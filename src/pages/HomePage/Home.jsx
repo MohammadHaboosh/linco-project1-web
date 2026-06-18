@@ -1,18 +1,11 @@
-import HeaderBanner from "../../components/layouts/HeaderBanner/HeaderBanner";
-import PendingInvitations from "../../features/dashboard/components/PendingInvitations/PendingInvitations";
-import ActiveRooms from "../../features/dashboard/components/ActiveRooms/ActiveRooms";
+import HomePage from "../../features/HomePage/components/HomePage";
 
-const Home = () => {
+const homePage = () => {
   return (
-    <>
-      <HeaderBanner
-        title="Ready to dive into your learning, Abrar ?"
-        text="Manage your company invites, track your active training rooms, and level up your career from   one single dashboard."
-      />
-      <PendingInvitations />
-      <ActiveRooms />
-    </>
+    <div>
+      <HomePage />
+    </div>
   );
 };
 
-export default Home;
+export default homePage;

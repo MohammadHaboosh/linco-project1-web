@@ -1,0 +1,91 @@
+.sidebar {
+  width: 70px;
+  background-color: var(--color-linco-navy);
+  display: flex;
+  flex-direction: column;
+  padding: 30px 0;
+  color: #ffffff;
+  position: fixed;
+  height: 100%;
+  z-index: 10;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  transition: width 0.3s ease;
+  overflow-x: hidden; /* Prevents text from spilling out during animation */
+}
+
+/* Expanded state class */
+.sidebar.open {
+  width: 220px;
+}
+
+.center-menu {
+  display: flex;
+  flex-direction: column;
+  margin-top: 100px;
+  width: 100%;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  cursor: pointer;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.menu-item:hover {
+  opacity: 0.7;
+}
+
+/* Forces the icon to always take up the same 70px space */
+.icon-wrapper {
+  min-width: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.menu-icon {
+  font-size: 38px;
+  color: #9cbaff;
+}
+
+.icon {
+  font-size: 28px;
+  color: #9cbaff;
+}
+
+.text {
+  font-size: 16px;
+  color: #9cbaff;
+  white-space: nowrap;
+  animation: fadeIn 0.3s ease-in;
+}
+
+/* Thin lines between the center icons */
+.divider {
+  width: 24px;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.3);
+  margin: 24px auto; /* Auto keeps it centered when closed */
+  transition: width 0.3s ease;
+}
+
+/* Expands the divider line when the sidebar opens */
+.sidebar.open .divider {
+  width: 80%;
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+  margin-bottom: 10px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
