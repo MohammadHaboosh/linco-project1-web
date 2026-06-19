@@ -1,11 +1,9 @@
 import styles from "./Header.module.css";
-// Import your JPG image here. Adjust the path to match your file structure.
 import appIconImg from "../../../assets/images/linco-logo.jpg";
 
 const Header = () => {
   return (
     <header className={styles.header}>
-      {/* ... keeping the left and center sections the same ... */}
       <div className={styles["header-left"]}>
         <div className={styles.logo}>
           <span className={styles["brand-name"]}>LinCo</span>{" "}
@@ -33,11 +31,7 @@ const Header = () => {
       </nav>
 
       <div className={styles["header-actions"]}>
-        <button className={styles["btn-workspace"]}>
-          <span className={styles["btn-workspace-icon"]}>👤</span> Create a
-          Workspace
-        </button>
-        {/* Replace the octopus emoji with the imported image */}
+        <button className={styles["btn-workspace"]}>Create a Workspace</button>
         <div className={styles["app-icon"]}>
           <img
             src={appIconImg}

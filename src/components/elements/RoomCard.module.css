@@ -1,0 +1,80 @@
+.card {
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 20px;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+}
+
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.card-image {
+  width: 160px;
+  height: 110px;
+  background-color: var(--color-linco-navy);
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.card-info h3 {
+  color: var(--color-linco-blue);
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  margin-top: 5px;
+}
+
+.card-info p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: #1e293b;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.icon {
+  color: var(--color-linco-blue);
+  font-size: 1.1rem;
+}
+
+.card-divider {
+  border: none;
+  border-top: 1px solid #cbd5e1;
+  margin: 15px 0;
+  width: 100%;
+}
+
+.card-bottom {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.member-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--color-linco-navy);
+  color: #ffffff;
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.badge-icon {
+  font-size: 1rem;
+}
