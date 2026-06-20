@@ -1,19 +1,20 @@
 import { createBrowserRouter } from "react-router-dom";
-import HomePage from "../features/HomePage/components/HomePage";
-import PendingInvitationsPage from "../features/PendingInvitationsPage/components/PendingInvitations";
-import JoinedRoomsPage from "../features/JoinedRoomPage/components/JoinedRooms";
+import HomePage from "../features/HomePage/components/home_page/HomePage";
+import PendingInvitationsPage from "../features/PendingInvitationsPage/components/pending_invitations/PendingInvitations";
+import JoinedRoomsPage from "../features/JoinedRoomPage/components/joined_rooms/JoinedRooms";
+import { PATHS } from "./paths";
 
 export const router = createBrowserRouter([
   {
-    path: "/",
+    path: PATHS.HOME,
     element: <HomePage />,
   },
   {
-    path: "/pending-invitations",
+    path: PATHS.PENDING_INVITATIONS,
     element: <PendingInvitationsPage />,
   },
   {
-    path: "/joined-rooms",
+    path: PATHS.JOINED_ROOMS,
     element: <JoinedRoomsPage />,
   },
   {

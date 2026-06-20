@@ -1,60 +1,48 @@
 import { useState } from "react";
-import {
-  IoMenu,
-  IoSettings,
-  IoNotifications,
-  IoPersonOutline,
-  IoLogOutOutline,
-} from "react-icons/io5";
+import { Link } from "react-router-dom";
+import { IoMenu, IoLogOutOutline } from "react-icons/io5";
+import { SIDEBAR_ROLES } from "./sidebarConfig";
 import styles from "./Sidebar.module.css";
 
-const Sidebar = () => {
+const Sidebar = ({ role = "trainee" }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
 
+  const menuItems = SIDEBAR_ROLES[role] || [];
+
   return (
     <aside className={`${styles.sidebar} ${isOpen ? styles.open : ""}`}>
-      {/* Top Menu Icon (Clickable to toggle) */}
       <div className={styles["menu-item"]} onClick={toggleSidebar} title="Menu">
         <div className={styles["icon-wrapper"]}>
           <IoMenu className={styles["menu-icon"]} />
         </div>
       </div>
 
-      {/* Center Icons with Dividers */}
       <div className={styles["center-menu"]}>
-        <div className={styles["menu-item"]} title="Settings">
-          <div className={styles["icon-wrapper"]}>
-            <IoSettings className={styles.icon} />
+        {menuItems.map((item, index) => (
+          <div key={index}>
+            <Link
+              to={item.path}
+              className={styles["menu-item"]}
+              title={item.name}
+              style={{ textDecoration: "none" }}
+            >
+              <div className={styles["icon-wrapper"]}>
+                <span className={styles.icon}>{item.icon}</span>
+              </div>
+              {isOpen && <span className={styles.text}>{item.name}</span>}
+            </Link>
+
+            {index < menuItems.length - 1 && (
+              <div className={styles.divider}></div>
+            )}
           </div>
-          {isOpen && <span className={styles.text}>Settings</span>}
-        </div>
-
-        <div className={styles.divider}></div>
-
-        <div className={styles["menu-item"]} title="Notifications">
-          <div className={styles["icon-wrapper"]}>
-            <IoNotifications className={styles.icon} />
-          </div>
-          {isOpen && <span className={styles.text}>Notifications</span>}
-        </div>
-
-        <div className={styles.divider}></div>
-
-        <div className={styles["menu-item"]} title="Profile">
-          <div className={styles["icon-wrapper"]}>
-            <IoPersonOutline className={styles.icon} />
-          </div>
-          {isOpen && <span className={styles.text}>Profile</span>}
-        </div>
-
-        <div className={styles.divider}></div>
+        ))}
       </div>
 
-      {/* Bottom Logout Icon */}
       <div
         className={`${styles["sidebar-bottom"]} ${styles["menu-item"]}`}
         title="Log out"

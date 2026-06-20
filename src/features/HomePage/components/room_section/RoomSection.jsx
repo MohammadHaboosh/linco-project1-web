@@ -1,4 +1,4 @@
-import RoomCard from "../../../components/elements/RoomCard.jsx";
+import RoomCard from "../../../../components/elements/RoomCard.jsx";
 import styles from "./RoomSection.module.css";
 
 const RoomSection = ({ title, rooms }) => {

@@ -1,0 +1,53 @@
+.workspace-sub-header {
+  background-color: #e0e7ff;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 0 30px;
+  border-bottom: 1px solid #cbd5e1;
+  width: 100%;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.sub-nav-links {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.sub-nav-item {
+  display: flex;
+  align-items: center;
+}
+
+.sub-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-linco-navy);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 12px 20px;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.sub-nav-icon {
+  font-size: 1.15rem;
+  color: var(--color-linco-blue);
+}
+
+.sub-nav-link.active {
+  background-color: #ffffff;
+  color: var(--color-linco-blue);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.sub-nav-divider {
+  width: 1px;
+  height: 24px;
+  background-color: #cbd5e1;
+  margin: 0 12px;
+}

@@ -1,0 +1,2551 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+.gitignore
+eslint.config.js
+index.html
+package.json
+public/favicon.svg
+public/icons.svg
+README.md
+src/App.css
+src/assets/fonts/.gitkeep
+src/assets/icons/linco-logo.png
+src/assets/images/linco-logo.jpg
+src/assets/images/OIP 10 (2).png
+src/assets/images/OIP 12 (2).png
+src/components/elements/.gitkeep
+src/components/elements/InvitationCard.jsx
+src/components/elements/InvitationCard.module.css
+src/components/elements/RoomCard.jsx
+src/components/elements/RoomCard.module.css
+src/components/form/.gitkeep
+src/components/layouts/BrandLogo/BrandLogo.jsx
+src/components/layouts/BrandLogo/BrandLogoStyles.js
+src/components/layouts/Footer/Footer.jsx
+src/components/layouts/Footer/Footer.module.css
+src/components/layouts/Header/Header.jsx
+src/components/layouts/Header/Header.module.css
+src/components/layouts/SideBar/Sidebar.jsx
+src/components/layouts/SideBar/Sidebar.module.css
+src/config/theme.js
+src/features/HomePage/api/.gitkeep
+src/features/HomePage/components/HomePage.jsx
+src/features/HomePage/components/HomePage.module.css
+src/features/HomePage/components/PendingInvitations.jsx
+src/features/HomePage/components/PendingInvitations.module.css
+src/features/HomePage/components/RoomSection.jsx
+src/features/HomePage/components/RoomSection.module.css
+src/features/HomePage/hooks/.gitkeep
+src/features/HomePage/store/.gitkeep
+src/features/HomePage/utils/.gitkeep
+src/features/JoinedRoomPage/api/.gitkeep
+src/features/JoinedRoomPage/components/JoinedRooms.jsx
+src/features/JoinedRoomPage/components/JoinedRooms.module.css
+src/features/JoinedRoomPage/hooks/.gitkeep
+src/features/JoinedRoomPage/store/.gitkeep
+src/features/JoinedRoomPage/utils/.gitkeep
+src/features/PendingInvitationsPage/api/.gitkeep
+src/features/PendingInvitationsPage/components/PendingInvitations.jsx
+src/features/PendingInvitationsPage/components/PendingInvitations.module.css
+src/features/PendingInvitationsPage/hooks/.gitkeep
+src/features/PendingInvitationsPage/store/.gitkeep
+src/features/PendingInvitationsPage/utils/.gitkeep
+src/hooks/.gitkeep
+src/index.css
+src/layouts/MainLayout/MainLayout.jsx
+src/layouts/MainLayout/MainLayoutStyle.js
+src/lib/.gitkeep
+src/main.jsx
+src/pages/HomePage.jsx
+src/pages/JoinedRooms.jsx
+src/pages/PendingInvitationsPage.jsx
+src/routes/index.jsx
+src/routes/paths.js
+src/store/.gitkeep
+src/types/.gitkeep
+src/utils/.gitkeep
+vite.config.js
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path=".gitignore">
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+</file>
+
+<file path="index.html">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>linco-project1-web</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
+</file>
+
+<file path="public/favicon.svg">
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="46" fill="none" viewBox="0 0 48 46"><path fill="#863bff" d="M25.946 44.938c-.664.845-2.021.375-2.021-.698V33.937a2.26 2.26 0 0 0-2.262-2.262H10.287c-.92 0-1.456-1.04-.92-1.788l7.48-10.471c1.07-1.497 0-3.578-1.842-3.578H1.237c-.92 0-1.456-1.04-.92-1.788L10.013.474c.214-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.471c-1.07 1.498 0 3.579 1.842 3.579h11.377c.943 0 1.473 1.088.89 1.83L25.947 44.94z" style="fill:#863bff;fill:color(display-p3 .5252 .23 1);fill-opacity:1"/><mask id="a" width="48" height="46" x="0" y="0" maskUnits="userSpaceOnUse" style="mask-type:alpha"><path fill="#000" d="M25.842 44.938c-.664.844-2.021.375-2.021-.698V33.937a2.26 2.26 0 0 0-2.262-2.262H10.183c-.92 0-1.456-1.04-.92-1.788l7.48-10.471c1.07-1.498 0-3.579-1.842-3.579H1.133c-.92 0-1.456-1.04-.92-1.787L9.91.473c.214-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.471c-1.07 1.498 0 3.578 1.842 3.578h11.377c.943 0 1.473 1.088.89 1.832L25.843 44.94z" style="fill:#000;fill-opacity:1"/></mask><g mask="url(#a)"><g filter="url(#b)"><ellipse cx="5.508" cy="14.704" fill="#ede6ff" rx="5.508" ry="14.704" style="fill:#ede6ff;fill:color(display-p3 .9275 .9033 1);fill-opacity:1" transform="matrix(.00324 1 1 -.00324 -4.47 31.516)"/></g><g filter="url(#c)"><ellipse cx="10.399" cy="29.851" fill="#ede6ff" rx="10.399" ry="29.851" style="fill:#ede6ff;fill:color(display-p3 .9275 .9033 1);fill-opacity:1" transform="matrix(.00324 1 1 -.00324 -39.328 7.883)"/></g><g filter="url(#d)"><ellipse cx="5.508" cy="30.487" fill="#7e14ff" rx="5.508" ry="30.487" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.814 -25.913 -14.639)scale(1 -1)"/></g><g filter="url(#e)"><ellipse cx="5.508" cy="30.599" fill="#7e14ff" rx="5.508" ry="30.599" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.814 -32.644 -3.334)scale(1 -1)"/></g><g filter="url(#f)"><ellipse cx="5.508" cy="30.599" fill="#7e14ff" rx="5.508" ry="30.599" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="matrix(.00324 1 1 -.00324 -34.34 30.47)"/></g><g filter="url(#g)"><ellipse cx="14.072" cy="22.078" fill="#ede6ff" rx="14.072" ry="22.078" style="fill:#ede6ff;fill:color(display-p3 .9275 .9033 1);fill-opacity:1" transform="rotate(93.35 24.506 48.493)scale(-1 1)"/></g><g filter="url(#h)"><ellipse cx="3.47" cy="21.501" fill="#7e14ff" rx="3.47" ry="21.501" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.009 28.708 47.59)scale(-1 1)"/></g><g filter="url(#i)"><ellipse cx="3.47" cy="21.501" fill="#7e14ff" rx="3.47" ry="21.501" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.009 28.708 47.59)scale(-1 1)"/></g><g filter="url(#j)"><ellipse cx=".387" cy="8.972" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(39.51 .387 8.972)"/></g><g filter="url(#k)"><ellipse cx="47.523" cy="-6.092" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 47.523 -6.092)"/></g><g filter="url(#l)"><ellipse cx="41.412" cy="6.333" fill="#47bfff" rx="5.971" ry="9.665" style="fill:#47bfff;fill:color(display-p3 .2799 .748 1);fill-opacity:1" transform="rotate(37.892 41.412 6.333)"/></g><g filter="url(#m)"><ellipse cx="-1.879" cy="38.332" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 -1.88 38.332)"/></g><g filter="url(#n)"><ellipse cx="-1.879" cy="38.332" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 -1.88 38.332)"/></g><g filter="url(#o)"><ellipse cx="35.651" cy="29.907" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 35.651 29.907)"/></g><g filter="url(#p)"><ellipse cx="38.418" cy="32.4" fill="#47bfff" rx="5.971" ry="15.297" style="fill:#47bfff;fill:color(display-p3 .2799 .748 1);fill-opacity:1" transform="rotate(37.892 38.418 32.4)"/></g></g><defs><filter id="b" width="60.045" height="41.654" x="-19.77" y="16.149" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659"/></filter><filter id="c" width="90.34" height="51.437" x="-54.613" y="-7.533" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659"/></filter><filter id="d" width="79.355" height="29.4" x="-49.64" y="2.03" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="e" width="79.579" height="29.4" x="-45.045" y="20.029" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="f" width="79.579" height="29.4" x="-43.513" y="21.178" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="g" width="74.749" height="58.852" x="15.756" y="-17.901" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659"/></filter><filter id="h" width="61.377" height="25.362" x="23.548" y="2.284" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="i" width="61.377" height="25.362" x="23.548" y="2.284" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="j" width="56.045" height="63.649" x="-27.636" y="-22.853" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="k" width="54.814" height="64.646" x="20.116" y="-38.415" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="l" width="33.541" height="35.313" x="24.641" y="-11.323" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="m" width="54.814" height="64.646" x="-29.286" y="6.009" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="n" width="54.814" height="64.646" x="-29.286" y="6.009" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="o" width="54.814" height="64.646" x="8.244" y="-2.416" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="p" width="39.409" height="43.623" x="18.713" y="10.588" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter></defs></svg>
+</file>
+
+<file path="public/icons.svg">
+<svg xmlns="http://www.w3.org/2000/svg">
+  <symbol id="bluesky-icon" viewBox="0 0 16 17">
+    <g clip-path="url(#bluesky-clip)"><path fill="#08060d" d="M7.75 7.735c-.693-1.348-2.58-3.86-4.334-5.097-1.68-1.187-2.32-.981-2.74-.79C.188 2.065.1 2.812.1 3.251s.241 3.602.398 4.13c.52 1.744 2.367 2.333 4.07 2.145-2.495.37-4.71 1.278-1.805 4.512 3.196 3.309 4.38-.71 4.987-2.746.608 2.036 1.307 5.91 4.93 2.746 2.72-2.746.747-4.143-1.747-4.512 1.702.189 3.55-.4 4.07-2.145.156-.528.397-3.691.397-4.13s-.088-1.186-.575-1.406c-.42-.19-1.06-.395-2.741.79-1.755 1.24-3.64 3.752-4.334 5.099"/></g>
+    <defs><clipPath id="bluesky-clip"><path fill="#fff" d="M.1.85h15.3v15.3H.1z"/></clipPath></defs>
+  </symbol>
+  <symbol id="discord-icon" viewBox="0 0 20 19">
+    <path fill="#08060d" d="M16.224 3.768a14.5 14.5 0 0 0-3.67-1.153c-.158.286-.343.67-.47.976a13.5 13.5 0 0 0-4.067 0c-.128-.306-.317-.69-.476-.976A14.4 14.4 0 0 0 3.868 3.77C1.546 7.28.916 10.703 1.231 14.077a14.7 14.7 0 0 0 4.5 2.306q.545-.748.965-1.587a9.5 9.5 0 0 1-1.518-.74q.191-.14.372-.293c2.927 1.369 6.107 1.369 8.999 0q.183.152.372.294-.723.437-1.52.74.418.838.963 1.588a14.6 14.6 0 0 0 4.504-2.308c.37-3.911-.63-7.302-2.644-10.309m-9.13 8.234c-.878 0-1.599-.82-1.599-1.82 0-.998.705-1.82 1.6-1.82.894 0 1.614.82 1.599 1.82.001 1-.705 1.82-1.6 1.82m5.91 0c-.878 0-1.599-.82-1.599-1.82 0-.998.705-1.82 1.6-1.82.893 0 1.614.82 1.599 1.82 0 1-.706 1.82-1.6 1.82"/>
+  </symbol>
+  <symbol id="documentation-icon" viewBox="0 0 21 20">
+    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="m15.5 13.333 1.533 1.322c.645.555.967.833.967 1.178s-.322.623-.967 1.179L15.5 18.333m-3.333-5-1.534 1.322c-.644.555-.966.833-.966 1.178s.322.623.966 1.179l1.534 1.321"/>
+    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M17.167 10.836v-4.32c0-1.41 0-2.117-.224-2.68-.359-.906-1.118-1.621-2.08-1.96-.599-.21-1.349-.21-2.848-.21-2.623 0-3.935 0-4.983.369-1.684.591-3.013 1.842-3.641 3.428C3 6.449 3 7.684 3 10.154v2.122c0 2.558 0 3.838.706 4.726q.306.383.713.671c.76.536 1.79.64 3.581.66"/>
+    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M3 10a2.78 2.78 0 0 1 2.778-2.778c.555 0 1.209.097 1.748-.047.48-.129.854-.503.982-.982.145-.54.048-1.194.048-1.749a2.78 2.78 0 0 1 2.777-2.777"/>
+  </symbol>
+  <symbol id="github-icon" viewBox="0 0 19 19">
+    <path fill="#08060d" fill-rule="evenodd" d="M9.356 1.85C5.05 1.85 1.57 5.356 1.57 9.694a7.84 7.84 0 0 0 5.324 7.44c.387.079.528-.168.528-.376 0-.182-.013-.805-.013-1.454-2.165.467-2.616-.935-2.616-.935-.349-.91-.864-1.143-.864-1.143-.71-.48.051-.48.051-.48.787.051 1.2.805 1.2.805.695 1.194 1.817.857 2.268.649.064-.507.27-.857.49-1.052-1.728-.182-3.545-.857-3.545-3.87 0-.857.31-1.558.8-2.104-.078-.195-.349-1 .077-2.078 0 0 .657-.208 2.14.805a7.5 7.5 0 0 1 1.946-.26c.657 0 1.328.092 1.946.26 1.483-1.013 2.14-.805 2.14-.805.426 1.078.155 1.883.078 2.078.502.546.799 1.247.799 2.104 0 3.013-1.818 3.675-3.558 3.87.284.247.528.714.528 1.454 0 1.052-.012 1.896-.012 2.156 0 .208.142.455.528.377a7.84 7.84 0 0 0 5.324-7.441c.013-4.338-3.48-7.844-7.773-7.844" clip-rule="evenodd"/>
+  </symbol>
+  <symbol id="social-icon" viewBox="0 0 20 20">
+    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M12.5 6.667a4.167 4.167 0 1 0-8.334 0 4.167 4.167 0 0 0 8.334 0"/>
+    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M2.5 16.667a5.833 5.833 0 0 1 8.75-5.053m3.837.474.513 1.035c.07.144.257.282.414.309l.93.155c.596.1.736.536.307.965l-.723.73a.64.64 0 0 0-.152.531l.207.903c.164.715-.213.991-.84.618l-.872-.52a.63.63 0 0 0-.577 0l-.872.52c-.624.373-1.003.094-.84-.618l.207-.903a.64.64 0 0 0-.152-.532l-.723-.729c-.426-.43-.289-.864.306-.964l.93-.156a.64.64 0 0 0 .412-.31l.513-1.034c.28-.562.735-.562 1.012 0"/>
+  </symbol>
+  <symbol id="x-icon" viewBox="0 0 19 19">
+    <path fill="#08060d" fill-rule="evenodd" d="M1.893 1.98c.052.072 1.245 1.769 2.653 3.77l2.892 4.114c.183.261.333.48.333.486s-.068.089-.152.183l-.522.593-.765.867-3.597 4.087c-.375.426-.734.834-.798.905a1 1 0 0 0-.118.148c0 .01.236.017.664.017h.663l.729-.83c.4-.457.796-.906.879-.999a692 692 0 0 0 1.794-2.038c.034-.037.301-.34.594-.675l.551-.624.345-.392a7 7 0 0 1 .34-.374c.006 0 .93 1.306 2.052 2.903l2.084 2.965.045.063h2.275c1.87 0 2.273-.003 2.266-.021-.008-.02-1.098-1.572-3.894-5.547-2.013-2.862-2.28-3.246-2.273-3.266.008-.019.282-.332 2.085-2.38l2-2.274 1.567-1.782c.022-.028-.016-.03-.65-.03h-.674l-.3.342a871 871 0 0 1-1.782 2.025c-.067.075-.405.458-.75.852a100 100 0 0 1-.803.91c-.148.172-.299.344-.99 1.127-.304.343-.32.358-.345.327-.015-.019-.904-1.282-1.976-2.808L6.365 1.85H1.8zm1.782.91 8.078 11.294c.772 1.08 1.413 1.973 1.425 1.984.016.017.241.02 1.05.017l1.03-.004-2.694-3.766L7.796 5.75 5.722 2.852l-1.039-.004-1.039-.004z" clip-rule="evenodd"/>
+  </symbol>
+</svg>
+</file>
+
+<file path="README.md">
+# React + Vite
+
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+
+Currently, two official plugins are available:
+
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+
+## React Compiler
+
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+</file>
+
+<file path="src/App.css">
+.counter {
+  font-size: 16px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border: 2px solid transparent;
+  transition: border-color 0.3s;
+  margin-bottom: 24px;
+
+  &:hover {
+    border-color: var(--accent-border);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+.hero {
+  position: relative;
+
+  .base,
+  .framework,
+  .vite {
+    inset-inline: 0;
+    margin: 0 auto;
+  }
+
+  .base {
+    width: 170px;
+    position: relative;
+    z-index: 0;
+  }
+
+  .framework,
+  .vite {
+    position: absolute;
+  }
+
+  .framework {
+    z-index: 1;
+    top: 34px;
+    height: 28px;
+    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
+      scale(1.4);
+  }
+
+  .vite {
+    z-index: 0;
+    top: 107px;
+    height: 26px;
+    width: auto;
+    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
+      scale(0.8);
+  }
+}
+
+#center {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  place-content: center;
+  place-items: center;
+  flex-grow: 1;
+
+  @media (max-width: 1024px) {
+    padding: 32px 20px 24px;
+    gap: 18px;
+  }
+}
+
+#next-steps {
+  display: flex;
+  border-top: 1px solid var(--border);
+  text-align: left;
+
+  & > div {
+    flex: 1 1 0;
+    padding: 32px;
+    @media (max-width: 1024px) {
+      padding: 24px 20px;
+    }
+  }
+
+  .icon {
+    margin-bottom: 16px;
+    width: 22px;
+    height: 22px;
+  }
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+#docs {
+  border-right: 1px solid var(--border);
+
+  @media (max-width: 1024px) {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+#next-steps ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 8px;
+  margin: 32px 0 0;
+
+  .logo {
+    height: 18px;
+  }
+
+  a {
+    color: var(--text-h);
+    font-size: 16px;
+    border-radius: 6px;
+    background: var(--social-bg);
+    display: flex;
+    padding: 6px 12px;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    transition: box-shadow 0.3s;
+
+    &:hover {
+      box-shadow: var(--shadow);
+    }
+    .button-icon {
+      height: 18px;
+      width: 18px;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    margin-top: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    li {
+      flex: 1 1 calc(50% - 8px);
+    }
+
+    a {
+      width: 100%;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+  }
+}
+
+#spacer {
+  height: 88px;
+  border-top: 1px solid var(--border);
+  @media (max-width: 1024px) {
+    height: 48px;
+  }
+}
+
+.ticks {
+  position: relative;
+  width: 100%;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: -4.5px;
+    border: 5px solid transparent;
+  }
+
+  &::before {
+    left: 0;
+    border-left-color: var(--border);
+  }
+  &::after {
+    right: 0;
+    border-right-color: var(--border);
+  }
+}
+</file>
+
+<file path="src/assets/fonts/.gitkeep">
+
+</file>
+
+<file path="src/components/elements/.gitkeep">
+
+</file>
+
+<file path="src/components/elements/InvitationCard.jsx">
+import styles from "./InvitationCard.module.css";
+
+const InvitationCard = ({ invitation }) => {
+  return (
+    <div className={styles["list-item"]}>
+      <div className={styles["company-name"]}>{invitation.company}</div>
+      <div className={styles["vertical-divider"]}></div>
+      <div className={styles["text-item"]}>{invitation.caller}</div>
+      <div className={styles["vertical-divider"]}></div>
+      <div className={styles["text-item"]}>{invitation.role}</div>
+      <div className={styles["vertical-divider"]}></div>
+      <div className={styles["text-item"]}>{invitation.time}</div>
+
+      <div className={styles["list-actions"]}>
+        <button className={styles["btn-accept"]}>Accept</button>
+        <button className={styles["btn-reject"]}>Reject</button>
+      </div>
+    </div>
+  );
+};
+
+export default InvitationCard;
+</file>
+
+<file path="src/components/elements/InvitationCard.module.css">
+.list-item {
+  display: flex;
+  align-items: center;
+  padding: 16px 25px;
+  background-color: #ffffff;
+  border: 1px solid #475569;
+  border-radius: 12px;
+  transition: transform 0.1s;
+}
+
+.list-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.company-name {
+  flex: 1;
+  color: var(--color-linco-blue);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.text-item {
+  flex: 1;
+  font-size: 1rem;
+  color: #0f172a;
+  font-weight: 500;
+  text-align: center;
+}
+
+.vertical-divider {
+  width: 1px;
+  height: 24px;
+  background-color: #cbd5e1;
+}
+
+.list-actions {
+  flex: 1.2;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.list-actions button {
+  padding: 10px 28px;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-accept {
+  background-color: var(--color-linco-navy);
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-reject {
+  background-color: #ffffff;
+  color: var(--color-linco-navy);
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.btn-accept:hover {
+  opacity: 0.9;
+}
+
+.btn-reject:hover {
+  background-color: #f8fafc;
+}
+
+@media (max-width: 1100px) {
+  .list-item {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .vertical-divider {
+    display: none;
+  }
+}
+</file>
+
+<file path="src/components/elements/RoomCard.jsx">
+import { IoPersonOutline, IoCalendarOutline, IoPeople } from "react-icons/io5";
+import styles from "./RoomCard.module.css";
+
+const RoomCard = ({ room }) => {
+  return (
+    <div className={styles.card}>
+      {/* Top half with image and info */}
+      <div className={styles["card-top"]}>
+        <div
+          className={styles["card-image"]}
+          style={room.imageColor ? { backgroundColor: room.imageColor } : {}}
+        ></div>
+        <div className={styles["card-info"]}>
+          <h3>{room.companyName}</h3>
+          <p>
+            <IoPersonOutline className={styles.icon} /> Role: {room.role}
+          </p>
+          <p>
+            <IoCalendarOutline className={styles.icon} /> Joined at{" "}
+            {room.dateJoined}
+          </p>
+        </div>
+      </div>
+
+      {/* Horizontal line */}
+      <hr className={styles["card-divider"]} />
+
+      {/* Bottom half with badge */}
+      <div className={styles["card-bottom"]}>
+        <div className={styles["member-badge"]}>
+          <IoPeople className={styles["badge-icon"]} />
+          {room.members || 120}{" "}
+          {/* Fallback to 120 if no members are provided */}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default RoomCard;
+</file>
+
+<file path="src/components/elements/RoomCard.module.css">
+.card {
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 20px;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+}
+
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.card-image {
+  width: 160px;
+  height: 110px;
+  background-color: var(--color-linco-navy);
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.card-info h3 {
+  color: var(--color-linco-blue);
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  margin-top: 5px;
+}
+
+.card-info p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: #1e293b;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.icon {
+  color: var(--color-linco-blue);
+  font-size: 1.1rem;
+}
+
+.card-divider {
+  border: none;
+  border-top: 1px solid #cbd5e1;
+  margin: 15px 0;
+  width: 100%;
+}
+
+.card-bottom {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.member-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--color-linco-navy);
+  color: #ffffff;
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.badge-icon {
+  font-size: 1rem;
+}
+</file>
+
+<file path="src/components/form/.gitkeep">
+
+</file>
+
+<file path="src/components/layouts/BrandLogo/BrandLogo.jsx">
+import { logoStyles } from "./BrandLogoStyles";
+import logoImg from "../../../assets/images/linco-logo.jpg";
+
+const BrandLogo = () => {
+  return (
+    <div className={logoStyles.container}>
+      <div className={logoStyles.imageWrapper}>
+        <img
+          src={logoImg}
+          alt="LinCo Corporate Squid Logo"
+          className={logoStyles.image}
+        />
+      </div>
+      <span className={logoStyles.brandText}>
+        LinCo <span className={logoStyles.brandSubtext}>Link Company.</span>
+      </span>
+    </div>
+  );
+};
+
+export default BrandLogo;
+</file>
+
+<file path="src/components/layouts/BrandLogo/BrandLogoStyles.js">
+export const logoStyles = {
+  container: "flex items-center gap-3 py-2",
+  imageWrapper:
+    "w-8 h-8 bg-white rounded flex items-center justify-center overflow-hidden shadow-sm",
+  image: "w-full h-full object-contain p-0.5",
+  brandText: "font-bold text-white text-xl font-serif tracking-wide",
+  brandSubtext: "text-xs font-normal tracking-normal text-gray-300 ml-1",
+};
+</file>
+
+<file path="src/components/layouts/Footer/Footer.module.css">
+.footer {
+  background-color: var(--color-linco-navy);
+  color: #ffffff;
+  padding: 40px 50px 20px;
+  margin-top: auto;
+  flex-shrink: 0;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  margin-bottom: 30px;
+}
+
+.footer-col h4 {
+  font-size: 1rem;
+  margin-bottom: 15px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.footer-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-col ul li {
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+</file>
+
+<file path="src/components/layouts/Header/Header.module.css">
+.header {
+  background-color: var(--color-linco-navy);
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.logo {
+  font-size: 1.2rem;
+}
+
+.brand-name {
+  color: var(--color-linco-light);
+  font-weight: 800;
+}
+
+.company-text {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  background-color: var(--color-linco-light);
+  color: var(--color-linco-navy);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.user-name {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.dropdown-icon {
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid #ffffff;
+  border-bottom: 2px solid #ffffff;
+  transform: rotate(45deg);
+  margin-bottom: 4px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.nav-links a.active {
+  background-color: #ffffff;
+  color: var(--color-linco-blue);
+  font-weight: 700;
+}
+
+.nav-divider {
+  width: 1px;
+  height: 20px;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.btn-workspace {
+  background-color: var(--color-linco-light);
+  color: var(--color-linco-navy);
+  border: none;
+  padding: 8px 18px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-workspace-icon {
+  font-size: 1rem;
+}
+
+.app-icon {
+  width: 38px;
+  height: 38px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  overflow: hidden; /* Added this to clip the image to the border-radius */
+}
+
+/* Add this new class to style the image inside the container */
+.app-icon-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the image fills the square perfectly */
+}
+
+@media (max-width: 1100px) {
+  .header {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 15px 30px;
+    gap: 15px;
+  }
+  .nav-links {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+</file>
+
+<file path="src/components/layouts/SideBar/Sidebar.module.css">
+.sidebar {
+  width: 70px;
+  background-color: var(--color-linco-navy);
+  display: flex;
+  flex-direction: column;
+  padding: 30px 0;
+  color: #ffffff;
+  position: fixed;
+  height: 100%;
+  z-index: 10;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  transition: width 0.3s ease;
+  overflow-x: hidden; /* Prevents text from spilling out during animation */
+}
+
+/* Expanded state class */
+.sidebar.open {
+  width: 220px;
+}
+
+.center-menu {
+  display: flex;
+  flex-direction: column;
+  margin-top: 100px;
+  width: 100%;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  cursor: pointer;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.menu-item:hover {
+  opacity: 0.7;
+}
+
+/* Forces the icon to always take up the same 70px space */
+.icon-wrapper {
+  min-width: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.menu-icon {
+  font-size: 38px;
+  color: #9cbaff;
+}
+
+.icon {
+  font-size: 28px;
+  color: #9cbaff;
+}
+
+.text {
+  font-size: 16px;
+  color: #9cbaff;
+  white-space: nowrap;
+  animation: fadeIn 0.3s ease-in;
+}
+
+/* Thin lines between the center icons */
+.divider {
+  width: 24px;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.3);
+  margin: 24px auto; /* Auto keeps it centered when closed */
+  transition: width 0.3s ease;
+}
+
+/* Expands the divider line when the sidebar opens */
+.sidebar.open .divider {
+  width: 80%;
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+  margin-bottom: 10px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+</file>
+
+<file path="src/config/theme.js">
+export const theme = {
+  colors: {
+    primary: "#112950",
+    secondary: "#93c5fd",
+    background: "#f8fafc",
+  },
+};
+</file>
+
+<file path="src/features/HomePage/api/.gitkeep">
+
+</file>
+
+<file path="src/features/HomePage/components/PendingInvitations.jsx">
+import styles from "./PendingInvitations.module.css";
+import InvitationCard from "../../../components/elements/InvitationCard.jsx";
+
+const PendingInvitations = () => {
+  // Mock data array
+  const invitations = [
+    {
+      id: 1,
+      company: "Company name",
+      caller: "Name of the caller",
+      role: "As a trainee",
+      time: "13:40 pm",
+    },
+    {
+      id: 2,
+      company: "Company name",
+      caller: "Name of the caller",
+      role: "As a trainee",
+      time: "13:40 pm",
+    },
+    {
+      id: 3,
+      company: "Company name",
+      caller: "Name of the caller",
+      role: "As a trainee",
+      time: "13:40 pm",
+    },
+  ];
+
+  return (
+    <div
+      className={styles["content-section"]}
+      style={{ background: "transparent" }}
+    >
+      <div className={styles["section-header"]}>
+        <h2>New pending Invitations</h2>
+        <button className={styles["view-all"]}>View All</button>
+      </div>
+
+      <div className={styles["list-container"]}>
+        {invitations.map((inv) => (
+          <InvitationCard key={inv.id} invitation={inv} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default PendingInvitations;
+</file>
+
+<file path="src/features/HomePage/components/PendingInvitations.module.css">
+.content-section {
+  padding: 0 40px;
+  margin-bottom: 30px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-header h2 {
+  color: var(--color-linco-navy);
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.view-all {
+  background-color: #e2e8f0;
+  color: var(--color-linco-navy);
+  font-size: 0.85rem;
+  font-weight: 700;
+  border: 1px solid #cbd5e1;
+  padding: 6px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.view-all:hover {
+  background-color: var(--color-linco-light);
+}
+
+.list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+</file>
+
+<file path="src/features/HomePage/components/RoomSection.jsx">
+import RoomCard from "../../../components/elements/RoomCard.jsx";
+import styles from "./RoomSection.module.css";
+
+const RoomSection = ({ title, rooms }) => {
+  return (
+    <div className={styles.section}>
+      <div className={styles["section-header"]}>
+        <h2>{title}</h2>
+        <button className={styles["view-all"]}>View All</button>
+      </div>
+
+      <div className={styles["cards-grid"]}>
+        {rooms.map((room) => (
+          <RoomCard key={room.id} room={room} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default RoomSection;
+</file>
+
+<file path="src/features/HomePage/components/RoomSection.module.css">
+.section {
+  margin-bottom: 40px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-header h2 {
+  color: var(--color-linco-navy);
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.view-all {
+  background-color: #e2e8f0;
+  color: var(--color-linco-navy);
+  font-size: 0.85rem;
+  font-weight: 700;
+  border: 1px solid #cbd5e1;
+  padding: 6px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.view-all:hover {
+  background-color: var(--color-linco-light);
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 30px;
+}
+
+@media (max-width: 1100px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</file>
+
+<file path="src/features/HomePage/hooks/.gitkeep">
+
+</file>
+
+<file path="src/features/HomePage/store/.gitkeep">
+
+</file>
+
+<file path="src/features/HomePage/utils/.gitkeep">
+
+</file>
+
+<file path="src/features/JoinedRoomPage/api/.gitkeep">
+
+</file>
+
+<file path="src/features/JoinedRoomPage/components/JoinedRooms.jsx">
+import { useState } from "react";
+import { IoChevronBack, IoSearch } from "react-icons/io5";
+import Sidebar from "../../../components/layouts/SideBar/Sidebar";
+import Header from "../../../components/layouts/Header/Header";
+import Footer from "../../../components/layouts/Footer/Footer";
+import RoomCard from "../../../components/elements/RoomCard.jsx";
+import styles from "./JoinedRooms.module.css";
+
+const JoinedRoomsPage = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const joinedRooms = Array.from({ length: 10 }, (_, index) => ({
+    id: index + 1,
+    companyName: `Company Demo Name ${index + 1}`,
+    role: "Trainee",
+    dateJoined: "12/12/2025",
+    members: 120,
+  }));
+
+  const filteredRooms = joinedRooms.filter((room) =>
+    room.companyName.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
+
+  return (
+    <div className={styles["app-container"]}>
+      <Sidebar />
+
+      <div className={`${styles["main-wrapper"]} custom-scrollbar`}>
+        <Header />
+
+        <div className={styles["top-banner"]}>
+          <div className={styles["banner-text"]}>
+            <div className={styles["title-container"]}>
+              <a href="#" className={styles["back-link"]}>
+                <IoChevronBack className={styles["back-icon"]} />
+                <h2>Joined Training Rooms</h2>
+              </a>
+              <div className={styles["dashed-line"]}></div>
+            </div>
+
+            <div className={styles["stats-box"]}>
+              <p className={styles["stats-title"]}>
+                Number of training companies
+              </p>
+              <p className={styles["stats-number"]}>{joinedRooms.length}</p>
+            </div>
+          </div>
+
+          <div className={styles["banner-image-container"]}>
+            <img
+              src=""
+              alt="Modern office building"
+              className={styles["banner-image"]}
+            />
+          </div>
+        </div>
+
+        <div className={styles["search-section"]}>
+          <div className={styles["search-bar"]}>
+            <input
+              type="text"
+              placeholder="Search by company's name"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <IoSearch className={styles["search-icon"]} />
+          </div>
+        </div>
+
+        <div className={styles["list-section"]}>
+          <div className={styles["cards-grid"]}>
+            {filteredRooms.length > 0 ? (
+              filteredRooms.map((room) => (
+                <RoomCard key={room.id} room={room} />
+              ))
+            ) : (
+              <p
+                style={{
+                  color: "#64748b",
+                  fontStyle: "italic",
+                  gridColumn: "1 / -1",
+                }}
+              >
+                No companies found matching "{searchQuery}"
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div className={styles["footer-wrapper"]}>
+          <Footer />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default JoinedRoomsPage;
+</file>
+
+<file path="src/features/JoinedRoomPage/components/JoinedRooms.module.css">
+.app-container {
+  background-color: var(--color-linco-navy);
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-wrapper {
+  margin-left: 70px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow-y: auto;
+  transition: margin-left 0.3s ease;
+  background-color: var(--color-linco-navy);
+}
+
+.main-wrapper.shifted {
+  margin-left: 220px;
+}
+
+/* --- Top Banner Styles --- */
+.top-banner {
+  background-color: #ffffff;
+  padding: 60px 80px;
+  border-bottom-left-radius: 80px;
+  border-bottom-right-radius: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 380px;
+  overflow: hidden;
+  position: relative;
+}
+
+.banner-text {
+  max-width: 50%;
+  z-index: 2;
+}
+
+.title-container {
+  display: inline-block;
+  margin-bottom: 30px;
+}
+
+.back-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--color-linco-navy);
+  margin-bottom: 15px;
+}
+
+.back-icon {
+  font-size: 1.8rem;
+  margin-right: 15px;
+}
+
+.back-link h2 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.dashed-line {
+  width: 100%;
+  height: 2px;
+  border-bottom: 2px dashed var(--color-linco-navy);
+  margin-left: 45px;
+}
+
+.stats-box {
+  border: 2px dashed var(--color-linco-navy);
+  border-radius: 16px;
+  padding: 25px 50px;
+  margin-left: 45px;
+  display: inline-block;
+  text-align: center;
+  background-color: #ffffff;
+}
+
+.stats-title {
+  color: var(--color-linco-blue);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+}
+
+.stats-number {
+  color: var(--color-linco-navy);
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin: 0;
+  line-height: 1;
+}
+
+.banner-image-container {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 45%;
+  background-color: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --- Search Section Styles --- */
+.search-section {
+  padding: 40px 20px 50px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.search-bar {
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 650px;
+  display: flex;
+  align-items: center;
+  padding: 12px 25px;
+  border-radius: 12px;
+}
+
+.search-bar input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  color: var(--color-linco-navy);
+}
+
+.search-bar input::placeholder {
+  color: #94a3b8;
+}
+
+.search-icon {
+  color: var(--color-linco-navy);
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+/* --- Grid Section Styles --- */
+.list-section {
+  background-color: #ffffff;
+  border-top-left-radius: 80px;
+  border-top-right-radius: 80px;
+  padding: 60px 80px;
+  flex: 1;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+}
+
+.icon {
+  color: var(--color-linco-blue);
+  font-size: 1.1rem;
+}
+
+.badge-icon {
+  font-size: 1rem;
+}
+
+.footer-wrapper {
+  background-color: var(--color-linco-navy);
+}
+
+@media (max-width: 1100px) {
+  .top-banner {
+    padding: 30px;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+    flex-direction: column;
+    text-align: center;
+  }
+  .banner-text {
+    max-width: 100%;
+    margin-bottom: 30px;
+  }
+  .stats-box {
+    margin-left: 0;
+  }
+  .dashed-line {
+    margin-left: 0;
+  }
+  .banner-image-container {
+    display: none;
+  }
+  .list-section {
+    padding: 40px 30px;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+  }
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</file>
+
+<file path="src/features/JoinedRoomPage/hooks/.gitkeep">
+
+</file>
+
+<file path="src/features/JoinedRoomPage/store/.gitkeep">
+
+</file>
+
+<file path="src/features/JoinedRoomPage/utils/.gitkeep">
+
+</file>
+
+<file path="src/features/PendingInvitationsPage/api/.gitkeep">
+
+</file>
+
+<file path="src/features/PendingInvitationsPage/components/PendingInvitations.jsx">
+import { useState } from "react";
+import { IoChevronBack, IoSearch } from "react-icons/io5";
+import Sidebar from "../../../components/layouts/SideBar/Sidebar";
+import Header from "../../../components/layouts/Header/Header";
+import Footer from "../../../components/layouts/Footer/Footer";
+import InvitationCard from "../../../components/elements/InvitationCard.jsx";
+import styles from "./PendingInvitations.module.css";
+
+const PendingInvitationsPage = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const invitations = [
+    {
+      id: 1,
+      company: "Company name 1",
+      caller: "Name of the caller",
+      role: "As a trainee",
+      time: "13:40 pm",
+    },
+    {
+      id: 2,
+      company: "Company name 2",
+      caller: "Name of the caller",
+      role: "As a trainee",
+      time: "13:40 pm",
+    },
+    {
+      id: 3,
+      company: "Company name 3",
+      caller: "Name of the caller",
+      role: "As a trainee",
+      time: "13:40 pm",
+    },
+    {
+      id: 4,
+      company: "Company name 4",
+      caller: "Name of the caller",
+      role: "As a trainee",
+      time: "13:40 pm",
+    },
+    {
+      id: 5,
+      company: "Company name 5",
+      caller: "Name of the caller",
+      role: "As a trainee",
+      time: "13:40 pm",
+    },
+    {
+      id: 6,
+      company: "Company name 6",
+      caller: "Name of the caller",
+      role: "As a trainee",
+      time: "13:40 pm",
+    },
+  ];
+
+  const filteredInvitations = invitations.filter((inv) =>
+    inv.company.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
+
+  return (
+    <div className={styles["app-container"]}>
+      <Sidebar />
+
+      <div className={`${styles["main-wrapper"]} custom-scrollbar`}>
+        <Header />
+
+        <div className={styles["top-banner"]}>
+          <div className={styles["banner-text"]}>
+            <div className={styles["title-container"]}>
+              <a href="#" className={styles["back-link"]}>
+                <IoChevronBack className={styles["back-icon"]} />
+                <h2>Pending Invitations</h2>
+              </a>
+              <div className={styles["dashed-line"]}></div>
+            </div>
+            <p>
+              Review your pending invitations to join company
+              <br />
+              workspaces and training rooms.
+            </p>
+          </div>
+
+          <div className={styles["banner-image-container"]}>
+            <img
+              src=""
+              alt="Invitation to Linco company envelopes"
+              className={styles["banner-image"]}
+            />
+          </div>
+        </div>
+
+        <div className={styles["search-section"]}>
+          <div className={styles["search-bar"]}>
+            <input
+              type="text"
+              placeholder="Search by company's name"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <IoSearch className={styles["search-icon"]} />
+          </div>
+        </div>
+
+        <div className={styles["list-section"]}>
+          <div className={styles["table-header"]}>
+            <div className={styles["th-col"]} style={{ textAlign: "left" }}>
+              COMPANY NAME
+            </div>
+            <div className={styles["th-col"]}>CALLER</div>
+            <div className={styles["th-col"]}>ROLE</div>
+            <div className={styles["th-col"]}>TIME</div>
+            <div className={styles["th-col-action"]}>ACTION</div>
+          </div>
+
+          <div className={styles["list-container"]}>
+            {filteredInvitations.length > 0 ? (
+              filteredInvitations.map((inv) => (
+                <InvitationCard key={inv.id} invitation={inv} />
+              ))
+            ) : (
+              <p
+                style={{
+                  color: "#64748b",
+                  fontStyle: "italic",
+                  textAlign: "center",
+                  padding: "20px",
+                }}
+              >
+                No pending invitations found matching "{searchQuery}"
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div className={styles["footer-wrapper"]}>
+          <Footer />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default PendingInvitationsPage;
+</file>
+
+<file path="src/features/PendingInvitationsPage/components/PendingInvitations.module.css">
+.app-container {
+  background-color: var(--color-linco-navy);
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-wrapper {
+  margin-left: 70px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow-y: auto;
+  transition: margin-left 0.3s ease;
+  background-color: var(--color-linco-navy);
+}
+
+.main-wrapper.shifted {
+  margin-left: 220px;
+}
+
+.top-banner {
+  background-color: #ffffff;
+  padding: 60px 80px;
+  border-bottom-left-radius: 80px;
+  border-bottom-right-radius: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 380px;
+  overflow: hidden;
+  position: relative;
+}
+
+.banner-text {
+  max-width: 50%;
+  z-index: 2;
+}
+
+.title-container {
+  display: inline-block;
+  margin-bottom: 25px;
+}
+
+.back-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--color-linco-navy);
+  margin-bottom: 15px;
+}
+
+.back-icon {
+  font-size: 1.8rem;
+  margin-right: 15px;
+}
+
+.back-link h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.dashed-line {
+  width: 100%;
+  height: 2px;
+  border-bottom: 2px dashed var(--color-linco-navy);
+  margin-left: 45px;
+}
+
+.banner-text p {
+  color: #334155;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-left: 45px;
+}
+
+.banner-image-container {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 45%;
+  background-color: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  color: #94a3b8;
+  font-style: italic;
+  text-align: center;
+}
+
+.search-section {
+  padding: 40px 20px 50px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.search-bar {
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 650px;
+  display: flex;
+  align-items: center;
+  padding: 12px 25px;
+  border-radius: 12px;
+}
+
+.search-bar input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  color: var(--color-linco-navy);
+}
+
+.search-bar input::placeholder {
+  color: #94a3b8;
+}
+
+.search-icon {
+  color: var(--color-linco-navy);
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.list-section {
+  background-color: #ffffff;
+  border-top-left-radius: 80px;
+  border-top-right-radius: 80px;
+  padding: 50px 80px;
+  flex: 1;
+}
+
+.table-header {
+  display: flex;
+  padding: 0 25px;
+  margin-bottom: 20px;
+  color: var(--color-linco-blue);
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+.th-col {
+  flex: 1;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.th-col-action {
+  flex: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.footer-wrapper {
+  background-color: var(--color-linco-navy);
+}
+
+@media (max-width: 1100px) {
+  .top-banner {
+    padding: 30px;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+  }
+  .banner-text {
+    max-width: 100%;
+  }
+  .banner-image-container {
+    display: none;
+  }
+  .table-header {
+    display: none;
+  }
+  .list-section {
+    padding: 30px;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+  }
+}
+</file>
+
+<file path="src/features/PendingInvitationsPage/hooks/.gitkeep">
+
+</file>
+
+<file path="src/features/PendingInvitationsPage/store/.gitkeep">
+
+</file>
+
+<file path="src/features/PendingInvitationsPage/utils/.gitkeep">
+
+</file>
+
+<file path="src/hooks/.gitkeep">
+
+</file>
+
+<file path="src/layouts/MainLayout/MainLayout.jsx">
+import { Outlet } from "react-router-dom";
+import mascotImg from "../../assets/icons/linco-logo.png";
+import Sidebar from "../../components/layouts/SideBar/Sidebar";
+import BrandLogo from "../../components/layouts/BrandLogo/BrandLogo";
+import Footer from "../../components/layouts/Footer/Footer";
+import { mainLayoutStyles } from "./MainLayoutStyle";
+
+const sidebarLinks = [
+  {
+    name: "Home",
+    icon: (
+      <svg
+        className="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+        />
+      </svg>
+    ),
+  },
+  {
+    name: "pending Invitations",
+    icon: (
+      <svg
+        className="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+        />
+      </svg>
+    ),
+  },
+  {
+    name: "Joined Rooms",
+    icon: (
+      <svg
+        className="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+        />
+      </svg>
+    ),
+  },
+  {
+    name: "My Profile",
+    icon: (
+      <svg
+        className="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+        />
+      </svg>
+    ),
+  },
+];
+
+const MainLayout = () => {
+  return (
+    <div className={mainLayoutStyles.wrapper}>
+      <div className={mainLayoutStyles.sidebarContainer}>
+        <Sidebar
+          mascotImg={mascotImg}
+          navLinks={sidebarLinks}
+          activeItem="Home"
+          onLogout={() => console.log("User logged out!")}
+        />
+      </div>
+
+      <div className={mainLayoutStyles.wireContainer}>
+        {[...Array(20)].map((_, i) => (
+          <div key={i} className={mainLayoutStyles.wireItem}>
+            <div className={mainLayoutStyles.wireBody} />
+            <div className={mainLayoutStyles.wireHole} />
+          </div>
+        ))}
+      </div>
+
+      <div className={mainLayoutStyles.contentWrapper}>
+        <div className={mainLayoutStyles.headerContainer}>
+          <BrandLogo />
+        </div>
+
+        <div className={mainLayoutStyles.notebookPaper}>
+          <main className={mainLayoutStyles.mainArea}>
+            <div className={mainLayoutStyles.outletWrapper}>
+              <Outlet />
+            </div>
+
+            <Footer />
+          </main>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default MainLayout;
+</file>
+
+<file path="src/layouts/MainLayout/MainLayoutStyle.js">
+export const mainLayoutStyles = {
+  wrapper: "flex min-h-screen bg-[#112950] font-serif font-medium",
+  sidebarContainer: "fixed top-0 left-0 bottom-0 w-[260px] z-10",
+  wireContainer:
+    "fixed top-20 bottom-0 left-[260px] w-16 -translate-x-1/2 z-30 pointer-events-none flex flex-col gap-9 overflow-hidden",
+  wireItem: "relative w-full h-6 shrink-0",
+  wireBody:
+    "absolute left-1/2 -translate-x-1/2 top-1 w-10 h-3.5 bg-[#93c5fd] rounded-full border-[2px] border-[#112950] z-20 shadow-sm",
+  wireHole:
+    "absolute left-[calc(50%+6px)] top-0.5 w-5 h-5 bg-[#112950] rounded-full shadow-[inset_2px_2px_4px_rgba(0,0,0,0.6)] z-10",
+  contentWrapper: "flex-1 flex flex-col relative ml-[260px]",
+  headerContainer:
+    "h-16 flex items-center px-10 sticky top-0 z-50 bg-[#112950]",
+  notebookPaper:
+    "flex-1 bg-[#f8fafc] mr-4 mb-6 rounded-tl-sm rounded-bl-[2.5rem] rounded-tr-xl rounded-br-xl relative shadow-2xl flex flex-col z-20",
+  mainArea: "p-10 pl-16 flex-1 flex flex-col",
+  outletWrapper: "flex-1",
+};
+</file>
+
+<file path="src/lib/.gitkeep">
+
+</file>
+
+<file path="src/main.jsx">
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./routes";
+
+import "./index.css";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <RouterProvider router={router} />
+  </React.StrictMode>,
+);
+</file>
+
+<file path="src/pages/HomePage.jsx">
+import HomePage from "../features/HomePage/components/HomePage";
+
+const homePage = () => {
+  return (
+    <div>
+      <HomePage />
+    </div>
+  );
+};
+
+export default homePage;
+</file>
+
+<file path="src/pages/JoinedRooms.jsx">
+import JoinedRooms from "../features/JoinedRooms/components/JoinedRooms";
+
+const joinedRooms = () => {
+  return (
+    <div>
+      <JoinedRooms />
+    </div>
+  );
+};
+
+export default joinedRooms;
+</file>
+
+<file path="src/pages/PendingInvitationsPage.jsx">
+import PendingIvitations from "../features/PendingInvitationsPage/components/PendingInvitations";
+
+const pendingInvitations = () => {
+  return (
+    <div>
+      <PendingIvitations />
+    </div>
+  );
+};
+
+export default pendingInvitations;
+</file>
+
+<file path="src/routes/paths.js">
+export const PATHS = {
+  HOME: "/",
+  PENDING_INVITATIONS: "/invitations",
+  JOINED_ROOMS: "/rooms",
+  PROFILE: "/profile",
+};
+</file>
+
+<file path="src/store/.gitkeep">
+
+</file>
+
+<file path="src/types/.gitkeep">
+
+</file>
+
+<file path="src/utils/.gitkeep">
+
+</file>
+
+<file path="vite.config.js">
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+});
+</file>
+
+<file path="eslint.config.js">
+import js from '@eslint/js'
+import globals from 'globals'
+import reactHooks from 'eslint-plugin-react-hooks'
+import reactRefresh from 'eslint-plugin-react-refresh'
+import { defineConfig, globalIgnores } from 'eslint/config'
+
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{js,jsx}'],
+    extends: [
+      js.configs.recommended,
+      reactHooks.configs.flat.recommended,
+      reactRefresh.configs.vite,
+    ],
+    rules: {
+      'no-unused-vars': 'warn',
+    },
+    languageOptions: {
+      globals: globals.browser,
+      parserOptions: { ecmaFeatures: { jsx: true } },
+    },
+  },
+])
+</file>
+
+<file path="package.json">
+{
+  "name": "linco-project1-web",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "react-icons": "^5.6.0",
+    "react-router-dom": "^7.17.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@tailwindcss/vite": "^4.3.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "eslint": "^10.3.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "globals": "^17.6.0",
+    "tailwindcss": "^4.3.0",
+    "vite": "^8.0.12"
+  }
+}
+</file>
+
+<file path="src/components/layouts/Footer/Footer.jsx">
+import styles from "./Footer.module.css";
+
+const Footer = () => {
+  return (
+    <footer className={styles.footer}>
+      <div className={styles["footer-grid"]}>
+        <div className={styles["footer-col"]}>
+          <h4>Quick Links</h4>
+          <ul>
+            <li>Pending Invitations</li>
+            <li>Joined Rooms</li>
+            <li>My Own Rooms</li>
+          </ul>
+        </div>
+        <div className={styles["footer-col"]}>
+          <h4>Contact Info</h4>
+          <ul>
+            <li>Damascus, Syria</li>
+            <li>contact@linco.com</li>
+            <li>+963-XXX-XXXXXX</li>
+          </ul>
+        </div>
+        <div className={styles["footer-col"]}>
+          <h4>Legal</h4>
+          <ul>
+            <li>Terms of Service</li>
+            <li>Privacy Policy</li>
+            <li>Cookies Policy</li>
+          </ul>
+        </div>
+      </div>
+      <div className={styles["footer-bottom"]}>
+        &copy; 2024 LinCo. All rights reserved.
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;
+</file>
+
+<file path="src/components/layouts/Header/Header.jsx">
+import styles from "./Header.module.css";
+import appIconImg from "../../../assets/images/linco-logo.jpg";
+
+const Header = () => {
+  return (
+    <header className={styles.header}>
+      <div className={styles["header-left"]}>
+        <div className={styles.logo}>
+          <span className={styles["brand-name"]}>LinCo</span>{" "}
+          <span className={styles["company-text"]}>Link Company.</span>
+        </div>
+        <div className={styles["user-profile"]}>
+          <div className={styles["user-avatar"]}>AA</div>
+          <span className={styles["user-name"]}>Abrar Abo Auad</span>
+          <div className={styles["dropdown-icon"]}></div>
+        </div>
+      </div>
+
+      <nav className={styles["nav-links"]}>
+        <a href="#" className={styles.active}>
+          Home
+        </a>
+        <div className={styles["nav-divider"]}></div>
+        <a href="#">Pending Invitations</a>
+        <div className={styles["nav-divider"]}></div>
+        <a href="#">Joined Rooms</a>
+        <div className={styles["nav-divider"]}></div>
+        <a href="#">My Own Rooms</a>
+        <div className={styles["nav-divider"]}></div>
+        <a href="#">My Profile</a>
+      </nav>
+
+      <div className={styles["header-actions"]}>
+        <button className={styles["btn-workspace"]}>Create a Workspace</button>
+        <div className={styles["app-icon"]}>
+          <img
+            src={appIconImg}
+            alt="App Icon"
+            className={styles["app-icon-img"]}
+          />
+        </div>
+      </div>
+    </header>
+  );
+};
+
+export default Header;
+</file>
+
+<file path="src/components/layouts/SideBar/Sidebar.jsx">
+import { useState } from "react";
+import {
+  IoMenu,
+  IoSettings,
+  IoNotifications,
+  IoPersonOutline,
+  IoLogOutOutline,
+} from "react-icons/io5";
+import styles from "./Sidebar.module.css";
+
+const Sidebar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsOpen(!isOpen);
+  };
+
+  return (
+    <aside className={`${styles.sidebar} ${isOpen ? styles.open : ""}`}>
+      {/* Top Menu Icon (Clickable to toggle) */}
+      <div className={styles["menu-item"]} onClick={toggleSidebar} title="Menu">
+        <div className={styles["icon-wrapper"]}>
+          <IoMenu className={styles["menu-icon"]} />
+        </div>
+      </div>
+
+      {/* Center Icons with Dividers */}
+      <div className={styles["center-menu"]}>
+        <div className={styles["menu-item"]} title="Settings">
+          <div className={styles["icon-wrapper"]}>
+            <IoSettings className={styles.icon} />
+          </div>
+          {isOpen && <span className={styles.text}>Settings</span>}
+        </div>
+
+        <div className={styles.divider}></div>
+
+        <div className={styles["menu-item"]} title="Notifications">
+          <div className={styles["icon-wrapper"]}>
+            <IoNotifications className={styles.icon} />
+          </div>
+          {isOpen && <span className={styles.text}>Notifications</span>}
+        </div>
+
+        <div className={styles.divider}></div>
+
+        <div className={styles["menu-item"]} title="Profile">
+          <div className={styles["icon-wrapper"]}>
+            <IoPersonOutline className={styles.icon} />
+          </div>
+          {isOpen && <span className={styles.text}>Profile</span>}
+        </div>
+
+        <div className={styles.divider}></div>
+      </div>
+
+      {/* Bottom Logout Icon */}
+      <div
+        className={`${styles["sidebar-bottom"]} ${styles["menu-item"]}`}
+        title="Log out"
+      >
+        <div className={styles["icon-wrapper"]}>
+          <IoLogOutOutline className={styles.icon} />
+        </div>
+        {isOpen && <span className={styles.text}>Log out</span>}
+      </div>
+    </aside>
+  );
+};
+
+export default Sidebar;
+</file>
+
+<file path="src/features/HomePage/components/HomePage.jsx">
+import Sidebar from "../../../components/layouts/SideBar/Sidebar";
+import Header from "../../../components/layouts/Header/Header";
+import Footer from "../../../components/layouts/Footer/Footer";
+import PendingInvitations from "./PendingInvitations";
+import RoomSection from "./RoomSection"; 
+import styles from "./HomePage.module.css";
+
+import appIconImg from "../../../assets/icons/linco-logo.png";
+
+const HomePage = () => {
+  // Mock data arrays for the different room categories
+  const activeRooms = [
+    {
+      id: 1,
+      companyName: "Company Demo Name",
+      role: "Trainee",
+      dateJoined: "12/12/2025",
+      members: 120 ,
+    },
+    {
+      id: 2,
+      companyName: "Company Demo Name",
+      role: "Trainee",
+      dateJoined: "12/12/2025",
+      imageColor: "#1a365d",
+      members: 120 ,
+    },
+  ];
+
+  const ownedRooms = [
+    {
+      id: 1,
+      companyName: "Company Demo Name",
+      role: "Trainee",
+      dateJoined: "12/12/2025",
+      members: 120 ,
+    },
+    {
+      id: 2,
+      companyName: "Company Demo Name",
+      role: "Trainee",
+      dateJoined: "12/12/2025",
+      members: 120 ,
+    },
+  ];
+
+  const workedRooms = [
+    {
+      id: 1,
+      companyName: "Company Demo Name",
+      role: "Trainee",
+      dateJoined: "12/12/2025",
+      members: 120 ,
+    },
+    {
+      id: 2,
+      companyName: "Company Demo Name",
+      role: "Trainee",
+      dateJoined: "12/12/2025",
+      members: 120 ,
+    },
+  ];
+
+  return (
+    <div className={styles["app-container"]}>
+      <Sidebar />
+
+      <div className={`${styles["main-wrapper"]} custom-scrollbar`}>
+        <Header />
+
+        <div className={styles["hero-banner"]}>
+          <div className={styles["hero-text"]}>
+            <h1>Ready to dive into your learning, Abrar ?</h1>
+            <p>
+              Manage your company links, track your active training rooms, and
+              level up your career from one single dashboard.
+            </p>
+          </div>
+          <img
+            src={appIconImg}
+            alt="App Icon"
+            className={styles["app-icon-img"]}
+          />
+        </div>
+
+        <PendingInvitations />
+
+        <div
+          className={styles["content-section"]}
+          style={{ paddingTop: "40px" }}
+        >
+          <RoomSection title="Recently Active Rooms" rooms={activeRooms} />
+
+          <div className={styles.divider}></div>
+
+          <RoomSection title="Recently Active Owned Rooms" rooms={ownedRooms} />
+
+          <div className={styles.divider}></div>
+
+          <RoomSection
+            title="Recently Active Worked Rooms"
+            rooms={workedRooms}
+          />
+        </div>
+
+        <Footer />
+      </div>
+    </div>
+  );
+};
+
+export default HomePage;
+</file>
+
+<file path="src/features/HomePage/components/HomePage.module.css">
+.app-container {
+  background-color: var(--color-linco-bg);
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-wrapper {
+  margin-left: 70px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.hero-banner {
+  background-color: var(--color-linco-navy);
+  color: #ffffff;
+  padding: 40px 50px;
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 30px;
+  flex-shrink: 0;
+}
+
+.hero-text h1 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.hero-text p {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  max-width: 500px;
+}
+
+.app-icon-img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  flex-shrink: 0;
+  transform: scale(1.7);
+}
+
+.content-section {
+  padding: 20px 40px;
+  margin-bottom: 20px;
+  background-color: #ffffff;
+  border-radius: 50px 50px 0 0;
+}
+
+.divider {
+  border-top: 1px dashed #e5e7eb;
+  margin: 20px 40px;
+}
+</file>
+
+<file path="src/index.css">
+@import "tailwindcss";
+
+@theme {
+  --color-linco-navy: #112950;
+  --color-linco-blue: #1a56db;
+  --color-linco-light: #bfdbfe;
+  --color-linco-bg: #f8fafc;
+  --font-sans: "Inter", sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #112950;
+}
+
+/* إعدادات شريط التمرير */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 10px;
+}
+</file>
+
+<file path="src/routes/index.jsx">
+import { createBrowserRouter } from "react-router-dom";
+import HomePage from "../features/HomePage/components/HomePage";
+import PendingInvitationsPage from "../features/PendingInvitationsPage/components/PendingInvitations";
+import JoinedRoomsPage from "../features/JoinedRoomPage/components/JoinedRooms";
+
+export const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <HomePage />,
+  },
+  {
+    path: "/pending-invitations",
+    element: <PendingInvitationsPage />,
+  },
+  {
+    path: "/joined-rooms",
+    element: <JoinedRoomsPage />,
+  },
+  {
+    path: "*",
+    element: (
+      <div className="text-center p-20 text-white text-2xl font-serif">
+        الصفحة غير موجودة 404
+      </div>
+    ),
+  },
+]);
+</file>
+
+</files>

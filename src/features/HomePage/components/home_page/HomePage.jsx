@@ -1,11 +1,10 @@
-import Sidebar from "../../../components/layouts/SideBar/Sidebar";
-import Header from "../../../components/layouts/Header/Header";
-import Footer from "../../../components/layouts/Footer/Footer";
-import PendingInvitations from "./PendingInvitations";
-import RoomSection from "./RoomSection"; 
+import Sidebar from "../../../../components/layouts/SideBar/Sidebar";
+import Header from "../../../../components/layouts/Header/global_header/Header";
+import Footer from "../../../../components/layouts/Footer/Footer";
+import PendingInvitations from "../pending_invitations/PendingInvitations";
+import RoomSection from "../room_section/RoomSection";
 import styles from "./HomePage.module.css";
-
-import appIconImg from "../../../assets/icons/linco-logo.png";
+import appIconImg from "../../../../assets/icons/linco-logo.png";
 
 const HomePage = () => {
   // Mock data arrays for the different room categories
@@ -15,7 +14,7 @@ const HomePage = () => {
       companyName: "Company Demo Name",
       role: "Trainee",
       dateJoined: "12/12/2025",
-      members: 120 ,
+      members: 120,
     },
     {
       id: 2,
@@ -23,7 +22,7 @@ const HomePage = () => {
       role: "Trainee",
       dateJoined: "12/12/2025",
       imageColor: "#1a365d",
-      members: 120 ,
+      members: 120,
     },
   ];
 
@@ -33,14 +32,14 @@ const HomePage = () => {
       companyName: "Company Demo Name",
       role: "Trainee",
       dateJoined: "12/12/2025",
-      members: 120 ,
+      members: 120,
     },
     {
       id: 2,
       companyName: "Company Demo Name",
       role: "Trainee",
       dateJoined: "12/12/2025",
-      members: 120 ,
+      members: 120,
     },
   ];
 
@@ -50,24 +49,23 @@ const HomePage = () => {
       companyName: "Company Demo Name",
       role: "Trainee",
       dateJoined: "12/12/2025",
-      members: 120 ,
+      members: 120,
     },
     {
       id: 2,
       companyName: "Company Demo Name",
       role: "Trainee",
       dateJoined: "12/12/2025",
-      members: 120 ,
+      members: 120,
     },
   ];
 
   return (
     <div className={styles["app-container"]}>
-      <Sidebar />
+      <Sidebar role="global" />
 
       <div className={`${styles["main-wrapper"]} custom-scrollbar`}>
         <Header />
-
         <div className={styles["hero-banner"]}>
           <div className={styles["hero-text"]}>
             <h1>Ready to dive into your learning, Abrar ?</h1>

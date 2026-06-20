@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { IoChevronBack, IoSearch } from "react-icons/io5";
-import Sidebar from "../../../components/layouts/SideBar/Sidebar";
-import Header from "../../../components/layouts/Header/Header";
-import Footer from "../../../components/layouts/Footer/Footer";
-import InvitationCard from "../../../components/elements/InvitationCard.jsx";
+import Sidebar from "../../../../components/layouts/SideBar/Sidebar.jsx";
+import Header from "../../../../components/layouts/Header/global_header/Header.jsx";
+import Footer from "../../../../components/layouts/Footer/Footer.jsx";
+import InvitationCard from "../../../../components/elements/InvitationCard.jsx";
 import styles from "./PendingInvitations.module.css";
 
 const PendingInvitationsPage = () => {
@@ -60,7 +60,7 @@ const PendingInvitationsPage = () => {
 
   return (
     <div className={styles["app-container"]}>
-      <Sidebar />
+      <Sidebar role="global" />
 
       <div className={`${styles["main-wrapper"]} custom-scrollbar`}>
         <Header />
@@ -83,7 +83,7 @@ const PendingInvitationsPage = () => {
 
           <div className={styles["banner-image-container"]}>
             <img
-              src=""
+              src="src\assets\images\pending-invitations.png"
               alt="Invitation to Linco company envelopes"
               className={styles["banner-image"]}
             />
