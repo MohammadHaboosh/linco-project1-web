@@ -1,10 +1,10 @@
-import Sidebar from "../../../../components/layouts/SideBar/Sidebar";
-import Header from "../../../../components/layouts/Header/global_header/Header";
-import Footer from "../../../../components/layouts/Footer/Footer";
+import Sidebar from "../../../../../components/layouts/SideBar/Sidebar";
+import Header from "../../../../../components/layouts/Header/global_header/Header";
+import Footer from "../../../../../components/layouts/Footer/Footer";
 import PendingInvitations from "../pending_invitations/PendingInvitations";
 import RoomSection from "../room_section/RoomSection";
 import styles from "./HomePage.module.css";
-import appIconImg from "../../../../assets/icons/linco-logo.png";
+import appIconImg from "../../../../../assets/icons/linco-logo.png";
 
 const HomePage = () => {
   // Mock data arrays for the different room categories

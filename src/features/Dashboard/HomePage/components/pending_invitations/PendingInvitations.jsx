@@ -1,5 +1,5 @@
 import styles from "./PendingInvitations.module.css";
-import InvitationCard from "../../../../components/elements/InvitationCard.jsx";
+import InvitationCard from "../../../../../components/elements/InvitationCard/InvitationCard.jsx";
 
 const PendingInvitations = () => {
   // Mock data array

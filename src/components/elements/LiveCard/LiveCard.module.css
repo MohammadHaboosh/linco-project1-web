@@ -1,0 +1,110 @@
+/* src/components/elements/LiveCard.module.css */
+.card {
+  display: flex;
+  background: #ffffff;
+  border: 1px solid #f1f5f9;
+  border-radius: 20px;
+  padding: 24px;
+  gap: 25px;
+  box-shadow: 0 6px 24px rgba(17, 41, 80, 0.04);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 32px rgba(17, 41, 80, 0.1);
+}
+
+.imageContainer {
+  position: relative;
+  width: 170px;
+  height: 130px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background-color: #f8fafc;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 10px;
+}
+
+.playIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+  color: #ffffff;
+  background: rgba(17, 41, 80, 0.4);
+  border-radius: 50%;
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.card:hover .playIcon {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.title {
+  color: var(--color-linco-navy);
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* تباعد مريح بين تفاصيل الوقت والتاريخ */
+}
+
+.details p {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: #475569;
+  margin: 0;
+  font-weight: 600;
+}
+
+.icon {
+  color: var(--color-linco-blue); /* إعطاء الأيقونات لوناً أزرق ليبرزها */
+  font-size: 1.1rem;
+}
+
+.actionRow {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: auto;
+}
+
+.btn {
+  background-color: var(--color-linco-navy);
+  color: #ffffff;
+  border: none;
+  padding: 10px 28px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn:hover {
+  background-color: #1a3a6c;
+  box-shadow: 0 4px 12px rgba(17, 41, 80, 0.2);
+}

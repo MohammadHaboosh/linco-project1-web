@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { IoMenu, IoLogOutOutline } from "react-icons/io5";
 import { SIDEBAR_ROLES } from "./sidebarConfig";
 import styles from "./Sidebar.module.css";
 
 const Sidebar = ({ role = "trainee" }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -14,45 +15,59 @@ const Sidebar = ({ role = "trainee" }) => {
   const menuItems = SIDEBAR_ROLES[role] || [];
 
   return (
-    <aside className={`${styles.sidebar} ${isOpen ? styles.open : ""}`}>
-      <div className={styles["menu-item"]} onClick={toggleSidebar} title="Menu">
-        <div className={styles["icon-wrapper"]}>
-          <IoMenu className={styles["menu-icon"]} />
-        </div>
-      </div>
+    <>
+      {isOpen && <div className={styles.overlay} onClick={toggleSidebar}></div>}
 
-      <div className={styles["center-menu"]}>
-        {menuItems.map((item, index) => (
-          <div key={index}>
-            <Link
-              to={item.path}
-              className={styles["menu-item"]}
-              title={item.name}
-              style={{ textDecoration: "none" }}
-            >
-              <div className={styles["icon-wrapper"]}>
-                <span className={styles.icon}>{item.icon}</span>
-              </div>
-              {isOpen && <span className={styles.text}>{item.name}</span>}
-            </Link>
-
-            {index < menuItems.length - 1 && (
-              <div className={styles.divider}></div>
-            )}
+      <aside className={`${styles.sidebar} ${isOpen ? styles.open : ""}`}>
+        <div className={styles["top-section"]}>
+          <div
+            className={styles["toggle-btn"]}
+            onClick={toggleSidebar}
+            title="Menu"
+          >
+            <IoMenu className={styles["menu-icon"]} />
           </div>
-        ))}
-      </div>
-
-      <div
-        className={`${styles["sidebar-bottom"]} ${styles["menu-item"]}`}
-        title="Log out"
-      >
-        <div className={styles["icon-wrapper"]}>
-          <IoLogOutOutline className={styles.icon} />
         </div>
-        {isOpen && <span className={styles.text}>Log out</span>}
-      </div>
-    </aside>
+
+        <div className={styles["center-menu"]}>
+          {menuItems.map((item, index) => {
+            const isActive = location.pathname === item.path;
+
+            return (
+              <div key={index} className={styles["menu-item-container"]}>
+                <Link
+                  to={item.path}
+                  className={`${styles["menu-item"]} ${isActive ? styles.active : ""}`}
+                  title={item.name}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <div className={styles["icon-wrapper"]}>
+                    <span className={styles.icon}>{item.icon}</span>
+                  </div>
+                  <span className={styles.text}>{item.name}</span>
+                </Link>
+
+                {index < menuItems.length - 1 && (
+                  <div className={styles.divider}></div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        <div className={styles["bottom-section"]}>
+          <div
+            className={`${styles["menu-item"]} ${styles["logout-item"]}`}
+            title="Log out"
+          >
+            <div className={styles["icon-wrapper"]}>
+              <IoLogOutOutline className={styles.icon} />
+            </div>
+            <span className={styles.text}>Log out</span>
+          </div>
+        </div>
+      </aside>
+    </>
   );
 };
 

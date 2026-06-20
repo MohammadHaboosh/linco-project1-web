@@ -1,22 +1,28 @@
+/* src/components/layouts/Header/global_header/Header.module.css */
+
 .header {
   background-color: var(--color-linco-navy);
   height: 70px;
+  min-height: 70px; /* ضمان عدم انضغاط الهيدر */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 30px;
+  padding: 0 40px; /* زيادة المساحة الجانبية لتطابق هيدر مساحة العمل */
   color: #ffffff;
   flex-shrink: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
+/* --- الجزء الأيسر (اللوجو والملف الشخصي) --- */
 .header-left {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 20px; /* تقليل المسافة بين اللوجو والملف الشخصي */
 }
 
 .logo {
-  font-size: 1.2rem;
+  font-size: 1.1rem; /* تصغير حجم اللوجو قليلاً */
 }
 
 .brand-name {
@@ -32,69 +38,127 @@
 .user-profile {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   cursor: pointer;
+  padding-left: 20px;
+  border-left: 1px solid rgba(255, 255, 255, 0.2); /* إضافة خط فاصل أنيق بين اللوجو والملف الشخصي */
 }
 
 .user-avatar {
-  width: 36px;
-  height: 36px;
+  width: 32px; /* تصغير الأفاتار */
+  height: 32px;
   background-color: var(--color-linco-light);
   color: var(--color-linco-navy);
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-weight: 700;
-  font-size: 0.85rem;
+  font-weight: 800;
+  font-size: 0.75rem; /* تصغير خط الحروف داخل الأفاتار */
 }
 
 .user-name {
-  font-size: 0.95rem;
-  font-weight: 500;
+  font-size: 0.85rem; /* تصغير حجم اسم المستخدم */
+  font-weight: 600;
 }
 
 .dropdown-icon {
-  width: 10px;
-  height: 10px;
+  width: 8px; /* تصغير السهم */
+  height: 8px;
   border-right: 2px solid #ffffff;
   border-bottom: 2px solid #ffffff;
   transform: rotate(45deg);
   margin-bottom: 4px;
+  opacity: 0.8;
 }
 
+/* --- الروابط في المنتصف --- */
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 5px; /* تصغير الفراغات بين الروابط لأنها ستحتوي على حشوة داخلية */
+}
+
+.nav-item-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .nav-links a {
   text-decoration: none;
-  color: #ffffff;
-  font-size: 0.9rem;
-  font-weight: 500;
-  padding: 8px 16px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.8rem; /* تصغير حجم خط الروابط */
+  font-weight: 600;
+  padding: 6px 14px; /* تصغير مساحة الزر المحيطة بالنص */
   border-radius: 6px;
-  transition: background 0.2s;
+  transition: all 0.2s;
+}
+
+.nav-links a:hover {
+  color: #ffffff;
 }
 
 .nav-links a.active {
   background-color: #ffffff;
-  color: var(--color-linco-blue);
+  color: var(
+    --color-linco-navy
+  ); /* جعل لون النص النشط كحلي ليتناسب مع الفخامة */
   font-weight: 700;
 }
 
 .nav-divider {
   width: 1px;
-  height: 20px;
-  background-color: rgba(255, 255, 255, 0.3);
+  height: 14px; /* تصغير طول الخط الفاصل بين الروابط */
+  background-color: rgba(255, 255, 255, 0.2);
+  margin: 0 5px;
 }
 
+/* --- الجزء الأيمن (الأزرار) --- */
 .header-actions {
   display: flex;
   align-items: center;
   gap: 15px;
+}
+
+.btn-workspace {
+  background-color: var(--color-linco-light);
+  color: var(--color-linco-navy);
+  border: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.4rem;
+  cursor: pointer;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.btn-workspace:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.app-icon {
+  width: 32px;
+  height: 32px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.app-icon-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .btn-workspace {
@@ -165,12 +229,16 @@
 
 .workspace-top-header {
   background-color: var(--color-linco-navy);
-  height: 50px;
+  height: 70px;
+  min-height: 70px; /* يجبر المتصفح على احترام الارتفاع */
+  flex-shrink: 0; /* يمنع الـ Flexbox من ضغط الهيدر ليتسع باقي المحتوى */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 30px;
+  padding: 0 40px;
   color: #ffffff;
+  width: 100%;
+  box-sizing: border-box; /* يضمن عدم تمدد العرض بسبب الـ padding */
 }
 
 .workspace-logo .company-name {

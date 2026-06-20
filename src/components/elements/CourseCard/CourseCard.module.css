@@ -1,0 +1,122 @@
+/* src/components/elements/CourseCard.module.css */
+.card {
+  display: flex;
+  background: #ffffff;
+  border: 1px solid #f1f5f9; /* حد ناعم جداً يكاد لا يرى */
+  border-radius: 20px; /* انحناء متناسق مع باقي التصميم */
+  padding: 24px; /* مساحة تنفس إضافية */
+  gap: 25px;
+  box-shadow: 0 6px 24px rgba(17, 41, 80, 0.04); /* ظل ناعم وفخم */
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px); /* رفع الكرت للأعلى عند لمسه */
+  box-shadow: 0 12px 32px rgba(17, 41, 80, 0.1);
+}
+
+.imageContainer {
+  position: relative;
+  width: 170px;
+  height: 130px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background-color: #f8fafc; /* خلفية ناعمة تحسباً للصور الشفافة */
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* للحفاظ على نسب شعار Linco بشكل أفضل */
+  padding: 10px;
+}
+
+.playIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem; /* تكبير أيقونة التشغيل قليلاً */
+  color: #ffffff;
+  background: rgba(17, 41, 80, 0.4); /* لون كحلي شفاف يتناسب مع الهوية */
+  border-radius: 50%;
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.card:hover .playIcon {
+  transform: translate(-50%, -50%) scale(1.1); /* تأثير حركي لزر التشغيل */
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  color: var(--color-linco-navy);
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.description {
+  color: #64748b;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin-bottom: 15px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.actionRow {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 15px;
+}
+
+.btn {
+  background-color: var(--color-linco-navy);
+  color: #ffffff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 10px; /* انحناء متناسق للزر */
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn:hover {
+  background-color: #1a3a6c;
+  box-shadow: 0 4px 12px rgba(17, 41, 80, 0.2);
+}
+
+.progressContainer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--color-linco-navy);
+  font-weight: 700;
+  margin-bottom: 8px; /* مسافة أريح لشريط التقدم */
+}
+
+.progressBarBg {
+  width: 100%;
+  height: 8px; /* شريط أسمك قليلاً */
+  background-color: #e2e8f0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progressBarFill {
+  height: 100%;
+  background-color: var(--color-linco-navy);
+  border-radius: 4px;
+  transition: width 1s ease-in-out; /* حركة انسيابية لامتلاء الشريط */
+}

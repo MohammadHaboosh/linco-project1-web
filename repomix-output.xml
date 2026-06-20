@@ -50,52 +50,76 @@ README.md
 src/App.css
 src/assets/fonts/.gitkeep
 src/assets/icons/linco-logo.png
+src/assets/images/joined-rooms.png
 src/assets/images/linco-logo.jpg
-src/assets/images/OIP 10 (2).png
-src/assets/images/OIP 12 (2).png
-src/components/elements/.gitkeep
-src/components/elements/InvitationCard.jsx
-src/components/elements/InvitationCard.module.css
-src/components/elements/RoomCard.jsx
-src/components/elements/RoomCard.module.css
+src/assets/images/pending-invitations.png
+src/components/elements/CourseCard/CourseCard.jsx
+src/components/elements/CourseCard/CourseCard.module.css
+src/components/elements/InvitationCard/InvitationCard.jsx
+src/components/elements/InvitationCard/InvitationCard.module.css
+src/components/elements/LiveCard/LiveCard.jsx
+src/components/elements/LiveCard/LiveCard.module.css
+src/components/elements/RoomCard/RoomCard.jsx
+src/components/elements/RoomCard/RoomCard.module.css
 src/components/form/.gitkeep
 src/components/layouts/BrandLogo/BrandLogo.jsx
 src/components/layouts/BrandLogo/BrandLogoStyles.js
 src/components/layouts/Footer/Footer.jsx
 src/components/layouts/Footer/Footer.module.css
-src/components/layouts/Header/Header.jsx
-src/components/layouts/Header/Header.module.css
+src/components/layouts/Footer/footerConfig.jsx
+src/components/layouts/Header/global_header/Header.jsx
+src/components/layouts/Header/global_header/Header.module.css
+src/components/layouts/Header/headerConfig.jsx
+src/components/layouts/Header/sub_header/SubHeader.jsx
+src/components/layouts/Header/sub_header/SubHeader.module.css
 src/components/layouts/SideBar/Sidebar.jsx
 src/components/layouts/SideBar/Sidebar.module.css
+src/components/layouts/SideBar/sidebarConfig.jsx
 src/config/theme.js
-src/features/HomePage/api/.gitkeep
-src/features/HomePage/components/HomePage.jsx
-src/features/HomePage/components/HomePage.module.css
-src/features/HomePage/components/PendingInvitations.jsx
-src/features/HomePage/components/PendingInvitations.module.css
-src/features/HomePage/components/RoomSection.jsx
-src/features/HomePage/components/RoomSection.module.css
-src/features/HomePage/hooks/.gitkeep
-src/features/HomePage/store/.gitkeep
-src/features/HomePage/utils/.gitkeep
-src/features/JoinedRoomPage/api/.gitkeep
-src/features/JoinedRoomPage/components/JoinedRooms.jsx
-src/features/JoinedRoomPage/components/JoinedRooms.module.css
-src/features/JoinedRoomPage/hooks/.gitkeep
-src/features/JoinedRoomPage/store/.gitkeep
-src/features/JoinedRoomPage/utils/.gitkeep
-src/features/PendingInvitationsPage/api/.gitkeep
-src/features/PendingInvitationsPage/components/PendingInvitations.jsx
-src/features/PendingInvitationsPage/components/PendingInvitations.module.css
-src/features/PendingInvitationsPage/hooks/.gitkeep
-src/features/PendingInvitationsPage/store/.gitkeep
-src/features/PendingInvitationsPage/utils/.gitkeep
+src/features/Dashboard/HomePage/api/.gitkeep
+src/features/Dashboard/HomePage/components/home_page/HomePage.jsx
+src/features/Dashboard/HomePage/components/home_page/HomePage.module.css
+src/features/Dashboard/HomePage/components/pending_invitations/PendingInvitations.jsx
+src/features/Dashboard/HomePage/components/pending_invitations/PendingInvitations.module.css
+src/features/Dashboard/HomePage/components/room_section/RoomSection.jsx
+src/features/Dashboard/HomePage/components/room_section/RoomSection.module.css
+src/features/Dashboard/HomePage/hooks/.gitkeep
+src/features/Dashboard/HomePage/store/.gitkeep
+src/features/Dashboard/HomePage/utils/.gitkeep
+src/features/Dashboard/JoinedRoomPage/api/.gitkeep
+src/features/Dashboard/JoinedRoomPage/components/joined_rooms/JoinedRooms.jsx
+src/features/Dashboard/JoinedRoomPage/components/joined_rooms/JoinedRooms.module.css
+src/features/Dashboard/JoinedRoomPage/hooks/.gitkeep
+src/features/Dashboard/JoinedRoomPage/store/.gitkeep
+src/features/Dashboard/JoinedRoomPage/utils/.gitkeep
+src/features/Dashboard/PendingInvitationsPage/api/.gitkeep
+src/features/Dashboard/PendingInvitationsPage/components/pending_invitations/PendingInvitations.jsx
+src/features/Dashboard/PendingInvitationsPage/components/pending_invitations/PendingInvitations.module.css
+src/features/Dashboard/PendingInvitationsPage/hooks/.gitkeep
+src/features/Dashboard/PendingInvitationsPage/store/.gitkeep
+src/features/Dashboard/PendingInvitationsPage/utils/.gitkeep
+src/features/HomeDemoPage/api/.gitkeep
+src/features/HomeDemoPage/components/DemoContent/DemoContent.jsx
+src/features/HomeDemoPage/components/DemoContent/DemoContent.module.css
+src/features/HomeDemoPage/components/sections/CourseSection/CoursesSection.jsx
+src/features/HomeDemoPage/components/sections/LeaderboardSection/LeaderboardSection.jsx
+src/features/HomeDemoPage/components/sections/LeaderboardSection/LeaderboardSection.module.css
+src/features/HomeDemoPage/components/sections/LivesSection/LivesSection.jsx
+src/features/HomeDemoPage/components/sections/SharedSection.module.css
+src/features/HomeDemoPage/components/sections/StatsSection/StatsSection.jsx
+src/features/HomeDemoPage/components/sections/StatsSection/StatsSection.module.css
+src/features/HomeDemoPage/components/sections/WelcomeSection/WelcomeSection.jsx
+src/features/HomeDemoPage/components/sections/WelcomeSection/WelcomeSection.module.css
+src/features/HomeDemoPage/hooks/.gitkeep
+src/features/HomeDemoPage/store/.gitkeep
+src/features/HomeDemoPage/utils/.gitkeep
 src/hooks/.gitkeep
 src/index.css
 src/layouts/MainLayout/MainLayout.jsx
 src/layouts/MainLayout/MainLayoutStyle.js
 src/lib/.gitkeep
 src/main.jsx
+src/pages/HomeDemoPage.jsx
 src/pages/HomePage.jsx
 src/pages/JoinedRooms.jsx
 src/pages/PendingInvitationsPage.jsx
@@ -109,6 +133,2303 @@ vite.config.js
 
 <files>
 This section contains the contents of the repository's files.
+
+<file path="src/components/elements/CourseCard/CourseCard.jsx">
+import { IoPlayCircleOutline } from "react-icons/io5";
+import styles from "./CourseCard.module.css";
+import placeholderImg from "../../../assets/images/linco-logo.jpg"; // صورة مؤقتة
+
+const CourseCard = ({ course }) => {
+  return (
+    <div className={styles.card}>
+      <div className={styles.imageContainer}>
+        <img src={placeholderImg} alt={course.title} className={styles.image} />
+        <IoPlayCircleOutline className={styles.playIcon} />
+      </div>
+      <div className={styles.content}>
+        <h3 className={styles.title}>{course.title}</h3>
+        <p className={styles.description}>{course.description}</p>
+        <div className={styles.actionRow}>
+          <button className={styles.btn}>Continue Learning</button>
+        </div>
+        <div className={styles.progressContainer}>
+          <span className={styles.progressText}>Progress</span>
+          <span className={styles.progressPercentage}>{course.progress}%</span>
+        </div>
+        <div className={styles.progressBarBg}>
+          <div
+            className={styles.progressBarFill}
+            style={{ width: `${course.progress}%` }}
+          ></div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CourseCard;
+</file>
+
+<file path="src/components/elements/CourseCard/CourseCard.module.css">
+/* src/components/elements/CourseCard.module.css */
+.card {
+  display: flex;
+  background: #ffffff;
+  border: 1px solid #f1f5f9; /* حد ناعم جداً يكاد لا يرى */
+  border-radius: 20px; /* انحناء متناسق مع باقي التصميم */
+  padding: 24px; /* مساحة تنفس إضافية */
+  gap: 25px;
+  box-shadow: 0 6px 24px rgba(17, 41, 80, 0.04); /* ظل ناعم وفخم */
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px); /* رفع الكرت للأعلى عند لمسه */
+  box-shadow: 0 12px 32px rgba(17, 41, 80, 0.1);
+}
+
+.imageContainer {
+  position: relative;
+  width: 170px;
+  height: 130px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background-color: #f8fafc; /* خلفية ناعمة تحسباً للصور الشفافة */
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* للحفاظ على نسب شعار Linco بشكل أفضل */
+  padding: 10px;
+}
+
+.playIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem; /* تكبير أيقونة التشغيل قليلاً */
+  color: #ffffff;
+  background: rgba(17, 41, 80, 0.4); /* لون كحلي شفاف يتناسب مع الهوية */
+  border-radius: 50%;
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.card:hover .playIcon {
+  transform: translate(-50%, -50%) scale(1.1); /* تأثير حركي لزر التشغيل */
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  color: var(--color-linco-navy);
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.description {
+  color: #64748b;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin-bottom: 15px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.actionRow {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 15px;
+}
+
+.btn {
+  background-color: var(--color-linco-navy);
+  color: #ffffff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 10px; /* انحناء متناسق للزر */
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn:hover {
+  background-color: #1a3a6c;
+  box-shadow: 0 4px 12px rgba(17, 41, 80, 0.2);
+}
+
+.progressContainer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--color-linco-navy);
+  font-weight: 700;
+  margin-bottom: 8px; /* مسافة أريح لشريط التقدم */
+}
+
+.progressBarBg {
+  width: 100%;
+  height: 8px; /* شريط أسمك قليلاً */
+  background-color: #e2e8f0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progressBarFill {
+  height: 100%;
+  background-color: var(--color-linco-navy);
+  border-radius: 4px;
+  transition: width 1s ease-in-out; /* حركة انسيابية لامتلاء الشريط */
+}
+</file>
+
+<file path="src/components/elements/InvitationCard/InvitationCard.jsx">
+import styles from "./InvitationCard.module.css";
+
+const InvitationCard = ({ invitation }) => {
+  return (
+    <div className={styles["list-item"]}>
+      <div className={styles["company-name"]}>{invitation.company}</div>
+      <div className={styles["vertical-divider"]}></div>
+      <div className={styles["text-item"]}>{invitation.caller}</div>
+      <div className={styles["vertical-divider"]}></div>
+      <div className={styles["text-item"]}>{invitation.role}</div>
+      <div className={styles["vertical-divider"]}></div>
+      <div className={styles["text-item"]}>{invitation.time}</div>
+
+      <div className={styles["list-actions"]}>
+        <button className={styles["btn-accept"]}>Accept</button>
+        <button className={styles["btn-reject"]}>Reject</button>
+      </div>
+    </div>
+  );
+};
+
+export default InvitationCard;
+</file>
+
+<file path="src/components/elements/InvitationCard/InvitationCard.module.css">
+.list-item {
+  display: flex;
+  align-items: center;
+  padding: 16px 25px;
+  background-color: #ffffff;
+  border: 1px solid #475569;
+  border-radius: 12px;
+  transition: transform 0.1s;
+}
+
+.list-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.company-name {
+  flex: 1;
+  color: var(--color-linco-blue);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.text-item {
+  flex: 1;
+  font-size: 1rem;
+  color: #0f172a;
+  font-weight: 500;
+  text-align: center;
+}
+
+.vertical-divider {
+  width: 1px;
+  height: 24px;
+  background-color: #cbd5e1;
+}
+
+.list-actions {
+  flex: 1.2;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.list-actions button {
+  padding: 10px 28px;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-accept {
+  background-color: var(--color-linco-navy);
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-reject {
+  background-color: #ffffff;
+  color: var(--color-linco-navy);
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.btn-accept:hover {
+  opacity: 0.9;
+}
+
+.btn-reject:hover {
+  background-color: #f8fafc;
+}
+
+@media (max-width: 1100px) {
+  .list-item {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .vertical-divider {
+    display: none;
+  }
+}
+</file>
+
+<file path="src/components/elements/LiveCard/LiveCard.jsx">
+import {
+  IoPlayCircleOutline,
+  IoPersonOutline,
+  IoCalendarOutline,
+  IoTimeOutline,
+} from "react-icons/io5";
+import styles from "./LiveCard.module.css";
+import placeholderImg from "../../../assets/images/linco-logo.jpg";
+
+const LiveCard = ({ live }) => {
+  return (
+    <div className={styles.card}>
+      <div className={styles.imageContainer}>
+        <img src={placeholderImg} alt={live.title} className={styles.image} />
+        <IoPlayCircleOutline className={styles.playIcon} />
+      </div>
+      <div className={styles.content}>
+        <h3 className={styles.title}>{live.title}</h3>
+        <div className={styles.details}>
+          <p>
+            <IoPersonOutline className={styles.icon} /> {live.instructor}
+          </p>
+          <p>
+            <IoCalendarOutline className={styles.icon} /> {live.date}
+          </p>
+          <p>
+            <IoTimeOutline className={styles.icon} /> {live.duration}
+          </p>
+        </div>
+        <div className={styles.actionRow}>
+          <button className={styles.btn}>Join Now</button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default LiveCard;
+</file>
+
+<file path="src/components/elements/LiveCard/LiveCard.module.css">
+/* src/components/elements/LiveCard.module.css */
+.card {
+  display: flex;
+  background: #ffffff;
+  border: 1px solid #f1f5f9;
+  border-radius: 20px;
+  padding: 24px;
+  gap: 25px;
+  box-shadow: 0 6px 24px rgba(17, 41, 80, 0.04);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 32px rgba(17, 41, 80, 0.1);
+}
+
+.imageContainer {
+  position: relative;
+  width: 170px;
+  height: 130px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background-color: #f8fafc;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 10px;
+}
+
+.playIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+  color: #ffffff;
+  background: rgba(17, 41, 80, 0.4);
+  border-radius: 50%;
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.card:hover .playIcon {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.title {
+  color: var(--color-linco-navy);
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* تباعد مريح بين تفاصيل الوقت والتاريخ */
+}
+
+.details p {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: #475569;
+  margin: 0;
+  font-weight: 600;
+}
+
+.icon {
+  color: var(--color-linco-blue); /* إعطاء الأيقونات لوناً أزرق ليبرزها */
+  font-size: 1.1rem;
+}
+
+.actionRow {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: auto;
+}
+
+.btn {
+  background-color: var(--color-linco-navy);
+  color: #ffffff;
+  border: none;
+  padding: 10px 28px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn:hover {
+  background-color: #1a3a6c;
+  box-shadow: 0 4px 12px rgba(17, 41, 80, 0.2);
+}
+</file>
+
+<file path="src/components/elements/RoomCard/RoomCard.jsx">
+import { useNavigate } from "react-router-dom";
+import { IoPersonOutline, IoCalendarOutline, IoPeople } from "react-icons/io5";
+import styles from "./RoomCard.module.css";
+import { PATHS } from "../../../routes/paths";
+
+const RoomCard = ({ room }) => {
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    ////////////////////////////////////////
+    navigate(PATHS.DEMO);
+  };
+
+  return (
+    <div className={styles.card} onClick={handleCardClick}>
+      {/* Top half with image and info */}
+      <div className={styles["card-top"]}>
+        <div
+          className={styles["card-image"]}
+          style={room.imageColor ? { backgroundColor: room.imageColor } : {}}
+        ></div>
+        <div className={styles["card-info"]}>
+          <h3>{room.companyName}</h3>
+          <p>
+            <IoPersonOutline className={styles.icon} /> Role: {room.role}
+          </p>
+          <p>
+            <IoCalendarOutline className={styles.icon} /> Joined at{" "}
+            {room.dateJoined}
+          </p>
+        </div>
+      </div>
+
+      {/* Horizontal line */}
+      <hr className={styles["card-divider"]} />
+
+      {/* Bottom half with badge */}
+      <div className={styles["card-bottom"]}>
+        <div className={styles["member-badge"]}>
+          <IoPeople className={styles["badge-icon"]} />
+          {room.members || 120}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default RoomCard;
+</file>
+
+<file path="src/components/elements/RoomCard/RoomCard.module.css">
+.card {
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 20px;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+}
+
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.card-image {
+  width: 160px;
+  height: 110px;
+  background-color: var(--color-linco-navy);
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.card-info h3 {
+  color: var(--color-linco-blue);
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  margin-top: 5px;
+}
+
+.card-info p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: #1e293b;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.icon {
+  color: var(--color-linco-blue);
+  font-size: 1.1rem;
+}
+
+.card-divider {
+  border: none;
+  border-top: 1px solid #cbd5e1;
+  margin: 15px 0;
+  width: 100%;
+}
+
+.card-bottom {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.member-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--color-linco-navy);
+  color: #ffffff;
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.badge-icon {
+  font-size: 1rem;
+}
+</file>
+
+<file path="src/features/Dashboard/HomePage/api/.gitkeep">
+
+</file>
+
+<file path="src/features/Dashboard/HomePage/components/home_page/HomePage.jsx">
+import Sidebar from "../../../../../components/layouts/SideBar/Sidebar";
+import Header from "../../../../../components/layouts/Header/global_header/Header";
+import Footer from "../../../../../components/layouts/Footer/Footer";
+import PendingInvitations from "../pending_invitations/PendingInvitations";
+import RoomSection from "../room_section/RoomSection";
+import styles from "./HomePage.module.css";
+import appIconImg from "../../../../../assets/icons/linco-logo.png";
+
+const HomePage = () => {
+  // Mock data arrays for the different room categories
+  const activeRooms = [
+    {
+      id: 1,
+      companyName: "Company Demo Name",
+      role: "Trainee",
+      dateJoined: "12/12/2025",
+      members: 120,
+    },
+    {
+      id: 2,
+      companyName: "Company Demo Name",
+      role: "Trainee",
+      dateJoined: "12/12/2025",
+      imageColor: "#1a365d",
+      members: 120,
+    },
+  ];
+
+  const ownedRooms = [
+    {
+      id: 1,
+      companyName: "Company Demo Name",
+      role: "Trainee",
+      dateJoined: "12/12/2025",
+      members: 120,
+    },
+    {
+      id: 2,
+      companyName: "Company Demo Name",
+      role: "Trainee",
+      dateJoined: "12/12/2025",
+      members: 120,
+    },
+  ];
+
+  const workedRooms = [
+    {
+      id: 1,
+      companyName: "Company Demo Name",
+      role: "Trainee",
+      dateJoined: "12/12/2025",
+      members: 120,
+    },
+    {
+      id: 2,
+      companyName: "Company Demo Name",
+      role: "Trainee",
+      dateJoined: "12/12/2025",
+      members: 120,
+    },
+  ];
+
+  return (
+    <div className={styles["app-container"]}>
+      <Sidebar role="global" />
+
+      <div className={`${styles["main-wrapper"]} custom-scrollbar`}>
+        <Header />
+        <div className={styles["hero-banner"]}>
+          <div className={styles["hero-text"]}>
+            <h1>Ready to dive into your learning, Abrar ?</h1>
+            <p>
+              Manage your company links, track your active training rooms, and
+              level up your career from one single dashboard.
+            </p>
+          </div>
+          <img
+            src={appIconImg}
+            alt="App Icon"
+            className={styles["app-icon-img"]}
+          />
+        </div>
+
+        <PendingInvitations />
+
+        <div
+          className={styles["content-section"]}
+          style={{ paddingTop: "40px" }}
+        >
+          <RoomSection title="Recently Active Rooms" rooms={activeRooms} />
+
+          <div className={styles.divider}></div>
+
+          <RoomSection title="Recently Active Owned Rooms" rooms={ownedRooms} />
+
+          <div className={styles.divider}></div>
+
+          <RoomSection
+            title="Recently Active Worked Rooms"
+            rooms={workedRooms}
+          />
+        </div>
+
+        <Footer />
+      </div>
+    </div>
+  );
+};
+
+export default HomePage;
+</file>
+
+<file path="src/features/Dashboard/HomePage/components/home_page/HomePage.module.css">
+.app-container {
+  background-color: var(--color-linco-bg);
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-wrapper {
+  margin-left: 70px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.hero-banner {
+  background-color: var(--color-linco-navy);
+  color: #ffffff;
+  padding: 40px 50px;
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 30px;
+  flex-shrink: 0;
+}
+
+.hero-text h1 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.hero-text p {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  max-width: 500px;
+}
+
+.app-icon-img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  flex-shrink: 0;
+  transform: scale(1.7);
+}
+
+.content-section {
+  padding: 20px 40px;
+  margin-bottom: 20px;
+  background-color: #ffffff;
+  border-radius: 50px 50px 0 0;
+}
+
+.divider {
+  border-top: 1px dashed #e5e7eb;
+  margin: 20px 40px;
+}
+</file>
+
+<file path="src/features/Dashboard/HomePage/components/pending_invitations/PendingInvitations.jsx">
+import styles from "./PendingInvitations.module.css";
+import InvitationCard from "../../../../components/elements/InvitationCard/InvitationCard.jsx";
+
+const PendingInvitations = () => {
+  // Mock data array
+  const invitations = [
+    {
+      id: 1,
+      company: "Company name",
+      caller: "Name of the caller",
+      role: "As a trainee",
+      time: "13:40 pm",
+    },
+    {
+      id: 2,
+      company: "Company name",
+      caller: "Name of the caller",
+      role: "As a trainee",
+      time: "13:40 pm",
+    },
+    {
+      id: 3,
+      company: "Company name",
+      caller: "Name of the caller",
+      role: "As a trainee",
+      time: "13:40 pm",
+    },
+  ];
+
+  return (
+    <div
+      className={styles["content-section"]}
+      style={{ background: "transparent" }}
+    >
+      <div className={styles["section-header"]}>
+        <h2>New pending Invitations</h2>
+        <button className={styles["view-all"]}>View All</button>
+      </div>
+
+      <div className={styles["list-container"]}>
+        {invitations.map((inv) => (
+          <InvitationCard key={inv.id} invitation={inv} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default PendingInvitations;
+</file>
+
+<file path="src/features/Dashboard/HomePage/components/pending_invitations/PendingInvitations.module.css">
+.content-section {
+  padding: 0 40px;
+  margin-bottom: 30px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-header h2 {
+  color: var(--color-linco-navy);
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.view-all {
+  background-color: #e2e8f0;
+  color: var(--color-linco-navy);
+  font-size: 0.85rem;
+  font-weight: 700;
+  border: 1px solid #cbd5e1;
+  padding: 6px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.view-all:hover {
+  background-color: var(--color-linco-light);
+}
+
+.list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+</file>
+
+<file path="src/features/Dashboard/HomePage/components/room_section/RoomSection.jsx">
+import RoomCard from "../../../../../components/elements/RoomCard/RoomCard.jsx";
+import styles from "./RoomSection.module.css";
+
+const RoomSection = ({ title, rooms }) => {
+  return (
+    <div className={styles.section}>
+      <div className={styles["section-header"]}>
+        <h2>{title}</h2>
+        <button className={styles["view-all"]}>View All</button>
+      </div>
+
+      <div className={styles["cards-grid"]}>
+        {rooms.map((room) => (
+          <RoomCard key={room.id} room={room} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default RoomSection;
+</file>
+
+<file path="src/features/Dashboard/HomePage/components/room_section/RoomSection.module.css">
+.section {
+  margin-bottom: 40px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-header h2 {
+  color: var(--color-linco-navy);
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.view-all {
+  background-color: #e2e8f0;
+  color: var(--color-linco-navy);
+  font-size: 0.85rem;
+  font-weight: 700;
+  border: 1px solid #cbd5e1;
+  padding: 6px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.view-all:hover {
+  background-color: var(--color-linco-light);
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 30px;
+}
+
+@media (max-width: 1100px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</file>
+
+<file path="src/features/Dashboard/HomePage/hooks/.gitkeep">
+
+</file>
+
+<file path="src/features/Dashboard/HomePage/store/.gitkeep">
+
+</file>
+
+<file path="src/features/Dashboard/HomePage/utils/.gitkeep">
+
+</file>
+
+<file path="src/features/Dashboard/JoinedRoomPage/api/.gitkeep">
+
+</file>
+
+<file path="src/features/Dashboard/JoinedRoomPage/components/joined_rooms/JoinedRooms.jsx">
+import { useState } from "react";
+import { IoChevronBack, IoSearch } from "react-icons/io5";
+import Sidebar from "../../../../../components/layouts/SideBar/Sidebar.jsx";
+import Header from "../../../../../components/layouts/Header/global_header/Header.jsx";
+import Footer from "../../../../../components/layouts/Footer/Footer.jsx";
+import RoomCard from "../../../../../components/elements/RoomCard/RoomCard.jsx";
+import styles from "./JoinedRooms.module.css";
+
+const JoinedRoomsPage = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const joinedRooms = Array.from({ length: 10 }, (_, index) => ({
+    id: index + 1,
+    companyName: `Company Demo Name ${index + 1}`,
+    role: "Trainee",
+    dateJoined: "12/12/2025",
+    members: 120,
+  }));
+
+  const filteredRooms = joinedRooms.filter((room) =>
+    room.companyName.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
+
+  return (
+    <div className={styles["app-container"]}>
+      <Sidebar role="global" />
+
+      <div className={`${styles["main-wrapper"]} custom-scrollbar`}>
+        <Header />
+
+        <div className={styles["top-banner"]}>
+          <div className={styles["banner-text"]}>
+            <div className={styles["title-container"]}>
+              <a href="#" className={styles["back-link"]}>
+                <IoChevronBack className={styles["back-icon"]} />
+                <h2>Joined Training Rooms</h2>
+              </a>
+              <div className={styles["dashed-line"]}></div>
+            </div>
+
+            <div className={styles["stats-box"]}>
+              <p className={styles["stats-title"]}>
+                Number of training companies
+              </p>
+              <p className={styles["stats-number"]}>{joinedRooms.length}</p>
+            </div>
+          </div>
+
+          <div className={styles["banner-image-container"]}>
+            <img
+              src="src\assets\images\joined-rooms.png"
+              alt="Modern office building"
+              className={styles["banner-image"]}
+            />
+          </div>
+        </div>
+
+        <div className={styles["search-section"]}>
+          <div className={styles["search-bar"]}>
+            <input
+              type="text"
+              placeholder="Search by company's name"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <IoSearch className={styles["search-icon"]} />
+          </div>
+        </div>
+
+        <div className={styles["list-section"]}>
+          <div className={styles["cards-grid"]}>
+            {filteredRooms.length > 0 ? (
+              filteredRooms.map((room) => (
+                <RoomCard key={room.id} room={room} />
+              ))
+            ) : (
+              <p
+                style={{
+                  color: "#64748b",
+                  fontStyle: "italic",
+                  gridColumn: "1 / -1",
+                }}
+              >
+                No companies found matching "{searchQuery}"
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div className={styles["footer-wrapper"]}>
+          <Footer />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default JoinedRoomsPage;
+</file>
+
+<file path="src/features/Dashboard/JoinedRoomPage/components/joined_rooms/JoinedRooms.module.css">
+.app-container {
+  background-color: var(--color-linco-navy);
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-wrapper {
+  margin-left: 70px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow-y: auto;
+  transition: margin-left 0.3s ease;
+  background-color: var(--color-linco-navy);
+}
+
+.main-wrapper.shifted {
+  margin-left: 220px;
+}
+
+/* --- Top Banner Styles --- */
+.top-banner {
+  background-color: #ffffff;
+  padding: 60px 80px;
+  border-bottom-left-radius: 80px;
+  border-bottom-right-radius: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 380px;
+  overflow: hidden;
+  position: relative;
+}
+
+.banner-text {
+  max-width: 50%;
+  z-index: 2;
+}
+
+.title-container {
+  display: inline-block;
+  margin-bottom: 30px;
+}
+
+.back-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--color-linco-navy);
+  margin-bottom: 15px;
+}
+
+.back-icon {
+  font-size: 1.8rem;
+  margin-right: 15px;
+}
+
+.back-link h2 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.dashed-line {
+  width: 100%;
+  height: 2px;
+  border-bottom: 2px dashed var(--color-linco-navy);
+  margin-left: 45px;
+}
+
+.stats-box {
+  border: 2px dashed var(--color-linco-navy);
+  border-radius: 16px;
+  padding: 25px 50px;
+  margin-left: 45px;
+  display: inline-block;
+  text-align: center;
+  background-color: #ffffff;
+}
+
+.stats-title {
+  color: var(--color-linco-blue);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+}
+
+.stats-number {
+  color: var(--color-linco-navy);
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin: 0;
+  line-height: 1;
+}
+
+.banner-image-container {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 45%;
+  background-color: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --- Search Section Styles --- */
+.search-section {
+  padding: 40px 20px 50px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.search-bar {
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 650px;
+  display: flex;
+  align-items: center;
+  padding: 12px 25px;
+  border-radius: 12px;
+}
+
+.search-bar input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  color: var(--color-linco-navy);
+}
+
+.search-bar input::placeholder {
+  color: #94a3b8;
+}
+
+.search-icon {
+  color: var(--color-linco-navy);
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+/* --- Grid Section Styles --- */
+.list-section {
+  background-color: #ffffff;
+  border-top-left-radius: 80px;
+  border-top-right-radius: 80px;
+  padding: 60px 80px;
+  flex: 1;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+}
+
+.icon {
+  color: var(--color-linco-blue);
+  font-size: 1.1rem;
+}
+
+.badge-icon {
+  font-size: 1rem;
+}
+
+.footer-wrapper {
+  background-color: var(--color-linco-navy);
+}
+
+@media (max-width: 1100px) {
+  .top-banner {
+    padding: 30px;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+    flex-direction: column;
+    text-align: center;
+  }
+  .banner-text {
+    max-width: 100%;
+    margin-bottom: 30px;
+  }
+  .stats-box {
+    margin-left: 0;
+  }
+  .dashed-line {
+    margin-left: 0;
+  }
+  .banner-image-container {
+    display: none;
+  }
+  .list-section {
+    padding: 40px 30px;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+  }
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</file>
+
+<file path="src/features/Dashboard/JoinedRoomPage/hooks/.gitkeep">
+
+</file>
+
+<file path="src/features/Dashboard/JoinedRoomPage/store/.gitkeep">
+
+</file>
+
+<file path="src/features/Dashboard/JoinedRoomPage/utils/.gitkeep">
+
+</file>
+
+<file path="src/features/Dashboard/PendingInvitationsPage/api/.gitkeep">
+
+</file>
+
+<file path="src/features/Dashboard/PendingInvitationsPage/components/pending_invitations/PendingInvitations.jsx">
+import { useState } from "react";
+import { IoChevronBack, IoSearch } from "react-icons/io5";
+import Sidebar from "../../../../../components/layouts/SideBar/Sidebar.jsx";
+import Header from "../../../../../components/layouts/Header/global_header/Header.jsx";
+import Footer from "../../../../../components/layouts/Footer/Footer.jsx";
+import InvitationCard from "../../../../../components/elements/InvitationCard/InvitationCard.jsx";
+import styles from "./PendingInvitations.module.css";
+
+const PendingInvitationsPage = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const invitations = [
+    {
+      id: 1,
+      company: "Company name 1",
+      caller: "Name of the caller",
+      role: "As a trainee",
+      time: "13:40 pm",
+    },
+    {
+      id: 2,
+      company: "Company name 2",
+      caller: "Name of the caller",
+      role: "As a trainee",
+      time: "13:40 pm",
+    },
+    {
+      id: 3,
+      company: "Company name 3",
+      caller: "Name of the caller",
+      role: "As a trainee",
+      time: "13:40 pm",
+    },
+    {
+      id: 4,
+      company: "Company name 4",
+      caller: "Name of the caller",
+      role: "As a trainee",
+      time: "13:40 pm",
+    },
+    {
+      id: 5,
+      company: "Company name 5",
+      caller: "Name of the caller",
+      role: "As a trainee",
+      time: "13:40 pm",
+    },
+    {
+      id: 6,
+      company: "Company name 6",
+      caller: "Name of the caller",
+      role: "As a trainee",
+      time: "13:40 pm",
+    },
+  ];
+
+  const filteredInvitations = invitations.filter((inv) =>
+    inv.company.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
+
+  return (
+    <div className={styles["app-container"]}>
+      <Sidebar role="global" />
+
+      <div className={`${styles["main-wrapper"]} custom-scrollbar`}>
+        <Header />
+
+        <div className={styles["top-banner"]}>
+          <div className={styles["banner-text"]}>
+            <div className={styles["title-container"]}>
+              <a href="#" className={styles["back-link"]}>
+                <IoChevronBack className={styles["back-icon"]} />
+                <h2>Pending Invitations</h2>
+              </a>
+              <div className={styles["dashed-line"]}></div>
+            </div>
+            <p>
+              Review your pending invitations to join company
+              <br />
+              workspaces and training rooms.
+            </p>
+          </div>
+
+          <div className={styles["banner-image-container"]}>
+            <img
+              src="src\assets\images\pending-invitations.png"
+              alt="Invitation to Linco company envelopes"
+              className={styles["banner-image"]}
+            />
+          </div>
+        </div>
+
+        <div className={styles["search-section"]}>
+          <div className={styles["search-bar"]}>
+            <input
+              type="text"
+              placeholder="Search by company's name"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <IoSearch className={styles["search-icon"]} />
+          </div>
+        </div>
+
+        <div className={styles["list-section"]}>
+          <div className={styles["table-header"]}>
+            <div className={styles["th-col"]} style={{ textAlign: "left" }}>
+              COMPANY NAME
+            </div>
+            <div className={styles["th-col"]}>CALLER</div>
+            <div className={styles["th-col"]}>ROLE</div>
+            <div className={styles["th-col"]}>TIME</div>
+            <div className={styles["th-col-action"]}>ACTION</div>
+          </div>
+
+          <div className={styles["list-container"]}>
+            {filteredInvitations.length > 0 ? (
+              filteredInvitations.map((inv) => (
+                <InvitationCard key={inv.id} invitation={inv} />
+              ))
+            ) : (
+              <p
+                style={{
+                  color: "#64748b",
+                  fontStyle: "italic",
+                  textAlign: "center",
+                  padding: "20px",
+                }}
+              >
+                No pending invitations found matching "{searchQuery}"
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div className={styles["footer-wrapper"]}>
+          <Footer />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default PendingInvitationsPage;
+</file>
+
+<file path="src/features/Dashboard/PendingInvitationsPage/components/pending_invitations/PendingInvitations.module.css">
+.app-container {
+  background-color: var(--color-linco-navy);
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-wrapper {
+  margin-left: 70px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow-y: auto;
+  transition: margin-left 0.3s ease;
+  background-color: var(--color-linco-navy);
+}
+
+.main-wrapper.shifted {
+  margin-left: 220px;
+}
+
+.top-banner {
+  background-color: #ffffff;
+  padding: 60px 80px;
+  border-bottom-left-radius: 80px;
+  border-bottom-right-radius: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 380px;
+  overflow: hidden;
+  position: relative;
+}
+
+.banner-text {
+  max-width: 50%;
+  z-index: 2;
+}
+
+.title-container {
+  display: inline-block;
+  margin-bottom: 25px;
+}
+
+.back-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--color-linco-navy);
+  margin-bottom: 15px;
+}
+
+.back-icon {
+  font-size: 1.8rem;
+  margin-right: 15px;
+}
+
+.back-link h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.dashed-line {
+  width: 100%;
+  height: 2px;
+  border-bottom: 2px dashed var(--color-linco-navy);
+  margin-left: 45px;
+}
+
+.banner-text p {
+  color: #334155;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-left: 45px;
+}
+
+.banner-image-container {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 45%;
+  background-color: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  color: #94a3b8;
+  font-style: italic;
+  text-align: center;
+}
+
+.search-section {
+  padding: 40px 20px 50px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.search-bar {
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 650px;
+  display: flex;
+  align-items: center;
+  padding: 12px 25px;
+  border-radius: 12px;
+}
+
+.search-bar input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  color: var(--color-linco-navy);
+}
+
+.search-bar input::placeholder {
+  color: #94a3b8;
+}
+
+.search-icon {
+  color: var(--color-linco-navy);
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.list-section {
+  background-color: #ffffff;
+  border-top-left-radius: 80px;
+  border-top-right-radius: 80px;
+  padding: 50px 80px;
+  flex: 1;
+}
+
+.table-header {
+  display: flex;
+  padding: 0 25px;
+  margin-bottom: 20px;
+  color: var(--color-linco-blue);
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+.th-col {
+  flex: 1;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.th-col-action {
+  flex: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.footer-wrapper {
+  background-color: var(--color-linco-navy);
+}
+
+@media (max-width: 1100px) {
+  .top-banner {
+    padding: 30px;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+  }
+  .banner-text {
+    max-width: 100%;
+  }
+  .banner-image-container {
+    display: none;
+  }
+  .table-header {
+    display: none;
+  }
+  .list-section {
+    padding: 30px;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+  }
+}
+</file>
+
+<file path="src/features/Dashboard/PendingInvitationsPage/hooks/.gitkeep">
+
+</file>
+
+<file path="src/features/Dashboard/PendingInvitationsPage/store/.gitkeep">
+
+</file>
+
+<file path="src/features/Dashboard/PendingInvitationsPage/utils/.gitkeep">
+
+</file>
+
+<file path="src/features/HomeDemoPage/api/.gitkeep">
+
+</file>
+
+<file path="src/features/HomeDemoPage/components/DemoContent/DemoContent.jsx">
+import styles from "./DemoContent.module.css";
+import WelcomeSection from "../sections/WelcomeSection/WelcomeSection";
+import LeaderboardSection from "../sections/LeaderboardSection/LeaderboardSection";
+import StatsSection from "../sections/StatsSection/StatsSection";
+import CoursesSection from "../sections/CourseSection/CoursesSection";
+import LivesSection from "../sections/LivesSection/LivesSection";
+
+const WorkspaceDashboardContent = () => {
+  const userData = { companyName: "TechCorp", userName: "Abrar" };
+
+  const leaderboardData = [
+    {
+      rank: 1,
+      avatar: "SA",
+      name: "Ahmad",
+      points: "1,250",
+      isCurrentUser: false,
+    },
+    {
+      rank: 2,
+      avatar: "AA",
+      name: "Abrar A (You)",
+      points: "1,120",
+      isCurrentUser: true,
+    },
+    {
+      rank: 3,
+      avatar: "MK",
+      name: "Omar",
+      points: "980",
+      isCurrentUser: false,
+    },
+  ];
+
+  const statisticsData = {
+    activeCourses: { current: 5, total: 15 },
+    tasks: { completed: 2, total: 11 },
+    certificates: { earned: 6, left: 11 },
+  };
+
+  const coursesData = [
+    {
+      id: 1,
+      title: "Introduction To React Hooks",
+      description: "Description text will be here...",
+      progress: 72,
+    },
+    {
+      id: 2,
+      title: "Advanced Node.js",
+      description: "Description text will be here...",
+      progress: 45,
+    },
+  ];
+
+  const livesData = [
+    {
+      id: 1,
+      title: "System Design Basics",
+      instructor: "Ahmad Ahmad",
+      date: "Apr 04, 2026",
+      duration: "48 min",
+    },
+    {
+      id: 2,
+      title: "Frontend Architecture",
+      instructor: "Sara Omar",
+      date: "Apr 05, 2026",
+      duration: "60 min",
+    },
+  ];
+
+  return (
+    <>
+      <div className={styles["hero-section"]}>
+        <div className={styles["hero-content"]}>
+          <WelcomeSection
+            companyName={userData.companyName}
+            userName={userData.userName}
+          />
+          <LeaderboardSection leaders={leaderboardData} />
+        </div>
+        <StatsSection stats={statisticsData} />
+      </div>
+
+      <div className={styles["content-section"]}>
+        <CoursesSection courses={coursesData} />
+
+        <hr className={styles["section-divider"]} />
+
+        <LivesSection lives={livesData} />
+      </div>
+    </>
+  );
+};
+
+export default WorkspaceDashboardContent;
+</file>
+
+<file path="src/features/HomeDemoPage/components/DemoContent/DemoContent.module.css">
+.app-container {
+  background-color: var(--color-linco-navy);
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-wrapper {
+  margin-left: 70px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow-y: auto;
+  background-color: var(--color-linco-navy);
+}
+
+.hero-section {
+  background-color: #ffffff;
+  padding: 50px 80px 40px;
+  border-bottom-left-radius: 60px;
+  border-bottom-right-radius: 60px;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 80px;
+  margin-bottom: 50px;
+  max-width: 1450px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.content-section {
+  background-color: #ffffff;
+  margin: 50px 1px 80px;
+  border-radius: 80px 80px 40px 40px;
+  padding: 50px;
+}
+
+.section-divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #cbd5e1, transparent);
+  margin: 50px 0;
+}
+</file>
+
+<file path="src/features/HomeDemoPage/components/sections/CourseSection/CoursesSection.jsx">
+import styles from "../SharedSection.module.css";
+import CourseCard from "../../../../../components/elements/CourseCard/CourseCard";
+
+const CoursesSection = ({ courses }) => {
+  return (
+    <>
+      <div className={styles["section-header"]}>
+        <h2>Resume Learning</h2>
+        <p>Continue your current course</p>
+      </div>
+
+      <div className={styles["cards-grid-2"]}>
+        {courses.map((course) => (
+          <CourseCard key={course.id} course={course} />
+        ))}
+      </div>
+    </>
+  );
+};
+
+export default CoursesSection;
+</file>
+
+<file path="src/features/HomeDemoPage/components/sections/LeaderboardSection/LeaderboardSection.jsx">
+import styles from "./LeaderboardSection.module.css";
+
+const LeaderboardSection = ({ leaders }) => {
+  return (
+    <div className={styles["leaderboard-box"]}>
+      <div className={styles["leaderboard-header"]}>
+        <h3>Company Leader Board Top-3</h3>
+      </div>
+
+      <div className={styles["leaderboard-list"]}>
+        {leaders.map((user) => (
+          <div
+            key={user.rank}
+            className={`${styles["leader-item"]} ${user.isCurrentUser ? styles.currentUser : ""}`}
+          >
+            <div className={styles["leader-info"]}>
+              <span className={styles.rank}>{user.rank}</span>
+              <div className={styles.avatar}>{user.avatar}</div>
+              <span className={styles["leader-name"]}>{user.name}</span>
+            </div>
+            <div className={styles["leader-points"]}>
+              <span className={styles["points-badge"]}>{user.points} XP</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <button className={styles["view-full-btn"]}>View Full Leaderboard</button>
+    </div>
+  );
+};
+
+export default LeaderboardSection;
+</file>
+
+<file path="src/features/HomeDemoPage/components/sections/LeaderboardSection/LeaderboardSection.module.css">
+.leaderboard-box {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
+  padding: 30px;
+  min-width: 550px;
+  box-shadow: 0 10px 30px rgba(17, 41, 80, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.leaderboard-header h3 {
+  color: var(--color-linco-navy);
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.leaderboard-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.leader-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  border-radius: 12px;
+  background-color: #f8fafc;
+  border: 1px solid transparent;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.leader-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-color: #e2e8f0;
+}
+
+.leader-item.currentUser {
+  background: linear-gradient(135deg, #0f005a 0%, #0f005a 100%);
+  box-shadow: 0 6px 20px rgba(0, 9, 128, 0.2);
+}
+
+.leader-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.rank {
+  color: var(--color-linco-navy);
+  font-size: 1.1rem;
+  font-weight: 800;
+  width: 20px;
+}
+
+.currentUser .rank {
+  color: #ffffff;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  background-color: #cbd5e1;
+  color: var(--color-linco-navy);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.currentUser .avatar {
+  background-color: #ffffff;
+  color: #002680;
+}
+
+.leader-name {
+  font-weight: 700;
+  color: var(--color-linco-navy);
+  font-size: 0.95rem;
+}
+
+.currentUser .leader-name {
+  color: #ffffff;
+}
+
+.points-badge {
+  background-color: #e2e8f0;
+  color: var(--color-linco-navy);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 800;
+  font-size: 0.8rem;
+}
+
+.currentUser .points-badge {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.view-full-btn {
+  background: transparent;
+  color: var(--color-linco-navy);
+  border: 1px solid #cbd5e1;
+  padding: 12px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 5px;
+}
+
+.view-full-btn:hover {
+  background-color: var(--color-linco-navy);
+  color: #ffffff;
+}
+</file>
+
+<file path="src/features/HomeDemoPage/components/sections/LivesSection/LivesSection.jsx">
+import LiveCard from "../../../../../components/elements/LiveCard/LiveCard";
+import styles from "../SharedSection.module.css";
+
+const LivesSection = ({ lives }) => {
+  return (
+    <>
+      <div className={styles["section-header"]}>
+        <h2>New Lives</h2>
+      </div>
+
+      <div className={styles["cards-grid-2"]}>
+        {lives.map((live) => (
+          <LiveCard key={live.id} live={live} />
+        ))}
+      </div>
+    </>
+  );
+};
+
+export default LivesSection;
+</file>
+
+<file path="src/features/HomeDemoPage/components/sections/SharedSection.module.css">
+/* src/features/WorkspaceDashboard/components/sections/SharedSection.module.css */
+
+.section-header h2 {
+  color: var(--color-linco-navy);
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 5px;
+}
+
+.section-header p {
+  color: #475569;
+  font-size: 1rem;
+  margin-bottom: 30px;
+}
+
+.cards-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+}
+</file>
+
+<file path="src/features/HomeDemoPage/components/sections/StatsSection/StatsSection.jsx">
+import styles from "./StatsSection.module.css";
+
+const StatsSection = ({ stats }) => {
+  return (
+    <div className={styles["stats-row"]}>
+      {/* Active Courses */}
+      <div className={styles["stat-box"]}>
+        <div className={styles["stat-title"]}>Active Courses</div>
+        <div className={styles["stat-values"]}>
+          <span className={styles.highlight}>
+            {stats.activeCourses.current}
+          </span>
+          <div className={styles.divider}></div>
+          <span className={styles.secondary}>
+            All
+            <br />
+            {stats.activeCourses.total}
+          </span>
+        </div>
+      </div>
+
+      {/* Tasks Completed */}
+      <div className={styles["stat-box"]}>
+        <div className={styles["stat-title"]}>Tasks Completed</div>
+        <div className={styles["stat-values"]}>
+          <span className={styles.highlight}>{stats.tasks.completed}</span>
+          <div className={styles.divider}></div>
+          <span className={styles.secondary}>
+            NUMBER OF TASKS
+            <br />
+            YOU FINISHED {stats.tasks.total}
+          </span>
+        </div>
+      </div>
+
+      {/* Certificates Earned */}
+      <div className={styles["stat-box"]}>
+        <div className={styles["stat-title"]}>Certificates Earned</div>
+        <div className={styles["stat-values"]}>
+          <span className={styles.highlight}>{stats.certificates.earned}</span>
+          <div className={styles.divider}></div>
+          <span className={styles.secondary}>
+            YOU HAVE ONLY
+            <br />
+            LEFT {stats.certificates.left}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default StatsSection;
+</file>
+
+<file path="src/features/HomeDemoPage/components/sections/StatsSection/StatsSection.module.css">
+.stats-row {
+  display: flex;
+  gap: 35px;
+  justify-content: space-between;
+  position: relative;
+  z-index: 10;
+  max-width: 1450px;
+  width: 100%;
+  margin: 0 auto auto;
+}
+
+.stat-box {
+  flex: 1;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 8px 24px rgba(17, 41, 80, 0.05);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.stat-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(17, 41, 80, 0.1);
+}
+
+.stat-title {
+  color: var(--color-linco-navy);
+  font-weight: 800;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+.stat-values {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.highlight {
+  color: #002b80;
+  font-size: 3.2rem;
+  font-weight: 800;
+  line-height: 1;
+  text-shadow: 2px 2px 4px rgba(128, 0, 32, 0.1);
+}
+
+.divider {
+  width: 2px;
+  height: 45px;
+  background-color: #e2e8f0;
+  margin: 0 20px;
+}
+
+.secondary {
+  color: #64748b;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.5;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+</file>
+
+<file path="src/features/HomeDemoPage/components/sections/WelcomeSection/WelcomeSection.jsx">
+import styles from "./WelcomeSection.module.css";
+
+const WelcomeSection = ({ companyName, userName }) => {
+  return (
+    <div className={styles["welcome-text"]}>
+      <div className={styles["welcome-badge"]}>
+        <span>👋</span> Welcome Back
+      </div>
+
+      <h1>
+        Welcome to{" "}
+        <span className={styles["highlight-company"]}>{companyName}</span>
+        <br />
+        Academy, <span className={styles["highlight-name"]}>{userName}</span>!
+      </h1>
+
+      <p>
+        Start your journey to top the company leaderboard and achieve your daily
+        goals.
+      </p>
+
+      <div className={styles["welcome-actions"]}>
+        <button className={styles["btn-primary"]}>Resume Learning</button>
+        <button className={styles["btn-secondary"]}>View Road Map</button>
+      </div>
+    </div>
+  );
+};
+
+export default WelcomeSection;
+</file>
+
+<file path="src/features/HomeDemoPage/components/sections/WelcomeSection/WelcomeSection.module.css">
+.welcome-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1;
+  max-width: 100%;
+}
+
+.welcome-badge {
+  background-color: #f1f5f9;
+  color: var(--color-linco-navy);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.welcome-text h1 {
+  color: var(--color-linco-navy);
+  font-size: 2.4rem;
+  font-weight: 800;
+  line-height: 1.3;
+  margin-bottom: 15px;
+}
+
+.highlight-company {
+  color: var(--color-linco-blue);
+}
+
+.highlight-name {
+  color: #060080;
+  position: relative;
+  display: inline-block;
+}
+
+.highlight-name::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 6px;
+  bottom: 4px;
+  left: 0;
+  background-color: rgba(6, 0, 128, 0.15);
+  z-index: -1;
+  border-radius: 4px;
+}
+
+.welcome-text p {
+  color: #64748b;
+  font-size: 1.05rem;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.welcome-actions {
+  display: flex;
+  gap: 15px;
+}
+
+.btn-primary {
+  background-color: var(--color-linco-navy);
+  color: #ffffff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(17, 41, 80, 0.15);
+}
+
+.btn-primary:hover {
+  background-color: #1a3a6c;
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background-color: #ffffff;
+  color: var(--color-linco-navy);
+  border: 1px solid #cbd5e1;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  background-color: #f8fafc;
+  border-color: var(--color-linco-navy);
+}
+</file>
+
+<file path="src/features/HomeDemoPage/hooks/.gitkeep">
+
+</file>
+
+<file path="src/features/HomeDemoPage/store/.gitkeep">
+
+</file>
+
+<file path="src/features/HomeDemoPage/utils/.gitkeep">
+
+</file>
+
+<file path="src/pages/HomeDemoPage.jsx">
+import Sidebar from "../components/layouts/SideBar/Sidebar";
+import Header from "../components/layouts/Header/global_header/Header";
+import Footer from "../components/layouts/Footer/Footer";
+import DemoContentContent from "../features/HomeDemoPage/components/DemoContent/DemoContent";
+import styles from "../features/HomeDemoPage/components/DemoContent/DemoContent.module.css";
+
+const DemoPage = () => {
+  const currentRole = "trainee";
+
+  return (
+    <div className={styles["app-container"]}>
+      <Sidebar role={currentRole} />
+      <div className={`${styles["main-wrapper"]} custom-scrollbar`}>
+        <Header
+          role={currentRole}
+          companyName="CompanyName"
+          roomName="Company Demo"
+        />
+        <DemoContentContent />
+
+        <Footer role={currentRole} />
+      </div>
+    </div>
+  );
+};
+
+export default DemoPage;
+</file>
 
 <file path=".gitignore">
 # Logs
@@ -394,247 +2715,6 @@ If you are developing a production application, we recommend using TypeScript wi
 
 </file>
 
-<file path="src/components/elements/.gitkeep">
-
-</file>
-
-<file path="src/components/elements/InvitationCard.jsx">
-import styles from "./InvitationCard.module.css";
-
-const InvitationCard = ({ invitation }) => {
-  return (
-    <div className={styles["list-item"]}>
-      <div className={styles["company-name"]}>{invitation.company}</div>
-      <div className={styles["vertical-divider"]}></div>
-      <div className={styles["text-item"]}>{invitation.caller}</div>
-      <div className={styles["vertical-divider"]}></div>
-      <div className={styles["text-item"]}>{invitation.role}</div>
-      <div className={styles["vertical-divider"]}></div>
-      <div className={styles["text-item"]}>{invitation.time}</div>
-
-      <div className={styles["list-actions"]}>
-        <button className={styles["btn-accept"]}>Accept</button>
-        <button className={styles["btn-reject"]}>Reject</button>
-      </div>
-    </div>
-  );
-};
-
-export default InvitationCard;
-</file>
-
-<file path="src/components/elements/InvitationCard.module.css">
-.list-item {
-  display: flex;
-  align-items: center;
-  padding: 16px 25px;
-  background-color: #ffffff;
-  border: 1px solid #475569;
-  border-radius: 12px;
-  transition: transform 0.1s;
-}
-
-.list-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-
-.company-name {
-  flex: 1;
-  color: var(--color-linco-blue);
-  font-size: 1.05rem;
-  font-weight: 700;
-}
-
-.text-item {
-  flex: 1;
-  font-size: 1rem;
-  color: #0f172a;
-  font-weight: 500;
-  text-align: center;
-}
-
-.vertical-divider {
-  width: 1px;
-  height: 24px;
-  background-color: #cbd5e1;
-}
-
-.list-actions {
-  flex: 1.2;
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-}
-
-.list-actions button {
-  padding: 10px 28px;
-  border-radius: 25px;
-  font-size: 0.9rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.btn-accept {
-  background-color: var(--color-linco-navy);
-  color: #ffffff;
-  border: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.btn-reject {
-  background-color: #ffffff;
-  color: var(--color-linco-navy);
-  border: 1px solid #cbd5e1;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.btn-accept:hover {
-  opacity: 0.9;
-}
-
-.btn-reject:hover {
-  background-color: #f8fafc;
-}
-
-@media (max-width: 1100px) {
-  .list-item {
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  .vertical-divider {
-    display: none;
-  }
-}
-</file>
-
-<file path="src/components/elements/RoomCard.jsx">
-import { IoPersonOutline, IoCalendarOutline, IoPeople } from "react-icons/io5";
-import styles from "./RoomCard.module.css";
-
-const RoomCard = ({ room }) => {
-  return (
-    <div className={styles.card}>
-      {/* Top half with image and info */}
-      <div className={styles["card-top"]}>
-        <div
-          className={styles["card-image"]}
-          style={room.imageColor ? { backgroundColor: room.imageColor } : {}}
-        ></div>
-        <div className={styles["card-info"]}>
-          <h3>{room.companyName}</h3>
-          <p>
-            <IoPersonOutline className={styles.icon} /> Role: {room.role}
-          </p>
-          <p>
-            <IoCalendarOutline className={styles.icon} /> Joined at{" "}
-            {room.dateJoined}
-          </p>
-        </div>
-      </div>
-
-      {/* Horizontal line */}
-      <hr className={styles["card-divider"]} />
-
-      {/* Bottom half with badge */}
-      <div className={styles["card-bottom"]}>
-        <div className={styles["member-badge"]}>
-          <IoPeople className={styles["badge-icon"]} />
-          {room.members || 120}{" "}
-          {/* Fallback to 120 if no members are provided */}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default RoomCard;
-</file>
-
-<file path="src/components/elements/RoomCard.module.css">
-.card {
-  border: 1px solid #cbd5e1;
-  border-radius: 12px;
-  padding: 20px;
-  background-color: #ffffff;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
-}
-
-.card-top {
-  display: flex;
-  align-items: flex-start;
-  gap: 20px;
-}
-
-.card-image {
-  width: 160px;
-  height: 110px;
-  background-color: var(--color-linco-navy);
-  border-radius: 12px;
-  flex-shrink: 0;
-}
-
-.card-info h3 {
-  color: var(--color-linco-blue);
-  font-size: 1.15rem;
-  font-weight: 700;
-  margin-bottom: 15px;
-  margin-top: 5px;
-}
-
-.card-info p {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.9rem;
-  color: #1e293b;
-  margin-bottom: 8px;
-  font-weight: 500;
-}
-
-.icon {
-  color: var(--color-linco-blue);
-  font-size: 1.1rem;
-}
-
-.card-divider {
-  border: none;
-  border-top: 1px solid #cbd5e1;
-  margin: 15px 0;
-  width: 100%;
-}
-
-.card-bottom {
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-}
-
-.member-badge {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background-color: var(--color-linco-navy);
-  color: #ffffff;
-  padding: 6px 16px;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-
-.badge-icon {
-  font-size: 1rem;
-}
-</file>
-
 <file path="src/components/form/.gitkeep">
 
 </file>
@@ -717,26 +2797,147 @@ export const logoStyles = {
 }
 </file>
 
-<file path="src/components/layouts/Header/Header.module.css">
+<file path="src/components/layouts/Footer/footerConfig.jsx">
+export const FOOTER_CONFIG = {
+  global: [
+    { name: "Pending Invitations", path: "/pending-invitations" },
+    { name: "Joined Rooms", path: "/joined-rooms" },
+    { name: "My Own Rooms", path: "/my-own-rooms" },
+  ],
+  trainee: [
+    { name: "Learning Path", path: "/learning-path" },
+    { name: "Weekly Tasks", path: "/weekly-tasks" },
+    { name: "My Certificates", path: "/certificates" },
+  ],
+  "section manger": [
+    //
+  ],
+  owner: [
+    //
+  ],
+};
+</file>
+
+<file path="src/components/layouts/Header/global_header/Header.jsx">
+import { Link, useLocation } from "react-router-dom";
+import { IoChevronBack, IoPersonOutline } from "react-icons/io5";
+import styles from "./Header.module.css";
+import { HEADER_CONFIG } from "../headerConfig";
+import appIconImg from "../../../../assets/images/linco-logo.jpg";
+import { PATHS } from "../../../../routes/paths";
+
+const Header = ({
+  role = "global",
+  companyName = "CompanyName",
+  roomName = "Company Demo",
+}) => {
+  const location = useLocation();
+
+  if (role !== "global") {
+    return (
+      <header className={styles["workspace-top-header"]}>
+        <div className={styles["workspace-logo"]}>
+          <span className={styles["brand-name"]}>LinCo</span>{" "}
+          <span className={styles["company-name"]}>.{companyName}</span>
+        </div>
+
+        <div className={styles["workspace-center"]}>
+          <Link to={PATHS.HOME} className={styles["go-dashboard"]}>
+            <IoChevronBack /> Go to my dashboard
+          </Link>
+          <div className={styles["nav-divider"]}></div>
+          <div className={styles["room-badge"]}>{roomName}</div>
+        </div>
+
+        <div className={styles["workspace-right"]}>
+          <span className={styles["brand-name-full"]}>Link Company</span>
+        </div>
+      </header>
+    );
+  }
+
+  const globalLinks = HEADER_CONFIG.global.navLinks;
+
+  return (
+    <header className={styles.header}>
+      <div className={styles["header-left"]}>
+        <div className={styles.logo}>
+          <span className={styles["brand-name"]}>LinCo</span>{" "}
+          <span className={styles["company-text"]}>Link Company.</span>
+        </div>
+        <div className={styles["user-profile"]}>
+          <div className={styles["user-avatar"]}>AA</div>
+          <span className={styles["user-name"]}>Abrar Abo Auad</span>
+          <div className={styles["dropdown-icon"]}></div>
+        </div>
+      </div>
+
+      <nav className={styles["nav-links"]}>
+        {globalLinks.map((link, index) => (
+          <div key={index} className={styles["nav-item-wrapper"]}>
+            <Link
+              to={link.path}
+              className={
+                location.pathname === link.path ||
+                (index === 0 && location.pathname === "/")
+                  ? styles.active
+                  : ""
+              }
+            >
+              {link.name}
+            </Link>
+            {index < globalLinks.length - 1 && (
+              <div className={styles["nav-divider"]}></div>
+            )}
+          </div>
+        ))}
+      </nav>
+
+      <div className={styles["header-actions"]}>
+        <button className={styles["btn-workspace"]}>
+          <IoPersonOutline style={{ marginRight: "5px" }} /> Create a Workspace
+        </button>
+        <div className={styles["app-icon"]}>
+          <img
+            src={appIconImg}
+            alt="App Icon"
+            className={styles["app-icon-img"]}
+          />
+        </div>
+      </div>
+    </header>
+  );
+};
+
+export default Header;
+</file>
+
+<file path="src/components/layouts/Header/global_header/Header.module.css">
+/* src/components/layouts/Header/global_header/Header.module.css */
+
 .header {
   background-color: var(--color-linco-navy);
   height: 70px;
+  min-height: 70px; /* ضمان عدم انضغاط الهيدر */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 30px;
+  padding: 0 40px; /* زيادة المساحة الجانبية لتطابق هيدر مساحة العمل */
   color: #ffffff;
   flex-shrink: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
+/* --- الجزء الأيسر (اللوجو والملف الشخصي) --- */
 .header-left {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 20px; /* تقليل المسافة بين اللوجو والملف الشخصي */
 }
 
 .logo {
-  font-size: 1.2rem;
+  font-size: 1.1rem; /* تصغير حجم اللوجو قليلاً */
 }
 
 .brand-name {
@@ -752,69 +2953,127 @@ export const logoStyles = {
 .user-profile {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   cursor: pointer;
+  padding-left: 20px;
+  border-left: 1px solid rgba(255, 255, 255, 0.2); /* إضافة خط فاصل أنيق بين اللوجو والملف الشخصي */
 }
 
 .user-avatar {
-  width: 36px;
-  height: 36px;
+  width: 32px; /* تصغير الأفاتار */
+  height: 32px;
   background-color: var(--color-linco-light);
   color: var(--color-linco-navy);
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-weight: 700;
-  font-size: 0.85rem;
+  font-weight: 800;
+  font-size: 0.75rem; /* تصغير خط الحروف داخل الأفاتار */
 }
 
 .user-name {
-  font-size: 0.95rem;
-  font-weight: 500;
+  font-size: 0.85rem; /* تصغير حجم اسم المستخدم */
+  font-weight: 600;
 }
 
 .dropdown-icon {
-  width: 10px;
-  height: 10px;
+  width: 8px; /* تصغير السهم */
+  height: 8px;
   border-right: 2px solid #ffffff;
   border-bottom: 2px solid #ffffff;
   transform: rotate(45deg);
   margin-bottom: 4px;
+  opacity: 0.8;
 }
 
+/* --- الروابط في المنتصف --- */
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 5px; /* تصغير الفراغات بين الروابط لأنها ستحتوي على حشوة داخلية */
+}
+
+.nav-item-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .nav-links a {
   text-decoration: none;
-  color: #ffffff;
-  font-size: 0.9rem;
-  font-weight: 500;
-  padding: 8px 16px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.8rem; /* تصغير حجم خط الروابط */
+  font-weight: 600;
+  padding: 6px 14px; /* تصغير مساحة الزر المحيطة بالنص */
   border-radius: 6px;
-  transition: background 0.2s;
+  transition: all 0.2s;
+}
+
+.nav-links a:hover {
+  color: #ffffff;
 }
 
 .nav-links a.active {
   background-color: #ffffff;
-  color: var(--color-linco-blue);
+  color: var(
+    --color-linco-navy
+  ); /* جعل لون النص النشط كحلي ليتناسب مع الفخامة */
   font-weight: 700;
 }
 
 .nav-divider {
   width: 1px;
-  height: 20px;
-  background-color: rgba(255, 255, 255, 0.3);
+  height: 14px; /* تصغير طول الخط الفاصل بين الروابط */
+  background-color: rgba(255, 255, 255, 0.2);
+  margin: 0 5px;
 }
 
+/* --- الجزء الأيمن (الأزرار) --- */
 .header-actions {
   display: flex;
   align-items: center;
   gap: 15px;
+}
+
+.btn-workspace {
+  background-color: var(--color-linco-light);
+  color: var(--color-linco-navy);
+  border: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.4rem;
+  cursor: pointer;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.btn-workspace:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.app-icon {
+  width: 32px;
+  height: 32px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.app-icon-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .btn-workspace {
@@ -868,6 +3127,284 @@ export const logoStyles = {
     flex-wrap: wrap;
   }
 }
+/* --- Global Header Updates --- */
+.nav-item-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* --- Workspace Header (Trainee/Owner/etc) --- */
+.workspace-header-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.workspace-top-header {
+  background-color: var(--color-linco-navy);
+  height: 70px;
+  min-height: 70px; /* يجبر المتصفح على احترام الارتفاع */
+  flex-shrink: 0; /* يمنع الـ Flexbox من ضغط الهيدر ليتسع باقي المحتوى */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  color: #ffffff;
+  width: 100%;
+  box-sizing: border-box; /* يضمن عدم تمدد العرض بسبب الـ padding */
+}
+
+.workspace-logo .company-name {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+}
+
+.workspace-center {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.go-dashboard {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.2s;
+}
+
+.go-dashboard:hover {
+  color: #ffffff;
+}
+
+.room-badge {
+  background-color: #ffffff;
+  color: var(--color-linco-blue);
+  padding: 4px 16px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.brand-name-full {
+  font-family: serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+/* --- Sub Header --- */
+.workspace-sub-header {
+  background-color: #e0e7ff; /* لون أزرق فاتح مشابه للصورة */
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding: 0 30px;
+  border-bottom: 1px solid #cbd5e1;
+}
+
+.sub-nav-links {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.sub-nav-item {
+  display: flex;
+  align-items: center;
+}
+
+.sub-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-linco-navy);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.sub-nav-icon {
+  font-size: 1.1rem;
+  color: var(--color-linco-blue);
+}
+
+.sub-nav-link.active {
+  background-color: #ffffff;
+  color: var(--color-linco-blue);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.sub-nav-divider {
+  width: 1px;
+  height: 20px;
+  background-color: #cbd5e1;
+  margin: 0 10px;
+}
+</file>
+
+<file path="src/components/layouts/Header/headerConfig.jsx">
+import {
+  IoLinkOutline,
+  IoMapOutline,
+  IoListOutline,
+  IoPersonOutline,
+  IoChatbubblesOutline,
+} from "react-icons/io5";
+import { PATHS } from "../../../routes/paths";
+
+export const HEADER_CONFIG = {
+  global: {
+    navLinks: [
+      { name: "Home", path: PATHS.HOME },
+      { name: "Pending Invitations", path: PATHS.PENDING_INVITATIONS },
+      { name: "Joined Rooms", path: PATHS.JOINED_ROOMS },
+      { name: "My Own Rooms", path: PATHS.OWN_ROOMS },
+      { name: "My Profile", path: PATHS.PROFILE },
+    ],
+  },
+  trainee: {
+    subNavLinks: [
+      {
+        name: "Learning Path",
+        icon: <IoLinkOutline />,
+        path: PATHS.LEARNING_PATH,
+      },
+      { name: "Courses", icon: <IoLinkOutline />, path: PATHS.COURSES },
+      { name: "Road Map", icon: <IoMapOutline />, path: PATHS.ROAD_MAP },
+      {
+        name: "Weekly Tasks",
+        icon: <IoListOutline />,
+        path: PATHS.WEEKLY_TASKS,
+      },
+      {
+        name: "Leaderboard",
+        icon: <IoPersonOutline />,
+        path: PATHS.LEADERBOARD,
+      },
+      {
+        name: "Group Workspace",
+        icon: <IoLinkOutline />,
+        path: PATHS.GROUP_WORKSPACE,
+      },
+      {
+        name: "Group Chat",
+        icon: <IoChatbubblesOutline />,
+        path: PATHS.GROUP_CHAT,
+      },
+    ],
+  },
+  "section manger": {
+    subNavLinks: [],
+  },
+  owner: {
+    subNavLinks: [],
+  },
+};
+</file>
+
+<file path="src/components/layouts/Header/sub_header/SubHeader.jsx">
+import { Link, useLocation } from "react-router-dom";
+import { HEADER_CONFIG } from "../headerConfig";
+import styles from "./SubHeader.module.css";
+
+const SubHeader = ({ role = "trainee" }) => {
+  const location = useLocation();
+
+  const subNavLinks = HEADER_CONFIG[role]?.subNavLinks || [];
+
+  if (subNavLinks.length === 0) return null;
+
+  return (
+    <div className={styles["workspace-sub-header"]}>
+      <nav className={styles["sub-nav-links"]}>
+        {subNavLinks.map((link, index) => {
+          const isActive = location.pathname === link.path;
+
+          return (
+            <div key={index} className={styles["sub-nav-item"]}>
+              <Link
+                to={link.path}
+                className={`${styles["sub-nav-link"]} ${isActive ? styles["active"] : ""}`}
+              >
+                <span className={styles["sub-nav-icon"]}>{link.icon}</span>
+                {link.name}
+              </Link>
+              {index < subNavLinks.length - 1 && (
+                <div className={styles["sub-nav-divider"]}></div>
+              )}
+            </div>
+          );
+        })}
+      </nav>
+    </div>
+  );
+};
+
+export default SubHeader;
+</file>
+
+<file path="src/components/layouts/Header/sub_header/SubHeader.module.css">
+.workspace-sub-header {
+  background-color: #e0e7ff;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 0 30px;
+  border-bottom: 1px solid #cbd5e1;
+  width: 100%;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.sub-nav-links {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.sub-nav-item {
+  display: flex;
+  align-items: center;
+}
+
+.sub-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-linco-navy);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 12px 20px;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.sub-nav-icon {
+  font-size: 1.15rem;
+  color: var(--color-linco-blue);
+}
+
+.sub-nav-link.active {
+  background-color: #ffffff;
+  color: var(--color-linco-blue);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.sub-nav-divider {
+  width: 1px;
+  height: 24px;
+  background-color: #cbd5e1;
+  margin: 0 12px;
+}
 </file>
 
 <file path="src/components/layouts/SideBar/Sidebar.module.css">
@@ -876,92 +3413,223 @@ export const logoStyles = {
   background-color: var(--color-linco-navy);
   display: flex;
   flex-direction: column;
-  padding: 30px 0;
+  padding: 15px 0;
   color: #ffffff;
   position: fixed;
-  height: 100%;
-  z-index: 10;
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
-  transition: width 0.3s ease;
-  overflow-x: hidden; /* Prevents text from spilling out during animation */
+  height: 100vh;
+  z-index: 100;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-x: hidden;
 }
 
-/* Expanded state class */
 .sidebar.open {
-  width: 220px;
+  width: 240px;
+}
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(17, 41, 80, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 90;
+  cursor: pointer;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.top-section {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  margin-bottom: 30px;
+}
+
+.toggle-btn {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-left: 13px;
+}
+
+.toggle-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.menu-icon {
+  font-size: 28px;
+  color: #ffffff;
 }
 
 .center-menu {
   display: flex;
   flex-direction: column;
-  margin-top: 100px;
   width: 100%;
+  gap: 5px;
+}
+
+.menu-item-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .menu-item {
   display: flex;
   align-items: center;
-  width: 100%;
+  width: calc(100% - 24px);
+  margin: 0 12px;
+  padding: 12px 0;
+  border-radius: 12px;
   cursor: pointer;
-  transition: opacity 0.2s ease-in-out;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .menu-item:hover {
-  opacity: 0.7;
+  background-color: rgba(255, 255, 255, 0.06);
 }
 
-/* Forces the icon to always take up the same 70px space */
+.menu-item.active {
+  background-color: rgba(255, 255, 255, 0.12);
+  box-shadow: inset 4px 0 0 var(--color-linco-light);
+}
+
 .icon-wrapper {
-  min-width: 70px;
+  min-width: 46px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.menu-icon {
-  font-size: 38px;
-  color: #9cbaff;
+.icon {
+  font-size: 22px;
+  color: #94a3b8;
+  transition:
+    color 0.2s,
+    transform 0.2s;
 }
 
-.icon {
-  font-size: 28px;
-  color: #9cbaff;
+.menu-item:hover .icon,
+.menu-item.active .icon {
+  color: #ffffff;
+  transform: scale(1.1);
 }
 
 .text {
-  font-size: 16px;
-  color: #9cbaff;
+  font-size: 0.95rem;
+  color: #cbd5e1;
   white-space: nowrap;
-  animation: fadeIn 0.3s ease-in;
+  font-weight: 500;
+  margin-left: 5px;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
 }
 
-/* Thin lines between the center icons */
+.sidebar.open .text {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.menu-item:hover .text {
+  color: #ffffff;
+}
+
+.menu-item.active .text {
+  color: #ffffff;
+  font-weight: 700;
+}
+
 .divider {
-  width: 24px;
+  width: 30px;
   height: 1px;
-  background-color: rgba(255, 255, 255, 0.3);
-  margin: 24px auto; /* Auto keeps it centered when closed */
+  background-color: rgba(255, 255, 255, 0.08);
+  margin: 8px 0;
   transition: width 0.3s ease;
 }
 
-/* Expands the divider line when the sidebar opens */
 .sidebar.open .divider {
   width: 80%;
 }
 
-.sidebar-bottom {
+.bottom-section {
   margin-top: auto;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+  width: 100%;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+.logout-item:hover {
+  background-color: rgba(68, 105, 239, 0.1);
 }
+
+.logout-item:hover .icon,
+.logout-item:hover .text {
+  color: #4472ef;
+}
+</file>
+
+<file path="src/components/layouts/SideBar/sidebarConfig.jsx">
+import {
+  IoBusinessOutline,
+  IoRibbonOutline,
+  IoVideocamOutline,
+  IoChatbubblesOutline,
+  IoHelpCircleOutline,
+  IoSettings,
+  IoNotifications,
+  IoPerson,
+} from "react-icons/io5";
+import { PATHS } from "../../../routes/paths";
+
+export const SIDEBAR_ROLES = {
+  trainee: [
+    {
+      name: "Departments",
+      icon: <IoBusinessOutline />,
+      path: PATHS.DEPARTMENTS,
+    },
+    {
+      name: "Certificates",
+      icon: <IoRibbonOutline />,
+      path: PATHS.CERTIFICATES,
+    },
+    { name: "Lives", icon: <IoVideocamOutline />, path: PATHS.LIVES },
+    {
+      name: "Chat Channel",
+      icon: <IoChatbubblesOutline />,
+      path: PATHS.CHAT_CHANNEL,
+    },
+    { name: "Inquiries", icon: <IoHelpCircleOutline />, path: PATHS.INQUIRIES },
+  ],
+  "section manger": [
+    //
+  ],
+  owner: [
+    //
+  ],
+  global: [
+    { name: "Settings", icon: <IoSettings />, path: PATHS.SETTINGS },
+    {
+      name: "Notifications",
+      icon: <IoNotifications />,
+      path: PATHS.NOTIFICATIONS,
+    },
+    { name: "My Profile", icon: <IoPerson />, path: PATHS.PROFILE },
+  ],
+};
 </file>
 
 <file path="src/config/theme.js">
@@ -972,874 +3640,6 @@ export const theme = {
     background: "#f8fafc",
   },
 };
-</file>
-
-<file path="src/features/HomePage/api/.gitkeep">
-
-</file>
-
-<file path="src/features/HomePage/components/PendingInvitations.jsx">
-import styles from "./PendingInvitations.module.css";
-import InvitationCard from "../../../components/elements/InvitationCard.jsx";
-
-const PendingInvitations = () => {
-  // Mock data array
-  const invitations = [
-    {
-      id: 1,
-      company: "Company name",
-      caller: "Name of the caller",
-      role: "As a trainee",
-      time: "13:40 pm",
-    },
-    {
-      id: 2,
-      company: "Company name",
-      caller: "Name of the caller",
-      role: "As a trainee",
-      time: "13:40 pm",
-    },
-    {
-      id: 3,
-      company: "Company name",
-      caller: "Name of the caller",
-      role: "As a trainee",
-      time: "13:40 pm",
-    },
-  ];
-
-  return (
-    <div
-      className={styles["content-section"]}
-      style={{ background: "transparent" }}
-    >
-      <div className={styles["section-header"]}>
-        <h2>New pending Invitations</h2>
-        <button className={styles["view-all"]}>View All</button>
-      </div>
-
-      <div className={styles["list-container"]}>
-        {invitations.map((inv) => (
-          <InvitationCard key={inv.id} invitation={inv} />
-        ))}
-      </div>
-    </div>
-  );
-};
-
-export default PendingInvitations;
-</file>
-
-<file path="src/features/HomePage/components/PendingInvitations.module.css">
-.content-section {
-  padding: 0 40px;
-  margin-bottom: 30px;
-}
-
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.section-header h2 {
-  color: var(--color-linco-navy);
-  font-size: 1.5rem;
-  font-weight: 800;
-}
-
-.view-all {
-  background-color: #e2e8f0;
-  color: var(--color-linco-navy);
-  font-size: 0.85rem;
-  font-weight: 700;
-  border: 1px solid #cbd5e1;
-  padding: 6px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-.view-all:hover {
-  background-color: var(--color-linco-light);
-}
-
-.list-container {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-</file>
-
-<file path="src/features/HomePage/components/RoomSection.jsx">
-import RoomCard from "../../../components/elements/RoomCard.jsx";
-import styles from "./RoomSection.module.css";
-
-const RoomSection = ({ title, rooms }) => {
-  return (
-    <div className={styles.section}>
-      <div className={styles["section-header"]}>
-        <h2>{title}</h2>
-        <button className={styles["view-all"]}>View All</button>
-      </div>
-
-      <div className={styles["cards-grid"]}>
-        {rooms.map((room) => (
-          <RoomCard key={room.id} room={room} />
-        ))}
-      </div>
-    </div>
-  );
-};
-
-export default RoomSection;
-</file>
-
-<file path="src/features/HomePage/components/RoomSection.module.css">
-.section {
-  margin-bottom: 40px;
-}
-
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.section-header h2 {
-  color: var(--color-linco-navy);
-  font-size: 1.5rem;
-  font-weight: 800;
-}
-
-.view-all {
-  background-color: #e2e8f0;
-  color: var(--color-linco-navy);
-  font-size: 0.85rem;
-  font-weight: 700;
-  border: 1px solid #cbd5e1;
-  padding: 6px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-.view-all:hover {
-  background-color: var(--color-linco-light);
-}
-
-.cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-  gap: 30px;
-}
-
-@media (max-width: 1100px) {
-  .cards-grid {
-    grid-template-columns: 1fr;
-  }
-}
-</file>
-
-<file path="src/features/HomePage/hooks/.gitkeep">
-
-</file>
-
-<file path="src/features/HomePage/store/.gitkeep">
-
-</file>
-
-<file path="src/features/HomePage/utils/.gitkeep">
-
-</file>
-
-<file path="src/features/JoinedRoomPage/api/.gitkeep">
-
-</file>
-
-<file path="src/features/JoinedRoomPage/components/JoinedRooms.jsx">
-import { useState } from "react";
-import { IoChevronBack, IoSearch } from "react-icons/io5";
-import Sidebar from "../../../components/layouts/SideBar/Sidebar";
-import Header from "../../../components/layouts/Header/Header";
-import Footer from "../../../components/layouts/Footer/Footer";
-import RoomCard from "../../../components/elements/RoomCard.jsx";
-import styles from "./JoinedRooms.module.css";
-
-const JoinedRoomsPage = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const joinedRooms = Array.from({ length: 10 }, (_, index) => ({
-    id: index + 1,
-    companyName: `Company Demo Name ${index + 1}`,
-    role: "Trainee",
-    dateJoined: "12/12/2025",
-    members: 120,
-  }));
-
-  const filteredRooms = joinedRooms.filter((room) =>
-    room.companyName.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
-
-  return (
-    <div className={styles["app-container"]}>
-      <Sidebar />
-
-      <div className={`${styles["main-wrapper"]} custom-scrollbar`}>
-        <Header />
-
-        <div className={styles["top-banner"]}>
-          <div className={styles["banner-text"]}>
-            <div className={styles["title-container"]}>
-              <a href="#" className={styles["back-link"]}>
-                <IoChevronBack className={styles["back-icon"]} />
-                <h2>Joined Training Rooms</h2>
-              </a>
-              <div className={styles["dashed-line"]}></div>
-            </div>
-
-            <div className={styles["stats-box"]}>
-              <p className={styles["stats-title"]}>
-                Number of training companies
-              </p>
-              <p className={styles["stats-number"]}>{joinedRooms.length}</p>
-            </div>
-          </div>
-
-          <div className={styles["banner-image-container"]}>
-            <img
-              src=""
-              alt="Modern office building"
-              className={styles["banner-image"]}
-            />
-          </div>
-        </div>
-
-        <div className={styles["search-section"]}>
-          <div className={styles["search-bar"]}>
-            <input
-              type="text"
-              placeholder="Search by company's name"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <IoSearch className={styles["search-icon"]} />
-          </div>
-        </div>
-
-        <div className={styles["list-section"]}>
-          <div className={styles["cards-grid"]}>
-            {filteredRooms.length > 0 ? (
-              filteredRooms.map((room) => (
-                <RoomCard key={room.id} room={room} />
-              ))
-            ) : (
-              <p
-                style={{
-                  color: "#64748b",
-                  fontStyle: "italic",
-                  gridColumn: "1 / -1",
-                }}
-              >
-                No companies found matching "{searchQuery}"
-              </p>
-            )}
-          </div>
-        </div>
-
-        <div className={styles["footer-wrapper"]}>
-          <Footer />
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default JoinedRoomsPage;
-</file>
-
-<file path="src/features/JoinedRoomPage/components/JoinedRooms.module.css">
-.app-container {
-  background-color: var(--color-linco-navy);
-  display: flex;
-  min-height: 100vh;
-}
-
-.main-wrapper {
-  margin-left: 70px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  overflow-y: auto;
-  transition: margin-left 0.3s ease;
-  background-color: var(--color-linco-navy);
-}
-
-.main-wrapper.shifted {
-  margin-left: 220px;
-}
-
-/* --- Top Banner Styles --- */
-.top-banner {
-  background-color: #ffffff;
-  padding: 60px 80px;
-  border-bottom-left-radius: 80px;
-  border-bottom-right-radius: 80px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  min-height: 380px;
-  overflow: hidden;
-  position: relative;
-}
-
-.banner-text {
-  max-width: 50%;
-  z-index: 2;
-}
-
-.title-container {
-  display: inline-block;
-  margin-bottom: 30px;
-}
-
-.back-link {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  color: var(--color-linco-navy);
-  margin-bottom: 15px;
-}
-
-.back-icon {
-  font-size: 1.8rem;
-  margin-right: 15px;
-}
-
-.back-link h2 {
-  font-size: 2.2rem;
-  font-weight: 800;
-  margin: 0;
-}
-
-.dashed-line {
-  width: 100%;
-  height: 2px;
-  border-bottom: 2px dashed var(--color-linco-navy);
-  margin-left: 45px;
-}
-
-.stats-box {
-  border: 2px dashed var(--color-linco-navy);
-  border-radius: 16px;
-  padding: 25px 50px;
-  margin-left: 45px;
-  display: inline-block;
-  text-align: center;
-  background-color: #ffffff;
-}
-
-.stats-title {
-  color: var(--color-linco-blue);
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin: 0 0 10px 0;
-}
-
-.stats-number {
-  color: var(--color-linco-navy);
-  font-size: 3.5rem;
-  font-weight: 800;
-  margin: 0;
-  line-height: 1;
-}
-
-.banner-image-container {
-  position: absolute;
-  right: 0;
-  top: 0;
-  height: 100%;
-  width: 45%;
-  background-color: #f1f5f9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.banner-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* --- Search Section Styles --- */
-.search-section {
-  padding: 40px 20px 50px 20px;
-  display: flex;
-  justify-content: center;
-}
-
-.search-bar {
-  background-color: #ffffff;
-  width: 100%;
-  max-width: 650px;
-  display: flex;
-  align-items: center;
-  padding: 12px 25px;
-  border-radius: 12px;
-}
-
-.search-bar input {
-  flex: 1;
-  border: none;
-  outline: none;
-  font-size: 1rem;
-  color: var(--color-linco-navy);
-}
-
-.search-bar input::placeholder {
-  color: #94a3b8;
-}
-
-.search-icon {
-  color: var(--color-linco-navy);
-  font-size: 1.4rem;
-  cursor: pointer;
-}
-
-/* --- Grid Section Styles --- */
-.list-section {
-  background-color: #ffffff;
-  border-top-left-radius: 80px;
-  border-top-right-radius: 80px;
-  padding: 60px 80px;
-  flex: 1;
-}
-
-.cards-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 30px;
-}
-
-.icon {
-  color: var(--color-linco-blue);
-  font-size: 1.1rem;
-}
-
-.badge-icon {
-  font-size: 1rem;
-}
-
-.footer-wrapper {
-  background-color: var(--color-linco-navy);
-}
-
-@media (max-width: 1100px) {
-  .top-banner {
-    padding: 30px;
-    border-bottom-left-radius: 40px;
-    border-bottom-right-radius: 40px;
-    flex-direction: column;
-    text-align: center;
-  }
-  .banner-text {
-    max-width: 100%;
-    margin-bottom: 30px;
-  }
-  .stats-box {
-    margin-left: 0;
-  }
-  .dashed-line {
-    margin-left: 0;
-  }
-  .banner-image-container {
-    display: none;
-  }
-  .list-section {
-    padding: 40px 30px;
-    border-top-left-radius: 40px;
-    border-top-right-radius: 40px;
-  }
-  .cards-grid {
-    grid-template-columns: 1fr;
-  }
-}
-</file>
-
-<file path="src/features/JoinedRoomPage/hooks/.gitkeep">
-
-</file>
-
-<file path="src/features/JoinedRoomPage/store/.gitkeep">
-
-</file>
-
-<file path="src/features/JoinedRoomPage/utils/.gitkeep">
-
-</file>
-
-<file path="src/features/PendingInvitationsPage/api/.gitkeep">
-
-</file>
-
-<file path="src/features/PendingInvitationsPage/components/PendingInvitations.jsx">
-import { useState } from "react";
-import { IoChevronBack, IoSearch } from "react-icons/io5";
-import Sidebar from "../../../components/layouts/SideBar/Sidebar";
-import Header from "../../../components/layouts/Header/Header";
-import Footer from "../../../components/layouts/Footer/Footer";
-import InvitationCard from "../../../components/elements/InvitationCard.jsx";
-import styles from "./PendingInvitations.module.css";
-
-const PendingInvitationsPage = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const invitations = [
-    {
-      id: 1,
-      company: "Company name 1",
-      caller: "Name of the caller",
-      role: "As a trainee",
-      time: "13:40 pm",
-    },
-    {
-      id: 2,
-      company: "Company name 2",
-      caller: "Name of the caller",
-      role: "As a trainee",
-      time: "13:40 pm",
-    },
-    {
-      id: 3,
-      company: "Company name 3",
-      caller: "Name of the caller",
-      role: "As a trainee",
-      time: "13:40 pm",
-    },
-    {
-      id: 4,
-      company: "Company name 4",
-      caller: "Name of the caller",
-      role: "As a trainee",
-      time: "13:40 pm",
-    },
-    {
-      id: 5,
-      company: "Company name 5",
-      caller: "Name of the caller",
-      role: "As a trainee",
-      time: "13:40 pm",
-    },
-    {
-      id: 6,
-      company: "Company name 6",
-      caller: "Name of the caller",
-      role: "As a trainee",
-      time: "13:40 pm",
-    },
-  ];
-
-  const filteredInvitations = invitations.filter((inv) =>
-    inv.company.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
-
-  return (
-    <div className={styles["app-container"]}>
-      <Sidebar />
-
-      <div className={`${styles["main-wrapper"]} custom-scrollbar`}>
-        <Header />
-
-        <div className={styles["top-banner"]}>
-          <div className={styles["banner-text"]}>
-            <div className={styles["title-container"]}>
-              <a href="#" className={styles["back-link"]}>
-                <IoChevronBack className={styles["back-icon"]} />
-                <h2>Pending Invitations</h2>
-              </a>
-              <div className={styles["dashed-line"]}></div>
-            </div>
-            <p>
-              Review your pending invitations to join company
-              <br />
-              workspaces and training rooms.
-            </p>
-          </div>
-
-          <div className={styles["banner-image-container"]}>
-            <img
-              src=""
-              alt="Invitation to Linco company envelopes"
-              className={styles["banner-image"]}
-            />
-          </div>
-        </div>
-
-        <div className={styles["search-section"]}>
-          <div className={styles["search-bar"]}>
-            <input
-              type="text"
-              placeholder="Search by company's name"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <IoSearch className={styles["search-icon"]} />
-          </div>
-        </div>
-
-        <div className={styles["list-section"]}>
-          <div className={styles["table-header"]}>
-            <div className={styles["th-col"]} style={{ textAlign: "left" }}>
-              COMPANY NAME
-            </div>
-            <div className={styles["th-col"]}>CALLER</div>
-            <div className={styles["th-col"]}>ROLE</div>
-            <div className={styles["th-col"]}>TIME</div>
-            <div className={styles["th-col-action"]}>ACTION</div>
-          </div>
-
-          <div className={styles["list-container"]}>
-            {filteredInvitations.length > 0 ? (
-              filteredInvitations.map((inv) => (
-                <InvitationCard key={inv.id} invitation={inv} />
-              ))
-            ) : (
-              <p
-                style={{
-                  color: "#64748b",
-                  fontStyle: "italic",
-                  textAlign: "center",
-                  padding: "20px",
-                }}
-              >
-                No pending invitations found matching "{searchQuery}"
-              </p>
-            )}
-          </div>
-        </div>
-
-        <div className={styles["footer-wrapper"]}>
-          <Footer />
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default PendingInvitationsPage;
-</file>
-
-<file path="src/features/PendingInvitationsPage/components/PendingInvitations.module.css">
-.app-container {
-  background-color: var(--color-linco-navy);
-  display: flex;
-  min-height: 100vh;
-}
-
-.main-wrapper {
-  margin-left: 70px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  overflow-y: auto;
-  transition: margin-left 0.3s ease;
-  background-color: var(--color-linco-navy);
-}
-
-.main-wrapper.shifted {
-  margin-left: 220px;
-}
-
-.top-banner {
-  background-color: #ffffff;
-  padding: 60px 80px;
-  border-bottom-left-radius: 80px;
-  border-bottom-right-radius: 80px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  min-height: 380px;
-  overflow: hidden;
-  position: relative;
-}
-
-.banner-text {
-  max-width: 50%;
-  z-index: 2;
-}
-
-.title-container {
-  display: inline-block;
-  margin-bottom: 25px;
-}
-
-.back-link {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  color: var(--color-linco-navy);
-  margin-bottom: 15px;
-}
-
-.back-icon {
-  font-size: 1.8rem;
-  margin-right: 15px;
-}
-
-.back-link h2 {
-  font-size: 2rem;
-  font-weight: 800;
-  margin: 0;
-}
-
-.dashed-line {
-  width: 100%;
-  height: 2px;
-  border-bottom: 2px dashed var(--color-linco-navy);
-  margin-left: 45px;
-}
-
-.banner-text p {
-  color: #334155;
-  font-size: 1.05rem;
-  line-height: 1.6;
-  margin-left: 45px;
-}
-
-.banner-image-container {
-  position: absolute;
-  right: 0;
-  top: 0;
-  height: 100%;
-  width: 45%;
-  background-color: #f1f5f9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.banner-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  color: #94a3b8;
-  font-style: italic;
-  text-align: center;
-}
-
-.search-section {
-  padding: 40px 20px 50px 20px;
-  display: flex;
-  justify-content: center;
-}
-
-.search-bar {
-  background-color: #ffffff;
-  width: 100%;
-  max-width: 650px;
-  display: flex;
-  align-items: center;
-  padding: 12px 25px;
-  border-radius: 12px;
-}
-
-.search-bar input {
-  flex: 1;
-  border: none;
-  outline: none;
-  font-size: 1rem;
-  color: var(--color-linco-navy);
-}
-
-.search-bar input::placeholder {
-  color: #94a3b8;
-}
-
-.search-icon {
-  color: var(--color-linco-navy);
-  font-size: 1.4rem;
-  cursor: pointer;
-}
-
-.list-section {
-  background-color: #ffffff;
-  border-top-left-radius: 80px;
-  border-top-right-radius: 80px;
-  padding: 50px 80px;
-  flex: 1;
-}
-
-.table-header {
-  display: flex;
-  padding: 0 25px;
-  margin-bottom: 20px;
-  color: var(--color-linco-blue);
-  font-weight: 800;
-  font-size: 1.1rem;
-}
-
-.th-col {
-  flex: 1;
-  text-align: center;
-  text-transform: uppercase;
-}
-
-.th-col-action {
-  flex: 1.2;
-  text-align: center;
-  text-transform: uppercase;
-}
-
-.list-container {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.footer-wrapper {
-  background-color: var(--color-linco-navy);
-}
-
-@media (max-width: 1100px) {
-  .top-banner {
-    padding: 30px;
-    border-bottom-left-radius: 40px;
-    border-bottom-right-radius: 40px;
-  }
-  .banner-text {
-    max-width: 100%;
-  }
-  .banner-image-container {
-    display: none;
-  }
-  .table-header {
-    display: none;
-  }
-  .list-section {
-    padding: 30px;
-    border-top-left-radius: 40px;
-    border-top-right-radius: 40px;
-  }
-}
-</file>
-
-<file path="src/features/PendingInvitationsPage/hooks/.gitkeep">
-
-</file>
-
-<file path="src/features/PendingInvitationsPage/store/.gitkeep">
-
-</file>
-
-<file path="src/features/PendingInvitationsPage/utils/.gitkeep">
-
 </file>
 
 <file path="src/hooks/.gitkeep">
@@ -2054,15 +3854,6 @@ const pendingInvitations = () => {
 export default pendingInvitations;
 </file>
 
-<file path="src/routes/paths.js">
-export const PATHS = {
-  HOME: "/",
-  PENDING_INVITATIONS: "/invitations",
-  JOINED_ROOMS: "/rooms",
-  PROFILE: "/profile",
-};
-</file>
-
 <file path="src/store/.gitkeep">
 
 </file>
@@ -2146,348 +3937,6 @@ export default defineConfig([
 }
 </file>
 
-<file path="src/components/layouts/Footer/Footer.jsx">
-import styles from "./Footer.module.css";
-
-const Footer = () => {
-  return (
-    <footer className={styles.footer}>
-      <div className={styles["footer-grid"]}>
-        <div className={styles["footer-col"]}>
-          <h4>Quick Links</h4>
-          <ul>
-            <li>Pending Invitations</li>
-            <li>Joined Rooms</li>
-            <li>My Own Rooms</li>
-          </ul>
-        </div>
-        <div className={styles["footer-col"]}>
-          <h4>Contact Info</h4>
-          <ul>
-            <li>Damascus, Syria</li>
-            <li>contact@linco.com</li>
-            <li>+963-XXX-XXXXXX</li>
-          </ul>
-        </div>
-        <div className={styles["footer-col"]}>
-          <h4>Legal</h4>
-          <ul>
-            <li>Terms of Service</li>
-            <li>Privacy Policy</li>
-            <li>Cookies Policy</li>
-          </ul>
-        </div>
-      </div>
-      <div className={styles["footer-bottom"]}>
-        &copy; 2024 LinCo. All rights reserved.
-      </div>
-    </footer>
-  );
-};
-
-export default Footer;
-</file>
-
-<file path="src/components/layouts/Header/Header.jsx">
-import styles from "./Header.module.css";
-import appIconImg from "../../../assets/images/linco-logo.jpg";
-
-const Header = () => {
-  return (
-    <header className={styles.header}>
-      <div className={styles["header-left"]}>
-        <div className={styles.logo}>
-          <span className={styles["brand-name"]}>LinCo</span>{" "}
-          <span className={styles["company-text"]}>Link Company.</span>
-        </div>
-        <div className={styles["user-profile"]}>
-          <div className={styles["user-avatar"]}>AA</div>
-          <span className={styles["user-name"]}>Abrar Abo Auad</span>
-          <div className={styles["dropdown-icon"]}></div>
-        </div>
-      </div>
-
-      <nav className={styles["nav-links"]}>
-        <a href="#" className={styles.active}>
-          Home
-        </a>
-        <div className={styles["nav-divider"]}></div>
-        <a href="#">Pending Invitations</a>
-        <div className={styles["nav-divider"]}></div>
-        <a href="#">Joined Rooms</a>
-        <div className={styles["nav-divider"]}></div>
-        <a href="#">My Own Rooms</a>
-        <div className={styles["nav-divider"]}></div>
-        <a href="#">My Profile</a>
-      </nav>
-
-      <div className={styles["header-actions"]}>
-        <button className={styles["btn-workspace"]}>Create a Workspace</button>
-        <div className={styles["app-icon"]}>
-          <img
-            src={appIconImg}
-            alt="App Icon"
-            className={styles["app-icon-img"]}
-          />
-        </div>
-      </div>
-    </header>
-  );
-};
-
-export default Header;
-</file>
-
-<file path="src/components/layouts/SideBar/Sidebar.jsx">
-import { useState } from "react";
-import {
-  IoMenu,
-  IoSettings,
-  IoNotifications,
-  IoPersonOutline,
-  IoLogOutOutline,
-} from "react-icons/io5";
-import styles from "./Sidebar.module.css";
-
-const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
-
-  return (
-    <aside className={`${styles.sidebar} ${isOpen ? styles.open : ""}`}>
-      {/* Top Menu Icon (Clickable to toggle) */}
-      <div className={styles["menu-item"]} onClick={toggleSidebar} title="Menu">
-        <div className={styles["icon-wrapper"]}>
-          <IoMenu className={styles["menu-icon"]} />
-        </div>
-      </div>
-
-      {/* Center Icons with Dividers */}
-      <div className={styles["center-menu"]}>
-        <div className={styles["menu-item"]} title="Settings">
-          <div className={styles["icon-wrapper"]}>
-            <IoSettings className={styles.icon} />
-          </div>
-          {isOpen && <span className={styles.text}>Settings</span>}
-        </div>
-
-        <div className={styles.divider}></div>
-
-        <div className={styles["menu-item"]} title="Notifications">
-          <div className={styles["icon-wrapper"]}>
-            <IoNotifications className={styles.icon} />
-          </div>
-          {isOpen && <span className={styles.text}>Notifications</span>}
-        </div>
-
-        <div className={styles.divider}></div>
-
-        <div className={styles["menu-item"]} title="Profile">
-          <div className={styles["icon-wrapper"]}>
-            <IoPersonOutline className={styles.icon} />
-          </div>
-          {isOpen && <span className={styles.text}>Profile</span>}
-        </div>
-
-        <div className={styles.divider}></div>
-      </div>
-
-      {/* Bottom Logout Icon */}
-      <div
-        className={`${styles["sidebar-bottom"]} ${styles["menu-item"]}`}
-        title="Log out"
-      >
-        <div className={styles["icon-wrapper"]}>
-          <IoLogOutOutline className={styles.icon} />
-        </div>
-        {isOpen && <span className={styles.text}>Log out</span>}
-      </div>
-    </aside>
-  );
-};
-
-export default Sidebar;
-</file>
-
-<file path="src/features/HomePage/components/HomePage.jsx">
-import Sidebar from "../../../components/layouts/SideBar/Sidebar";
-import Header from "../../../components/layouts/Header/Header";
-import Footer from "../../../components/layouts/Footer/Footer";
-import PendingInvitations from "./PendingInvitations";
-import RoomSection from "./RoomSection"; 
-import styles from "./HomePage.module.css";
-
-import appIconImg from "../../../assets/icons/linco-logo.png";
-
-const HomePage = () => {
-  // Mock data arrays for the different room categories
-  const activeRooms = [
-    {
-      id: 1,
-      companyName: "Company Demo Name",
-      role: "Trainee",
-      dateJoined: "12/12/2025",
-      members: 120 ,
-    },
-    {
-      id: 2,
-      companyName: "Company Demo Name",
-      role: "Trainee",
-      dateJoined: "12/12/2025",
-      imageColor: "#1a365d",
-      members: 120 ,
-    },
-  ];
-
-  const ownedRooms = [
-    {
-      id: 1,
-      companyName: "Company Demo Name",
-      role: "Trainee",
-      dateJoined: "12/12/2025",
-      members: 120 ,
-    },
-    {
-      id: 2,
-      companyName: "Company Demo Name",
-      role: "Trainee",
-      dateJoined: "12/12/2025",
-      members: 120 ,
-    },
-  ];
-
-  const workedRooms = [
-    {
-      id: 1,
-      companyName: "Company Demo Name",
-      role: "Trainee",
-      dateJoined: "12/12/2025",
-      members: 120 ,
-    },
-    {
-      id: 2,
-      companyName: "Company Demo Name",
-      role: "Trainee",
-      dateJoined: "12/12/2025",
-      members: 120 ,
-    },
-  ];
-
-  return (
-    <div className={styles["app-container"]}>
-      <Sidebar />
-
-      <div className={`${styles["main-wrapper"]} custom-scrollbar`}>
-        <Header />
-
-        <div className={styles["hero-banner"]}>
-          <div className={styles["hero-text"]}>
-            <h1>Ready to dive into your learning, Abrar ?</h1>
-            <p>
-              Manage your company links, track your active training rooms, and
-              level up your career from one single dashboard.
-            </p>
-          </div>
-          <img
-            src={appIconImg}
-            alt="App Icon"
-            className={styles["app-icon-img"]}
-          />
-        </div>
-
-        <PendingInvitations />
-
-        <div
-          className={styles["content-section"]}
-          style={{ paddingTop: "40px" }}
-        >
-          <RoomSection title="Recently Active Rooms" rooms={activeRooms} />
-
-          <div className={styles.divider}></div>
-
-          <RoomSection title="Recently Active Owned Rooms" rooms={ownedRooms} />
-
-          <div className={styles.divider}></div>
-
-          <RoomSection
-            title="Recently Active Worked Rooms"
-            rooms={workedRooms}
-          />
-        </div>
-
-        <Footer />
-      </div>
-    </div>
-  );
-};
-
-export default HomePage;
-</file>
-
-<file path="src/features/HomePage/components/HomePage.module.css">
-.app-container {
-  background-color: var(--color-linco-bg);
-  display: flex;
-  min-height: 100vh;
-}
-
-.main-wrapper {
-  margin-left: 70px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  overflow-y: auto;
-}
-
-.hero-banner {
-  background-color: var(--color-linco-navy);
-  color: #ffffff;
-  padding: 40px 50px;
-  border-bottom-left-radius: 50px;
-  border-bottom-right-radius: 50px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 20px 30px;
-  flex-shrink: 0;
-}
-
-.hero-text h1 {
-  font-size: 1.8rem;
-  margin-bottom: 10px;
-}
-
-.hero-text p {
-  font-size: 0.9rem;
-  opacity: 0.8;
-  max-width: 500px;
-}
-
-.app-icon-img {
-  width: 120px;
-  height: 120px;
-  object-fit: contain;
-  flex-shrink: 0;
-  transform: scale(1.7);
-}
-
-.content-section {
-  padding: 20px 40px;
-  margin-bottom: 20px;
-  background-color: #ffffff;
-  border-radius: 50px 50px 0 0;
-}
-
-.divider {
-  border-top: 1px dashed #e5e7eb;
-  margin: 20px 40px;
-}
-</file>
-
 <file path="src/index.css">
 @import "tailwindcss";
 
@@ -2518,24 +3967,209 @@ body {
 }
 </file>
 
+<file path="src/routes/paths.js">
+export const PATHS = {
+  HOME: "/",
+  PENDING_INVITATIONS: "/pending-invitations",
+  JOINED_ROOMS: "/joined-rooms",
+  PROFILE: "/profile",
+  OWN_ROOMS: "/my-own-rooms",
+  LEARNING_PATH: "/learning-path",
+  COURSES: "/courses",
+  ROAD_MAP: "/road-map",
+  WEEKLY_TASKS: "/weekly-tasks",
+  LEADERBOARD: "/leaderboard",
+  GROUP_WORKSPACE: "/group-workspace",
+  GROUP_CHAT: "/group-chat",
+  DEPARTMENTS: "/departments",
+  CERTIFICATES: "/certificates",
+  LIVES: "/lives",
+  CHAT_CHANNEL: "/chat-channel",
+  INQUIRIES: "/inquiries",
+  NOTIFICATIONS: "/notifications",
+  SETTINGS: "/settings",
+  DEMO: "/demo",
+};
+</file>
+
+<file path="src/components/layouts/Footer/Footer.jsx">
+import { Link } from "react-router-dom";
+import styles from "./Footer.module.css";
+import { FOOTER_CONFIG } from "./footerConfig";
+
+const Footer = ({ role = "global" }) => {
+  const quickLinks = FOOTER_CONFIG[role] || FOOTER_CONFIG.global;
+
+  return (
+    <footer className={styles.footer}>
+      <div className={styles["footer-grid"]}>
+        <div className={styles["footer-col"]}>
+          <h4>Quick Links</h4>
+          <ul>
+            {quickLinks.map((link, index) => (
+              <li key={index}>
+                <Link
+                  to={link.path}
+                  style={{ color: "inherit", textDecoration: "none" }}
+                >
+                  {link.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className={styles["footer-col"]}>
+          <h4>Contact Info</h4>
+          <ul>
+            <li>Damascus, Syria</li>
+            <li>contact@linco.com</li>
+            <li>+963-XXX-XXXXXX</li>
+          </ul>
+        </div>
+
+        <div className={styles["footer-col"]}>
+          <h4>Legal</h4>
+          <ul>
+            <li>
+              <Link
+                to="/terms"
+                style={{ color: "inherit", textDecoration: "none" }}
+              >
+                Terms of Service
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/privacy"
+                style={{ color: "inherit", textDecoration: "none" }}
+              >
+                Privacy Policy
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/cookies"
+                style={{ color: "inherit", textDecoration: "none" }}
+              >
+                Cookies Policy
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div className={styles["footer-bottom"]}>
+        &copy; 2026 LinCo. All rights reserved.
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;
+</file>
+
+<file path="src/components/layouts/SideBar/Sidebar.jsx">
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { IoMenu, IoLogOutOutline } from "react-icons/io5";
+import { SIDEBAR_ROLES } from "./sidebarConfig";
+import styles from "./Sidebar.module.css";
+
+const Sidebar = ({ role = "trainee" }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+
+  const toggleSidebar = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const menuItems = SIDEBAR_ROLES[role] || [];
+
+  return (
+    <>
+      {isOpen && <div className={styles.overlay} onClick={toggleSidebar}></div>}
+
+      <aside className={`${styles.sidebar} ${isOpen ? styles.open : ""}`}>
+        <div className={styles["top-section"]}>
+          <div
+            className={styles["toggle-btn"]}
+            onClick={toggleSidebar}
+            title="Menu"
+          >
+            <IoMenu className={styles["menu-icon"]} />
+          </div>
+        </div>
+
+        <div className={styles["center-menu"]}>
+          {menuItems.map((item, index) => {
+            const isActive = location.pathname === item.path;
+
+            return (
+              <div key={index} className={styles["menu-item-container"]}>
+                <Link
+                  to={item.path}
+                  className={`${styles["menu-item"]} ${isActive ? styles.active : ""}`}
+                  title={item.name}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <div className={styles["icon-wrapper"]}>
+                    <span className={styles.icon}>{item.icon}</span>
+                  </div>
+                  <span className={styles.text}>{item.name}</span>
+                </Link>
+
+                {index < menuItems.length - 1 && (
+                  <div className={styles.divider}></div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        <div className={styles["bottom-section"]}>
+          <div
+            className={`${styles["menu-item"]} ${styles["logout-item"]}`}
+            title="Log out"
+          >
+            <div className={styles["icon-wrapper"]}>
+              <IoLogOutOutline className={styles.icon} />
+            </div>
+            <span className={styles.text}>Log out</span>
+          </div>
+        </div>
+      </aside>
+    </>
+  );
+};
+
+export default Sidebar;
+</file>
+
 <file path="src/routes/index.jsx">
 import { createBrowserRouter } from "react-router-dom";
-import HomePage from "../features/HomePage/components/HomePage";
-import PendingInvitationsPage from "../features/PendingInvitationsPage/components/PendingInvitations";
-import JoinedRoomsPage from "../features/JoinedRoomPage/components/JoinedRooms";
+import HomePage from "../features/Dashboard/HomePage/components/home_page/HomePage";
+import PendingInvitationsPage from "../features/Dashboard/PendingInvitationsPage/components/pending_invitations/PendingInvitations";
+import JoinedRoomsPage from "../features/Dashboard/JoinedRoomPage/components/joined_rooms/JoinedRooms";
+import { PATHS } from "./paths";
+import DemoPage from "../pages/HomeDemoPage";
 
 export const router = createBrowserRouter([
   {
-    path: "/",
+    path: PATHS.HOME,
     element: <HomePage />,
   },
   {
-    path: "/pending-invitations",
+    path: PATHS.PENDING_INVITATIONS,
     element: <PendingInvitationsPage />,
   },
   {
-    path: "/joined-rooms",
+    path: PATHS.JOINED_ROOMS,
     element: <JoinedRoomsPage />,
+  },
+  {
+    path: PATHS.DEMO,
+    element: <DemoPage />,
   },
   {
     path: "*",

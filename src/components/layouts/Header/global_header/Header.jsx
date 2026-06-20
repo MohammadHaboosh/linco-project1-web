@@ -3,6 +3,7 @@ import { IoChevronBack, IoPersonOutline } from "react-icons/io5";
 import styles from "./Header.module.css";
 import { HEADER_CONFIG } from "../headerConfig";
 import appIconImg from "../../../../assets/images/linco-logo.jpg";
+import { PATHS } from "../../../../routes/paths";
 
 const Header = ({
   role = "global",
@@ -20,7 +21,7 @@ const Header = ({
         </div>
 
         <div className={styles["workspace-center"]}>
-          <Link to="/" className={styles["go-dashboard"]}>
+          <Link to={PATHS.HOME} className={styles["go-dashboard"]}>
             <IoChevronBack /> Go to my dashboard
           </Link>
           <div className={styles["nav-divider"]}></div>

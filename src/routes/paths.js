@@ -18,4 +18,5 @@ export const PATHS = {
   INQUIRIES: "/inquiries",
   NOTIFICATIONS: "/notifications",
   SETTINGS: "/settings",
+  DEMO: "/demo",
 };
