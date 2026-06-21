@@ -17,7 +17,6 @@ const VerifyEmail = () => {
 
   return (
     <div className={styles["page-container"]}>
-      {/* Reusing your standard LinCo left panel */}
       <div className={styles["left-panel"]}>
         <div className={styles["left-content"]}>
           <div className={styles["logo-container"]}>
@@ -33,7 +32,6 @@ const VerifyEmail = () => {
         </div>
       </div>
 
-      {/* The Verification Message Panel */}
       <div className={styles["right-panel"]}>
         <div className={styles["verify-wrapper"]}>
           
@@ -53,7 +51,7 @@ const VerifyEmail = () => {
             Please click the link in that email to activate your account and start using LinCo.
           </p>
 
-          <button className={styles["btn-primary"]} onClick={() => window.location.href = '/login'}>
+          <button className={styles["btn-primary"]} onClick={() => window.location.href = '/signin'}>
             Go to Login
           </button>
 
