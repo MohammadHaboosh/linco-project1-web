@@ -14,9 +14,12 @@ export const PATHS = {
   DEPARTMENTS: "/departments",
   CERTIFICATES: "/certificates",
   LIVES: "/lives",
+  SIGNIN: "/signin",
   CHAT_CHANNEL: "/chat-channel",
   INQUIRIES: "/inquiries",
   NOTIFICATIONS: "/notifications",
   SETTINGS: "/settings",
+  SIGNUP: "/signup",
   DEMO: "/demo",
+  VERIFY_EMAIL: "/verify-email",
 };

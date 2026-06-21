@@ -1,0 +1,145 @@
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { registerUser } from "../Api/userApi";
+import { setUser } from "../store/userSlice";
+import { useNavigate } from "react-router-dom";
+
+export const useSignup = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [step, setStep] = useState(1);
+  const [errors, setErrors] = useState({});
+  const [serverError, setServerError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+    firstName: "",
+    lastName: "",
+    birthDate: "",
+    imagePath: null,
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+
+    setServerError("");
+
+    if (errors[name] || errors.passwordMatch) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: null,
+        passwordMatch: null,
+      }));
+    }
+  };
+
+  const handleFileChange = (e) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      imagePath: e.target.files[0],
+    }));
+    setServerError("");
+    if (errors.imagePath) {
+      setErrors((prev) => ({ ...prev, imagePath: null }));
+    }
+  };
+
+  const validateStep1 = () => {
+    const newErrors = {};
+    if (!formData.email) newErrors.email = "Email is required";
+    if (!formData.password) newErrors.password = "Password is required";
+    if (!formData.confirmPassword)
+      newErrors.confirmPassword = "Confirm your password";
+
+    if (
+      formData.password &&
+      formData.confirmPassword &&
+      formData.password !== formData.confirmPassword
+    ) {
+      newErrors.passwordMatch = "Passwords do not match!";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const validateStep2 = () => {
+    const newErrors = {};
+    if (!formData.firstName) newErrors.firstName = "First name is required";
+    if (!formData.lastName) newErrors.lastName = "Last name is required";
+    if (!formData.birthDate) newErrors.birthDate = "Date of birth is required";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const validateStep3 = () => {
+    const newErrors = {};
+    if (!formData.imagePath)
+      newErrors.imagePath = "Please upload a profile image";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleNextStep = () => {
+    setServerError("");
+    if (step === 1 && !validateStep1()) return;
+    if (step === 2 && !validateStep2()) return;
+    if (step < 3) setStep((prev) => prev + 1);
+  };
+
+  const handlePrevStep = () => {
+    setServerError("");
+    if (step > 1) setStep((prev) => prev - 1);
+  };
+
+  const handleSubmit = async () => {
+    if (!validateStep3()) return;
+
+    setIsSubmitting(true);
+    setServerError("");
+
+    try {
+      const response = await registerUser(formData);
+
+      const { password, confirmPassword, imagePath, ...safeProfileData } =
+        formData;
+
+      dispatch(
+        setUser({
+          ...safeProfileData,
+          profileImageUrl: URL.createObjectURL(imagePath),
+        }),
+      );
+
+      navigate("/verify-email");
+    } catch (error) {
+      console.error("Signup error:", error);
+      setServerError(error.message || "Failed to sign up. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return {
+    step,
+    formData,
+    errors,
+    serverError,
+    isSubmitting,
+    handleInputChange,
+    handleFileChange,
+    handleNextStep,
+    handlePrevStep,
+    handleSubmit,
+  };
+};
