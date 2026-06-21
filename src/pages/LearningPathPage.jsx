@@ -1,22 +1,26 @@
 import Sidebar from "../components/layouts/SideBar/Sidebar";
 import Header from "../components/layouts/Header/global_header/Header";
+import SubHeader from "../components/layouts/Header/sub_header/SubHeader";
 import Footer from "../components/layouts/Footer/Footer";
-import DemoContentContent from "../features/Demo/HomeDemoPage/components/DemoContent/DemoContent";
-import styles from "../features/Demo/HomeDemoPage/components/DemoContent/DemoContent.module.css";
+import LearningPathContent from "../features/Demo/LearningPathPage/components/LearningPathContent";
+import styles from "../features/Demo/LearningPathPage/components/LearningPathContent.module.css";
 
-const DemoPage = () => {
+const LearningPathPage = () => {
   const currentRole = "trainee";
 
   return (
     <div className={styles["app-container"]}>
       <Sidebar role={currentRole} />
+
       <div className={`${styles["main-wrapper"]} custom-scrollbar`}>
         <Header
           role={currentRole}
           companyName="CompanyName"
           roomName="Company Demo"
         />
-        <DemoContentContent />
+        <SubHeader role={currentRole} />
+
+        <LearningPathContent />
 
         <Footer role={currentRole} />
       </div>
@@ -24,4 +28,4 @@ const DemoPage = () => {
   );
 };
 
-export default DemoPage;
+export default LearningPathPage;

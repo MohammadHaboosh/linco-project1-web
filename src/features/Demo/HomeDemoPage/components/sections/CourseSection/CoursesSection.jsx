@@ -1,5 +1,5 @@
 import styles from "../SharedSection.module.css";
-import CourseCard from "../../../../../components/elements/CourseCard/CourseCard";
+import CourseCard from "../../../../../../components/elements/CourseCard/CourseCard";
 
 const CoursesSection = ({ courses }) => {
   return (

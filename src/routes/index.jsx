@@ -8,11 +8,13 @@ import SignupPage from "../pages/SignupPage.jsx";
 import DemoPage from "../pages/HomeDemoPage";
 import VerifyEmailPage from "../pages/VerifyEmailPage.jsx";
 import SinginPage from "../pages/SigninPage.jsx";
+import CoursesPage from "../pages/CoursesPage";
+import LearningPathPage from "../pages/LearningPathPage";
 
 export const router = createBrowserRouter([
   {
     path: PATHS.HOME,
-    element: <HomePage />,
+    element: <SignupPage />,
   },
   {
     path: PATHS.PENDING_INVITATIONS,
@@ -37,6 +39,18 @@ export const router = createBrowserRouter([
   {
     path: PATHS.SIGNIN,
     element: <SinginPage />,
+  },
+  {
+    path: PATHS.COURSES,
+    element: <CoursesPage />,
+  },
+  {
+    path: PATHS.LEARNING_PATH,
+    element: <LearningPathPage />,
+  },
+  {
+    path: PATHS.DEPARTMENTS,
+    element: <LearningPathPage />,
   },
   {
     path: "*",

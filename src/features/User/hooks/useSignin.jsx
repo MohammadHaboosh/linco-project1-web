@@ -60,7 +60,6 @@ export const useSignin = () => {
       // Adjust these keys based on what your Nest.js backend actually returns
       const userData = response.user || response.data || response;
 
-      // Store user in Redux global state
       dispatch(setUser(userData));
 
       // Store JWT token if your backend uses it
@@ -68,7 +67,6 @@ export const useSignin = () => {
         localStorage.setItem("token", response.token || response.accessToken);
       }
 
-      // Navigate to the main app dashboard
       navigate("/");
     } catch (error) {
       setServerError(

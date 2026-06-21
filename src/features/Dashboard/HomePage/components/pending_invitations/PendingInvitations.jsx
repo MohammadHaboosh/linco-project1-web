@@ -2,7 +2,6 @@ import styles from "./PendingInvitations.module.css";
 import InvitationCard from "../../../../../components/elements/InvitationCard/InvitationCard.jsx";
 
 const PendingInvitations = () => {
-  // Mock data array
   const invitations = [
     {
       id: 1,

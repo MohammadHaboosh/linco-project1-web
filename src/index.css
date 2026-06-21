@@ -1,3 +1,4 @@
+/* src/index.css */
 @import "tailwindcss";
 
 @theme {
@@ -5,6 +6,9 @@
   --color-linco-blue: #1a56db;
   --color-linco-light: #bfdbfe;
   --color-linco-bg: #f8fafc;
+  --color-linco-accent: #9f1239;
+  --color-linco-accent-light: #ffe4e6;
+
   --font-sans: "Inter", sans-serif;
 }
 

@@ -1,4 +1,4 @@
-import LiveCard from "../../../../../components/elements/LiveCard/LiveCard";
+import LiveCard from "../../../../../../components/elements/LiveCard/LiveCard";
 import styles from "../SharedSection.module.css";
 
 const LivesSection = ({ lives }) => {
