@@ -15,8 +15,9 @@ const LearningPathPage = () => {
       <div className={`${styles["main-wrapper"]} custom-scrollbar`}>
         <Header
           role={currentRole}
-          companyName="CompanyName"
-          roomName="Company Demo"
+          companyName="TechCorp"
+          roomName="Front-End Dept"
+          showDeptSwitcher={true}
         />
         <SubHeader role={currentRole} />
 

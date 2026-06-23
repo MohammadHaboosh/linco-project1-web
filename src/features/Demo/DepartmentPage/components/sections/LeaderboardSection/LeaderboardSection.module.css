@@ -120,6 +120,6 @@
 }
 
 .view-full-btn:hover {
-  background-color: var(--color-linco-navy);
+  background: var(--bg-navy-gradient);
   color: #ffffff;
 }

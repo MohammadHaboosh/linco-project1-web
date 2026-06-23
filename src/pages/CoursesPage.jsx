@@ -13,17 +13,15 @@ const CoursesPage = () => {
       <Sidebar role={currentRole} />
 
       <div className={`${styles["main-wrapper"]} custom-scrollbar`}>
-        {/* الهيدر العلوي الخاص بمساحة العمل */}
         <Header
           role={currentRole}
-          companyName="CompanyName"
-          roomName="Company Demo"
+          companyName="TechCorp"
+          roomName="Front-End Dept"
+          showDeptSwitcher={true}
         />
 
-        {/* الهيدر الفرعي الذي يحوي روابط (Courses, Road Map, إلخ) */}
         <SubHeader role={currentRole} />
 
-        {/* محتوى الصفحة الذي برمجناه */}
         <CoursesContent />
 
         <Footer role={currentRole} />

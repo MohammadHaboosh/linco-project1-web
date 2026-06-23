@@ -1,18 +1,17 @@
-import { COLORS } from "../theme/colors";
 import Header from "../components/layouts/Header/global_header/Header";
 import SubHeader from "../components/layouts/Header/sub_header/SubHeader";
 import Footer from "../components/layouts/Footer/Footer";
-import DemoContentContent from "../features/Demo/HomeDemoPage/components/DemoContent/DemoContent";
+import DepartmentContent from "../features/Demo/DepartmentPage/components/DepartmentContent/DepartmentContent";
 
-const DemoPage = () => {
-  const currentRole = "demo_home";
+const DepartmentPage = () => {
+  const currentRole = "trainee";
 
   return (
     <div
       style={{
         display: "flex",
         minHeight: "100vh",
-        background: COLORS.navyGradient,
+        backgroundColor: "var(--color-linco-navy)",
       }}
     >
       <div
@@ -26,17 +25,20 @@ const DemoPage = () => {
         }}
       >
         <Header
-          role={currentRole}
+          role="trainee"
           companyName="TechCorp"
           roomName="Front-End Dept"
           showDeptSwitcher={true}
         />
+
         <SubHeader role={currentRole} />
-        <DemoContentContent />
+
+        <DepartmentContent />
+
         <Footer role="trainee" />
       </div>
     </div>
   );
 };
 
-export default DemoPage;
+export default DepartmentPage;

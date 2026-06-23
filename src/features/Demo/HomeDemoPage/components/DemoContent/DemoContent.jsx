@@ -1,97 +1,113 @@
+// src/features/Demo/HomeDemoPage/components/DemoContent/DemoContent.jsx
+
+import DemoHeaderSection from "./sections/DemoHeaderSection/DemoHeaderSection";
+import SectionCard from "./sections/SectionCard/SectionCard";
+import ProjectChatsWidget from "./sections/ProjectChatsWidget/ProjectChatsWidget";
 import styles from "./DemoContent.module.css";
-import WelcomeSection from "../sections/WelcomeSection/WelcomeSection";
-import LeaderboardSection from "../sections/LeaderboardSection/LeaderboardSection";
-import StatsSection from "../sections/StatsSection/StatsSection";
-import CoursesSection from "../sections/CourseSection/CoursesSection";
-import LivesSection from "../sections/LivesSection/LivesSection";
 
-const WorkspaceDashboardContent = () => {
-  const userData = { companyName: "TechCorp", userName: "Abrar" };
-
-  const leaderboardData = [
-    {
-      rank: 1,
-      avatar: "SA",
-      name: "Ahmad",
-      points: "1,250",
-      isCurrentUser: false,
-    },
-    {
-      rank: 2,
-      avatar: "AA",
-      name: "Abrar A (You)",
-      points: "1,120",
-      isCurrentUser: true,
-    },
-    {
-      rank: 3,
-      avatar: "MK",
-      name: "Omar",
-      points: "980",
-      isCurrentUser: false,
-    },
-  ];
-
-  const statisticsData = {
-    activeCourses: { current: 5, total: 15 },
-    tasks: { completed: 2, total: 11 },
-    certificates: { earned: 6, left: 11 },
-  };
-
-  const coursesData = [
+const DemoContent = () => {
+  // هذه البيانات يمكن استبدالها بـ Redux لاحقاً
+  const sectionsData = [
     {
       id: 1,
-      title: "Introduction To React Hooks",
-      description: "Description text will be here...",
-      progress: 72,
-    },
-    {
-      id: 2,
-      title: "Advanced Node.js",
-      description: "Description text will be here...",
+      title: "Front-End Development",
+      description: "Master React, TypeScript, and modern UI libraries.",
       progress: 45,
-    },
-  ];
-
-  const livesData = [
-    {
-      id: 1,
-      title: "System Design Basics",
-      instructor: "Ahmad Ahmad",
-      date: "Apr 04, 2026",
-      duration: "48 min",
+      tags: ["React", "TypeScript", "Tailwind"],
+      coursesCount: 16,
+      membersCount: 120,
+      isLocked: false,
     },
     {
       id: 2,
-      title: "Frontend Architecture",
-      instructor: "Sara Omar",
-      date: "Apr 05, 2026",
-      duration: "60 min",
+      title: "Back-End Development",
+      description: "Learn Node.js, Express, and Database design.",
+      progress: 12,
+      tags: ["Node.js", "Express", "MongoDB"],
+      coursesCount: 14,
+      membersCount: 85,
+      isLocked: false,
+    },
+    {
+      id: 3,
+      title: "UI/UX Design",
+      description:
+        "Understand user research and creating pixel-perfect designs.",
+      progress: 0,
+      tags: ["Figma", "Research", "Prototyping"],
+      coursesCount: 8,
+      membersCount: 200,
+      isLocked: true,
+    },
+    {
+      id: 4,
+      title: "DevOps Engineering",
+      description: "Automate deployments, manage CI/CD pipelines.",
+      progress: 0,
+      tags: ["Docker", "AWS", "CI/CD"],
+      coursesCount: 10,
+      membersCount: 45,
+      isLocked: true,
+    },
+  ];
+
+  const recentChats = [
+    {
+      id: 1,
+      projectName: "E-Commerce App",
+      lastMessage: "Sarah: I pushed the new navbar updates.",
+      time: "10:30 AM",
+      unread: 2,
+      avatarColor: "#1a56db",
+    },
+    {
+      id: 2,
+      projectName: "Dashboard UI",
+      lastMessage: "You: Let's review the API structure.",
+      time: "Yesterday",
+      unread: 0,
+      avatarColor: "#9f1239",
+    },
+    {
+      id: 3,
+      projectName: "LinCo Landing",
+      lastMessage: "Ahmad: Needs more padding on mobile.",
+      time: "Yesterday",
+      unread: 5,
+      avatarColor: "#059669",
+    },
+    {
+      id: 4,
+      projectName: "Auth System",
+      lastMessage: "Omar: JWT is implemented successfully.",
+      time: "Mon",
+      unread: 0,
+      avatarColor: "#d97706",
     },
   ];
 
   return (
-    <>
-      <div className={styles["hero-section"]}>
-        <div className={styles["hero-content"]}>
-          <WelcomeSection
-            companyName={userData.companyName}
-            userName={userData.userName}
-          />
-          <LeaderboardSection leaders={leaderboardData} />
+    <div className={styles.contentArea}>
+      <div className={styles.innerContainer}>
+        <DemoHeaderSection
+          title="Training Sections"
+          subtitle="Select your specialized department to unlock tailored road maps, live sessions, and practical tasks."
+        />
+
+        <div className={styles.mainLayout}>
+          <div className={styles.sectionsGrid}>
+            {sectionsData.map((section) => (
+              <SectionCard key={section.id} section={section} />
+            ))}
+          </div>
+
+          <div className={styles.chatsSidebar}>
+            <ProjectChatsWidget chats={recentChats} />
+          </div>
         </div>
-        <StatsSection stats={statisticsData} />
       </div>
-
-      <div className={styles["content-section"]}>
-        <CoursesSection courses={coursesData} />
-
-        <hr className={styles["section-divider"]} />
-
-        <LivesSection lives={livesData} />
-      </div>
-    </>
+    </div>
   );
 };
 
-export default WorkspaceDashboardContent;
+export default DemoContent;

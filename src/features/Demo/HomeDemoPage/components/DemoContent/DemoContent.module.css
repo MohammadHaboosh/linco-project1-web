@@ -1,49 +1,44 @@
-.app-container {
-  background-color: var(--color-linco-navy);
-  display: flex;
-  min-height: 100vh;
-}
-
-.main-wrapper {
-  margin-left: 70px;
+.contentArea {
+  background-color: #ffffff;
+  padding: 40px 60px 80px;
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  overflow-y: auto;
-  background-color: var(--color-linco-navy);
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.hero-section {
-  background-color: #ffffff;
-  padding: 50px 80px 40px;
-  border-bottom-left-radius: 60px;
-  border-bottom-right-radius: 60px;
-  position: relative;
-  z-index: 2;
-}
-
-.hero-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 80px;
-  margin-bottom: 50px;
+.innerContainer {
   max-width: 1450px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
 }
 
-.content-section {
-  background-color: #ffffff;
-  margin: 50px 1px 80px;
-  border-radius: 80px 80px 40px 40px;
-  padding: 50px;
+.mainLayout {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
 }
 
-.section-divider {
-  border: none;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #cbd5e1, transparent);
-  margin: 50px 0;
+.sectionsGrid {
+  flex: 2.2;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px;
+}
+
+.chatsSidebar {
+  flex: 1;
+  position: sticky;
+  top: 20px;
+}
+
+@media (max-width: 1100px) {
+  .mainLayout {
+    flex-direction: column;
+  }
+  .sectionsGrid {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+  .chatsSidebar {
+    width: 100%;
+  }
 }

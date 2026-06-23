@@ -99,7 +99,7 @@
 
 .progress-fill {
   height: 100%;
-  background-color: var(--color-linco-navy);
+  background: var(--bg-navy-gradient);
   border-radius: 4px;
 }
 
@@ -118,7 +118,7 @@
 .image-container {
   width: 280px;
   height: 160px;
-  background-color: var(--color-linco-navy);
+  background: var(--bg-navy-gradient);
   border-radius: 12px;
   flex-shrink: 0;
   display: flex;
@@ -150,7 +150,7 @@
 }
 
 .btn-continue {
-  background-color: var(--color-linco-navy);
+  background: var(--bg-navy-gradient);
   color: #ffffff;
   border: none;
   padding: 12px 30px;

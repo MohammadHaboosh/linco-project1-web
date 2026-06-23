@@ -1,0 +1,187 @@
+/* src/features/Demo/HomeDemoPage/components/DemoContent/sections/SectionCard/SectionCard.module.css */
+
+.sectionCard {
+  border-radius: 20px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+  height: 100%;
+}
+
+/* الكرت المتاح أصبح أبيض ناصع مع حدود ناعمة */
+.cardActive {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(17, 41, 80, 0.02);
+}
+
+.cardActive:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(17, 41, 80, 0.08);
+  border-color: var(
+    --color-linco-blue
+  ); /* إضاءة زرقاء خفيفة للحدود عند التمرير */
+}
+
+/* الكرت المقفل أبيض أيضاً لكن باهت ومسطح */
+.cardLocked {
+  background-color: #ffffff;
+  border: 1px dashed #cbd5e1;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.cardTitle {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--color-linco-navy);
+  margin: 0;
+}
+
+.cardLocked .cardTitle {
+  color: #94a3b8;
+}
+
+.iconBox {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.4rem;
+}
+
+/* الأيقونة داخل الكرت المتاح */
+.cardActive .iconBox {
+  background-color: #eff6ff;
+  color: var(--color-linco-blue);
+}
+
+.cardLocked .iconBox {
+  background-color: transparent;
+  color: #94a3b8;
+  font-size: 1.5rem;
+}
+
+.lockedText {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #94a3b8;
+  margin-right: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.description {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #475569;
+  margin-bottom: 25px;
+}
+
+.cardLocked .description {
+  color: #94a3b8;
+}
+
+.progressContainer {
+  margin-bottom: 25px;
+}
+
+.progressHeader {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.cardActive .progressHeader {
+  color: var(--color-linco-navy);
+}
+.cardLocked .progressHeader {
+  color: #94a3b8;
+}
+
+.progressBg {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* تعديل مهم: خلفية شريط التقدم أصبحت رمادية لأن الكرت أصبح أبيض */
+.cardActive .progressBg {
+  background-color: #f1f5f9;
+}
+.cardLocked .progressBg {
+  background-color: #f8fafc;
+}
+
+.progressFill {
+  height: 100%;
+  background-color: var(--color-linco-blue); /* لون أزرق مشرق للتقدم */
+  border-radius: 4px;
+}
+
+.cardLocked .progressFill {
+  background-color: #e2e8f0;
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+.tags {
+  display: flex;
+  gap: 8px;
+}
+
+.tag {
+  background-color: #f1f5f9;
+  color: var(--color-linco-navy);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.cardLocked .tag {
+  background-color: #f8fafc;
+  color: #94a3b8;
+}
+
+.stats {
+  display: flex;
+  gap: 15px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.cardActive .stats {
+  color: var(--color-linco-navy);
+}
+.cardLocked .stats {
+  color: #94a3b8;
+}
+
+.statItem {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
