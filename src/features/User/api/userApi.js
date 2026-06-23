@@ -41,7 +41,7 @@ export const signinUser = async (credentials) => {
     });
 
     const data = await response.json();
-    console.log('Sign in response: ', response);
+    console.log('Sign in response: ', data);
 
     if (!response.ok) {
       throw new Error(data.message || `HTTP error! status: ${response.status}`);
