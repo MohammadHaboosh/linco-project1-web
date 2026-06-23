@@ -4,14 +4,16 @@ import {
   IoCloseCircleOutline,
   IoReloadOutline,
 } from "react-icons/io5";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { verifyUserEmail } from "../../api/userApi"; // استيراد الدالة التي أنشأناها
 import styles from "./VerifyAccount.module.css";
 import logoImg from "../../../../../public/icons/celebrating.png";
 
 const VerifyAccount = () => {
   const navigate = useNavigate();
-  const { token } = useParams();
+  const [searchParams] = useSearchParams();
+
+  const token = searchParams.get("token");
 
   const [status, setStatus] = useState(token ? "loading" : "error");
   const [errorMessage, setErrorMessage] = useState(

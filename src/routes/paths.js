@@ -25,5 +25,5 @@ export const PATHS = {
   DEMO: "/demo",
   VERIFY_EMAIL: "/verify-email",
   //VERIFIED_SUCCESSFULLY: "/verify-email/:token",
-  VERIFY_ACCOUNT: "/verify-account/:token",
+  VERIFY_ACCOUNT: "/verify-email/:token",
 };
