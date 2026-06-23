@@ -48,7 +48,7 @@ const JoinedRoomsPage = () => {
 
           <div className={styles['banner-image-container']}>
             <img
-              src="public\images\joined-rooms.png"
+              src="/images/joined-rooms.png"
               alt="Modern office building"
               className={styles['banner-image']}
             />

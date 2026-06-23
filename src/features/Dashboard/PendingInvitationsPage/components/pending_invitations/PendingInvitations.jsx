@@ -83,7 +83,7 @@ const PendingInvitationsPage = () => {
 
           <div className={styles['banner-image-container']}>
             <img
-              src="public\images\pending-invitations.png"
+              src="/images/pending-invitations.png"
               alt="Invitation to Linco company envelopes"
               className={styles['banner-image']}
             />
