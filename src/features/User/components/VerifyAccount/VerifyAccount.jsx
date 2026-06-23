@@ -5,7 +5,7 @@ import {
   IoReloadOutline,
 } from "react-icons/io5";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
-import { verifyUserEmail } from "../../api/userApi"; // استيراد الدالة التي أنشأناها
+import { verifyUserEmail } from "../../api/userApi";
 import styles from "./VerifyAccount.module.css";
 import logoImg from "../../../../../public/icons/celebrating.png";
 
