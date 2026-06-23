@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.lincolms.app",
+      "sha256_cert_fingerprints": [
+        "52:00:31:3E:D2:CA:54:BF:09:33:18:85:36:B8:6C:18:C1:54:A1:16:D9:EC:37:A6:95:4B:A8:E1:4A:70:DF:40"
+      ]
+    }
+  }
+]
