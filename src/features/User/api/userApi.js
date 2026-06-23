@@ -103,5 +103,6 @@ export const fetchCurrentUser = async () => {
   });
 
   const data = await response.json();
+  console.log('Current User Data:', data);
   return data;
 };
