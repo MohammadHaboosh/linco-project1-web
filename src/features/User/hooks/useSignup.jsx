@@ -1,11 +1,8 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { registerUser } from "../Api/userApi";
-import { setUser } from "../store/userSlice";
+import { registerUser } from "../api/userApi";
 import { useNavigate } from "react-router-dom";
 
 export const useSignup = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [step, setStep] = useState(1);
