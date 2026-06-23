@@ -109,19 +109,9 @@ export const useSignup = () => {
     setServerError("");
 
     try {
-      const response = await registerUser(formData);
+      await registerUser(formData);
 
-      const { password, confirmPassword, imagePath, ...safeProfileData } =
-        formData;
-
-      dispatch(
-        setUser({
-          ...safeProfileData,
-          profileImageUrl: URL.createObjectURL(imagePath),
-        }),
-      );
-
-      navigate("/verify-email");
+      navigate("/verify-email", { state: { email: formData.email } });
     } catch (error) {
       console.error("Signup error:", error);
       setServerError(error.message || "Failed to sign up. Please try again.");

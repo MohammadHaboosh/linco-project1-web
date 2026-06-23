@@ -57,15 +57,9 @@ export const useSignin = () => {
     try {
       const response = await signinUser(formData);
 
-      // Adjust these keys based on what your Nest.js backend actually returns
-      const userData = response.user || response.data || response;
+      const userData = response?.data?.user;
 
       dispatch(setUser(userData));
-
-      // Store JWT token if your backend uses it
-      if (response.token || response.accessToken) {
-        localStorage.setItem("token", response.token || response.accessToken);
-      }
 
       navigate("/");
     } catch (error) {

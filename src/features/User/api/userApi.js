@@ -33,6 +33,7 @@ export const signinUser = async (credentials) => {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify({
         email: credentials.email,
         password: credentials.password,
@@ -50,4 +51,53 @@ export const signinUser = async (credentials) => {
     console.error("API Error during signin:", error);
     throw error;
   }
+};
+
+export const logoutUser = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/authentication/sign-out`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || `HTTP error! status: ${response.status}`);
+    }
+
+    return data;
+  } catch (error) {
+    console.error("API Error during signout:", error);
+    throw error;
+  }
+};
+
+export const fetchCurrentUser = async () => {
+  const refreshResponse = await fetch(
+    `${BASE_URL}/authentication/refresh-tokens`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+    },
+  );
+
+  console.log("Refresh Response:", refreshResponse);
+
+  if (!refreshResponse.ok) {
+    return null;
+  }
+
+  const response = await fetch(`${BASE_URL}/users/me`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+  });
+
+  const data = await response.json();
+  return data;
 };

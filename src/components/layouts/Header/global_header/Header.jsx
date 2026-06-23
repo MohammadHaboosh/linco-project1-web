@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { IoChevronBack, IoPersonOutline } from "react-icons/io5";
+import { useHeader } from "../hooks/useHeader.jsx";
 import styles from "./Header.module.css";
 import { HEADER_CONFIG } from "../headerConfig";
 import appIconImg from "../../../../assets/images/linco-logo.jpg";
@@ -12,6 +13,17 @@ const Header = ({
 }) => {
   const location = useLocation();
 
+  const {
+    dropdownRef,
+    isDropdownOpen,
+    isAuthenticated,
+    fullName,
+    initials,
+    toggleDropdown,
+    closeDropdown,
+    handleLogout,
+  } = useHeader();
+
   if (role !== "global") {
     return (
       <header className={styles["workspace-top-header"]}>
@@ -19,7 +31,6 @@ const Header = ({
           <span className={styles["brand-name"]}>LinCo</span>{" "}
           <span className={styles["company-name"]}>.{companyName}</span>
         </div>
-
         <div className={styles["workspace-center"]}>
           <Link to={PATHS.HOME} className={styles["go-dashboard"]}>
             <IoChevronBack /> Go to my dashboard
@@ -27,7 +38,6 @@ const Header = ({
           <div className={styles["nav-divider"]}></div>
           <div className={styles["room-badge"]}>{roomName}</div>
         </div>
-
         <div className={styles["workspace-right"]}>
           <span className={styles["brand-name-full"]}>Link Company</span>
         </div>
@@ -44,10 +54,57 @@ const Header = ({
           <span className={styles["brand-name"]}>LinCo</span>{" "}
           <span className={styles["company-text"]}>Link Company.</span>
         </div>
-        <div className={styles["user-profile"]}>
-          <div className={styles["user-avatar"]}>AA</div>
-          <span className={styles["user-name"]}>Abrar Abo Auad</span>
-          <div className={styles["dropdown-icon"]}></div>
+
+        <div
+          className={styles["user-profile"]}
+          ref={dropdownRef}
+          onClick={toggleDropdown}
+        >
+          <div className={styles["user-avatar"]}>{initials}</div>
+          <span className={styles["user-name"]}>{fullName}</span>
+          <div
+            className={`${styles["dropdown-icon"]} ${isDropdownOpen ? styles["open"] : ""}`}
+          ></div>
+
+          {/* Dropdown Menu */}
+          {isDropdownOpen && (
+            <div className={styles["dropdown-menu"]}>
+              {isAuthenticated ? (
+                <>
+                  <Link
+                    to={PATHS.PROFILE}
+                    className={styles["dropdown-item"]}
+                    onClick={closeDropdown}
+                  >
+                    My Profile
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className={`${styles["dropdown-item"]} ${styles["logout-btn"]}`}
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to="/signin"
+                    className={styles["dropdown-item"]}
+                    onClick={closeDropdown}
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    to="/signup"
+                    className={styles["dropdown-item"]}
+                    onClick={closeDropdown}
+                  >
+                    Sign Up
+                  </Link>
+                </>
+              )}
+            </div>
+          )}
         </div>
       </div>
 

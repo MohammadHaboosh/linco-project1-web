@@ -14,7 +14,6 @@ export const HEADER_CONFIG = {
       { name: "Pending Invitations", path: PATHS.PENDING_INVITATIONS },
       { name: "Joined Rooms", path: PATHS.JOINED_ROOMS },
       { name: "My Own Rooms", path: PATHS.OWN_ROOMS },
-      { name: "My Profile", path: PATHS.PROFILE },
     ],
   },
   trainee: {

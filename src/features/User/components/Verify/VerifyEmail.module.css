@@ -7,10 +7,10 @@
 
 .left-panel {
   flex: 0 0 35%;
-  background-color: var(--color-linco-navy, #112950);
+  background-color: var(--color-linco-navy);
   display: flex;
   flex-direction: column;
-  color: #ffffff;
+  color: var(--color-white);
   padding: 60px 40px;
 }
 
@@ -47,7 +47,7 @@
   height: 240px;
   border-radius: 24px;
   object-fit: cover;
-  background-color: #ffffff;
+  background-color: var(--color-white);
 }
 
 .brand-text {
@@ -80,11 +80,11 @@
   align-items: center;
   justify-content: center;
   padding: 40px;
-  background-color: #ffffff;
+  background-color: var(--color-white);
 }
 
 .verify-wrapper {
-  background-color: #ffffff;
+  background-color: var(--color-white);
   border-radius: 24px;
   padding: 50px 40px;
   width: 100%;
@@ -96,7 +96,7 @@
 .icon-container {
   width: 80px;
   height: 80px;
-  background-color: #eff6ff;
+  background-color: var(--color-blue-50);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -106,18 +106,18 @@
 
 .mail-icon {
   font-size: 40px;
-  color: #3b82f6;
+  color: var(--color-blue-500);
 }
 
 .title {
   font-size: 2rem;
-  color: var(--color-linco-navy, #112950);
+  color: var(--color-linco-navy);
   margin-bottom: 16px;
 }
 
 .description {
   font-size: 1rem;
-  color: #475569;
+  color: var(--color-slate-600);
   line-height: 1.5;
   margin-bottom: 16px;
 }
@@ -125,21 +125,21 @@
 .email-highlight {
   display: inline-block;
   margin-top: 8px;
-  color: var(--color-linco-navy, #112950);
+  color: var(--color-linco-navy);
   font-size: 1.1rem;
 }
 
 .instructions {
   font-size: 0.95rem;
-  color: #64748b;
+  color: var(--color-slate-500);
   margin-bottom: 32px;
 }
 
 .btn-primary {
   width: 100%;
   padding: 14px;
-  background-color: var(--color-linco-navy, #112950);
-  color: white;
+  background-color: var(--color-linco-navy);
+  color: var(--color-white);
   border: none;
   border-radius: 30px;
   font-size: 1rem;
@@ -150,19 +150,19 @@
 }
 
 .btn-primary:hover {
-  background-color: #1e3a6a;
+  background-color: var(--color-linco-navy-hover);
 }
 
 .resend-section {
   margin-bottom: 24px;
   font-size: 0.95rem;
-  color: #64748b;
+  color: var(--color-slate-500);
 }
 
 .btn-text {
   background: none;
   border: none;
-  color: #3b82f6;
+  color: var(--color-blue-500);
   font-weight: 600;
   cursor: pointer;
   padding: 0;
@@ -180,7 +180,7 @@
   width: 100%;
   background: none;
   border: none;
-  color: #64748b;
+  color: var(--color-slate-500);
   font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
@@ -188,7 +188,7 @@
 }
 
 .btn-back:hover {
-  color: var(--color-linco-navy, #112950);
+  color: var(--color-linco-navy);
 }
 
 .back-icon {

@@ -1,28 +1,25 @@
-/* src/components/layouts/Header/global_header/Header.module.css */
-
 .header {
   background-color: var(--color-linco-navy);
   height: 70px;
-  min-height: 70px; /* ضمان عدم انضغاط الهيدر */
+  min-height: 70px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 40px; /* زيادة المساحة الجانبية لتطابق هيدر مساحة العمل */
+  padding: 0 40px;
   color: #ffffff;
   flex-shrink: 0;
   width: 100%;
   box-sizing: border-box;
 }
 
-/* --- الجزء الأيسر (اللوجو والملف الشخصي) --- */
 .header-left {
   display: flex;
   align-items: center;
-  gap: 20px; /* تقليل المسافة بين اللوجو والملف الشخصي */
+  gap: 20px;
 }
 
 .logo {
-  font-size: 1.1rem; /* تصغير حجم اللوجو قليلاً */
+  font-size: 1.1rem;
 }
 
 .brand-name {
@@ -41,11 +38,13 @@
   gap: 10px;
   cursor: pointer;
   padding-left: 20px;
-  border-left: 1px solid rgba(255, 255, 255, 0.2); /* إضافة خط فاصل أنيق بين اللوجو والملف الشخصي */
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  user-select: none;
 }
 
 .user-avatar {
-  width: 32px; /* تصغير الأفاتار */
+  width: 32px;
   height: 32px;
   background-color: var(--color-linco-light);
   color: var(--color-linco-navy);
@@ -54,29 +53,124 @@
   justify-content: center;
   align-items: center;
   font-weight: 800;
-  font-size: 0.75rem; /* تصغير خط الحروف داخل الأفاتار */
+  font-size: 0.75rem;
 }
 
 .user-name {
-  font-size: 0.85rem; /* تصغير حجم اسم المستخدم */
+  font-size: 0.85rem;
   font-weight: 600;
 }
 
 .dropdown-icon {
-  width: 8px; /* تصغير السهم */
+  width: 8px;
   height: 8px;
   border-right: 2px solid #ffffff;
   border-bottom: 2px solid #ffffff;
   transform: rotate(45deg);
   margin-bottom: 4px;
   opacity: 0.8;
+  transition: transform 0.2s ease;
 }
 
-/* --- الروابط في المنتصف --- */
+.dropdown-icon.open {
+  transform: rotate(-135deg);
+  margin-bottom: -4px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 15px);
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--color-white);
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(17, 41, 80, 0.15);
+  border: 3px solid var(--color-linco-light);
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  z-index: 1000;
+  animation: slideDown 0.2s ease-out forwards;
+}
+
+.dropdown-menu::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 12px;
+  height: 12px;
+  background-color: var(--color-white);
+  border-top: 1px solid var(--color-linco-light);
+  border-left: 1px solid var(--color-linco-light);
+  z-index: 1;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.dropdown-item {
+  position: relative;
+  z-index: 2;
+  padding: 12px 20px;
+  color: var(--color-linco-navy);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: center;
+  background: none;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 100%;
+  display: block;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.dropdown-item:hover {
+  background-color: var(--color-blue-50);
+  color: var(--color-linco-blue);
+  transform: scale(0.98);
+}
+
+.logout-btn {
+  color: var(--color-error-main);
+  margin-top: 4px;
+  position: relative;
+}
+
+.logout-btn::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: 10%;
+  width: 80%;
+  height: 1px;
+  background-color: var(--color-slate-300);
+  opacity: 0.5;
+}
+
+.logout-btn:hover {
+  background-color: var(--color-error-bg);
+  color: var(--color-error-main);
+}
+
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 5px; /* تصغير الفراغات بين الروابط لأنها ستحتوي على حشوة داخلية */
+  gap: 5px;
 }
 
 .nav-item-wrapper {
@@ -88,9 +182,9 @@
 .nav-links a {
   text-decoration: none;
   color: rgba(255, 255, 255, 0.8);
-  font-size: 0.8rem; /* تصغير حجم خط الروابط */
+  font-size: 0.8rem;
   font-weight: 600;
-  padding: 6px 14px; /* تصغير مساحة الزر المحيطة بالنص */
+  padding: 6px 14px;
   border-radius: 6px;
   transition: all 0.2s;
 }
@@ -101,20 +195,17 @@
 
 .nav-links a.active {
   background-color: #ffffff;
-  color: var(
-    --color-linco-navy
-  ); /* جعل لون النص النشط كحلي ليتناسب مع الفخامة */
+  color: var(--color-linco-navy);
   font-weight: 700;
 }
 
 .nav-divider {
   width: 1px;
-  height: 14px; /* تصغير طول الخط الفاصل بين الروابط */
+  height: 14px;
   background-color: rgba(255, 255, 255, 0.2);
   margin: 0 5px;
 }
 
-/* --- الجزء الأيمن (الأزرار) --- */
 .header-actions {
   display: flex;
   align-items: center;
@@ -188,14 +279,13 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  overflow: hidden; /* Added this to clip the image to the border-radius */
+  overflow: hidden;
 }
 
-/* Add this new class to style the image inside the container */
 .app-icon-img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Ensures the image fills the square perfectly */
+  object-fit: cover;
 }
 
 @media (max-width: 1100px) {
@@ -212,14 +302,13 @@
     flex-wrap: wrap;
   }
 }
-/* --- Global Header Updates --- */
+
 .nav-item-wrapper {
   display: flex;
   align-items: center;
   gap: 15px;
 }
 
-/* --- Workspace Header (Trainee/Owner/etc) --- */
 .workspace-header-container {
   display: flex;
   flex-direction: column;
@@ -230,15 +319,15 @@
 .workspace-top-header {
   background-color: var(--color-linco-navy);
   height: 70px;
-  min-height: 70px; /* يجبر المتصفح على احترام الارتفاع */
-  flex-shrink: 0; /* يمنع الـ Flexbox من ضغط الهيدر ليتسع باقي المحتوى */
+  min-height: 70px;
+  flex-shrink: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 40px;
   color: #ffffff;
   width: 100%;
-  box-sizing: border-box; /* يضمن عدم تمدد العرض بسبب الـ padding */
+  box-sizing: border-box;
 }
 
 .workspace-logo .company-name {
@@ -282,9 +371,8 @@
   opacity: 0.9;
 }
 
-/* --- Sub Header --- */
 .workspace-sub-header {
-  background-color: #e0e7ff; /* لون أزرق فاتح مشابه للصورة */
+  background-color: #e0e7ff;
   height: 50px;
   display: flex;
   align-items: center;

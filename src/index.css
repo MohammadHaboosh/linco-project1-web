@@ -1,13 +1,35 @@
-/* src/index.css */
 @import "tailwindcss";
 
 @theme {
+  /* Core Brand Colors */
   --color-linco-navy: #112950;
+  --color-linco-navy-hover: #1a3a6c;
   --color-linco-blue: #1a56db;
   --color-linco-light: #bfdbfe;
   --color-linco-bg: #f8fafc;
   --color-linco-accent: #9f1239;
   --color-linco-accent-light: #ffe4e6;
+
+  /* Base & Neutrals */
+  --color-white: #ffffff;
+  --color-text-dark: #333333;
+  --color-slate-300: #cbd5e1;
+  --color-slate-400: #94a3b8;
+  --color-slate-500: #64748b;
+  --color-slate-600: #475569;
+  --color-slate-700: #334155;
+
+  /* Action & Icon Colors */
+  --color-blue-50: #eff6ff;
+  --color-blue-500: #3b82f6;
+  --color-google-bg: #a0c4ff;
+  --color-google-hover: #8bb7fc;
+
+  /* Error Feedback Colors */
+  --color-error-text: #ff6b6b;
+  --color-error-bg: #fef2f2;
+  --color-error-border: #fca5a5;
+  --color-error-main: #ef4444;
 
   --font-sans: "Inter", sans-serif;
 }
@@ -15,10 +37,9 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #112950;
+  background-color: var(--color-linco-navy);
 }
 
-/* إعدادات شريط التمرير */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
 }
@@ -26,6 +47,6 @@ body {
   background: transparent;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #cbd5e1;
+  background-color: var(--color-slate-300);
   border-radius: 10px;
 }
