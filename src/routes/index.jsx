@@ -13,6 +13,7 @@ import CoursesPage from "../pages/CoursesPage";
 import LearningPathPage from "../pages/LearningPathPage";
 import DepartmentPage from "../pages/DepartmentPage.jsx";
 import LandingPage from "../pages/LandingPage.jsx";
+import VerifyEmail from "../features/User/components/Verify/VerifyEmail.jsx";
 
 export const router = createBrowserRouter([
   {
@@ -41,11 +42,11 @@ export const router = createBrowserRouter([
   },
   {
     path: PATHS.VERIFY_EMAIL,
-    element: <VerifyEmailPage />,
+    element: <VerifyAccount />,
   },
   {
     path: PATHS.VERIFY_ACCOUNT,
-    element: <VerifyAccount />,
+    element: <VerifyEmail />,
   },
   // {
   //   path: PATHS.VERIFIED_SUCCESSFULLY,
