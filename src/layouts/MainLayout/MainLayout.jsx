@@ -1,13 +1,13 @@
-import { Outlet } from "react-router-dom";
-import mascotImg from "../../assets/icons/linco-logo.png";
-import Sidebar from "../../components/layouts/SideBar/Sidebar";
-import BrandLogo from "../../components/layouts/BrandLogo/BrandLogo";
-import Footer from "../../components/layouts/Footer/Footer";
-import { mainLayoutStyles } from "./MainLayoutStyle";
+import { Outlet } from 'react-router-dom';
+import mascotImg from '../../../public/icons/linco-logo.png';
+import Sidebar from '../../components/layouts/SideBar/Sidebar';
+import BrandLogo from '../../components/layouts/BrandLogo/BrandLogo';
+import Footer from '../../components/layouts/Footer/Footer';
+import { mainLayoutStyles } from './MainLayoutStyle';
 
 const sidebarLinks = [
   {
-    name: "Home",
+    name: 'Home',
     icon: (
       <svg
         className="w-5 h-5"
@@ -25,7 +25,7 @@ const sidebarLinks = [
     ),
   },
   {
-    name: "pending Invitations",
+    name: 'pending Invitations',
     icon: (
       <svg
         className="w-5 h-5"
@@ -43,7 +43,7 @@ const sidebarLinks = [
     ),
   },
   {
-    name: "Joined Rooms",
+    name: 'Joined Rooms',
     icon: (
       <svg
         className="w-5 h-5"
@@ -61,7 +61,7 @@ const sidebarLinks = [
     ),
   },
   {
-    name: "My Profile",
+    name: 'My Profile',
     icon: (
       <svg
         className="w-5 h-5"
@@ -88,7 +88,7 @@ const MainLayout = () => {
           mascotImg={mascotImg}
           navLinks={sidebarLinks}
           activeItem="Home"
-          onLogout={() => console.log("User logged out!")}
+          onLogout={() => console.log('User logged out!')}
         />
       </div>
 

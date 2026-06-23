@@ -2,7 +2,7 @@ import { IoCheckmarkCircle } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import styles from "./VerifiedSuccessfully.module.css";
 
-import logoImg from "../../../../assets/icons/celebrating.png";
+import logoImg from "../../../../../public/icons/celebrating.png";
 
 const VerifiedSuccessfully = () => {
   const navigate = useNavigate();

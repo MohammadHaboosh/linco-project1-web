@@ -3,13 +3,13 @@ This file is a merged representation of the entire codebase, combined into a sin
 <file_summary>
 This section contains a summary of this file.
 
-<purpose>
+  <purpose>
 This file contains a packed representation of the entire repository's contents.
 It is designed to be easily consumable by AI systems for analysis, code review,
 or other automated processes.
-</purpose>
+  </purpose>
 
-<file_format>
+  <file_format>
 The content is organized as follows:
 1. This summary section
 2. Repository information
@@ -18,24 +18,24 @@ The content is organized as follows:
 5. Multiple file entries, each consisting of:
   - File path as an attribute
   - Full contents of the file
-</file_format>
+  </file_format>
 
-<usage_guidelines>
+  <usage_guidelines>
 - This file should be treated as read-only. Any changes should be made to the
   original repository files, not this packed version.
 - When processing this file, use the file path to distinguish
   between different files in the repository.
 - Be aware that this file may contain sensitive information. Handle it with
   the same level of security as you would the original repository.
-</usage_guidelines>
+  </usage_guidelines>
 
-<notes>
+  <notes>
 - Some files may have been excluded based on .gitignore rules and Repomix's configuration
 - Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
 - Files matching patterns in .gitignore are excluded
 - Files matching default ignore patterns are excluded
 - Files are sorted by Git change count (files with more changes are at the bottom)
-</notes>
+  </notes>
 
 </file_summary>
 
@@ -48,11 +48,11 @@ public/favicon.svg
 public/icons.svg
 README.md
 src/App.css
-src/assets/fonts/.gitkeep
-src/assets/icons/linco-logo.png
-src/assets/images/joined-rooms.png
-src/assets/images/linco-logo.jpg
-src/assets/images/pending-invitations.png
+public/fonts/.gitkeep
+public/icons/linco-logo.png
+public/images/joined-rooms.png
+public/images/linco-logo.jpg
+public/images/pending-invitations.png
 src/components/elements/CourseCard/CourseCard.jsx
 src/components/elements/CourseCard/CourseCard.module.css
 src/components/elements/InvitationCard/InvitationCard.jsx
@@ -156,11 +156,11 @@ vite.config.js
 <files>
 This section contains the contents of the repository's files.
 
-<file path="src/features/Demo/CoursesPage/api/.gitkeep">
+  <file path="src/features/Demo/CoursesPage/api/.gitkeep">
 
-</file>
+  </file>
 
-<file path="src/features/Demo/CoursesPage/components/CoursesContent/CoursesContent.jsx">
+  <file path="src/features/Demo/CoursesPage/components/CoursesContent/CoursesContent.jsx">
 import PageHeaderSection from "../sections/PageHeaderSection/PageHeaderSection";
 import CoursesGridSection from "../sections/CoursesGridSection/CoursesGridSection";
 import styles from "./CoursesContent.module.css";
@@ -177,13 +177,10 @@ const CoursesContent = () => {
 
   return (
     <div className={styles["content-area"]}>
-      <PageHeaderSection
-        departmentName="Back-End Department"
-        title="All Courses"
-      />
+<PageHeaderSection departmentName="Back-End Department" title="All Courses" />
 
-      <CoursesGridSection courses={mockCourses} />
-    </div>
+    <CoursesGridSection courses={mockCourses} />
+</div>
   );
 };
 
@@ -216,15 +213,15 @@ export default CoursesContent;
   width: 100%;
   box-sizing: border-box;
 }
-</file>
+    </file>
 
-<file path="src/features/Demo/CoursesPage/components/sections/CoursesGridSection/CoursesGridSection.jsx">
+    <file path="src/features/Demo/CoursesPage/components/sections/CoursesGridSection/CoursesGridSection.jsx">
 import CourseCard from "../../../../../../components/elements/CourseCard/CourseCard";
 import styles from "./CoursesGridSection.module.css";
 
 const CoursesGridSection = ({ courses }) => {
   return (
-    <div className={styles["grid-container"]}>
+      <div className={styles["grid-container"]}>
       {courses.map((course) => (
         <CourseCard key={course.id} course={course} />
       ))}
@@ -255,9 +252,9 @@ export default CoursesGridSection;
     grid-template-columns: 1fr;
   }
 }
-</file>
+      </file>
 
-<file path="src/features/Demo/CoursesPage/components/sections/PageHeaderSection/PageHeaderSection.jsx">
+      <file path="src/features/Demo/CoursesPage/components/sections/PageHeaderSection/PageHeaderSection.jsx">
 import { IoChevronBack, IoSearch } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import styles from "./PageHeaderSection.module.css";
@@ -265,19 +262,19 @@ import { PATHS } from "../../../../../../routes/paths";
 
 const PageHeaderSection = ({ departmentName, title }) => {
   return (
-    <div className={styles["header-container"]}>
-      <div className={styles["title-area"]}>
-        <Link to={PATHS.HOME} className={styles["back-link"]}>
-          <IoChevronBack style={{ marginRight: "5px" }} /> {departmentName}
+        <div className={styles["header-container"]}>
+<div className={styles["title-area"]}>
+<Link to={PATHS.HOME} className={styles["back-link"]}>
+<IoChevronBack style={{ marginRight: "5px" }} /> {departmentName}
         </Link>
-        <h1 className={styles.title}>{title}</h1>
-      </div>
+<h1 className={styles.title}>{title}</h1>
+</div>
 
-      <div className={styles["search-bar"]}>
-        <input type="text" placeholder="Search by name's roadmap" />
+<div className={styles["search-bar"]}>
+<input type="text" placeholder="Search by name's roadmap" />
         <IoSearch className={styles["search-icon"]} />
-      </div>
-    </div>
+</div>
+</div>
   );
 };
 
@@ -346,25 +343,25 @@ export default PageHeaderSection;
   color: #64748b;
   font-size: 1.2rem;
 }
-</file>
+        </file>
 
-<file path="src/features/Demo/CoursesPage/hooks/.gitkeep">
+        <file path="src/features/Demo/CoursesPage/hooks/.gitkeep">
 
-</file>
+        </file>
 
-<file path="src/features/Demo/CoursesPage/store/.gitkeep">
+        <file path="src/features/Demo/CoursesPage/store/.gitkeep">
 
-</file>
+        </file>
 
-<file path="src/features/Demo/CoursesPage/utils/.gitkeep">
+        <file path="src/features/Demo/CoursesPage/utils/.gitkeep">
 
-</file>
+        </file>
 
-<file path="src/features/Demo/HomeDemoPage/api/.gitkeep">
+        <file path="src/features/Demo/HomeDemoPage/api/.gitkeep">
 
-</file>
+        </file>
 
-<file path="src/features/Demo/HomeDemoPage/components/DemoContent/DemoContent.jsx">
+        <file path="src/features/Demo/HomeDemoPage/components/DemoContent/DemoContent.jsx">
 import styles from "./DemoContent.module.css";
 import WelcomeSection from "../sections/WelcomeSection/WelcomeSection";
 import LeaderboardSection from "../sections/LeaderboardSection/LeaderboardSection";
@@ -438,26 +435,24 @@ const WorkspaceDashboardContent = () => {
   ];
 
   return (
-    <>
-      <div className={styles["hero-section"]}>
-        <div className={styles["hero-content"]}>
-          <WelcomeSection
-            companyName={userData.companyName}
-            userName={userData.userName}
+          <>
+            <div className={styles["hero-section"]}>
+<div className={styles["hero-content"]}>
+<WelcomeSection companyName={userData.companyName} userName={userData.userName}
           />
-          <LeaderboardSection leaders={leaderboardData} />
-        </div>
-        <StatsSection stats={statisticsData} />
-      </div>
+<LeaderboardSection leaders={leaderboardData} />
+</div>
+<StatsSection stats={statisticsData} />
+</div>
 
-      <div className={styles["content-section"]}>
-        <CoursesSection courses={coursesData} />
+<div className={styles["content-section"]}>
+<CoursesSection courses={coursesData} />
 
-        <hr className={styles["section-divider"]} />
+<hr className={styles["section-divider"]} />
 
-        <LivesSection lives={livesData} />
-      </div>
-    </>
+<LivesSection lives={livesData} />
+</div>
+</>
   );
 };
 
@@ -514,26 +509,26 @@ export default WorkspaceDashboardContent;
   background: linear-gradient(90deg, transparent, #cbd5e1, transparent);
   margin: 50px 0;
 }
-</file>
+            </file>
 
-<file path="src/features/Demo/HomeDemoPage/components/sections/CourseSection/CoursesSection.jsx">
+            <file path="src/features/Demo/HomeDemoPage/components/sections/CourseSection/CoursesSection.jsx">
 import styles from "../SharedSection.module.css";
 import CourseCard from "../../../../../../components/elements/CourseCard/CourseCard";
 
 const CoursesSection = ({ courses }) => {
   return (
-    <>
-      <div className={styles["section-header"]}>
-        <h2>Resume Learning</h2>
-        <p>Continue your current course</p>
-      </div>
+              <>
+                <div className={styles["section-header"]}>
+<h2>Resume Learning</h2>
+<p>Continue your current course</p>
+</div>
 
-      <div className={styles["cards-grid-2"]}>
+<div className={styles["cards-grid-2"]}>
         {courses.map((course) => (
           <CourseCard key={course.id} course={course} />
         ))}
       </div>
-    </>
+</>
   );
 };
 
@@ -545,31 +540,29 @@ import styles from "./LeaderboardSection.module.css";
 
 const LeaderboardSection = ({ leaders }) => {
   return (
-    <div className={styles["leaderboard-box"]}>
-      <div className={styles["leaderboard-header"]}>
-        <h3>Company Leader Board Top-3</h3>
-      </div>
+                  <div className={styles["leaderboard-box"]}>
+<div className={styles["leaderboard-header"]}>
+<h3>Company Leader Board Top-3</h3>
+</div>
 
-      <div className={styles["leaderboard-list"]}>
+<div className={styles["leaderboard-list"]}>
         {leaders.map((user) => (
-          <div
-            key={user.rank}
-            className={`${styles["leader-item"]} ${user.isCurrentUser ? styles.currentUser : ""}`}
+          <div key={user.rank} className={`${styles["leader-item"]} ${user.isCurrentUser ? styles.currentUser : ""}`}
           >
-            <div className={styles["leader-info"]}>
-              <span className={styles.rank}>{user.rank}</span>
-              <div className={styles.avatar}>{user.avatar}</div>
-              <span className={styles["leader-name"]}>{user.name}</span>
-            </div>
-            <div className={styles["leader-points"]}>
-              <span className={styles["points-badge"]}>{user.points} XP</span>
-            </div>
-          </div>
+<div className={styles["leader-info"]}>
+<span className={styles.rank}>{user.rank}</span>
+<div className={styles.avatar}>{user.avatar}</div>
+<span className={styles["leader-name"]}>{user.name}</span>
+</div>
+<div className={styles["leader-points"]}>
+<span className={styles["points-badge"]}>{user.points} XP</span>
+</div>
+</div>
         ))}
       </div>
 
-      <button className={styles["view-full-btn"]}>View Full Leaderboard</button>
-    </div>
+<button className={styles["view-full-btn"]}>View Full Leaderboard</button>
+</div>
   );
 };
 
@@ -702,25 +695,25 @@ export default LeaderboardSection;
   background-color: var(--color-linco-navy);
   color: #ffffff;
 }
-</file>
+                  </file>
 
-<file path="src/features/Demo/HomeDemoPage/components/sections/LivesSection/LivesSection.jsx">
+                  <file path="src/features/Demo/HomeDemoPage/components/sections/LivesSection/LivesSection.jsx">
 import LiveCard from "../../../../../../components/elements/LiveCard/LiveCard";
 import styles from "../SharedSection.module.css";
 
 const LivesSection = ({ lives }) => {
   return (
-    <>
-      <div className={styles["section-header"]}>
-        <h2>New Lives</h2>
-      </div>
+                    <>
+                      <div className={styles["section-header"]}>
+<h2>New Lives</h2>
+</div>
 
-      <div className={styles["cards-grid-2"]}>
+<div className={styles["cards-grid-2"]}>
         {lives.map((live) => (
           <LiveCard key={live.id} live={live} />
         ))}
       </div>
-    </>
+</>
   );
 };
 
@@ -748,58 +741,58 @@ export default LivesSection;
   grid-template-columns: repeat(2, 1fr);
   gap: 30px;
 }
-</file>
+                      </file>
 
-<file path="src/features/Demo/HomeDemoPage/components/sections/StatsSection/StatsSection.jsx">
+                      <file path="src/features/Demo/HomeDemoPage/components/sections/StatsSection/StatsSection.jsx">
 import styles from "./StatsSection.module.css";
 
 const StatsSection = ({ stats }) => {
   return (
-    <div className={styles["stats-row"]}>
+                        <div className={styles["stats-row"]}>
       {/* Active Courses */}
       <div className={styles["stat-box"]}>
-        <div className={styles["stat-title"]}>Active Courses</div>
-        <div className={styles["stat-values"]}>
-          <span className={styles.highlight}>
+<div className={styles["stat-title"]}>Active Courses</div>
+<div className={styles["stat-values"]}>
+<span className={styles.highlight}>
             {stats.activeCourses.current}
           </span>
-          <div className={styles.divider}></div>
-          <span className={styles.secondary}>
+<div className={styles.divider}></div>
+<span className={styles.secondary}>
             All
             <br />
             {stats.activeCourses.total}
           </span>
-        </div>
-      </div>
+</div>
+</div>
 
       {/* Tasks Completed */}
       <div className={styles["stat-box"]}>
-        <div className={styles["stat-title"]}>Tasks Completed</div>
-        <div className={styles["stat-values"]}>
-          <span className={styles.highlight}>{stats.tasks.completed}</span>
-          <div className={styles.divider}></div>
-          <span className={styles.secondary}>
+<div className={styles["stat-title"]}>Tasks Completed</div>
+<div className={styles["stat-values"]}>
+<span className={styles.highlight}>{stats.tasks.completed}</span>
+<div className={styles.divider}></div>
+<span className={styles.secondary}>
             NUMBER OF TASKS
             <br />
             YOU FINISHED {stats.tasks.total}
           </span>
-        </div>
-      </div>
+</div>
+</div>
 
       {/* Certificates Earned */}
       <div className={styles["stat-box"]}>
-        <div className={styles["stat-title"]}>Certificates Earned</div>
-        <div className={styles["stat-values"]}>
-          <span className={styles.highlight}>{stats.certificates.earned}</span>
-          <div className={styles.divider}></div>
-          <span className={styles.secondary}>
+<div className={styles["stat-title"]}>Certificates Earned</div>
+<div className={styles["stat-values"]}>
+<span className={styles.highlight}>{stats.certificates.earned}</span>
+<div className={styles.divider}></div>
+<span className={styles.secondary}>
             YOU HAVE ONLY
             <br />
             LEFT {stats.certificates.left}
           </span>
-        </div>
-      </div>
-    </div>
+</div>
+</div>
+</div>
   );
 };
 
@@ -874,35 +867,35 @@ export default StatsSection;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
-</file>
+                        </file>
 
-<file path="src/features/Demo/HomeDemoPage/components/sections/WelcomeSection/WelcomeSection.jsx">
+                        <file path="src/features/Demo/HomeDemoPage/components/sections/WelcomeSection/WelcomeSection.jsx">
 import styles from "./WelcomeSection.module.css";
 
 const WelcomeSection = ({ companyName, userName }) => {
   return (
-    <div className={styles["welcome-text"]}>
-      <div className={styles["welcome-badge"]}>
-        <span>👋</span> Welcome Back
+                          <div className={styles["welcome-text"]}>
+<div className={styles["welcome-badge"]}>
+<span>👋</span> Welcome Back
       </div>
 
-      <h1>
+<h1>
         Welcome to{" "}
         <span className={styles["highlight-company"]}>{companyName}</span>
-        <br />
+<br />
         Academy, <span className={styles["highlight-name"]}>{userName}</span>!
       </h1>
 
-      <p>
+<p>
         Start your journey to top the company leaderboard and achieve your daily
         goals.
       </p>
 
-      <div className={styles["welcome-actions"]}>
-        <button className={styles["btn-primary"]}>Resume Learning</button>
-        <button className={styles["btn-secondary"]}>View Road Map</button>
-      </div>
-    </div>
+<div className={styles["welcome-actions"]}>
+<button className={styles["btn-primary"]}>Resume Learning</button>
+<button className={styles["btn-secondary"]}>View Road Map</button>
+</div>
+</div>
   );
 };
 
@@ -1008,25 +1001,25 @@ export default WelcomeSection;
   background-color: #f8fafc;
   border-color: var(--color-linco-navy);
 }
-</file>
+                          </file>
 
-<file path="src/features/Demo/HomeDemoPage/hooks/.gitkeep">
+                          <file path="src/features/Demo/HomeDemoPage/hooks/.gitkeep">
 
-</file>
+                          </file>
 
-<file path="src/features/Demo/HomeDemoPage/store/.gitkeep">
+                          <file path="src/features/Demo/HomeDemoPage/store/.gitkeep">
 
-</file>
+                          </file>
 
-<file path="src/features/Demo/HomeDemoPage/utils/.gitkeep">
+                          <file path="src/features/Demo/HomeDemoPage/utils/.gitkeep">
 
-</file>
+                          </file>
 
-<file path="src/features/Demo/LearningPathPage/api/.gitkeep">
+                          <file path="src/features/Demo/LearningPathPage/api/.gitkeep">
 
-</file>
+                          </file>
 
-<file path="src/features/Demo/LearningPathPage/components/LearningPathContent.jsx">
+                          <file path="src/features/Demo/LearningPathPage/components/LearningPathContent.jsx">
 import PathHeaderSection from "./sections/PathHeaderSection/PathHeaderSection";
 import PathCourseCard from "./sections/PathCourseCard/PathCourseCard";
 import styles from "./LearningPathContent.module.css";
@@ -1083,17 +1076,17 @@ const LearningPathContent = () => {
   ];
 
   return (
-    <div className={styles["content-area"]}>
-      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        <PathHeaderSection />
+                            <div className={styles["content-area"]}>
+<div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+<PathHeaderSection />
 
-        <div className={styles["course-list"]}>
+<div className={styles["course-list"]}>
           {pathData.map((course, index) => (
             <PathCourseCard key={index} course={course} />
           ))}
         </div>
-      </div>
-    </div>
+</div>
+</div>
   );
 };
 
@@ -1133,9 +1126,9 @@ export default LearningPathContent;
   max-width: 1200px;
   margin: 0 auto; /* توسيط القائمة في الشاشات الكبيرة */
 }
-</file>
+                            </file>
 
-<file path="src/features/Demo/LearningPathPage/components/sections/PathCourseCard/PathCourseCard.jsx">
+                            <file path="src/features/Demo/LearningPathPage/components/sections/PathCourseCard/PathCourseCard.jsx">
 import { useState } from "react";
 import {
   IoChevronDown,
@@ -1156,11 +1149,11 @@ const PathCourseCard = ({ course }) => {
   };
 
   return (
-    <div className={`${styles.card} ${styles[course.status]}`}>
+                              <div className={`${styles.card} ${styles[course.status]}`}>
       {/* رأس الكرت */}
       <div className={styles["card-header"]} onClick={toggleExpand}>
-        <div className={styles["header-left"]}>
-          <span className={styles["course-title"]}>
+<div className={styles["header-left"]}>
+<span className={styles["course-title"]}>
             {course.id}- {course.title}
           </span>
           {/* إظهار التاجز في الرأس إذا كان مغلقاً أو مقفلاً */}
@@ -1175,24 +1168,20 @@ const PathCourseCard = ({ course }) => {
           )}
         </div>
 
-        <div className={styles["header-right"]}>
-          <div className={styles["progress-mini"]}>
-            <div className={styles["progress-labels"]}>
-              <span>Progress</span>
-              <span>{course.progress}%</span>
-            </div>
-            <div className={styles["progress-bar"]}>
-              <div
-                className={styles["progress-fill"]}
-                style={{ width: `${course.progress}%` }}
+<div className={styles["header-right"]}>
+<div className={styles["progress-mini"]}>
+<div className={styles["progress-labels"]}>
+<span>Progress</span>
+<span>{course.progress}%</span>
+</div>
+<div className={styles["progress-bar"]}>
+<div className={styles["progress-fill"]} style={{ width: `${course.progress}%` }}
               ></div>
-            </div>
-          </div>
+</div>
+</div>
           {/* الأيقونة تتغير حسب الحالة */}
           {course.status === "locked" ? (
-            <IoLockClosedOutline
-              className={styles["action-icon"]}
-              style={{ color: "#94a3b8" }}
+            <IoLockClosedOutline className={styles["action-icon"]} style={{ color: "#94a3b8" }}
             />
           ) : isExpanded ? (
             <IoChevronUp className={styles["action-icon"]} />
@@ -1200,19 +1189,18 @@ const PathCourseCard = ({ course }) => {
             <IoChevronDown className={styles["action-icon"]} />
           )}
         </div>
-      </div>
+</div>
 
       {/* جسم الكرت (يظهر فقط إذا كان مفتوحاً) */}
       {isExpanded && course.status !== "locked" && (
         <div className={styles["card-body"]}>
-          <div className={styles["image-container"]}>image</div>
-          <div className={styles.details}>
-            <p className={styles.description}>{course.description}</p>
+<div className={styles["image-container"]}>image</div>
+<div className={styles.details}>
+<p className={styles.description}>{course.description}</p>
 
-            <div className={styles["bottom-row"]}>
-              <div className={styles.topics}>
-                <span
-                  style={{
+<div className={styles["bottom-row"]}>
+<div className={styles.topics}>
+<span style={{
                     fontSize: "0.85rem",
                     fontWeight: "bold",
                     color: "var(--color-linco-navy)",
@@ -1226,12 +1214,12 @@ const PathCourseCard = ({ course }) => {
                   </span>
                 ))}
               </div>
-              <button className={styles["btn-continue"]}>
-                <IoPlayOutline style={{ fontSize: "1.2rem" }} /> Continue Lesson
+<button className={styles["btn-continue"]}>
+<IoPlayOutline style={{ fontSize: "1.2rem" }} /> Continue Lesson
               </button>
-            </div>
-          </div>
-        </div>
+</div>
+</div>
+</div>
       )}
     </div>
   );
@@ -1411,9 +1399,9 @@ export default PathCourseCard;
   background-color: #1a3a6c;
   transform: translateY(-2px);
 }
-</file>
+                              </file>
 
-<file path="src/features/Demo/LearningPathPage/components/sections/PathHeaderSection/PathHeaderSection.jsx">
+                              <file path="src/features/Demo/LearningPathPage/components/sections/PathHeaderSection/PathHeaderSection.jsx">
 import { IoChevronBack, IoFlashOutline, IoPulseOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import styles from "./PathHeaderSection.module.css";
@@ -1421,71 +1409,71 @@ import { PATHS } from "../../../../../../routes/paths";
 
 const PathHeaderSection = () => {
   return (
-    <div className={styles.headerSection}>
-      <Link to={PATHS.DEPARTMENTS} className={styles.backLink}>
-        <IoChevronBack style={{ marginRight: "5px" }} /> Back-End Department
+                                <div className={styles.headerSection}>
+<Link to={PATHS.DEPARTMENTS} className={styles.backLink}>
+<IoChevronBack style={{ marginRight: "5px" }} /> Back-End Department
       </Link>
-      <h1 className={styles.title}>Trainee Learning Path</h1>
+<h1 className={styles.title}>Trainee Learning Path</h1>
 
-      <div className={styles.topPanels}>
+<div className={styles.topPanels}>
         {/* القسم الأيسر: النصوص الحرة النظيفة */}
         <div className={styles.welcomePanel}>
-          <div className={styles.badge}>
-            <span>👋</span> Welcome Back
+<div className={styles.badge}>
+<span>👋</span> Welcome Back
           </div>
-          <h3>
+<h3>
             Ready to dive into your
             <br />
             learning, <span className={styles.nameHighlight}>Abrar!</span>
-          </h3>
-          <p>
+</h3>
+<p>
             Manage your company links, track your active training rooms, and
             level up your career from one single dashboard.
           </p>
-        </div>
+</div>
 
         {/* القسم الأيمن: صندوق إحصائيات بأسلوب الـ Leaderboard */}
         <div className={styles.statsCard}>
-          <h3 className={styles.statsTitle}>Progress Summary</h3>
-          <div className={styles.statList}>
+<h3 className={styles.statsTitle}>Progress Summary</h3>
+<div className={styles.statList}>
             {/* الصف الأول (مظلل/نشط) */}
             <div className={`${styles.statRow} ${styles.statRowActive}`}>
-              <div className={styles.statRowLeft}>
-                <div className={styles.statIcon}>
+<div className={styles.statRowLeft}>
+<div className={styles.statIcon}>
                   {/* <IoTargetOutline /> */}
                 </div>
-                <span className={styles.statLabel}>Course Completion</span>
-              </div>
-              <div className={styles.statRowRight}>25%</div>
-            </div>
+<span className={styles.statLabel}>Course Completion</span>
+</div>
+<div className={styles.statRowRight}>25%</div>
+</div>
 
             {/* الصف الثاني */}
             <div className={styles.statRow}>
-              <div className={styles.statRowLeft}>
-                <div className={styles.statIcon}>
-                  <IoFlashOutline />
-                </div>
-                <span className={styles.statLabel}>XP Points</span>
-              </div>
-              <div className={styles.statRowRight}>1,200 XP</div>
-            </div>
+<div className={styles.statRowLeft}>
+<div className={styles.statIcon}>
+<IoFlashOutline />
+</div>
+<span className={styles.statLabel}>XP Points</span>
+</div>
+<div className={styles.statRowRight}>1,200 XP</div>
+</div>
 
             {/* الصف الثالث */}
             <div className={styles.statRow}>
-              <div className={styles.statRowLeft}>
-                <div className={styles.statIcon}>
-                  <IoPulseOutline />
-                </div>
-                <span className={styles.statLabel}>Day Strike</span>
-              </div>
-              <div className={styles.statRowRight}>3 Days</div>
-            </div>
-          </div>
-        </div>
-      </div>
+<div className={styles.statRowLeft}>
+<div className={styles.statIcon}>
+<IoPulseOutline />
+</div>
+<span className={styles.statLabel}>Day Strike</span>
+</div>
+<div className={styles.statRowRight}>3 Days</div>
+</div>
+</div>
+</div>
+</div>
 
-      <hr className={styles.divider} />
-    </div>
+<hr className={styles.divider} />
+</div>
   );
 };
 
@@ -1676,21 +1664,21 @@ export default PathHeaderSection;
   border-top: 1px solid #cbd5e1;
   margin: 50px 0;
 }
-</file>
+                                </file>
 
-<file path="src/features/Demo/LearningPathPage/hooks/.gitkeep">
+                                <file path="src/features/Demo/LearningPathPage/hooks/.gitkeep">
 
-</file>
+                                </file>
 
-<file path="src/features/Demo/LearningPathPage/store/.gitkeep">
+                                <file path="src/features/Demo/LearningPathPage/store/.gitkeep">
 
-</file>
+                                </file>
 
-<file path="src/features/Demo/LearningPathPage/utils/.gitkeep">
+                                <file path="src/features/Demo/LearningPathPage/utils/.gitkeep">
 
-</file>
+                                </file>
 
-<file path="src/pages/CoursesPage.jsx">
+                                <file path="src/pages/CoursesPage.jsx">
 import Sidebar from "../components/layouts/SideBar/Sidebar";
 import Header from "../components/layouts/Header/global_header/Header";
 import SubHeader from "../components/layouts/Header/sub_header/SubHeader";
@@ -1702,26 +1690,22 @@ const CoursesPage = () => {
   const currentRole = "trainee";
 
   return (
-    <div className={styles["app-container"]}>
-      <Sidebar role={currentRole} />
+                                  <div className={styles["app-container"]}>
+<Sidebar role={currentRole} />
 
-      <div className={`${styles["main-wrapper"]} custom-scrollbar`}>
+<div className={`${styles["main-wrapper"]} custom-scrollbar`}>
         {/* الهيدر العلوي الخاص بمساحة العمل */}
-        <Header
-          role={currentRole}
-          companyName="CompanyName"
-          roomName="Company Demo"
-        />
+        <Header role={currentRole} companyName="CompanyName" roomName="Company Demo" />
 
         {/* الهيدر الفرعي الذي يحوي روابط (Courses, Road Map, إلخ) */}
-        <SubHeader role={currentRole} />
+                                  <SubHeader role={currentRole} />
 
         {/* محتوى الصفحة الذي برمجناه */}
         <CoursesContent />
 
-        <Footer role={currentRole} />
-      </div>
-    </div>
+<Footer role={currentRole} />
+</div>
+</div>
   );
 };
 
@@ -1740,22 +1724,18 @@ const LearningPathPage = () => {
   const currentRole = "trainee";
 
   return (
-    <div className={styles["app-container"]}>
-      <Sidebar role={currentRole} />
+                                    <div className={styles["app-container"]}>
+<Sidebar role={currentRole} />
 
-      <div className={`${styles["main-wrapper"]} custom-scrollbar`}>
-        <Header
-          role={currentRole}
-          companyName="CompanyName"
-          roomName="Company Demo"
-        />
-        <SubHeader role={currentRole} />
+<div className={`${styles["main-wrapper"]} custom-scrollbar`}>
+<Header role={currentRole} companyName="CompanyName" roomName="Company Demo" />
+                                    <SubHeader role={currentRole} />
 
-        <LearningPathContent />
+<LearningPathContent />
 
-        <Footer role={currentRole} />
-      </div>
-    </div>
+<Footer role={currentRole} />
+</div>
+</div>
   );
 };
 
@@ -1787,56 +1767,191 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-</file>
+                                    </file>
 
-<file path="index.html">
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>linco-project1-web</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
-</html>
-</file>
+                                    <file path="index.html">
+                                      <!doctype html>
+                                      <html lang="en">
+                                        <head>
+                                          <meta charset="UTF-8" />
+                                          <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+                                          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                                          <title>linco-project1-web</title>
+                                        </head>
+                                        <body>
+                                          <div id="root"></div>
+                                          <script type="module" src="/src/main.jsx"></script>
+                                        </body>
+                                      </html>
+                                    </file>
 
-<file path="public/favicon.svg">
-<svg xmlns="http://www.w3.org/2000/svg" width="48" height="46" fill="none" viewBox="0 0 48 46"><path fill="#863bff" d="M25.946 44.938c-.664.845-2.021.375-2.021-.698V33.937a2.26 2.26 0 0 0-2.262-2.262H10.287c-.92 0-1.456-1.04-.92-1.788l7.48-10.471c1.07-1.497 0-3.578-1.842-3.578H1.237c-.92 0-1.456-1.04-.92-1.788L10.013.474c.214-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.471c-1.07 1.498 0 3.579 1.842 3.579h11.377c.943 0 1.473 1.088.89 1.83L25.947 44.94z" style="fill:#863bff;fill:color(display-p3 .5252 .23 1);fill-opacity:1"/><mask id="a" width="48" height="46" x="0" y="0" maskUnits="userSpaceOnUse" style="mask-type:alpha"><path fill="#000" d="M25.842 44.938c-.664.844-2.021.375-2.021-.698V33.937a2.26 2.26 0 0 0-2.262-2.262H10.183c-.92 0-1.456-1.04-.92-1.788l7.48-10.471c1.07-1.498 0-3.579-1.842-3.579H1.133c-.92 0-1.456-1.04-.92-1.787L9.91.473c.214-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.471c-1.07 1.498 0 3.578 1.842 3.578h11.377c.943 0 1.473 1.088.89 1.832L25.843 44.94z" style="fill:#000;fill-opacity:1"/></mask><g mask="url(#a)"><g filter="url(#b)"><ellipse cx="5.508" cy="14.704" fill="#ede6ff" rx="5.508" ry="14.704" style="fill:#ede6ff;fill:color(display-p3 .9275 .9033 1);fill-opacity:1" transform="matrix(.00324 1 1 -.00324 -4.47 31.516)"/></g><g filter="url(#c)"><ellipse cx="10.399" cy="29.851" fill="#ede6ff" rx="10.399" ry="29.851" style="fill:#ede6ff;fill:color(display-p3 .9275 .9033 1);fill-opacity:1" transform="matrix(.00324 1 1 -.00324 -39.328 7.883)"/></g><g filter="url(#d)"><ellipse cx="5.508" cy="30.487" fill="#7e14ff" rx="5.508" ry="30.487" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.814 -25.913 -14.639)scale(1 -1)"/></g><g filter="url(#e)"><ellipse cx="5.508" cy="30.599" fill="#7e14ff" rx="5.508" ry="30.599" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.814 -32.644 -3.334)scale(1 -1)"/></g><g filter="url(#f)"><ellipse cx="5.508" cy="30.599" fill="#7e14ff" rx="5.508" ry="30.599" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="matrix(.00324 1 1 -.00324 -34.34 30.47)"/></g><g filter="url(#g)"><ellipse cx="14.072" cy="22.078" fill="#ede6ff" rx="14.072" ry="22.078" style="fill:#ede6ff;fill:color(display-p3 .9275 .9033 1);fill-opacity:1" transform="rotate(93.35 24.506 48.493)scale(-1 1)"/></g><g filter="url(#h)"><ellipse cx="3.47" cy="21.501" fill="#7e14ff" rx="3.47" ry="21.501" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.009 28.708 47.59)scale(-1 1)"/></g><g filter="url(#i)"><ellipse cx="3.47" cy="21.501" fill="#7e14ff" rx="3.47" ry="21.501" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.009 28.708 47.59)scale(-1 1)"/></g><g filter="url(#j)"><ellipse cx=".387" cy="8.972" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(39.51 .387 8.972)"/></g><g filter="url(#k)"><ellipse cx="47.523" cy="-6.092" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 47.523 -6.092)"/></g><g filter="url(#l)"><ellipse cx="41.412" cy="6.333" fill="#47bfff" rx="5.971" ry="9.665" style="fill:#47bfff;fill:color(display-p3 .2799 .748 1);fill-opacity:1" transform="rotate(37.892 41.412 6.333)"/></g><g filter="url(#m)"><ellipse cx="-1.879" cy="38.332" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 -1.88 38.332)"/></g><g filter="url(#n)"><ellipse cx="-1.879" cy="38.332" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 -1.88 38.332)"/></g><g filter="url(#o)"><ellipse cx="35.651" cy="29.907" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 35.651 29.907)"/></g><g filter="url(#p)"><ellipse cx="38.418" cy="32.4" fill="#47bfff" rx="5.971" ry="15.297" style="fill:#47bfff;fill:color(display-p3 .2799 .748 1);fill-opacity:1" transform="rotate(37.892 38.418 32.4)"/></g></g><defs><filter id="b" width="60.045" height="41.654" x="-19.77" y="16.149" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659"/></filter><filter id="c" width="90.34" height="51.437" x="-54.613" y="-7.533" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659"/></filter><filter id="d" width="79.355" height="29.4" x="-49.64" y="2.03" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="e" width="79.579" height="29.4" x="-45.045" y="20.029" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="f" width="79.579" height="29.4" x="-43.513" y="21.178" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="g" width="74.749" height="58.852" x="15.756" y="-17.901" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659"/></filter><filter id="h" width="61.377" height="25.362" x="23.548" y="2.284" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="i" width="61.377" height="25.362" x="23.548" y="2.284" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="j" width="56.045" height="63.649" x="-27.636" y="-22.853" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="k" width="54.814" height="64.646" x="20.116" y="-38.415" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="l" width="33.541" height="35.313" x="24.641" y="-11.323" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="m" width="54.814" height="64.646" x="-29.286" y="6.009" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="n" width="54.814" height="64.646" x="-29.286" y="6.009" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="o" width="54.814" height="64.646" x="8.244" y="-2.416" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter><filter id="p" width="39.409" height="43.623" x="18.713" y="10.588" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/></filter></defs></svg>
-</file>
+                                    <file path="public/favicon.svg">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="46" fill="none" viewBox="0 0 48 46">
+                                        <path fill="#863bff" d="M25.946 44.938c-.664.845-2.021.375-2.021-.698V33.937a2.26 2.26 0 0 0-2.262-2.262H10.287c-.92 0-1.456-1.04-.92-1.788l7.48-10.471c1.07-1.497 0-3.578-1.842-3.578H1.237c-.92 0-1.456-1.04-.92-1.788L10.013.474c.214-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.471c-1.07 1.498 0 3.579 1.842 3.579h11.377c.943 0 1.473 1.088.89 1.83L25.947 44.94z" style="fill:#863bff;fill:color(display-p3 .5252 .23 1);fill-opacity:1"/>
+                                        <mask id="a" width="48" height="46" x="0" y="0" maskUnits="userSpaceOnUse" style="mask-type:alpha">
+                                          <path fill="#000" d="M25.842 44.938c-.664.844-2.021.375-2.021-.698V33.937a2.26 2.26 0 0 0-2.262-2.262H10.183c-.92 0-1.456-1.04-.92-1.788l7.48-10.471c1.07-1.498 0-3.579-1.842-3.579H1.133c-.92 0-1.456-1.04-.92-1.787L9.91.473c.214-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.471c-1.07 1.498 0 3.578 1.842 3.578h11.377c.943 0 1.473 1.088.89 1.832L25.843 44.94z" style="fill:#000;fill-opacity:1"/>
+                                        </mask>
+                                        <g mask="url(#a)">
+                                          <g filter="url(#b)">
+                                            <ellipse cx="5.508" cy="14.704" fill="#ede6ff" rx="5.508" ry="14.704" style="fill:#ede6ff;fill:color(display-p3 .9275 .9033 1);fill-opacity:1" transform="matrix(.00324 1 1 -.00324 -4.47 31.516)"/>
+                                          </g>
+                                          <g filter="url(#c)">
+                                            <ellipse cx="10.399" cy="29.851" fill="#ede6ff" rx="10.399" ry="29.851" style="fill:#ede6ff;fill:color(display-p3 .9275 .9033 1);fill-opacity:1" transform="matrix(.00324 1 1 -.00324 -39.328 7.883)"/>
+                                          </g>
+                                          <g filter="url(#d)">
+                                            <ellipse cx="5.508" cy="30.487" fill="#7e14ff" rx="5.508" ry="30.487" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.814 -25.913 -14.639)scale(1 -1)"/>
+                                          </g>
+                                          <g filter="url(#e)">
+                                            <ellipse cx="5.508" cy="30.599" fill="#7e14ff" rx="5.508" ry="30.599" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.814 -32.644 -3.334)scale(1 -1)"/>
+                                          </g>
+                                          <g filter="url(#f)">
+                                            <ellipse cx="5.508" cy="30.599" fill="#7e14ff" rx="5.508" ry="30.599" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="matrix(.00324 1 1 -.00324 -34.34 30.47)"/>
+                                          </g>
+                                          <g filter="url(#g)">
+                                            <ellipse cx="14.072" cy="22.078" fill="#ede6ff" rx="14.072" ry="22.078" style="fill:#ede6ff;fill:color(display-p3 .9275 .9033 1);fill-opacity:1" transform="rotate(93.35 24.506 48.493)scale(-1 1)"/>
+                                          </g>
+                                          <g filter="url(#h)">
+                                            <ellipse cx="3.47" cy="21.501" fill="#7e14ff" rx="3.47" ry="21.501" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.009 28.708 47.59)scale(-1 1)"/>
+                                          </g>
+                                          <g filter="url(#i)">
+                                            <ellipse cx="3.47" cy="21.501" fill="#7e14ff" rx="3.47" ry="21.501" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(89.009 28.708 47.59)scale(-1 1)"/>
+                                          </g>
+                                          <g filter="url(#j)">
+                                            <ellipse cx=".387" cy="8.972" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(39.51 .387 8.972)"/>
+                                          </g>
+                                          <g filter="url(#k)">
+                                            <ellipse cx="47.523" cy="-6.092" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 47.523 -6.092)"/>
+                                          </g>
+                                          <g filter="url(#l)">
+                                            <ellipse cx="41.412" cy="6.333" fill="#47bfff" rx="5.971" ry="9.665" style="fill:#47bfff;fill:color(display-p3 .2799 .748 1);fill-opacity:1" transform="rotate(37.892 41.412 6.333)"/>
+                                          </g>
+                                          <g filter="url(#m)">
+                                            <ellipse cx="-1.879" cy="38.332" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 -1.88 38.332)"/>
+                                          </g>
+                                          <g filter="url(#n)">
+                                            <ellipse cx="-1.879" cy="38.332" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 -1.88 38.332)"/>
+                                          </g>
+                                          <g filter="url(#o)">
+                                            <ellipse cx="35.651" cy="29.907" fill="#7e14ff" rx="4.407" ry="29.108" style="fill:#7e14ff;fill:color(display-p3 .4922 .0767 1);fill-opacity:1" transform="rotate(37.892 35.651 29.907)"/>
+                                          </g>
+                                          <g filter="url(#p)">
+                                            <ellipse cx="38.418" cy="32.4" fill="#47bfff" rx="5.971" ry="15.297" style="fill:#47bfff;fill:color(display-p3 .2799 .748 1);fill-opacity:1" transform="rotate(37.892 38.418 32.4)"/>
+                                          </g>
+                                        </g>
+                                        <defs>
+                                          <filter id="b" width="60.045" height="41.654" x="-19.77" y="16.149" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+                                            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                                            <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+                                            <feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659"/>
+                                          </filter>
+                                          <filter id="c" width="90.34" height="51.437" x="-54.613" y="-7.533" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+                                            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                                            <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+                                            <feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659"/>
+                                          </filter>
+                                          <filter id="d" width="79.355" height="29.4" x="-49.64" y="2.03" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+                                            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                                            <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+                                            <feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/>
+                                          </filter>
+                                          <filter id="e" width="79.579" height="29.4" x="-45.045" y="20.029" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+                                            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                                            <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+                                            <feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/>
+                                          </filter>
+                                          <filter id="f" width="79.579" height="29.4" x="-43.513" y="21.178" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+                                            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                                            <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+                                            <feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/>
+                                          </filter>
+                                          <filter id="g" width="74.749" height="58.852" x="15.756" y="-17.901" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+                                            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                                            <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+                                            <feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659"/>
+                                          </filter>
+                                          <filter id="h" width="61.377" height="25.362" x="23.548" y="2.284" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+                                            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                                            <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+                                            <feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/>
+                                          </filter>
+                                          <filter id="i" width="61.377" height="25.362" x="23.548" y="2.284" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+                                            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                                            <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+                                            <feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/>
+                                          </filter>
+                                          <filter id="j" width="56.045" height="63.649" x="-27.636" y="-22.853" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+                                            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                                            <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+                                            <feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/>
+                                          </filter>
+                                          <filter id="k" width="54.814" height="64.646" x="20.116" y="-38.415" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+                                            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                                            <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+                                            <feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/>
+                                          </filter>
+                                          <filter id="l" width="33.541" height="35.313" x="24.641" y="-11.323" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+                                            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                                            <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+                                            <feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/>
+                                          </filter>
+                                          <filter id="m" width="54.814" height="64.646" x="-29.286" y="6.009" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+                                            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                                            <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+                                            <feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/>
+                                          </filter>
+                                          <filter id="n" width="54.814" height="64.646" x="-29.286" y="6.009" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+                                            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                                            <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+                                            <feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/>
+                                          </filter>
+                                          <filter id="o" width="54.814" height="64.646" x="8.244" y="-2.416" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+                                            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                                            <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+                                            <feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/>
+                                          </filter>
+                                          <filter id="p" width="39.409" height="43.623" x="18.713" y="10.588" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+                                            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                                            <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+                                            <feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596"/>
+                                          </filter>
+                                        </defs>
+                                      </svg>
+                                    </file>
 
-<file path="public/icons.svg">
-<svg xmlns="http://www.w3.org/2000/svg">
-  <symbol id="bluesky-icon" viewBox="0 0 16 17">
-    <g clip-path="url(#bluesky-clip)"><path fill="#08060d" d="M7.75 7.735c-.693-1.348-2.58-3.86-4.334-5.097-1.68-1.187-2.32-.981-2.74-.79C.188 2.065.1 2.812.1 3.251s.241 3.602.398 4.13c.52 1.744 2.367 2.333 4.07 2.145-2.495.37-4.71 1.278-1.805 4.512 3.196 3.309 4.38-.71 4.987-2.746.608 2.036 1.307 5.91 4.93 2.746 2.72-2.746.747-4.143-1.747-4.512 1.702.189 3.55-.4 4.07-2.145.156-.528.397-3.691.397-4.13s-.088-1.186-.575-1.406c-.42-.19-1.06-.395-2.741.79-1.755 1.24-3.64 3.752-4.334 5.099"/></g>
-    <defs><clipPath id="bluesky-clip"><path fill="#fff" d="M.1.85h15.3v15.3H.1z"/></clipPath></defs>
-  </symbol>
-  <symbol id="discord-icon" viewBox="0 0 20 19">
-    <path fill="#08060d" d="M16.224 3.768a14.5 14.5 0 0 0-3.67-1.153c-.158.286-.343.67-.47.976a13.5 13.5 0 0 0-4.067 0c-.128-.306-.317-.69-.476-.976A14.4 14.4 0 0 0 3.868 3.77C1.546 7.28.916 10.703 1.231 14.077a14.7 14.7 0 0 0 4.5 2.306q.545-.748.965-1.587a9.5 9.5 0 0 1-1.518-.74q.191-.14.372-.293c2.927 1.369 6.107 1.369 8.999 0q.183.152.372.294-.723.437-1.52.74.418.838.963 1.588a14.6 14.6 0 0 0 4.504-2.308c.37-3.911-.63-7.302-2.644-10.309m-9.13 8.234c-.878 0-1.599-.82-1.599-1.82 0-.998.705-1.82 1.6-1.82.894 0 1.614.82 1.599 1.82.001 1-.705 1.82-1.6 1.82m5.91 0c-.878 0-1.599-.82-1.599-1.82 0-.998.705-1.82 1.6-1.82.893 0 1.614.82 1.599 1.82 0 1-.706 1.82-1.6 1.82"/>
-  </symbol>
-  <symbol id="documentation-icon" viewBox="0 0 21 20">
-    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="m15.5 13.333 1.533 1.322c.645.555.967.833.967 1.178s-.322.623-.967 1.179L15.5 18.333m-3.333-5-1.534 1.322c-.644.555-.966.833-.966 1.178s.322.623.966 1.179l1.534 1.321"/>
-    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M17.167 10.836v-4.32c0-1.41 0-2.117-.224-2.68-.359-.906-1.118-1.621-2.08-1.96-.599-.21-1.349-.21-2.848-.21-2.623 0-3.935 0-4.983.369-1.684.591-3.013 1.842-3.641 3.428C3 6.449 3 7.684 3 10.154v2.122c0 2.558 0 3.838.706 4.726q.306.383.713.671c.76.536 1.79.64 3.581.66"/>
-    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M3 10a2.78 2.78 0 0 1 2.778-2.778c.555 0 1.209.097 1.748-.047.48-.129.854-.503.982-.982.145-.54.048-1.194.048-1.749a2.78 2.78 0 0 1 2.777-2.777"/>
-  </symbol>
-  <symbol id="github-icon" viewBox="0 0 19 19">
-    <path fill="#08060d" fill-rule="evenodd" d="M9.356 1.85C5.05 1.85 1.57 5.356 1.57 9.694a7.84 7.84 0 0 0 5.324 7.44c.387.079.528-.168.528-.376 0-.182-.013-.805-.013-1.454-2.165.467-2.616-.935-2.616-.935-.349-.91-.864-1.143-.864-1.143-.71-.48.051-.48.051-.48.787.051 1.2.805 1.2.805.695 1.194 1.817.857 2.268.649.064-.507.27-.857.49-1.052-1.728-.182-3.545-.857-3.545-3.87 0-.857.31-1.558.8-2.104-.078-.195-.349-1 .077-2.078 0 0 .657-.208 2.14.805a7.5 7.5 0 0 1 1.946-.26c.657 0 1.328.092 1.946.26 1.483-1.013 2.14-.805 2.14-.805.426 1.078.155 1.883.078 2.078.502.546.799 1.247.799 2.104 0 3.013-1.818 3.675-3.558 3.87.284.247.528.714.528 1.454 0 1.052-.012 1.896-.012 2.156 0 .208.142.455.528.377a7.84 7.84 0 0 0 5.324-7.441c.013-4.338-3.48-7.844-7.773-7.844" clip-rule="evenodd"/>
-  </symbol>
-  <symbol id="social-icon" viewBox="0 0 20 20">
-    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M12.5 6.667a4.167 4.167 0 1 0-8.334 0 4.167 4.167 0 0 0 8.334 0"/>
-    <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M2.5 16.667a5.833 5.833 0 0 1 8.75-5.053m3.837.474.513 1.035c.07.144.257.282.414.309l.93.155c.596.1.736.536.307.965l-.723.73a.64.64 0 0 0-.152.531l.207.903c.164.715-.213.991-.84.618l-.872-.52a.63.63 0 0 0-.577 0l-.872.52c-.624.373-1.003.094-.84-.618l.207-.903a.64.64 0 0 0-.152-.532l-.723-.729c-.426-.43-.289-.864.306-.964l.93-.156a.64.64 0 0 0 .412-.31l.513-1.034c.28-.562.735-.562 1.012 0"/>
-  </symbol>
-  <symbol id="x-icon" viewBox="0 0 19 19">
-    <path fill="#08060d" fill-rule="evenodd" d="M1.893 1.98c.052.072 1.245 1.769 2.653 3.77l2.892 4.114c.183.261.333.48.333.486s-.068.089-.152.183l-.522.593-.765.867-3.597 4.087c-.375.426-.734.834-.798.905a1 1 0 0 0-.118.148c0 .01.236.017.664.017h.663l.729-.83c.4-.457.796-.906.879-.999a692 692 0 0 0 1.794-2.038c.034-.037.301-.34.594-.675l.551-.624.345-.392a7 7 0 0 1 .34-.374c.006 0 .93 1.306 2.052 2.903l2.084 2.965.045.063h2.275c1.87 0 2.273-.003 2.266-.021-.008-.02-1.098-1.572-3.894-5.547-2.013-2.862-2.28-3.246-2.273-3.266.008-.019.282-.332 2.085-2.38l2-2.274 1.567-1.782c.022-.028-.016-.03-.65-.03h-.674l-.3.342a871 871 0 0 1-1.782 2.025c-.067.075-.405.458-.75.852a100 100 0 0 1-.803.91c-.148.172-.299.344-.99 1.127-.304.343-.32.358-.345.327-.015-.019-.904-1.282-1.976-2.808L6.365 1.85H1.8zm1.782.91 8.078 11.294c.772 1.08 1.413 1.973 1.425 1.984.016.017.241.02 1.05.017l1.03-.004-2.694-3.766L7.796 5.75 5.722 2.852l-1.039-.004-1.039-.004z" clip-rule="evenodd"/>
-  </symbol>
-</svg>
-</file>
+                                    <file path="public/icons.svg">
+                                      <svg xmlns="http://www.w3.org/2000/svg">
+                                        <symbol id="bluesky-icon" viewBox="0 0 16 17">
+                                          <g clip-path="url(#bluesky-clip)">
+                                            <path fill="#08060d" d="M7.75 7.735c-.693-1.348-2.58-3.86-4.334-5.097-1.68-1.187-2.32-.981-2.74-.79C.188 2.065.1 2.812.1 3.251s.241 3.602.398 4.13c.52 1.744 2.367 2.333 4.07 2.145-2.495.37-4.71 1.278-1.805 4.512 3.196 3.309 4.38-.71 4.987-2.746.608 2.036 1.307 5.91 4.93 2.746 2.72-2.746.747-4.143-1.747-4.512 1.702.189 3.55-.4 4.07-2.145.156-.528.397-3.691.397-4.13s-.088-1.186-.575-1.406c-.42-.19-1.06-.395-2.741.79-1.755 1.24-3.64 3.752-4.334 5.099"/>
+                                          </g>
+                                          <defs>
+                                            <clipPath id="bluesky-clip">
+                                              <path fill="#fff" d="M.1.85h15.3v15.3H.1z"/>
+                                            </clipPath>
+                                          </defs>
+                                        </symbol>
+                                        <symbol id="discord-icon" viewBox="0 0 20 19">
+                                          <path fill="#08060d" d="M16.224 3.768a14.5 14.5 0 0 0-3.67-1.153c-.158.286-.343.67-.47.976a13.5 13.5 0 0 0-4.067 0c-.128-.306-.317-.69-.476-.976A14.4 14.4 0 0 0 3.868 3.77C1.546 7.28.916 10.703 1.231 14.077a14.7 14.7 0 0 0 4.5 2.306q.545-.748.965-1.587a9.5 9.5 0 0 1-1.518-.74q.191-.14.372-.293c2.927 1.369 6.107 1.369 8.999 0q.183.152.372.294-.723.437-1.52.74.418.838.963 1.588a14.6 14.6 0 0 0 4.504-2.308c.37-3.911-.63-7.302-2.644-10.309m-9.13 8.234c-.878 0-1.599-.82-1.599-1.82 0-.998.705-1.82 1.6-1.82.894 0 1.614.82 1.599 1.82.001 1-.705 1.82-1.6 1.82m5.91 0c-.878 0-1.599-.82-1.599-1.82 0-.998.705-1.82 1.6-1.82.893 0 1.614.82 1.599 1.82 0 1-.706 1.82-1.6 1.82"/>
+                                        </symbol>
+                                        <symbol id="documentation-icon" viewBox="0 0 21 20">
+                                          <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="m15.5 13.333 1.533 1.322c.645.555.967.833.967 1.178s-.322.623-.967 1.179L15.5 18.333m-3.333-5-1.534 1.322c-.644.555-.966.833-.966 1.178s.322.623.966 1.179l1.534 1.321"/>
+                                          <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M17.167 10.836v-4.32c0-1.41 0-2.117-.224-2.68-.359-.906-1.118-1.621-2.08-1.96-.599-.21-1.349-.21-2.848-.21-2.623 0-3.935 0-4.983.369-1.684.591-3.013 1.842-3.641 3.428C3 6.449 3 7.684 3 10.154v2.122c0 2.558 0 3.838.706 4.726q.306.383.713.671c.76.536 1.79.64 3.581.66"/>
+                                          <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M3 10a2.78 2.78 0 0 1 2.778-2.778c.555 0 1.209.097 1.748-.047.48-.129.854-.503.982-.982.145-.54.048-1.194.048-1.749a2.78 2.78 0 0 1 2.777-2.777"/>
+                                        </symbol>
+                                        <symbol id="github-icon" viewBox="0 0 19 19">
+                                          <path fill="#08060d" fill-rule="evenodd" d="M9.356 1.85C5.05 1.85 1.57 5.356 1.57 9.694a7.84 7.84 0 0 0 5.324 7.44c.387.079.528-.168.528-.376 0-.182-.013-.805-.013-1.454-2.165.467-2.616-.935-2.616-.935-.349-.91-.864-1.143-.864-1.143-.71-.48.051-.48.051-.48.787.051 1.2.805 1.2.805.695 1.194 1.817.857 2.268.649.064-.507.27-.857.49-1.052-1.728-.182-3.545-.857-3.545-3.87 0-.857.31-1.558.8-2.104-.078-.195-.349-1 .077-2.078 0 0 .657-.208 2.14.805a7.5 7.5 0 0 1 1.946-.26c.657 0 1.328.092 1.946.26 1.483-1.013 2.14-.805 2.14-.805.426 1.078.155 1.883.078 2.078.502.546.799 1.247.799 2.104 0 3.013-1.818 3.675-3.558 3.87.284.247.528.714.528 1.454 0 1.052-.012 1.896-.012 2.156 0 .208.142.455.528.377a7.84 7.84 0 0 0 5.324-7.441c.013-4.338-3.48-7.844-7.773-7.844" clip-rule="evenodd"/>
+                                        </symbol>
+                                        <symbol id="social-icon" viewBox="0 0 20 20">
+                                          <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M12.5 6.667a4.167 4.167 0 1 0-8.334 0 4.167 4.167 0 0 0 8.334 0"/>
+                                          <path fill="none" stroke="#aa3bff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M2.5 16.667a5.833 5.833 0 0 1 8.75-5.053m3.837.474.513 1.035c.07.144.257.282.414.309l.93.155c.596.1.736.536.307.965l-.723.73a.64.64 0 0 0-.152.531l.207.903c.164.715-.213.991-.84.618l-.872-.52a.63.63 0 0 0-.577 0l-.872.52c-.624.373-1.003.094-.84-.618l.207-.903a.64.64 0 0 0-.152-.532l-.723-.729c-.426-.43-.289-.864.306-.964l.93-.156a.64.64 0 0 0 .412-.31l.513-1.034c.28-.562.735-.562 1.012 0"/>
+                                        </symbol>
+                                        <symbol id="x-icon" viewBox="0 0 19 19">
+                                          <path fill="#08060d" fill-rule="evenodd" d="M1.893 1.98c.052.072 1.245 1.769 2.653 3.77l2.892 4.114c.183.261.333.48.333.486s-.068.089-.152.183l-.522.593-.765.867-3.597 4.087c-.375.426-.734.834-.798.905a1 1 0 0 0-.118.148c0 .01.236.017.664.017h.663l.729-.83c.4-.457.796-.906.879-.999a692 692 0 0 0 1.794-2.038c.034-.037.301-.34.594-.675l.551-.624.345-.392a7 7 0 0 1 .34-.374c.006 0 .93 1.306 2.052 2.903l2.084 2.965.045.063h2.275c1.87 0 2.273-.003 2.266-.021-.008-.02-1.098-1.572-3.894-5.547-2.013-2.862-2.28-3.246-2.273-3.266.008-.019.282-.332 2.085-2.38l2-2.274 1.567-1.782c.022-.028-.016-.03-.65-.03h-.674l-.3.342a871 871 0 0 1-1.782 2.025c-.067.075-.405.458-.75.852a100 100 0 0 1-.803.91c-.148.172-.299.344-.99 1.127-.304.343-.32.358-.345.327-.015-.019-.904-1.282-1.976-2.808L6.365 1.85H1.8zm1.782.91 8.078 11.294c.772 1.08 1.413 1.973 1.425 1.984.016.017.241.02 1.05.017l1.03-.004-2.694-3.766L7.796 5.75 5.722 2.852l-1.039-.004-1.039-.004z" clip-rule="evenodd"/>
+                                        </symbol>
+                                      </svg>
+                                    </file>
 
-<file path="README.md">
+                                    <file path="README.md">
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
@@ -1853,9 +1968,9 @@ The React Compiler is not enabled on this template because of its impact on dev 
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-</file>
+                                    </file>
 
-<file path="src/App.css">
+                                    <file path="src/App.css">
 .counter {
   font-size: 16px;
   padding: 5px 10px;
@@ -2040,42 +2155,40 @@ If you are developing a production application, we recommend using TypeScript wi
     border-right-color: var(--border);
   }
 }
-</file>
+                                    </file>
 
-<file path="src/assets/fonts/.gitkeep">
+                                    <file path="public/fonts/.gitkeep">
 
-</file>
+                                    </file>
 
-<file path="src/components/elements/CourseCard/CourseCard.jsx">
+                                    <file path="src/components/elements/CourseCard/CourseCard.jsx">
 import { IoPlayCircleOutline } from "react-icons/io5";
 import styles from "./CourseCard.module.css";
-import placeholderImg from "../../../assets/images/linco-logo.jpg"; // صورة مؤقتة
+import placeholderImg from "../../../../public/images/linco-logo.jpg"; // صورة مؤقتة
 
 const CourseCard = ({ course }) => {
   return (
-    <div className={styles.card}>
-      <div className={styles.imageContainer}>
-        <img src={placeholderImg} alt={course.title} className={styles.image} />
-        <IoPlayCircleOutline className={styles.playIcon} />
-      </div>
-      <div className={styles.content}>
-        <h3 className={styles.title}>{course.title}</h3>
-        <p className={styles.description}>{course.description}</p>
-        <div className={styles.actionRow}>
-          <button className={styles.btn}>Continue Learning</button>
-        </div>
-        <div className={styles.progressContainer}>
-          <span className={styles.progressText}>Progress</span>
-          <span className={styles.progressPercentage}>{course.progress}%</span>
-        </div>
-        <div className={styles.progressBarBg}>
-          <div
-            className={styles.progressBarFill}
-            style={{ width: `${course.progress}%` }}
+                                      <div className={styles.card}>
+<div className={styles.imageContainer}>
+<img src={placeholderImg} alt={course.title} className={styles.image} />
+<IoPlayCircleOutline className={styles.playIcon} />
+</div>
+<div className={styles.content}>
+<h3 className={styles.title}>{course.title}</h3>
+<p className={styles.description}>{course.description}</p>
+<div className={styles.actionRow}>
+<button className={styles.btn}>Continue Learning</button>
+</div>
+<div className={styles.progressContainer}>
+<span className={styles.progressText}>Progress</span>
+<span className={styles.progressPercentage}>{course.progress}%</span>
+</div>
+<div className={styles.progressBarBg}>
+<div className={styles.progressBarFill} style={{ width: `${course.progress}%` }}
           ></div>
-        </div>
-      </div>
-    </div>
+</div>
+</div>
+</div>
   );
 };
 
@@ -2214,27 +2327,27 @@ export default CourseCard;
   border-radius: 3px;
   transition: width 1s ease-in-out;
 }
-</file>
+                                      </file>
 
-<file path="src/components/elements/InvitationCard/InvitationCard.jsx">
+                                      <file path="src/components/elements/InvitationCard/InvitationCard.jsx">
 import styles from "./InvitationCard.module.css";
 
 const InvitationCard = ({ invitation }) => {
   return (
-    <div className={styles["list-item"]}>
-      <div className={styles["company-name"]}>{invitation.company}</div>
-      <div className={styles["vertical-divider"]}></div>
-      <div className={styles["text-item"]}>{invitation.caller}</div>
-      <div className={styles["vertical-divider"]}></div>
-      <div className={styles["text-item"]}>{invitation.role}</div>
-      <div className={styles["vertical-divider"]}></div>
-      <div className={styles["text-item"]}>{invitation.time}</div>
+                                        <div className={styles["list-item"]}>
+<div className={styles["company-name"]}>{invitation.company}</div>
+<div className={styles["vertical-divider"]}></div>
+<div className={styles["text-item"]}>{invitation.caller}</div>
+<div className={styles["vertical-divider"]}></div>
+<div className={styles["text-item"]}>{invitation.role}</div>
+<div className={styles["vertical-divider"]}></div>
+<div className={styles["text-item"]}>{invitation.time}</div>
 
-      <div className={styles["list-actions"]}>
-        <button className={styles["btn-accept"]}>Accept</button>
-        <button className={styles["btn-reject"]}>Reject</button>
-      </div>
-    </div>
+<div className={styles["list-actions"]}>
+<button className={styles["btn-accept"]}>Accept</button>
+<button className={styles["btn-reject"]}>Reject</button>
+</div>
+</div>
   );
 };
 
@@ -2325,9 +2438,9 @@ export default InvitationCard;
     display: none;
   }
 }
-</file>
+                                        </file>
 
-<file path="src/components/elements/LiveCard/LiveCard.jsx">
+                                        <file path="src/components/elements/LiveCard/LiveCard.jsx">
 import {
   IoPlayCircleOutline,
   IoPersonOutline,
@@ -2335,33 +2448,33 @@ import {
   IoTimeOutline,
 } from "react-icons/io5";
 import styles from "./LiveCard.module.css";
-import placeholderImg from "../../../assets/images/linco-logo.jpg";
+import placeholderImg from "../../../../public/images/linco-logo.jpg";
 
 const LiveCard = ({ live }) => {
   return (
-    <div className={styles.card}>
-      <div className={styles.imageContainer}>
-        <img src={placeholderImg} alt={live.title} className={styles.image} />
-        <IoPlayCircleOutline className={styles.playIcon} />
-      </div>
-      <div className={styles.content}>
-        <h3 className={styles.title}>{live.title}</h3>
-        <div className={styles.details}>
-          <p>
-            <IoPersonOutline className={styles.icon} /> {live.instructor}
+                                          <div className={styles.card}>
+<div className={styles.imageContainer}>
+<img src={placeholderImg} alt={live.title} className={styles.image} />
+<IoPlayCircleOutline className={styles.playIcon} />
+</div>
+<div className={styles.content}>
+<h3 className={styles.title}>{live.title}</h3>
+<div className={styles.details}>
+<p>
+<IoPersonOutline className={styles.icon} /> {live.instructor}
           </p>
-          <p>
-            <IoCalendarOutline className={styles.icon} /> {live.date}
+<p>
+<IoCalendarOutline className={styles.icon} /> {live.date}
           </p>
-          <p>
-            <IoTimeOutline className={styles.icon} /> {live.duration}
+<p>
+<IoTimeOutline className={styles.icon} /> {live.duration}
           </p>
-        </div>
-        <div className={styles.actionRow}>
-          <button className={styles.btn}>Join Now</button>
-        </div>
-      </div>
-    </div>
+</div>
+<div className={styles.actionRow}>
+<button className={styles.btn}>Join Now</button>
+</div>
+</div>
+</div>
   );
 };
 
@@ -2479,9 +2592,9 @@ export default LiveCard;
   background-color: #1a3a6c;
   box-shadow: 0 4px 12px rgba(17, 41, 80, 0.2);
 }
-</file>
+                                          </file>
 
-<file path="src/components/elements/RoomCard/RoomCard.jsx">
+                                          <file path="src/components/elements/RoomCard/RoomCard.jsx">
 import { useNavigate } from "react-router-dom";
 import { IoPersonOutline, IoCalendarOutline, IoPeople } from "react-icons/io5";
 import styles from "./RoomCard.module.css";
@@ -2496,36 +2609,34 @@ const RoomCard = ({ room }) => {
   };
 
   return (
-    <div className={styles.card} onClick={handleCardClick}>
+                                            <div className={styles.card} onClick={handleCardClick}>
       {/* Top half with image and info */}
       <div className={styles["card-top"]}>
-        <div
-          className={styles["card-image"]}
-          style={room.imageColor ? { backgroundColor: room.imageColor } : {}}
+<div className={styles["card-image"]} style={room.imageColor ? { backgroundColor: room.imageColor } : {}}
         ></div>
-        <div className={styles["card-info"]}>
-          <h3>{room.companyName}</h3>
-          <p>
-            <IoPersonOutline className={styles.icon} /> Role: {room.role}
+<div className={styles["card-info"]}>
+<h3>{room.companyName}</h3>
+<p>
+<IoPersonOutline className={styles.icon} /> Role: {room.role}
           </p>
-          <p>
-            <IoCalendarOutline className={styles.icon} /> Joined at{" "}
+<p>
+<IoCalendarOutline className={styles.icon} /> Joined at{" "}
             {room.dateJoined}
           </p>
-        </div>
-      </div>
+</div>
+</div>
 
       {/* Horizontal line */}
       <hr className={styles["card-divider"]} />
 
       {/* Bottom half with badge */}
       <div className={styles["card-bottom"]}>
-        <div className={styles["member-badge"]}>
-          <IoPeople className={styles["badge-icon"]} />
+<div className={styles["member-badge"]}>
+<IoPeople className={styles["badge-icon"]} />
           {room.members || 120}
         </div>
-      </div>
-    </div>
+</div>
+</div>
   );
 };
 
@@ -2616,30 +2727,27 @@ export default RoomCard;
 .badge-icon {
   font-size: 1rem;
 }
-</file>
+                                            </file>
 
-<file path="src/components/form/.gitkeep">
+                                            <file path="src/components/form/.gitkeep">
 
-</file>
+                                            </file>
 
-<file path="src/components/layouts/BrandLogo/BrandLogo.jsx">
+                                            <file path="src/components/layouts/BrandLogo/BrandLogo.jsx">
 import { logoStyles } from "./BrandLogoStyles";
-import logoImg from "../../../assets/images/linco-logo.jpg";
+import logoImg from "../../../../public/images/linco-logo.jpg";
 
 const BrandLogo = () => {
   return (
-    <div className={logoStyles.container}>
-      <div className={logoStyles.imageWrapper}>
-        <img
-          src={logoImg}
-          alt="LinCo Corporate Squid Logo"
-          className={logoStyles.image}
+                                              <div className={logoStyles.container}>
+<div className={logoStyles.imageWrapper}>
+<img src={logoImg} alt="LinCo Corporate Squid Logo" className={logoStyles.image}
         />
-      </div>
-      <span className={logoStyles.brandText}>
+</div>
+<span className={logoStyles.brandText}>
         LinCo <span className={logoStyles.brandSubtext}>Link Company.</span>
-      </span>
-    </div>
+</span>
+</div>
   );
 };
 
@@ -2655,9 +2763,9 @@ export const logoStyles = {
   brandText: "font-bold text-white text-xl font-serif tracking-wide",
   brandSubtext: "text-xs font-normal tracking-normal text-gray-300 ml-1",
 };
-</file>
+                                              </file>
 
-<file path="src/components/layouts/Footer/Footer.module.css">
+                                              <file path="src/components/layouts/Footer/Footer.module.css">
 .footer {
   background-color: var(--color-linco-navy);
   color: #ffffff;
@@ -2698,9 +2806,9 @@ export const logoStyles = {
   font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.5);
 }
-</file>
+                                              </file>
 
-<file path="src/components/layouts/Footer/footerConfig.jsx">
+                                              <file path="src/components/layouts/Footer/footerConfig.jsx">
 export const FOOTER_CONFIG = {
   global: [
     { name: "Pending Invitations", path: "/pending-invitations" },
@@ -2719,9 +2827,9 @@ export const FOOTER_CONFIG = {
     //
   ],
 };
-</file>
+                                              </file>
 
-<file path="src/components/layouts/Header/headerConfig.jsx">
+                                              <file path="src/components/layouts/Header/headerConfig.jsx">
 import {
   IoLinkOutline,
   IoMapOutline,
@@ -2745,29 +2853,36 @@ export const HEADER_CONFIG = {
     subNavLinks: [
       {
         name: "Learning Path",
-        icon: <IoLinkOutline />,
+        icon: <IoLinkOutline />
+,
         path: PATHS.LEARNING_PATH,
       },
-      { name: "Courses", icon: <IoLinkOutline />, path: PATHS.COURSES },
-      { name: "Road Map", icon: <IoMapOutline />, path: PATHS.ROAD_MAP },
+      { name: "Courses", icon: <IoLinkOutline />
+, path: PATHS.COURSES },
+      { name: "Road Map", icon: <IoMapOutline />
+, path: PATHS.ROAD_MAP },
       {
         name: "Weekly Tasks",
-        icon: <IoListOutline />,
+        icon: <IoListOutline />
+,
         path: PATHS.WEEKLY_TASKS,
       },
       {
         name: "Leaderboard",
-        icon: <IoPersonOutline />,
+        icon: <IoPersonOutline />
+,
         path: PATHS.LEADERBOARD,
       },
       {
         name: "Group Workspace",
-        icon: <IoLinkOutline />,
+        icon: <IoLinkOutline />
+,
         path: PATHS.GROUP_WORKSPACE,
       },
       {
         name: "Group Chat",
-        icon: <IoChatbubblesOutline />,
+        icon: <IoChatbubblesOutline />
+,
         path: PATHS.GROUP_CHAT,
       },
     ],
@@ -2779,9 +2894,9 @@ export const HEADER_CONFIG = {
     subNavLinks: [],
   },
 };
-</file>
+                                  </file>
 
-<file path="src/components/layouts/Header/sub_header/SubHeader.jsx">
+                                  <file path="src/components/layouts/Header/sub_header/SubHeader.jsx">
 import { Link, useLocation } from "react-router-dom";
 import { HEADER_CONFIG } from "../headerConfig";
 import styles from "./SubHeader.module.css";
@@ -2794,18 +2909,16 @@ const SubHeader = ({ role = "trainee" }) => {
   if (subNavLinks.length === 0) return null;
 
   return (
-    <div className={styles["workspace-sub-header"]}>
-      <nav className={styles["sub-nav-links"]}>
+                                    <div className={styles["workspace-sub-header"]}>
+<nav className={styles["sub-nav-links"]}>
         {subNavLinks.map((link, index) => {
           const isActive = location.pathname === link.path;
 
           return (
             <div key={index} className={styles["sub-nav-item"]}>
-              <Link
-                to={link.path}
-                className={`${styles["sub-nav-link"]} ${isActive ? styles["active"] : ""}`}
+<Link to={link.path} className={`${styles["sub-nav-link"]} ${isActive ? styles["active"] : ""}`}
               >
-                <span className={styles["sub-nav-icon"]}>{link.icon}</span>
+<span className={styles["sub-nav-icon"]}>{link.icon}</span>
                 {link.name}
               </Link>
               {index < subNavLinks.length - 1 && (
@@ -2815,7 +2928,7 @@ const SubHeader = ({ role = "trainee" }) => {
           );
         })}
       </nav>
-    </div>
+</div>
   );
 };
 
@@ -2876,9 +2989,9 @@ export default SubHeader;
   background-color: #cbd5e1;
   margin: 0 12px;
 }
-</file>
+                                    </file>
 
-<file path="src/components/layouts/SideBar/sidebarConfig.jsx">
+                                    <file path="src/components/layouts/SideBar/sidebarConfig.jsx">
 import {
   IoBusinessOutline,
   IoRibbonOutline,
@@ -2895,21 +3008,26 @@ export const SIDEBAR_ROLES = {
   trainee: [
     {
       name: "Departments",
-      icon: <IoBusinessOutline />,
+      icon: <IoBusinessOutline />
+,
       path: PATHS.DEPARTMENTS,
     },
     {
       name: "Certificates",
-      icon: <IoRibbonOutline />,
+      icon: <IoRibbonOutline />
+,
       path: PATHS.CERTIFICATES,
     },
-    { name: "Lives", icon: <IoVideocamOutline />, path: PATHS.LIVES },
+    { name: "Lives", icon: <IoVideocamOutline />
+, path: PATHS.LIVES },
     {
       name: "Chat Channel",
-      icon: <IoChatbubblesOutline />,
+      icon: <IoChatbubblesOutline />
+,
       path: PATHS.CHAT_CHANNEL,
     },
-    { name: "Inquiries", icon: <IoHelpCircleOutline />, path: PATHS.INQUIRIES },
+    { name: "Inquiries", icon: <IoHelpCircleOutline />
+, path: PATHS.INQUIRIES },
   ],
   "section manger": [
     //
@@ -2918,18 +3036,21 @@ export const SIDEBAR_ROLES = {
     //
   ],
   global: [
-    { name: "Settings", icon: <IoSettings />, path: PATHS.SETTINGS },
+    { name: "Settings", icon: <IoSettings />
+, path: PATHS.SETTINGS },
     {
       name: "Notifications",
-      icon: <IoNotifications />,
+      icon: <IoNotifications />
+,
       path: PATHS.NOTIFICATIONS,
     },
-    { name: "My Profile", icon: <IoPerson />, path: PATHS.PROFILE },
+    { name: "My Profile", icon: <IoPerson />
+, path: PATHS.PROFILE },
   ],
 };
-</file>
+                      </file>
 
-<file path="src/config/theme.js">
+                      <file path="src/config/theme.js">
 export const theme = {
   colors: {
     primary: "#112950",
@@ -2937,20 +3058,20 @@ export const theme = {
     background: "#f8fafc",
   },
 };
-</file>
+                      </file>
 
-<file path="src/features/Dashboard/HomePage/api/.gitkeep">
+                      <file path="src/features/Dashboard/HomePage/api/.gitkeep">
 
-</file>
+                      </file>
 
-<file path="src/features/Dashboard/HomePage/components/home_page/HomePage.jsx">
+                      <file path="src/features/Dashboard/HomePage/components/home_page/HomePage.jsx">
 import Sidebar from "../../../../../components/layouts/SideBar/Sidebar";
 import Header from "../../../../../components/layouts/Header/global_header/Header";
 import Footer from "../../../../../components/layouts/Footer/Footer";
 import PendingInvitations from "../pending_invitations/PendingInvitations";
 import RoomSection from "../room_section/RoomSection";
 import styles from "./HomePage.module.css";
-import appIconImg from "../../../../../assets/icons/linco-logo.png";
+import appIconImg from "../../../../../../public/icons/linco-logo.png";
 
 const HomePage = () => {
   // Mock data arrays for the different room categories
@@ -3007,49 +3128,42 @@ const HomePage = () => {
   ];
 
   return (
-    <div className={styles["app-container"]}>
-      <Sidebar role="global" />
+                        <div className={styles["app-container"]}>
+<Sidebar role="global" />
 
-      <div className={`${styles["main-wrapper"]} custom-scrollbar`}>
-        <Header />
-        <div className={styles["hero-banner"]}>
-          <div className={styles["hero-text"]}>
-            <h1>Ready to dive into your learning, Abrar ?</h1>
-            <p>
+                        <div className={`${styles["main-wrapper"]} custom-scrollbar`}>
+<Header />
+<div className={styles["hero-banner"]}>
+<div className={styles["hero-text"]}>
+<h1>Ready to dive into your learning, Abrar ?</h1>
+<p>
               Manage your company links, track your active training rooms, and
               level up your career from one single dashboard.
             </p>
-          </div>
-          <img
-            src={appIconImg}
-            alt="App Icon"
-            className={styles["app-icon-img"]}
+</div>
+<img src={appIconImg} alt="App Icon" className={styles["app-icon-img"]}
           />
-        </div>
+</div>
 
-        <PendingInvitations />
+<PendingInvitations />
 
-        <div
-          className={styles["content-section"]}
-          style={{ paddingTop: "40px" }}
+<div className={styles["content-section"]} style={{ paddingTop: "40px" }}
         >
-          <RoomSection title="Recently Active Rooms" rooms={activeRooms} />
+<RoomSection title="Recently Active Rooms" rooms={activeRooms} />
 
-          <div className={styles.divider}></div>
+<div className={styles.divider}></div>
 
-          <RoomSection title="Recently Active Owned Rooms" rooms={ownedRooms} />
+<RoomSection title="Recently Active Owned Rooms" rooms={ownedRooms} />
 
-          <div className={styles.divider}></div>
+<div className={styles.divider}></div>
 
-          <RoomSection
-            title="Recently Active Worked Rooms"
-            rooms={workedRooms}
+<RoomSection title="Recently Active Worked Rooms" rooms={workedRooms}
           />
-        </div>
+</div>
 
-        <Footer />
-      </div>
-    </div>
+<Footer />
+</div>
+</div>
   );
 };
 
@@ -3115,9 +3229,9 @@ export default HomePage;
   border-top: 1px dashed #e5e7eb;
   margin: 20px 40px;
 }
-</file>
+                        </file>
 
-<file path="src/features/Dashboard/HomePage/components/pending_invitations/PendingInvitations.jsx">
+                        <file path="src/features/Dashboard/HomePage/components/pending_invitations/PendingInvitations.jsx">
 import styles from "./PendingInvitations.module.css";
 import InvitationCard from "../../../../../components/elements/InvitationCard/InvitationCard.jsx";
 
@@ -3147,21 +3261,19 @@ const PendingInvitations = () => {
   ];
 
   return (
-    <div
-      className={styles["content-section"]}
-      style={{ background: "transparent" }}
+                          <div className={styles["content-section"]} style={{ background: "transparent" }}
     >
-      <div className={styles["section-header"]}>
-        <h2>New pending Invitations</h2>
-        <button className={styles["view-all"]}>View All</button>
-      </div>
+<div className={styles["section-header"]}>
+<h2>New pending Invitations</h2>
+<button className={styles["view-all"]}>View All</button>
+</div>
 
-      <div className={styles["list-container"]}>
+<div className={styles["list-container"]}>
         {invitations.map((inv) => (
           <InvitationCard key={inv.id} invitation={inv} />
         ))}
       </div>
-    </div>
+</div>
   );
 };
 
@@ -3209,26 +3321,26 @@ export default PendingInvitations;
   flex-direction: column;
   gap: 15px;
 }
-</file>
+                          </file>
 
-<file path="src/features/Dashboard/HomePage/components/room_section/RoomSection.jsx">
+                          <file path="src/features/Dashboard/HomePage/components/room_section/RoomSection.jsx">
 import RoomCard from "../../../../../components/elements/RoomCard/RoomCard.jsx";
 import styles from "./RoomSection.module.css";
 
 const RoomSection = ({ title, rooms }) => {
   return (
-    <div className={styles.section}>
-      <div className={styles["section-header"]}>
-        <h2>{title}</h2>
-        <button className={styles["view-all"]}>View All</button>
-      </div>
+                            <div className={styles.section}>
+<div className={styles["section-header"]}>
+<h2>{title}</h2>
+<button className={styles["view-all"]}>View All</button>
+</div>
 
-      <div className={styles["cards-grid"]}>
+<div className={styles["cards-grid"]}>
         {rooms.map((room) => (
           <RoomCard key={room.id} room={room} />
         ))}
       </div>
-    </div>
+</div>
   );
 };
 
@@ -3281,25 +3393,25 @@ export default RoomSection;
     grid-template-columns: 1fr;
   }
 }
-</file>
+                            </file>
 
-<file path="src/features/Dashboard/HomePage/hooks/.gitkeep">
+                            <file path="src/features/Dashboard/HomePage/hooks/.gitkeep">
 
-</file>
+                            </file>
 
-<file path="src/features/Dashboard/HomePage/store/.gitkeep">
+                            <file path="src/features/Dashboard/HomePage/store/.gitkeep">
 
-</file>
+                            </file>
 
-<file path="src/features/Dashboard/HomePage/utils/.gitkeep">
+                            <file path="src/features/Dashboard/HomePage/utils/.gitkeep">
 
-</file>
+                            </file>
 
-<file path="src/features/Dashboard/JoinedRoomPage/api/.gitkeep">
+                            <file path="src/features/Dashboard/JoinedRoomPage/api/.gitkeep">
 
-</file>
+                            </file>
 
-<file path="src/features/Dashboard/JoinedRoomPage/components/joined_rooms/JoinedRooms.jsx">
+                            <file path="src/features/Dashboard/JoinedRoomPage/components/joined_rooms/JoinedRooms.jsx">
 import { useState } from "react";
 import { IoChevronBack, IoSearch } from "react-icons/io5";
 import Sidebar from "../../../../../components/layouts/SideBar/Sidebar.jsx";
@@ -3324,60 +3436,52 @@ const JoinedRoomsPage = () => {
   );
 
   return (
-    <div className={styles["app-container"]}>
-      <Sidebar role="global" />
+                              <div className={styles["app-container"]}>
+<Sidebar role="global" />
 
-      <div className={`${styles["main-wrapper"]} custom-scrollbar`}>
-        <Header />
+                              <div className={`${styles["main-wrapper"]} custom-scrollbar`}>
+<Header />
 
-        <div className={styles["top-banner"]}>
-          <div className={styles["banner-text"]}>
-            <div className={styles["title-container"]}>
-              <a href="#" className={styles["back-link"]}>
-                <IoChevronBack className={styles["back-icon"]} />
-                <h2>Joined Training Rooms</h2>
-              </a>
-              <div className={styles["dashed-line"]}></div>
-            </div>
+<div className={styles["top-banner"]}>
+<div className={styles["banner-text"]}>
+<div className={styles["title-container"]}>
+<a href="#" className={styles["back-link"]}>
+<IoChevronBack className={styles["back-icon"]} />
+<h2>Joined Training Rooms</h2>
+</a>
+<div className={styles["dashed-line"]}></div>
+</div>
 
-            <div className={styles["stats-box"]}>
-              <p className={styles["stats-title"]}>
+<div className={styles["stats-box"]}>
+<p className={styles["stats-title"]}>
                 Number of training companies
               </p>
-              <p className={styles["stats-number"]}>{joinedRooms.length}</p>
-            </div>
-          </div>
+<p className={styles["stats-number"]}>{joinedRooms.length}</p>
+</div>
+</div>
 
-          <div className={styles["banner-image-container"]}>
-            <img
-              src="src\assets\images\joined-rooms.png"
-              alt="Modern office building"
-              className={styles["banner-image"]}
+<div className={styles["banner-image-container"]}>
+<img src="public\images\joined-rooms.png" alt="Modern office building" className={styles["banner-image"]}
             />
-          </div>
-        </div>
+</div>
+</div>
 
-        <div className={styles["search-section"]}>
-          <div className={styles["search-bar"]}>
-            <input
-              type="text"
-              placeholder="Search by company's name"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+<div className={styles["search-section"]}>
+<div className={styles["search-bar"]}>
+<input type="text" placeholder="Search by company's name" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <IoSearch className={styles["search-icon"]} />
-          </div>
-        </div>
+<IoSearch className={styles["search-icon"]} />
+</div>
+</div>
 
-        <div className={styles["list-section"]}>
-          <div className={styles["cards-grid"]}>
+<div className={styles["list-section"]}>
+<div className={styles["cards-grid"]}>
             {filteredRooms.length > 0 ? (
               filteredRooms.map((room) => (
                 <RoomCard key={room.id} room={room} />
               ))
             ) : (
-              <p
-                style={{
+              <p style={{
                   color: "#64748b",
                   fontStyle: "italic",
                   gridColumn: "1 / -1",
@@ -3387,13 +3491,13 @@ const JoinedRoomsPage = () => {
               </p>
             )}
           </div>
-        </div>
+</div>
 
-        <div className={styles["footer-wrapper"]}>
-          <Footer />
-        </div>
-      </div>
-    </div>
+<div className={styles["footer-wrapper"]}>
+<Footer />
+</div>
+</div>
+</div>
   );
 };
 
@@ -3608,25 +3712,25 @@ export default JoinedRoomsPage;
     grid-template-columns: 1fr;
   }
 }
-</file>
+                              </file>
 
-<file path="src/features/Dashboard/JoinedRoomPage/hooks/.gitkeep">
+                              <file path="src/features/Dashboard/JoinedRoomPage/hooks/.gitkeep">
 
-</file>
+                              </file>
 
-<file path="src/features/Dashboard/JoinedRoomPage/store/.gitkeep">
+                              <file path="src/features/Dashboard/JoinedRoomPage/store/.gitkeep">
 
-</file>
+                              </file>
 
-<file path="src/features/Dashboard/JoinedRoomPage/utils/.gitkeep">
+                              <file path="src/features/Dashboard/JoinedRoomPage/utils/.gitkeep">
 
-</file>
+                              </file>
 
-<file path="src/features/Dashboard/PendingInvitationsPage/api/.gitkeep">
+                              <file path="src/features/Dashboard/PendingInvitationsPage/api/.gitkeep">
 
-</file>
+                              </file>
 
-<file path="src/features/Dashboard/PendingInvitationsPage/components/pending_invitations/PendingInvitations.jsx">
+                              <file path="src/features/Dashboard/PendingInvitationsPage/components/pending_invitations/PendingInvitations.jsx">
 import { useState } from "react";
 import { IoChevronBack, IoSearch } from "react-icons/io5";
 import Sidebar from "../../../../../components/layouts/SideBar/Sidebar.jsx";
@@ -3688,68 +3792,60 @@ const PendingInvitationsPage = () => {
   );
 
   return (
-    <div className={styles["app-container"]}>
-      <Sidebar role="global" />
+                                <div className={styles["app-container"]}>
+<Sidebar role="global" />
 
-      <div className={`${styles["main-wrapper"]} custom-scrollbar`}>
-        <Header />
+                                <div className={`${styles["main-wrapper"]} custom-scrollbar`}>
+<Header />
 
-        <div className={styles["top-banner"]}>
-          <div className={styles["banner-text"]}>
-            <div className={styles["title-container"]}>
-              <a href="#" className={styles["back-link"]}>
-                <IoChevronBack className={styles["back-icon"]} />
-                <h2>Pending Invitations</h2>
-              </a>
-              <div className={styles["dashed-line"]}></div>
-            </div>
-            <p>
+<div className={styles["top-banner"]}>
+<div className={styles["banner-text"]}>
+<div className={styles["title-container"]}>
+<a href="#" className={styles["back-link"]}>
+<IoChevronBack className={styles["back-icon"]} />
+<h2>Pending Invitations</h2>
+</a>
+<div className={styles["dashed-line"]}></div>
+</div>
+<p>
               Review your pending invitations to join company
               <br />
               workspaces and training rooms.
             </p>
-          </div>
+</div>
 
-          <div className={styles["banner-image-container"]}>
-            <img
-              src="src\assets\images\pending-invitations.png"
-              alt="Invitation to Linco company envelopes"
-              className={styles["banner-image"]}
+<div className={styles["banner-image-container"]}>
+<img src="public\images\pending-invitations.png" alt="Invitation to Linco company envelopes" className={styles["banner-image"]}
             />
-          </div>
-        </div>
+</div>
+</div>
 
-        <div className={styles["search-section"]}>
-          <div className={styles["search-bar"]}>
-            <input
-              type="text"
-              placeholder="Search by company's name"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+<div className={styles["search-section"]}>
+<div className={styles["search-bar"]}>
+<input type="text" placeholder="Search by company's name" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <IoSearch className={styles["search-icon"]} />
-          </div>
-        </div>
+<IoSearch className={styles["search-icon"]} />
+</div>
+</div>
 
-        <div className={styles["list-section"]}>
-          <div className={styles["table-header"]}>
-            <div className={styles["th-col"]} style={{ textAlign: "left" }}>
+<div className={styles["list-section"]}>
+<div className={styles["table-header"]}>
+<div className={styles["th-col"]} style={{ textAlign: "left" }}>
               COMPANY NAME
             </div>
-            <div className={styles["th-col"]}>CALLER</div>
-            <div className={styles["th-col"]}>ROLE</div>
-            <div className={styles["th-col"]}>TIME</div>
-            <div className={styles["th-col-action"]}>ACTION</div>
-          </div>
+<div className={styles["th-col"]}>CALLER</div>
+<div className={styles["th-col"]}>ROLE</div>
+<div className={styles["th-col"]}>TIME</div>
+<div className={styles["th-col-action"]}>ACTION</div>
+</div>
 
-          <div className={styles["list-container"]}>
+<div className={styles["list-container"]}>
             {filteredInvitations.length > 0 ? (
               filteredInvitations.map((inv) => (
                 <InvitationCard key={inv.id} invitation={inv} />
               ))
             ) : (
-              <p
-                style={{
+              <p style={{
                   color: "#64748b",
                   fontStyle: "italic",
                   textAlign: "center",
@@ -3760,13 +3856,13 @@ const PendingInvitationsPage = () => {
               </p>
             )}
           </div>
-        </div>
+</div>
 
-        <div className={styles["footer-wrapper"]}>
-          <Footer />
-        </div>
-      </div>
-    </div>
+<div className={styles["footer-wrapper"]}>
+<Footer />
+</div>
+</div>
+</div>
   );
 };
 
@@ -3966,27 +4062,27 @@ export default PendingInvitationsPage;
     border-top-right-radius: 40px;
   }
 }
-</file>
+                                </file>
 
-<file path="src/features/Dashboard/PendingInvitationsPage/hooks/.gitkeep">
+                                <file path="src/features/Dashboard/PendingInvitationsPage/hooks/.gitkeep">
 
-</file>
+                                </file>
 
-<file path="src/features/Dashboard/PendingInvitationsPage/store/.gitkeep">
+                                <file path="src/features/Dashboard/PendingInvitationsPage/store/.gitkeep">
 
-</file>
+                                </file>
 
-<file path="src/features/Dashboard/PendingInvitationsPage/utils/.gitkeep">
+                                <file path="src/features/Dashboard/PendingInvitationsPage/utils/.gitkeep">
 
-</file>
+                                </file>
 
-<file path="src/hooks/.gitkeep">
+                                <file path="src/hooks/.gitkeep">
 
-</file>
+                                </file>
 
-<file path="src/layouts/MainLayout/MainLayout.jsx">
+                                <file path="src/layouts/MainLayout/MainLayout.jsx">
 import { Outlet } from "react-router-dom";
-import mascotImg from "../../assets/icons/linco-logo.png";
+import mascotImg from "../../../public/icons/linco-logo.png";
 import Sidebar from "../../components/layouts/SideBar/Sidebar";
 import BrandLogo from "../../components/layouts/BrandLogo/BrandLogo";
 import Footer from "../../components/layouts/Footer/Footer";
@@ -3996,114 +4092,70 @@ const sidebarLinks = [
   {
     name: "Home",
     icon: (
-      <svg
-        className="w-5 h-5"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-        />
-      </svg>
+                                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                                  </svg>
     ),
   },
   {
     name: "pending Invitations",
     icon: (
-      <svg
-        className="w-5 h-5"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-        />
-      </svg>
+                                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                  </svg>
     ),
   },
   {
     name: "Joined Rooms",
     icon: (
-      <svg
-        className="w-5 h-5"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-        />
-      </svg>
+                                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                  </svg>
     ),
   },
   {
     name: "My Profile",
     icon: (
-      <svg
-        className="w-5 h-5"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-        />
-      </svg>
+                                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                  </svg>
     ),
   },
 ];
 
 const MainLayout = () => {
   return (
-    <div className={mainLayoutStyles.wrapper}>
-      <div className={mainLayoutStyles.sidebarContainer}>
-        <Sidebar
-          mascotImg={mascotImg}
-          navLinks={sidebarLinks}
-          activeItem="Home"
-          onLogout={() => console.log("User logged out!")}
+                                  <div className={mainLayoutStyles.wrapper}>
+<div className={mainLayoutStyles.sidebarContainer}>
+<Sidebar mascotImg={mascotImg} navLinks={sidebarLinks} activeItem="Home" onLogout={() => console.log("User logged out!")}
         />
-      </div>
+</div>
 
-      <div className={mainLayoutStyles.wireContainer}>
+<div className={mainLayoutStyles.wireContainer}>
         {[...Array(20)].map((_, i) => (
           <div key={i} className={mainLayoutStyles.wireItem}>
-            <div className={mainLayoutStyles.wireBody} />
-            <div className={mainLayoutStyles.wireHole} />
-          </div>
+<div className={mainLayoutStyles.wireBody} />
+<div className={mainLayoutStyles.wireHole} />
+</div>
         ))}
       </div>
 
-      <div className={mainLayoutStyles.contentWrapper}>
-        <div className={mainLayoutStyles.headerContainer}>
-          <BrandLogo />
-        </div>
+<div className={mainLayoutStyles.contentWrapper}>
+<div className={mainLayoutStyles.headerContainer}>
+<BrandLogo />
+</div>
 
-        <div className={mainLayoutStyles.notebookPaper}>
-          <main className={mainLayoutStyles.mainArea}>
-            <div className={mainLayoutStyles.outletWrapper}>
-              <Outlet />
-            </div>
+<div className={mainLayoutStyles.notebookPaper}>
+<main className={mainLayoutStyles.mainArea}>
+<div className={mainLayoutStyles.outletWrapper}>
+<Outlet />
+</div>
 
-            <Footer />
-          </main>
-        </div>
-      </div>
-    </div>
+<Footer />
+</main>
+</div>
+</div>
+</div>
   );
 };
 
@@ -4129,13 +4181,13 @@ export const mainLayoutStyles = {
   mainArea: "p-10 pl-16 flex-1 flex flex-col",
   outletWrapper: "flex-1",
 };
-</file>
+                                  </file>
 
-<file path="src/lib/.gitkeep">
+                                  <file path="src/lib/.gitkeep">
 
-</file>
+                                  </file>
 
-<file path="src/main.jsx">
+                                  <file path="src/main.jsx">
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
@@ -4144,9 +4196,9 @@ import { router } from "./routes";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>,
+                                    <React.StrictMode>
+                                      <RouterProvider router={router} />
+</React.StrictMode>,
 );
 </file>
 
@@ -4161,19 +4213,15 @@ const DemoPage = () => {
   const currentRole = "trainee";
 
   return (
-    <div className={styles["app-container"]}>
-      <Sidebar role={currentRole} />
-      <div className={`${styles["main-wrapper"]} custom-scrollbar`}>
-        <Header
-          role={currentRole}
-          companyName="CompanyName"
-          roomName="Company Demo"
-        />
-        <DemoContentContent />
+                                        <div className={styles["app-container"]}>
+<Sidebar role={currentRole} />
+<div className={`${styles["main-wrapper"]} custom-scrollbar`}>
+<Header role={currentRole} companyName="CompanyName" roomName="Company Demo" />
+                                        <DemoContentContent />
 
-        <Footer role={currentRole} />
-      </div>
-    </div>
+                                        <Footer role={currentRole} />
+</div>
+</div>
   );
 };
 
@@ -4185,56 +4233,56 @@ import HomePage from "../features/HomePage/components/HomePage";
 
 const homePage = () => {
   return (
-    <div>
-      <HomePage />
-    </div>
+                                          <div>
+                                            <HomePage />
+                                          </div>
   );
 };
 
 export default homePage;
-</file>
+                                        </file>
 
-<file path="src/pages/JoinedRooms.jsx">
+                                        <file path="src/pages/JoinedRooms.jsx">
 import JoinedRooms from "../features/JoinedRooms/components/JoinedRooms";
 
 const joinedRooms = () => {
   return (
-    <div>
-      <JoinedRooms />
-    </div>
+                                          <div>
+                                            <JoinedRooms />
+                                          </div>
   );
 };
 
 export default joinedRooms;
-</file>
+                                        </file>
 
-<file path="src/pages/PendingInvitationsPage.jsx">
+                                        <file path="src/pages/PendingInvitationsPage.jsx">
 import PendingIvitations from "../features/PendingInvitationsPage/components/PendingInvitations";
 
 const pendingInvitations = () => {
   return (
-    <div>
-      <PendingIvitations />
-    </div>
+                                          <div>
+                                            <PendingIvitations />
+                                          </div>
   );
 };
 
 export default pendingInvitations;
-</file>
+                                        </file>
 
-<file path="src/store/.gitkeep">
+                                        <file path="src/store/.gitkeep">
 
-</file>
+                                        </file>
 
-<file path="src/types/.gitkeep">
+                                        <file path="src/types/.gitkeep">
 
-</file>
+                                        </file>
 
-<file path="src/utils/.gitkeep">
+                                        <file path="src/utils/.gitkeep">
 
-</file>
+                                        </file>
 
-<file path="vite.config.js">
+                                        <file path="vite.config.js">
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
@@ -4242,9 +4290,9 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   plugins: [react(), tailwindcss()],
 });
-</file>
+                                        </file>
 
-<file path="eslint.config.js">
+                                        <file path="eslint.config.js">
 import js from '@eslint/js'
 import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
@@ -4269,9 +4317,9 @@ export default defineConfig([
     },
   },
 ])
-</file>
+                                        </file>
 
-<file path="package.json">
+                                        <file path="package.json">
 {
   "name": "linco-project1-web",
   "private": true,
@@ -4303,14 +4351,14 @@ export default defineConfig([
     "vite": "^8.0.12"
   }
 }
-</file>
+                                        </file>
 
-<file path="src/components/layouts/Header/global_header/Header.jsx">
+                                        <file path="src/components/layouts/Header/global_header/Header.jsx">
 import { Link, useLocation } from "react-router-dom";
 import { IoChevronBack, IoPersonOutline } from "react-icons/io5";
 import styles from "./Header.module.css";
 import { HEADER_CONFIG } from "../headerConfig";
-import appIconImg from "../../../../assets/images/linco-logo.jpg";
+import appIconImg from "../../../../../public/images/linco-logo.jpg";
 import { PATHS } from "../../../../routes/paths";
 
 const Header = ({
@@ -4322,24 +4370,24 @@ const Header = ({
 
   if (role !== "global") {
     return (
-      <header className={styles["workspace-top-header"]}>
-        <div className={styles["workspace-logo"]}>
-          <span className={styles["brand-name"]}>LinCo</span>{" "}
+                                          <header className={styles["workspace-top-header"]}>
+<div className={styles["workspace-logo"]}>
+<span className={styles["brand-name"]}>LinCo</span>{" "}
           <span className={styles["company-name"]}>.{companyName}</span>
-        </div>
+</div>
 
-        <div className={styles["workspace-center"]}>
-          <Link to={PATHS.HOME} className={styles["go-dashboard"]}>
-            <IoChevronBack /> Go to my dashboard
+<div className={styles["workspace-center"]}>
+<Link to={PATHS.HOME} className={styles["go-dashboard"]}>
+<IoChevronBack /> Go to my dashboard
           </Link>
-          <div className={styles["nav-divider"]}></div>
-          <div className={styles["room-badge"]}>{roomName}</div>
-        </div>
+<div className={styles["nav-divider"]}></div>
+<div className={styles["room-badge"]}>{roomName}</div>
+</div>
 
-        <div className={styles["workspace-right"]}>
-          <span className={styles["brand-name-full"]}>Link Company</span>
-        </div>
-      </header>
+<div className={styles["workspace-right"]}>
+<span className={styles["brand-name-full"]}>Link Company</span>
+</div>
+</header>
     );
   }
 
@@ -4347,24 +4395,22 @@ const Header = ({
 
   return (
     <header className={styles.header}>
-      <div className={styles["header-left"]}>
-        <div className={styles.logo}>
-          <span className={styles["brand-name"]}>LinCo</span>{" "}
+<div className={styles["header-left"]}>
+<div className={styles.logo}>
+<span className={styles["brand-name"]}>LinCo</span>{" "}
           <span className={styles["company-text"]}>Link Company.</span>
-        </div>
-        <div className={styles["user-profile"]}>
-          <div className={styles["user-avatar"]}>AA</div>
-          <span className={styles["user-name"]}>Abrar Abo Auad</span>
-          <div className={styles["dropdown-icon"]}></div>
-        </div>
-      </div>
+</div>
+<div className={styles["user-profile"]}>
+<div className={styles["user-avatar"]}>AA</div>
+<span className={styles["user-name"]}>Abrar Abo Auad</span>
+<div className={styles["dropdown-icon"]}></div>
+</div>
+</div>
 
-      <nav className={styles["nav-links"]}>
+<nav className={styles["nav-links"]}>
         {globalLinks.map((link, index) => (
           <div key={index} className={styles["nav-item-wrapper"]}>
-            <Link
-              to={link.path}
-              className={
+<Link to={link.path} className={
                 location.pathname === link.path ||
                 (index === 0 && location.pathname === "/")
                   ? styles.active
@@ -4380,19 +4426,16 @@ const Header = ({
         ))}
       </nav>
 
-      <div className={styles["header-actions"]}>
-        <button className={styles["btn-workspace"]}>
-          <IoPersonOutline style={{ marginRight: "5px" }} /> Create a Workspace
+<div className={styles["header-actions"]}>
+<button className={styles["btn-workspace"]}>
+<IoPersonOutline style={{ marginRight: "5px" }} /> Create a Workspace
         </button>
-        <div className={styles["app-icon"]}>
-          <img
-            src={appIconImg}
-            alt="App Icon"
-            className={styles["app-icon-img"]}
+<div className={styles["app-icon"]}>
+<img src={appIconImg} alt="App Icon" className={styles["app-icon-img"]}
           />
-        </div>
-      </div>
-    </header>
+</div>
+</div>
+</header>
   );
 };
 
@@ -4735,9 +4778,9 @@ export default Header;
   background-color: #cbd5e1;
   margin: 0 10px;
 }
-</file>
+                                          </file>
 
-<file path="src/components/layouts/SideBar/Sidebar.module.css">
+                                          <file path="src/components/layouts/SideBar/Sidebar.module.css">
 .sidebar {
   width: 70px;
   background-color: var(--color-linco-navy);
@@ -4909,9 +4952,9 @@ export default Header;
 .logout-item:hover .text {
   color: #4472ef;
 }
-</file>
+                                          </file>
 
-<file path="src/index.css">
+                                          <file path="src/index.css">
 @import "tailwindcss";
 
 @theme {
@@ -4939,9 +4982,9 @@ body {
   background-color: #cbd5e1;
   border-radius: 10px;
 }
-</file>
+                                          </file>
 
-<file path="src/components/layouts/Footer/Footer.jsx">
+                                          <file path="src/components/layouts/Footer/Footer.jsx">
 import { Link } from "react-router-dom";
 import styles from "./Footer.module.css";
 import { FOOTER_CONFIG } from "./footerConfig";
@@ -4950,68 +4993,60 @@ const Footer = ({ role = "global" }) => {
   const quickLinks = FOOTER_CONFIG[role] || FOOTER_CONFIG.global;
 
   return (
-    <footer className={styles.footer}>
-      <div className={styles["footer-grid"]}>
-        <div className={styles["footer-col"]}>
-          <h4>Quick Links</h4>
-          <ul>
+                                            <footer className={styles.footer}>
+<div className={styles["footer-grid"]}>
+<div className={styles["footer-col"]}>
+<h4>Quick Links</h4>
+<ul>
             {quickLinks.map((link, index) => (
               <li key={index}>
-                <Link
-                  to={link.path}
-                  style={{ color: "inherit", textDecoration: "none" }}
+<Link to={link.path} style={{ color: "inherit", textDecoration: "none" }}
                 >
                   {link.name}
                 </Link>
-              </li>
+</li>
             ))}
           </ul>
-        </div>
+</div>
 
-        <div className={styles["footer-col"]}>
-          <h4>Contact Info</h4>
-          <ul>
-            <li>Damascus, Syria</li>
-            <li>contact@linco.com</li>
-            <li>+963-XXX-XXXXXX</li>
-          </ul>
-        </div>
+<div className={styles["footer-col"]}>
+<h4>Contact Info</h4>
+<ul>
+<li>Damascus, Syria</li>
+<li>contact@linco.com</li>
+<li>+963-XXX-XXXXXX</li>
+</ul>
+</div>
 
-        <div className={styles["footer-col"]}>
-          <h4>Legal</h4>
-          <ul>
-            <li>
-              <Link
-                to="/terms"
-                style={{ color: "inherit", textDecoration: "none" }}
+<div className={styles["footer-col"]}>
+<h4>Legal</h4>
+<ul>
+<li>
+<Link to="/terms" style={{ color: "inherit", textDecoration: "none" }}
               >
                 Terms of Service
               </Link>
-            </li>
-            <li>
-              <Link
-                to="/privacy"
-                style={{ color: "inherit", textDecoration: "none" }}
+</li>
+<li>
+<Link to="/privacy" style={{ color: "inherit", textDecoration: "none" }}
               >
                 Privacy Policy
               </Link>
-            </li>
-            <li>
-              <Link
-                to="/cookies"
-                style={{ color: "inherit", textDecoration: "none" }}
+</li>
+<li>
+<Link to="/cookies" style={{ color: "inherit", textDecoration: "none" }}
               >
                 Cookies Policy
               </Link>
-            </li>
-          </ul>
-        </div>
-      </div>
+</li>
+</ul>
+</div>
+</div>
 
-      <div className={styles["footer-bottom"]}>
+<div className={styles["footer-bottom"]}>
         &copy; 2026 LinCo. All rights reserved.
       </div>
-    </footer>
+</footer>
   );
 };
 
@@ -5041,9 +5076,9 @@ export const PATHS = {
   SETTINGS: "/settings",
   DEMO: "/demo",
 };
-</file>
+                                            </file>
 
-<file path="src/components/layouts/SideBar/Sidebar.jsx">
+                                            <file path="src/components/layouts/SideBar/Sidebar.jsx">
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { IoMenu, IoLogOutOutline } from "react-icons/io5";
@@ -5061,37 +5096,29 @@ const Sidebar = ({ role = "trainee" }) => {
   const menuItems = SIDEBAR_ROLES[role] || [];
 
   return (
-    <>
+                                              <>
       {isOpen && <div className={styles.overlay} onClick={toggleSidebar}></div>}
 
       <aside className={`${styles.sidebar} ${isOpen ? styles.open : ""}`}>
-        <div className={styles["top-section"]}>
-          <div
-            className={styles["toggle-btn"]}
-            onClick={toggleSidebar}
-            title="Menu"
-          >
-            <IoMenu className={styles["menu-icon"]} />
-          </div>
-        </div>
+<div className={styles["top-section"]}>
+<div className={styles["toggle-btn"]} onClick={toggleSidebar} title="Menu">
+                                                <IoMenu className={styles["menu-icon"]} />
+</div>
+</div>
 
-        <div className={styles["center-menu"]}>
+<div className={styles["center-menu"]}>
           {menuItems.map((item, index) => {
             const isActive = location.pathname === item.path;
 
             return (
               <div key={index} className={styles["menu-item-container"]}>
-                <Link
-                  to={item.path}
-                  className={`${styles["menu-item"]} ${isActive ? styles.active : ""}`}
-                  title={item.name}
-                  onClick={() => setIsOpen(false)}
+<Link to={item.path} className={`${styles["menu-item"]} ${isActive ? styles.active : ""}`} title={item.name} onClick={() => setIsOpen(false)}
                 >
-                  <div className={styles["icon-wrapper"]}>
-                    <span className={styles.icon}>{item.icon}</span>
-                  </div>
-                  <span className={styles.text}>{item.name}</span>
-                </Link>
+<div className={styles["icon-wrapper"]}>
+<span className={styles.icon}>{item.icon}</span>
+</div>
+<span className={styles.text}>{item.name}</span>
+</Link>
 
                 {index < menuItems.length - 1 && (
                   <div className={styles.divider}></div>
@@ -5101,19 +5128,16 @@ const Sidebar = ({ role = "trainee" }) => {
           })}
         </div>
 
-        <div className={styles["bottom-section"]}>
-          <div
-            className={`${styles["menu-item"]} ${styles["logout-item"]}`}
-            title="Log out"
-          >
-            <div className={styles["icon-wrapper"]}>
-              <IoLogOutOutline className={styles.icon} />
-            </div>
-            <span className={styles.text}>Log out</span>
-          </div>
-        </div>
-      </aside>
-    </>
+<div className={styles["bottom-section"]}>
+<div className={`${styles["menu-item"]} ${styles["logout-item"]}`} title="Log out">
+                                                  <div className={styles["icon-wrapper"]}>
+<IoLogOutOutline className={styles.icon} />
+</div>
+<span className={styles.text}>Log out</span>
+</div>
+</div>
+</aside>
+</>
   );
 };
 
@@ -5133,41 +5157,48 @@ import LearningPathPage from "../pages/LearningPathPage";
 export const router = createBrowserRouter([
   {
     path: PATHS.HOME,
-    element: <HomePage />,
+    element: <HomePage />
+,
   },
   {
     path: PATHS.PENDING_INVITATIONS,
-    element: <PendingInvitationsPage />,
+    element: <PendingInvitationsPage />
+,
   },
   {
     path: PATHS.JOINED_ROOMS,
-    element: <JoinedRoomsPage />,
+    element: <JoinedRoomsPage />
+,
   },
   {
     path: PATHS.DEMO,
-    element: <DemoPage />,
+    element: <DemoPage />
+,
   },
   {
     path: PATHS.COURSES,
-    element: <CoursesPage />,
+    element: <CoursesPage />
+,
   },
   {
     path: PATHS.LEARNING_PATH,
-    element: <LearningPathPage />,
+    element: <LearningPathPage />
+,
   },
   {
     path: PATHS.DEPARTMENTS,
-    element: <LearningPathPage />,
+    element: <LearningPathPage />
+,
   },
   {
     path: "*",
     element: (
-      <div className="text-center p-20 text-white text-2xl font-serif">
+                                      <div className="text-center p-20 text-white text-2xl font-serif">
         الصفحة غير موجودة 404
-      </div>
+                                      </div>
     ),
   },
 ]);
-</file>
+                                    </file>
 
-</files>
+                                  </files>

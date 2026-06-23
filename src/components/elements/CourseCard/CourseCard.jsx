@@ -1,6 +1,6 @@
-import { IoPlayCircleOutline } from "react-icons/io5";
-import styles from "./CourseCard.module.css";
-import placeholderImg from "../../../assets/images/linco-logo.jpg"; // صورة مؤقتة
+import { IoPlayCircleOutline } from 'react-icons/io5';
+import styles from './CourseCard.module.css';
+import placeholderImg from '../../../../public/images/linco-logo.jpg';
 
 const CourseCard = ({ course }) => {
   return (

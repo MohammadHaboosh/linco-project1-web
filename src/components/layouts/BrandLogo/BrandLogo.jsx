@@ -1,5 +1,5 @@
 import { logoStyles } from "./BrandLogoStyles";
-import logoImg from "../../../assets/images/linco-logo.jpg";
+import logoImg from "../../../../public/images/linco-logo.jpg";
 
 const BrandLogo = () => {
   return (

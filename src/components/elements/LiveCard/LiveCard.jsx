@@ -3,9 +3,9 @@ import {
   IoPersonOutline,
   IoCalendarOutline,
   IoTimeOutline,
-} from "react-icons/io5";
-import styles from "./LiveCard.module.css";
-import placeholderImg from "../../../assets/images/linco-logo.jpg";
+} from 'react-icons/io5';
+import styles from './LiveCard.module.css';
+import placeholderImg from '../../../../public/images/linco-logo.jpg';
 
 const LiveCard = ({ live }) => {
   return (
