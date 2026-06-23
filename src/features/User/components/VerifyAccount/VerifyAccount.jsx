@@ -6,10 +6,10 @@ import {
 } from "react-icons/io5";
 import { useParams, useNavigate } from "react-router-dom";
 import { verifyUserEmail } from "../../api/userApi"; // استيراد الدالة التي أنشأناها
-import styles from "./VerifiedSuccessfully.module.css";
+import styles from "./VerifyAccount.module.css";
 import logoImg from "../../../../../public/icons/celebrating.png";
 
-const VerifiedSuccessfully = () => {
+const VerifyAccount = () => {
   const navigate = useNavigate();
   const { token } = useParams();
 
@@ -115,4 +115,4 @@ const VerifiedSuccessfully = () => {
   );
 };
 
-export default VerifiedSuccessfully;
+export default VerifyAccount;

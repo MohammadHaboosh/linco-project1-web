@@ -7,7 +7,7 @@ import JoinedRoomsPage from "../features/Dashboard/JoinedRoomPage/components/joi
 import SignupPage from "../pages/SignupPage.jsx";
 import DemoPage from "../pages/HomeDemoPage";
 import VerifyEmailPage from "../pages/VerifyEmailPage.jsx";
-import VerifiedSuccessfullyPage from "../pages/VerifiedSuccessfullyPage.jsx";
+import VerifyAccount from "../pages/VerifyAccountPage.jsx";
 import SinginPage from "../pages/SigninPage.jsx";
 import CoursesPage from "../pages/CoursesPage";
 import LearningPathPage from "../pages/LearningPathPage";
@@ -44,9 +44,13 @@ export const router = createBrowserRouter([
     element: <VerifyEmailPage />,
   },
   {
-    path: PATHS.VERIFIED_SUCCESSFULLY,
-    element: <VerifiedSuccessfullyPage />,
+    path: PATHS.VERIFY_ACCOUNT,
+    element: <VerifyAccount />,
   },
+  // {
+  //   path: PATHS.VERIFIED_SUCCESSFULLY,
+  //   element: <VerifiedSuccessfullyPage />,
+  // },
   {
     path: PATHS.SIGNIN,
     element: <SinginPage />,
