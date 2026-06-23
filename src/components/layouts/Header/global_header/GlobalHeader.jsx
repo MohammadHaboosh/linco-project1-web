@@ -1,10 +1,9 @@
-// src/components/layouts/Header/global_header/GlobalHeader.jsx
 import { Link, useLocation } from "react-router-dom";
 import { IoPersonOutline } from "react-icons/io5";
 import { useHeader } from "../hooks/useHeader.jsx";
 import { HEADER_CONFIG } from "../headerConfig";
 import { PATHS } from "../../../../routes/paths";
-import appIconImg from "../../../../assets/images/linco-logo.jpg";
+import appIconImg from "/public/images/linco-logo.jpg";
 import styles from "./Header.module.css";
 
 const GlobalHeader = () => {
