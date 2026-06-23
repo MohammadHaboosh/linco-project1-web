@@ -12,11 +12,16 @@ import SinginPage from "../pages/SigninPage.jsx";
 import CoursesPage from "../pages/CoursesPage";
 import LearningPathPage from "../pages/LearningPathPage";
 import DepartmentPage from "../pages/DepartmentPage.jsx";
+import LandingPage from "../pages/LandingPage.jsx";
 
 export const router = createBrowserRouter([
   {
     path: PATHS.HOME,
     element: <HomePage />,
+  },
+  {
+    path: PATHS.LANDING,
+    element: <LandingPage />,
   },
   {
     path: PATHS.PENDING_INVITATIONS,

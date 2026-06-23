@@ -1,5 +1,6 @@
 export const PATHS = {
   HOME: "/",
+  LANDING: "/welcome",
   PENDING_INVITATIONS: "/pending-invitations",
   JOINED_ROOMS: "/joined-rooms",
   PROFILE: "/profile",
@@ -23,5 +24,5 @@ export const PATHS = {
   SIGNUP: "/signup",
   DEMO: "/demo",
   VERIFY_EMAIL: "/verify-email",
-  VERIFIED_SUCCESSFULLY: "/verified-successfully",
+  VERIFIED_SUCCESSFULLY: "/verify-account/:token",
 };
