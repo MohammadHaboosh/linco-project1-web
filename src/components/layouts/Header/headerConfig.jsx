@@ -4,6 +4,11 @@ import {
   IoListOutline,
   IoPersonOutline,
   IoChatbubblesOutline,
+  IoBusinessOutline,
+  IoRibbonOutline,
+  IoVideocamOutline,
+  IoHelpCircleOutline,
+  IoHome,
 } from "react-icons/io5";
 import { PATHS } from "../../../routes/paths";
 
@@ -18,6 +23,7 @@ export const HEADER_CONFIG = {
   },
   trainee: {
     subNavLinks: [
+      { name: "Home", path: PATHS.DEPARTMENT_DETAILS },
       {
         name: "Learning Path",
         icon: <IoLinkOutline />,
@@ -47,10 +53,25 @@ export const HEADER_CONFIG = {
       },
     ],
   },
-  "section manger": {
-    subNavLinks: [],
-  },
-  owner: {
-    subNavLinks: [],
+  demo_home: {
+    subNavLinks: [
+      { name: "Departments", icon: <IoBusinessOutline />, path: PATHS.DEMO },
+      {
+        name: "Certificates",
+        icon: <IoRibbonOutline />,
+        path: PATHS.CERTIFICATES,
+      },
+      { name: "Lives", icon: <IoVideocamOutline />, path: PATHS.LIVES },
+      {
+        name: "Chat Channel",
+        icon: <IoChatbubblesOutline />,
+        path: PATHS.CHAT_CHANNEL,
+      },
+      {
+        name: "Inquiries",
+        icon: <IoHelpCircleOutline />,
+        path: PATHS.INQUIRIES,
+      },
+    ],
   },
 };

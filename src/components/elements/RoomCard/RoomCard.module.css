@@ -25,7 +25,7 @@
 .card-image {
   width: 160px;
   height: 110px;
-  background-color: var(--color-linco-navy);
+  background: var(--bg-navy-gradient);
   border-radius: 12px;
   flex-shrink: 0;
 }
@@ -70,7 +70,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  background-color: var(--color-linco-navy);
+  background: var(--bg-navy-gradient);
   color: #ffffff;
   padding: 6px 16px;
   border-radius: 6px;

@@ -51,7 +51,7 @@
 }
 
 .btn-accept {
-  background-color: var(--color-linco-navy);
+  background: var(--bg-navy-gradient);
   color: #ffffff;
   border: none;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);

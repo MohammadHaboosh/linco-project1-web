@@ -1,3 +1,5 @@
+// src/components/layouts/Header/sub_header/SubHeader.jsx
+
 import { Link, useLocation } from "react-router-dom";
 import { HEADER_CONFIG } from "../headerConfig";
 import styles from "./SubHeader.module.css";
@@ -24,6 +26,8 @@ const SubHeader = ({ role = "trainee" }) => {
                 <span className={styles["sub-nav-icon"]}>{link.icon}</span>
                 {link.name}
               </Link>
+
+              {/* إظهار الخط الفاصل بين العناصر فقط */}
               {index < subNavLinks.length - 1 && (
                 <div className={styles["sub-nav-divider"]}></div>
               )}
