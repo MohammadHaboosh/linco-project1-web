@@ -43,7 +43,6 @@ export const signinUser = async (credentials) => {
     });
 
     const data = await response.json();
-    console.log('Sign in response: ', data);
 
     if (!response.ok) {
       throw new Error(data.message || `HTTP error! status: ${response.status}`);
@@ -90,8 +89,6 @@ export const fetchCurrentUser = async () => {
     },
   );
 
-  console.log('Refresh Response:', refreshResponse);
-
   if (!refreshResponse.ok) {
     return null;
   }
@@ -103,6 +100,5 @@ export const fetchCurrentUser = async () => {
   });
 
   const data = await response.json();
-  console.log('Current User Data:', data);
   return data;
 };
