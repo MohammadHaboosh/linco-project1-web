@@ -9,7 +9,7 @@
 /* --- Left Panel (Reused from Verify/Signup) --- */
 .left-panel {
   width: 35%;
-  background-color: var(--color-linco-navy);
+  background: var(--bg-navy-gradient);
   display: flex;
   padding: 40px;
   color: var(--color-white);
@@ -114,7 +114,7 @@
 
 /* --- The Navy Form Card --- */
 .form-card {
-  background-color: var(--color-linco-navy);
+  background: var(--bg-navy-gradient);
   width: 100%;
   padding: 40px;
   border-radius: 30px;
@@ -256,7 +256,7 @@
 }
 
 .btn-primary {
-  background-color: var(--color-linco-navy);
+  background: var(--bg-navy-gradient);
   color: var(--color-white);
   border: none;
 }
@@ -266,7 +266,7 @@
 }
 
 .btn-secondary {
-  background-color: var(--color-linco-navy);
+  background: var(--bg-navy-gradient);
   color: var(--color-white);
   border: none;
 }

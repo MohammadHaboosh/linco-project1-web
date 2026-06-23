@@ -1,16 +1,17 @@
-import { createBrowserRouter } from 'react-router-dom';
-import { PATHS } from './paths';
+import { createBrowserRouter } from "react-router-dom";
+import { PATHS } from "./paths";
 
-import HomePage from '../features/Dashboard/HomePage/components/home_page/HomePage';
-import PendingInvitationsPage from '../features/Dashboard/PendingInvitationsPage/components/pending_invitations/PendingInvitations';
-import JoinedRoomsPage from '../features/Dashboard/JoinedRoomPage/components/joined_rooms/JoinedRooms';
-import SignupPage from '../pages/SignupPage.jsx';
-import DemoPage from '../pages/HomeDemoPage';
-import VerifyEmailPage from '../pages/VerifyEmailPage.jsx';
-import VerifiedSuccessfullyPage from '../pages/VerifiedSuccessfullyPage.jsx';
-import SinginPage from '../pages/SigninPage.jsx';
-import CoursesPage from '../pages/CoursesPage';
-import LearningPathPage from '../pages/LearningPathPage';
+import HomePage from "../features/Dashboard/HomePage/components/home_page/HomePage";
+import PendingInvitationsPage from "../features/Dashboard/PendingInvitationsPage/components/pending_invitations/PendingInvitations";
+import JoinedRoomsPage from "../features/Dashboard/JoinedRoomPage/components/joined_rooms/JoinedRooms";
+import SignupPage from "../pages/SignupPage.jsx";
+import DemoPage from "../pages/HomeDemoPage";
+import VerifyEmailPage from "../pages/VerifyEmailPage.jsx";
+import VerifiedSuccessfullyPage from "../pages/VerifiedSuccessfullyPage.jsx";
+import SinginPage from "../pages/SigninPage.jsx";
+import CoursesPage from "../pages/CoursesPage";
+import LearningPathPage from "../pages/LearningPathPage";
+import DepartmentPage from "../pages/DepartmentPage.jsx";
 
 export const router = createBrowserRouter([
   {
@@ -53,12 +54,16 @@ export const router = createBrowserRouter([
     path: PATHS.LEARNING_PATH,
     element: <LearningPathPage />,
   },
+  // {
+  //   path: PATHS.DEPARTMENTS,
+  //   element: <HomeDemoPage />,
+  // },
   {
-    path: PATHS.DEPARTMENTS,
-    element: <LearningPathPage />,
+    path: PATHS.DEPARTMENT_DETAILS,
+    element: <DepartmentPage />,
   },
   {
-    path: '*',
+    path: "*",
     element: (
       <div className="text-center p-20 text-white text-2xl font-serif">
         404 - Page Not Found

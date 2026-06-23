@@ -61,7 +61,7 @@
 }
 
 .btn-primary {
-  background-color: var(--color-linco-navy);
+  background: var(--bg-navy-gradient);
   color: var(--color-white);
   border: none;
   border-radius: 30px;
