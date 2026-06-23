@@ -24,5 +24,5 @@ export const PATHS = {
   SIGNUP: "/signup",
   DEMO: "/demo",
   VERIFY_EMAIL: "/verify-email",
-  VERIFIED_SUCCESSFULLY: "/verify-account/:token",
+  VERIFIED_SUCCESSFULLY: "/verify-email/:token",
 };
