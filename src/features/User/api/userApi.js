@@ -5,6 +5,7 @@ export const registerUser = async (userData) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'x-client-type': 'web',
     },
     body: JSON.stringify({
       firstName: userData.firstName,
@@ -32,6 +33,7 @@ export const signinUser = async (credentials) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'x-client-type': 'web',
       },
       credentials: 'include',
       body: JSON.stringify({
@@ -60,6 +62,7 @@ export const logoutUser = async () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'x-client-type': 'web',
       },
       credentials: 'include',
     });
@@ -82,7 +85,7 @@ export const fetchCurrentUser = async () => {
     `${BASE_URL}/authentication/refresh-tokens`,
     {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-client-type': 'web' },
       credentials: 'include',
     },
   );
@@ -95,7 +98,7 @@ export const fetchCurrentUser = async () => {
 
   const response = await fetch(`${BASE_URL}/users/me`, {
     method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'x-client-type': 'web' },
     credentials: 'include',
   });
 
