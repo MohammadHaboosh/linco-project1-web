@@ -4,8 +4,9 @@ import {
   IoCloseCircleOutline,
   IoReloadOutline,
 } from "react-icons/io5";
-import { useParams, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { verifyUserEmail } from "../../api/userApi";
+import { PATHS } from "../../../../routes/paths.js";
 import styles from "./VerifyAccount.module.css";
 import logoImg from "../../../../../public/icons/celebrating.png";
 
@@ -85,7 +86,7 @@ const VerifyAccount = () => {
           <button
             className={styles["btn-primary"]}
             style={{ background: "var(--color-linco-accent)" }}
-            onClick={() => navigate("/signup")}
+            onClick={() => navigate(PATHS.SIGNUP)}
           >
             Back to Sign Up
           </button>
@@ -108,7 +109,7 @@ const VerifyAccount = () => {
         </p>
         <button
           className={styles["btn-primary"]}
-          onClick={() => navigate("/signin")}
+          onClick={() => navigate(PATHS.SIGNIN)}
         >
           Go to Sign In
         </button>

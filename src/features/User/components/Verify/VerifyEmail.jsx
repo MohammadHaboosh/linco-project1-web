@@ -1,5 +1,6 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { IoMailUnreadOutline, IoArrowBackOutline } from 'react-icons/io5';
+import { PATHS } from '../../../../routes/paths.js';
 import styles from './VerifyEmail.module.css';
 
 import logoImg from '../../../../../public/images/LinCo.png';
@@ -7,6 +8,7 @@ import mascotImg from '../../../../../public/images/linco-logo.jpg';
 
 const VerifyEmail = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const userEmail = location.state?.email || 'your email';
 
   const handleResend = () => {
@@ -54,7 +56,7 @@ const VerifyEmail = () => {
 
           <button
             className={styles['btn-primary']}
-            onClick={() => (window.location.href = '/signin')}
+            onClick={() => navigate(PATHS.SIGNIN)}
           >
             Go to Login
           </button>
@@ -68,7 +70,7 @@ const VerifyEmail = () => {
 
           <button
             className={styles['btn-back']}
-            onClick={() => (window.location.href = '/signup')}
+            onClick={() => navigate(PATHS.SIGNUP)}
           >
             <IoArrowBackOutline className={styles['back-icon']} />
             Back to sign up

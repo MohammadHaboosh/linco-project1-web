@@ -26,4 +26,5 @@ export const PATHS = {
   CHECK_EMAIL: "/check-email",
   VERIFY_EMAIL: "/authentication/verify-email",
   VERIFIED_SUCCESSFULLY: "/verified-successfully",
+  FORGOT_PASSWORD: "/forgot-password",
 };
