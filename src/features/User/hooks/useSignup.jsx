@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { registerUser } from "../api/userApi";
 import { useNavigate } from "react-router-dom";
+import { PATHS } from "../../../routes/paths";
 
 export const useSignup = () => {
   const navigate = useNavigate();
@@ -108,7 +109,7 @@ export const useSignup = () => {
     try {
       await registerUser(formData);
 
-      navigate("/verify-email", { state: { email: formData.email } });
+      navigate(PATHS.CHECK_EMAIL, { state: { email: formData.email } });
     } catch (error) {
       console.error("Signup error:", error);
       setServerError(error.message || "Failed to sign up. Please try again.");

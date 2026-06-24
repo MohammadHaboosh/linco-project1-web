@@ -105,14 +105,16 @@ export const fetchCurrentUser = async () => {
 
 export const verifyUserEmail = async (token) => {
   try {
-    const response = await fetch(`${BASE_URL}/authentication/verify-email`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-client-type": "web",
+    const response = await fetch(
+      `${BASE_URL}/authentication/verify-email?token=${token}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "x-client-type": "web",
+        },
       },
-      body: JSON.stringify({ token }),
-    });
+    );
 
     const data = await response.json();
 

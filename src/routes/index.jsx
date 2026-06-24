@@ -14,6 +14,7 @@ import LearningPathPage from "../pages/LearningPathPage";
 import DepartmentPage from "../pages/DepartmentPage.jsx";
 import LandingPage from "../pages/LandingPage.jsx";
 import VerifyEmail from "../features/User/components/Verify/VerifyEmail.jsx";
+import VerifyAccountPage from "../pages/VerifyAccountPage.jsx";
 
 export const router = createBrowserRouter([
   {
@@ -41,12 +42,12 @@ export const router = createBrowserRouter([
     element: <SignupPage />,
   },
   {
-    path: PATHS.VERIFY_EMAIL,
-    element: <VerifyAccount />,
+    path: PATHS.CHECK_EMAIL,
+    element: <VerifyEmailPage />,
   },
   {
-    path: PATHS.VERIFY_ACCOUNT,
-    element: <VerifyEmail />,
+    path: PATHS.VERIFY_EMAIL,
+    element: <VerifyAccountPage />,
   },
   // {
   //   path: PATHS.VERIFIED_SUCCESSFULLY,

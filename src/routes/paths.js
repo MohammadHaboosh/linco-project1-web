@@ -23,7 +23,7 @@ export const PATHS = {
   SETTINGS: "/settings",
   SIGNUP: "/signup",
   DEMO: "/demo",
-  VERIFY_EMAIL: "/verified-successfully",
-  //VERIFIED_SUCCESSFULLY: "/verify-email/:token",
-  VERIFY_ACCOUNT: "/verified-successfully/:token",
+  CHECK_EMAIL: "/check-email",
+  VERIFY_EMAIL: "/authentication/verify-email",
+  VERIFIED_SUCCESSFULLY: "/verified-successfully",
 };
