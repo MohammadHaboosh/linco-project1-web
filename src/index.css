@@ -13,6 +13,21 @@
 
 :root {
   --bg-navy-gradient: linear-gradient(135deg, #112950 0%, #1e3a8a 100%);
+
+  --color-white: #ffffff;
+  --color-google-bg: #f8fafc;
+  --color-google-hover: #e2e8f0;
+
+  --color-error-main: #ef4444;
+  --color-error-bg: #fef2f2;
+  --color-error-text: #dc2626;
+  --color-error-border: #fecaca;
+
+  --color-slate-300: #cbd5e1;
+  --color-slate-500: #64748b;
+  --color-slate-600: #475569;
+  --color-slate-700: #334155;
+  --color-text-dark: #1e293b;
 }
 
 body {
