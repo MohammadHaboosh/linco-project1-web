@@ -130,9 +130,13 @@ const Signin = () => {
 
             <div className={styles["forgot-password"]}>
               <span>Forget password ? </span>
-              <a href="/forgot-password" className={styles["forgot-link"]}>
+              <span
+                onClick={() => navigate(PATHS.FORGOT_PASSWORD)}
+                className={styles["forgot-link"]}
+                style={{ cursor: "pointer" }}
+              >
                 Yes
-              </a>
+              </span>
             </div>
           </div>
 

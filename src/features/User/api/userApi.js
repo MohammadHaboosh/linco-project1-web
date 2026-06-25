@@ -159,3 +159,51 @@ export const verifyUserEmail = async (token) => {
     throw error;
   }
 };
+
+export const forgotPassword = async (email) => {
+  try {
+    const response = await fetch(`${BASE_URL}/authentication/forgot-password`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-client-type": "web",
+      },
+      body: JSON.stringify({ email }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || `HTTP error! status: ${response.status}`);
+    }
+
+    return data;
+  } catch (error) {
+    console.error("API Error during password reset request:", error);
+    throw error;
+  }
+};
+
+export const resetPassword = async (token, newPassword) => {
+  try {
+    const response = await fetch(`${BASE_URL}/authentication/reset-password`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-client-type": "web",
+      },
+      body: JSON.stringify({ token, newPassword }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || `HTTP error! status: ${response.status}`);
+    }
+
+    return data;
+  } catch (error) {
+    console.error("API Error during password reset:", error);
+    throw error;
+  }
+};
