@@ -5,6 +5,7 @@ import {
   IoEyeOutline,
   IoEyeOffOutline,
   IoShieldCheckmarkOutline,
+  IoCheckmarkCircle,
 } from "react-icons/io5";
 import { resetPassword } from "../../api/userApi";
 import { PATHS } from "../../../../routes/paths";
@@ -23,6 +24,15 @@ const ResetPassword = () => {
   const [status, setStatus] = useState("idle"); // 'idle', 'loading', 'success', 'error'
   const [message, setMessage] = useState("");
 
+  const missingCriteria = [];
+  if (password) {
+    if (!/.{8,}/.test(password)) missingCriteria.push("8+ chars");
+    if (!/[A-Z]/.test(password)) missingCriteria.push("uppercase");
+    if (!/[a-z]/.test(password)) missingCriteria.push("lowercase");
+    if (!/\d/.test(password)) missingCriteria.push("number");
+    if (!/[@$!%*?&]/.test(password)) missingCriteria.push("special char");
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -34,9 +44,12 @@ const ResetPassword = () => {
       return;
     }
 
-    if (!password || password.length < 8) {
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+
+    if (!passwordRegex.test(password)) {
       setStatus("error");
-      setMessage("Password must be at least 8 characters long.");
+      setMessage("Please ensure your password meets all requirements.");
       return;
     }
 
@@ -112,7 +125,10 @@ const ResetPassword = () => {
               type={showPassword ? "text" : "password"}
               placeholder="New password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                if (status === "error") setStatus("idle");
+              }}
               className={styles["input-field"]}
               disabled={status === "loading"}
             />
@@ -125,13 +141,31 @@ const ResetPassword = () => {
             </button>
           </div>
 
+          {/* Real-time Feedback Text */}
+          <div className={styles["feedback-container"]}>
+            {password && missingCriteria.length > 0 && (
+              <span className={styles["password-feedback-text"]}>
+                Missing: {missingCriteria.join(", ")}.
+              </span>
+            )}
+            {password && missingCriteria.length === 0 && (
+              <span className={styles["password-success-text"]}>
+                <IoCheckmarkCircle className={styles["success-icon"]} /> Secure
+                password
+              </span>
+            )}
+          </div>
+
           <div className={styles["input-wrapper"]}>
             <IoLockClosedOutline className={styles["input-icon"]} />
             <input
               type={showConfirmPassword ? "text" : "password"}
               placeholder="Confirm new password"
               value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              onChange={(e) => {
+                setConfirmPassword(e.target.value);
+                if (status === "error") setStatus("idle"); 
+              }}
               className={styles["input-field"]}
               disabled={status === "loading"}
             />

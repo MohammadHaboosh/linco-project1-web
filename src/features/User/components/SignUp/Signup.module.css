@@ -390,3 +390,39 @@
     transform: translateX(4px);
   }
 }
+
+.password-feedback-text {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-slate-500, #64748b);
+  margin: -10px 0 5px 15px;
+  line-height: 1.4;
+  display: block;
+}
+
+.password-success-text {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #4ade80;
+  margin: -10px 0 5px 15px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.success-icon {
+  font-size: 1rem;
+}
+
+.criteria-icon {
+  margin-right: 8px;
+  font-size: 1.1rem;
+}
+
+.criteria-item.met {
+  color: #4ade80;
+}
+
+.criteria-item.unmet {
+  color: var(--color-slate-400, #94a3b8);
+}

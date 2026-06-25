@@ -54,15 +54,15 @@ export const useSignup = () => {
     const newErrors = {};
 
     const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_])[A-Za-z\d@$!%*?&_]{8,}$/;
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
 
     if (!formData.email) newErrors.email = "Email is required";
 
     if (!formData.password) {
       newErrors.password = "Password is required";
     } else if (!passwordRegex.test(formData.password)) {
-      newErrors.password =
-        "Must be 8+ chars with uppercase, lowercase, number, and special char (@$!%*?&_).";
+      // Shorter error since the UI checklist handles the details
+      newErrors.password = "Please meet all password requirements.";
     }
 
     if (!formData.confirmPassword) {
@@ -80,6 +80,7 @@ export const useSignup = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
   const validateStep2 = () => {
     const newErrors = {};
     if (!formData.firstName) newErrors.firstName = "First name is required";
