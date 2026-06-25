@@ -1,4 +1,3 @@
-/* --- Global Layout --- */
 .page-container {
   display: flex;
   min-height: 100vh;
@@ -6,7 +5,6 @@
   font-family: var(--font-sans, "Inter", sans-serif);
 }
 
-/* --- Left Panel (Reused from Verify/Signup) --- */
 .left-panel {
   width: 35%;
   background: var(--bg-navy-gradient);
@@ -75,7 +73,6 @@
   line-height: 1.4;
 }
 
-/* --- Right Panel --- */
 .right-panel {
   width: 65%;
   display: flex;
@@ -112,7 +109,6 @@
   line-height: 1.4;
 }
 
-/* --- The Navy Form Card --- */
 .form-card {
   background: var(--bg-navy-gradient);
   width: 100%;
@@ -122,7 +118,6 @@
   margin-bottom: 40px;
 }
 
-/* Input Fields inside the dark card */
 .input-group {
   position: relative;
   margin-bottom: 20px;
@@ -168,7 +163,6 @@
   z-index: 10;
 }
 
-/* Divider */
 .divider-container {
   display: flex;
   align-items: center;
@@ -191,7 +185,6 @@
   letter-spacing: 0.5px;
 }
 
-/* Google Button */
 .btn-google {
   width: 100%;
   padding: 14px;
@@ -218,7 +211,6 @@
   margin-right: 10px;
 }
 
-/* Forgot Password */
 .forgot-password {
   text-align: right;
   color: var(--color-white);
@@ -235,7 +227,6 @@
   text-decoration: underline;
 }
 
-/* --- Bottom Actions --- */
 .bottom-actions {
   display: flex;
   justify-content: space-between;
@@ -275,7 +266,6 @@
   background-color: var(--color-linco-navy-hover);
 }
 
-/* --- Error UI --- */
 .error-text {
   color: var(--color-error-text);
   font-size: 0.85rem;
@@ -302,6 +292,7 @@
   text-align: center;
   animation: shake 0.4s ease-in-out;
 }
+
 @keyframes shake {
   0%,
   100% {
@@ -312,5 +303,67 @@
   }
   75% {
     transform: translateX(4px);
+  }
+}
+
+.resend-container {
+  margin-top: 12px;
+}
+
+.btn-resend {
+  background-color: transparent;
+  color: var(--color-error-main);
+  border: 1px solid var(--color-error-main);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-resend:hover:not(:disabled) {
+  background-color: var(--color-error-main);
+  color: var(--color-white);
+}
+
+.btn-resend:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.resend-message {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 15px;
+  padding: 14px 20px;
+  margin-top: -15px;
+  margin-bottom: 25px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: center;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.resend-message.success {
+  background-color: var(--color-blue-50);
+  color: var(--color-blue-500);
+  border: 1px solid var(--color-linco-light);
+}
+
+.resend-message.error {
+  background-color: var(--color-error-bg);
+  color: var(--color-error-main);
+  border: 1px solid var(--color-error-border);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

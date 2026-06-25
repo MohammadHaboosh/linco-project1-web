@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { signinUser } from "../api/userApi.js";
+import { signinUser, resendVerificationEmail } from "../api/userApi.js";
 import { setUser } from "../store/userSlice.js";
 
 export const useSignin = () => {
@@ -17,6 +17,10 @@ export const useSignin = () => {
   const [serverError, setServerError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const [isUnverified, setIsUnverified] = useState(false);
+  const [isResending, setIsResending] = useState(false);
+  const [resendMessage, setResendMessage] = useState({ type: "", text: "" });
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -28,6 +32,8 @@ export const useSignin = () => {
       setErrors((prev) => ({ ...prev, [name]: null }));
     }
     setServerError("");
+    setIsUnverified(false);
+    setResendMessage({ type: "", text: "" });
   };
 
   const validate = () => {
@@ -46,6 +52,28 @@ export const useSignin = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const handleResendVerification = async () => {
+    if (!formData.email) return;
+
+    setIsResending(true);
+    setResendMessage({ type: "", text: "" });
+
+    try {
+      await resendVerificationEmail(formData.email);
+      setResendMessage({
+        type: "success",
+        text: "Verification email sent successfully! Please check your inbox.",
+      });
+    } catch (error) {
+      setResendMessage({
+        type: "error",
+        text: error.message || "Failed to resend email. Please try again.",
+      });
+    } finally {
+      setIsResending(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
 
@@ -53,16 +81,19 @@ export const useSignin = () => {
 
     setIsSubmitting(true);
     setServerError("");
+    setIsUnverified(false);
+    setResendMessage({ type: "", text: "" });
 
     try {
       const response = await signinUser(formData);
-
       const userData = response?.data?.user;
 
       dispatch(setUser(userData));
-
       navigate("/");
     } catch (error) {
+      if (error.code === "EmailNotVerifiedException") {
+        setIsUnverified(true);
+      }
       setServerError(
         error.message || "Failed to sign in. Please check your credentials.",
       );
@@ -76,7 +107,11 @@ export const useSignin = () => {
     errors,
     serverError,
     isSubmitting,
+    isUnverified,
+    isResending,
+    resendMessage,
     handleInputChange,
     handleSubmit,
+    handleResendVerification,
   };
 };

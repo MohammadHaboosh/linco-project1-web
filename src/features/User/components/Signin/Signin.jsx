@@ -21,8 +21,12 @@ const Signin = () => {
     errors,
     serverError,
     isSubmitting,
+    isUnverified,
+    isResending,
+    resendMessage,
     handleInputChange,
     handleSubmit,
+    handleResendVerification,
   } = useSignin();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -133,7 +137,31 @@ const Signin = () => {
           </div>
 
           {serverError && (
-            <div className={styles["server-error-banner"]}>{serverError}</div>
+            <div className={styles["server-error-banner"]}>
+              <span>{serverError}</span>
+              {isUnverified && (
+                <div className={styles["resend-container"]}>
+                  <button
+                    type="button"
+                    className={styles["btn-resend"]}
+                    onClick={handleResendVerification}
+                    disabled={isResending}
+                  >
+                    {isResending ? "Sending..." : "Resend Verification Email"}
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {resendMessage.text && (
+            <div
+              className={`${styles["resend-message"]} ${
+                styles[resendMessage.type]
+              }`}
+            >
+              {resendMessage.text}
+            </div>
           )}
 
           <div className={styles["bottom-actions"]}>

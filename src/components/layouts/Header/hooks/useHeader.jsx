@@ -16,7 +16,7 @@ export const useHeader = () => {
   const firstName = profile?.firstName || "Guest";
   const lastName = profile?.lastName || "";
   const fullName = `${firstName} ${lastName}`.trim();
-  const initials = isAuthenticated
+  const initials = profile.imagePath
     ? `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase()
     : "G";
 

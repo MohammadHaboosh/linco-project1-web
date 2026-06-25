@@ -45,12 +45,43 @@ export const signinUser = async (credentials) => {
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.message || `HTTP error! status: ${response.status}`);
+      const err = new Error(
+        data.message || `HTTP error! status: ${response.status}`,
+      );
+      err.code = data.error;
+      throw err;
     }
 
     return data;
   } catch (error) {
     console.error("API Error during signin:", error);
+    throw error;
+  }
+};
+
+export const resendVerificationEmail = async (email) => {
+  try {
+    const response = await fetch(
+      `${BASE_URL}/authentication/resend-verification-email`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-client-type": "web",
+        },
+        body: JSON.stringify({ email }),
+      },
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || `HTTP error! status: ${response.status}`);
+    }
+
+    return data;
+  } catch (error) {
+    console.error("API Error during resend verification:", error);
     throw error;
   }
 };

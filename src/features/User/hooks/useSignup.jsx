@@ -52,10 +52,22 @@ export const useSignup = () => {
 
   const validateStep1 = () => {
     const newErrors = {};
+
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_])[A-Za-z\d@$!%*?&_]{8,}$/;
+
     if (!formData.email) newErrors.email = "Email is required";
-    if (!formData.password) newErrors.password = "Password is required";
-    if (!formData.confirmPassword)
+
+    if (!formData.password) {
+      newErrors.password = "Password is required";
+    } else if (!passwordRegex.test(formData.password)) {
+      newErrors.password =
+        "Must be 8+ chars with uppercase, lowercase, number, and special char (@$!%*?&_).";
+    }
+
+    if (!formData.confirmPassword) {
       newErrors.confirmPassword = "Confirm your password";
+    }
 
     if (
       formData.password &&
@@ -68,7 +80,6 @@ export const useSignup = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
   const validateStep2 = () => {
     const newErrors = {};
     if (!formData.firstName) newErrors.firstName = "First name is required";
@@ -112,7 +123,16 @@ export const useSignup = () => {
       navigate(PATHS.CHECK_EMAIL, { state: { email: formData.email } });
     } catch (error) {
       console.error("Signup error:", error);
-      setServerError(error.message || "Failed to sign up. Please try again.");
+
+      if (error.message === "Email already exists") {
+        setStep(1);
+        setErrors((prev) => ({
+          ...prev,
+          email: "This email is already in use. Please log in or use another.",
+        }));
+      } else {
+        setServerError(error.message || "Failed to sign up. Please try again.");
+      }
     } finally {
       setIsSubmitting(false);
     }
