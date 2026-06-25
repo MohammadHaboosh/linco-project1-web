@@ -16,6 +16,11 @@ const SignupStep1 = ({ formData, onChange, errors }) => {
   const toggleConfirmPassword = () =>
     setShowConfirmPassword(!showConfirmPassword);
 
+  const handleGoogleLogin = () => {
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+    window.location.href = `${BASE_URL}/authentication/google`;
+  };
+
   return (
     <>
       <div className={styles["input-group"]}>
@@ -73,7 +78,6 @@ const SignupStep1 = ({ formData, onChange, errors }) => {
       {errors.confirmPassword && (
         <span className={styles["error-text"]}>{errors.confirmPassword}</span>
       )}
-      {/* Specifically show the mismatch error here */}
       {errors.passwordMatch && (
         <span className={styles["error-text"]}>{errors.passwordMatch}</span>
       )}
@@ -84,7 +88,11 @@ const SignupStep1 = ({ formData, onChange, errors }) => {
         <div className={styles.line}></div>
       </div>
 
-      <button className={styles["btn-google"]}>
+      <button
+        type="button"
+        className={styles["btn-google"]}
+        onClick={handleGoogleLogin}
+      >
         <FcGoogle className={styles["google-icon"]} />
         Continue with Google
       </button>

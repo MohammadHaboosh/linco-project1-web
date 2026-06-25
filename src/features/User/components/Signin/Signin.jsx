@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   IoMailOutline,
   IoLockClosedOutline,
@@ -27,6 +27,11 @@ const Signin = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const togglePassword = () => setShowPassword(!showPassword);
+
+  const handleGoogleLogin = () => {
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+    window.location.href = `${BASE_URL}/authentication/google`;
+  };
 
   return (
     <div className={styles["page-container"]}>
@@ -110,7 +115,11 @@ const Signin = () => {
               <div className={styles.line}></div>
             </div>
 
-            <button type="button" className={styles["btn-google"]}>
+            <button
+              type="button"
+              className={styles["btn-google"]}
+              onClick={handleGoogleLogin}
+            >
               <FcGoogle className={styles["google-icon"]} />
               Continue with Google
             </button>
