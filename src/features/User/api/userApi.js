@@ -196,6 +196,7 @@ export const resetPassword = async (token, newPassword) => {
     });
 
     const data = await response.json();
+    console.log("Backend Response: ", data);
 
     if (!response.ok) {
       throw new Error(data.message || `HTTP error! status: ${response.status}`);
