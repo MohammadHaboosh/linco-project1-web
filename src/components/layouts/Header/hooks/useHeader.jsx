@@ -20,6 +20,7 @@ export const useHeader = () => {
     ? `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase()
     : "G";
 
+  console.log("User profile from Redux store:", profile);
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
