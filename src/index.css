@@ -55,3 +55,42 @@ body {
   background-color: #cbd5e1;
   border-radius: 10px;
 }
+.reveal-up {
+  opacity: 0;
+  transform: translateY(50px);
+  transition:
+    opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition:
+    opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.reveal-right {
+  opacity: 0;
+  transform: translateX(50px);
+  transition:
+    opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.reveal-visible {
+  opacity: 1 !important;
+  transform: translate(0) !important;
+}
+
+.wave-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+.wave-bottom svg {
+  display: block;
+  width: calc(100% + 1.3px);
+  height: 60px;
+}

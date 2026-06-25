@@ -1,0 +1,52 @@
+.testimonialsContainer {
+  padding: 100px 60px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin-top: 50px;
+}
+
+.card {
+  background-color: #ffffff;
+  border: 2px dashed var(--color-linco-navy);
+  border-radius: 16px;
+  padding: 30px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.role {
+  color: var(--color-linco-navy);
+  font-weight: 800;
+  font-size: 0.95rem;
+}
+
+.quote {
+  color: var(--color-slate-700);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

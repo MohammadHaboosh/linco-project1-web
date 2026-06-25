@@ -7,13 +7,11 @@ import JoinedRoomsPage from "../features/Dashboard/JoinedRoomPage/components/joi
 import SignupPage from "../pages/SignupPage.jsx";
 import DemoPage from "../pages/HomeDemoPage";
 import VerifyEmailPage from "../pages/VerifyEmailPage.jsx";
-//import VerifyAccount from "../pages/VerifyAccountPage.jsx";
 import SinginPage from "../pages/SigninPage.jsx";
 import CoursesPage from "../pages/CoursesPage";
 import LearningPathPage from "../pages/LearningPathPage";
 import DepartmentPage from "../pages/DepartmentPage.jsx";
-//import LandingPage from "../pages/LandingPage.jsx";
-//import VerifyEmail from "../features/User/components/Verify/VerifyEmail.jsx";
+import LandingPage from "../pages/LandingPage.jsx";
 import VerifyAccountPage from "../pages/VerifyAccountPage.jsx";
 import ResetPasswordPage from "../pages/ResetPasswordPage.jsx";
 import ForgotPasswordPage from "../pages/ForgotPasswordPage.jsx";
@@ -23,10 +21,10 @@ export const router = createBrowserRouter([
     path: PATHS.HOME,
     element: <HomePage />,
   },
-  // {
-  //   path: PATHS.LANDING,
-  //   element: <LandingPage />,
-  // },
+  {
+    path: PATHS.LANDING,
+    element: <LandingPage />,
+  },
   {
     path: PATHS.PENDING_INVITATIONS,
     element: <PendingInvitationsPage />,
