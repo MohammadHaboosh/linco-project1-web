@@ -186,13 +186,22 @@ export const forgotPassword = async (email) => {
 
 export const resetPassword = async (token, newPassword) => {
   try {
+    console.log(
+      "Resetting password with token:",
+      token,
+      "and newPassword:",
+      newPassword,
+    );
     const response = await fetch(`${BASE_URL}/authentication/reset-password`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "x-client-type": "web",
       },
-      body: JSON.stringify({ token, newPassword }),
+      body: JSON.stringify({
+        password: newPassword,
+        token: token,
+      }),
     });
 
     const data = await response.json();
