@@ -16,10 +16,11 @@ export const useHeader = () => {
   const firstName = profile?.firstName || "Guest";
   const lastName = profile?.lastName || "";
   const fullName = `${firstName} ${lastName}`.trim();
-  const initials = profile.imagePath
-    ? `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase()
+  const initials = profile?.firstName
+    ? `${firstName.charAt(0)}${lastName ? lastName.charAt(0) : ""}`.toUpperCase()
     : "G";
 
+  const imagePath = profile?.imagePath || null;
   console.log("User profile from Redux store:", profile);
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -56,6 +57,7 @@ export const useHeader = () => {
     isAuthenticated,
     fullName,
     initials,
+    imagePath,
     toggleDropdown,
     closeDropdown,
     handleLogout,

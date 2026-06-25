@@ -14,6 +14,7 @@ const GlobalHeader = () => {
     isAuthenticated,
     fullName,
     initials,
+    imagePath,
     toggleDropdown,
     closeDropdown,
     handleLogout,
@@ -34,7 +35,22 @@ const GlobalHeader = () => {
           ref={dropdownRef}
           onClick={toggleDropdown}
         >
-          <div className={styles["user-avatar"]}>{initials}</div>
+          <div className={styles["user-avatar"]}>
+            {imagePath && imagePath !== "123456789" ? (
+              <img
+                src={imagePath}
+                alt={`${fullName}'s profile`}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                }}
+              />
+            ) : (
+              initials
+            )}
+          </div>
           <span className={styles["user-name"]}>{fullName}</span>
           <div
             className={`${styles["dropdown-icon"]} ${isDropdownOpen ? styles["open"] : ""}`}
