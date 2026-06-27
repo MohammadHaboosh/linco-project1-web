@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { IoChevronBack, IoSearch } from 'react-icons/io5';
-import Sidebar from '../../../../../components/layouts/SideBar/Sidebar.jsx';
-import Header from '../../../../../components/layouts/Header/global_header/Header.jsx';
-import Footer from '../../../../../components/layouts/Footer/Footer.jsx';
-import InvitationCard from '../../../../../components/elements/InvitationCard/InvitationCard.jsx';
+import Sidebar from '../../../../components/layouts/SideBar/Sidebar.jsx';
+import Header from '../../../../components/layouts/Header/global_header/Header.jsx';
+import Footer from '../../../../components/layouts/Footer/Footer.jsx';
+import InvitationCard from '../../../../components/elements/InvitationCard/InvitationCard.jsx';
 import styles from './PendingInvitations.module.css';
 
 const PendingInvitationsPage = () => {

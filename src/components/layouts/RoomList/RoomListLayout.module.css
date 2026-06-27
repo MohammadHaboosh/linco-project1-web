@@ -1,0 +1,243 @@
+.app-container {
+  background: var(--bg-navy-gradient);
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow-y: auto;
+  background: var(--bg-navy-gradient);
+}
+
+.top-banner {
+  background-color: #ffffff;
+  padding: 60px 80px;
+  border-bottom-left-radius: 80px;
+  border-bottom-right-radius: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 380px;
+  overflow: hidden;
+  position: relative;
+}
+
+.banner-text {
+  max-width: 50%;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.title-container {
+  display: inline-block;
+  margin-bottom: 30px;
+}
+
+.back-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--color-linco-navy);
+  margin-bottom: 15px;
+}
+
+.back-icon {
+  font-size: 1.8rem;
+  margin-right: 15px;
+}
+
+.back-link h2 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.dashed-line {
+  width: 100%;
+  height: 2px;
+  border-bottom: 2px dashed var(--color-linco-navy);
+  margin-left: 45px;
+}
+
+.stats-box {
+  border: 2px dashed var(--color-linco-navy);
+  border-radius: 16px;
+  padding: 25px 50px;
+  margin-left: 45px;
+  display: inline-block;
+  text-align: center;
+  background-color: #ffffff;
+}
+
+.stats-title {
+  color: var(--color-linco-blue);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+}
+
+.stats-number {
+  color: var(--color-linco-navy);
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin: 0;
+  line-height: 1;
+}
+
+.banner-image-container {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 45%;
+  background-color: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.search-section {
+  padding: 40px 20px 50px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.search-bar {
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 650px;
+  display: flex;
+  align-items: center;
+  padding: 12px 25px;
+  border-radius: 12px;
+}
+
+.search-bar input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  color: var(--color-linco-navy);
+}
+
+.search-bar input::placeholder {
+  color: #94a3b8;
+}
+
+.search-icon {
+  color: var(--color-linco-navy);
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.list-section {
+  background-color: #ffffff;
+  border-top-left-radius: 80px;
+  border-top-right-radius: 80px;
+  padding: 60px 80px;
+  flex: 1;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+}
+
+.icon {
+  color: var(--color-linco-blue);
+  font-size: 1.1rem;
+}
+
+.badge-icon {
+  font-size: 1rem;
+}
+
+.footer-wrapper {
+  background: var(--bg-navy-gradient);
+}
+
+@media (max-width: 1100px) {
+  .top-banner {
+    padding: 30px;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+    flex-direction: column;
+    text-align: center;
+  }
+  .banner-text {
+    max-width: 100%;
+    margin-bottom: 30px;
+  }
+  .stats-box {
+    margin-left: 0;
+  }
+  .dashed-line {
+    margin-left: 0;
+  }
+  .banner-image-container {
+    display: none;
+  }
+  .list-section {
+    padding: 40px 30px;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+  }
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.empty-state-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 20px 0 60px 0;
+}
+
+.empty-state-card {
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8fafc;
+  text-align: center;
+  color: #64748b;
+  width: 100%;
+  max-width: 600px;
+}
+
+.empty-icon {
+  font-size: 3.5rem;
+  color: #94a3b8;
+  margin-bottom: 15px;
+}
+
+.empty-state-card h3 {
+  color: var(--color-linco-navy, #1e293b);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.empty-state-card p {
+  font-size: 0.95rem;
+  max-width: 450px;
+  line-height: 1.5;
+}

@@ -1,9 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
 import { PATHS } from "./paths";
 
-import HomePage from "../features/Dashboard/HomePage/components/home_page/HomePage";
-import PendingInvitationsPage from "../features/Dashboard/PendingInvitationsPage/components/pending_invitations/PendingInvitations";
-import JoinedRoomsPage from "../features/Dashboard/JoinedRoomPage/components/joined_rooms/JoinedRooms";
+import HomePage from "../pages/HomePage.jsx";
+import PendingInvitationsPage from "../pages/PendingInvitationsPage.jsx";
+import JoinedRoomsPage from "../pages/JoinedRooms.jsx";
+import MyOwnRoomsPage from "../pages/MyOwnRoomsPage.jsx";
 import SignupPage from "../pages/SignupPage.jsx";
 import DemoPage from "../pages/HomeDemoPage";
 import VerifyEmailPage from "../pages/VerifyEmailPage.jsx";
@@ -32,6 +33,10 @@ export const router = createBrowserRouter([
   {
     path: PATHS.JOINED_ROOMS,
     element: <JoinedRoomsPage />,
+  },
+  {
+    path: PATHS.OWN_ROOMS,
+    element: <MyOwnRoomsPage />,
   },
   {
     path: PATHS.DEMO,

@@ -1,74 +1,31 @@
-import Sidebar from '../../../../../components/layouts/SideBar/Sidebar';
-import Header from '../../../../../components/layouts/Header/global_header/Header';
-import Footer from '../../../../../components/layouts/Footer/Footer';
-import PendingInvitations from '../pending_invitations/PendingInvitations';
-import RoomSection from '../room_section/RoomSection';
-import styles from './HomePage.module.css';
-import appIconImg from '../../../../../../public/icons/linco-logo.png';
+import Sidebar from "../../../../../components/layouts/SideBar/Sidebar";
+import Header from "../../../../../components/layouts/Header/global_header/Header";
+import Footer from "../../../../../components/layouts/Footer/Footer";
+import PendingInvitations from "../pending_invitations/PendingInvitations";
+import RoomSection from "../room_section/RoomSection";
+import styles from "./HomePage.module.css";
+import appIconImg from "../../../../../../public/icons/linco-logo.png";
+
+import { useUser } from "../../../../../hooks/useUser";
+import { useHomePage } from "../../hooks/useHomePage.jsx";
 
 const HomePage = () => {
-  // Mock data arrays for the different room categories
-  const activeRooms = [
-    {
-      id: 1,
-      companyName: 'Company Demo Name',
-      role: 'Trainee',
-      dateJoined: '12/12/2025',
-      members: 120,
-    },
-    {
-      id: 2,
-      companyName: 'Company Demo Name',
-      role: 'Trainee',
-      dateJoined: '12/12/2025',
-      imageColor: '#1a365d',
-      members: 120,
-    },
-  ];
-
-  const ownedRooms = [
-    {
-      id: 1,
-      companyName: 'Company Demo Name',
-      role: 'Trainee',
-      dateJoined: '12/12/2025',
-      members: 120,
-    },
-    {
-      id: 2,
-      companyName: 'Company Demo Name',
-      role: 'Trainee',
-      dateJoined: '12/12/2025',
-      members: 120,
-    },
-  ];
-
-  const workedRooms = [
-    {
-      id: 1,
-      companyName: 'Company Demo Name',
-      role: 'Trainee',
-      dateJoined: '12/12/2025',
-      members: 120,
-    },
-    {
-      id: 2,
-      companyName: 'Company Demo Name',
-      role: 'Trainee',
-      dateJoined: '12/12/2025',
-      members: 120,
-    },
-  ];
+  const { profile } = useUser();
+  const { ownedRooms, isLoadingOwnedRooms, activeRooms, workedRooms } =
+    useHomePage();
 
   return (
-    <div className={styles['app-container']}>
+    <div className={styles["app-container"]}>
       <Sidebar role="global" />
 
-      <div className={`${styles['main-wrapper']} custom-scrollbar`}>
+      <div className={`${styles["main-wrapper"]} custom-scrollbar`}>
         <Header />
-        <div className={styles['hero-banner']}>
-          <div className={styles['hero-text']}>
-            <h1>Ready to dive into your learning, Abrar ?</h1>
+        <div className={styles["hero-banner"]}>
+          <div className={styles["hero-text"]}>
+            <h1>
+              Ready to dive into your learning, {profile?.firstName || "Guest"}{" "}
+              ?
+            </h1>
             <p>
               Manage your company links, track your active training rooms, and
               level up your career from one single dashboard.
@@ -77,21 +34,35 @@ const HomePage = () => {
           <img
             src={appIconImg}
             alt="App Icon"
-            className={styles['app-icon-img']}
+            className={styles["app-icon-img"]}
           />
         </div>
 
         <PendingInvitations />
 
         <div
-          className={styles['content-section']}
-          style={{ paddingTop: '40px' }}
+          className={styles["content-section"]}
+          style={{ paddingTop: "40px" }}
         >
           <RoomSection title="Recently Active Rooms" rooms={activeRooms} />
 
           <div className={styles.divider}></div>
 
-          <RoomSection title="Recently Active Owned Rooms" rooms={ownedRooms} />
+          <div className={styles["owned-rooms-container"]}>
+            {isLoadingOwnedRooms ? (
+              <p style={{ padding: "0 40px", color: "#64748b" }}>
+                Loading your rooms...
+              </p>
+            ) : (
+              <RoomSection
+                title="Recently Active Owned Rooms"
+                rooms={ownedRooms}
+                viewAllPath="/my-own-rooms"
+                emptyMessage="No Owned Rooms Yet"
+                emptySubtext="You don't have any active owned rooms right now. Create one to get started!"
+              />
+            )}
+          </div>
 
           <div className={styles.divider}></div>
 

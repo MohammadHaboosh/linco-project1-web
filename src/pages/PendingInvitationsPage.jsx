@@ -1,4 +1,4 @@
-import PendingIvitations from "../features/PendingInvitationsPage/components/PendingInvitations";
+import PendingIvitations from "../features/Dashboard/PendingInvitationsPage/components/PendingInvitations.jsx";
 
 const pendingInvitations = () => {
   return (

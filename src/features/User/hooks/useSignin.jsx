@@ -89,7 +89,7 @@ export const useSignin = () => {
       const userData = response?.data?.user;
 
       dispatch(setUser(userData));
-      navigate("/");
+      navigate("/home");
     } catch (error) {
       if (error.code === "EmailNotVerifiedException") {
         setIsUnverified(true);

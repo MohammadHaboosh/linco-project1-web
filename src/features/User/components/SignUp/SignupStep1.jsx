@@ -4,7 +4,7 @@ import {
   IoLockClosedOutline,
   IoEyeOutline,
   IoEyeOffOutline,
-  IoCheckmarkCircle, // Keep this for the success state
+  IoCheckmarkCircle,
 } from "react-icons/io5";
 import { FcGoogle } from "react-icons/fc";
 import styles from "./Signup.module.css";
@@ -22,7 +22,6 @@ const SignupStep1 = ({ formData, onChange, errors }) => {
     window.location.href = `${BASE_URL}/authentication/google`;
   };
 
-  // 1. Generate the missing criteria array
   const password = formData.password || "";
   const missingCriteria = [];
 
@@ -68,7 +67,6 @@ const SignupStep1 = ({ formData, onChange, errors }) => {
         </button>
       </div>
 
-      {/* 2. Compact Real-time Feedback Text */}
       {password && missingCriteria.length > 0 && (
         <span className={styles["password-feedback-text"]}>
           Missing: {missingCriteria.join(", ")}.
@@ -81,7 +79,6 @@ const SignupStep1 = ({ formData, onChange, errors }) => {
         </span>
       )}
 
-      {/* Main submission error */}
       {errors.password && (
         <span className={styles["error-text"]}>{errors.password}</span>
       )}
