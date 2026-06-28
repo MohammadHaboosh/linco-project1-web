@@ -13,9 +13,11 @@ import styles from "./Signin.module.css";
 
 import logoImg from "../../../../../public/images/LinCo.png";
 import mascotImg from "../../../../../public/images/linco-logo.jpg";
+import { useTranslation } from "react-i18next";
 
 const Signin = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const {
     formData,
     errors,
@@ -62,11 +64,11 @@ const Signin = () => {
       <div className={styles["right-panel"]}>
         <div className={styles["form-wrapper"]}>
           <div className={styles.header}>
-            <h1 className={styles.title}>Sign In</h1>
+            <h1 className={styles.title}>{t("sign-in")}</h1>
             <p className={styles.subtitle}>
-              Welcome back..
+              {t("welcome-back")}
               <br />
-              sign in to continue your learning journey
+              {t("sign-in-to-continue-your-learning-journey")}
             </p>
           </div>
 

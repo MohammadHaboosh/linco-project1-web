@@ -21,7 +21,7 @@ const InfoRow = ({ title, desc, list, isReverse, btnText, imgSrc }) => {
           {list.map((item, i) => (
             <li key={i}>
               <IoCheckmark className={styles.checkIcon} />{" "}
-              <span style={{ flex: 1 }}>{t("item")}</span>
+              <span style={{ flex: 1 }}>{item}</span>
             </li>
           ))}
         </ul>

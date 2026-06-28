@@ -1,15 +1,23 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { IoMenu, IoLogOutOutline, IoClose } from "react-icons/io5"; // تمت إضافة IoClose
+import { useTranslation } from "react-i18next";
+import {
+  IoMenu,
+  IoLogOutOutline,
+  IoClose,
+  IoSettingsOutline,
+  IoMoonOutline,
+} from "react-icons/io5";
 import { SIDEBAR_ROLES } from "./sidebarConfig";
+import LanguageSwitcher from "../../common/LanguageSwitcher";
 import styles from "./Sidebar.module.css";
 
 const Sidebar = ({ role = "trainee" }) => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const { t } = useTranslation();
 
   const toggleSidebar = () => setIsOpen(!isOpen);
-
   const menuItems = SIDEBAR_ROLES[role] || [];
 
   return (
@@ -36,12 +44,15 @@ const Sidebar = ({ role = "trainee" }) => {
                 <Link
                   to={item.path}
                   className={`${styles["menu-item"]} ${isActive ? styles.active : ""}`}
-                  onClick={() => setIsOpen(false)} // إغلاق القائمة عند اختيار صفحة
+                  onClick={() => setIsOpen(false)}
                 >
                   <div className={styles["icon-wrapper"]}>
                     <span className={styles.icon}>{item.icon}</span>
                   </div>
-                  <span className={styles.text}>{item.name}</span>
+                  <span className={styles.text}>
+                    {t(item.name.toLowerCase().replace(/\s+/g, "-")) ||
+                      item.name}
+                  </span>
                 </Link>
               </div>
             );
@@ -49,11 +60,21 @@ const Sidebar = ({ role = "trainee" }) => {
         </div>
 
         <div className={styles["bottom-section"]}>
+          <div className={styles["sidebar-actions"]}>
+            <LanguageSwitcher />
+            <div className={styles["action-btn"]} title={t("theme")}>
+              <IoMoonOutline />
+            </div>
+            <div className={styles["action-btn"]} title={t("settings")}>
+              <IoSettingsOutline />
+            </div>
+          </div>
+
           <div className={`${styles["menu-item"]} ${styles["logout-item"]}`}>
             <div className={styles["icon-wrapper"]}>
               <IoLogOutOutline className={styles.icon} />
             </div>
-            <span className={styles.text}>Log out</span>
+            <span className={styles.text}>{t("logout")}</span>
           </div>
         </div>
       </aside>

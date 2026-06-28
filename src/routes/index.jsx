@@ -19,7 +19,6 @@ import ResetPasswordPage from "../pages/ResetPasswordPage.jsx";
 import ForgotPasswordPage from "../pages/ForgotPasswordPage.jsx";
 import RequestRoomPage from "../pages/RequestRoomPage.jsx";
 
-
 export const router = createBrowserRouter([
   {
     path: PATHS.HOME,
@@ -27,7 +26,7 @@ export const router = createBrowserRouter([
   },
   {
     path: PATHS.LANDING,
-    element: <LandingPage />,
+    element: <HomeDemoPage />,
   },
   {
     path: PATHS.PENDING_INVITATIONS,

@@ -121,11 +121,14 @@ const GlobalHeader = () => {
           </div>
         ))}
       </nav>
-      <LanguageSwitcher />
+
       <div className={styles["header-actions"]}>
-        <button className={styles["btn-workspace"]} onClick={() => navigate(PATHS.REQUEST_ROOM)}>
+        <button
+          className={styles["btn-workspace"]}
+          onClick={() => navigate(PATHS.REQUEST_ROOM)}
+        >
           <IoPersonOutline style={{ marginRight: "5px" }} />{" "}
-          {t('request-a-room')}
+          {t("request-a-room")}
         </button>
         <div className={styles["app-icon"]}>
           <img
