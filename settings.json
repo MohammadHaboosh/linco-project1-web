@@ -1,0 +1,12 @@
+{
+  "i18n-ally.localesPaths": ["src/locales"],
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.sourceLanguage": "en",
+  "i18n-ally.displayLanguage": "en",
+  "i18n-ally.extract.autoDetect": true,
+  "i18n-ally.framework": "i18next",
+  "i18n-ally.enabledFrameworks": ["react", "i18next"],
+  "i18n-ally.includeSubfolders": true,
+  "i18n-ally.promptTranslating.hover": true,
+  "i18n-ally.translate.engines": ["google"]
+}

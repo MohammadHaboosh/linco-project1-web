@@ -9,8 +9,10 @@ import styles from "./Signup.module.css";
 
 import logoImg from "../../../../../public/images/LinCo.png";
 import mascotImg from "../../../../../public/images/linco-logo.jpg";
+import { useTranslation } from "react-i18next";
 
 const SignupPage = () => {
+  const { t } = useTranslation() ;
   const navigate = useNavigate();
   const {
     step,
@@ -40,8 +42,7 @@ const SignupPage = () => {
               <strong>LinCo..</strong> Link Company,
             </h2>
             <p>
-              dfshehbfigfbeuw uewh fiuw eiufwiu fhf iuewhiuf hewfiuh ewiuhfiu
-              ewhifuhweifh iweh fiuewhif
+              {t('transform-the-way-your-company-learns-build-a-centralized-hub-for-onboarding-training-and-team-collaboration-0')}
             </p>
           </div>
         </div>
@@ -50,7 +51,7 @@ const SignupPage = () => {
       <div className={styles["right-panel"]}>
         <div className={styles["form-wrapper"]}>
           <div className={styles.header}>
-            <h1 className={styles.title}>Sign Up</h1>
+            <h1 className={styles.title}>{t('sign-up')}</h1>
             <p className={styles.subtitle}>
               Join thousands of learners on LinCo..
             </p>
@@ -92,7 +93,7 @@ const SignupPage = () => {
               className={styles["btn-login"]}
               onClick={() => navigate(PATHS.SIGNIN)}
             >
-              Sign In
+              {t('sign-in')}
             </button>
             <button
               type="button"
@@ -106,7 +107,7 @@ const SignupPage = () => {
                 "Sign Up"
               ) : (
                 <>
-                  Continue{" "}
+                  {t('continue')}{" "}
                   <IoArrowForwardOutline className={styles["arrow-icon"]} />
                 </>
               )}

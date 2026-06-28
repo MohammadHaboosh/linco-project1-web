@@ -28,4 +28,5 @@ export const PATHS = {
   VERIFIED_SUCCESSFULLY: "/verified-successfully",
   FORGOT_PASSWORD: "/forgot-password",
   RESET_PASSWORD: "/reset-password",
+  REQUEST_ROOM: "/request-room",
 };

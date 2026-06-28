@@ -17,6 +17,8 @@ import LandingPage from "../pages/LandingPage.jsx";
 import VerifyAccountPage from "../pages/VerifyAccountPage.jsx";
 import ResetPasswordPage from "../pages/ResetPasswordPage.jsx";
 import ForgotPasswordPage from "../pages/ForgotPasswordPage.jsx";
+import RequestRoomPage from "../pages/RequestRoomPage.jsx";
+
 
 export const router = createBrowserRouter([
   {
@@ -25,7 +27,7 @@ export const router = createBrowserRouter([
   },
   {
     path: PATHS.LANDING,
-    element: <HomeDemoPage />,
+    element: <LandingPage />,
   },
   {
     path: PATHS.PENDING_INVITATIONS,
@@ -66,6 +68,10 @@ export const router = createBrowserRouter([
   {
     path: PATHS.SIGNIN,
     element: <SinginPage />,
+  },
+  {
+    path: PATHS.REQUEST_ROOM,
+    element: <RequestRoomPage />,
   },
   {
     path: PATHS.COURSES,

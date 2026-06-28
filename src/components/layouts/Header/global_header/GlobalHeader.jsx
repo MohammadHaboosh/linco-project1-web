@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { IoPersonOutline } from "react-icons/io5";
 import { useHeader } from "../hooks/useHeader.jsx";
 import { HEADER_CONFIG } from "../headerConfig";
@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 const GlobalHeader = () => {
   const { t } = useTranslation();
   const location = useLocation();
+  const navigate = useNavigate();
   const {
     dropdownRef,
     isDropdownOpen,
@@ -122,9 +123,9 @@ const GlobalHeader = () => {
       </nav>
       <LanguageSwitcher />
       <div className={styles["header-actions"]}>
-        <button className={styles["btn-workspace"]}>
+        <button className={styles["btn-workspace"]} onClick={() => navigate(PATHS.REQUEST_ROOM)}>
           <IoPersonOutline style={{ marginRight: "5px" }} />{" "}
-          {t("create-a-workspace")}
+          {t('request-a-room')}
         </button>
         <div className={styles["app-icon"]}>
           <img
