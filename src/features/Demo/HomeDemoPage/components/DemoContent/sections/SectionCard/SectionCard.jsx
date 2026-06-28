@@ -3,12 +3,21 @@ import {
   IoLockClosedOutline,
   IoPeopleOutline,
   IoBookOutline,
+  IoTrashOutline,
 } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import { PATHS } from "../../../../../../../routes/paths"; // مسار استدعاء الـ Paths
+import { PATHS } from "../../../../../../../routes/paths";
 import styles from "./SectionCard.module.css";
+import { useTranslation } from "react-i18next";
 
-const SectionCard = ({ section }) => {
+const SectionCard = ({ section, isOwner, onDelete }) => {
+  const { t } = useTranslation();
+  const handleDeleteClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onDelete(section.id);
+  };
+
   return (
     <Link
       to={section.isLocked ? "#" : PATHS.DEPARTMENT_DETAILS}
@@ -19,10 +28,17 @@ const SectionCard = ({ section }) => {
       >
         <div className={styles.cardHeader}>
           <h3 className={styles.cardTitle}>{section.title}</h3>
-          <div style={{ display: "flex", alignItems: "center" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             {section.isLocked && (
-              <span className={styles.lockedText}>Locked</span>
+              <span className={styles.lockedText}>{t("locked")}</span>
             )}
+
+            {isOwner && (
+              <button className={styles.deleteBtn} onClick={handleDeleteClick}>
+                <IoTrashOutline />
+              </button>
+            )}
+
             <div className={styles.iconBox}>
               {section.isLocked ? (
                 <IoLockClosedOutline />
@@ -37,7 +53,7 @@ const SectionCard = ({ section }) => {
 
         <div className={styles.progressContainer}>
           <div className={styles.progressHeader}>
-            <span>Progress</span>
+            <span>{t("progress")}</span>
             <span>{section.progress}%</span>
           </div>
           <div className={styles.progressBg}>
@@ -58,7 +74,7 @@ const SectionCard = ({ section }) => {
           </div>
           <div className={styles.stats}>
             <span className={styles.statItem}>
-              <IoBookOutline /> {section.coursesCount} courses
+              <IoBookOutline /> {section.coursesCount} {t("courses")}
             </span>
             <span className={styles.statItem}>
               <IoPeopleOutline /> {section.membersCount}

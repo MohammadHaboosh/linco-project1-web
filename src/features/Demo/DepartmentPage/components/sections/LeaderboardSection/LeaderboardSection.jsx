@@ -1,10 +1,12 @@
+import { useTranslation } from "react-i18next";
 import styles from "./LeaderboardSection.module.css";
 
 const LeaderboardSection = ({ leaders }) => {
+  const { t } = useTranslation();
   return (
     <div className={styles["leaderboard-box"]}>
       <div className={styles["leaderboard-header"]}>
-        <h3>Company Leader Board Top-3</h3>
+        <h3>{t("companys-leader-board-top-3")}</h3>
       </div>
 
       <div className={styles["leaderboard-list"]}>
@@ -25,7 +27,9 @@ const LeaderboardSection = ({ leaders }) => {
         ))}
       </div>
 
-      <button className={styles["view-full-btn"]}>View Full Leaderboard</button>
+      <button className={styles["view-full-btn"]}>
+        {t("view-full-leaderboard")}
+      </button>
     </div>
   );
 };

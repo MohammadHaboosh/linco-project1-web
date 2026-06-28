@@ -1,11 +1,15 @@
+import { useTranslation } from "react-i18next";
 import styles from "./ProjectChatsWidget.module.css";
 
 const ProjectChatsWidget = ({ chats }) => {
+  const { t } = useTranslation();
+
   return (
     <div className={styles.chatsCard}>
-      <h3 className={styles.chatsTitle}>Project Discussions</h3>
-      <p className={styles.chatsSubtitle}>Recent activity in your groups</p>
-
+      <h3 className={styles.chatsTitle}>{t("project-discussions")}</h3>
+      <p className={styles.chatsSubtitle}>
+        {t("recent-activity-in-your-groups")}
+      </p>
       <div className={styles.chatsList}>
         {chats.map((chat) => (
           <div key={chat.id} className={styles.chatItem}>
@@ -30,8 +34,10 @@ const ProjectChatsWidget = ({ chats }) => {
           </div>
         ))}
       </div>
-
-      <button className={styles.viewAllChatsBtn}>View All Channels</button>
+      {t("view-all-channels")}
+      <button className={styles.viewAllChatsBtn}>
+        {t("view-all-channels")}
+      </button>
     </div>
   );
 };

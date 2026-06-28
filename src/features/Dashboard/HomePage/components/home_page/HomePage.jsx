@@ -8,8 +8,10 @@ import appIconImg from "../../../../../../public/icons/linco-logo.png";
 
 import { useUser } from "../../../../../hooks/useUser";
 import { useHomePage } from "../../hooks/useHomePage.jsx";
+import { useTranslation } from "react-i18next";
 
 const HomePage = () => {
+  const { t } = useTranslation();
   const { profile } = useUser();
   const { ownedRooms, isLoadingOwnedRooms, activeRooms, workedRooms } =
     useHomePage();
@@ -23,12 +25,13 @@ const HomePage = () => {
         <div className={styles["hero-banner"]}>
           <div className={styles["hero-text"]}>
             <h1>
-              Ready to dive into your learning, {profile?.firstName || "Guest"}{" "}
-              ?
+              {t("ready-to-dive-into-your-learning")}{" "}
+              {profile?.firstName || t("guest")} ?
             </h1>
             <p>
-              Manage your company links, track your active training rooms, and
-              level up your career from one single dashboard.
+              {t(
+                "manage-your-company-links-track-your-active-training-rooms-and-level-up-your-career-from-one-single-dashboard-1",
+              )}
             </p>
           </div>
           <img
@@ -44,22 +47,24 @@ const HomePage = () => {
           className={styles["content-section"]}
           style={{ paddingTop: "40px" }}
         >
-          <RoomSection title="Recently Active Rooms" rooms={activeRooms} />
+          <RoomSection title={t("recently-active-rooms")} rooms={activeRooms} />
 
           <div className={styles.divider}></div>
 
           <div className={styles["owned-rooms-container"]}>
             {isLoadingOwnedRooms ? (
               <p style={{ padding: "0 40px", color: "#64748b" }}>
-                Loading your rooms...
+                {t("loading-your-rooms")}
               </p>
             ) : (
               <RoomSection
-                title="Recently Active Owned Rooms"
+                title={t("recently-active-owned-rooms")}
                 rooms={ownedRooms}
                 viewAllPath="/my-own-rooms"
-                emptyMessage="No Owned Rooms Yet"
-                emptySubtext="You don't have any active owned rooms right now. Create one to get started!"
+                emptyMessage={t("no-owned-rooms-yet")}
+                emptySubtext={t(
+                  "you-dont-have-any-active-owned-rooms-right-now-create-one-to-get-started",
+                )}
               />
             )}
           </div>
@@ -67,7 +72,7 @@ const HomePage = () => {
           <div className={styles.divider}></div>
 
           <RoomSection
-            title="Recently Active Worked Rooms"
+            title={t("recently-active-worked-rooms")}
             rooms={workedRooms}
           />
         </div>

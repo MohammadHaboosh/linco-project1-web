@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import { IoFolderOpenOutline } from "react-icons/io5"; // Added an icon for the empty state
+import { IoFolderOpenOutline } from "react-icons/io5";
 import RoomCard from "../../../../../components/elements/RoomCard/RoomCard.jsx";
 import styles from "./RoomSection.module.css";
+import { useTranslation } from "react-i18next";
 
 const RoomSection = ({
   title,
@@ -11,6 +12,7 @@ const RoomSection = ({
   emptySubtext,
 }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <div className={styles.section}>
@@ -21,7 +23,7 @@ const RoomSection = ({
             className={styles["view-all"]}
             onClick={() => navigate(viewAllPath)}
           >
-            View All
+            {t("view-all-channels")}
           </button>
         )}
       </div>
@@ -35,10 +37,10 @@ const RoomSection = ({
       ) : (
         <div className={styles["empty-state-card"]}>
           <IoFolderOpenOutline className={styles["empty-icon"]} />
-          <h3>{emptyMessage || "No rooms found"}</h3>
+          <h3>{emptyMessage || t("no-rooms-found")}</h3>
           <p>
             {emptySubtext ||
-              "There are no rooms to display here at the moment."}
+              t("there-are-no-rooms-to-display-here-at-the-moment")}
           </p>
         </div>
       )}

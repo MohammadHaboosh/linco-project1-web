@@ -11,8 +11,10 @@ import SolutionsSection from "./sections/SolutionsSection/SolutionsSection";
 import TestimonialsSection from "./sections/TestimonialsSection/TestimonialsSection";
 import FAQSection from "./sections/FAQSection/FAQSection";
 import CTASection from "./sections/CTASection/CTASection";
+import { useTranslation } from "react-i18next";
 
 const LandingPage = () => {
+  const { t } = useTranslation();
   const { ref: heroRef, isVisible: isHeroVisible } = useScrollReveal();
 
   return (
@@ -24,26 +26,26 @@ const LandingPage = () => {
             alt="LinCo"
             style={{ width: "45px", borderRadius: "50%" }}
           />
-          <h2 className={styles.navBrandText}>LinCo.</h2>
+          <h2 className={styles.navBrandText}>{t("linco")}</h2>
         </div>
         <div className={styles.navLinks}>
-          <a href="#home">Home</a>
-          <a href="#features">Features</a>
-          <a href="#solutions">Solutions</a>
-          <a href="#faq">FAQ</a>
+          <a href="#home">{t("home")}</a>
+          <a href="#features">{t("features")}</a>
+          <a href="#solutions">{t("solutions")}</a>
+          <a href="#faq">{t("faq")}</a>
         </div>
         <div className={styles.navActions}>
           <Link to={PATHS.SIGNIN} className={styles.btnOutline}>
-            Log In
+            {t("login")}
           </Link>
           <Link to={PATHS.SIGNUP} className={styles.btnPrimary}>
-            Sign Up
+            {t("signup")}
           </Link>
         </div>
 
         <div className={styles.navLine}></div>
       </nav>
-
+      {t("features")}
       <section
         id="home"
         className={styles.heroSection}
@@ -61,26 +63,28 @@ const LandingPage = () => {
                 className={styles.heroMascot}
               />
               <div className={styles.heroBrandTitles}>
-                <h1>LinCo..</h1>
-                <span>Link Company</span>
+                <h1>{t("linco")}</h1>
+                <span>{t("link-company")}</span>
               </div>
             </div>
 
             <h2 className={styles.heroSubTitle}>
-              Empowering Engineers for the Real World
+              {t("empowering-engineers-for-the-real-world")}
             </h2>
 
             <p className={styles.heroDesc}>
-              An all-in-one virtual workspace designed to transform trainees
-              into industry-ready professionals through interactive coding,
-              agile management, and live design labs
+              {t(
+                "an-all-in-one-virtual-workspace-designed-to-transform-trainees-into-industry-ready-professionals-through-interactive-coding-agile-management-and-live-design-labs",
+              )}
             </p>
 
             <div style={{ display: "flex", gap: "15px" }}>
               <Link to={PATHS.SIGNIN} className={styles.btnPrimary}>
-                Login
+                {t("login")}
               </Link>
-              <button className={styles.btnOutline}>View Road Map</button>
+              <button className={styles.btnOutline}>
+                {t("view-road-map")}
+              </button>
             </div>
           </div>
 
@@ -156,13 +160,11 @@ const LandingPage = () => {
           </svg>
         </div>
       </section>
-
       <FeaturesSection />
       <SolutionsSection />
       <TestimonialsSection />
       <FAQSection />
       <CTASection />
-
       <div className={styles.footerContainer}>
         <Footer role="global" />
       </div>

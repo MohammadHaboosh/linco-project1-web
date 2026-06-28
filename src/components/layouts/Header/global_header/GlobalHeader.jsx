@@ -5,8 +5,11 @@ import { HEADER_CONFIG } from "../headerConfig";
 import { PATHS } from "../../../../routes/paths";
 import appIconImg from "/public/images/linco-logo.jpg";
 import styles from "./Header.module.css";
+import LanguageSwitcher from "../../../common/LanguageSwitcher.jsx";
+import { useTranslation } from "react-i18next";
 
 const GlobalHeader = () => {
+  const { t } = useTranslation();
   const location = useLocation();
   const {
     dropdownRef,
@@ -26,8 +29,8 @@ const GlobalHeader = () => {
     <header className={styles.header}>
       <div className={styles["header-left"]}>
         <div className={styles.logo}>
-          <span className={styles["brand-name"]}>LinCo</span>{" "}
-          <span className={styles["company-text"]}>Link Company.</span>
+          <span className={styles["brand-name"]}>{t("linco")}</span>{" "}
+          <span className={styles["company-text"]}>{t("link-company-0")}</span>
         </div>
 
         <div
@@ -65,13 +68,13 @@ const GlobalHeader = () => {
                     className={styles["dropdown-item"]}
                     onClick={closeDropdown}
                   >
-                    My Profile
+                    {t("my-profile")}
                   </Link>
                   <button
                     onClick={handleLogout}
                     className={`${styles["dropdown-item"]} ${styles["logout-btn"]}`}
                   >
-                    Logout
+                    {t("logout")}
                   </button>
                 </>
               ) : (
@@ -81,14 +84,14 @@ const GlobalHeader = () => {
                     className={styles["dropdown-item"]}
                     onClick={closeDropdown}
                   >
-                    Sign In
+                    {t("sign-in")}
                   </Link>
                   <Link
                     to="/signup"
                     className={styles["dropdown-item"]}
                     onClick={closeDropdown}
                   >
-                    Sign Up
+                    {t("sign-up")}
                   </Link>
                 </>
               )}
@@ -117,10 +120,11 @@ const GlobalHeader = () => {
           </div>
         ))}
       </nav>
-
+      <LanguageSwitcher />
       <div className={styles["header-actions"]}>
         <button className={styles["btn-workspace"]}>
-          <IoPersonOutline style={{ marginRight: "5px" }} /> Create a Workspace
+          <IoPersonOutline style={{ marginRight: "5px" }} />{" "}
+          {t("create-a-workspace")}
         </button>
         <div className={styles["app-icon"]}>
           <img

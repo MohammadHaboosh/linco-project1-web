@@ -11,6 +11,7 @@ import {
   IoHome,
 } from "react-icons/io5";
 import { PATHS } from "../../../routes/paths";
+import { useTranslation } from "react-i18next";
 
 export const HEADER_CONFIG = {
   global: {

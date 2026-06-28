@@ -2,9 +2,11 @@ import { useNavigate } from "react-router-dom";
 import { IoPersonOutline, IoCalendarOutline, IoPeople } from "react-icons/io5";
 import styles from "./RoomCard.module.css";
 import { PATHS } from "../../../routes/paths";
+import { useTranslation } from "react-i18next";
 
 const RoomCard = ({ room }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleCardClick = () => {
     ////////////////////////////////////////
@@ -22,10 +24,10 @@ const RoomCard = ({ room }) => {
         <div className={styles["card-info"]}>
           <h3>{room.companyName}</h3>
           <p>
-            <IoPersonOutline className={styles.icon} /> Role: {room.role}
+            <IoPersonOutline className={styles.icon} /> {t("role")} {room.role}
           </p>
           <p>
-            <IoCalendarOutline className={styles.icon} /> Joined at{" "}
+            <IoCalendarOutline className={styles.icon} /> {t("joined-at")}{" "}
             {room.dateJoined}
           </p>
         </div>

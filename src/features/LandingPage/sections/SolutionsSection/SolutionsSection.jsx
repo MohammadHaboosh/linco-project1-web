@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useScrollReveal } from "../../../../hooks/useScrollReveal";
 import stylesLanding from "../../LandingPage.module.css";
 import styles from "./SolutionsSection.module.css";
@@ -23,10 +24,10 @@ const TimelineItem = ({ number, title, desc, isReverse }) => {
 
 const SolutionsSection = () => {
   const { ref, isVisible } = useScrollReveal();
+  const { t } = useTranslation();
 
   return (
     <section className={styles.solutionsContainer} id="solutions">
-      {/* SVG Wave Top */}
       <div
         style={{
           position: "absolute",
@@ -62,33 +63,41 @@ const SolutionsSection = () => {
           className={stylesLanding.sectionSubtitle}
           style={{ color: "var(--color-linco-blue)", fontWeight: "600" }}
         >
-          The Ultimate Solution for Fragmented Corporate Training Tools
+          {t("the-ultimate-solution-for-fragmented-corporate-training-tools")}
         </p>
       </div>
 
       <div className={styles.timeline}>
         <TimelineItem
           number="1"
-          title="Analytics Dashboards"
-          desc="Comprehensive visual reports that give management clear insights into trainee progress, performance, and completion rates per department."
+          title={t("analytics-dashboards")}
+          desc={t(
+            "comprehensive-visual-reports-that-give-management-clear-insights-into-trainee-progress-performance-and-completion-rates-per-department",
+          )}
           isReverse={false}
         />
         <TimelineItem
           number="2"
-          title="Shared Courses Library"
-          desc="Add your own proprietary courses or purchase ready-made high-quality training content from other providers via our centralized marketplace."
+          title={t("shared-courses-library")}
+          desc={t(
+            "add-your-own-proprietary-courses-or-purchase-ready-made-high-quality-training-content-from-other-providers-via-our-centralized-marketplace",
+          )}
           isReverse={true}
         />
         <TimelineItem
           number="3"
-          title="Automated Certificates"
-          desc="Instantly reward trainee efforts by automatically issuing professional completion certificates to their portfolio upon successful course completion."
+          title={t("automated-certificates")}
+          desc={t(
+            "instantly-reward-trainee-efforts-by-automatically-issuing-professional-completion-certificates-to-their-portfolio-upon-successful-course-completion",
+          )}
           isReverse={false}
         />
         <TimelineItem
           number="4"
-          title="Interactive Weekly Tasks"
-          desc="Ensure continuous learning and engagement by assigning recurring challenges and professional tasks curated by department managers."
+          title={t("interactive-weekly-tasks-0")}
+          desc={t(
+            "ensure-continuous-learning-and-engagement-by-assigning-recurring-challenges-and-professional-tasks-curated-by-department-managers",
+          )}
           isReverse={true}
         />
       </div>

@@ -1,5 +1,6 @@
 import styles from "./PendingInvitations.module.css";
 import InvitationCard from "../../../../../components/elements/InvitationCard/InvitationCard.jsx";
+import { useTranslation } from "react-i18next";
 
 const PendingInvitations = () => {
   const invitations = [
@@ -25,6 +26,7 @@ const PendingInvitations = () => {
       time: "13:40 pm",
     },
   ];
+  const { t } = useTranslation();
 
   return (
     <div
@@ -32,8 +34,8 @@ const PendingInvitations = () => {
       style={{ background: "transparent" }}
     >
       <div className={styles["section-header"]}>
-        <h2>New pending Invitations</h2>
-        <button className={styles["view-all"]}>View All</button>
+        <h2>{t("new-pending-invitations")}</h2>
+        <button className={styles["view-all"]}>{t("view-all-channels")}</button>
       </div>
 
       <div className={styles["list-container"]}>

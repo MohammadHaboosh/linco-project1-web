@@ -1,15 +1,17 @@
 import { Link } from "react-router-dom";
 import styles from "./Footer.module.css";
 import { FOOTER_CONFIG } from "./footerConfig";
+import { useTranslation } from "react-i18next";
 
 const Footer = ({ role = "global" }) => {
   const quickLinks = FOOTER_CONFIG[role] || FOOTER_CONFIG.global;
+  const { t } = useTranslation();
 
   return (
     <footer className={styles.footer}>
       <div className={styles["footer-grid"]}>
         <div className={styles["footer-col"]}>
-          <h4>Quick Links</h4>
+          <h4>{t("quick-links")}</h4>
           <ul>
             {quickLinks.map((link, index) => (
               <li key={index}>
@@ -25,23 +27,23 @@ const Footer = ({ role = "global" }) => {
         </div>
 
         <div className={styles["footer-col"]}>
-          <h4>Contact Info</h4>
+          <h4>{t("contact-info")}</h4>
           <ul>
-            <li>Damascus, Syria</li>
+            <li>{t("damascus-syria")}</li>
             <li>contact@linco.com</li>
             <li>+963-XXX-XXXXXX</li>
           </ul>
         </div>
 
         <div className={styles["footer-col"]}>
-          <h4>Legal</h4>
+          <h4>{t("legal")}</h4>
           <ul>
             <li>
               <Link
                 to="/terms"
                 style={{ color: "inherit", textDecoration: "none" }}
               >
-                Terms of Service
+                {t("terms-of-service")}
               </Link>
             </li>
             <li>
@@ -49,7 +51,7 @@ const Footer = ({ role = "global" }) => {
                 to="/privacy"
                 style={{ color: "inherit", textDecoration: "none" }}
               >
-                Privacy Policy
+                {t("privacy-policy")}
               </Link>
             </li>
             <li>
@@ -57,7 +59,7 @@ const Footer = ({ role = "global" }) => {
                 to="/cookies"
                 style={{ color: "inherit", textDecoration: "none" }}
               >
-                Cookies Policy
+                {t("cookies-policy")}
               </Link>
             </li>
           </ul>
@@ -65,7 +67,7 @@ const Footer = ({ role = "global" }) => {
       </div>
 
       <div className={styles["footer-bottom"]}>
-        &copy; 2026 LinCo. All rights reserved.
+        {t("and-copy-2026-linco-all-rights-reserved")}
       </div>
     </footer>
   );

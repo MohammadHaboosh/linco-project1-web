@@ -3,7 +3,6 @@ import CoursesGridSection from "../sections/CoursesGridSection/CoursesGridSectio
 import styles from "./CoursesContent.module.css";
 
 const CoursesContent = () => {
-  // بيانات وهمية للكورسات لإملاء الـ 3 أعمدة
   const mockCourses = Array.from({ length: 8 }, (_, i) => ({
     id: i + 1,
     title: "Introduction To React Hooks",

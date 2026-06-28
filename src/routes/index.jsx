@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import { PATHS } from "./paths";
 
 import HomePage from "../pages/HomePage.jsx";
+import HomeDemoPage from "../pages/HomeDemoPage.jsx";
 import PendingInvitationsPage from "../pages/PendingInvitationsPage.jsx";
 import JoinedRoomsPage from "../pages/JoinedRooms.jsx";
 import MyOwnRoomsPage from "../pages/MyOwnRoomsPage.jsx";
@@ -24,7 +25,7 @@ export const router = createBrowserRouter([
   },
   {
     path: PATHS.LANDING,
-    element: <LandingPage />,
+    element: <HomeDemoPage />,
   },
   {
     path: PATHS.PENDING_INVITATIONS,
@@ -62,10 +63,6 @@ export const router = createBrowserRouter([
     path: PATHS.FORGOT_PASSWORD,
     element: <ForgotPasswordPage />,
   },
-  // {
-  //    path: PATHS.VERIFIED_SUCCESSFULLY,
-  //    element: <VerifiedSuccessfullyPage />,
-  // },
   {
     path: PATHS.SIGNIN,
     element: <SinginPage />,
@@ -78,10 +75,6 @@ export const router = createBrowserRouter([
     path: PATHS.LEARNING_PATH,
     element: <LearningPathPage />,
   },
-  // {
-  //   path: PATHS.DEPARTMENTS,
-  //   element: <HomeDemoPage />,
-  // },
   {
     path: PATHS.DEPARTMENT_DETAILS,
     element: <DepartmentPage />,

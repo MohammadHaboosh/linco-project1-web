@@ -6,9 +6,10 @@ import {
   IoPlayOutline,
 } from "react-icons/io5";
 import styles from "./PathCourseCard.module.css";
+import { useTranslation } from "react-i18next";
 
 const PathCourseCard = ({ course }) => {
-  // الكرت يكون مفتوحاً افتراضياً إذا كانت حالته 'active' ومطلوب فتحه
+  const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(course.defaultExpanded || false);
 
   const toggleExpand = () => {
@@ -19,13 +20,11 @@ const PathCourseCard = ({ course }) => {
 
   return (
     <div className={`${styles.card} ${styles[course.status]}`}>
-      {/* رأس الكرت */}
       <div className={styles["card-header"]} onClick={toggleExpand}>
         <div className={styles["header-left"]}>
           <span className={styles["course-title"]}>
             {course.id}- {course.title}
           </span>
-          {/* إظهار التاجز في الرأس إذا كان مغلقاً أو مقفلاً */}
           {(!isExpanded || course.status === "locked") && (
             <div className={styles.topics}>
               {course.topics.map((topic, i) => (
@@ -40,7 +39,7 @@ const PathCourseCard = ({ course }) => {
         <div className={styles["header-right"]}>
           <div className={styles["progress-mini"]}>
             <div className={styles["progress-labels"]}>
-              <span>Progress</span>
+              <span>{t("progress")}</span>
               <span>{course.progress}%</span>
             </div>
             <div className={styles["progress-bar"]}>
@@ -50,7 +49,6 @@ const PathCourseCard = ({ course }) => {
               ></div>
             </div>
           </div>
-          {/* الأيقونة تتغير حسب الحالة */}
           {course.status === "locked" ? (
             <IoLockClosedOutline
               className={styles["action-icon"]}
@@ -64,10 +62,9 @@ const PathCourseCard = ({ course }) => {
         </div>
       </div>
 
-      {/* جسم الكرت (يظهر فقط إذا كان مفتوحاً) */}
       {isExpanded && course.status !== "locked" && (
         <div className={styles["card-body"]}>
-          <div className={styles["image-container"]}>image</div>
+          <div className={styles["image-container"]}>{t("image")}</div>
           <div className={styles.details}>
             <p className={styles.description}>{course.description}</p>
 
@@ -80,7 +77,7 @@ const PathCourseCard = ({ course }) => {
                     color: "var(--color-linco-navy)",
                   }}
                 >
-                  Topics
+                  {t("topics")}
                 </span>
                 {course.topics.map((topic, i) => (
                   <span key={i} className={styles["topic-tag"]}>
@@ -89,7 +86,8 @@ const PathCourseCard = ({ course }) => {
                 ))}
               </div>
               <button className={styles["btn-continue"]}>
-                <IoPlayOutline style={{ fontSize: "1.2rem" }} /> Continue Lesson
+                <IoPlayOutline style={{ fontSize: "1.2rem" }} />{" "}
+                {t("continue-lesson")}
               </button>
             </div>
           </div>

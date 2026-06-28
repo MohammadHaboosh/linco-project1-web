@@ -1,10 +1,10 @@
 import { IoCheckmark } from "react-icons/io5";
 import { useScrollReveal } from "../../../../hooks/useScrollReveal";
-import { COLORS } from "../../../../theme/colors";
 import styles from "../../LandingPage.module.css";
-import placeholderImg from "/public/images/linco-logo.jpg";
+import { useTranslation } from "react-i18next";
 
 const InfoRow = ({ title, desc, list, isReverse, btnText, imgSrc }) => {
+  const { t } = useTranslation();
   const { ref, isVisible } = useScrollReveal();
   return (
     <div
@@ -21,7 +21,7 @@ const InfoRow = ({ title, desc, list, isReverse, btnText, imgSrc }) => {
           {list.map((item, i) => (
             <li key={i}>
               <IoCheckmark className={styles.checkIcon} />{" "}
-              <span style={{ flex: 1 }}>{item}</span>
+              <span style={{ flex: 1 }}>{t("item")}</span>
             </li>
           ))}
         </ul>
@@ -32,61 +32,76 @@ const InfoRow = ({ title, desc, list, isReverse, btnText, imgSrc }) => {
 };
 
 const FeaturesSection = () => {
+  const { t } = useTranslation();
+
   return (
     <section className={styles.section} id="features">
       <h2 className={styles.sectionTitle}>
-        Transforming Professional Development
+        {t("transforming-professional-development")}
       </h2>
       <p className={styles.sectionSubtitle}>
-        Discover how LinCo bridges the gap between learning and doing.
+        {t("discover-how-linco-bridges-the-gap-between-learning-and-doing")}
       </p>
 
       <InfoRow
-        title="Comprehensive Content Management & Live Broadcasting"
-        desc="Organize courses, stream live sessions, and track progress all from a single powerful dashboard designed for modern companies."
+        title={t("comprehensive-content-management-and-live-broadcasting")}
+        desc={t(
+          "organize-courses-stream-live-sessions-and-track-progress-all-from-a-single-powerful-dashboard-designed-for-modern-companies",
+        )}
         list={[
-          "High-quality video streaming",
-          "Interactive Q&A sessions",
-          "Detailed progress analytics",
+          t("high-quality-video-streaming-0"),
+          t("interactive-q-and-a-sessions"),
+          t("detailed-progress-analytics"),
         ]}
         isReverse={false}
         imgSrc="/images/features-landing/feature-1.png"
       />
 
       <InfoRow
-        title="A Communications Hub That Breaks Down Silos"
-        desc="Connect teams instantly. Share resources, discuss projects, and foster a collaborative environment seamlessly."
+        title={t("t-a-communications-hub-that-breaks-down-silos")}
+        desc={t(
+          "connect-teams-instantly-share-resources-discuss-projects-and-foster-a-collaborative-environment-seamlessly",
+        )}
         list={[
-          "Real-time messaging",
-          "Project-specific channels",
-          "File sharing and archiving",
+          t("real-time-messaging"),
+          t("project-specific-channels"),
+          t("file-sharing-and-archiving"),
         ]}
-        btnText="Discover Hub"
+        btnText={t("discover-hub")}
         isReverse={true}
         imgSrc="/images/features-landing/feature-2.png"
       />
 
       <InfoRow
-        title="Gamified Learning & Performance Analytics"
-        desc="Motivate your trainees with leaderboards, experience points (XP), and comprehensive performance metrics."
+        title={t("gamified-learning-and-performance-analytics")}
+        desc={t(
+          "motivate-your-trainees-with-leaderboards-experience-points-xp-and-comprehensive-performance-metrics",
+        )}
         list={[
-          "XP points & Leveling up",
-          "Company Leaderboards",
-          "Custom badges & achievements",
+          t("xp-points-and-leveling-up"),
+          t("company-leaderboards"),
+          t("custom-badges-and-achievements"),
         ]}
         isReverse={false}
         imgSrc="/images/features-landing/feature-3.png"
       />
 
       <InfoRow
-        title="Centralized Corporate Course Library"
-        desc="Eliminate content fragmentation. Build your own proprietary training hub or enrich your team's knowledge with premium external content from other industry leaders."
+        title={t("centralized-corporate-course-library")}
+        desc={t(
+          "eliminate-content-fragmentation-build-your-own-proprietary-training-hub-or-enrich-your-teams-knowledge-with-premium-external-content-from-other-industry-leaders",
+        )}
         list={[
-          "A dedicated marketplace allowing companies to securely host their own content.",
-          "Advanced search and filtering capabilities.",
-          "Seamlessly import purchased courses directly into specific department roadmaps.",
+          t(
+            "a-dedicated-marketplace-allowing-companies-to-securely-host-their-own-content",
+          ),
+          t("advanced-search-and-filtering-capabilities"),
+          t(
+            "seamlessly-import-purchased-courses-directly-into-specific-department-roadmaps",
+          ),
+          t("browse-the-library"),
         ]}
-        btnText="Browse The Library"
+        btnText={t("browse-the-library-0")}
         isReverse={true}
         imgSrc="/images/features-landing/feature-4.png"
       />

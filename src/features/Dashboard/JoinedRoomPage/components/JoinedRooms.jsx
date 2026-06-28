@@ -1,8 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import RoomsListLayout from "../../../../components/layouts/RoomList/RoomListLayout.jsx";
+import { useTranslation } from "react-i18next";
 
 const JoinedRoomsPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const joinedRooms = Array.from({ length: 10 }, (_, index) => ({
     id: index + 1,
@@ -14,8 +16,8 @@ const JoinedRoomsPage = () => {
 
   return (
     <RoomsListLayout
-      title="Joined Training Rooms"
-      statsTitle="Number of training companies"
+      title={t("joined-training-rooms")}
+      statsTitle={t("number-of-training-companies")}
       rooms={joinedRooms}
       bannerImage="/images/joined-rooms.png"
       onBackClick={() => navigate(-1)}

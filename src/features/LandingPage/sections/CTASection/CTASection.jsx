@@ -2,8 +2,10 @@ import { Link } from "react-router-dom";
 import { useScrollReveal } from "../../../../hooks/useScrollReveal";
 import { PATHS } from "../../../../routes/paths";
 import stylesLanding from "../../LandingPage.module.css";
+import { useTranslation } from "react-i18next";
 
 const CTASection = () => {
+  const { t } = useTranslation();
   const { ref, isVisible } = useScrollReveal();
 
   return (
@@ -16,7 +18,7 @@ const CTASection = () => {
         backgroundColor: "#f8fafc",
       }}
     >
-      <h2 className={stylesLanding.sectionTitle}>Start Your Journey</h2>
+      <h2 className={stylesLanding.sectionTitle}>{t("start-your-journey")}</h2>
       <div
         style={{
           display: "flex",
@@ -26,10 +28,10 @@ const CTASection = () => {
         }}
       >
         <Link to={PATHS.SIGNUP} className={stylesLanding.btnSecondary}>
-          Create Account
+          {t("create-account")}
         </Link>
         <Link to={PATHS.SIGNIN} className={stylesLanding.btnSecondary}>
-          Log In
+          {t("log-in")}
         </Link>
       </div>
     </section>

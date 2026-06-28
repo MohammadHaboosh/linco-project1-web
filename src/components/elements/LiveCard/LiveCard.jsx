@@ -3,11 +3,14 @@ import {
   IoPersonOutline,
   IoCalendarOutline,
   IoTimeOutline,
-} from 'react-icons/io5';
-import styles from './LiveCard.module.css';
-import placeholderImg from '../../../../public/images/linco-logo.jpg';
+} from "react-icons/io5";
+import styles from "./LiveCard.module.css";
+import placeholderImg from "../../../../public/images/linco-logo.jpg";
+import { useTranslation } from "react-i18next";
 
 const LiveCard = ({ live }) => {
+  const { t } = useTranslation();
+
   return (
     <div className={styles.card}>
       <div className={styles.imageContainer}>
@@ -28,7 +31,7 @@ const LiveCard = ({ live }) => {
           </p>
         </div>
         <div className={styles.actionRow}>
-          <button className={styles.btn}>Join Now</button>
+          <button className={styles.btn}>{t("join-now")}</button>
         </div>
       </div>
     </div>

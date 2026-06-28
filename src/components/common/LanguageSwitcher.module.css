@@ -1,0 +1,36 @@
+.langBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.1); /* خلفية شفافة خفيفة */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: var(--font-sans, "Inter", sans-serif);
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+}
+
+.langBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+.icon {
+  font-size: 1.1rem;
+}
+
+/*
+.langBtn {
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  color: var(--color-linco-navy, #112950);
+}
+.langBtn:hover {
+  background: #e2e8f0;
+}
+*/

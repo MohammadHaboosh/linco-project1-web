@@ -1,13 +1,16 @@
-// src/features/Demo/HomeDemoPage/components/DemoContent/DemoContent.jsx
-
+import { useState } from "react";
 import DemoHeaderSection from "./sections/DemoHeaderSection/DemoHeaderSection";
 import SectionCard from "./sections/SectionCard/SectionCard";
 import ProjectChatsWidget from "./sections/ProjectChatsWidget/ProjectChatsWidget";
 import styles from "./DemoContent.module.css";
+import { IoAdd } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
 
 const DemoContent = () => {
-  // هذه البيانات يمكن استبدالها بـ Redux لاحقاً
-  const sectionsData = [
+  const { t } = useTranslation();
+  const isOwner = true;
+
+  const initialSections = [
     {
       id: 1,
       title: "Front-End Development",
@@ -51,6 +54,14 @@ const DemoContent = () => {
     },
   ];
 
+  const [sectionsData, setSectionsData] = useState(initialSections);
+
+  const handleDeleteSection = (id) => {
+    const updatedSections = sectionsData.filter((section) => section.id !== id);
+    setSectionsData(updatedSections);
+    console.log("Section Deleted:", id);
+  };
+
   const recentChats = [
     {
       id: 1,
@@ -90,14 +101,31 @@ const DemoContent = () => {
     <div className={styles.contentArea}>
       <div className={styles.innerContainer}>
         <DemoHeaderSection
-          title="Training Sections"
-          subtitle="Select your specialized department to unlock tailored road maps, live sessions, and practical tasks."
+          title={t("training-sections")}
+          subtitle={t(
+            "select-your-specialized-department-to-unlock-tailored-road-maps",
+          )}
         />
 
         <div className={styles.mainLayout}>
           <div className={styles.sectionsGrid}>
+            {isOwner && (
+              <div
+                className={styles.createSectionCard}
+                onClick={() => console.log("Open Add Modal")}
+              >
+                <IoAdd className={styles.addIcon} />
+                <h3>{t("create-new-section")}</h3>
+              </div>
+            )}
+
             {sectionsData.map((section) => (
-              <SectionCard key={section.id} section={section} />
+              <SectionCard
+                key={section.id}
+                section={section}
+                isOwner={isOwner}
+                onDelete={handleDeleteSection}
+              />
             ))}
           </div>
 
