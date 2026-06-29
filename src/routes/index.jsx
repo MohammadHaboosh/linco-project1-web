@@ -7,7 +7,6 @@ import PendingInvitationsPage from "../pages/PendingInvitationsPage.jsx";
 import JoinedRoomsPage from "../pages/JoinedRooms.jsx";
 import MyOwnRoomsPage from "../pages/MyOwnRoomsPage.jsx";
 import SignupPage from "../pages/SignupPage.jsx";
-import DemoPage from "../pages/HomeDemoPage";
 import VerifyEmailPage from "../pages/VerifyEmailPage.jsx";
 import SinginPage from "../pages/SigninPage.jsx";
 import CoursesPage from "../pages/CoursesPage";
@@ -27,11 +26,15 @@ export const router = createBrowserRouter([
   },
   {
     path: PATHS.LANDING,
-    element: <HomeDemoPage />,
+    element: <LandingPage />,
   },
   {
     path: PATHS.PENDING_INVITATIONS,
     element: <PendingInvitationsPage />,
+  },
+  {
+    path: PATHS.DEPARTMENT_DETAILS,
+    element: <DepartmentPage />,
   },
   {
     path: PATHS.JOINED_ROOMS,
@@ -43,7 +46,7 @@ export const router = createBrowserRouter([
   },
   {
     path: PATHS.DEMO,
-    element: <DemoPage />,
+    element: <HomeDemoPage />,
   },
   {
     path: PATHS.SIGNUP,
@@ -88,6 +91,11 @@ export const router = createBrowserRouter([
   {
     path: PATHS.PROFILE,
     element: <ProfilePage />,
+  },
+  { path: PATHS.MEMBERS, element: <LearningPathPage /> },
+  {
+    path: PATHS.ROADMAPS,
+    element: <DepartmentPage />,
   },
   {
     path: "*",

@@ -29,4 +29,6 @@ export const PATHS = {
   FORGOT_PASSWORD: "/forgot-password",
   RESET_PASSWORD: "/reset-password",
   REQUEST_ROOM: "/request-room",
+  ROADMAPS: "/roadmaps",
+  MEMBERS: "/members",
 };

@@ -8,10 +8,9 @@ import {
   IoRibbonOutline,
   IoVideocamOutline,
   IoHelpCircleOutline,
-  IoHome,
+  IoPeopleOutline,
 } from "react-icons/io5";
 import { PATHS } from "../../../routes/paths";
-import { useTranslation } from "react-i18next";
 
 export const HEADER_CONFIG = {
   global: {
@@ -31,7 +30,7 @@ export const HEADER_CONFIG = {
         path: PATHS.LEARNING_PATH,
       },
       { name: "Courses", icon: <IoLinkOutline />, path: PATHS.COURSES },
-      { name: "Road Map", icon: <IoMapOutline />, path: PATHS.ROAD_MAP },
+      { name: "Road Maps", icon: <IoMapOutline />, path: PATHS.ROAD_MAP },
       {
         name: "Weekly Tasks",
         icon: <IoListOutline />,

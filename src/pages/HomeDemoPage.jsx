@@ -1,20 +1,18 @@
-import { COLORS } from "../theme/colors";
+import Sidebar from "../components/layouts/SideBar/Sidebar";
 import Header from "../components/layouts/Header/global_header/Header";
+import DemoContent from "../features/Demo/HomeDemoPage/components/DemoContent/DemoContent";
 import SubHeader from "../components/layouts/Header/sub_header/SubHeader";
-import Footer from "../components/layouts/Footer/Footer";
-import DemoContentContent from "../features/Demo/HomeDemoPage/components/DemoContent/DemoContent";
 
-const DemoPage = () => {
-  const currentRole = "demo_home";
-
+const HomeDemoPage = () => {
   return (
     <div
       style={{
         display: "flex",
         minHeight: "100vh",
-        background: COLORS.navyGradient,
+        backgroundColor: "var(--color-linco-navy)",
       }}
     >
+      <Sidebar role="global" />
       <div
         className="custom-scrollbar"
         style={{
@@ -23,20 +21,20 @@ const DemoPage = () => {
           flexDirection: "column",
           height: "100vh",
           overflowY: "auto",
+          backgroundColor: "#ffffff",
         }}
       >
         <Header
-          role={currentRole}
+          role="demo_home"
           companyName="TechCorp"
           roomName="Front-End Dept"
           showDeptSwitcher={true}
         />
-        <SubHeader role={currentRole} />
-        <DemoContentContent />
-        <Footer role="trainee" />
+        <SubHeader role="demo_home" />
+        <DemoContent />
       </div>
     </div>
   );
 };
 
-export default DemoPage;
+export default HomeDemoPage;

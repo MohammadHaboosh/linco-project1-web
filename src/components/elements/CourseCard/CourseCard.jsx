@@ -1,33 +1,140 @@
-import { IoPlayCircleOutline } from "react-icons/io5";
+import {
+  IoPlayCircle,
+  IoPencilOutline,
+  IoTrashOutline,
+  IoEyeOutline,
+  IoBookOutline,
+  IoTimeOutline,
+  IoPeopleOutline,
+} from "react-icons/io5";
 import styles from "./CourseCard.module.css";
-import placeholderImg from "../../../../public/images/linco-logo.jpg";
 import { useTranslation } from "react-i18next";
 
-const CourseCard = ({ course }) => {
+const CourseCard = ({ course, isOwner, onEdit, onDelete }) => {
   const { t } = useTranslation();
+
+  const {
+    id,
+    title = "Untitled Course",
+    description = "No description provided.",
+    image = "/images/linco-logo.jpg",
+    lessonsCount = 0,
+    duration = "0h 0m",
+    progress = 0,
+    views = 0,
+    studentsCount = 0,
+    status = "published",
+    lastUpdated = "Recently",
+  } = course || {};
 
   return (
     <div className={styles.card}>
       <div className={styles.imageContainer}>
-        <img src={placeholderImg} alt={course.title} className={styles.image} />
-        <IoPlayCircleOutline className={styles.playIcon} />
+        <img src={image} alt={title} className={styles.coverImage} />
+
+        {!isOwner ? (
+          <div className={styles.playOverlay}>
+            <IoPlayCircle className={styles.playIcon} />
+          </div>
+        ) : (
+          <div className={`${styles.statusBadge} ${styles[status]}`}>
+            {status === "draft"
+              ? t("draft", "Draft")
+              : t("published", "Published")}
+          </div>
+        )}
       </div>
-      <div className={styles.content}>
-        <h3 className={styles.title}>{course.title}</h3>
-        <p className={styles.description}>{course.description}</p>
-        <div className={styles.actionRow}>
-          <button className={styles.btn}>{t("continue-learning")}</button>
+
+      <div className={styles.cardBody}>
+        <div className={styles.header}>
+          <h3 className={styles.title} title={title}>
+            {title}
+          </h3>
+
+          {isOwner && (
+            <div className={styles.adminActions}>
+              <button
+                className={styles.editBtn}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEdit(course);
+                }}
+                title={t("edit-course", "Edit Course")}
+              >
+                <IoPencilOutline />
+              </button>
+              <button
+                className={styles.deleteBtn}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDelete(id);
+                }}
+                title={t("delete-course", "Delete Course")}
+              >
+                <IoTrashOutline />
+              </button>
+            </div>
+          )}
         </div>
-        <div className={styles.progressContainer}>
-          <span className={styles.progressText}>{t("progress")}</span>
-          <span className={styles.progressPercentage}>{course.progress}%</span>
+
+        <p className={styles.description} title={description}>
+          {description}
+        </p>
+
+        <div className={styles.metaTags}>
+          <span className={styles.tag}>
+            <IoBookOutline /> {lessonsCount} {t("lessons", "Lessons")}
+          </span>
+          <span className={styles.tag}>
+            <IoTimeOutline /> {duration}
+          </span>
         </div>
-        <div className={styles.progressBarBg}>
-          <div
-            className={styles.progressBarFill}
-            style={{ width: `${course.progress}%` }}
-          ></div>
-        </div>
+
+        <div className={styles.spacer}></div>
+
+        {isOwner ? (
+          <div className={styles.ownerFooter}>
+            <div className={styles.statsGrid}>
+              <div className={styles.statItem}>
+                <IoEyeOutline />{" "}
+                <span>
+                  {views} {t("views", "Views")}
+                </span>
+              </div>
+              <div className={styles.statItem}>
+                <IoPeopleOutline />{" "}
+                <span>
+                  {studentsCount} {t("students", "Students")}
+                </span>
+              </div>
+            </div>
+            <div className={styles.lastUpdated}>
+              {t("last-updated", "Last Updated")}: {lastUpdated}
+            </div>
+          </div>
+        ) : (
+          <div className={styles.traineeFooter}>
+            <div className={styles.progressContainer}>
+              <div className={styles.progressHeader}>
+                <span className={styles.progressLabel}>
+                  {t("progress", "Progress")}
+                </span>
+                <span className={styles.progressValue}>{progress}%</span>
+              </div>
+              <div className={styles.progressBar}>
+                <div
+                  className={styles.progressFill}
+                  style={{ width: `${progress}%` }}
+                ></div>
+              </div>
+            </div>
+            <button className={styles.primaryCta}>
+              {progress > 0
+                ? t("continue-learning", "Continue Learning")
+                : t("start-learning", "Start Learning")}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
