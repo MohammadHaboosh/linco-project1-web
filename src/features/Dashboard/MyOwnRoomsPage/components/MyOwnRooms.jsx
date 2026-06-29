@@ -1,44 +1,15 @@
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import RoomsListLayout from "../../../../components/layouts/RoomList/RoomListLayout.jsx";
-import { fetchDemos } from "../../api/roomsApi.js";
+import { useOwnedRooms } from "../hooks/useOwnedRooms.jsx"; 
 import { useTranslation } from "react-i18next";
 
 const MyOwnRooms = () => {
   const navigate = useNavigate();
-  const [ownedRooms, setOwnedRooms] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const { t } = useTranslation();
 
-  useEffect(() => {
-    const loadOwnedRooms = async () => {
-      try {
-        setIsLoading(true);
-        const json = await fetchDemos();
-
-        if (json.success && json.data) {
-          const mappedRooms = json.data.map((room) => ({
-            id: room.id,
-            companyName: room.name,
-            role: "Owner",
-            dateJoined: new Date(room.createdAt).toLocaleDateString("en-GB"),
-            members: 0,
-          }));
-
-          setOwnedRooms(mappedRooms);
-        }
-      } catch (error) {
-        console.error("Error fetching owned rooms:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadOwnedRooms();
-  }, []);
+  const { ownedRooms, isLoading } = useOwnedRooms();
 
   if (isLoading) {
-    // Replace with a proper loader if you have one
     return <div>Loading...</div>;
   }
 
