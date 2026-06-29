@@ -95,7 +95,6 @@ export const useRequestRoom = () => {
         plan: formData.plan,
       });
 
-      console.log("Room created successfully");
       navigate("/home");
     } catch (error) {
       console.error("Room request error:", error);

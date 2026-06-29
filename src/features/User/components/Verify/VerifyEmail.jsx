@@ -12,7 +12,6 @@ const VerifyEmail = () => {
   const userEmail = location.state?.email || 'your email';
 
   const handleResend = () => {
-    console.log('Resending verification email to:', userEmail);
     alert('Verification email resent!');
   };
 

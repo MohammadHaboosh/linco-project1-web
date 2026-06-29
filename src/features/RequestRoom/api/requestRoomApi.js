@@ -1,7 +1,6 @@
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const getUploadUrl = async (fileName) => {
-  console.log("fileName: ", fileName);
   const response = await fetch(`${BASE_URL}/demos/upload-url`, {
     method: "POST",
     headers: {
@@ -36,7 +35,6 @@ export const uploadFileToCloud = async (uploadUrl, fields, file) => {
 };
 
 export const createRoom = async (data) => {
-  console.log("createRoom data: ", data);
   const response = await fetch(`${BASE_URL}/demos`, {
     method: "POST",
     headers: {
@@ -51,8 +49,7 @@ export const createRoom = async (data) => {
       plan: data.plan,
     }),
   });
-  const batata = await response.json();
-  console.log("createRoom response: ", batata);
+  
   if (!response.ok) throw new Error("Failed to create the room");
   return response.json();
 };
