@@ -96,7 +96,7 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className={styles.searchInput}
-                    placeholder={t("search-user", "Search by name or email...")}
+                    placeholder={t("search-user", "Search by name...")}
                   />
                   {isSearching && <span className={styles.loader}>...</span>}
                 </div>
@@ -114,7 +114,9 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
                       >
                         <IoPersonOutline className={styles.userIcon} />
                         <div>
-                          <p className={styles.resultName}>{user.name}</p>
+                          <p className={styles.resultName}>
+                            {user.firstName} {user.lastName}
+                          </p>
                           <p className={styles.resultEmail}>{user.email}</p>
                         </div>
                       </li>
