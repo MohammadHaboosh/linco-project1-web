@@ -22,7 +22,7 @@ export const PATHS = {
   NOTIFICATIONS: "/notifications",
   SETTINGS: "/settings",
   SIGNUP: "/signup",
-  DEMO: "/demo",
+  DEMO: "/demos/:demoId",
   CHECK_EMAIL: "/check-email",
   VERIFY_EMAIL: "/verify-email",
   VERIFIED_SUCCESSFULLY: "/verified-successfully",
