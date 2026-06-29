@@ -6,7 +6,7 @@ import styles from "./CreateDepartment.module.css";
 const DEMO_MEMBERS = [
   { id: 1, name: "Ahmad Mohammed", email: "ahmad@linco.com" },
   { id: 2, name: "Sarah Ali", email: "sarah@linco.com" },
-  { id: 3, name: "Omar Khaled", email: "omar@linco.com" },
+  { id: 3, name: "Omar Khaledd", email: "omar@linco.com" },
   { id: 4, name: "Abrar Abo Auad", email: "abrar@linco.com" },
 ];
 
