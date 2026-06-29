@@ -72,7 +72,7 @@ export const useCreateDepartment = (demoId, onSuccess) => {
         description: formData.description,
         managerId: selectedUser.id,
       };
-      console.log(`${payload} payload`);
+      console.log(`${payload.managerId} payload`);
       await departmentApi.createDepartment(demoId, payload);
 
       if (onSuccess) onSuccess();
