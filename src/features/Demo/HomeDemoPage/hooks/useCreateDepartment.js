@@ -46,17 +46,19 @@ export const useCreateDepartment = (demoId, onSuccess) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-
+    console.log(`${formData.name} Department title is required.`);
     if (!formData.name.trim()) {
       console.log(`${formData.name} Department title is required.`);
       setError("Department title is required.");
       return;
     }
+    console.log(`${selectedUser} selectedUser is required.`);
     if (!selectedUser) {
       console.log(`${selectedUser} selectedUser is required.`);
       setError("Please select a manager/member from the search.");
       return;
     }
+    console.log(`${demoId} demoId is required.`);
     if (!demoId) {
       console.log(`${demoId} demoId is required.`);
       setError("Demo ID is missing.");
