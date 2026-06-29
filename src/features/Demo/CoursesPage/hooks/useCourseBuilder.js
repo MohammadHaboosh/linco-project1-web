@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { courseApi } from "../api/courseApi";
+// import { courseApi } from "../api/courseApi";
 
 export const useCourseBuilder = (initialData = null) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -60,7 +60,7 @@ export const useCourseBuilder = (initialData = null) => {
     setIsLoading(true);
     const payload = { details: courseDetails, curriculum: sections };
     try {
-      await courseApi.createCourse(payload);
+      // await courseApi.createCourse(payload);
       alert("Course saved successfully!");
     } catch (error) {
       console.error("Failed to save course", error);
