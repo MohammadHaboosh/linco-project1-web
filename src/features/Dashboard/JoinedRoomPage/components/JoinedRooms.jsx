@@ -21,10 +21,8 @@ const JoinedRoomsPage = () => {
       rooms={joinedRooms}
       bannerImage="/images/joined-rooms.png"
       onBackClick={() => navigate(-1)}
-      emptyMessage={t("no-joined-rooms-yet")}
-      emptySubtext={t(
-        "you-havent-joined-any-training-rooms-yet-once-you-join-them-they-will-appear-here",
-      )}
+      emptyMessage={t('no-joined-rooms-yet')}
+      emptySubtext={t('you-havent-joined-any-training-rooms-yet-once-you-join-them-they-will-appear-here')}
     />
   );
 };
