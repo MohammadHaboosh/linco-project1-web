@@ -55,7 +55,6 @@ export const useCourseBuilder = (initialData = null) => {
     setSections(newSec);
   };
 
-  // دالة الحفظ النهائية (ترسل للباك-إند)
   const handleSaveCourse = async () => {
     setIsLoading(true);
     const payload = { details: courseDetails, curriculum: sections };

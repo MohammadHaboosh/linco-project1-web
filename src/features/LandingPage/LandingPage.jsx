@@ -45,7 +45,6 @@ const LandingPage = () => {
 
         <div className={styles.navLine}></div>
       </nav>
-      {t("features")}
       <section
         id="home"
         className={styles.heroSection}

@@ -1,158 +1,157 @@
-import { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { IoSearchOutline, IoClose } from "react-icons/io5";
+import {
+  IoCloseOutline,
+  IoSearchOutline,
+  IoPersonOutline,
+  IoCheckmarkCircle,
+} from "react-icons/io5";
+import { useCreateDepartment } from "../../hooks/useCreateDepartment";
 import styles from "./CreateDepartment.module.css";
 
-const DEMO_MEMBERS = [
-  { id: 1, name: "Ahmad Mohammed", email: "ahmad@linco.com" },
-  { id: 2, name: "Sarah Ali", email: "sarah@linco.com" },
-  { id: 3, name: "Omar Khaledd", email: "omar@linco.com" },
-  { id: 4, name: "Abrar Abo Auad", email: "abrar@linco.com" },
-];
-
-const CreateDepartment = ({ onClose, onSubmit }) => {
+const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
   const { t } = useTranslation();
 
-  // حالة الفورم
-  const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    managerId: null,
+  const {
+    formData,
+    handleChange,
+    searchQuery,
+    setSearchQuery,
+    searchResults,
+    isSearching,
+    selectedUser,
+    setSelectedUser,
+    isSubmitting,
+    error,
+    handleSubmit,
+  } = useCreateDepartment(demoId, () => {
+    if (onSuccess) onSuccess();
+    onClose();
   });
 
-  // حالة حقل البحث عن المدير
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  // تصفية الأعضاء بناءً على نص البحث
-  const filteredMembers = DEMO_MEMBERS.filter((member) =>
-    member.name.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  // عند كتابة اسم في حقل البحث
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-    setIsDropdownOpen(true);
-    setFormData((prev) => ({ ...prev, managerId: null })); // تصفير الاختيار إذا تم تعديل النص
-  };
-
-  // عند اختيار مدير من القائمة المنسدلة
-  const handleSelectManager = (member) => {
-    setFormData((prev) => ({ ...prev, managerId: member.id }));
-    setSearchQuery(member.name); // وضع اسم المدير المختار في حقل الإدخال
-    setIsDropdownOpen(false); // إغلاق القائمة
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Department Data to Submit:", formData);
-    // إرسال البيانات للأب (الأب هو من يتصل بالباك إند)
-    if (onSubmit) onSubmit(formData);
-  };
-
   return (
-    <div className={styles.modalOverlay} onClick={onClose}>
-      {/* إيقاف انتشار الضغطة لكي لا يغلق المودال عند الضغط داخل الكرت */}
-      <div className={styles.card} onClick={(e) => e.stopPropagation()}>
+    <div className={styles.overlay}>
+      <div className={styles.modal}>
         <div className={styles.header}>
-          <h2>{t("create-department")}</h2>
+          <h3>{t("create-new-department", "Create New Department")}</h3>
+          <button
+            className={styles.closeBtn}
+            onClick={onClose}
+            disabled={isSubmitting}
+          >
+            <IoCloseOutline />
+          </button>
         </div>
 
-        <form onSubmit={handleSubmit}>
-          {/* اسم القسم */}
+        <div className={styles.body}>
+          {error && <div className={styles.errorAlert}>{error}</div>}
+
           <div className={styles.formGroup}>
-            <label>{t("department-name")}</label>
+            <label>{t("department-title", "Department Title")}</label>
             <input
               type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleInputChange}
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
               className={styles.input}
-              placeholder="e.g. Front-End Development"
-              required
+              placeholder="e.g. Back-End Engineering"
+              disabled={isSubmitting}
             />
           </div>
 
-          {/* وصف القسم */}
           <div className={styles.formGroup}>
-            <label>{t("department-description")}</label>
+            <label>{t("department-desc", "Description (Optional)")}</label>
             <textarea
               name="description"
               value={formData.description}
-              onChange={handleInputChange}
+              onChange={handleChange}
               className={styles.textarea}
-              placeholder="Brief description about the department..."
-              required
+              placeholder="Brief description about this department..."
+              disabled={isSubmitting}
             />
           </div>
 
-          {/* اختيار المدير (Searchable Autocomplete) */}
           <div className={styles.formGroup}>
-            <label>{t("department-manager")}</label>
-            <div className={styles.searchContainer}>
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={handleSearchChange}
-                onFocus={() => setIsDropdownOpen(true)}
-                onBlur={() => setIsDropdownOpen(false)} // يغلق القائمة عند الخروج من الحقل
-                className={styles.input}
-                placeholder={t("search-manager")}
-                required={!formData.managerId} // مطلوب إذا لم يتم تحديد مدير
-              />
-              <IoSearchOutline className={styles.searchIcon} />
+            <label>{t("assign-manager", "Assign Manager / Member")}</label>
 
-              {/* القائمة المنسدلة */}
-              {isDropdownOpen && (
-                <ul className={styles.dropdownList}>
-                  {filteredMembers.length > 0 ? (
-                    filteredMembers.map((member) => (
+            {selectedUser ? (
+              <div className={styles.selectedUserCard}>
+                <div className={styles.userInfo}>
+                  <IoCheckmarkCircle className={styles.successIcon} />
+                  <span>{selectedUser.name || selectedUser.email}</span>
+                </div>
+                <button
+                  className={styles.changeUserBtn}
+                  onClick={() => setSelectedUser(null)}
+                  disabled={isSubmitting}
+                >
+                  {t("change", "Change")}
+                </button>
+              </div>
+            ) : (
+              <div className={styles.searchContainer}>
+                <div className={styles.searchBox}>
+                  <IoSearchOutline className={styles.searchIcon} />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className={styles.searchInput}
+                    placeholder={t("search-user", "Search by name or email...")}
+                  />
+                  {isSearching && <span className={styles.loader}>...</span>}
+                </div>
+
+                {searchQuery.trim() !== "" && searchResults.length > 0 && (
+                  <ul className={styles.resultsList}>
+                    {searchResults.map((user) => (
                       <li
-                        key={member.id}
-                        className={styles.dropdownItem}
-                        // استخدمنا onMouseDown بدلاً من onClick لأنها تتنفذ قبل onBlur الخاص بحقل الإدخال
-                        onMouseDown={() => handleSelectManager(member)}
+                        key={user.id}
+                        className={styles.resultItem}
+                        onClick={() => {
+                          setSelectedUser(user);
+                          setSearchQuery("");
+                        }}
                       >
-                        <div className={styles.memberAvatar}>
-                          {member.name.charAt(0).toUpperCase()}
-                        </div>
+                        <IoPersonOutline className={styles.userIcon} />
                         <div>
-                          <div className={styles.memberName}>{member.name}</div>
-                          <div className={styles.memberEmail}>
-                            {member.email}
-                          </div>
+                          <p className={styles.resultName}>{user.name}</p>
+                          <p className={styles.resultEmail}>{user.email}</p>
                         </div>
                       </li>
-                    ))
-                  ) : (
-                    <li className={styles.noResults}>
-                      {t("no-members-found")}
-                    </li>
-                  )}
-                </ul>
-              )}
-            </div>
-          </div>
+                    ))}
+                  </ul>
+                )}
 
-          {/* أزرار الإلغاء والإنشاء */}
-          <div className={styles.actions}>
-            <button
-              type="button"
-              className={styles.cancelBtn}
-              onClick={onClose}
-            >
-              {t("cancel")}
-            </button>
-            <button type="submit" className={styles.submitBtn}>
-              {t("create")}
-            </button>
+                {searchQuery.trim() !== "" &&
+                  searchResults.length === 0 &&
+                  !isSearching && (
+                    <div className={styles.noResults}>
+                      {t("no-users-found", "No users found.")}
+                    </div>
+                  )}
+              </div>
+            )}
           </div>
-        </form>
+        </div>
+
+        <div className={styles.footer}>
+          <button
+            className={styles.cancelBtn}
+            onClick={onClose}
+            disabled={isSubmitting}
+          >
+            {t("cancel", "Cancel")}
+          </button>
+          <button
+            className={styles.submitBtn}
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+          >
+            {isSubmitting
+              ? t("creating", "Creating...")
+              : t("create-department", "Create Department")}
+          </button>
+        </div>
       </div>
     </div>
   );
