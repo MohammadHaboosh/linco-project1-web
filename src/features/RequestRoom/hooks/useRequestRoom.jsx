@@ -1,5 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  getUploadUrl,
+  uploadFileToCloud,
+  createRoom,
+} from "../api/requestRoomApi";
 
 export const useRequestRoom = () => {
   const navigate = useNavigate();
@@ -12,7 +17,7 @@ export const useRequestRoom = () => {
     companyName: "",
     description: "",
     logo: null,
-    plan: "", // No default selection
+    plan: "", 
   });
 
   const handleInputChange = (e) => {
@@ -52,6 +57,7 @@ export const useRequestRoom = () => {
       newErrors.companyName = "Company Name is required";
     if (!formData.description)
       newErrors.description = "Description is required";
+    if (!formData.logo) newErrors.logo = "Company logo is required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -73,21 +79,33 @@ export const useRequestRoom = () => {
   };
 
   const handleSubmit = async () => {
-    if (!validateStep2()) return; // Enforce plan selection
+    if (!validateStep2()) return;
 
     setIsSubmitting(true);
     try {
-      // 1. Send formData to your backend
-      // 2. Receive the Stripe Checkout Session URL
-      console.log("Sending to backend:", formData);
+      // 1. Get URL and fields
+      const { data } = await getUploadUrl(formData.logo.name);
+      const { uploadUrl, fields, cdnUrl } = data;
 
-      // const stripeUrl = await getStripeSessionUrl(formData);
-      // window.location.href = stripeUrl; // Redirect to Stripe
+      // 2. Upload to Cloud
+      await uploadFileToCloud(uploadUrl, fields, formData.logo);
+
+      // 3. Final submission
+      await createRoom({
+        name: formData.companyName,
+        description: formData.description,
+        plan: formData.plan,
+        imagePath: cdnUrl,
+      });
+
+      console.log("Room created successfully");
     } catch (error) {
       console.error("Room request error:", error);
+      setErrors({ plan: error.message || "An error occurred." });
     } finally {
       setIsSubmitting(false);
     }
+    navigate("/home");
   };
 
   return {
