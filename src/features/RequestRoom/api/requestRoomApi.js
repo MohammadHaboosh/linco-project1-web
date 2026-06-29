@@ -4,6 +4,10 @@ export const getUploadUrl = async (fileName) => {
   console.log("fileName: ", fileName);
   const response = await fetch(`${BASE_URL}/demos/upload-url`, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-client-type": "web",
+    },
     body: JSON.stringify({ fileName }),
   });
 

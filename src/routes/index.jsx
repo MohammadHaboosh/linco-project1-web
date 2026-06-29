@@ -18,6 +18,7 @@ import VerifyAccountPage from "../pages/VerifyAccountPage.jsx";
 import ResetPasswordPage from "../pages/ResetPasswordPage.jsx";
 import ForgotPasswordPage from "../pages/ForgotPasswordPage.jsx";
 import RequestRoomPage from "../pages/RequestRoomPage.jsx";
+import ProfilePage from "../features/Profile/components/Profile.jsx";
 
 export const router = createBrowserRouter([
   {
@@ -83,6 +84,10 @@ export const router = createBrowserRouter([
   {
     path: PATHS.DEPARTMENT_DETAILS,
     element: <DepartmentPage />,
+  },
+  {
+    path: PATHS.PROFILE,
+    element: <ProfilePage />,
   },
   {
     path: "*",
