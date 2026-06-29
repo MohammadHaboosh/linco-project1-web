@@ -111,7 +111,7 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
                         key={user.id}
                         className={styles.resultItem}
                         onClick={() => {
-                          setSelectedUser(user);
+                          setSelectedUser(user.user);
                           setSearchQuery("");
                         }}
                       >
