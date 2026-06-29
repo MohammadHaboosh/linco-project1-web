@@ -3,7 +3,10 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 export const getUploadUrl = async (fileName) => {
   const response = await fetch(`${BASE_URL}/demos/upload-url`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      "x-client-type": "web",
+    },
     body: JSON.stringify({ fileName }),
   });
 
@@ -13,11 +16,11 @@ export const getUploadUrl = async (fileName) => {
 
 export const uploadFileToCloud = async (uploadUrl, fields, file) => {
   const cloudFormData = new FormData();
-  
+
   Object.keys(fields).forEach((key) => {
     cloudFormData.append(key, fields[key]);
   });
-  
+
   cloudFormData.append("file", file);
 
   const response = await fetch(uploadUrl, {
@@ -33,7 +36,10 @@ export const uploadFileToCloud = async (uploadUrl, fields, file) => {
 export const createRoom = async (data) => {
   const response = await fetch(`${BASE_URL}/demos`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      "x-client-type": "web",
+    },
     body: JSON.stringify(data),
   });
 
