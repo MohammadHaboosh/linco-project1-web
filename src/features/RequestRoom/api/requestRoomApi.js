@@ -42,6 +42,7 @@ export const createRoom = async (data) => {
       'Content-Type': 'application/json',
       'x-client-type': 'web',
     },
+    credentials: 'include',
     body: JSON.stringify(data),
   });
 
