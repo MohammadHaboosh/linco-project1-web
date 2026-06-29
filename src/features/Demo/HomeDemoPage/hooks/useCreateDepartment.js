@@ -47,15 +47,18 @@ export const useCreateDepartment = (demoId, onSuccess) => {
     e.preventDefault();
     setError(null);
 
-    if (!formData.title.trim()) {
+    if (!formData.name.trim()) {
+      console.log(`${formData.name} Department title is required.`);
       setError("Department title is required.");
       return;
     }
     if (!selectedUser) {
+      console.log(`${selectedUser} selectedUser is required.`);
       setError("Please select a manager/member from the search.");
       return;
     }
     if (!demoId) {
+      console.log(`${demoId} demoId is required.`);
       setError("Demo ID is missing.");
       return;
     }
@@ -63,11 +66,11 @@ export const useCreateDepartment = (demoId, onSuccess) => {
     setIsSubmitting(true);
     try {
       const payload = {
-        name: formData.title,
+        name: formData.name,
         description: formData.description,
-        managerId: selectedUser.id,
+        managerId: selectedUser.managerId,
       };
-
+      console.log(`${payload} payload`);
       await departmentApi.createDepartment(demoId, payload);
 
       if (onSuccess) onSuccess();
