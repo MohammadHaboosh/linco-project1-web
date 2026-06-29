@@ -21,7 +21,7 @@ export const departmentApi = {
         throw new Error(data.message || "Failed to search members");
       }
 
-      return data.data || data;
+      return data.data;
     } catch (error) {
       console.error("API Error during member search:", error);
       throw error;

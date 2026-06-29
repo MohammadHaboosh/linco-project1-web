@@ -103,6 +103,9 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
 
                 {searchQuery.trim() !== "" && searchResults.length > 0 && (
                   <ul className={styles.resultsList}>
+                    {console.log(searchResults)}
+                    {console.log(searchResults[0].id)}
+                    {console.log(searchResults[0].firstName)}
                     {searchResults.map((user) => (
                       <li
                         key={user.id}
@@ -112,6 +115,7 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
                           setSearchQuery("");
                         }}
                       >
+                        {console.log(user)}
                         <IoPersonOutline className={styles.userIcon} />
                         <div>
                           <p className={styles.resultName}>
