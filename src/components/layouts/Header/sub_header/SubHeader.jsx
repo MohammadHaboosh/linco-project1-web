@@ -1,9 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next"; // تمت الإضافة هنا
 import { HEADER_CONFIG } from "../headerConfig";
 import styles from "./SubHeader.module.css";
 
 const SubHeader = ({ role = "trainee" }) => {
   const location = useLocation();
+  const { t } = useTranslation();
+
   const subNavLinks = HEADER_CONFIG[role]?.subNavLinks || [];
 
   if (subNavLinks.length === 0) return null;
@@ -17,11 +20,11 @@ const SubHeader = ({ role = "trainee" }) => {
           return (
             <div key={index} className={styles["sub-nav-item"]}>
               <Link
-                to={link.path}
+                to={link.path || "#"}
                 className={`${styles["sub-nav-link"]} ${isActive ? styles["active"] : ""}`}
               >
                 <span className={styles["sub-nav-icon"]}>{link.icon}</span>
-                {link.name}
+                {t(link.name)}
               </Link>
 
               {index < subNavLinks.length - 1 && (

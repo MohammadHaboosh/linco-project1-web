@@ -1,5 +1,3 @@
-/* src/features/Demo/HomeDemoPage/components/DemoContent/sections/SectionCard/SectionCard.module.css */
-
 .sectionCard {
   border-radius: 20px;
   padding: 25px;
@@ -12,10 +10,9 @@
   height: 100%;
 }
 
-/* الكرت المتاح أصبح أبيض ناصع مع حدود ناعمة */
 .cardActive {
   background-color: #ffffff;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #e2eaf0;
   cursor: pointer;
   box-shadow: 0 4px 15px rgba(17, 41, 80, 0.02);
 }
@@ -23,12 +20,9 @@
 .cardActive:hover {
   transform: translateY(-5px);
   box-shadow: 0 15px 35px rgba(17, 41, 80, 0.08);
-  border-color: var(
-    --color-linco-blue
-  ); /* إضاءة زرقاء خفيفة للحدود عند التمرير */
+  border-color: var(--color-linco-blue);
 }
 
-/* الكرت المقفل أبيض أيضاً لكن باهت ومسطح */
 .cardLocked {
   background-color: #ffffff;
   border: 1px dashed #cbd5e1;
@@ -64,7 +58,6 @@
   font-size: 1.4rem;
 }
 
-/* الأيقونة داخل الكرت المتاح */
 .cardActive .iconBox {
   background-color: #eff6ff;
   color: var(--color-linco-blue);
@@ -184,4 +177,128 @@
   display: flex;
   align-items: center;
   gap: 5px;
+}
+/* تنسيقات زر الحذف ليكون أنيقاً ويظهر عند التمرير */
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.deleteBtn {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  cursor: pointer;
+  opacity: 0; /* مخفي افتراضياً */
+  transform: scale(0.9);
+  transition: all 0.2s ease;
+}
+
+/* يظهر الزر عند تمرير الماوس على الكرت بأكمله */
+.sectionCard:hover .deleteBtn {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.deleteBtn:hover {
+  background: #ef4444;
+  color: white;
+}
+
+/* تنسيقات المودال */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(10, 42, 84, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.confirmModal {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalPop {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modalIcon {
+  font-size: 3rem;
+  color: #ef4444;
+  margin-bottom: 15px;
+}
+
+.confirmModal h3 {
+  color: #0a2a54;
+  margin-bottom: 10px;
+}
+
+.confirmModal p {
+  color: #64748b;
+  font-size: 0.95rem;
+  margin-bottom: 25px;
+}
+
+.modalActions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.cancelBtn,
+.confirmDeleteBtn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.cancelBtn {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+.cancelBtn:hover {
+  background: #e2e8f0;
+  color: #0a2a54;
+}
+
+.confirmDeleteBtn {
+  background: #ef4444;
+  color: white;
+}
+
+.confirmDeleteBtn:hover {
+  background: #dc2626;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
 }

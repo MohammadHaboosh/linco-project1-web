@@ -1,6 +1,7 @@
 import { useState } from "react";
 import DemoHeaderSection from "./sections/DemoHeaderSection/DemoHeaderSection";
 import SectionCard from "./sections/SectionCard/SectionCard";
+import CreateDepartment from "../CreateDepartment/CreateDepartment.jsx";
 import ProjectChatsWidget from "./sections/ProjectChatsWidget/ProjectChatsWidget";
 import styles from "./DemoContent.module.css";
 import { IoAdd } from "react-icons/io5";
@@ -62,41 +63,7 @@ const DemoContent = () => {
     console.log("Section Deleted:", id);
   };
 
-  const recentChats = [
-    {
-      id: 1,
-      projectName: "E-Commerce App",
-      lastMessage: "Sarah: I pushed the new navbar updates.",
-      time: "10:30 AM",
-      unread: 2,
-      avatarColor: "#1a56db",
-    },
-    {
-      id: 2,
-      projectName: "Dashboard UI",
-      lastMessage: "You: Let's review the API structure.",
-      time: "Yesterday",
-      unread: 0,
-      avatarColor: "#9f1239",
-    },
-    {
-      id: 3,
-      projectName: "LinCo Landing",
-      lastMessage: "Ahmad: Needs more padding on mobile.",
-      time: "Yesterday",
-      unread: 5,
-      avatarColor: "#059669",
-    },
-    {
-      id: 4,
-      projectName: "Auth System",
-      lastMessage: "Omar: JWT is implemented successfully.",
-      time: "Mon",
-      unread: 0,
-      avatarColor: "#d97706",
-    },
-  ];
-
+  const [showCreateModal, setShowCreateModal] = useState(false);
   return (
     <div className={styles.contentArea}>
       <div className={styles.innerContainer}>
@@ -107,31 +74,34 @@ const DemoContent = () => {
           )}
         />
 
-        <div className={styles.mainLayout}>
-          <div className={styles.sectionsGrid}>
-            {isOwner && (
-              <div
-                className={styles.createSectionCard}
-                onClick={() => console.log("Open Add Modal")}
-              >
-                <IoAdd className={styles.addIcon} />
-                <h3>{t("create-new-section")}</h3>
-              </div>
-            )}
+        <div className={styles.sectionsGrid}>
+          {isOwner && (
+            <div
+              className={styles.createSectionCard}
+              onClick={() => setShowCreateModal(true)}
+            >
+              <IoAdd className={styles.addIcon} />
+              <h3>{t("create-new-section")}</h3>
+            </div>
+          )}
+          {showCreateModal && (
+            <CreateDepartment
+              onClose={() => setShowCreateModal(false)}
+              onSubmit={(data) => {
+                console.log("Data saved:", data);
+                setShowCreateModal(false);
+              }}
+            />
+          )}
 
-            {sectionsData.map((section) => (
-              <SectionCard
-                key={section.id}
-                section={section}
-                isOwner={isOwner}
-                onDelete={handleDeleteSection}
-              />
-            ))}
-          </div>
-
-          <div className={styles.chatsSidebar}>
-            <ProjectChatsWidget chats={recentChats} />
-          </div>
+          {sectionsData.map((section) => (
+            <SectionCard
+              key={section.id}
+              section={section}
+              isOwner={isOwner}
+              onDelete={handleDeleteSection}
+            />
+          ))}
         </div>
       </div>
     </div>

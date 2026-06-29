@@ -5,7 +5,6 @@ import { HEADER_CONFIG } from "../headerConfig";
 import { PATHS } from "../../../../routes/paths";
 import appIconImg from "/public/images/linco-logo.jpg";
 import styles from "./Header.module.css";
-import LanguageSwitcher from "../../../common/LanguageSwitcher.jsx";
 import { useTranslation } from "react-i18next";
 
 const GlobalHeader = () => {
