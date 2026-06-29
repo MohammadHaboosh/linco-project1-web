@@ -49,8 +49,8 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
             <label>{t("department-title", "Department Title")}</label>
             <input
               type="text"
-              name="title"
-              value={formData.title}
+              name="name"
+              value={formData.name}
               onChange={handleChange}
               className={styles.input}
               placeholder="e.g. Back-End Engineering"

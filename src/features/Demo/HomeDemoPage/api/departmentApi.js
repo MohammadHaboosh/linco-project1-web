@@ -30,6 +30,8 @@ export const departmentApi = {
 
   createDepartment: async (demoId, departmentPayload) => {
     try {
+      console.log(departmentPayload);
+      console.log(JSON.stringify(departmentPayload));
       const response = await fetch(`${BASE_URL}/demos/${demoId}/departments`, {
         method: "POST",
         headers: {

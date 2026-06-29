@@ -3,7 +3,7 @@ import { departmentApi } from "../api/departmentApi";
 
 export const useCreateDepartment = (demoId, onSuccess) => {
   const [formData, setFormData] = useState({
-    title: "",
+    name: "",
     description: "",
   });
 
@@ -18,6 +18,7 @@ export const useCreateDepartment = (demoId, onSuccess) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    console.log(formData);
   };
 
   useEffect(() => {
@@ -62,9 +63,9 @@ export const useCreateDepartment = (demoId, onSuccess) => {
     setIsSubmitting(true);
     try {
       const payload = {
-        title: formData.title,
+        name: formData.title,
         description: formData.description,
-        user_id: selectedUser.id,
+        managerId: selectedUser.id,
       };
 
       await departmentApi.createDepartment(demoId, payload);
