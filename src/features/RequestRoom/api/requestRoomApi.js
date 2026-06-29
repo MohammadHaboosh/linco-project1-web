@@ -8,7 +8,6 @@ export const getUploadUrl = async (fileName) => {
   });
 
   if (!response.ok) throw new Error("Failed to generate upload URL");
-  console.log("Upload URL response:", response);
   return response.json();
 };
 
@@ -29,7 +28,6 @@ export const uploadFileToCloud = async (uploadUrl, fields, file) => {
   if (!response.ok && response.status !== 204) {
     throw new Error("Failed to upload image to the cloud");
   }
-  console.log("File uploaded successfully to the cloud");
 };
 
 export const createRoom = async (data) => {
@@ -40,6 +38,5 @@ export const createRoom = async (data) => {
   });
 
   if (!response.ok) throw new Error("Failed to create the room");
-  console.log("Room creation response:", response);
   return response.json();
 };

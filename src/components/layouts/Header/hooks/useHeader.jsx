@@ -21,7 +21,6 @@ export const useHeader = () => {
     : "G";
 
   const imagePath = profile?.imagePath || null;
-  console.log("User profile from Redux store:", profile);
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {

@@ -86,10 +86,12 @@ export const useRequestRoom = () => {
       // 1. Get URL and fields
       const { data } = await getUploadUrl(formData.logo.name);
       const { uploadUrl, fields, cdnUrl } = data;
-
+      console.log("Upload URL:", uploadUrl);
+      console.log("Fields:", fields);
+      console.log("CDN URL:", cdnUrl);
       // 2. Upload to Cloud
       await uploadFileToCloud(uploadUrl, fields, formData.logo);
-
+      console.log("File uploaded successfully");
       // 3. Final submission
       await createRoom({
         name: formData.companyName,
@@ -99,13 +101,13 @@ export const useRequestRoom = () => {
       });
 
       console.log("Room created successfully");
+      navigate("/home");
     } catch (error) {
       console.error("Room request error:", error);
       setErrors({ plan: error.message || "An error occurred." });
     } finally {
       setIsSubmitting(false);
     }
-    navigate("/home");
   };
 
   return {
