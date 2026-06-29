@@ -1,18 +1,18 @@
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const getUploadUrl = async (fileName) => {
-  console.log('fileName: ', fileName);
+  console.log("fileName: ", fileName);
   const response = await fetch(`${BASE_URL}/demos/upload-url`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      'x-client-type': 'web',
+      "Content-Type": "application/json",
+      "x-client-type": "web",
     },
-    credentials: 'include',
+    credentials: "include",
     body: JSON.stringify({ fileName }),
   });
 
-  if (!response.ok) throw new Error('Failed to generate upload URL');
+  if (!response.ok) throw new Error("Failed to generate upload URL");
   return response.json();
 };
 
@@ -23,29 +23,36 @@ export const uploadFileToCloud = async (uploadUrl, fields, file) => {
     cloudFormData.append(key, fields[key]);
   });
 
-  cloudFormData.append('file', file);
+  cloudFormData.append("file", file);
 
   const response = await fetch(uploadUrl, {
-    method: 'POST',
+    method: "POST",
     body: cloudFormData,
   });
 
   if (!response.ok && response.status !== 204) {
-    throw new Error('Failed to upload image to the cloud');
+    throw new Error("Failed to upload image to the cloud");
   }
 };
 
 export const createRoom = async (data) => {
+  console.log("createRoom data: ", data);
   const response = await fetch(`${BASE_URL}/demos`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      'x-client-type': 'web',
+      "Content-Type": "application/json",
+      "x-client-type": "web",
     },
-    credentials: 'include',
-    body: JSON.stringify(data),
+    credentials: "include",
+    body: JSON.stringify({
+      name: data.name,
+      description: data.description,
+      imagePath: data.imagePath,
+      plan: data.plan,
+    }),
   });
-
-  if (!response.ok) throw new Error('Failed to create the room');
+  const batata = await response.json();
+  console.log("createRoom response: ", batata);
+  if (!response.ok) throw new Error("Failed to create the room");
   return response.json();
 };
