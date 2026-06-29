@@ -119,9 +119,11 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
                         <IoPersonOutline className={styles.userIcon} />
                         <div>
                           <p className={styles.resultName}>
-                            {user.firstName} {user.lastName}
+                            {user.user.firstName} {user.user.lastName}
                           </p>
-                          <p className={styles.resultEmail}>{user.email}</p>
+                          <p className={styles.resultEmail}>
+                            {user.user.email}
+                          </p>
                         </div>
                       </li>
                     ))}
