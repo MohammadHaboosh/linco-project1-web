@@ -6,7 +6,7 @@ import {
   IoCameraOutline,
 } from "react-icons/io5";
 import { useProfile } from "../hooks/useProfile.jsx";
-import styles from "./ProfilePage.module.css"; 
+import styles from "./Profile.module.css"; 
 
 const ProfilePage = () => {
   const { t } = useTranslation();
