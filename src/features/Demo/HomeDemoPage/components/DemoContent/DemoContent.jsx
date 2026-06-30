@@ -9,6 +9,7 @@ import CreateDepartment from "../CreateDepartment/CreateDepartment";
 import { useDepartments } from "../../hooks/useDepartments";
 
 import styles from "./DemoContent.module.css";
+import { useDeleteDepartment } from "../../hooks/useDeleteDepartment";
 
 const DemoContent = () => {
   const { t } = useTranslation();
@@ -17,11 +18,14 @@ const DemoContent = () => {
   const { demoId } = useParams();
 
   const { departments, isLoading, error, refetch } = useDepartments(demoId);
-
+  const { deleteDepartment, isDeleting } = useDeleteDepartment(demoId, () => {
+    console.log("Department deleted successfully!");
+    refetch();
+  });
   const [showCreateModal, setShowCreateModal] = useState(false);
 
   const handleDeleteSection = (id) => {
-    ///// TODO:
+    deleteDepartment(id);
     console.log("Section Deleted:", id);
   };
 

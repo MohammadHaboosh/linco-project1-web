@@ -88,4 +88,29 @@ export const departmentApi = {
       throw error;
     }
   },
+
+  deleteDepartment: async (demoId, departmentId) => {
+    try {
+      const response = await fetch(
+        `${BASE_URL}/demos/${demoId}/departments/${departmentId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            "x-client-type": "web",
+          },
+          credentials: "include",
+        },
+      );
+
+      const data = await response.json();
+      if (!response.ok)
+        throw new Error(data.message || "Failed to delete department");
+
+      return data;
+    } catch (error) {
+      console.error("API Error during department deletion:", error);
+      throw error;
+    }
+  },
 };
