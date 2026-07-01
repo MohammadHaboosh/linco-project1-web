@@ -23,14 +23,14 @@ import { PATHS } from "../routes/paths";
 export const SUBHEADER_CONFIG = {
   global: {
     navLinks: [
-      { name: "Home", path: PATHS.DEMO },
+      { name: "Home", path: PATHS.HOME },
       { name: "Pending Invitations", path: PATHS.PENDING_INVITATIONS },
       { name: "Joined Rooms", path: PATHS.JOINED_ROOMS },
       { name: "My Own Rooms", path: PATHS.OWN_ROOMS },
     ],
   },
   trainee: [
-    { name: "Home", icon: <IoHomeOutline />, path: PATHS.HOME },
+    { name: "Home", icon: <IoHomeOutline />, path: PATHS.DEMO },
     {
       name: "Learning Path",
       icon: <IoMapOutline />,
