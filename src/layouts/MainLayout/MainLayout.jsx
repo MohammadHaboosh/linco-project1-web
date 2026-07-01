@@ -29,6 +29,7 @@ const LayoutContent = () => {
         <main className={styles.pageContent}>
           <Outlet />
         </main>
+        <Footer />
       </div>
     </div>
   );

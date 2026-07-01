@@ -2,6 +2,7 @@ import { useState } from "react";
 import LeaderboardPodium from "./LeaderboardPodium";
 import LeaderboardList from "./LeaderboardList";
 import styles from "./LeaderboardContent.module.css";
+import { useTranslation } from "react-i18next";
 
 const mockLeaderboard = [
   {
@@ -60,19 +61,20 @@ const LeaderboardContent = () => {
 
   const topThree = mockLeaderboard.slice(0, 3);
   const restOfUsers = mockLeaderboard.slice(3);
+  const { t } = useTranslation();
 
   return (
     <div className={styles.contentArea}>
       <div className={styles.headerArea}>
-        <span className={styles.subHeading}>COMPANY LEADERBOARD</span>
-        <h1 className={styles.mainHeading}>Weekly Tasks Leaderboard</h1>
+        <span className={styles.subHeading}>{t("company-leaderboard-0")}</span>
+        <h1 className={styles.mainHeading}>{t("weekly-tasks-leaderboard")}</h1>
       </div>
 
       <div className={styles.leaderboardContainer}>
         <LeaderboardPodium topThree={topThree} />
 
         <div className={styles.listHeader}>
-          <h2>Company Leaderboard</h2>
+          <h2>{t("company-leaderboard")}</h2>
         </div>
 
         <LeaderboardList allUsers={mockLeaderboard} />

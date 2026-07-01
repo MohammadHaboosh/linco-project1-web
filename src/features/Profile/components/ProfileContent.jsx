@@ -15,7 +15,7 @@ const ProfileContent = () => {
     return (
       <div className={styles.loadingState}>
         <div className={styles.spinner}></div>
-        <p>Loading account settings...</p>
+        <p>{t("loading-account-settings")}</p>
       </div>
     );
   }
@@ -24,8 +24,8 @@ const ProfileContent = () => {
     <div className={styles.contentWrapper}>
       <div className={styles.ovalBackground}>
         <div className={styles.headerText}>
-          <h1>{t('account-settings')}</h1>
-          <p>{t('manage-your-account-details-and-security-preferences')}</p>
+          <h1>{t("account-settings")}</h1>
+          <p>{t("manage-your-account-details-and-security-preferences")}</p>
         </div>
       </div>
 

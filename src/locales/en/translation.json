@@ -215,5 +215,9 @@
   "first-name": "First Name",
   "last-name": "Last Name",
   "date-of-birth": "Date of Birth",
-  "view-your-personal-details": "View your personal details"
+  "view-your-personal-details": "View your personal details",
+  "company-leaderboard": "Company Leaderboard",
+  "company-leaderboard-0": "COMPANY LEADERBOARD",
+  "weekly-tasks-leaderboard": "Weekly Tasks Leaderboard",
+  "loading-account-settings": "Loading account settings..."
 }
