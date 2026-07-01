@@ -3,8 +3,10 @@ export const fetchCurrentUser = async () => {
 
   const response = await fetch(`${BASE_URL}/user/me`, {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`, // Adjust based on your auth logic
+      "Content-Type": "application/json",
+      "x-client-type": "web", 
     },
+    credentials: "include",
   });
 
   if (!response.ok) {
@@ -12,4 +14,28 @@ export const fetchCurrentUser = async () => {
   }
 
   return response.json();
+};
+
+export const changePassword = async (oldPassword, newPassword) => {
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+  const response = await fetch(`${BASE_URL}/authentication/change-password`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-client-type": "web", 
+    },
+    credentials: "include",
+    body: JSON.stringify({
+      oldPassword,
+      newPassword,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || "Failed to update password. Please check your current password.");
+  }
+
+  return response.json().catch(() => ({}));
 };

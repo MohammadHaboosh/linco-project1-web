@@ -1,16 +1,26 @@
-import { useState } from "react";
 import {
   IoLockClosedOutline,
   IoQrCodeOutline,
   IoHardwareChipOutline,
 } from "react-icons/io5";
+import { useProfile } from "../hooks/useProfile.jsx";
 import styles from "./ProfileContent.module.css";
 import { t } from "i18next";
 
-const SecurityTab = ({ profile }) => {
-  const [is2FAEnabled, setIs2FAEnabled] = useState(
-    profile?.isTwoFactorEnabled || false,
-  );
+const SecurityTab = () => {
+  const {
+    is2FAEnabled,
+    setIs2FAEnabled,
+    oldPassword,
+    setOldPassword,
+    newPassword,
+    setNewPassword,
+    confirmPassword,
+    setConfirmPassword,
+    passwordStatus,
+    isUpdatingPassword,
+    handleUpdatePassword,
+  } = useProfile();
 
   return (
     <div className={styles.cardSection}>
@@ -24,6 +34,20 @@ const SecurityTab = ({ profile }) => {
         </div>
 
         <div className={styles.passwordForm}>
+          
+          {passwordStatus.message && (
+            <div style={{ 
+              padding: "10px", 
+              borderRadius: "8px", 
+              backgroundColor: passwordStatus.type === "error" ? "#fee2e2" : "#d1fae5",
+              color: passwordStatus.type === "error" ? "#b91c1c" : "#047857",
+              fontSize: "0.9rem",
+              fontWeight: "600"
+            }}>
+              {passwordStatus.message}
+            </div>
+          )}
+
           <div className={styles.inputGroup}>
             <label>{t('current-password')}</label>
             <div className={styles.inputWrapper}>
@@ -32,6 +56,8 @@ const SecurityTab = ({ profile }) => {
                 type="password"
                 placeholder="••••••••"
                 className={styles.input}
+                value={oldPassword}
+                onChange={(e) => setOldPassword(e.target.value)}
               />
             </div>
           </div>
@@ -43,6 +69,8 @@ const SecurityTab = ({ profile }) => {
                 type="password"
                 placeholder="••••••••"
                 className={styles.input}
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
               />
             </div>
           </div>
@@ -54,18 +82,26 @@ const SecurityTab = ({ profile }) => {
                 type="password"
                 placeholder="••••••••"
                 className={styles.input}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </div>
           </div>
           <div className={styles.actionRow}>
-            <button className={styles.btnPrimary}>{t('update-password')}</button>
+            <button 
+              className={styles.btnPrimary} 
+              onClick={handleUpdatePassword}
+              disabled={isUpdatingPassword}
+              style={{ opacity: isUpdatingPassword ? 0.7 : 1, cursor: isUpdatingPassword ? 'not-allowed' : 'pointer' }}
+            >
+              {isUpdatingPassword ? "Updating..." : t('update-password')}
+            </button>
           </div>
         </div>
       </div>
 
       <hr className={styles.divider} />
 
-      {/* Two-Factor Authentication */}
       <div className={styles.securityBlock}>
         <div className={styles.sectionHeader}>
           <h2>{t('two-factor-authentication-2fa')}</h2>
