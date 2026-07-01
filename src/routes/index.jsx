@@ -1,113 +1,90 @@
 import { createBrowserRouter } from "react-router-dom";
 import { PATHS } from "./paths";
+import { t } from "i18next";
 
+// ==========================================
+import LandingPage from "../pages/LandingPage.jsx";
+import SignupPage from "../pages/SignupPage.jsx";
+import SinginPage from "../pages/SigninPage.jsx";
+import VerifyEmailPage from "../pages/VerifyEmailPage.jsx";
+import VerifyAccountPage from "../pages/VerifyAccountPage.jsx";
+import ForgotPasswordPage from "../pages/ForgotPasswordPage.jsx";
+import ResetPasswordPage from "../pages/ResetPasswordPage.jsx";
+
+// ==========================================
 import HomePage from "../pages/HomePage.jsx";
-import HomeDemoPage from "../pages/HomeDemoPage.jsx";
-import PendingInvitationsPage from "../pages/PendingInvitationsPage.jsx";
+import ProfilePage from "../pages/ProfilePage.jsx";
+import RequestRoomPage from "../pages/RequestRoomPage.jsx";
 import JoinedRoomsPage from "../pages/JoinedRooms.jsx";
 import MyOwnRoomsPage from "../pages/MyOwnRoomsPage.jsx";
-import SignupPage from "../pages/SignupPage.jsx";
-import VerifyEmailPage from "../pages/VerifyEmailPage.jsx";
-import SinginPage from "../pages/SigninPage.jsx";
-import CoursesPage from "../pages/CoursesPage";
-import LearningPathPage from "../pages/LearningPathPage";
+import PendingInvitationsPage from "../pages/PendingInvitationsPage.jsx";
+
+// ==========================================
+import MainLayout from "../layouts/MainLayout/MainLayout.jsx";
+import HomeDemoPage from "../pages/HomeDemoPage.jsx";
+import CoursesPage from "../pages/CoursesPage.jsx";
+import LeaderboardPage from "../pages/LeaderboardPage.jsx";
+import LearningPathPage from "../pages/LearningPathPage.jsx";
 import DepartmentPage from "../pages/DepartmentPage.jsx";
-import LandingPage from "../pages/LandingPage.jsx";
-import VerifyAccountPage from "../pages/VerifyAccountPage.jsx";
-import ResetPasswordPage from "../pages/ResetPasswordPage.jsx";
-import ForgotPasswordPage from "../pages/ForgotPasswordPage.jsx";
-import RequestRoomPage from "../pages/RequestRoomPage.jsx";
-import { t } from "i18next";
-// import LeaderboardContent from "../features/Demo/LeaderboardPage/components/LeaderboardContent.jsx";
-// import LeaderboardPage from "../pages/LeaderboardPage.jsx";
-import ProfilePage from "../pages/ProfilePage.jsx";
+import DashboardLayout from "../layouts/DashboardLayout/DashboardLayout.jsx";
+// import WeeklyTasksPage from "../pages/WeeklyTasksPage.jsx";
 
 export const router = createBrowserRouter([
+  { path: PATHS.LANDING, element: <HomePage /> },
+  { path: PATHS.SIGNIN, element: <SinginPage /> },
+  { path: PATHS.SIGNUP, element: <SignupPage /> },
+  { path: PATHS.CHECK_EMAIL, element: <VerifyEmailPage /> },
+  { path: PATHS.VERIFY_EMAIL, element: <VerifyAccountPage /> },
+  { path: PATHS.FORGOT_PASSWORD, element: <ForgotPasswordPage /> },
+  { path: PATHS.RESET_PASSWORD, element: <ResetPasswordPage /> },
+
+  // ==========================================
   {
-    path: PATHS.HOME,
-    element: <HomePage />,
+    element: <DashboardLayout />,
+    children: [
+      { path: PATHS.HOME, element: <HomePage /> },
+      { path: PATHS.PROFILE, element: <ProfilePage /> },
+      { path: PATHS.JOINED_ROOMS, element: <JoinedRoomsPage /> },
+      { path: PATHS.OWN_ROOMS, element: <MyOwnRoomsPage /> },
+      { path: PATHS.PENDING_INVITATIONS, element: <PendingInvitationsPage /> },
+    ],
   },
-  {
-    path: PATHS.LANDING,
-    element: <LandingPage />,
-  },
-  {
-    path: PATHS.PENDING_INVITATIONS,
-    element: <PendingInvitationsPage />,
-  },
-  {
-    path: PATHS.DEPARTMENT_DETAILS,
-    element: <DepartmentPage />,
-  },
-  {
-    path: PATHS.JOINED_ROOMS,
-    element: <JoinedRoomsPage />,
-  },
-  {
-    path: PATHS.OWN_ROOMS,
-    element: <MyOwnRoomsPage />,
-  },
+  // ==========================================
+
   {
     path: PATHS.DEMO,
-    element: <HomeDemoPage />,
+    element: <MainLayout />,
+    children: [
+      {
+        index: true,
+        element: <HomeDemoPage />,
+      },
+      {
+        path: PATHS.COURSES,
+        element: <CoursesPage />,
+      },
+      {
+        path: PATHS.LEADERBOARD,
+        element: <LeaderboardPage />,
+      },
+      {
+        path: PATHS.LEARNING_PATH,
+        element: <LearningPathPage />,
+      },
+      {
+        path: PATHS.DEPARTMENT_DETAILS,
+        element: <DepartmentPage />,
+      },
+      // {
+      //   path: PATHS.WEEKLY_TASKS,
+      //   element: <WeeklyTasksPage />,
+      // },
+    ],
   },
-  {
-    path: PATHS.SIGNUP,
-    element: <SignupPage />,
-  },
-  {
-    path: PATHS.CHECK_EMAIL,
-    element: <VerifyEmailPage />,
-  },
-  {
-    path: PATHS.VERIFY_EMAIL,
-    element: <VerifyAccountPage />,
-  },
-  {
-    path: PATHS.RESET_PASSWORD,
-    element: <ResetPasswordPage />,
-  },
-  {
-    path: PATHS.FORGOT_PASSWORD,
-    element: <ForgotPasswordPage />,
-  },
-  {
-    path: PATHS.SIGNIN,
-    element: <SinginPage />,
-  },
-  {
-    path: PATHS.REQUEST_ROOM,
-    element: <RequestRoomPage />,
-  },
-  {
-    path: PATHS.COURSES,
-    element: <CoursesPage />,
-  },
-  {
-    path: PATHS.LEARNING_PATH,
-    element: <LearningPathPage />,
-  },
-  {
-    path: PATHS.DEPARTMENT_DETAILS,
-    element: <DepartmentPage />,
-  },
-  {
-    path: PATHS.PROFILE,
-    element: <ProfilePage />,
-  },
-  { path: PATHS.MEMBERS, element: <LearningPathPage /> },
-  {
-    path: PATHS.ROADMAPS,
-    element: <DepartmentPage />,
-  },
-  // {
-  //   path: PATHS.LEADERBOARD,
-  //   element: <LeaderboardPage />,
-  // },
   {
     path: "*",
     element: (
-      <div className="text-center p-20 text-white text-2xl font-serif">
+      <div className="flex items-center justify-center h-screen bg-slate-900 text-white text-2xl font-serif">
         {t("404-page-not-found")}
       </div>
     ),

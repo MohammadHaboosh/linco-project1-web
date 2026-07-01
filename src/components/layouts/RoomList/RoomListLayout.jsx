@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IoChevronBack, IoSearch, IoFolderOpenOutline } from "react-icons/io5"; 
+import { IoChevronBack, IoSearch, IoFolderOpenOutline } from "react-icons/io5";
 import Sidebar from "../SideBar/Sidebar.jsx";
 import Header from "../Header/global_header/Header.jsx";
 import Footer from "../Footer/Footer.jsx";
@@ -13,8 +13,8 @@ const RoomsListLayout = ({
   rooms,
   bannerImage,
   onBackClick,
-  emptyMessage = "No rooms found", 
-  emptySubtext = "There are no rooms to display here at the moment.", 
+  emptyMessage = "No rooms found",
+  emptySubtext = "There are no rooms to display here at the moment.",
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -24,11 +24,7 @@ const RoomsListLayout = ({
 
   return (
     <div className={styles["app-container"]}>
-      <Sidebar role="global" />
-
       <div className={`${styles["main-wrapper"]} custom-scrollbar`}>
-        <Header />
-
         <div className={styles["top-banner"]}>
           <div className={styles["banner-text"]}>
             <div className={styles["title-container"]}>
@@ -95,7 +91,7 @@ const RoomsListLayout = ({
                     padding: "40px 0",
                   }}
                 >
-                  {t('no-companies-found-matching')} "{searchQuery}"
+                  {t("no-companies-found-matching")} "{searchQuery}"
                 </p>
               )}
             </div>

@@ -1,4 +1,4 @@
-.workspace-sub-header {
+.subHeader {
   background-color: #ffffff;
   min-height: 65px;
   display: flex;
@@ -11,19 +11,19 @@
   box-shadow: 0 4px 15px -5px rgba(0, 0, 0, 0.02);
 }
 
-.sub-nav-links {
+.navLinks {
   display: flex;
   align-items: center;
   width: 100%;
   gap: 8px;
 }
 
-.sub-nav-item {
+.navItem {
   display: flex;
   align-items: center;
 }
 
-.sub-nav-link {
+.navLink {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -37,33 +37,33 @@
   transition: all 0.2s ease;
 }
 
-.sub-nav-icon {
+.icon {
   font-size: 1.2rem;
   color: #94a3b8;
   transition: color 0.2s ease;
 }
 
-.sub-nav-link:hover {
+.navLink:hover {
   background-color: #f8fafc;
   color: var(--color-linco-navy);
   border-color: #e2e8f0;
 }
 
-.sub-nav-link:hover .sub-nav-icon {
+.navLink:hover .icon {
   color: var(--color-linco-blue);
 }
 
-.sub-nav-link.active {
+.active {
   background: linear-gradient(135deg, var(--color-linco-navy) 0%, #1e3a8a 100%);
   color: #ffffff;
   border-color: transparent;
   box-shadow:
-    0 6px 16px rgba(17, 41, 80, 0.25),
+    0 6px 16px rgb(255, 255, 255),
     inset 0 1px 1px rgba(255, 255, 255, 0.15);
   animation: activePop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
-.sub-nav-link.active .sub-nav-icon {
+.active .icon {
   color: #ffffff;
 }
 
@@ -78,7 +78,7 @@
   }
 }
 
-.sub-nav-divider {
+.divider {
   width: 1px;
   height: 18px;
   background-color: #e2e8f0;

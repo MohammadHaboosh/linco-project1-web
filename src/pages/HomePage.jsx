@@ -2,9 +2,9 @@ import HomePage from "../features/Dashboard/HomePage/components/home_page/HomePa
 
 const homePage = () => {
   return (
-    <div>
+    <>
       <HomePage />
-    </div>
+    </>
   );
 };
 

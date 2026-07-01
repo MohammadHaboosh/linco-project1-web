@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { IoChevronDown, IoCheckmarkCircle } from "react-icons/io5";
-import styles from "../global_header/Header.module.css";
+import styles from "./Header.module.css";
 
 const DepartmentSwitcher = ({ currentRoom }) => {
   const [isDeptOpen, setIsDeptOpen] = useState(false);

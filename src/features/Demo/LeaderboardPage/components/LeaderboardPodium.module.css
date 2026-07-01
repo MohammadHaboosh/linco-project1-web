@@ -1,0 +1,132 @@
+.podiumWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 20px;
+  height: 350px;
+  margin-bottom: 50px;
+  width: 100%;
+}
+
+.podiumCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 160px;
+}
+
+/* الكتل الكحلية */
+.podiumBlock {
+  background-color: #0a2a54;
+  width: 100%;
+  border-radius: 16px 16px 4px 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 10px 30px rgba(10, 42, 84, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.podiumCol:hover .podiumBlock {
+  transform: translateY(-5px);
+}
+
+.rank1 .podiumBlock {
+  height: 220px;
+  border-top: 4px solid #d4af37; /* اللمسة الذهبية للمركز الأول */
+  background: linear-gradient(180deg, #0f3669 0%, #0a2a54 100%);
+  width: 180px;
+}
+
+.rank2 .podiumBlock {
+  height: 160px;
+}
+
+.rank3 .podiumBlock {
+  height: 130px;
+}
+
+/* رقم الرتبة الكبير داخل الكتلة */
+.rankNumber {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 2.5rem;
+  font-weight: 800;
+}
+
+.rank1 .rankNumber {
+  font-size: 3.5rem;
+  color: #ffffff;
+}
+
+/* الميدالية الفوقية */
+.medalBadge {
+  position: absolute;
+  top: -20px;
+  width: 40px;
+  height: 40px;
+  background-color: #ffffff;
+  border: 2px solid #cbd5e1;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 800;
+  color: #0a2a54;
+  font-size: 1.1rem;
+  z-index: 10;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.rank1 .medalBadge {
+  top: -25px;
+  width: 50px;
+  height: 50px;
+  background-color: #d4af37;
+  border-color: #ffffff;
+  color: #ffffff;
+  font-size: 1.4rem;
+  border-width: 3px;
+}
+
+/* أيقونة الحبار */
+.squidMascot {
+  position: absolute;
+  top: -120px;
+  width: 110px;
+  z-index: 20;
+  filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.2));
+  animation: floatMascot 3s ease-in-out infinite;
+}
+
+@keyframes floatMascot {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* أسماء المستخدمين تحت المنصة */
+.userInfo {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.userName {
+  color: #1a56db;
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.highlightUser {
+  color: #0a2a54;
+  text-decoration: underline;
+  text-decoration-color: #d4af37;
+  text-decoration-thickness: 3px;
+}

@@ -1,10 +1,10 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { IoPersonOutline } from "react-icons/io5";
-import { useHeader } from "../hooks/useHeader.jsx";
-import { HEADER_CONFIG } from "../headerConfig";
+import { useHeader } from "../hooks/useHeader.jsx"; // تأكد من مسار الهوك
+import { SUBHEADER_CONFIG } from "../../../../config/layoutConfig.jsx";
 import { PATHS } from "../../../../routes/paths";
 import appIconImg from "/public/images/linco-logo.jpg";
-import styles from "./Header.module.css";
+import styles from "./GlobalHeader.module.css"; // تم تعديل اسم الملف ليكون مطابقاً
 import { useTranslation } from "react-i18next";
 
 const GlobalHeader = () => {
@@ -23,14 +23,16 @@ const GlobalHeader = () => {
     handleLogout,
   } = useHeader();
 
-  const globalLinks = HEADER_CONFIG.global.navLinks;
+  const globalLinks = SUBHEADER_CONFIG.global.navLinks;
 
   return (
     <header className={styles.header}>
       <div className={styles["header-left"]}>
         <div className={styles.logo}>
-          <span className={styles["brand-name"]}>{t("linco")}</span>{" "}
-          <span className={styles["company-text"]}>{t("link-company-0")}</span>
+          <span className={styles["brand-name"]}>{t("linco", "LinCo.")}</span>{" "}
+          <span className={styles["company-text"]}>
+            {t("link-company-0", "Link Company")}
+          </span>
         </div>
 
         <div
@@ -43,15 +45,10 @@ const GlobalHeader = () => {
               <img
                 src={imagePath}
                 alt={`${fullName}'s profile`}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  borderRadius: "50%",
-                  objectFit: "cover",
-                }}
+                className={styles["avatar-img"]}
               />
             ) : (
-              initials
+              initials || "U"
             )}
           </div>
           <span className={styles["user-name"]}>{fullName}</span>
@@ -68,30 +65,30 @@ const GlobalHeader = () => {
                     className={styles["dropdown-item"]}
                     onClick={closeDropdown}
                   >
-                    {t("my-profile")}
+                    {t("my-profile", "My Profile")}
                   </Link>
                   <button
                     onClick={handleLogout}
                     className={`${styles["dropdown-item"]} ${styles["logout-btn"]}`}
                   >
-                    {t('sign-out')}
+                    {t("sign-out", "Sign out")}
                   </button>
                 </>
               ) : (
                 <>
                   <Link
-                    to="/signin"
+                    to={PATHS.SIGNIN}
                     className={styles["dropdown-item"]}
                     onClick={closeDropdown}
                   >
-                    {t("sign-in")}
+                    {t("sign-in", "Sign in")}
                   </Link>
                   <Link
-                    to="/signup"
+                    to={PATHS.SIGNUP}
                     className={styles["dropdown-item"]}
                     onClick={closeDropdown}
                   >
-                    {t("sign-up")}
+                    {t("sign-up", "Sign up")}
                   </Link>
                 </>
               )}
@@ -126,8 +123,8 @@ const GlobalHeader = () => {
           className={styles["btn-workspace"]}
           onClick={() => navigate(PATHS.REQUEST_ROOM)}
         >
-          <IoPersonOutline style={{ marginRight: "5px" }} />{" "}
-          {t("request-a-room")}
+          <IoPersonOutline className={styles["btn-icon"]} />{" "}
+          {t("request-a-room", "Request a room")}
         </button>
         <div className={styles["app-icon"]}>
           <img

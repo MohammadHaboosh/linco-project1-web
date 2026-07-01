@@ -18,10 +18,7 @@ const HomePage = () => {
 
   return (
     <div className={styles["app-container"]}>
-      <Sidebar role="global" />
-
       <div className={`${styles["main-wrapper"]} custom-scrollbar`}>
-        <Header />
         <div className={styles["hero-banner"]}>
           <div className={styles["hero-text"]}>
             <h1>

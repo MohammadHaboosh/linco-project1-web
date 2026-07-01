@@ -9,8 +9,6 @@ const RoomCard = ({ room }) => {
   const { t } = useTranslation();
 
   const handleCardClick = () => {
-    ////////////////////////////////////////
-    /// const tempDemoId = ;
     navigate(PATHS.DEMO.replace(":demoId", room.id));
   };
 

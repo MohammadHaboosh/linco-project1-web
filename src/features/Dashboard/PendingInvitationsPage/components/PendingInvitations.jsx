@@ -62,11 +62,7 @@ const PendingInvitationsPage = () => {
 
   return (
     <div className={styles["app-container"]}>
-      <Sidebar role="global" />
-
       <div className={`${styles["main-wrapper"]} custom-scrollbar`}>
-        <Header />
-
         <div className={styles["top-banner"]}>
           <div className={styles["banner-text"]}>
             <div className={styles["title-container"]}>

@@ -1,0 +1,54 @@
+.appContainer {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: #0a2a54;
+  font-family: var(--font-sans, "Inter", sans-serif);
+}
+
+.mainWrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: #f8fafc;
+  position: relative;
+}
+
+.pageContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.mainWrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.mainWrapper::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.mainWrapper::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 10px;
+  border: 2px solid #f1f5f9;
+}
+
+.mainWrapper::-webkit-scrollbar-thumb:hover {
+  background-color: #94a3b8;
+}
+
+@media (max-width: 992px) {
+  .appContainer {
+    flex-direction: column;
+  }
+
+  .mainWrapper {
+    height: calc(100vh - 60px);
+  }
+}

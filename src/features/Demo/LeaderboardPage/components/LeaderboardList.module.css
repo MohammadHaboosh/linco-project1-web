@@ -1,0 +1,120 @@
+.listWrapper {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(10, 42, 84, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rowCard {
+  display: grid;
+  grid-template-columns: 80px 2fr 2fr 1fr 150px;
+  align-items: center;
+  padding: 16px 20px;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.rowCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(10, 42, 84, 0.05);
+}
+
+/* تصميم الصف الخاص بالمستخدم الحالي */
+.currentUserRow {
+  background-color: #0a2a54;
+  border-color: #0a2a54;
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(10, 42, 84, 0.2);
+}
+
+.currentUserRow:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(10, 42, 84, 0.3);
+}
+
+.rankCol {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.rankBadge {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background-color: #bfdbfe;
+  color: #0a2a54;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 800;
+  font-size: 1rem;
+}
+
+/* باجة الرقم للمستخدم الحالي */
+.badgeMe {
+  background-color: #ffffff;
+  color: #0a2a54;
+}
+
+.nameCol {
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: #0a2a54;
+}
+
+.currentUserRow .nameCol {
+  color: #ffffff;
+}
+
+.roleCol {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #334155;
+}
+
+.currentUserRow .roleCol {
+  color: #e2e8f0;
+}
+
+.levelCol {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #64748b;
+}
+
+.currentUserRow .levelCol {
+  color: #cbd5e1;
+}
+
+.xpCol {
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: #0a2a54;
+  text-align: right;
+}
+
+.currentUserRow .xpCol {
+  color: #d4af37; /* لون ذهبي للـ XP الخاص بك */
+}
+
+/* تجاوب للشاشات الأصغر */
+@media (max-width: 900px) {
+  .rowCard {
+    grid-template-columns: 60px 1fr 1fr;
+    gap: 10px;
+    padding: 15px;
+  }
+  .roleCol,
+  .levelCol {
+    display: none;
+  }
+}

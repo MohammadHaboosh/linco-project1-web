@@ -1,38 +1,31 @@
 import { Link, useLocation } from "react-router-dom";
-import { useTranslation } from "react-i18next"; // تمت الإضافة هنا
-import { HEADER_CONFIG } from "../headerConfig";
+import { SUBHEADER_CONFIG } from "../../../../config/layoutConfig";
 import styles from "./SubHeader.module.css";
 
-const SubHeader = ({ role = "trainee" }) => {
+const SubHeader = ({ role }) => {
   const location = useLocation();
-  const { t } = useTranslation();
+  const links = SUBHEADER_CONFIG[role] || [];
 
-  const subNavLinks = HEADER_CONFIG[role]?.subNavLinks || [];
-
-  if (subNavLinks.length === 0) return null;
+  if (!links.length) return null;
 
   return (
-    <div className={styles["workspace-sub-header"]}>
-      <nav className={styles["sub-nav-links"]}>
-        {subNavLinks.map((link, index) => {
-          const isActive = location.pathname === link.path;
+    <div className={styles.subHeader}>
+      <nav className={styles.navLinks}>
+        {links.map((link, index) => (
+          <div key={index} className={styles.navItem}>
+            <Link
+              to={link.path}
+              className={`${styles.navLink} ${
+                location.pathname.endsWith(link.path) ? styles.active : ""
+              }`}
+            >
+              <span className={styles.icon}>{link.icon}</span>
+              {link.name}
+            </Link>
 
-          return (
-            <div key={index} className={styles["sub-nav-item"]}>
-              <Link
-                to={link.path || "#"}
-                className={`${styles["sub-nav-link"]} ${isActive ? styles["active"] : ""}`}
-              >
-                <span className={styles["sub-nav-icon"]}>{link.icon}</span>
-                {t(link.name)}
-              </Link>
-
-              {index < subNavLinks.length - 1 && (
-                <div className={styles["sub-nav-divider"]}></div>
-              )}
-            </div>
-          );
-        })}
+            {index < links.length - 1 && <div className={styles.divider}></div>}
+          </div>
+        ))}
       </nav>
     </div>
   );

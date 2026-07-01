@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { useRole } from "../../../../../hooks/useRole";
 import PageHeaderSection from "../sections/PageHeaderSection/PageHeaderSection";
 import CoursesGridSection from "../sections/CoursesGridSection/CoursesGridSection";
 import CourseBuilder from "../CourseBuilder/CourseBuilder";
 import styles from "./CoursesContent.module.css";
 
 const CoursesContent = () => {
-  const { isOwner } = useRole();
+  const isOwner = "trainee";
   const [isBuilding, setIsBuilding] = useState(false);
 
   const mockCourses = Array.from({ length: 8 }, (_, i) => ({
