@@ -1,58 +1,57 @@
 import {
   IoPersonOutline,
-  IoMailOutline,
   IoCalendarOutline,
 } from "react-icons/io5";
 import styles from "./ProfileContent.module.css";
+import { t } from "i18next";
 
 const GeneralTab = ({ profile, firstName, lastName }) => {
   return (
     <div className={styles.cardSection}>
       <div className={styles.sectionHeader}>
-        <h2>Personal Information</h2>
-        <p>Update your personal details.</p>
+        <h2>{t("personal-information")}</h2>
+        <p>{t('view-your-personal-details')}</p>
       </div>
 
       <div className={styles.formGrid}>
         <div className={styles.inputGroup}>
-          <label>First Name</label>
+          <label>{t("first-name")}</label>
           <div className={styles.inputWrapper}>
             <IoPersonOutline className={styles.inputIcon} />
             <input
               type="text"
               defaultValue={firstName}
               className={styles.input}
+              readOnly
             />
           </div>
         </div>
 
         <div className={styles.inputGroup}>
-          <label>Last Name</label>
+          <label>{t("last-name")}</label>
           <div className={styles.inputWrapper}>
             <IoPersonOutline className={styles.inputIcon} />
             <input
               type="text"
               defaultValue={lastName}
               className={styles.input}
+              readOnly
             />
           </div>
         </div>
 
         <div className={styles.inputGroup}>
-          <label>Date of Birth</label>
+          <label>{t("date-of-birth")}</label>
           <div className={styles.inputWrapper}>
             <IoCalendarOutline className={styles.inputIcon} />
             <input
               type="date"
               defaultValue={profile?.birthDate?.split("T")[0]}
               className={styles.input}
+              readOnly
             />
           </div>
         </div>
-      </div>
-
-      <div className={styles.actionRow}>
-        <button className={styles.btnPrimary}>Save Changes</button>
       </div>
     </div>
   );

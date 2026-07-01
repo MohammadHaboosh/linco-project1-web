@@ -4,6 +4,7 @@ import {
   IoCameraOutline,
 } from "react-icons/io5";
 import styles from "./ProfileContent.module.css";
+import { t } from "i18next";
 
 const ProfileSidebar = ({
   profile,
@@ -31,7 +32,7 @@ const ProfileSidebar = ({
         <p className={styles.userEmail}>
           {profile?.email || "nameusername@gmail.com"}
         </p>
-        <div className={styles.roleBadge}>Trainee</div>
+        <div className={styles.roleBadge}>{t('trainee')}</div>
       </div>
 
       <nav className={styles.settingsNav}>
@@ -40,14 +41,14 @@ const ProfileSidebar = ({
           onClick={() => setActiveTab("general")}
         >
           <IoPersonOutline className={styles.navIcon} />
-          General Information
+          {t('general-information')}
         </button>
         <button
           className={`${styles.navItem} ${activeTab === "security" ? styles.activeNav : ""}`}
           onClick={() => setActiveTab("security")}
         >
           <IoShieldCheckmarkOutline className={styles.navIcon} />
-          Security & Sign-in
+          {t('security-and-sign-in')}
         </button>
       </nav>
     </aside>

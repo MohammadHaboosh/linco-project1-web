@@ -4,6 +4,7 @@ import ProfileSidebar from "./ProfileSidebar";
 import GeneralTab from "./GeneralTab";
 import SecurityTab from "./SecurityTab";
 import styles from "./ProfileContent.module.css";
+import { t } from "i18next";
 
 const ProfileContent = () => {
   const { profile, isLoading, firstName, lastName, fullName, initials } =
@@ -23,8 +24,8 @@ const ProfileContent = () => {
     <div className={styles.contentWrapper}>
       <div className={styles.ovalBackground}>
         <div className={styles.headerText}>
-          <h1>Account Settings</h1>
-          <p>Manage your account details and security preferences.</p>
+          <h1>{t('account-settings')}</h1>
+          <p>{t('manage-your-account-details-and-security-preferences')}</p>
         </div>
       </div>
 

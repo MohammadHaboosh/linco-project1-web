@@ -5,6 +5,7 @@ import {
   IoHardwareChipOutline,
 } from "react-icons/io5";
 import styles from "./ProfileContent.module.css";
+import { t } from "i18next";
 
 const SecurityTab = ({ profile }) => {
   const [is2FAEnabled, setIs2FAEnabled] = useState(
@@ -16,15 +17,15 @@ const SecurityTab = ({ profile }) => {
       {/* Password Change */}
       <div className={styles.securityBlock}>
         <div className={styles.sectionHeader}>
-          <h2>Change Password</h2>
+          <h2>{t('change-password')}</h2>
           <p>
-            Ensure your account is using a long, random password to stay secure.
+            {t('ensure-your-account-is-using-a-long-random-password-to-stay-secure')}
           </p>
         </div>
 
         <div className={styles.passwordForm}>
           <div className={styles.inputGroup}>
-            <label>Current Password</label>
+            <label>{t('current-password')}</label>
             <div className={styles.inputWrapper}>
               <IoLockClosedOutline className={styles.inputIcon} />
               <input
@@ -35,7 +36,7 @@ const SecurityTab = ({ profile }) => {
             </div>
           </div>
           <div className={styles.inputGroup}>
-            <label>New Password</label>
+            <label>{t('new-password')}</label>
             <div className={styles.inputWrapper}>
               <IoLockClosedOutline className={styles.inputIcon} />
               <input
@@ -46,7 +47,7 @@ const SecurityTab = ({ profile }) => {
             </div>
           </div>
           <div className={styles.inputGroup}>
-            <label>Confirm New Password</label>
+            <label>{t('confirm-new-password')}</label>
             <div className={styles.inputWrapper}>
               <IoLockClosedOutline className={styles.inputIcon} />
               <input
@@ -57,7 +58,7 @@ const SecurityTab = ({ profile }) => {
             </div>
           </div>
           <div className={styles.actionRow}>
-            <button className={styles.btnPrimary}>Update Password</button>
+            <button className={styles.btnPrimary}>{t('update-password')}</button>
           </div>
         </div>
       </div>
@@ -67,8 +68,8 @@ const SecurityTab = ({ profile }) => {
       {/* Two-Factor Authentication */}
       <div className={styles.securityBlock}>
         <div className={styles.sectionHeader}>
-          <h2>Two-Factor Authentication (2FA)</h2>
-          <p>Add an extra layer of security to your account.</p>
+          <h2>{t('two-factor-authentication-2fa')}</h2>
+          <p>{t('add-an-extra-layer-of-security-to-your-account')}</p>
         </div>
 
         <div className={styles.twoFactorContainer}>
@@ -102,12 +103,12 @@ const SecurityTab = ({ profile }) => {
               <div className={styles.qrInfo}>
                 <IoHardwareChipOutline className={styles.qrIconBig} />
                 <div>
-                  <h4>Configure Authenticator</h4>
-                  <p>Scan the QR code using Google Authenticator or Authy.</p>
+                  <h4>{t('configure-authenticator')}</h4>
+                  <p>{t('scan-the-qr-code-using-google-authenticator-or-authy')}</p>
                 </div>
               </div>
               <button className={styles.btnOutline}>
-                <IoQrCodeOutline className={styles.btnIcon} /> Generate QR Code
+                <IoQrCodeOutline className={styles.btnIcon} /> {t('generate-qr-code')}
               </button>
             </div>
           )}

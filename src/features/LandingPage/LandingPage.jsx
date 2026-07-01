@@ -36,7 +36,7 @@ const LandingPage = () => {
         </div>
         <div className={styles.navActions}>
           <Link to={PATHS.SIGNIN} className={styles.btnOutline}>
-            {t("login")}
+            {t("sign-in")}
           </Link>
           <Link to={PATHS.SIGNUP} className={styles.btnPrimary}>
             {t("signup")}

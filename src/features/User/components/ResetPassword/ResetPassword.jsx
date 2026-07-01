@@ -10,6 +10,7 @@ import {
 import { resetPassword } from "../../api/userApi";
 import { PATHS } from "../../../../routes/paths";
 import styles from "./PasswordReset.module.css";
+import { t } from "i18next";
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -88,14 +89,13 @@ const ResetPassword = () => {
           </div>
           <h1 className={styles["title"]}>Password Reset</h1>
           <p className={styles["subtitle"]}>
-            Your password has been successfully reset. You can now use your new
-            password to log in.
+            {t('your-password-has-been-successfully-reset-you-can-now-use-your-new-password-to-sign-in')}
           </p>
           <button
             className={styles["btn-primary"]}
             onClick={() => navigate(PATHS.SIGNIN)}
           >
-            Go to Sign In
+            {t('go-to-sign-in')}
           </button>
         </div>
       </div>

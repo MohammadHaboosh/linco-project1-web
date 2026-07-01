@@ -143,7 +143,7 @@ export const useSignup = () => {
         setStep(1);
         setErrors((prev) => ({
           ...prev,
-          email: "This email is already in use. Please log in or use another.",
+          email: "This email is already in use. Please sign in or use another.",
         }));
       } else {
         setServerError(error.message || "Failed to sign up. Please try again.");

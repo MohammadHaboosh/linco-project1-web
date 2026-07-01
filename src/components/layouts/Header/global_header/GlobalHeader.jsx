@@ -74,7 +74,7 @@ const GlobalHeader = () => {
                     onClick={handleLogout}
                     className={`${styles["dropdown-item"]} ${styles["logout-btn"]}`}
                   >
-                    {t("logout")}
+                    {t('sign-out')}
                   </button>
                 </>
               ) : (
