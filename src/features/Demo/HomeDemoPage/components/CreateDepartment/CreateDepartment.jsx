@@ -77,7 +77,10 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
               <div className={styles.selectedUserCard}>
                 <div className={styles.userInfo}>
                   <IoCheckmarkCircle className={styles.successIcon} />
-                  <span>{selectedUser.name || selectedUser.email}</span>
+                  <span>
+                    {selectedUser.user.firstName} {selectedUser.user.lastName}
+                  </span>
+                  <span>{selectedUser.user.email}</span>
                 </div>
                 <button
                   className={styles.changeUserBtn}
