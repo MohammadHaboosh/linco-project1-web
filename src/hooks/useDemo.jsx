@@ -19,7 +19,7 @@ export const DemoProvider = ({ children }) => {
       try {
         const response = await fetch(`${BASE_URL}/demos/${demoId}`);
         const data = await response.json();
-
+        console.log("Fetched demo data:", data);
         // "id": "019f0fe8-d807-73b9-a0c7-891a13776c4b",
         // "name": "Google",
         // "imagePath": "qwertyuikol",
