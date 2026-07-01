@@ -35,7 +35,7 @@ const PendingInvitations = () => {
     >
       <div className={styles["section-header"]}>
         <h2>{t("new-pending-invitations")}</h2>
-        <button className={styles["view-all"]}>{t("view-all-channels")}</button>
+        <button className={styles["view-all"]}>{t('view-all-pending-invitations')}</button>
       </div>
 
       <div className={styles["list-container"]}>

@@ -17,7 +17,7 @@ const ProfileSidebar = ({
       <div className={styles.userBriefCard}>
         <div className={styles.avatarContainer}>
           <div className={styles.avatar}>
-            {profile?.imagePath && profile.imagePath !== "123456789" ? (
+            {profile?.imagePath ? (
               <img src={profile.imagePath} alt={fullName} />
             ) : (
               <span>{initials}</span>

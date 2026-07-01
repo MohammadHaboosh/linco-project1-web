@@ -189,5 +189,6 @@
   "continue": "Continue",
   "404-page-not-found": "404 - Page Not Found",
   "no-companies-found-matching": "No companies found matching",
-  "view-all-rooms": "View all rooms"
+  "view-all-rooms": "View all rooms",
+  "view-all-pending-invitations": "View all pending invitations"
 }

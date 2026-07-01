@@ -188,5 +188,7 @@
   "transform-the-way-your-company-learns-build-a-centralized-hub-for-onboarding-training-and-team-collaboration-0": "حوّل طريقة تعلم شركتك: أنشئ مركزاً مركزياً للتوظيف والتدريب والتعاون",
   "continue": "متابعة",
   "404-page-not-found": "404 - الصفحة غير موجودة",
-  "no-companies-found-matching": "لم يتم العثور على شركات مطابقة"
+  "no-companies-found-matching": "لم يتم العثور على شركات مطابقة",
+  "view-all-pending-invitations": "عرض كافة الدعوات المعلقة",
+  "view-all-rooms": "عرض جميع الغرف"
 }
