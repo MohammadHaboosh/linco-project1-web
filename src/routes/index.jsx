@@ -17,8 +17,10 @@ import VerifyAccountPage from "../pages/VerifyAccountPage.jsx";
 import ResetPasswordPage from "../pages/ResetPasswordPage.jsx";
 import ForgotPasswordPage from "../pages/ForgotPasswordPage.jsx";
 import RequestRoomPage from "../pages/RequestRoomPage.jsx";
-import ProfilePage from "../features/Profile/components/Profile.jsx";
 import { t } from "i18next";
+// import LeaderboardContent from "../features/Demo/LeaderboardPage/components/LeaderboardContent.jsx";
+// import LeaderboardPage from "../pages/LeaderboardPage.jsx";
+import ProfilePage from "../pages/ProfilePage.jsx";
 
 export const router = createBrowserRouter([
   {
@@ -98,11 +100,15 @@ export const router = createBrowserRouter([
     path: PATHS.ROADMAPS,
     element: <DepartmentPage />,
   },
+  // {
+  //   path: PATHS.LEADERBOARD,
+  //   element: <LeaderboardPage />,
+  // },
   {
     path: "*",
     element: (
       <div className="text-center p-20 text-white text-2xl font-serif">
-        {t('404-page-not-found')}
+        {t("404-page-not-found")}
       </div>
     ),
   },
