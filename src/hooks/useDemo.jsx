@@ -17,7 +17,14 @@ export const DemoProvider = ({ children }) => {
     const loadDemoData = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`${BASE_URL}/demos/${demoId}`);
+        const response = await fetch(`${BASE_URL}/demos/${demoId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-client-type": "web",
+          },
+          credentials: "include",
+        });
         const data = await response.json();
         console.log("Fetched demo data:", data);
         // "id": "019f0fe8-d807-73b9-a0c7-891a13776c4b",

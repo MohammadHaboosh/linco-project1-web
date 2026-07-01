@@ -14,7 +14,7 @@ const Header = ({ role, currentDepartment, currentRoleView, onRoleChange }) => {
       </div>
 
       <div className={styles.centerArea}>
-        <Link to={PATHS.DASHBOARD} className={styles.backLink}>
+        <Link to={PATHS.HOME} className={styles.backLink}>
           <IoChevronBack /> Go to my dashboard
         </Link>
 
