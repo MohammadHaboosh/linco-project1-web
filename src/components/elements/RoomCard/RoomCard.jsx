@@ -11,7 +11,7 @@ const RoomCard = ({ room }) => {
   const handleCardClick = () => {
     ////////////////////////////////////////
     /// const tempDemoId = ;
-    navigate(`/demos/019f0fe8-d807-73b9-a0c7-891a13776c4b`);
+    navigate(PATHS.DEMO.replace(":demoId", room.id));
   };
 
   return (

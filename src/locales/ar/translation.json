@@ -187,5 +187,7 @@
   "choose-plan": "اختر خطة",
   "sign-in-to-continue-your-learning-journey": "سجّل الدخول لمتابعة رحلة التعلم الخاصة بك",
   "transform-the-way-your-company-learns-build-a-centralized-hub-for-onboarding-training-and-team-collaboration-0": "حوّل طريقة تعلم شركتك: أنشئ مركزاً مركزياً للتوظيف والتدريب والتعاون",
-  "continue": "متابعة"
+  "continue": "متابعة",
+  "404-page-not-found": "404 - الصفحة غير موجودة",
+  "no-companies-found-matching": "لم يتم العثور على شركات مطابقة"
 }

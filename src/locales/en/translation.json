@@ -187,5 +187,7 @@
   "choose-plan": "Choose Plan",
   "sign-in-to-continue-your-learning-journey": "Sign in to continue your learning journey",
   "transform-the-way-your-company-learns-build-a-centralized-hub-for-onboarding-training-and-team-collaboration-0": "Transform the way your company learns: build a centralized hub for onboarding, training, and team collaboration",
-  "continue": "Continue"
+  "continue": "Continue",
+  "404-page-not-found": "404 - Page Not Found",
+  "no-companies-found-matching": "No companies found matching"
 }

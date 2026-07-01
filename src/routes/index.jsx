@@ -18,6 +18,7 @@ import ResetPasswordPage from "../pages/ResetPasswordPage.jsx";
 import ForgotPasswordPage from "../pages/ForgotPasswordPage.jsx";
 import RequestRoomPage from "../pages/RequestRoomPage.jsx";
 import ProfilePage from "../features/Profile/components/Profile.jsx";
+import { t } from "i18next";
 
 export const router = createBrowserRouter([
   {
@@ -101,7 +102,7 @@ export const router = createBrowserRouter([
     path: "*",
     element: (
       <div className="text-center p-20 text-white text-2xl font-serif">
-        404 - Page Not Found
+        {t('404-page-not-found')}
       </div>
     ),
   },

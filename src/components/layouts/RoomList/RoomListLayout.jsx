@@ -5,6 +5,7 @@ import Header from "../Header/global_header/Header.jsx";
 import Footer from "../Footer/Footer.jsx";
 import RoomCard from "../../elements/RoomCard/RoomCard.jsx";
 import styles from "./RoomListLayout.module.css";
+import { t } from "i18next";
 
 const RoomsListLayout = ({
   title,
@@ -94,7 +95,7 @@ const RoomsListLayout = ({
                     padding: "40px 0",
                   }}
                 >
-                  No companies found matching "{searchQuery}"
+                  {t('no-companies-found-matching')} "{searchQuery}"
                 </p>
               )}
             </div>

@@ -13,6 +13,8 @@ const MyOwnRooms = () => {
     return <div>Loading...</div>;
   }
 
+  console.log("Owned Rooms:", ownedRooms);
+
   return (
     <RoomsListLayout
       title={t("my-owned-rooms")}
