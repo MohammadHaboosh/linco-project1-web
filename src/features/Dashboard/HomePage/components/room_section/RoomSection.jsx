@@ -23,7 +23,7 @@ const RoomSection = ({
             className={styles["view-all"]}
             onClick={() => navigate(viewAllPath)}
           >
-            {t("view-all-channels")}
+            {t('view-all-rooms')}
           </button>
         )}
       </div>

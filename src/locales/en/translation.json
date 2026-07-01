@@ -42,7 +42,6 @@
   "you-dont-have-any-active-owned-rooms-right-now-create-one-to-get-started": "You don't have any active owned rooms right now. Create one to get started.",
   "recently-active-worked-rooms": "Recently Active Worked Rooms",
   "new-pending-invitations": "New Pending Invitations",
-  "view-all-channels": "View All Channels",
   "no-rooms-found": "No rooms found",
   "there-are-no-rooms-to-display-here-at-the-moment": "There are no rooms to display here at the moment",
   "joined-training-rooms": "Joined Training Rooms",
@@ -189,5 +188,6 @@
   "transform-the-way-your-company-learns-build-a-centralized-hub-for-onboarding-training-and-team-collaboration-0": "Transform the way your company learns: build a centralized hub for onboarding, training, and team collaboration",
   "continue": "Continue",
   "404-page-not-found": "404 - Page Not Found",
-  "no-companies-found-matching": "No companies found matching"
+  "no-companies-found-matching": "No companies found matching",
+  "view-all-rooms": "View all rooms"
 }

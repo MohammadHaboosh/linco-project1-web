@@ -39,7 +39,7 @@ const GlobalHeader = () => {
           onClick={toggleDropdown}
         >
           <div className={styles["user-avatar"]}>
-            {imagePath && imagePath !== "123456789" ? (
+            {imagePath ? (
               <img
                 src={imagePath}
                 alt={`${fullName}'s profile`}

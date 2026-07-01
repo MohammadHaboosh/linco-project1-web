@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { registerUser } from "../api/userApi";
+import { registerUser, getUploadUrl, uploadFileToCloud } from "../api/userApi";
 import { useNavigate } from "react-router-dom";
 import { PATHS } from "../../../routes/paths";
 
@@ -61,7 +61,6 @@ export const useSignup = () => {
     if (!formData.password) {
       newErrors.password = "Password is required";
     } else if (!passwordRegex.test(formData.password)) {
-      // Shorter error since the UI checklist handles the details
       newErrors.password = "Please meet all password requirements.";
     }
 
@@ -119,7 +118,22 @@ export const useSignup = () => {
     setServerError("");
 
     try {
-      await registerUser(formData);
+      let finalImagePath = "";
+
+      if (formData.imagePath) {
+        // 1. Get the pre-signed URL from the backend
+        const { data } = await getUploadUrl(formData.imagePath.name);
+        const { uploadUrl, fields, cdnUrl } = data;
+
+        await uploadFileToCloud(uploadUrl, fields, formData.imagePath);
+
+        finalImagePath = cdnUrl;
+      }
+
+      await registerUser({
+        ...formData,
+        imagePath: finalImagePath,
+      });
 
       navigate(PATHS.CHECK_EMAIL, { state: { email: formData.email } });
     } catch (error) {

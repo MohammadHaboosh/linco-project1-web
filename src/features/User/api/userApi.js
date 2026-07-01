@@ -1,16 +1,52 @@
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
+export const getUploadUrl = async (fileName) => {
+  const response = await fetch(`${BASE_URL}/users/upload-url`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-client-type": "web",
+    },
+    credentials: "include",
+    body: JSON.stringify({ fileName }),
+  });
+
+  if (!response.ok) throw new Error("Failed to generate upload URL");
+
+  const data = await response.json();
+  return data;
+};
+
+export const uploadFileToCloud = async (uploadUrl, fields, file) => {
+  const cloudFormData = new FormData();
+
+  Object.keys(fields).forEach((key) => {
+    cloudFormData.append(key, fields[key]);
+  });
+
+  cloudFormData.append("file", file);
+
+  const response = await fetch(uploadUrl, {
+    method: "POST",
+    body: cloudFormData,
+  });
+
+  if (!response.ok && response.status !== 204) {
+    throw new Error("Failed to upload image to the cloud");
+  }
+};
+
 export const registerUser = async (userData) => {
   const response = await fetch(`${BASE_URL}/authentication/sign-up`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      'x-client-type': 'web',
+      "Content-Type": "application/json",
+      "x-client-type": "web",
     },
     body: JSON.stringify({
       firstName: userData.firstName,
       lastName: userData.lastName,
-      imagePath: '123456789',
+      imagePath: userData.imagePath,
       birthDate: userData.birthDate,
       email: userData.email,
       password: userData.password,
@@ -20,7 +56,7 @@ export const registerUser = async (userData) => {
   const data = await response.json();
 
   if (!response.ok) {
-    console.error('Backend Error Response:', data);
+    console.error("Backend Error Response:", data);
     throw new Error(data.message || `HTTP error! status: ${response.status}`);
   }
 
@@ -30,12 +66,12 @@ export const registerUser = async (userData) => {
 export const signinUser = async (credentials) => {
   try {
     const response = await fetch(`${BASE_URL}/authentication/sign-in`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'x-client-type': 'web',
+        "Content-Type": "application/json",
+        "x-client-type": "web",
       },
-      credentials: 'include',
+      credentials: "include",
       body: JSON.stringify({
         email: credentials.email,
         password: credentials.password,
@@ -54,7 +90,7 @@ export const signinUser = async (credentials) => {
 
     return data;
   } catch (error) {
-    console.error('API Error during signin:', error);
+    console.error("API Error during signin:", error);
     throw error;
   }
 };
@@ -64,10 +100,10 @@ export const resendVerificationEmail = async (email) => {
     const response = await fetch(
       `${BASE_URL}/authentication/resend-verification-email`,
       {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'x-client-type': 'web',
+          "Content-Type": "application/json",
+          "x-client-type": "web",
         },
         body: JSON.stringify({ email }),
       },
@@ -81,7 +117,7 @@ export const resendVerificationEmail = async (email) => {
 
     return data;
   } catch (error) {
-    console.error('API Error during resend verification:', error);
+    console.error("API Error during resend verification:", error);
     throw error;
   }
 };
@@ -89,12 +125,12 @@ export const resendVerificationEmail = async (email) => {
 export const logoutUser = async () => {
   try {
     const response = await fetch(`${BASE_URL}/authentication/sign-out`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'x-client-type': 'web',
+        "Content-Type": "application/json",
+        "x-client-type": "web",
       },
-      credentials: 'include',
+      credentials: "include",
     });
 
     const data = await response.json();
@@ -105,7 +141,7 @@ export const logoutUser = async () => {
 
     return data;
   } catch (error) {
-    console.error('API Error during signout:', error);
+    console.error("API Error during signout:", error);
     throw error;
   }
 };
@@ -114,9 +150,9 @@ export const fetchCurrentUser = async () => {
   const refreshResponse = await fetch(
     `${BASE_URL}/authentication/refresh-tokens`,
     {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-client-type': 'web' },
-      credentials: 'include',
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-client-type": "web" },
+      credentials: "include",
     },
   );
 
@@ -125,9 +161,9 @@ export const fetchCurrentUser = async () => {
   }
 
   const response = await fetch(`${BASE_URL}/users/me`, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json', 'x-client-type': 'web' },
-    credentials: 'include',
+    method: "GET",
+    headers: { "Content-Type": "application/json", "x-client-type": "web" },
+    credentials: "include",
   });
 
   const data = await response.json();
@@ -139,10 +175,10 @@ export const verifyUserEmail = async (token) => {
     const response = await fetch(
       `${BASE_URL}/authentication/verify-email?token=${token}`,
       {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
-          'x-client-type': 'web',
+          "Content-Type": "application/json",
+          "x-client-type": "web",
         },
       },
     );
@@ -155,7 +191,7 @@ export const verifyUserEmail = async (token) => {
 
     return data;
   } catch (error) {
-    console.error('API Error during email verification:', error);
+    console.error("API Error during email verification:", error);
     throw error;
   }
 };
@@ -163,10 +199,10 @@ export const verifyUserEmail = async (token) => {
 export const forgotPassword = async (email) => {
   try {
     const response = await fetch(`${BASE_URL}/authentication/forgot-password`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'x-client-type': 'web',
+        "Content-Type": "application/json",
+        "x-client-type": "web",
       },
       body: JSON.stringify({ email }),
     });
@@ -179,7 +215,7 @@ export const forgotPassword = async (email) => {
 
     return data;
   } catch (error) {
-    console.error('API Error during password reset request:', error);
+    console.error("API Error during password reset request:", error);
     throw error;
   }
 };
@@ -187,16 +223,16 @@ export const forgotPassword = async (email) => {
 export const resetPassword = async (token, newPassword) => {
   try {
     console.log(
-      'Resetting password with token:',
+      "Resetting password with token:",
       token,
-      'and newPassword:',
+      "and newPassword:",
       newPassword,
     );
     const response = await fetch(`${BASE_URL}/authentication/reset-password`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'x-client-type': 'web',
+        "Content-Type": "application/json",
+        "x-client-type": "web",
       },
       body: JSON.stringify({
         password: newPassword,
@@ -205,7 +241,7 @@ export const resetPassword = async (token, newPassword) => {
     });
 
     const data = await response.json();
-    console.log('Backend Response: ', data);
+    console.log("Backend Response: ", data);
 
     if (!response.ok) {
       throw new Error(data.message || `HTTP error! status: ${response.status}`);
@@ -213,7 +249,7 @@ export const resetPassword = async (token, newPassword) => {
 
     return data;
   } catch (error) {
-    console.error('API Error during password reset:', error);
+    console.error("API Error during password reset:", error);
     throw error;
   }
 };
