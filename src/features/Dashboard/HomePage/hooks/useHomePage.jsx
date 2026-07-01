@@ -1,10 +1,8 @@
-// src/features/home/hooks/useHomePage.js (Adjust path according to your structure)
-import { useState, useEffect } from "react";
-import { fetchDemos } from "../../api/roomsApi.js";
+import { useOwnedRooms } from "../../MyOwnRoomsPage/hooks/useOwnedRooms";
 
 export const useHomePage = () => {
-  const [ownedRooms, setOwnedRooms] = useState([]);
-  const [isLoadingOwnedRooms, setIsLoadingOwnedRooms] = useState(true);
+  const { ownedRooms, isLoading: isLoadingOwnedRooms } = useOwnedRooms();
+  const previewOwnedRooms = ownedRooms.slice(0, 2);
 
   const activeRooms = [
     {
@@ -26,35 +24,8 @@ export const useHomePage = () => {
     },
   ];
 
-  useEffect(() => {
-    const loadOwnedRooms = async () => {
-      try {
-        setIsLoadingOwnedRooms(true);
-        const json = await fetchDemos();
-
-        if (json.success && json.data) {
-          const mappedRooms = json.data.slice(0, 2).map((room) => ({
-            id: room.id,
-            companyName: room.name,
-            role: "Owner",
-            dateJoined: new Date(room.createdAt).toLocaleDateString("en-GB"),
-            members: 0,
-          }));
-
-          setOwnedRooms(mappedRooms);
-        }
-      } catch (error) {
-        console.error("Error fetching owned rooms:", error);
-      } finally {
-        setIsLoadingOwnedRooms(false);
-      }
-    };
-
-    loadOwnedRooms();
-  }, []);
-
   return {
-    ownedRooms,
+    ownedRooms: previewOwnedRooms, 
     isLoadingOwnedRooms,
     activeRooms,
     workedRooms,
