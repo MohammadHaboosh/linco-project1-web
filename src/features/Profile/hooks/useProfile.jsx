@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "../../../features/User/store/userSlice.js";
-import { fetchCurrentUser, changePassword } from "../api/profileApi.js";
+import {
+  fetchCurrentUser,
+  changePassword,
+  generate2FA,
+  turnOn2FA,
+} from "../api/profileApi.js";
 
 export const useProfile = () => {
   const dispatch = useDispatch();
@@ -20,6 +25,7 @@ export const useProfile = () => {
     setIs2FAEnabled(profile?.isTwoFactorEnabled || false);
   }
 
+  // Password States
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -28,6 +34,16 @@ export const useProfile = () => {
     message: "",
   });
   const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
+
+  // 2FA States
+  const [isSettingUp2FA, setIsSettingUp2FA] = useState(false);
+  const [qrCodeData, setQrCodeData] = useState(null);
+  const [verificationCode, setVerificationCode] = useState("");
+  const [twoFactorMessage, setTwoFactorMessage] = useState({
+    type: "",
+    message: "",
+  });
+  const [isVerifying2FA, setIsVerifying2FA] = useState(false);
 
   useEffect(() => {
     const loadUserProfile = async () => {
@@ -86,6 +102,49 @@ export const useProfile = () => {
     }
   };
 
+  const handleGenerate2FA = async () => {
+    setTwoFactorMessage({ type: "", message: "" });
+    setIsSettingUp2FA(true);
+    try {
+      const response = await generate2FA();
+      if (response.success && response.data?.qrCode) {
+        setQrCodeData(response.data.qrCode);
+      }
+    } catch (err) {
+      setTwoFactorMessage({ type: "error", message: err.message });
+      setIsSettingUp2FA(false);
+    }
+  };
+
+  const handleTurnOn2FA = async () => {
+    if (!verificationCode || verificationCode.length < 6) {
+      setTwoFactorMessage({
+        type: "error",
+        message: "Please enter a valid 6-digit code.",
+      });
+      return;
+    }
+
+    setIsVerifying2FA(true);
+    setTwoFactorMessage({ type: "", message: "" });
+
+    try {
+      await turnOn2FA(verificationCode);
+      setIs2FAEnabled(true);
+      setIsSettingUp2FA(false);
+      setQrCodeData(null);
+      setVerificationCode("");
+      setTwoFactorMessage({
+        type: "success",
+        message: "Two-factor authentication successfully enabled!",
+      });
+    } catch (err) {
+      setTwoFactorMessage({ type: "error", message: err.message });
+    } finally {
+      setIsVerifying2FA(false);
+    }
+  };
+
   const firstName = profile?.firstName || "Guest";
   const lastName = profile?.lastName || "";
   const fullName = `${firstName} ${lastName}`.trim();
@@ -102,9 +161,7 @@ export const useProfile = () => {
     lastName,
     fullName,
     initials,
-    // Exported Security Data & Functions
-    is2FAEnabled,
-    setIs2FAEnabled,
+    // Password
     oldPassword,
     setOldPassword,
     newPassword,
@@ -114,5 +171,16 @@ export const useProfile = () => {
     passwordStatus,
     isUpdatingPassword,
     handleUpdatePassword,
+    // 2FA
+    is2FAEnabled,
+    isSettingUp2FA,
+    setIsSettingUp2FA,
+    qrCodeData,
+    verificationCode,
+    setVerificationCode,
+    twoFactorMessage,
+    isVerifying2FA,
+    handleGenerate2FA,
+    handleTurnOn2FA,
   };
 };
