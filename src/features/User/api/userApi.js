@@ -95,7 +95,7 @@ export const signinUser = async (credentials) => {
   }
 };
 
-export const verifyTwoFactorSignin = async (email, code) => {
+export const verify2FASignin = async (twoFactorToken, code) => {
   try {
     const response = await fetch(`${BASE_URL}/authentication/sign-in/2fa`, {
       method: "POST",
@@ -104,8 +104,9 @@ export const verifyTwoFactorSignin = async (email, code) => {
         "x-client-type": "web",
       },
       credentials: "include",
-      body: JSON.stringify({ 
-        "tfaCode" : code 
+      body: JSON.stringify({
+        "twoFactorToken": twoFactorToken,
+        "tfaCode" : code,
       }),
     });
 
@@ -121,6 +122,8 @@ export const verifyTwoFactorSignin = async (email, code) => {
     throw error;
   }
 };
+
+// ... remaining existing functions (resendVerificationEmail, logoutUser, etc.) ...
 
 export const resendVerificationEmail = async (email) => {
   try {

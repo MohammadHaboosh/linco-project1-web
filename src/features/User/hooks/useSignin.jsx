@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import {
   signinUser,
   resendVerificationEmail,
-  verifyTwoFactorSignin,
+  verify2FASignin,
 } from "../api/userApi.js";
 import { setUser } from "../store/userSlice.js";
 
@@ -25,9 +25,12 @@ export const useSignin = () => {
   const [isResending, setIsResending] = useState(false);
   const [resendMessage, setResendMessage] = useState({ type: "", text: "" });
 
-  const [requires2FA, setRequires2FA] = useState(false);
+  // 2FA States
+  const [is2FAStep, setIs2FAStep] = useState(false);
+  const [twoFactorToken, setTwoFactorToken] = useState("");
   const [twoFactorCode, setTwoFactorCode] = useState("");
-  const [tempUserData, setTempUserData] = useState(null);
+  const [isVerifying2FA, setIsVerifying2FA] = useState(false);
+  const [twoFactorError, setTwoFactorError] = useState("");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -94,15 +97,16 @@ export const useSignin = () => {
 
     try {
       const response = await signinUser(formData);
-      const userData = response?.data?.user;
 
-      if (userData?.isTwoFactorEnabled) {
-        setRequires2FA(true);
-        setTempUserData(userData);
-      } else {
-        dispatch(setUser(userData));
-        navigate("/home");
+      if (response?.data?.requires2FA) {
+        setTwoFactorToken(response.data.twoFactorToken);
+        setIs2FAStep(true);
+        return; 
       }
+
+      const userData = response?.data?.user;
+      dispatch(setUser(userData));
+      navigate("/home");
     } catch (error) {
       if (error.code === "EmailNotVerifiedException") {
         setIsUnverified(true);
@@ -115,31 +119,27 @@ export const useSignin = () => {
     }
   };
 
-  const handleTwoFactorSubmit = async () => {
+  const handleVerify2FA = async (e) => {
+    if (e) e.preventDefault();
+
     if (!twoFactorCode || twoFactorCode.length < 6) {
-      setServerError("Please enter a valid 6-digit code.");
+      setTwoFactorError("Please enter a valid 6-digit code.");
       return;
     }
 
-    setIsSubmitting(true);
-    setServerError("");
+    setIsVerifying2FA(true);
+    setTwoFactorError("");
 
     try {
-      await verifyTwoFactorSignin(twoFactorCode);
-
-      dispatch(setUser(tempUserData));
+      const response = await verify2FASignin(twoFactorToken, twoFactorCode);
+      const userData = response?.data?.user;
+      dispatch(setUser(userData));
       navigate("/home");
     } catch (error) {
-      setServerError(error.message || "Invalid 2FA code. Please try again.");
+      setTwoFactorError(error.message || "Invalid authentication code.");
     } finally {
-      setIsSubmitting(false);
+      setIsVerifying2FA(false);
     }
-  };
-
-  const cancel2FA = () => {
-    setRequires2FA(false);
-    setTwoFactorCode("");
-    setTempUserData(null);
   };
 
   return {
@@ -154,10 +154,12 @@ export const useSignin = () => {
     handleSubmit,
     handleResendVerification,
     // 2FA Exports
-    requires2FA,
+    is2FAStep,
+    setIs2FAStep,
     twoFactorCode,
     setTwoFactorCode,
-    handleTwoFactorSubmit,
-    cancel2FA,
+    isVerifying2FA,
+    twoFactorError,
+    handleVerify2FA,
   };
 };
