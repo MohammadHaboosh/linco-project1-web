@@ -5,6 +5,7 @@ import {
   IoLockClosedOutline,
   IoEyeOutline,
   IoEyeOffOutline,
+  IoHardwareChipOutline,
 } from "react-icons/io5";
 import { FcGoogle } from "react-icons/fc";
 import { useSignin } from "../../hooks/useSignin.jsx";
@@ -29,6 +30,11 @@ const Signin = () => {
     handleInputChange,
     handleSubmit,
     handleResendVerification,
+    requires2FA,
+    twoFactorCode,
+    setTwoFactorCode,
+    handleTwoFactorSubmit,
+    cancel2FA,
   } = useSignin();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -72,80 +78,123 @@ const Signin = () => {
             </p>
           </div>
 
-          <div className={styles["form-card"]}>
-            <div className={styles["input-group"]}>
-              <IoMailOutline className={styles["icon-left"]} />
-              <input
-                type="email"
-                name="email"
-                placeholder="example@gmail.com"
-                value={formData.email}
-                onChange={handleInputChange}
-                className={styles["white-input"]}
-              />
-              {errors.email && (
-                <span className={styles["error-text"]}>{errors.email}</span>
-              )}
-            </div>
+          {requires2FA ? (
+            <div className={styles["form-card"]}>
+              <div className={styles["two-factor-header"]}>
+                <IoHardwareChipOutline className={styles["icon-large"]} />
+                <h3>{t("two-factor-authentication")}</h3>
+                <p>{t("enter-the-6-digit-code-from-your-authenticator-app")}</p>
+              </div>
 
-            <div className={styles["input-group"]}>
-              <IoLockClosedOutline className={styles["icon-left"]} />
-              <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                placeholder="Enter your password"
-                value={formData.password}
-                onChange={handleInputChange}
-                className={styles["white-input"]}
-              />
+              <div className={styles["input-group"]}>
+                <input
+                  type="text"
+                  placeholder="000000"
+                  maxLength="6"
+                  value={twoFactorCode}
+                  onChange={(e) => setTwoFactorCode(e.target.value)}
+                  className={styles["two-factor-input"]}
+                />
+              </div>
+
+              <div
+                className={styles["bottom-actions"]}
+                style={{ marginTop: "20px" }}
+              >
+                <button
+                  type="button"
+                  className={styles["btn-secondary"]}
+                  onClick={cancel2FA}
+                  disabled={isSubmitting}
+                >
+                  {t("cancel")}
+                </button>
+                <button
+                  type="button"
+                  className={styles["btn-primary"]}
+                  onClick={handleTwoFactorSubmit}
+                  disabled={isSubmitting || twoFactorCode.length < 6}
+                >
+                  {isSubmitting ? t("verifying") : t("verify")}
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className={styles["form-card"]}>
+              <div className={styles["input-group"]}>
+                <IoMailOutline className={styles["icon-left"]} />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="example@gmail.com"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className={styles["white-input"]}
+                />
+                {errors.email && (
+                  <span className={styles["error-text"]}>{errors.email}</span>
+                )}
+              </div>
+
+              <div className={styles["input-group"]}>
+                <IoLockClosedOutline className={styles["icon-left"]} />
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="Enter your password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  className={styles["white-input"]}
+                />
+                <button
+                  type="button"
+                  onClick={togglePassword}
+                  className={styles["icon-btn"]}
+                >
+                  {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
+                </button>
+                {errors.password && (
+                  <span
+                    className={styles["error-text"]}
+                    style={{ bottom: "-20px", left: "15px" }}
+                  >
+                    {errors.password}
+                  </span>
+                )}
+              </div>
+
+              <div className={styles["divider-container"]}>
+                <div className={styles.line}></div>
+                <span className={styles["divider-text"]}>OR WITH GOOGLE</span>
+                <div className={styles.line}></div>
+              </div>
+
               <button
                 type="button"
-                onClick={togglePassword}
-                className={styles["icon-btn"]}
+                className={styles["btn-google"]}
+                onClick={handleGoogleLogin}
               >
-                {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
+                <FcGoogle className={styles["google-icon"]} />
+                Continue with Google
               </button>
-              {errors.password && (
+
+              <div className={styles["forgot-password"]}>
+                <span>Forget password ? </span>
                 <span
-                  className={styles["error-text"]}
-                  style={{ bottom: "-20px", left: "15px" }}
+                  onClick={() => navigate(PATHS.FORGOT_PASSWORD)}
+                  className={styles["forgot-link"]}
+                  style={{ cursor: "pointer" }}
                 >
-                  {errors.password}
+                  Yes
                 </span>
-              )}
+              </div>
             </div>
-
-            <div className={styles["divider-container"]}>
-              <div className={styles.line}></div>
-              <span className={styles["divider-text"]}>OR WITH GOOGLE</span>
-              <div className={styles.line}></div>
-            </div>
-
-            <button
-              type="button"
-              className={styles["btn-google"]}
-              onClick={handleGoogleLogin}
-            >
-              <FcGoogle className={styles["google-icon"]} />
-              Continue with Google
-            </button>
-
-            <div className={styles["forgot-password"]}>
-              <span>Forget password ? </span>
-              <span
-                onClick={() => navigate(PATHS.FORGOT_PASSWORD)}
-                className={styles["forgot-link"]}
-                style={{ cursor: "pointer" }}
-              >
-                Yes
-              </span>
-            </div>
-          </div>
+          )}
 
           {serverError && (
             <div className={styles["server-error-banner"]}>
               <span>{serverError}</span>
-              {isUnverified && (
+              {isUnverified && !requires2FA && (
                 <div className={styles["resend-container"]}>
                   <button
                     type="button"
@@ -170,23 +219,25 @@ const Signin = () => {
             </div>
           )}
 
-          <div className={styles["bottom-actions"]}>
-            <button
-              type="button"
-              className={styles["btn-secondary"]}
-              onClick={() => navigate(PATHS.SIGNUP)}
-            >
-              Sign Up
-            </button>
-            <button
-              type="button"
-              className={styles["btn-primary"]}
-              onClick={handleSubmit}
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Signing In..." : "Sign In"}
-            </button>
-          </div>
+          {!requires2FA && (
+            <div className={styles["bottom-actions"]}>
+              <button
+                type="button"
+                className={styles["btn-secondary"]}
+                onClick={() => navigate(PATHS.SIGNUP)}
+              >
+                Sign Up
+              </button>
+              <button
+                type="button"
+                className={styles["btn-primary"]}
+                onClick={handleSubmit}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Signing In..." : "Sign In"}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -95,6 +95,33 @@ export const signinUser = async (credentials) => {
   }
 };
 
+export const verifyTwoFactorSignin = async (email, code) => {
+  try {
+    const response = await fetch(`${BASE_URL}/authentication/sign-in/2fa`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-client-type": "web",
+      },
+      credentials: "include",
+      body: JSON.stringify({ 
+        "tfaCode" : code 
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || `HTTP error! status: ${response.status}`);
+    }
+
+    return data;
+  } catch (error) {
+    console.error("API Error during 2FA verification:", error);
+    throw error;
+  }
+};
+
 export const resendVerificationEmail = async (email) => {
   try {
     const response = await fetch(

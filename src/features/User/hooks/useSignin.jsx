@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { signinUser, resendVerificationEmail } from "../api/userApi.js";
+import {
+  signinUser,
+  resendVerificationEmail,
+  verifyTwoFactorSignin,
+} from "../api/userApi.js";
 import { setUser } from "../store/userSlice.js";
 
 export const useSignin = () => {
@@ -20,6 +24,10 @@ export const useSignin = () => {
   const [isUnverified, setIsUnverified] = useState(false);
   const [isResending, setIsResending] = useState(false);
   const [resendMessage, setResendMessage] = useState({ type: "", text: "" });
+
+  const [requires2FA, setRequires2FA] = useState(false);
+  const [twoFactorCode, setTwoFactorCode] = useState("");
+  const [tempUserData, setTempUserData] = useState(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -88,8 +96,13 @@ export const useSignin = () => {
       const response = await signinUser(formData);
       const userData = response?.data?.user;
 
-      dispatch(setUser(userData));
-      navigate("/home");
+      if (userData?.isTwoFactorEnabled) {
+        setRequires2FA(true);
+        setTempUserData(userData);
+      } else {
+        dispatch(setUser(userData));
+        navigate("/home");
+      }
     } catch (error) {
       if (error.code === "EmailNotVerifiedException") {
         setIsUnverified(true);
@@ -100,6 +113,33 @@ export const useSignin = () => {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleTwoFactorSubmit = async () => {
+    if (!twoFactorCode || twoFactorCode.length < 6) {
+      setServerError("Please enter a valid 6-digit code.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setServerError("");
+
+    try {
+      await verifyTwoFactorSignin(twoFactorCode);
+
+      dispatch(setUser(tempUserData));
+      navigate("/home");
+    } catch (error) {
+      setServerError(error.message || "Invalid 2FA code. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const cancel2FA = () => {
+    setRequires2FA(false);
+    setTwoFactorCode("");
+    setTempUserData(null);
   };
 
   return {
@@ -113,5 +153,11 @@ export const useSignin = () => {
     handleInputChange,
     handleSubmit,
     handleResendVerification,
+    // 2FA Exports
+    requires2FA,
+    twoFactorCode,
+    setTwoFactorCode,
+    handleTwoFactorSubmit,
+    cancel2FA,
   };
 };
