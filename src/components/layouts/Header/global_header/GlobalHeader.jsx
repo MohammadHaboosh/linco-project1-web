@@ -1,10 +1,10 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { IoPersonOutline } from "react-icons/io5";
-import { useHeader } from "../hooks/useHeader.jsx"; // تأكد من مسار الهوك
-import { SUBHEADER_CONFIG } from "../../../../config/layoutConfig.jsx";
+import { useHeader } from "../hooks/useHeader.jsx";
+import { DASHBOARD_NAV } from "../../../../config/layoutConfig.jsx";
 import { PATHS } from "../../../../routes/paths";
 import appIconImg from "/public/images/linco-logo.jpg";
-import styles from "./GlobalHeader.module.css"; // تم تعديل اسم الملف ليكون مطابقاً
+import styles from "./GlobalHeader.module.css";
 import { useTranslation } from "react-i18next";
 
 const GlobalHeader = () => {
@@ -23,7 +23,7 @@ const GlobalHeader = () => {
     handleLogout,
   } = useHeader();
 
-  const globalLinks = SUBHEADER_CONFIG.global.navLinks;
+  const globalLinks = DASHBOARD_NAV.global.navLinks;
 
   return (
     <header className={styles.header}>

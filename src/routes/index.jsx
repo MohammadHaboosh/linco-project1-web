@@ -20,23 +20,27 @@ import MyOwnRoomsPage from "../pages/MyOwnRoomsPage.jsx";
 import PendingInvitationsPage from "../pages/PendingInvitationsPage.jsx";
 
 // ==========================================
-import MainLayout from "../layouts/MainLayout/MainLayout.jsx";
 import HomeDemoPage from "../pages/HomeDemoPage.jsx";
 import CoursesPage from "../pages/CoursesPage.jsx";
 import LeaderboardPage from "../pages/LeaderboardPage.jsx";
 import LearningPathPage from "../pages/LearningPathPage.jsx";
 import DepartmentPage from "../pages/DepartmentPage.jsx";
 import DashboardLayout from "../layouts/DashboardLayout/DashboardLayout.jsx";
+import WorkspaceToolsPage from "../pages/WorkspaceToolsPage.jsx";
+import RoadmapsPage from "../pages/RoadmapsPage.jsx";
+import DepartmentLayout from "../layouts/DepartmentLayout/DepartmentLayout.jsx";
+import DemoLayout from "../layouts/DemoLayout/DemoLayout.jsx";
 // import WeeklyTasksPage from "../pages/WeeklyTasksPage.jsx";
 
 export const router = createBrowserRouter([
-  { path: PATHS.LANDING, element: <LandingPage /> },
+  { path: PATHS.LANDING, element: <HomeDemoPage /> },
   { path: PATHS.SIGNIN, element: <SinginPage /> },
   { path: PATHS.SIGNUP, element: <SignupPage /> },
   { path: PATHS.CHECK_EMAIL, element: <VerifyEmailPage /> },
   { path: PATHS.VERIFY_EMAIL, element: <VerifyAccountPage /> },
   { path: PATHS.FORGOT_PASSWORD, element: <ForgotPasswordPage /> },
   { path: PATHS.RESET_PASSWORD, element: <ResetPasswordPage /> },
+  { path: PATHS.REQUEST_ROOM, element: <RequestRoomPage /> },
 
   // ==========================================
   {
@@ -50,37 +54,72 @@ export const router = createBrowserRouter([
     ],
   },
   // ==========================================
-
   {
     path: PATHS.DEMO,
-    element: <MainLayout />,
+    element: <DemoLayout />,
     children: [
-      {
-        index: true,
-        element: <HomeDemoPage />,
-      },
-      {
-        path: PATHS.COURSES,
-        element: <CoursesPage />,
-      },
-      {
-        path: PATHS.LEADERBOARD,
-        element: <LeaderboardPage />,
-      },
+      { index: true, element: <HomeDemoPage /> },
+      // { path: "certificates", element: <CertificatesPage /> },
+      // { path: "lives", element: <LivesPage /> },
+    ],
+  },
+  {
+    path: `${PATHS.DEMO}/departments/:departmentId`,
+    element: <DepartmentLayout />,
+    children: [
+      { index: true, element: <DepartmentPage /> },
       {
         path: PATHS.LEARNING_PATH,
         element: <LearningPathPage />,
-      },
-      {
-        path: PATHS.DEPARTMENT_DETAILS,
-        element: <DepartmentPage />,
       },
       // {
       //   path: PATHS.WEEKLY_TASKS,
       //   element: <WeeklyTasksPage />,
       // },
+      { path: PATHS.COURSES, element: <CoursesPage /> },
+      { path: PATHS.LEADERBOARD, element: <LeaderboardPage /> },
+      { path: PATHS.ROADMAPS, element: <RoadmapsPage /> },
+      { path: PATHS.TOOLS, element: <WorkspaceToolsPage /> },
     ],
   },
+  // {
+  //   path: PATHS.DEMO,
+  //   element: <MainLayout />,
+  //   children: [
+  //     {
+  //       index: true,
+  //       element: <HomeDemoPage />,
+  //     },
+  //     {
+  //       path: PATHS.COURSES,
+  //       element: <CoursesPage />,
+  //     },
+  //     {
+  //       path: PATHS.LEADERBOARD,
+  //       element: <LeaderboardPage />,
+  //     },
+  //     {
+  //       path: PATHS.LEARNING_PATH,
+  //       element: <LearningPathPage />,
+  //     },
+  //     {
+  //       path: PATHS.DEPARTMENT_DETAILS,
+  //       element: <DepartmentPage />,
+  //     },
+  //     {
+  //       path: PATHS.TOOLS,
+  //       element: <WorkspaceToolsPage />,
+  //     },
+  //     {
+  //       path: PATHS.ROADMAPS,
+  //       element: <RoadmapsPage />,
+  //     },
+  //     // {
+  //     //   path: PATHS.WEEKLY_TASKS,
+  //     //   element: <WeeklyTasksPage />,
+  //     // },
+  //   ],
+  // },
   {
     path: "*",
     element: (

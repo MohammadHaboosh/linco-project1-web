@@ -30,4 +30,5 @@ export const PATHS = {
   RESET_PASSWORD: "/reset-password",
   REQUEST_ROOM: "/request-room",
   MEMBERS: "members",
+  TOOLS: "tools",
 };

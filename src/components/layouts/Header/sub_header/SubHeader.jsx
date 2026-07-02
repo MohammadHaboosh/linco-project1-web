@@ -1,10 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
-import { SUBHEADER_CONFIG } from "../../../../config/layoutConfig";
 import styles from "./SubHeader.module.css";
 
-const SubHeader = ({ role }) => {
+const SubHeader = ({ links }) => {
   const location = useLocation();
-  const links = SUBHEADER_CONFIG[role] || [];
 
   if (!links.length) return null;
 
