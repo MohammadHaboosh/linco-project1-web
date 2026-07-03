@@ -4,7 +4,13 @@ import styles from "./SubHeader.module.css";
 const SubHeader = ({ links }) => {
   const location = useLocation();
 
-  if (!Array.isArray(links) || links.length === 0) return null;
+  if (!links || !Array.isArray(links) || links.length === 0) {
+    console.warn(
+      "SubHeader is hidden because links is empty or invalid:",
+      links,
+    );
+    return null;
+  }
 
   return (
     <div className={styles.subHeader}>

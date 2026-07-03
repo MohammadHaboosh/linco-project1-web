@@ -17,6 +17,7 @@ const LayoutContent = () => {
   const navLinks =
     DEPARTMENT_NAV[currentRoleView]?.navLinks ||
     DEPARTMENT_NAV.trainee.navLinks;
+  console.log("department navLinks :", navLinks);
 
   return (
     <div className={styles.appContainer}>
