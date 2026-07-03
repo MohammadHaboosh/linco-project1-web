@@ -10,8 +10,8 @@ const TOOLS_DATA = [
     name: "Draw.io",
     description:
       "Create professional flowcharts, process diagrams, and architectural layouts directly in your workspace.",
-    url: "https://app.diagrams.net/?embed=1&ui=min&spin=1",
-    icon: "https://jgraph.github.io/drawio-integration/images/drawlogo48.png",
+    url: "https://embed.diagrams.net/?embed=1&ui=min",
+    icon: "https://cdn.jsdelivr.net/gh/jgraph/drawio/src/main/webapp/images/logo.png",
     tags: ["Diagrams", "Architecture", "UML"],
   },
   {

@@ -97,7 +97,8 @@ const ToolViewer = ({ tool, onClose }) => {
             src={tool.url}
             className={styles.iframe}
             title={`${tool.name} Embed`}
-            allowFullScreen
+            allow="fullscreen; clipboard-read; clipboard-write"
+            sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
           ></iframe>
         </div>
       </div>

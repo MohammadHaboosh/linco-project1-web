@@ -30,10 +30,11 @@ import WorkspaceToolsPage from "../pages/WorkspaceToolsPage.jsx";
 // import RoadmapsPage from "../pages/RoadmapsPage.jsx";
 import DepartmentLayout from "../layouts/DepartmentLayout/DepartmentLayout.jsx";
 import DemoLayout from "../layouts/DemoLayout/DemoLayout.jsx";
+import DemoMembersPage from "../pages/DemoMembersPage.jsx";
 // import WeeklyTasksPage from "../pages/WeeklyTasksPage.jsx";
 
 export const router = createBrowserRouter([
-  { path: PATHS.LANDING, element: <LandingPage /> },
+  { path: PATHS.LANDING, element: <DemoMembersPage /> },
   { path: PATHS.SIGNIN, element: <SinginPage /> },
   { path: PATHS.SIGNUP, element: <SignupPage /> },
   { path: PATHS.CHECK_EMAIL, element: <VerifyEmailPage /> },
@@ -46,7 +47,7 @@ export const router = createBrowserRouter([
   {
     element: <DashboardLayout />,
     children: [
-      { index: true, element: <HomePage /> },
+      { path: PATHS.HOME, element: <HomePage /> },
       { path: PATHS.PROFILE, element: <ProfilePage /> },
       { path: PATHS.JOINED_ROOMS, element: <JoinedRoomsPage /> },
       { path: PATHS.OWN_ROOMS, element: <MyOwnRoomsPage /> },
@@ -59,6 +60,10 @@ export const router = createBrowserRouter([
     element: <DemoLayout />,
     children: [
       { index: true, element: <HomeDemoPage /> },
+      {
+        path: PATHS.OWNER_MEMBERS,
+        element: <DemoMembersPage />,
+      },
       // { path: "certificates", element: <CertificatesPage /> },
       // { path: "lives", element: <LivesPage /> },
     ],

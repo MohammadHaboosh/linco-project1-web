@@ -1,0 +1,167 @@
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.table th {
+  padding: 16px 24px;
+  background-color: #f8fafc;
+  color: #64748b;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.table td {
+  padding: 16px 24px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.tableRow:hover td {
+  background-color: #f8fafc;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 40px !important;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+/* User Info Cell */
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: #e0e7ff;
+  color: #1a56db;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 800;
+  font-size: 1.1rem;
+  overflow: hidden;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.userDetails {
+  display: flex;
+  flex-direction: column;
+}
+
+.userName {
+  color: #0a2a54;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.userEmail {
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.badgeOwner {
+  background-color: #fef08a;
+  color: #854d0e;
+}
+.badgeManager {
+  background-color: #e0e7ff;
+  color: #3730a3;
+}
+.badgeTrainee {
+  background-color: #f1f5f9;
+  color: #475569;
+}
+
+/* Status */
+.statusWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #475569;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.dotActive {
+  background-color: #10b981;
+  box-shadow: 0 0 0 3px #d1fae5;
+}
+.dotPending {
+  background-color: #f59e0b;
+  box-shadow: 0 0 0 3px #fef3c7;
+}
+.dotOffline {
+  background-color: #cbd5e1;
+}
+
+.dateText {
+  color: #64748b;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Actions */
+.actionsCol {
+  text-align: right;
+  width: 120px;
+}
+
+.actionBtn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 1.3rem;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s;
+  margin-left: 5px;
+}
+
+.actionBtn:hover {
+  background-color: #f1f5f9;
+  color: #1a56db;
+}
+
+.deleteBtn:hover {
+  background-color: #fef2f2;
+  color: #ef4444;
+}
