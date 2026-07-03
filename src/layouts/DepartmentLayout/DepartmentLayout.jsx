@@ -14,7 +14,9 @@ const LayoutContent = () => {
   if (isLoading)
     return <div className={styles.loader}>Loading Department...</div>;
 
-  const navLinks = DEPARTMENT_NAV[currentRoleView] || DEPARTMENT_NAV.trainee;
+  const navLinks =
+    DEPARTMENT_NAV[currentRoleView]?.navLinks ||
+    DEPARTMENT_NAV.trainee.navLinks;
 
   return (
     <div className={styles.appContainer}>
