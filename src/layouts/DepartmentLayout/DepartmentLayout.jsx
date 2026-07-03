@@ -14,10 +14,18 @@ const LayoutContent = () => {
   if (isLoading)
     return <div className={styles.loader}>Loading Department...</div>;
 
-  const navLinks =
-    DEPARTMENT_NAV[currentRoleView]?.navLinks ||
-    DEPARTMENT_NAV.trainee.navLinks;
-  console.log("department navLinks :", navLinks);
+  console.log(" [DeptLayout] 1. currentRoleView:", currentRoleView);
+
+  const safeRole = (currentRoleView || "trainee").toLowerCase();
+
+  const roleConfig = DEPARTMENT_NAV[safeRole] || DEPARTMENT_NAV.trainee;
+
+  const navLinks = roleConfig?.navLinks || [];
+  console.log(" [DeptLayout] 2. Final navLinks Array:", navLinks);
+  // const navLinks =
+  //   DEPARTMENT_NAV[currentRoleView]?.navLinks ||
+  //   DEPARTMENT_NAV.trainee.navLinks;
+  // console.log("department navLinks :", navLinks);
 
   return (
     <div className={styles.appContainer}>

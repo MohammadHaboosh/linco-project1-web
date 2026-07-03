@@ -31,4 +31,20 @@ export const PATHS = {
   MEMBERS: "members",
   TOOLS: "tools",
   DEMO_SECTION: "/demos/:demoId/departments/:departmentId",
+
+  OWNER_HOME: "analytics-home",
+  OWNER_DEPTS: "departments",
+  OWNER_MEMBERS: "members",
+  OWNER_INQUIRIES: "inquiries",
+  OWNER_LIVES: "lives",
+  OWNER_LIBRARY: "library",
+
+  SM_MEMBERS: "members",
+  SM_COURSES: "courses",
+  SM_LIVES: "lives",
+  SM_INQUIRIES: "inquiries",
+  SM_TOOLS: "tools",
+  SM_LEARNING_PATH: "learning-path",
+  SM_ROADMAPS: "roadmaps",
+  SM_TASKS: "weekly-tasks",
 };

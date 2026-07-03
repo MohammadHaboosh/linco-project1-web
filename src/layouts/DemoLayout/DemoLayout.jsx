@@ -12,10 +12,23 @@ const LayoutContent = () => {
 
   if (isLoading)
     return <div className={styles.loader}>Loading Workspace...</div>;
+  console.log(
+    " [DemoLayout] 1. currentRoleView from Context:",
+    currentRoleView,
+  );
 
-  const navLinks =
-    DEMO_NAV[currentRoleView]?.navLinks || DEMO_NAV.trainee.navLinks;
-  console.log("demo navLinks :", navLinks);
+  const safeRole = (currentRoleView || "trainee").toLowerCase();
+  console.log(" [DemoLayout] 2. safeRole (after lowercase):", safeRole);
+
+  const roleConfig = DEMO_NAV[safeRole] || DEMO_NAV.trainee;
+  console.log(" [DemoLayout] 3. roleConfig Object found:", roleConfig);
+
+  const navLinks = roleConfig?.navLinks || [];
+  console.log(" [DemoLayout] 4. Final navLinks Array:", navLinks);
+
+  // const navLinks =
+  //   DEMO_NAV[currentRoleView]?.navLinks || DEMO_NAV.trainee.navLinks;
+  // console.log("demo navLinks :", navLinks);
 
   return (
     <div className={styles.appContainer}>
