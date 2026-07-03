@@ -14,38 +14,36 @@ const RoomCard = ({ room }) => {
   const { t } = useTranslation();
 
   const handleCardClick = () => {
-    navigate(PATHS.DEMO.replace(":demoId", room.id));
+    navigate(PATHS.DEMO.replace(":demoId", room?.id));
   };
 
-  const displayName = room.name;
-  const displayDesc = room.description || "_";
-  const displayMembers = room.membersCount;
-  const displayRole = room.isOwner ? "Owner" : room.role || "Member";
-  const displayDate = room.createdAt
+  const safeName = room?.name || room?.companyName || "Workspace";
+  const displayDesc =
+    room?.description || "No description provided for this workspace.";
+  const displayMembers = room?.membersCount || room?.members || 0;
+  const displayRole = room?.isOwner ? "Owner" : room?.role || "Member";
+  const displayDate = room?.createdAt
     ? new Date(room.createdAt).toLocaleDateString()
-    : room.dateJoined || "";
-  const displayPlan = room.plan || "FREE";
-  const status = room.subscriptionStatus || "ACTIVE";
+    : room?.dateJoined || "";
+  const displayPlan = room?.plan || "FREE";
+  const status = room?.subscriptionStatus || "ACTIVE";
 
-  const initials = displayName.substring(0, 2).toUpperCase();
+  const initials = String(safeName).substring(0, 2).toUpperCase();
 
-  return (
+return (
     <div className={styles.card} onClick={handleCardClick}>
+      
       <div className={styles.cardHeader}>
         <div className={styles.brandSection}>
           <div className={styles.logoBox}>
-            {room.imagePath && room.imagePath !== "qwertyuikol" ? (
-              <img
-                src={room.imagePath}
-                alt={displayName}
-                className={styles.logoImg}
-              />
+            {room?.imagePath && room?.imagePath !== "qwertyuikol" ? (
+              <img src={room.imagePath} alt={safeName} className={styles.logoImg} />
             ) : (
               <span>{initials}</span>
             )}
           </div>
           <div className={styles.titleBox}>
-            <h3 className={styles.companyName}>{displayName}</h3>
+            <h3 className={styles.companyName}>{safeName}</h3>
             <span className={styles.roleTag}>
               <IoPersonOutline /> {displayRole}
             </span>
@@ -53,9 +51,7 @@ const RoomCard = ({ room }) => {
         </div>
 
         <div className={styles.badgeSection}>
-          <span
-            className={`${styles.planBadge} ${styles[displayPlan.toLowerCase()]}`}
-          >
+          <span className={`${styles.planBadge} ${styles[displayPlan.toLowerCase()]}`}>
             <IoRocketOutline /> {displayPlan}
           </span>
         </div>
@@ -74,14 +70,10 @@ const RoomCard = ({ room }) => {
             {displayMembers} {t("members", "Members")}
           </span>
         </div>
-
+        
         <div className={styles.footerItem}>
-          <span
-            className={`${styles.statusDot} ${styles[status.toLowerCase()]}`}
-          ></span>
-          <span style={{ textTransform: "capitalize" }}>
-            {status.toLowerCase()}
-          </span>
+          <span className={`${styles.statusDot} ${styles[String(status).toLowerCase()]}`}></span>
+          <span style={{textTransform: 'capitalize'}}>{String(status).toLowerCase()}</span>
         </div>
 
         {displayDate && (
@@ -91,8 +83,10 @@ const RoomCard = ({ room }) => {
           </div>
         )}
       </div>
+
     </div>
   );
+};
 };
 
 export default RoomCard;
