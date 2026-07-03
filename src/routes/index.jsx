@@ -33,7 +33,7 @@ import DemoLayout from "../layouts/DemoLayout/DemoLayout.jsx";
 // import WeeklyTasksPage from "../pages/WeeklyTasksPage.jsx";
 
 export const router = createBrowserRouter([
-  { path: PATHS.LANDING, element: <HomePage /> },
+  { path: PATHS.LANDING, element: <LandingPage /> },
   { path: PATHS.SIGNIN, element: <SinginPage /> },
   { path: PATHS.SIGNUP, element: <SignupPage /> },
   { path: PATHS.CHECK_EMAIL, element: <VerifyEmailPage /> },
@@ -46,7 +46,7 @@ export const router = createBrowserRouter([
   {
     element: <DashboardLayout />,
     children: [
-      { path: PATHS.HOME, element: <HomePage /> },
+      { index: true, element: <HomePage /> },
       { path: PATHS.PROFILE, element: <ProfilePage /> },
       { path: PATHS.JOINED_ROOMS, element: <JoinedRoomsPage /> },
       { path: PATHS.OWN_ROOMS, element: <MyOwnRoomsPage /> },

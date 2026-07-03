@@ -1,30 +1,21 @@
 import { Link, useLocation } from "react-router-dom";
 import styles from "./SubHeader.module.css";
 
-const SubHeader = ({ links }) => {
+const SubHeader = ({ navLinks }) => {
   const location = useLocation();
 
-  // ===================== ( Debugging Logs ) =====================
-  console.log("✨ [SubHeader] Received navLinks prop:", links);
-  console.log("✨ [SubHeader] Is it an array?", Array.isArray(links));
-  // ==============================================================
-
-  if (!links || !Array.isArray(links) || links.length === 0) {
-    console.warn("⚠️ [SubHeader] Hidden because links is empty or invalid!");
+  if (!navLinks || !Array.isArray(navLinks) || navLinks.length === 0) {
+    console.warn(
+      "SubHeader is hidden because navLinks is empty or invalid:",
+      navLinks,
+    );
     return null;
   }
-  // if (!links || !Array.isArray(links) || links.length === 0) {
-  //   console.warn(
-  //     "SubHeader is hidden because links is empty or invalid:",
-  //     links,
-  //   );
-  //   return null;
-  // }
 
   return (
     <div className={styles.subHeader}>
       <nav className={styles.navLinks}>
-        {links.map((link, index) => (
+        {navLinks.map((link, index) => (
           <div key={index} className={styles.navItem}>
             <Link
               to={link.path || ""}
@@ -36,7 +27,9 @@ const SubHeader = ({ links }) => {
               {link.name}
             </Link>
 
-            {index < links.length - 1 && <div className={styles.divider}></div>}
+            {index < navLinks.length - 1 && (
+              <div className={styles.divider}></div>
+            )}
           </div>
         ))}
       </nav>
