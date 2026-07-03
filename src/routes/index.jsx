@@ -64,7 +64,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: `${PATHS.DEMO}/departments/:departmentId`,
+    path: PATHS.DEMO_SECTION,
     element: <DepartmentLayout />,
     children: [
       { index: true, element: <DepartmentPage /> },

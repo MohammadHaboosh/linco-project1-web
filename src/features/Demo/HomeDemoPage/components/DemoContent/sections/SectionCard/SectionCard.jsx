@@ -7,13 +7,14 @@ import {
   IoTrashOutline,
   IoWarningOutline,
 } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { PATHS } from "../../../../../../../routes/paths";
 import styles from "./SectionCard.module.css";
 import { useTranslation } from "react-i18next";
 
 const SectionCard = ({ section, isOwner, onDelete }) => {
   const { t } = useTranslation();
+  const { demoId } = useParams();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const handleDeleteClick = (e) => {
@@ -38,7 +39,14 @@ const SectionCard = ({ section, isOwner, onDelete }) => {
   return (
     <>
       <Link
-        to={section.isLocked && !isOwner ? "#" : PATHS.DEPARTMENT_DETAILS}
+        to={
+          section.isLocked && !isOwner
+            ? "#"
+            : PATHS.DEMO_SECTION.replace(":demoId", demoId).replace(
+                ":departmentId",
+                section.id,
+              )
+        }
         style={{ textDecoration: "none", display: "block", height: "100%" }}
       >
         <div

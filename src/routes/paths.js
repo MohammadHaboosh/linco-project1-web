@@ -31,4 +31,5 @@ export const PATHS = {
   REQUEST_ROOM: "/request-room",
   MEMBERS: "members",
   TOOLS: "tools",
+  DEMO_SECTION: "/demos/:demoId/departments/:departmentId",
 };
