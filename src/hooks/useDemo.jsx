@@ -25,6 +25,11 @@ export const DemoProvider = ({ children }) => {
           },
           credentials: "include",
         });
+
+        if (!response.ok) {
+          throw new Error(`HTTP Error: ${response.status}`);
+        }
+
         const data = await response.json();
         console.log("Fetched demo data :", data);
         // "id": "019f0fe8-d807-73b9-a0c7-891a13776c4b",
@@ -40,6 +45,7 @@ export const DemoProvider = ({ children }) => {
 
         setDemoData(data.data);
 
+        console.log("data.data.role :", data.data.role);
         const role = data.data.isOwner ? "owner" : data.data.role || "trainee";
 
         setActualRole(role);

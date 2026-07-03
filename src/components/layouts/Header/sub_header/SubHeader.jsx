@@ -4,7 +4,7 @@ import styles from "./SubHeader.module.css";
 const SubHeader = ({ links }) => {
   const location = useLocation();
 
-  if (!links.length) return null;
+  if (!Array.isArray(links) || links.length === 0) return null;
 
   return (
     <div className={styles.subHeader}>
