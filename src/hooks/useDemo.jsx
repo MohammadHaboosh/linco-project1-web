@@ -46,7 +46,12 @@ export const DemoProvider = ({ children }) => {
         setDemoData(data.data);
 
         console.log("data.data.role :", data.data.role);
-        const role = data.data.isOwner ? "owner" : data.data.role || "trainee";
+        // true :
+        // const role = data.data.isOwner ? "owner" : data.data.role || "trainee";
+        // const role = data.data.role || "trainee";
+        // temp:
+        const role = "owner";
+        console.log("Determined role :", role);
 
         setActualRole(role);
         setCurrentRoleView(role);

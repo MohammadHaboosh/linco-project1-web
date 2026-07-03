@@ -13,7 +13,6 @@ export const PATHS = {
   GROUP_WORKSPACE: "group-workspace",
   GROUP_CHAT: "/group-chat",
   DEPARTMENTS: "/departments",
-  DEPARTMENT_DETAILS: "department-details",
   CERTIFICATES: "/certificates",
   LIVES: "/lives",
   SIGNIN: "/signin",
