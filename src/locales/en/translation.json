@@ -239,5 +239,8 @@
   "assign-role": "Assign Role",
   "section-manager": "Section Manager",
   "section-managers-can-manage-courses-and-tasks": "Section Managers can manage courses and tasks.",
-  "send-invitation": "Send Invitation"
+  "send-invitation": "Send Invitation",
+  "quick-activity": "Quick Activity",
+  "you-have-accessed": "You have accessed",
+  "workspaces-recently": "workspaces recently."
 }

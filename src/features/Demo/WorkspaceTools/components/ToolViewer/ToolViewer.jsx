@@ -28,7 +28,7 @@ const ToolViewer = ({ tool, onClose }) => {
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       setSaveSuccess(true);
-      setTimeout(() => setSaveSuccess(false), 3000); // إخفاء رسالة النجاح بعد 3 ثواني
+      setTimeout(() => setSaveSuccess(false), 3000);
     } catch (error) {
       console.error("Failed to save:", error);
     } finally {

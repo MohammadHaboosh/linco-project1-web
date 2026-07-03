@@ -1,14 +1,9 @@
-import Sidebar from "../../../../../components/layouts/SideBar/Sidebar";
-import Header from "../../../../../components/layouts/Header/global_header/Header";
-import Footer from "../../../../../components/layouts/Footer/Footer";
+import { useTranslation } from "react-i18next";
 import PendingInvitations from "../pending_invitations/PendingInvitations";
 import RoomSection from "../room_section/RoomSection";
 import styles from "./HomePage.module.css";
-import appIconImg from "../../../../../../public/icons/linco-logo.png";
-
 import { useUser } from "../../../../../hooks/useUser";
 import { useHomePage } from "../../hooks/useHomePage.jsx";
-import { useTranslation } from "react-i18next";
 
 const HomePage = () => {
   const { t } = useTranslation();
@@ -17,64 +12,62 @@ const HomePage = () => {
     useHomePage();
 
   return (
-    <div className={styles["app-container"]}>
-      <div className={`${styles["main-wrapper"]} custom-scrollbar`}>
-        <div className={styles["hero-banner"]}>
-          <div className={styles["hero-text"]}>
-            <h1>
-              {t("ready-to-dive-into-your-learning")}{" "}
-              {profile?.firstName || t("guest")} ?
-            </h1>
-            <p>
-              {t(
-                "manage-your-company-links-track-your-active-training-rooms-and-level-up-your-career-from-one-single-dashboard-1",
-              )}
-            </p>
-          </div>
-          <img
-            src={appIconImg}
-            alt="App Icon"
-            className={styles["app-icon-img"]}
-          />
-        </div>
-
-        <PendingInvitations />
-
-        <div
-          className={styles["content-section"]}
-          style={{ paddingTop: "40px" }}
-        >
-          <RoomSection title={t("recently-active-rooms")} rooms={activeRooms} />
-
-          <div className={styles.divider}></div>
-
-          <div className={styles["owned-rooms-container"]}>
-            {isLoadingOwnedRooms ? (
-              <p style={{ padding: "0 40px", color: "#64748b" }}>
-                {t("loading-your-rooms")}
-              </p>
-            ) : (
-              <RoomSection
-                title={t("recently-active-owned-rooms")}
-                rooms={ownedRooms}
-                viewAllPath="/my-own-rooms"
-                emptyMessage={t("no-owned-rooms-yet")}
-                emptySubtext={t(
-                  "you-dont-have-any-active-owned-rooms-right-now-create-one-to-get-started",
-                )}
-              />
+    <div className={styles.dashboardContainer}>
+      <div className={styles.welcomeBanner}>
+        <div className={styles.bannerContent}>
+          <h1 className={styles.greeting}>
+            {t("ready-to-dive-into-your-learning")}{" "}
+            <span className={styles.highlightName}>
+              {profile?.firstName || t("guest")}
+            </span>
+            !
+          </h1>
+          <p className={styles.bannerDesc}>
+            {t(
+              "manage-your-company-links-track-your-active-training-rooms-and-level-up-your-career-from-one-single-dashboard-1",
             )}
-          </div>
+          </p>
+        </div>
+        <div className={styles.bannerDecoration}></div>
+      </div>
 
-          <div className={styles.divider}></div>
+      <div className={styles.contentGrid}>
+        <div className={styles.mainColumn}>
+          {isLoadingOwnedRooms ? (
+            <div className={styles.loadingState}>
+              {t("loading-your-rooms", "Loading your workspaces...")}
+            </div>
+          ) : (
+            <RoomSection
+              title={t("recently-active-owned-rooms", "My Workspaces")}
+              rooms={ownedRooms}
+              viewAllPath="/my-own-rooms"
+              emptyMessage={t("no-owned-rooms-yet")}
+              emptySubtext={t(
+                "you-dont-have-any-active-owned-rooms-right-now-create-one-to-get-started",
+              )}
+            />
+          )}
+
+          <div className={styles.sectionSpacer}></div>
 
           <RoomSection
-            title={t("recently-active-worked-rooms")}
-            rooms={workedRooms}
+            title={t("recently-active-rooms", "Joined Workspaces")}
+            rooms={activeRooms}
           />
         </div>
 
-        <Footer />
+        <div className={styles.sideColumn}>
+          <PendingInvitations />
+
+          <div className={styles.quickStatsCard}>
+            <h3>{t("quick-activity")}</h3>
+            <p>
+              {t("you-have-accessed")} {activeRooms.length + ownedRooms.length}{" "}
+              {t("workspaces-recently")}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -81,3 +81,60 @@
     display: none;
   }
 }
+.compact-card {
+  flex-direction: column;
+  align-items: stretch;
+  padding: 16px;
+  gap: 12px;
+}
+
+.compact-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.compact-time {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+
+.compact-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: #475569;
+  background-color: #f8fafc;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+.compact-caller {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.compact-role {
+  background-color: #e2e8f0;
+  color: #0a2a54;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.compact-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.compact-actions button {
+  padding: 8px 16px;
+  flex: 1;
+  font-size: 0.85rem;
+}

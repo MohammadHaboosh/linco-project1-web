@@ -232,5 +232,8 @@
   "invite-new-member": "دعوة عضو جديد",
   "email-address": "البريد الإلكتروني",
   "section-managers-can-manage-courses-and-tasks": "يمكن لمديري الأقسام إدارة الدورات والمهام.",
-  "send-invitation": "إرسال دعوة"
+  "send-invitation": "إرسال دعوة",
+  "quick-activity": "إحصائيات سريعة",
+  "you-have-accessed": "لقد وصلت",
+  "workspaces-recently": "مساحات عمل مؤخرا."
 }

@@ -35,12 +35,14 @@ const PendingInvitations = () => {
     >
       <div className={styles["section-header"]}>
         <h2>{t("new-pending-invitations")}</h2>
-        <button className={styles["view-all"]}>{t('view-all-pending-invitations')}</button>
+        <button className={styles["view-all"]}>
+          {t("view-all-pending-invitations")}
+        </button>
       </div>
 
       <div className={styles["list-container"]}>
         {invitations.map((inv) => (
-          <InvitationCard key={inv.id} invitation={inv} />
+          <InvitationCard key={inv.id} invitation={inv} compact={true} />
         ))}
       </div>
     </div>
