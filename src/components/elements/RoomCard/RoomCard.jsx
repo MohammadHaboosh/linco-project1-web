@@ -30,14 +30,17 @@ const RoomCard = ({ room }) => {
 
   const initials = String(safeName).substring(0, 2).toUpperCase();
 
-return (
+  return (
     <div className={styles.card} onClick={handleCardClick}>
-      
       <div className={styles.cardHeader}>
         <div className={styles.brandSection}>
           <div className={styles.logoBox}>
             {room?.imagePath && room?.imagePath !== "qwertyuikol" ? (
-              <img src={room.imagePath} alt={safeName} className={styles.logoImg} />
+              <img
+                src={room.imagePath}
+                alt={safeName}
+                className={styles.logoImg}
+              />
             ) : (
               <span>{initials}</span>
             )}
@@ -51,7 +54,9 @@ return (
         </div>
 
         <div className={styles.badgeSection}>
-          <span className={`${styles.planBadge} ${styles[displayPlan.toLowerCase()]}`}>
+          <span
+            className={`${styles.planBadge} ${styles[displayPlan.toLowerCase()]}`}
+          >
             <IoRocketOutline /> {displayPlan}
           </span>
         </div>
@@ -70,10 +75,14 @@ return (
             {displayMembers} {t("members", "Members")}
           </span>
         </div>
-        
+
         <div className={styles.footerItem}>
-          <span className={`${styles.statusDot} ${styles[String(status).toLowerCase()]}`}></span>
-          <span style={{textTransform: 'capitalize'}}>{String(status).toLowerCase()}</span>
+          <span
+            className={`${styles.statusDot} ${styles[String(status).toLowerCase()]}`}
+          ></span>
+          <span style={{ textTransform: "capitalize" }}>
+            {String(status).toLowerCase()}
+          </span>
         </div>
 
         {displayDate && (
@@ -83,10 +92,8 @@ return (
           </div>
         )}
       </div>
-
     </div>
   );
-};
 };
 
 export default RoomCard;
