@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { useDemo } from "../../hooks/useDemo";
+import { DemoProvider, useDemo } from "../../hooks/useDemo";
 import Sidebar from "../../components/layouts/SideBar/Sidebar";
 import Header from "../../components/layouts/Header/global_header/Header";
 import SubHeader from "../../components/layouts/Header/sub_header/SubHeader";
@@ -7,7 +7,7 @@ import { DEMO_NAV } from "../../config/layoutConfig";
 import styles from "../MainLayout/MainLayout.module.css";
 import Footer from "../../components/layouts/Footer/Footer";
 
-const DemoLayout = () => {
+const LayoutContent = () => {
   const { role, currentRoleView, setRoleView, isLoading, demoData } = useDemo();
 
   if (isLoading)
@@ -34,6 +34,14 @@ const DemoLayout = () => {
         <Footer />
       </div>
     </div>
+  );
+};
+
+const DemoLayout = () => {
+  return (
+    <DemoProvider>
+      <LayoutContent />
+    </DemoProvider>
   );
 };
 

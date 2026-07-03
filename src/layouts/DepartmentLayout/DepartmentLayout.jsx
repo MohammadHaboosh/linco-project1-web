@@ -1,5 +1,5 @@
 import { Outlet, useParams } from "react-router-dom";
-import { useDemo } from "../../hooks/useDemo";
+import { DemoProvider, useDemo } from "../../hooks/useDemo";
 import Sidebar from "../../components/layouts/SideBar/Sidebar";
 import Header from "../../components/layouts/Header/global_header/Header";
 import SubHeader from "../../components/layouts/Header/sub_header/SubHeader";
@@ -7,7 +7,7 @@ import { DEPARTMENT_NAV } from "../../config/layoutConfig";
 import styles from "../MainLayout/MainLayout.module.css";
 import Footer from "../../components/layouts/Footer/Footer";
 
-const DepartmentLayout = () => {
+const LayoutContent = () => {
   const { role, currentRoleView, setRoleView, isLoading, demoData } = useDemo();
   const { departmentId } = useParams();
 
@@ -36,6 +36,14 @@ const DepartmentLayout = () => {
         <Footer />
       </div>
     </div>
+  );
+};
+
+const DepartmentLayout = () => {
+  return (
+    <DemoProvider>
+      <LayoutContent />
+    </DemoProvider>
   );
 };
 

@@ -27,7 +27,7 @@ import LearningPathPage from "../pages/LearningPathPage.jsx";
 import DepartmentPage from "../pages/DepartmentPage.jsx";
 import DashboardLayout from "../layouts/DashboardLayout/DashboardLayout.jsx";
 import WorkspaceToolsPage from "../pages/WorkspaceToolsPage.jsx";
-//import RoadmapsPage from "../pages/RoadmapsPage.jsx";
+// import RoadmapsPage from "../pages/RoadmapsPage.jsx";
 import DepartmentLayout from "../layouts/DepartmentLayout/DepartmentLayout.jsx";
 import DemoLayout from "../layouts/DemoLayout/DemoLayout.jsx";
 // import WeeklyTasksPage from "../pages/WeeklyTasksPage.jsx";
@@ -82,44 +82,6 @@ export const router = createBrowserRouter([
       { path: PATHS.TOOLS, element: <WorkspaceToolsPage /> },
     ],
   },
-  // {
-  //   path: PATHS.DEMO,
-  //   element: <MainLayout />,
-  //   children: [
-  //     {
-  //       index: true,
-  //       element: <HomeDemoPage />,
-  //     },
-  //     {
-  //       path: PATHS.COURSES,
-  //       element: <CoursesPage />,
-  //     },
-  //     {
-  //       path: PATHS.LEADERBOARD,
-  //       element: <LeaderboardPage />,
-  //     },
-  //     {
-  //       path: PATHS.LEARNING_PATH,
-  //       element: <LearningPathPage />,
-  //     },
-  //     {
-  //       path: PATHS.DEPARTMENT_DETAILS,
-  //       element: <DepartmentPage />,
-  //     },
-  //     {
-  //       path: PATHS.TOOLS,
-  //       element: <WorkspaceToolsPage />,
-  //     },
-  //     {
-  //       path: PATHS.ROADMAPS,
-  //       element: <RoadmapsPage />,
-  //     },
-  //     // {
-  //     //   path: PATHS.WEEKLY_TASKS,
-  //     //   element: <WeeklyTasksPage />,
-  //     // },
-  //   ],
-  // },
   {
     path: "*",
     element: (
