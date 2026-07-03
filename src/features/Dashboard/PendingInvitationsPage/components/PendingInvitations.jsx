@@ -1,142 +1,117 @@
 import { useState } from "react";
-import { IoChevronBack, IoSearch } from "react-icons/io5";
-import Sidebar from "../../../../components/layouts/SideBar/Sidebar.jsx";
-import Header from "../../../../components/layouts/Header/global_header/Header.jsx";
-import Footer from "../../../../components/layouts/Footer/Footer.jsx";
-import InvitationCard from "../../../../components/elements/InvitationCard/InvitationCard.jsx";
-import styles from "./PendingInvitations.module.css";
 import { useTranslation } from "react-i18next";
+import {
+  IoMailUnreadOutline,
+  IoSearchOutline,
+  IoCheckmarkDoneOutline,
+} from "react-icons/io5";
+import InvitationCard from "../../../../components/elements/InvitationCard/InvitationCard";
+import styles from "./PendingInvitations.module.css";
 
-const PendingInvitationsPage = () => {
-  const [searchQuery, setSearchQuery] = useState("");
+const PendingInvitationsContent = () => {
   const { t } = useTranslation();
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const invitations = [
+  // =========================================================
+  // 💡 اللوجيك الخاص بك: استبدل هذه المصفوفة بالـ Hook الخاص بك لجلب البيانات
+  // مثال: const { invitations, isLoading, acceptInvite, rejectInvite } = usePendingInvitations();
+  // =========================================================
+  const [invitations, setInvitations] = useState([
     {
       id: 1,
-      company: "Company name 1",
-      caller: "Name of the caller",
-      role: "As a trainee",
-      time: "13:40 pm",
+      company: "Google Workspace",
+      caller: "Ahmad Sami",
+      role: "Trainee",
+      time: "10:30 AM",
     },
     {
       id: 2,
-      company: "Company name 2",
-      caller: "Name of the caller",
-      role: "As a trainee",
-      time: "13:40 pm",
+      company: "Microsoft Team",
+      caller: "Sara Majed",
+      role: "Section Manager",
+      time: "Yesterday",
     },
-    {
-      id: 3,
-      company: "Company name 3",
-      caller: "Name of the caller",
-      role: "As a trainee",
-      time: "13:40 pm",
-    },
-    {
-      id: 4,
-      company: "Company name 4",
-      caller: "Name of the caller",
-      role: "As a trainee",
-      time: "13:40 pm",
-    },
-    {
-      id: 5,
-      company: "Company name 5",
-      caller: "Name of the caller",
-      role: "As a trainee",
-      time: "13:40 pm",
-    },
-    {
-      id: 6,
-      company: "Company name 6",
-      caller: "Name of the caller",
-      role: "As a trainee",
-      time: "13:40 pm",
-    },
-  ];
+  ]);
 
-  const filteredInvitations = invitations.filter((inv) =>
-    inv.company.toLowerCase().includes(searchQuery.toLowerCase()),
+  // دالة البحث (تعمل محلياً على تصفية المصفوفة)
+  const filteredInvitations = invitations.filter(
+    (inv) =>
+      inv.company.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      inv.caller.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
-    <div className={styles["app-container"]}>
-      <div className={`${styles["main-wrapper"]} custom-scrollbar`}>
-        <div className={styles["top-banner"]}>
-          <div className={styles["banner-text"]}>
-            <div className={styles["title-container"]}>
-              <a href="#" className={styles["back-link"]}>
-                <IoChevronBack className={styles["back-icon"]} />
-                <h2>{t("pending-invitations")}</h2>
-              </a>
-              <div className={styles["dashed-line"]}></div>
-            </div>
-            <p>
-              {t("review-your-pending-invitations-to-join-company")}
-              <br />
-              {t("workspaces-and-training-rooms")}
-            </p>
-          </div>
-
-          <div className={styles["banner-image-container"]}>
-            <img
-              src="/images/pending-invitations.png"
-              alt="Invitation to Linco company envelopes"
-              className={styles["banner-image"]}
-            />
-          </div>
-        </div>
-
-        <div className={styles["search-section"]}>
-          <div className={styles["search-bar"]}>
-            <input
-              type="text"
-              placeholder={t("search-by-companys-name")}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <IoSearch className={styles["search-icon"]} />
-          </div>
-        </div>
-
-        <div className={styles["list-section"]}>
-          <div className={styles["table-header"]}>
-            <div className={styles["th-col"]} style={{ textAlign: "left" }}>
-              {t("company-name")}
-            </div>
-            <div className={styles["th-col"]}>{t("caller")}</div>
-            <div className={styles["th-col"]}>{t("role-0")}</div>
-            <div className={styles["th-col"]}>{t("time")}</div>
-            <div className={styles["th-col-action"]}>{t("action")}</div>
-          </div>
-
-          <div className={styles["list-container"]}>
-            {filteredInvitations.length > 0 ? (
-              filteredInvitations.map((inv) => (
-                <InvitationCard key={inv.id} invitation={inv} />
-              ))
-            ) : (
-              <p
-                style={{
-                  color: "#64748b",
-                  fontStyle: "italic",
-                  textAlign: "center",
-                  padding: "20px",
-                }}
-              >
-                {t("no-pending-invitations-found-matching")} "{searchQuery}"
-              </p>
+    <div className={styles.pageContainer}>
+      {/* 1. الترويسة الفخمة */}
+      <div className={styles.pageHeader}>
+        <div className={styles.headerInfo}>
+          <div className={styles.iconBox}>
+            <IoMailUnreadOutline className={styles.headerIcon} />
+            {invitations.length > 0 && (
+              <span className={styles.badge}>{invitations.length}</span>
             )}
           </div>
+          <div>
+            <h1 className={styles.title}>
+              {t("pending-invitations", "Pending Invitations")}
+            </h1>
+            <p className={styles.description}>
+              {t(
+                "review-and-manage-invitations",
+                "Review and manage your workspace invitations. Accept to join or reject to decline.",
+              )}
+            </p>
+          </div>
         </div>
+      </div>
 
-        <div className={styles["footer-wrapper"]}>
-          <Footer />
+      {/* 2. شريط البحث والأدوات */}
+      <div className={styles.controlsSection}>
+        <div className={styles.searchBox}>
+          <IoSearchOutline className={styles.searchIcon} />
+          <input
+            type="text"
+            placeholder={t(
+              "search-invitations",
+              "Search by company or sender name...",
+            )}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className={styles.searchInput}
+          />
         </div>
+      </div>
+
+      {/* 3. قائمة الدعوات */}
+      <div className={styles.listSection}>
+        {filteredInvitations.length === 0 ? (
+          // حالة عدم وجود دعوات (Empty State)
+          <div className={styles.emptyState}>
+            <div className={styles.emptyIconBox}>
+              <IoCheckmarkDoneOutline />
+            </div>
+            <h3>{t("all-caught-up", "You're all caught up!")}</h3>
+            <p>
+              {t(
+                "no-pending-invitations",
+                "You don't have any pending invitations matching your search at the moment.",
+              )}
+            </p>
+          </div>
+        ) : (
+          <div className={styles.invitationsGrid}>
+            {filteredInvitations.map((inv) => (
+              <InvitationCard
+                key={inv.id}
+                invitation={inv}
+                compact={false} // 💡 تأكد من أن compact=false ليعرض التصميم العريض الخاص بالصفحة
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default PendingInvitationsPage;
+export default PendingInvitationsContent;

@@ -235,5 +235,13 @@
   "send-invitation": "إرسال دعوة",
   "quick-activity": "إحصائيات سريعة",
   "you-have-accessed": "لقد وصلت",
-  "workspaces-recently": "مساحات عمل مؤخرا."
+  "workspaces-recently": "مساحات عمل مؤخرا.",
+  "administration": "إدارة",
+  "my-workspaces": "مساحات العمل الخاصة بي",
+  "manage-the-workspaces-you-own-oversee-your-teams-and-track-your-subscriptions-0": "قم بإدارة مساحات العمل التي تمتلكها، والإشراف على فرقك، وتتبع اشتراكاتك.",
+  "new-workspace": "مساحة عمل جديدة",
+  "search-workspaces-by-company-name": "البحث في مساحات العمل حسب اسم الشركة...",
+  "no-workspaces-found": "لم يتم العثور على مساحات عمل",
+  "no-owned-workspaces-yet": "لا توجد مساحات عمل مملوكة حتى الآن",
+  "you-dont-have-any-active-workspaces-right-now-request-one-to-get-started": "ليس لديك أية مساحات عمل نشطة الآن. \nاطلب واحدًا للبدء."
 }

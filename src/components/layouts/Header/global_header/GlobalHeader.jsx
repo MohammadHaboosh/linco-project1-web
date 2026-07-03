@@ -45,7 +45,7 @@ const GlobalHeader = () => {
               <img
                 src={imagePath}
                 alt={`${fullName}'s profile`}
-                className={styles["avatar-img"]}
+                className={styles["user-avatar"]}
               />
             ) : (
               initials || "U"

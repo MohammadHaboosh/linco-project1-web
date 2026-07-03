@@ -242,5 +242,15 @@
   "send-invitation": "Send Invitation",
   "quick-activity": "Quick Activity",
   "you-have-accessed": "You have accessed",
-  "workspaces-recently": "workspaces recently."
+  "workspaces-recently": "workspaces recently.",
+  "administration": "Administration",
+  "my-workspaces": "My Workspaces",
+  "manage-the-workspaces-you-own-oversee-your-teams-and-track-your-subscriptions": "Manage the workspaces you own, oversee your teams, and track your subscriptions.",
+  "manage-the-workspaces-you-own-oversee-your-teams-and-track-your-subscriptions-0": "Manage the workspaces you own, oversee your teams, and track your subscriptions.",
+  "new-workspace": "New Workspace",
+  "search-workspaces-by-company-name": "Search workspaces by company name...",
+  "no-workspaces-found": "No workspaces found",
+  "no-owned-workspaces-yet": "No owned workspaces yet",
+  "you-dont-have-any-active-workspaces-right-now-request-one-to-get-started": "You don't have any active workspaces right now. Request one to get started.",
+  "request-a-workspace": "Request a Workspace"
 }
