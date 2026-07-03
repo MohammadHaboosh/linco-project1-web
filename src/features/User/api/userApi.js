@@ -123,8 +123,6 @@ export const verify2FASignin = async (twoFactorToken, code) => {
   }
 };
 
-// ... remaining existing functions (resendVerificationEmail, logoutUser, etc.) ...
-
 export const resendVerificationEmail = async (email) => {
   try {
     const response = await fetch(
