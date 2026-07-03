@@ -33,7 +33,7 @@ import DemoLayout from "../layouts/DemoLayout/DemoLayout.jsx";
 // import WeeklyTasksPage from "../pages/WeeklyTasksPage.jsx";
 
 export const router = createBrowserRouter([
-  { path: PATHS.LANDING, element: <LandingPage /> },
+  { path: PATHS.LANDING, element: <HomePage /> },
   { path: PATHS.SIGNIN, element: <SinginPage /> },
   { path: PATHS.SIGNUP, element: <SignupPage /> },
   { path: PATHS.CHECK_EMAIL, element: <VerifyEmailPage /> },
