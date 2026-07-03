@@ -114,6 +114,7 @@
   align-items: stretch;
   padding: 16px;
   gap: 12px;
+  min-height: 160px;
 }
 
 .compact-header {

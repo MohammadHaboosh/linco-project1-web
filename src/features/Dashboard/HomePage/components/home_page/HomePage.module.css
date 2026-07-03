@@ -71,7 +71,7 @@
 
 .contentGrid {
   display: grid;
-  grid-template-columns: 1fr 440px;
+  grid-template-columns: 1fr 600px;
   gap: 40px;
   align-items: start;
 }
