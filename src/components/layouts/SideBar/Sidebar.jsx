@@ -8,7 +8,7 @@ import {
   IoSettingsOutline,
   IoMoonOutline,
 } from "react-icons/io5";
-import { SIDEBAR_ROLES } from "./sidebarConfig";
+import { SIDEBAR_CONFIG } from "./sidebarConfig";
 import LanguageSwitcher from "../../common/LanguageSwitcher";
 import styles from "./Sidebar.module.css";
 
@@ -18,7 +18,7 @@ const Sidebar = ({ role = "trainee" }) => {
   const { t } = useTranslation();
 
   const toggleSidebar = () => setIsOpen(!isOpen);
-  const menuItems = SIDEBAR_ROLES[role] || [];
+  const menuItems = SIDEBAR_CONFIG;
 
   return (
     <>

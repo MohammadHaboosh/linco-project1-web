@@ -34,7 +34,7 @@ import DemoMembersPage from "../pages/DemoMembersPage.jsx";
 // import WeeklyTasksPage from "../pages/WeeklyTasksPage.jsx";
 
 export const router = createBrowserRouter([
-  { path: PATHS.LANDING, element: <DemoMembersPage /> },
+  { path: PATHS.LANDING, element: <LandingPage /> },
   { path: PATHS.SIGNIN, element: <SinginPage /> },
   { path: PATHS.SIGNUP, element: <SignupPage /> },
   { path: PATHS.CHECK_EMAIL, element: <VerifyEmailPage /> },
