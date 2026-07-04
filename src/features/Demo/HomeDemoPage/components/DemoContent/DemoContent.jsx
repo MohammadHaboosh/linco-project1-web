@@ -10,13 +10,14 @@ import { useDepartments } from "../../hooks/useDepartments";
 
 import styles from "./DemoContent.module.css";
 import { useDeleteDepartment } from "../../hooks/useDeleteDepartment";
+import { useDemo } from "../../../../../hooks/useDemo";
 
 const DemoContent = () => {
   const { t } = useTranslation();
   const isOwner = true;
 
   const { demoId } = useParams();
-
+  const { role, currentRoleView, setRoleView, demoData } = useDemo();
   const { departments, isLoading, error, refetch } = useDepartments(demoId);
   const { deleteDepartment, isDeleting } = useDeleteDepartment(demoId, () => {
     console.log("Department deleted successfully!");
@@ -63,7 +64,7 @@ const DemoContent = () => {
           </div>
         ) : (
           <div className={styles.sectionsGrid}>
-            {isOwner && (
+            {role == "owner" && (
               <div
                 className={styles.createSectionCard}
                 onClick={() => setShowCreateModal(true)}
@@ -89,7 +90,7 @@ const DemoContent = () => {
               <SectionCard
                 key={section.id}
                 section={section}
-                isOwner={isOwner}
+                isOwner={role == "owner"}
                 onDelete={handleDeleteSection}
               />
             ))}
