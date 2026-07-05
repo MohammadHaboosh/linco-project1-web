@@ -1,0 +1,135 @@
+.pageContainer {
+  padding: 40px 60px;
+  background-color: #f8fafc;
+  min-height: calc(100vh - 75px);
+  animation: fadeIn 0.4s ease-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.headerArea {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 35px;
+}
+.headerInfo {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.iconBox {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #0a2a54 0%, #153c75 100%);
+  border-radius: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 10px 25px rgba(10, 42, 84, 0.15);
+}
+.headerIcon {
+  font-size: 2.2rem;
+  color: #ffffff;
+}
+
+.subHeading {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #1a56db;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+  display: block;
+}
+.title {
+  color: #0a2a54;
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.5px;
+}
+.description {
+  color: #64748b;
+  font-size: 1.05rem;
+  margin: 0;
+  max-width: 600px;
+  line-height: 1.5;
+}
+
+.createBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #ef4444;
+  color: #ffffff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+}
+.createBtn:hover {
+  background-color: #dc2626;
+  transform: translateY(-2px);
+}
+.btnIcon {
+  font-size: 1.3rem;
+}
+
+/* Tabs */
+.tabsContainer {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 10px;
+}
+.tabBtn {
+  background: transparent;
+  border: none;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #64748b;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+.tabBtn:hover {
+  background-color: #f1f5f9;
+  color: #0a2a54;
+}
+.activeTab {
+  background-color: #e0e7ff;
+  color: #1a56db;
+}
+
+/* Grid */
+.livesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 30px;
+}
+
+.emptyState {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px;
+  background: #ffffff;
+  border: 2px dashed #cbd5e1;
+  border-radius: 16px;
+  color: #64748b;
+  font-size: 1.1rem;
+}
