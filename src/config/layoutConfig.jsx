@@ -64,7 +64,12 @@ export const DEMO_NAV = {
       {
         name: "Departments",
         icon: <IoBusinessOutline />,
-        path: PATHS.OWNER_DEPTS,
+        path: PATHS.DEPARTMENTS,
+      },
+      {
+        name: "Public Library",
+        icon: <IoLibraryOutline />,
+        path: PATHS.OWNER_LIBRARY,
       },
       {
         name: "Demo Members",
@@ -79,18 +84,9 @@ export const DEMO_NAV = {
       {
         name: "Chat Channel",
         icon: <IoChatbubblesOutline />,
-        path: PATHS.CHAT,
+        path: PATHS.CHAT_CHANNEL,
       },
-      {
-        name: "Live Streams",
-        icon: <IoVideocamOutline />,
-        path: PATHS.OWNER_LIVES,
-      },
-      {
-        name: "Public Library",
-        icon: <IoLibraryOutline />,
-        path: PATHS.OWNER_LIBRARY,
-      },
+      { name: "Live Streams", icon: <IoVideocamOutline />, path: PATHS.LIVES }, // 👈 تم التصحيح هنا
     ],
   },
   sectionManager: {
@@ -145,18 +141,20 @@ export const DEPARTMENT_NAV = {
       {
         name: "Group Chat",
         icon: <IoChatbubblesOutline />,
-        path: "group-chat",
+        path: PATHS.GROUP_CHAT,
       },
     ],
   },
   sectionManager: {
     navLinks: [
+      { name: "Home", icon: <IoHomeOutline />, path: "" },
       { name: "Members", icon: <IoPeopleOutline />, path: PATHS.SM_MEMBERS },
       { name: "Courses", icon: <IoBookOutline />, path: PATHS.SM_COURSES },
+      { name: "Live Streams", icon: <IoVideocamOutline />, path: PATHS.LIVES },
       {
-        name: "Live Streams",
-        icon: <IoVideocamOutline />,
-        path: PATHS.SM_LIVES,
+        name: "Demo Assets",
+        icon: <IoLibraryOutline />,
+        path: PATHS.SM_ASSETS,
       },
       {
         name: "Inquiries",
@@ -189,12 +187,14 @@ export const DEPARTMENT_NAV = {
   },
   owner: {
     navLinks: [
+      { name: "Home", icon: <IoHomeOutline />, path: "" },
       { name: "Members", icon: <IoPeopleOutline />, path: PATHS.SM_MEMBERS },
       { name: "Courses", icon: <IoBookOutline />, path: PATHS.SM_COURSES },
+      { name: "Live Streams", icon: <IoVideocamOutline />, path: PATHS.LIVES }, // 👈 تم التصحيح
       {
-        name: "Live Streams",
-        icon: <IoVideocamOutline />,
-        path: PATHS.SM_LIVES,
+        name: "Demo Assets",
+        icon: <IoLibraryOutline />,
+        path: PATHS.SM_ASSETS,
       },
       {
         name: "Inquiries",
