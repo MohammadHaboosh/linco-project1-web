@@ -259,5 +259,21 @@
   "internal-repository": "INTERNAL REPOSITORY",
   "company-assets": "Company Assets",
   "browse-all-courses-owned-by-your-company-and-import-them-into-your-department": "Browse all courses owned by your company and import them into your department.",
-  "search-company-assets": "Search company assets..."
+  "search-company-assets": "Search company assets...",
+  "live-now": "LIVE NOW",
+  "upcoming": "UPCOMING",
+  "recorded": "RECORDED",
+  "watching": "Watching",
+  "join-stream": "Join Stream",
+  "set-reminder": "Set Reminder",
+  "watch-replay": "Watch Replay",
+  "edit-stream": "Edit Stream",
+  "delete-stream": "Delete Stream",
+  "interactive-learning": "INTERACTIVE LEARNING",
+  "live-streams": "Live Streams",
+  "join-interactive-sessions-ask-questions-in-real-time-and-watch-past-recordings": "Join interactive sessions, ask questions in real-time, and watch past recordings.",
+  "schedule-live": "Schedule Live",
+  "upcoming-and-live": "Upcoming & Live",
+  "recorded-sessions": "Recorded Sessions",
+  "no-streams-available-in-this-category": "No streams available in this category."
 }

@@ -250,5 +250,21 @@
   "internal-repository": "المستودع الداخلي",
   "company-assets": "أصول الشركة",
   "browse-all-courses-owned-by-your-company-and-import-them-into-your-department": "تصفح جميع الدورات التدريبية المملوكة لشركتك وقم باستيرادها إلى قسمك.",
-  "search-company-assets": "البحث عن كورسات الشركة..."
+  "search-company-assets": "البحث عن كورسات الشركة...",
+  "live-now": "عش الآن",
+  "upcoming": "القادمة",
+  "recorded": "مسجل",
+  "join-stream": "انضم إلى الدفق",
+  "watching": "مراقبة",
+  "set-reminder": "تعيين تذكير",
+  "watch-replay": "شاهد الإعادة",
+  "edit-stream": "تحرير الدفق",
+  "delete-stream": "حذف الدفق",
+  "interactive-learning": "التعلم التفاعلي",
+  "live-streams": "البث المباشر",
+  "join-interactive-sessions-ask-questions-in-real-time-and-watch-past-recordings": "انضم إلى الجلسات التفاعلية، واطرح الأسئلة في الوقت الفعلي، وشاهد التسجيلات السابقة.",
+  "schedule-live": "جدولة لايف",
+  "upcoming-and-live": "القادمة",
+  "recorded-sessions": "الجلسات المسجلة",
+  "no-streams-available-in-this-category": "لا توجد تيارات متاحة في هذه الفئة."
 }
