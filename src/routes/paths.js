@@ -11,9 +11,9 @@ export const PATHS = {
   WEEKLY_TASKS: "weekly-tasks",
   LEADERBOARD: "leaderboard",
   GROUP_WORKSPACE: "group-workspace",
-  GROUP_CHAT: "/group-chat",
-  DEPARTMENTS: "/departments",
-  CERTIFICATES: "/certificates",
+  GROUP_CHAT: "group-chat",
+  DEPARTMENTS: "departments",
+  CERTIFICATES: "certificates",
 
   SIGNIN: "/signin",
   CHAT_CHANNEL: "chat-channel",
@@ -33,7 +33,6 @@ export const PATHS = {
   DEMO_SECTION: "/demos/:demoId/departments/:departmentId",
 
   OWNER_HOME: "analytics-home",
-  OWNER_DEPTS: "departments",
   OWNER_MEMBERS: "members",
   OWNER_INQUIRIES: "inquiries",
   OWNER_LIBRARY: "library",

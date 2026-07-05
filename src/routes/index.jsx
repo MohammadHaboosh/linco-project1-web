@@ -65,7 +65,7 @@ export const router = createBrowserRouter([
     element: <DemoLayout />,
     children: [
       { index: true, element: <DemoRedirector /> },
-      { path: "", element: <HomeDemoPage /> },
+      { path: PATHS.DEPARTMENTS, element: <HomeDemoPage /> },
       { path: PATHS.OWNER_HOME, element: <OwnerHomePage /> },
       {
         path: PATHS.OWNER_MEMBERS,

@@ -13,7 +13,7 @@ const DemoRedirector = () => {
     if (role === "owner") {
       navigate(PATHS.OWNER_HOME, { replace: true });
     } else {
-      navigate("", { replace: true });
+      navigate(PATHS.DEPARTMENTS, { replace: true });
     }
   }, [role, isLoading, navigate]);
 
