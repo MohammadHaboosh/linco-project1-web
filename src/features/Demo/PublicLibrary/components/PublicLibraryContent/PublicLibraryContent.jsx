@@ -71,9 +71,7 @@ const MOCK_LIBRARY = [
 
 const PublicLibraryContent = () => {
   const { t } = useTranslation();
-  const //{
-    currentRoleView = "owner";
-  //} = useDemo();
+  const { currentRoleView } = useDemo();
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
 
