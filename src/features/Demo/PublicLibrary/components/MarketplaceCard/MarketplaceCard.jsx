@@ -4,12 +4,25 @@ import {
   IoLockClosed,
   IoGlobeOutline,
   IoBusinessOutline,
+  IoStar,
+  IoPeopleOutline,
+  IoDownloadOutline,
 } from "react-icons/io5";
 import styles from "./MarketplaceCard.module.css";
-import { useTranslation } from "react-i18next";
 
 const MarketplaceCard = ({ course }) => {
-  const { t } = useTranslation();
+  const tagColorClasses = [
+    styles.tagBlue,
+    styles.tagGreen,
+    styles.tagPurple,
+    styles.tagOrange,
+    styles.tagPink,
+  ];
+
+  const getTagColor = (index) => {
+    return tagColorClasses[index % tagColorClasses.length];
+  };
+
   return (
     <div className={styles.card}>
       <div className={styles.imageWrapper}>
@@ -18,11 +31,12 @@ const MarketplaceCard = ({ course }) => {
           alt={course.title}
           className={styles.coverImage}
         />
+        <div className={styles.imageOverlay}></div>
 
         <div
           className={`${styles.priceBadge} ${course.price === 0 ? styles.freeBadge : styles.paidBadge}`}
         >
-          {course.price === 0 ? t("free") : `${course.price}`}
+          {course.price === 0 ? "Free" : `$${course.price}`}
         </div>
 
         {course.isMyDemo && (
@@ -31,11 +45,11 @@ const MarketplaceCard = ({ course }) => {
           >
             {course.isPrivate ? (
               <>
-                <IoLockClosed /> {t("private")}
+                <IoLockClosed /> Private Asset
               </>
             ) : (
               <>
-                <IoGlobeOutline /> {t("public")}
+                <IoGlobeOutline /> Public Market
               </>
             )}
           </div>
@@ -43,27 +57,56 @@ const MarketplaceCard = ({ course }) => {
       </div>
 
       <div className={styles.cardBody}>
-        <div className={styles.companyInfo}>
-          <IoBusinessOutline /> {course.company}
-          {course.isMyDemo && (
-            <span className={styles.myDemoTag}>({t("your-company")})</span>
-          )}
+        <div className={styles.metaRow}>
+          <div className={styles.companyInfo}>
+            <IoBusinessOutline className={styles.metaIcon} />
+            <span className={styles.companyText}>{course.company}</span>
+            {course.isMyDemo && <span className={styles.myDemoTag}>(You)</span>}
+          </div>
+          <div className={styles.ratingInfo}>
+            <IoStar className={styles.starIcon} />
+            <span>{course.rating}</span>
+          </div>
         </div>
 
         <h3 className={styles.title}>{course.title}</h3>
         <p className={styles.description}>{course.description}</p>
 
-        <div className={styles.actionArea}>
-          {course.isMyDemo ? (
-            <button className={styles.manageBtn}>
-              <IoSettingsOutline /> {t("manage-course")}
-            </button>
-          ) : (
-            <button className={styles.buyBtn}>
-              <IoCartOutline />{" "}
-              {course.price === 0 ? t("get-for-free") : t("purchase-course")}
-            </button>
-          )}
+        <div className={styles.tagsContainer}>
+          {course.tags?.map((tag, index) => (
+            <span key={index} className={`${styles.tag} ${getTagColor(index)}`}>
+              {tag}
+            </span>
+          ))}
+        </div>
+
+        <div className={styles.divider}></div>
+
+        <div className={styles.footerRow}>
+          <div className={styles.studentsInfo}>
+            <IoPeopleOutline className={styles.metaIcon} />
+            <span>{course.students.toLocaleString()} Students</span>
+          </div>
+
+          <div className={styles.actionArea}>
+            {course.isMyDemo ? (
+              <button className={styles.manageBtn}>
+                <IoSettingsOutline /> Manage
+              </button>
+            ) : (
+              <button className={styles.buyBtn}>
+                {course.price === 0 ? (
+                  <>
+                    <IoDownloadOutline /> Get
+                  </>
+                ) : (
+                  <>
+                    <IoCartOutline /> Buy
+                  </>
+                )}
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>

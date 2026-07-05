@@ -1,135 +1,257 @@
-/* تنسيقات كرت السوق */
 .card {
   background-color: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 16px;
+  border-radius: 20px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 20px rgba(10, 42, 84, 0.03);
+  height: 100%;
 }
+
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(10, 42, 84, 0.08);
+  transform: translateY(-6px);
+  box-shadow: 0 15px 35px rgba(10, 42, 84, 0.1);
   border-color: #cbd5e1;
 }
+
+/* 1. Image & Badges */
 .imageWrapper {
   position: relative;
   width: 100%;
-  height: 160px;
+  height: 170px;
+  overflow: hidden;
 }
 .coverImage {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.5s ease;
 }
+.card:hover .coverImage {
+  transform: scale(1.05);
+}
+
+.imageOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.1) 0%,
+    transparent 40%,
+    rgba(0, 0, 0, 0.05) 100%
+  );
+  pointer-events: none;
+}
+
 .priceBadge {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 14px;
+  right: 14px;
   padding: 6px 14px;
   border-radius: 20px;
   font-size: 0.85rem;
   font-weight: 800;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(8px);
+  z-index: 2;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 .freeBadge {
-  background-color: rgba(16, 185, 129, 0.9);
+  background-color: rgba(16, 185, 129, 0.95);
   color: #ffffff;
 }
 .paidBadge {
-  background-color: rgba(10, 42, 84, 0.9);
+  background-color: rgba(10, 42, 84, 0.95);
   color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
+
 .privacyBadge {
   position: absolute;
-  top: 12px;
-  left: 12px;
-  padding: 4px 10px;
-  border-radius: 8px;
+  top: 14px;
+  left: 14px;
+  padding: 5px 12px;
+  border-radius: 12px;
   font-size: 0.75rem;
   font-weight: 700;
   display: flex;
   align-items: center;
   gap: 4px;
+  z-index: 2;
+  backdrop-filter: blur(8px);
 }
 .private {
-  background-color: #fef2f2;
+  background-color: rgba(254, 242, 242, 0.95);
   color: #ef4444;
-  border: 1px solid #fca5a5;
+  border: 1px solid rgba(252, 165, 165, 0.5);
 }
 .public {
-  background-color: #eff6ff;
+  background-color: rgba(239, 246, 255, 0.95);
   color: #1a56db;
-  border: 1px solid #bfdbfe;
+  border: 1px solid rgba(191, 219, 254, 0.5);
 }
+
+/* 2. Card Body */
 .cardBody {
-  padding: 20px;
+  padding: 20px 24px;
   display: flex;
   flex-direction: column;
   flex: 1;
 }
-.companyInfo {
+
+.metaRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.companyInfo,
+.ratingInfo {
   display: flex;
   align-items: center;
   gap: 6px;
   font-size: 0.85rem;
   font-weight: 600;
   color: #64748b;
-  margin-bottom: 8px;
+}
+.metaIcon {
+  font-size: 1.1rem;
+  color: #94a3b8;
+}
+.starIcon {
+  font-size: 1.1rem;
+  color: #f59e0b;
+}
+.companyText {
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .myDemoTag {
   color: #10b981;
   font-size: 0.75rem;
   background: #d1fae5;
-  padding: 2px 6px;
-  border-radius: 4px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-weight: 700;
 }
+
 .title {
   color: #0a2a54;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   font-weight: 800;
-  margin: 0 0 8px 0;
+  margin: 0 0 10px 0;
+  line-height: 1.3;
 }
 .description {
   color: #475569;
   font-size: 0.9rem;
-  line-height: 1.5;
-  margin: 0 0 20px 0;
-  flex: 1;
+  line-height: 1.6;
+  margin: 0 0 16px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
+
+/* 3. Multi-color Tags */
+.tagsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.tag {
+  padding: 4px 12px;
+  border-radius: 20px; /* شكل بيضاوي */
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+/* ألوان التاغات (خلفية شفافة فاتحة ونص داكن) */
+.tagBlue {
+  background-color: #e0e7ff;
+  color: #3730a3;
+}
+.tagGreen {
+  background-color: #dcfce7;
+  color: #166534;
+}
+.tagPurple {
+  background-color: #f3e8ff;
+  color: #6b21a8;
+}
+.tagOrange {
+  background-color: #ffedd5;
+  color: #c2410c;
+}
+.tagPink {
+  background-color: #fce7f3;
+  color: #be185d;
+}
+
+.divider {
+  height: 1px;
+  background-color: #f1f5f9;
+  margin: auto 0 16px 0;
+}
+
+/* 4. Footer & Actions */
+.footerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.studentsInfo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
 .actionArea {
-  margin-top: auto;
+  display: flex;
+  gap: 10px;
 }
+
 .buyBtn,
 .manageBtn {
-  width: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 8px;
-  padding: 12px;
-  border-radius: 10px;
-  font-size: 0.95rem;
+  gap: 6px;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
 }
+
 .buyBtn {
-  background-color: #1a56db;
+  background-color: #0a2a54;
   color: #ffffff;
   border: none;
 }
 .buyBtn:hover {
-  background-color: #0a2a54;
+  background-color: #1a56db;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(26, 86, 219, 0.2);
 }
+
 .manageBtn {
-  background-color: #f1f5f9;
+  background-color: #f8fafc;
   color: #475569;
   border: 1px solid #cbd5e1;
 }
 .manageBtn:hover {
-  background-color: #e2e8f0;
+  background-color: #f1f5f9;
   color: #0a2a54;
+  border-color: #94a3b8;
 }
