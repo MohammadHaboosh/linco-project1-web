@@ -243,5 +243,12 @@
   "search-workspaces-by-company-name": "البحث في مساحات العمل حسب اسم الشركة...",
   "no-workspaces-found": "لم يتم العثور على مساحات عمل",
   "no-owned-workspaces-yet": "لا توجد مساحات عمل مملوكة حتى الآن",
-  "you-dont-have-any-active-workspaces-right-now-request-one-to-get-started": "ليس لديك أية مساحات عمل نشطة الآن. \nاطلب واحدًا للبدء."
+  "you-dont-have-any-active-workspaces-right-now-request-one-to-get-started": "ليس لديك أية مساحات عمل نشطة الآن. \nاطلب واحدًا للبدء.",
+  "ready-to-use": "جاهز للاستخدام",
+  "added-to-department": "تمت الإضافة إلى القسم",
+  "pull-to-department": "سحب إلى القسم",
+  "internal-repository": "المستودع الداخلي",
+  "company-assets": "أصول الشركة",
+  "browse-all-courses-owned-by-your-company-and-import-them-into-your-department": "تصفح جميع الدورات التدريبية المملوكة لشركتك وقم باستيرادها إلى قسمك.",
+  "search-company-assets": "البحث عن كورسات الشركة..."
 }

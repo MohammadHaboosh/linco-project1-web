@@ -252,5 +252,12 @@
   "no-workspaces-found": "No workspaces found",
   "no-owned-workspaces-yet": "No owned workspaces yet",
   "you-dont-have-any-active-workspaces-right-now-request-one-to-get-started": "You don't have any active workspaces right now. Request one to get started.",
-  "request-a-workspace": "Request a Workspace"
+  "request-a-workspace": "Request a Workspace",
+  "ready-to-use": "Ready to Use",
+  "added-to-department": "Added to Department",
+  "pull-to-department": "Pull to Department",
+  "internal-repository": "INTERNAL REPOSITORY",
+  "company-assets": "Company Assets",
+  "browse-all-courses-owned-by-your-company-and-import-them-into-your-department": "Browse all courses owned by your company and import them into your department.",
+  "search-company-assets": "Search company assets..."
 }
