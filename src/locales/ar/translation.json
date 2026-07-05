@@ -277,5 +277,21 @@
   "members": "أعضاء",
   "performance-score": "نقاط الأداء",
   "recent-activity": "النشاط الأخير",
-  "load-more": "تحميل المزيد"
+  "load-more": "تحميل المزيد",
+  "categories": "فئات",
+  "free": "حر",
+  "private": "خاص",
+  "public": "عام",
+  "your-company": "شركتك",
+  "manage-course": "إدارة الدورة",
+  "get-for-free": "احصل عليه مجاناً",
+  "purchase-course": "شراء الكورس",
+  "content-marketplace": "محتوى السوق ",
+  "ublic-course-library": "مكتبة المقررات العامة",
+  "discover-import-and-manage-premium-training-content-for-your-departments": "اكتشاف واستيراد وإدارة المحتوى التدريبي المتميز لأقسامك.",
+  "publish-new-course": "نشر دورة جديدة",
+  "search-library": "بحث في المكتبة",
+  "showing": "عرض",
+  "no-courses-found": "لم يتم العثور على دورات",
+  "try-adjusting-your-search-or-filters-to-find-what-youre-looking-for": "حاول تعديل البحث أو عوامل التصفية للعثور على ما تبحث عنه."
 }

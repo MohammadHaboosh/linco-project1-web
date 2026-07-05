@@ -7,7 +7,7 @@ import {
   IoPulseOutline,
   IoTimeOutline,
 } from "react-icons/io5";
-// import { useDemo } from "../../../../../hooks/useDemo";
+import { useDemo } from "../../../../../hooks/useDemo";
 import styles from "./OwnerHomeContent.module.css";
 
 const StatCard = ({ title, value, icon, trend, trendText, isPositive }) => (
@@ -32,19 +32,7 @@ const StatCard = ({ title, value, icon, trend, trendText, isPositive }) => (
 
 const OwnerHomeContent = () => {
   const { t } = useTranslation();
-  // TEMP
-  const demoData = {
-    id: "019f0fe8-d807-73b9-a0c7-891a13776c4b",
-    name: "Google",
-    imagePath: "qwertyuikol",
-    description: "nothing for now",
-    plan: "STARTER",
-    createdAt: "2026-06-28T20:25:45.735Z",
-    updatedAt: "2026-06-30T18:00:20.727Z",
-    ownerName: "Abrar Abo Auad",
-    membersCount: 1,
-    isOwner: false,
-  };
+  const { demoData } = useDemo();
 
   const workspaceName = demoData?.name || "Your Workspace";
 

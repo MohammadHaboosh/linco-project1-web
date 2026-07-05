@@ -287,5 +287,22 @@
   "members": "members",
   "performance-score": "Performance Score",
   "recent-activity": "Recent Activity",
-  "load-more": "Load More"
+  "load-more": "Load More",
+  "categories": "Categories",
+  "difficulty": "Difficulty",
+  "private": "Private",
+  "free": "Free",
+  "public": "Public",
+  "your-company": "Your Company",
+  "manage-course": "Manage Course",
+  "get-for-free": "Get for Free",
+  "purchase-course": "Purchase Course",
+  "content-marketplace": "CONTENT MARKETPLACE",
+  "ublic-course-library": "Public Course Library",
+  "discover-import-and-manage-premium-training-content-for-your-departments": "Discover, import, and manage premium training content for your departments.",
+  "publish-new-course": "Publish New Course",
+  "search-library": "Search library...",
+  "showing": "Showing",
+  "no-courses-found": "No courses found",
+  "try-adjusting-your-search-or-filters-to-find-what-youre-looking-for": "Try adjusting your search or filters to find what you're looking for."
 }

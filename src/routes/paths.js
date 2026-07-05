@@ -14,7 +14,7 @@ export const PATHS = {
   GROUP_CHAT: "/group-chat",
   DEPARTMENTS: "/departments",
   CERTIFICATES: "/certificates",
-  LIVES: "/lives",
+
   SIGNIN: "/signin",
   CHAT_CHANNEL: "chat-channel",
   INQUIRIES: "/inquiries",
@@ -36,15 +36,15 @@ export const PATHS = {
   OWNER_DEPTS: "departments",
   OWNER_MEMBERS: "members",
   OWNER_INQUIRIES: "inquiries",
-  OWNER_LIVES: "lives",
   OWNER_LIBRARY: "library",
 
+  SM_ASSETS: "demo-assets",
   SM_MEMBERS: "members",
   SM_COURSES: "courses",
-  SM_LIVES: "lives",
   SM_INQUIRIES: "inquiries",
   SM_TOOLS: "tools",
   SM_LEARNING_PATH: "learning-path",
   SM_ROADMAPS: "roadmaps",
   SM_TASKS: "weekly-tasks",
+  LIVES: "lives",
 };

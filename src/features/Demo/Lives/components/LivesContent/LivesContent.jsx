@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { IoVideocamOutline, IoAddOutline } from "react-icons/io5";
-// import { useDemo } from "../../../../../hooks/useDemo";
+import { useDemo } from "../../../../../hooks/useDemo";
 import LiveCard from "../LiveCard/LiveCard";
 import styles from "./LivesContent.module.css";
 import { useTranslation } from "react-i18next";
@@ -37,9 +37,7 @@ const MOCK_LIVES = [
 
 const LivesContent = () => {
   const { t } = useTranslation();
-  const //   {
-    currentRoleView = "owner";
-  // } = useDemo();
+  const { currentRoleView } = useDemo();
   const [activeTab, setActiveTab] = useState("UPCOMING");
 
   const canManage =

@@ -31,6 +31,11 @@ import WorkspaceToolsPage from "../pages/WorkspaceToolsPage.jsx";
 import DepartmentLayout from "../layouts/DepartmentLayout/DepartmentLayout.jsx";
 import DemoLayout from "../layouts/DemoLayout/DemoLayout.jsx";
 import DemoMembersPage from "../pages/DemoMembersPage.jsx";
+import PublicLibraryPage from "../pages/PublicLibraryPage.jsx";
+import DemoAssetsPage from "../pages/DemoAssetsPage.jsx";
+import LivesPage from "../pages/LivesPage.jsx";
+import OwnerHomePage from "../pages/OwnerHomePage.jsx";
+import DemoRedirector from "../components/common/DemoRedirector.jsx";
 // import WeeklyTasksPage from "../pages/WeeklyTasksPage.jsx";
 
 export const router = createBrowserRouter([
@@ -59,13 +64,26 @@ export const router = createBrowserRouter([
     path: PATHS.DEMO,
     element: <DemoLayout />,
     children: [
-      { index: true, element: <HomeDemoPage /> },
+      { index: true, element: <DemoRedirector /> },
+      { path: "", element: <HomeDemoPage /> },
+      { path: PATHS.OWNER_HOME, element: <OwnerHomePage /> },
       {
         path: PATHS.OWNER_MEMBERS,
         element: <DemoMembersPage />,
       },
+      {
+        path: PATHS.OWNER_LIBRARY,
+        element: <PublicLibraryPage />,
+      },
+      {
+        path: PATHS.SM_ASSETS,
+        element: <DemoAssetsPage />,
+      },
+      {
+        path: PATHS.LIVES,
+        element: <LivesPage />,
+      },
       // { path: "certificates", element: <CertificatesPage /> },
-      // { path: "lives", element: <LivesPage /> },
     ],
   },
   {
@@ -76,6 +94,14 @@ export const router = createBrowserRouter([
       {
         path: PATHS.LEARNING_PATH,
         element: <LearningPathPage />,
+      },
+      {
+        path: PATHS.SM_ASSETS,
+        element: <DemoAssetsPage />,
+      },
+      {
+        path: PATHS.LIVES,
+        element: <LivesPage />,
       },
       // {
       //   path: PATHS.WEEKLY_TASKS,
