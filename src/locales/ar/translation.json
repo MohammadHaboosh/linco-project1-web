@@ -266,5 +266,16 @@
   "schedule-live": "جدولة لايف",
   "upcoming-and-live": "القادمة",
   "recorded-sessions": "الجلسات المسجلة",
-  "no-streams-available-in-this-category": "لا توجد تيارات متاحة في هذه الفئة."
+  "no-streams-available-in-this-category": "لا توجد تيارات متاحة في هذه الفئة.",
+  "overview-for": "نظرة عامة على",
+  "heres-what-happening-in-your-workspace-today": "إليك ما يحدث في مساحة عملك اليوم",
+  "platform-activity": "نشاط المنصة",
+  "this-week": "هذا الاسبوع",
+  "last-week": "الأسبوع الماضي",
+  "active": "نشيط",
+  "top-performing-departments": "الإدارات الأعلى أداءً",
+  "members": "أعضاء",
+  "performance-score": "نقاط الأداء",
+  "recent-activity": "النشاط الأخير",
+  "load-more": "تحميل المزيد"
 }

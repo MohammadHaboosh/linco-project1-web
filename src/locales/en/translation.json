@@ -275,5 +275,17 @@
   "schedule-live": "Schedule Live",
   "upcoming-and-live": "Upcoming & Live",
   "recorded-sessions": "Recorded Sessions",
-  "no-streams-available-in-this-category": "No streams available in this category."
+  "no-streams-available-in-this-category": "No streams available in this category.",
+  "overview-for": "Overview For",
+  "heres-what-happening-in-your-workspace-today": "Heres what happening in your workspace today",
+  "platform-activity": "Platform Activity",
+  "this-week": "This Week",
+  "last-week": "Last Week",
+  "active": "Active",
+  "top-performing-departments": "Top Performing Departments",
+  "view-all": "View All",
+  "members": "members",
+  "performance-score": "Performance Score",
+  "recent-activity": "Recent Activity",
+  "load-more": "Load More"
 }
