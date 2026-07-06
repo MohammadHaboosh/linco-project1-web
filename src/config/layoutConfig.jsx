@@ -17,6 +17,7 @@ import {
   IoEarthOutline,
   IoLogOutOutline,
   IoDocumentTextOutline,
+  IoFolderOpenOutline,
 } from "react-icons/io5";
 
 import { PATHS } from "../routes/paths";
@@ -62,14 +63,19 @@ export const DEMO_NAV = {
         path: PATHS.OWNER_HOME,
       },
       {
+        name: "My Courses",
+        icon: <IoFolderOpenOutline />,
+        path: PATHS.OWNER_COURSES,
+      },
+      {
+        name: "Purchased courses",
+        icon: <IoLibraryOutline />,
+        path: PATHS.PSD_COURSES,
+      },
+      {
         name: "Departments",
         icon: <IoBusinessOutline />,
         path: PATHS.DEPARTMENTS,
-      },
-      {
-        name: "Public Library",
-        icon: <IoLibraryOutline />,
-        path: PATHS.OWNER_LIBRARY,
       },
       {
         name: "Demo Members",
@@ -86,7 +92,12 @@ export const DEMO_NAV = {
         icon: <IoChatbubblesOutline />,
         path: PATHS.CHAT_CHANNEL,
       },
-      { name: "Live Streams", icon: <IoVideocamOutline />, path: PATHS.LIVES }, // 👈 تم التصحيح هنا
+      { name: "Live Streams", icon: <IoVideocamOutline />, path: PATHS.LIVES },
+      {
+        name: "Public Library",
+        icon: <IoLibraryOutline />,
+        path: PATHS.OWNER_LIBRARY,
+      },
     ],
   },
   sectionManager: {
