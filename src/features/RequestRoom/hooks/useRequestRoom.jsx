@@ -9,7 +9,6 @@ import {
 export const useRequestRoom = () => {
   const navigate = useNavigate();
 
-  const [step, setStep] = useState(1);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -17,7 +16,6 @@ export const useRequestRoom = () => {
     companyName: "",
     description: "",
     logo: null,
-    plan: "", 
   });
 
   const handleInputChange = (e) => {
@@ -41,17 +39,7 @@ export const useRequestRoom = () => {
     }
   };
 
-  const handlePlanSelect = (planName) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      plan: planName,
-    }));
-    if (errors.plan) {
-      setErrors((prev) => ({ ...prev, plan: null }));
-    }
-  };
-
-  const validateStep1 = () => {
+  const validateRequest = () => {
     const newErrors = {};
     if (!formData.companyName)
       newErrors.companyName = "Company Name is required";
@@ -62,24 +50,8 @@ export const useRequestRoom = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const validateStep2 = () => {
-    const newErrors = {};
-    if (!formData.plan) newErrors.plan = "Please select a plan to continue";
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleNextStep = () => {
-    if (step === 1 && !validateStep1()) return;
-    if (step < 2) setStep((prev) => prev + 1);
-  };
-
-  const handlePrevStep = () => {
-    if (step > 1) setStep((prev) => prev - 1);
-  };
-
   const handleSubmit = async () => {
-    if (!validateStep2()) return;
+    if (!validateRequest()) return;
 
     setIsSubmitting(true);
     try {
@@ -92,28 +64,23 @@ export const useRequestRoom = () => {
         name: formData.companyName,
         imagePath: cdnUrl,
         description: formData.description,
-        plan: formData.plan,
       });
 
       navigate("/home");
     } catch (error) {
       console.error("Room request error:", error);
-      setErrors({ plan: error.message || "An error occurred." });
+      setErrors({ submit: error.message || "An error occurred." });
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return {
-    step,
     formData,
     errors,
     isSubmitting,
     handleInputChange,
     handleFileChange,
-    handlePlanSelect,
-    handleNextStep,
-    handlePrevStep,
     handleSubmit,
   };
 };

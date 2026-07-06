@@ -123,9 +123,9 @@ export const useSignup = () => {
       if (formData.imagePath) {
         // 1. Get the pre-signed URL from the backend
         const { data } = await getUploadUrl(formData.imagePath.name);
-        const { uploadUrl, fields, cdnUrl } = data;
+        const { uploadUrl, cdnUrl } = data;
 
-        await uploadFileToCloud(uploadUrl, fields, formData.imagePath);
+        await uploadFileToCloud(uploadUrl, formData.imagePath);
 
         finalImagePath = cdnUrl;
       }

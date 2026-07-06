@@ -46,7 +46,6 @@ export const createRoom = async (data) => {
       name: data.name,
       description: data.description,
       imagePath: data.imagePath,
-      plan: data.plan,
     }),
   });
   
