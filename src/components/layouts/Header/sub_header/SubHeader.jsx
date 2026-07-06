@@ -33,6 +33,7 @@ const SubHeader = ({ navLinks }) => {
           </div>
         ))}
       </nav>
+      <div className={styles.edgeFadeRight}></div>
     </div>
   );
 };
