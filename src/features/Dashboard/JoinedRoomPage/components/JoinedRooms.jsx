@@ -8,12 +8,17 @@ import {
 } from "react-icons/io5";
 import SharedRoomsLayout from "../../components/SharedRoomsLayout";
 import { PATHS } from "../../../../routes/paths";
+import { useJoinedRooms } from "../hooks/useJoinedRooms.jsx";
 
 const JoinedRooms = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [isLoading, setIsLoading] = useState(false);
-  const [joinedRooms, setJoinedRooms] = useState([]);
+  // Consume the hook
+  const { joinedRooms, isLoading } = useJoinedRooms();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   const CheckInvitationsBtn = (
     <button

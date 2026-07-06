@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { IoFolderOpenOutline, IoBusinessOutline } from "react-icons/io5";
+import { useOwnedRooms } from "../hooks/useOwnedRooms.jsx";
 import SharedRoomsLayout from "../../components/SharedRoomsLayout";
 
 const MyOwnRooms = () => {
   const { t } = useTranslation();
-  const [isLoading, setIsLoading] = useState(false);
-  const [myRooms, setMyRooms] = useState([]);
+  const { ownedRooms, isLoading, error } = useOwnedRooms();
 
   return (
     <SharedRoomsLayout
@@ -18,7 +18,7 @@ const MyOwnRooms = () => {
       )}
       searchPlaceholder={t("search-by-room-name")}
       isLoading={isLoading}
-      roomsData={myRooms}
+      roomsData={ownedRooms}
       emptyIcon={<IoBusinessOutline />}
       emptyTitle={t("no-owned-rooms-yet")}
       emptyDesc={t(
