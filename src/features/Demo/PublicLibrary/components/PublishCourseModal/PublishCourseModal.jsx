@@ -5,6 +5,7 @@ import {
   IoLockClosed,
   IoGlobeOutline,
 } from "react-icons/io5";
+
 import styles from "./PublishCourseModal.module.css";
 import { useTranslation } from "react-i18next";
 
