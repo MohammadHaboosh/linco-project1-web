@@ -6,21 +6,19 @@
   display: flex;
   flex-direction: column;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 20px rgba(10, 42, 84, 0.03);
+  box-shadow: 0 4px 15px rgba(10, 42, 84, 0.02);
   height: 100%;
 }
-
 .card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 15px 35px rgba(10, 42, 84, 0.1);
+  box-shadow: 0 15px 35px rgba(10, 42, 84, 0.08);
   border-color: #cbd5e1;
 }
 
-/* 1. Image & Badges */
 .imageWrapper {
   position: relative;
   width: 100%;
-  height: 170px;
+  height: 160px;
   overflow: hidden;
 }
 .coverImage {
@@ -33,25 +31,13 @@
   transform: scale(1.05);
 }
 
-.imageOverlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.1) 0%,
-    transparent 40%,
-    rgba(0, 0, 0, 0.05) 100%
-  );
-  pointer-events: none;
-}
-
 .priceBadge {
   position: absolute;
-  top: 14px;
-  right: 14px;
-  padding: 6px 14px;
+  top: 12px;
+  right: 12px;
+  padding: 4px 12px;
   border-radius: 20px;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 800;
   backdrop-filter: blur(8px);
   z-index: 2;
@@ -69,11 +55,11 @@
 
 .privacyBadge {
   position: absolute;
-  top: 14px;
-  left: 14px;
-  padding: 5px 12px;
+  top: 12px;
+  left: 12px;
+  padding: 4px 10px;
   border-radius: 12px;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -92,9 +78,8 @@
   border: 1px solid rgba(191, 219, 254, 0.5);
 }
 
-/* 2. Card Body */
 .cardBody {
-  padding: 20px 24px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -111,87 +96,94 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: #64748b;
 }
 .metaIcon {
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: #94a3b8;
 }
 .starIcon {
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: #f59e0b;
 }
 .companyText {
-  max-width: 150px;
+  max-width: 120px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .myDemoTag {
   color: #10b981;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   background: #d1fae5;
-  padding: 2px 8px;
+  padding: 2px 6px;
   border-radius: 6px;
   font-weight: 700;
 }
 
 .title {
   color: #0a2a54;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 800;
-  margin: 0 0 10px 0;
+  margin: 0 0 8px 0;
   line-height: 1.3;
-}
-.description {
-  color: #475569;
-  font-size: 0.9rem;
-  line-height: 1.6;
-  margin: 0 0 16px 0;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+.description {
+  color: #475569;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0 0 16px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex: 1;
+}
 
-/* 3. Multi-color Tags */
+/* Tags */
 .tagsContainer {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
   margin-bottom: 15px;
 }
-
 .tag {
   padding: 4px 12px;
-  border-radius: 20px; /* شكل بيضاوي */
-  font-size: 0.75rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.3px;
 }
-
-/* ألوان التاغات (خلفية شفافة فاتحة ونص داكن) */
 .tagBlue {
-  background-color: #e0e7ff;
-  color: #3730a3;
+  background-color: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
 }
 .tagGreen {
-  background-color: #dcfce7;
-  color: #166534;
+  background-color: #f0fdf4;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
 }
 .tagPurple {
-  background-color: #f3e8ff;
-  color: #6b21a8;
+  background-color: #faf5ff;
+  color: #7e22ce;
+  border: 1px solid #e9d5ff;
 }
 .tagOrange {
-  background-color: #ffedd5;
+  background-color: #fff7ed;
   color: #c2410c;
+  border: 1px solid #fed7aa;
 }
 .tagPink {
-  background-color: #fce7f3;
+  background-color: #fdf2f8;
   color: #be185d;
+  border: 1px solid #fbcfe8;
 }
 
 .divider {
@@ -200,13 +192,11 @@
   margin: auto 0 16px 0;
 }
 
-/* 4. Footer & Actions */
 .footerRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-
 .studentsInfo {
   display: flex;
   align-items: center;
@@ -216,35 +206,28 @@
   color: #64748b;
 }
 
-.actionArea {
-  display: flex;
-  gap: 10px;
-}
-
 .buyBtn,
 .manageBtn {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 10px 18px;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
   border-radius: 12px;
-  font-size: 0.9rem;
-  font-weight: 700;
+  font-size: 1.3rem;
   cursor: pointer;
   transition: all 0.2s ease;
 }
-
 .buyBtn {
-  background-color: #0a2a54;
+  background-color: #1a56db;
   color: #ffffff;
   border: none;
+  box-shadow: 0 4px 10px rgba(26, 86, 219, 0.2);
 }
 .buyBtn:hover {
-  background-color: #1a56db;
+  background-color: #0a2a54;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(26, 86, 219, 0.2);
 }
-
 .manageBtn {
   background-color: #f8fafc;
   color: #475569;

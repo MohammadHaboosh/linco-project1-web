@@ -8,12 +8,12 @@ const CoursesGridSection = ({ courses, isOwner, onUploadClick }) => {
 
   return (
     <div className={styles["grid-container"]}>
-      {isOwner && (
+      {/* {isOwner && (
         <div className={styles.uploadCard} onClick={onUploadClick}>
           <IoAdd className={styles.addIcon} />
           <h3>{t("upload-course")}</h3>
         </div>
-      )}
+      )} */}
       {courses.map((course) => (
         <CourseCard
           key={course.id}

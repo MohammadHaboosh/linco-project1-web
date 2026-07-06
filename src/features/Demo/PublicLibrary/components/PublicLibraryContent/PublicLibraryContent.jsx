@@ -1,22 +1,20 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
-  IoLibraryOutline,
-  IoAddCircleOutline,
+  IoGlobeOutline,
   IoSearchOutline,
+  IoFilterOutline,
+  IoChevronDownOutline,
 } from "react-icons/io5";
-import LibraryCourseCard from "../MarketplaceCard/MarketplaceCard";
-import LibraryFilters from "../LibraryFilters/LibraryFilters";
+import MarketplaceCard from "../MarketplaceCard/MarketplaceCard";
 import styles from "./PublicLibraryContent.module.css";
-import { useDemo } from "../../../../../hooks/useDemo";
 import { useTranslation } from "react-i18next";
 
-const MOCK_LIBRARY = [
+const MARKETPLACE_COURSES = [
   {
     id: 101,
-    title: "Advanced React & Next.js Architecture",
+    title: "Advanced React & Next.js",
     company: "Google Workspace",
-    description:
-      "Master complex UI building, Server-Side Rendering (SSR), and scalable Front-End architecture.",
+    description: "Master complex UI building and SSR architecture.",
     price: 49.99,
     isMyDemo: false,
     isPrivate: false,
@@ -29,8 +27,7 @@ const MOCK_LIBRARY = [
     id: 102,
     title: "Company Onboarding 2026",
     company: "LinCo.TechCorp",
-    description:
-      "Internal onboarding procedures, HR guidelines, and company culture essentials.",
+    description: "Internal onboarding procedures and HR guidelines.",
     price: 0,
     isMyDemo: true,
     isPrivate: true,
@@ -43,8 +40,7 @@ const MOCK_LIBRARY = [
     id: 103,
     title: "Figma UI/UX Masterclass",
     company: "Design Academy",
-    description:
-      "Create professional, reusable design systems and components from scratch.",
+    description: "Create professional design systems from scratch.",
     price: 0,
     isMyDemo: false,
     isPrivate: false,
@@ -57,8 +53,7 @@ const MOCK_LIBRARY = [
     id: 104,
     title: "Node.js Microservices",
     company: "LinCo.TechCorp",
-    description:
-      "Learn to build scalable backend systems using Node, Docker and Kubernetes.",
+    description: "Learn to build scalable backend systems using Node & Docker.",
     price: 89.99,
     isMyDemo: true,
     isPrivate: false,
@@ -67,99 +62,109 @@ const MOCK_LIBRARY = [
     tags: ["Node.js", "Backend", "Docker"],
     image: "/images/linco-logo.jpg",
   },
+  {
+    id: 105,
+    title: "Python for Data Science",
+    company: "DataCamp",
+    description: "Comprehensive guide to Data Analysis and Machine Learning.",
+    price: 29.99,
+    isMyDemo: false,
+    isPrivate: false,
+    rating: 4.7,
+    students: 890,
+    tags: ["Python", "Data", "AI"],
+    image: "/images/linco-logo.jpg",
+  },
 ];
 
 const PublicLibraryContent = () => {
   const { t } = useTranslation();
-  const { currentRoleView } = useDemo();
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [activeCategory, setActiveCategory] = useState(t("all-categories"));
+  const filterRef = useRef(null);
 
-  const filteredCourses = MOCK_LIBRARY.filter((course) => {
-    const matchesSearch = course.title
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
-    const matchesCategory =
-      activeCategory === "All" || course.category === activeCategory;
-    return matchesSearch && matchesCategory;
-  });
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (filterRef.current && !filterRef.current.contains(e.target))
+        setIsFilterOpen(false);
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const categories = [
+    "All Categories",
+    "Front-End",
+    "Back-End",
+    "UI/UX",
+    "Management",
+  ];
 
   return (
     <div className={styles.pageContainer}>
       <div className={styles.headerArea}>
         <div className={styles.headerInfo}>
           <div className={styles.iconBox}>
-            <IoLibraryOutline className={styles.headerIcon} />
+            <IoGlobeOutline className={styles.headerIcon} />
           </div>
           <div>
-            <span className={styles.subHeading}>
-              {t("content-marketplace")}
-            </span>
+            <span className={styles.subHeading}>{t("global-marketplace")}</span>
             <h1 className={styles.title}>{t("ublic-course-library")}</h1>
             <p className={styles.description}>
-              {t(
-                "discover-import-and-manage-premium-training-content-for-your-departments",
-              )}
+              {t("explore-premium-courses-or-publish-your-own-assets")}
             </p>
           </div>
         </div>
-
-        {currentRoleView === "owner" && (
-          <button className={styles.createBtn}>
-            <IoAddCircleOutline className={styles.btnIcon} />{" "}
-            {t("publish-new-course")}
-          </button>
-        )}
       </div>
 
-      <div className={styles.layoutGrid}>
-        <div className={styles.sidebarColumn}>
+      <div className={styles.controlsWrapper}>
+        <div className={styles.controlsInner}>
           <div className={styles.searchBox}>
             <IoSearchOutline className={styles.searchIcon} />
             <input
               type="text"
-              placeholder={t("search-library")}
+              placeholder={t("search-courses")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className={styles.searchInput}
             />
           </div>
 
-          <LibraryFilters
-            activeCategory={activeCategory}
-            setActiveCategory={setActiveCategory}
-          />
-        </div>
+          <div className={styles.divider}></div>
 
-        <div className={styles.mainColumn}>
-          <div className={styles.resultsHeader}>
-            <span>
-              {t("showing")} <strong>{filteredCourses.length}</strong>{" "}
-              {t("courses")}
-            </span>
+          <div className={styles.filterBox} ref={filterRef}>
+            <button
+              className={styles.filterBtn}
+              onClick={() => setIsFilterOpen(!isFilterOpen)}
+            >
+              <IoFilterOutline className={styles.filterIcon} /> {activeCategory}{" "}
+              <IoChevronDownOutline />
+            </button>
+            {isFilterOpen && (
+              <div className={styles.filterDropdown}>
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    className={`${styles.catItem} ${activeCategory === cat ? styles.catActive : ""}`}
+                    onClick={() => {
+                      setActiveCategory(cat);
+                      setIsFilterOpen(false);
+                    }}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
-
-          <div className={styles.coursesGrid}>
-            {filteredCourses.map((course) => (
-              <LibraryCourseCard
-                key={course.id}
-                course={course}
-                role={currentRoleView}
-              />
-            ))}
-          </div>
-
-          {filteredCourses.length === 0 && (
-            <div className={styles.emptyState}>
-              <h3>{t("no-courses-found")}</h3>
-              <p>
-                {t(
-                  "try-adjusting-your-search-or-filters-to-find-what-youre-looking-for",
-                )}
-              </p>
-            </div>
-          )}
         </div>
+      </div>
+
+      <div className={styles.coursesGrid}>
+        {MARKETPLACE_COURSES.map((course) => (
+          <MarketplaceCard key={course.id} course={course} />
+        ))}
       </div>
     </div>
   );

@@ -9,8 +9,10 @@ import {
   IoDownloadOutline,
 } from "react-icons/io5";
 import styles from "./MarketplaceCard.module.css";
+import { useTranslation } from "react-i18next";
 
 const MarketplaceCard = ({ course }) => {
+  const { t } = useTranslation();
   const tagColorClasses = [
     styles.tagBlue,
     styles.tagGreen,
@@ -19,9 +21,8 @@ const MarketplaceCard = ({ course }) => {
     styles.tagPink,
   ];
 
-  const getTagColor = (index) => {
-    return tagColorClasses[index % tagColorClasses.length];
-  };
+  const getTagColor = (index) =>
+    tagColorClasses[index % tagColorClasses.length];
 
   return (
     <div className={styles.card}>
@@ -36,7 +37,7 @@ const MarketplaceCard = ({ course }) => {
         <div
           className={`${styles.priceBadge} ${course.price === 0 ? styles.freeBadge : styles.paidBadge}`}
         >
-          {course.price === 0 ? "Free" : `$${course.price}`}
+          {course.price === 0 ? t("free") : `$${course.price}`}
         </div>
 
         {course.isMyDemo && (
@@ -45,11 +46,11 @@ const MarketplaceCard = ({ course }) => {
           >
             {course.isPrivate ? (
               <>
-                <IoLockClosed /> Private Asset
+                <IoLockClosed /> {t("private")}
               </>
             ) : (
               <>
-                <IoGlobeOutline /> Public Market
+                <IoGlobeOutline /> {t("public")}
               </>
             )}
           </div>
@@ -61,7 +62,9 @@ const MarketplaceCard = ({ course }) => {
           <div className={styles.companyInfo}>
             <IoBusinessOutline className={styles.metaIcon} />
             <span className={styles.companyText}>{course.company}</span>
-            {course.isMyDemo && <span className={styles.myDemoTag}>(You)</span>}
+            {course.isMyDemo && (
+              <span className={styles.myDemoTag}>({t("you")})</span>
+            )}
           </div>
           <div className={styles.ratingInfo}>
             <IoStar className={styles.starIcon} />
@@ -85,25 +88,24 @@ const MarketplaceCard = ({ course }) => {
         <div className={styles.footerRow}>
           <div className={styles.studentsInfo}>
             <IoPeopleOutline className={styles.metaIcon} />
-            <span>{course.students.toLocaleString()} Students</span>
+            <span>
+              {course.students.toLocaleString()} {t("users")}
+            </span>
           </div>
 
           <div className={styles.actionArea}>
             {course.isMyDemo ? (
-              <button className={styles.manageBtn}>
-                <IoSettingsOutline /> Manage
+              <button className={styles.manageBtn} title={t("manage-asset")}>
+                <IoSettingsOutline />
               </button>
             ) : (
-              <button className={styles.buyBtn}>
-                {course.price === 0 ? (
-                  <>
-                    <IoDownloadOutline /> Get
-                  </>
-                ) : (
-                  <>
-                    <IoCartOutline /> Buy
-                  </>
-                )}
+              <button
+                className={styles.buyBtn}
+                title={
+                  course.price === 0 ? t("get-for-free") : t("purchase-course")
+                }
+              >
+                {course.price === 0 ? <IoDownloadOutline /> : <IoCartOutline />}
               </button>
             )}
           </div>

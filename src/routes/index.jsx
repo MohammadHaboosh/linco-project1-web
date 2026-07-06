@@ -36,6 +36,8 @@ import DemoAssetsPage from "../pages/DemoAssetsPage.jsx";
 import LivesPage from "../pages/LivesPage.jsx";
 import OwnerHomePage from "../pages/OwnerHomePage.jsx";
 import DemoRedirector from "../components/common/DemoRedirector.jsx";
+import CourseStudio from "../features/Demo/PublishCourse/components/CourseStudio/CourseStudio.jsx";
+import OwnerCoursesPage from "../pages/OwnerCoursesPage.jsx";
 // import WeeklyTasksPage from "../pages/WeeklyTasksPage.jsx";
 
 export const router = createBrowserRouter([
@@ -75,6 +77,7 @@ export const router = createBrowserRouter([
         path: PATHS.OWNER_LIBRARY,
         element: <PublicLibraryPage />,
       },
+      { path: "course-studio", element: <CourseStudio /> },
       {
         path: PATHS.SM_ASSETS,
         element: <DemoAssetsPage />,
@@ -82,6 +85,10 @@ export const router = createBrowserRouter([
       {
         path: PATHS.LIVES,
         element: <LivesPage />,
+      },
+      {
+        path: PATHS.OwnerCoursesPage,
+        element: <OwnerCoursesPage />,
       },
       // { path: "certificates", element: <CertificatesPage /> },
     ],

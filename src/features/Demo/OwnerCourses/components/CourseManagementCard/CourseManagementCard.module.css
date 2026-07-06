@@ -1,0 +1,221 @@
+.addNewCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #f8fafc;
+  border: 2px dashed #cbd5e1;
+  border-radius: 24px;
+  aspect-ratio: 1 / 1.1;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  padding: 30px;
+}
+.addNewCard:hover {
+  background: #eff6ff;
+  border-color: #1a56db;
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(26, 86, 219, 0.1);
+}
+.addCircle {
+  width: 70px;
+  height: 70px;
+  background: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s;
+}
+.addNewCard:hover .addCircle {
+  background: #1a56db;
+}
+.addIcon {
+  font-size: 2.5rem;
+  color: #94a3b8;
+  transition: color 0.3s;
+}
+.addNewCard:hover .addIcon {
+  color: #ffffff;
+}
+.addNewCard h3 {
+  margin: 0 0 8px 0;
+  color: #0a2a54;
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+.addNewCard p {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+/* --- Course Card --- */
+.card {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
+  overflow: hidden;
+  aspect-ratio: 1 / 1.1; /* شكل شبه مربع متناسق للجميع */
+  box-shadow: 0 4px 15px rgba(10, 42, 84, 0.03);
+  transition: all 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(10, 42, 84, 0.08);
+  border-color: #cbd5e1;
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  height: 40%;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.courseImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.card:hover .courseImage {
+  transform: scale(1.05);
+}
+.imageOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.3) 0%, transparent 100%);
+}
+.publishedBadge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(16, 185, 129, 0.95);
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.cardBody {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.tagsRow {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.tag {
+  background: #eff6ff;
+  color: #1a56db;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.title {
+  margin: 0 0 8px 0;
+  color: #0a2a54;
+  font-size: 1.2rem;
+  font-weight: 800;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.description {
+  margin: 0 0 15px 0;
+  color: #64748b;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex: 1;
+}
+
+.statsRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fafc;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #f1f5f9;
+  margin-top: auto;
+}
+.statItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #475569;
+}
+.statIcon {
+  font-size: 1.1rem;
+  color: #94a3b8;
+}
+
+.cardFooter {
+  display: flex;
+  gap: 12px;
+  padding: 0 20px 20px 20px;
+}
+.editBtn,
+.publishBtn {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.editBtn {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
+.editBtn:hover {
+  background: #e2e8f0;
+  color: #0a2a54;
+}
+.publishBtn {
+  background: #0a2a54;
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 12px rgba(10, 42, 84, 0.2);
+}
+.publishBtn:hover:not(:disabled) {
+  background: #1a56db;
+  transform: translateY(-2px);
+}
+.publishedBtn {
+  background: #ecfdf5;
+  color: #059669;
+  box-shadow: none;
+  border: 1px solid #a7f3d0;
+  cursor: default;
+}

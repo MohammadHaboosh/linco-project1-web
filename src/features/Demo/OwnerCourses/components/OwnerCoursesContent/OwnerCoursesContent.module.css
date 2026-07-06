@@ -1,0 +1,81 @@
+.pageContainer {
+  padding: 40px 20px; /* تقليل الـ padding الجانبي للسماح للـ Wrapper بالتحكم */
+  background-color: #f8fafc;
+  min-height: calc(100vh - 75px);
+  display: flex;
+  justify-content: center; /* توسيط المحتوى بالكامل */
+}
+
+/*  الحاوية المركزية للحفاظ على هوامش متساوية وجميلة */
+.contentWrapper {
+  width: 100%;
+  max-width: 1400px; /* هذا العرض يضمن أن الشبكة لا تتمدد كثيراً وتبقى الكروت مربعة */
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.headerArea {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 40px;
+}
+.headerInfo {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.iconBox {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #0a2a54 0%, #153c75 100%);
+  border-radius: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 10px 25px rgba(10, 42, 84, 0.15);
+}
+.headerIcon {
+  font-size: 2.2rem;
+  color: #ffffff;
+}
+.title {
+  color: #0a2a54;
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin: 0 0 8px 0;
+}
+.description {
+  color: #64748b;
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+/* 💡 الشبكة (3 كروت في السطر بدقة) */
+.coursesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+@media (max-width: 1024px) {
+  .coursesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .coursesGrid {
+    grid-template-columns: 1fr;
+  }
+}

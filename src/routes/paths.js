@@ -36,6 +36,7 @@ export const PATHS = {
   OWNER_MEMBERS: "members",
   OWNER_INQUIRIES: "inquiries",
   OWNER_LIBRARY: "library",
+  OwnerCoursesPage: "manage-courses",
 
   SM_ASSETS: "demo-assets",
   SM_MEMBERS: "members",
