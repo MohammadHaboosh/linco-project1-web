@@ -1,15 +1,15 @@
 .pageContainer {
-  padding: 40px 60px;
+  padding: 40px 40px; /* تقليل الحواف الجانبية */
   background-color: #f8fafc;
   min-height: calc(100vh - 75px);
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
 }
 
+/* 💡 الحاوية الأوسع لاستغلال المساحة بشكل أفضل */
 .contentWrapper {
   width: 100%;
-  max-width: 1400px; /* يحافظ على تناسق الشبكة في الشاشات العملاقة */
+  max-width: 1400px; /* مساحة أوسع للكروت */
   animation: fadeIn 0.4s ease-out;
 }
 
@@ -24,20 +24,18 @@
   }
 }
 
-/* ================= Header ================= */
+/* Header */
 .pageHeader {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 40px;
 }
-
 .headerInfo {
   display: flex;
   align-items: center;
   gap: 20px;
 }
-
 .iconBox {
   width: 65px;
   height: 65px;
@@ -47,13 +45,9 @@
   justify-content: center;
   align-items: center;
   box-shadow: 0 8px 20px rgba(10, 42, 84, 0.15);
-}
-
-.headerIcon {
-  font-size: 2rem;
   color: #ffffff;
+  font-size: 2rem;
 }
-
 .subHeading {
   font-size: 0.85rem;
   font-weight: 700;
@@ -63,7 +57,6 @@
   margin-bottom: 6px;
   display: block;
 }
-
 .title {
   color: #0a2a54;
   font-size: 2.2rem;
@@ -71,50 +64,23 @@
   margin: 0 0 8px 0;
   letter-spacing: -0.5px;
 }
-
 .description {
   color: #64748b;
   font-size: 1.05rem;
   margin: 0;
-  max-width: 600px;
+  max-width: 650px;
+  line-height: 1.5;
 }
 
-.createBtn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background-color: #1a56db;
-  color: #ffffff;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 12px;
-  font-weight: 700;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 15px rgba(26, 86, 219, 0.2);
-}
-
-.createBtn:hover {
-  background-color: #1e40af;
-  transform: translateY(-2px);
-}
-
-.btnIcon {
-  font-size: 1.2rem;
-}
-
-/* ================= Controls ================= */
+/* Search Controls */
 .controlsSection {
-  margin-bottom: 30px;
+  margin-bottom: 35px;
 }
-
 .searchBox {
   position: relative;
   width: 100%;
   max-width: 450px;
 }
-
 .searchIcon {
   position: absolute;
   left: 18px;
@@ -123,48 +89,40 @@
   color: #94a3b8;
   font-size: 1.3rem;
 }
-
 .searchInput {
   width: 100%;
   padding: 14px 20px 14px 50px;
-  border: 1px solid #cbd5e1;
+  border: 1px solid #e2e8f0;
   border-radius: 14px;
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: #1e293b;
   background-color: #ffffff;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+  font-weight: 500;
 }
-
 .searchInput:focus {
   outline: none;
   border-color: #1a56db;
-  box-shadow: 0 0 0 4px rgba(26, 86, 219, 0.1);
-}
-
-/* ================= Content Grid & Empty State ================= */
-.listSection {
-  width: 100%;
+  box-shadow: 0 0 0 4px rgba(26, 86, 219, 0.08);
 }
 
 .cardsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   gap: 30px;
 }
 
+/* Empty State & Loader */
 .emptyState {
   background-color: #ffffff;
-  border: 2px dashed #cbd5e1;
-  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
   padding: 80px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  margin-top: 20px;
 }
-
 .emptyIconBox {
   width: 80px;
   height: 80px;
@@ -177,38 +135,23 @@
   font-size: 2.5rem;
   margin-bottom: 20px;
 }
-
 .emptyState h3 {
   color: #0a2a54;
   font-size: 1.4rem;
   margin: 0 0 10px 0;
   font-weight: 800;
 }
-
 .emptyState p {
   color: #64748b;
   font-size: 1rem;
   margin: 0 0 25px 0;
-  max-width: 400px;
+  max-width: 450px;
   line-height: 1.6;
 }
-
-.outlineBtn {
-  background: transparent;
-  color: #1a56db;
-  border: 2px solid #1a56db;
-  padding: 10px 24px;
-  border-radius: 10px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
+.actionBtnWrapper {
+  margin-top: 10px;
 }
 
-.outlineBtn:hover {
-  background: #eff6ff;
-}
-
-/* ================= Loader ================= */
 .loadingState {
   display: flex;
   flex-direction: column;
@@ -218,7 +161,6 @@
   color: #64748b;
   font-weight: 600;
 }
-
 .loader {
   width: 40px;
   height: 40px;
@@ -228,23 +170,18 @@
   animation: spin 1s linear infinite;
   margin-bottom: 15px;
 }
-
 @keyframes spin {
   to {
     transform: rotate(360deg);
   }
 }
 
+/* Media Queries */
 @media (max-width: 768px) {
-  .pageHeader {
-    flex-direction: column;
-    gap: 20px;
+  .pageContainer {
+    padding: 30px 20px;
   }
-  .createBtn {
-    width: 100%;
-    justify-content: center;
-  }
-  .searchBox {
-    max-width: 100%;
+  .cardsGrid {
+    grid-template-columns: 1fr;
   }
 }

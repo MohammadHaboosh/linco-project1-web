@@ -36,7 +36,7 @@
   "guest": "زائر",
   "manage-your-company-links-track-your-active-training-rooms-and-level-up-your-career-from-one-single-dashboard-1": "إدارة روابط شركتك، تتبع غرف التدريب النشطة، وارتقِ بمسارك المهني من لوحة تحكم واحدة.",
   "recently-active-rooms": "مساحات العمل النشطة مؤخراً",
-  "loading-your-rooms": "جاري تحميل مساحات العمل...",
+  "loading-your-rooms": "جاري تحميل غرف العمل الخاصة بك...",
   "recently-active-owned-rooms": "مساحات العمل المملوكة النشطة مؤخراً",
   "no-owned-rooms-yet": "لا توجد مساحات عمل مملوكة بعد",
   "you-dont-have-any-active-owned-rooms-right-now-create-one-to-get-started": "ليس لديك أي مساحات عمل مملوكة حالياً. أنشئ واحدة للبدء.",
@@ -357,5 +357,15 @@
   "no-sections-yet": "لا توجد أقسام حتى الآن",
   "add-section": "إضافة قسم",
   "add-sections-interactive-video-lessons-and-final-assessments": "إضافة أقسام ودروس فيديو تفاعلية وتقييمات نهائية.",
-  "start-by-adding-a-section-to-build-your-course-structure": "ابدأ بإضافة قسم لبناء هيكل الدورة التدريبية الخاصة بك."
+  "start-by-adding-a-section-to-build-your-course-structure": "ابدأ بإضافة قسم لبناء هيكل الدورة التدريبية الخاصة بك.",
+  "no-results-found": "لم يتم العثور على نتائج",
+  "we-couldnt-find-any-workspace-matching-your-search-query": "لم نتمكن من العثور على أي مساحة عمل تطابق استعلام البحث الخاص بك.",
+  "management": "إدارة",
+  "my-own-rooms": "غرفي الخاصة",
+  "create-and-manage-your-owned-workspaces-invite-team-members-and-monitor-overall-progress": "قم بإنشاء مساحات العمل المملوكة لك وإدارتها، ودعوة أعضاء الفريق، ومراقبة التقدم العام.",
+  "search-by-room-name": "البحث حسب اسم الغرفة...",
+  "you-havent-created-any-workspaces-yet-start-by-creating-one-to-manage-your-team": "لم تقم بإنشاء أية مساحات عمل حتى الآن. \nابدأ بإنشاء واحدة لإدارة فريقك.",
+  "collaboration": "تعاون",
+  "access-training-spaces-you-have-been-invited-to-and-collaborate-with-your-teams": "يمكنك الوصول إلى مساحات التدريب التي تمت دعوتك إليها والتعاون مع فرقك.",
+  "you-havent-joined-any-workspace-yet-check-your-pending-invitations": "لم تنضم إلى أية غرف حتى الآن. \nتحقق من دعواتك المعلقة."
 }

@@ -5,7 +5,7 @@
   animation: fadeIn 0.4s ease-out;
   display: flex;
   flex-direction: column;
-  align-items: center; /* توسيط المحتوى للشاشات الكبيرة */
+  align-items: center;
 }
 
 @keyframes fadeIn {
@@ -19,12 +19,11 @@
   }
 }
 
-/* حاوية المحتوى لتحديد أقصى عرض */
 .pageHeader,
 .controlsSection,
 .listSection {
   width: 100%;
-  max-width: 1000px; /* يمنع تمدد الكروت بشكل بشع في الشاشات العملاقة */
+  max-width: 1400px;
 }
 
 /* Header */

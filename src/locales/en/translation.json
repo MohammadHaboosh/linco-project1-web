@@ -36,7 +36,7 @@
   "guest": "Guest",
   "manage-your-company-links-track-your-active-training-rooms-and-level-up-your-career-from-one-single-dashboard-1": "Manage your company links, track your active training workspaces, and level up your career from one single dashboard.",
   "recently-active-rooms": "Recently Active Workspaces",
-  "loading-your-rooms": "Loading your workspaces...",
+  "loading-your-rooms": "Loading Rooms...",
   "recently-active-owned-rooms": "Recently Active Owned Rooms",
   "no-owned-rooms-yet": "No owned rooms yet",
   "you-dont-have-any-active-owned-rooms-right-now-create-one-to-get-started": "You don't have any active owned rooms right now. Create one to get started.",
@@ -377,5 +377,16 @@
   "add-sections-interactive-video-lessons-and-final-assessments": "Add sections, interactive video lessons, and final assessments.",
   "add-section": "Add Section",
   "no-sections-yet": "No Sections Yet",
-  "start-by-adding-a-section-to-build-your-course-structure": "Start by adding a section to build your course structure."
+  "start-by-adding-a-section-to-build-your-course-structure": "Start by adding a section to build your course structure.",
+  "we-couldnt-find-any-workspace-matching-your-search-query": "We couldn't find any workspace matching your search query.",
+  "no-results-found": "No results found",
+  "management": "Management",
+  "my-own-rooms": "My Own Rooms",
+  "create-and-manage-your-owned-workspaces-invite-team-members-and-monitor-overall-progress": "Create and manage your owned workspaces, invite team members, and monitor overall progress.",
+  "search-by-room-name": "Search By Room Name...",
+  "you-havent-created-any-workspaces-yet-start-by-creating-one-to-manage-your-team": "You haven't created any workspaces yet. Start by creating one to manage your team.",
+  "collaboration": "Collaboration",
+  "access-training-spaces-you-have-been-invited-to-and-collaborate-with-your-teams": "Access training spaces you have been invited to and collaborate with your teams.",
+  "search-room-by-name": "Search room by name...",
+  "you-havent-joined-any-workspace-yet-check-your-pending-invitations": "You haven't joined any rooms yet. Check your pending invitations."
 }
