@@ -87,7 +87,7 @@ export const router = createBrowserRouter([
         element: <LivesPage />,
       },
       {
-        path: PATHS.OwnerCoursesPage,
+        path: PATHS.OWNER_COURSES,
         element: <OwnerCoursesPage />,
       },
       // { path: "certificates", element: <CertificatesPage /> },
