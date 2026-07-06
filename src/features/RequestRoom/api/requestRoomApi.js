@@ -15,21 +15,17 @@ export const getUploadUrl = async (fileName) => {
   return response.json();
 };
 
-export const uploadFileToCloud = async (uploadUrl, fields, file) => {
-  const cloudFormData = new FormData();
-
-  Object.keys(fields).forEach((key) => {
-    cloudFormData.append(key, fields[key]);
-  });
-
-  cloudFormData.append("file", file);
-
+export const uploadFileToCloud = async (uploadUrl, file) => {
   const response = await fetch(uploadUrl, {
-    method: "POST",
-    body: cloudFormData,
+    method: "PUT",
+    headers: {
+      "x-ms-blob-type": "BlockBlob",
+      "Content-Type": file.type || "application/octet-stream",
+    },
+    body: file,
   });
 
-  if (!response.ok && response.status !== 204) {
+  if (!response.ok) {
     throw new Error("Failed to upload image to the cloud");
   }
 };

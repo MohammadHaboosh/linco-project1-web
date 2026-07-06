@@ -56,9 +56,9 @@ export const useRequestRoom = () => {
     setIsSubmitting(true);
     try {
       const { data } = await getUploadUrl(formData.logo.name);
-      const { uploadUrl, fields, cdnUrl } = data;
+      const { uploadUrl, cdnUrl } = data;
       
-      await uploadFileToCloud(uploadUrl, fields, formData.logo);
+      await uploadFileToCloud(uploadUrl, formData.logo);
       
       await createRoom({
         name: formData.companyName,
