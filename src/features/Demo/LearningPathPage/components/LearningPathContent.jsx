@@ -1,69 +1,124 @@
-import PathHeaderSection from "./sections/PathHeaderSection/PathHeaderSection";
-import PathCourseCard from "./sections/PathCourseCard/PathCourseCard";
-import styles from "./LearningPathContent.module.css";
+import { useState, useMemo } from "react";
+import { IoMapOutline, IoAddOutline } from "react-icons/io5";
+import PathStepCard from "./PathStepCard";
+import ReplaceCourseModal from "./ReplaceCourseModal";
+import styles from "./LearningPath.module.css";
+import { useDemo } from "../../../../hooks/useDemo";
+import { useTranslation } from "react-i18next";
+
+const MOCK_PATH_COURSES = [
+  {
+    id: "c1",
+    title: "HTML & CSS Fundamentals",
+    desc: "Build the structure and style of web pages.",
+    thumbnail: "/images/linco-logo.jpg",
+    status: "completed",
+  },
+  {
+    id: "c2",
+    title: "JavaScript Deep Dive",
+    desc: "Master JS engines, closures, and async programming.",
+    thumbnail: "/images/linco-logo.jpg",
+    status: "in-progress",
+  },
+  {
+    id: "c3",
+    title: "React Architecture",
+    desc: "Learn to build scalable apps using modern React.",
+    thumbnail: "/images/linco-logo.jpg",
+    status: "locked",
+  },
+];
 
 const LearningPathContent = () => {
-  const pathData = [
-    {
-      id: 2,
-      title: "Course Name",
-      description:
-        "Description text will be here with some details about the course content and objectives to help the trainee understand what they will learn.",
-      topics: ["React", "TypeScript", "Tailwind"],
-      progress: 35,
-      status: "active",
-      defaultExpanded: true,
-    },
-    {
-      id: 2,
-      title: "Course Name",
-      description:
-        "Description text will be here with some details about the course content and objectives.",
-      topics: ["React", "TypeScript", "Tailwind"],
-      progress: 0,
-      status: "locked",
-    },
-    {
-      id: 1,
-      title: "Course Name",
-      topics: ["React", "TypeScript", "Tailwind"],
-      progress: 0,
-      status: "locked",
-    },
-    {
-      id: 1,
-      title: "Course Name",
-      topics: ["React", "TypeScript", "Tailwind"],
-      progress: 0,
-      status: "locked",
-    },
-    {
-      id: 1,
-      title: "Course Name",
-      topics: ["React", "TypeScript", "Tailwind"],
-      progress: 100,
-      status: "completed",
-    },
-    {
-      id: 1,
-      title: "Course Name",
-      topics: ["React", "TypeScript", "Tailwind"],
-      progress: 100,
-      status: "completed",
-    },
-  ];
+  const { t } = useTranslation();
+  const { currentRoleView } = useDemo();
+
+  const [courses, setCourses] = useState(MOCK_PATH_COURSES);
+  const [modalState, setModalState] = useState({
+    isOpen: false,
+    courseIdToReplace: null,
+  });
+
+  const displayCourses = useMemo(() => {
+    if (currentRoleView === "trainee") {
+      const completed = courses.filter((c) => c.status === "completed");
+      const pending = courses.filter((c) => c.status !== "completed");
+      return [...pending, ...completed];
+    }
+    return courses;
+  }, [courses, currentRoleView]);
+
+  const handleDelete = (id) => {
+    setCourses((prev) => prev.filter((c) => c.id !== id));
+  };
+
+  const handleReplaceClick = (id) => {
+    setModalState({ isOpen: true, courseIdToReplace: id });
+  };
+
+  const executeReplace = (newCourseData) => {
+    setCourses((prev) =>
+      prev.map((c) =>
+        c.id === modalState.courseIdToReplace
+          ? { ...newCourseData, status: c.status }
+          : c,
+      ),
+    );
+    setModalState({ isOpen: false, courseIdToReplace: null });
+  };
 
   return (
-    <div className={styles["content-area"]}>
-      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        <PathHeaderSection />
+    <div className={styles.pageContainer}>
+      <div className={styles.contentWrapper}>
+        <div className={styles.headerArea}>
+          <div className={styles.headerInfo}>
+            <div className={styles.iconBox}>
+              <IoMapOutline className={styles.headerIcon} />
+            </div>
+            <div>
+              <span className={styles.subHeading}>
+                {t("department-journey")}
+              </span>
+              <h1 className={styles.title}>{t("learning-path")}</h1>
+              <p className={styles.description}>
+                {t("follow-the-structured-curriculum-to-master-your-role")}
+              </p>
+            </div>
+          </div>
 
-        <div className={styles["course-list"]}>
-          {pathData.map((course, index) => (
-            <PathCourseCard key={index} course={course} />
+          {(currentRoleView === "owner" ||
+            currentRoleView === "sectionManager") && (
+            <button className={styles.addCourseBtn}>
+              <IoAddOutline /> {t("add-course-to-path")}
+            </button>
+          )}
+        </div>
+
+        <div className={styles.timelineContainer}>
+          <div className={styles.timelineLine}></div>
+
+          {displayCourses.map((course, index) => (
+            <PathStepCard
+              key={course.id}
+              course={course}
+              index={index}
+              role={currentRoleView}
+              onDelete={() => handleDelete(course.id)}
+              onReplace={() => handleReplaceClick(course.id)}
+            />
           ))}
         </div>
       </div>
+
+      {modalState.isOpen && (
+        <ReplaceCourseModal
+          onClose={() =>
+            setModalState({ isOpen: false, courseIdToReplace: null })
+          }
+          onSelectReplacement={executeReplace}
+        />
+      )}
     </div>
   );
 };

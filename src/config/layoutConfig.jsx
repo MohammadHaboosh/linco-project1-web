@@ -44,9 +44,9 @@ export const DEMO_NAV = {
       },
       { name: "Live Streams", icon: <IoVideocamOutline />, path: PATHS.LIVES },
       {
-        name: "Chat Channel",
+        name: "Chats",
         icon: <IoChatbubblesOutline />,
-        path: PATHS.CHAT_CHANNEL,
+        path: PATHS.CHAT_GROUPS,
       },
       {
         name: "Inquiries",
@@ -58,7 +58,7 @@ export const DEMO_NAV = {
   owner: {
     navLinks: [
       {
-        name: "Analytics Home",
+        name: "Home",
         icon: <IoHomeOutline />,
         path: PATHS.OWNER_HOME,
       },
@@ -88,11 +88,11 @@ export const DEMO_NAV = {
         path: PATHS.INQUIRIES,
       },
       {
-        name: "Chat Channel",
+        name: "Chats",
         icon: <IoChatbubblesOutline />,
-        path: PATHS.CHAT_CHANNEL,
+        path: PATHS.CHAT_GROUPS,
       },
-      { name: "Live Streams", icon: <IoVideocamOutline />, path: PATHS.LIVES },
+      { name: "Lives", icon: <IoVideocamOutline />, path: PATHS.LIVES },
       {
         name: "Public Library",
         icon: <IoLibraryOutline />,
@@ -108,11 +108,11 @@ export const DEMO_NAV = {
         icon: <IoDocumentTextOutline />,
         path: PATHS.CERTIFICATES,
       },
-      { name: "Live Streams", icon: <IoVideocamOutline />, path: PATHS.LIVES },
+      { name: "Lives", icon: <IoVideocamOutline />, path: PATHS.LIVES },
       {
-        name: "Chat Channel",
+        name: "Chats",
         icon: <IoChatbubblesOutline />,
-        path: PATHS.CHAT_CHANNEL,
+        path: PATHS.CHAT_GROUPS,
       },
       {
         name: "Inquiries",
@@ -133,7 +133,7 @@ export const DEPARTMENT_NAV = {
         path: PATHS.LEARNING_PATH,
       },
       { name: "Courses", icon: <IoBookOutline />, path: PATHS.COURSES },
-      { name: "Road Maps", icon: <IoMapOutline />, path: PATHS.ROAD_MAP },
+      { name: "Road Maps", icon: <IoMapOutline />, path: PATHS.ROADMAPS },
       {
         name: "Weekly Tasks",
         icon: <IoListOutline />,
@@ -149,17 +149,12 @@ export const DEPARTMENT_NAV = {
         icon: <IoHardwareChipOutline />,
         path: PATHS.TOOLS,
       },
-      {
-        name: "Group Chat",
-        icon: <IoChatbubblesOutline />,
-        path: PATHS.GROUP_CHAT,
-      },
     ],
   },
   sectionManager: {
     navLinks: [
       { name: "Home", icon: <IoHomeOutline />, path: "" },
-      { name: "Members", icon: <IoPeopleOutline />, path: PATHS.SM_MEMBERS },
+      { name: "Members", icon: <IoPeopleOutline />, path: PATHS.OWNER_MEMBERS },
       { name: "Courses", icon: <IoBookOutline />, path: PATHS.SM_COURSES },
       { name: "Live Streams", icon: <IoVideocamOutline />, path: PATHS.LIVES },
       {
@@ -182,12 +177,6 @@ export const DEPARTMENT_NAV = {
         icon: <IoPersonOutline />,
         path: PATHS.LEADERBOARD,
       },
-
-      {
-        name: "Chat Channel",
-        icon: <IoChatbubblesOutline />,
-        path: PATHS.CHAT_CHANNEL,
-      },
       { name: "Road Maps", icon: <IoMapOutline />, path: PATHS.SM_ROADMAPS },
       { name: "Weekly Tasks", icon: <IoListOutline />, path: PATHS.SM_TASKS },
     ],
@@ -195,7 +184,7 @@ export const DEPARTMENT_NAV = {
   owner: {
     navLinks: [
       { name: "Home", icon: <IoHomeOutline />, path: "" },
-      { name: "Members", icon: <IoPeopleOutline />, path: PATHS.SM_MEMBERS },
+      { name: "Members", icon: <IoPeopleOutline />, path: PATHS.OWNER_MEMBERS },
       { name: "Courses", icon: <IoBookOutline />, path: PATHS.SM_COURSES },
       { name: "Live Streams", icon: <IoVideocamOutline />, path: PATHS.LIVES }, // 👈 تم التصحيح
       {
@@ -218,13 +207,7 @@ export const DEPARTMENT_NAV = {
         icon: <IoMapOutline />,
         path: PATHS.SM_LEARNING_PATH,
       },
-      {
-        name: "Chat Channel",
-        icon: <IoChatbubblesOutline />,
-        path: PATHS.CHAT_CHANNEL,
-      },
-
-      { name: "Road Maps", icon: <IoMapOutline />, path: PATHS.SM_ROADMAPS },
+      { name: "Road Maps", icon: <IoMapOutline />, path: PATHS.ROADMAPS },
       { name: "Weekly Tasks", icon: <IoListOutline />, path: PATHS.SM_TASKS },
     ],
   },

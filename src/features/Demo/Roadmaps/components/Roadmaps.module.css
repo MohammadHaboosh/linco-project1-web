@@ -1,0 +1,312 @@
+/* ================= Main Layout ================= */
+.pageContainer {
+  padding: 40px;
+  background-color: #f8fafc;
+  min-height: calc(100vh - 75px);
+  display: flex;
+  justify-content: center;
+  font-family: var(--font-sans);
+}
+
+.contentWrapper {
+  width: 100%;
+  max-width: 1200px; /* توسيط أنيق ليحافظ على أبعاد الكروت */
+  animation: fadeIn 0.4s ease-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header */
+.headerArea {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 40px;
+}
+.headerInfo {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.iconBox {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #0a2a54 0%, #153c75 100%);
+  border-radius: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 10px 25px rgba(10, 42, 84, 0.15);
+  font-size: 2.2rem;
+  color: #ffffff;
+}
+.subHeading {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #1a56db;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+  display: block;
+}
+.title {
+  color: #0a2a54;
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.5px;
+}
+.description {
+  color: #64748b;
+  font-size: 1.05rem;
+  margin: 0;
+  max-width: 600px;
+  line-height: 1.5;
+}
+
+/* Controls */
+.controlsSection {
+  margin-bottom: 40px;
+}
+.searchBox {
+  position: relative;
+  width: 100%;
+  max-width: 450px;
+}
+.searchIcon {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  font-size: 1.3rem;
+}
+.searchInput {
+  width: 100%;
+  padding: 14px 20px 14px 50px;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  font-size: 0.95rem;
+  color: #1e293b;
+  background-color: #ffffff;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+.searchInput:focus {
+  outline: none;
+  border-color: #1a56db;
+  box-shadow: 0 0 0 4px rgba(26, 86, 219, 0.08);
+}
+
+/* Grid */
+.roadmapsGrid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(340px, 1fr)
+  ); /* شبكة متجاوبة */
+  gap: 30px;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 60px;
+  color: #94a3b8;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: 2px dashed #cbd5e1;
+  border-radius: 20px;
+}
+
+/* ================= Roadmap Card ================= */
+.roadmapCard {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(10, 42, 84, 0.03);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  height: 100%;
+}
+
+.roadmapCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(10, 42, 84, 0.08);
+  border-color: #cbd5e1;
+}
+
+/* Card Header (Image & Level) */
+.cardHeader {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  overflow: hidden;
+}
+.coverImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.roadmapCard:hover .coverImage {
+  transform: scale(1.05);
+}
+.imageOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(0, 0, 0, 0.6) 100%);
+}
+
+.levelBadge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.levelBeginner {
+  background: rgba(16, 185, 129, 0.9);
+  color: #ffffff;
+}
+.levelIntermediate {
+  background: rgba(245, 158, 11, 0.9);
+  color: #ffffff;
+}
+.levelAdvanced {
+  background: rgba(239, 68, 68, 0.9);
+  color: #ffffff;
+}
+
+/* Card Body */
+.cardBody {
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.tagsContainer {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.tag {
+  background: #eff6ff;
+  color: #1a56db;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.title {
+  color: #0a2a54;
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin: 0 0 10px 0;
+  line-height: 1.3;
+}
+.description {
+  color: #64748b;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0 0 25px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex: 1;
+}
+
+/* Journey Meta (Milestones & Time) */
+.journeyMeta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  background: #f8fafc;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #f1f5f9;
+}
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #475569;
+  font-size: 0.85rem;
+}
+.metaIcon {
+  color: #1a56db;
+  font-size: 1.2rem;
+}
+.metaItem strong {
+  color: #0a2a54;
+  font-weight: 800;
+  font-size: 0.95rem;
+}
+.metaDivider {
+  width: 1px;
+  height: 20px;
+  background: #cbd5e1;
+}
+
+/* Card Footer */
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px;
+  border-top: 1px solid #f1f5f9;
+  background: #ffffff;
+  transition: background 0.3s;
+}
+.roadmapCard:hover .cardFooter {
+  background: #f8fafc;
+}
+.viewPathText {
+  color: #0a2a54;
+  font-weight: 800;
+  font-size: 0.95rem;
+  transition: color 0.3s;
+}
+.roadmapCard:hover .viewPathText {
+  color: #1a56db;
+}
+
+.arrowCircle {
+  width: 36px;
+  height: 36px;
+  background: #eff6ff;
+  color: #1a56db;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  transition: all 0.3s;
+}
+.roadmapCard:hover .arrowCircle {
+  background: #1a56db;
+  color: #ffffff;
+  transform: translateX(5px);
+}

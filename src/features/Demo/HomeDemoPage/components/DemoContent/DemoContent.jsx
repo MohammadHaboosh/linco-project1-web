@@ -14,7 +14,6 @@ import { useDemo } from "../../../../../hooks/useDemo";
 
 const DemoContent = () => {
   const { t } = useTranslation();
-  const isOwner = true;
 
   const { demoId } = useParams();
   const { role, currentRoleView, setRoleView, demoData } = useDemo();

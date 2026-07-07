@@ -27,7 +27,6 @@ import LearningPathPage from "../pages/LearningPathPage.jsx";
 import DepartmentPage from "../pages/DepartmentPage.jsx";
 import DashboardLayout from "../layouts/DashboardLayout/DashboardLayout.jsx";
 import WorkspaceToolsPage from "../pages/WorkspaceToolsPage.jsx";
-// import RoadmapsPage from "../pages/RoadmapsPage.jsx";
 import DepartmentLayout from "../layouts/DepartmentLayout/DepartmentLayout.jsx";
 import DemoLayout from "../layouts/DemoLayout/DemoLayout.jsx";
 import DemoMembersPage from "../pages/DemoMembersPage.jsx";
@@ -41,9 +40,10 @@ import OwnerCoursesPage from "../pages/OwnerCoursesPage.jsx";
 import InquiriesPage from "../pages/InquiriesPage.jsx";
 import CoursePlayerPage from "../pages/CoursePlayerPage.jsx";
 import QuizContainer from "../features/Demo/CoursePlayer/components/QuizContainer.jsx";
-import ChatGroups from "../features/Demo/Chats/components/ChatGroups.jsx";
-import ChatRoom from "../features/Demo/Chats/components/ChatRoom.jsx";
 import VideoPlayer from "../features/Demo/CoursePlayer/components/VideoPlayer.jsx";
+import ChatsPage from "../pages/ChatsPage.jsx";
+import RoadmapsPage from "../pages/RoadmapsPage.jsx";
+import CertificatesPage from "../pages/CertificatesPage.jsx";
 // import WeeklyTasksPage from "../pages/WeeklyTasksPage.jsx";
 
 export const router = createBrowserRouter([
@@ -100,9 +100,9 @@ export const router = createBrowserRouter([
         path: PATHS.INQUIRIES,
         element: <InquiriesPage />,
       },
-      { path: PATHS.CHAT_GROUPS, element: <ChatGroups /> },
-      { path: PATHS.CHAT_ROOM, element: <ChatRoom /> },
-      // { path: "certificates", element: <CertificatesPage /> },
+      { path: PATHS.CHAT_GROUPS, element: <ChatsPage /> },
+      { path: `${PATHS.CHAT_GROUPS}/:chatId`, element: <ChatsPage /> },
+      { path: PATHS.CERTIFICATES, element: <CertificatesPage /> },
     ],
   },
   {
@@ -137,7 +137,7 @@ export const router = createBrowserRouter([
       // },
       { path: PATHS.COURSES, element: <CoursesPage /> },
       { path: PATHS.LEADERBOARD, element: <LeaderboardPage /> },
-      //{ path: PATHS.ROADMAPS, element: <RoadmapsPage /> },
+      { path: PATHS.ROADMAPS, element: <RoadmapsPage /> },
       { path: PATHS.TOOLS, element: <WorkspaceToolsPage /> },
     ],
   },

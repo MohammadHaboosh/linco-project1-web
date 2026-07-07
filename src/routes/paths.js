@@ -10,8 +10,6 @@ export const PATHS = {
   LESSON: "lesson/:lessonId",
   QUIZ: "quiz/:sectionId",
   CHAT_GROUPS: "chats",
-  CHAT_ROOM: "chats/:roomId",
-  ROAD_MAP: "road-map",
   WEEKLY_TASKS: "weekly-tasks",
   LEADERBOARD: "leaderboard",
   GROUP_WORKSPACE: "group-workspace",
@@ -19,7 +17,6 @@ export const PATHS = {
   CERTIFICATES: "certificates",
 
   SIGNIN: "/signin",
-  CHAT_CHANNEL: "chat-channel",
 
   NOTIFICATIONS: "/notifications",
   SETTINGS: "/settings",
@@ -48,7 +45,8 @@ export const PATHS = {
   SM_COURSES: "courses",
   SM_TOOLS: "tools",
   SM_LEARNING_PATH: "learning-path",
-  SM_ROADMAPS: "roadmaps",
+  ROADMAPS: "roadmaps",
+  // SM_ROADMAPS: "roadmaps",
   SM_TASKS: "weekly-tasks",
   LIVES: "lives",
 };

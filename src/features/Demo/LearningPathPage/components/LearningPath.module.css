@@ -1,0 +1,430 @@
+/* ================= Layout & Header ================= */
+.pageContainer {
+  padding: 40px;
+  background-color: #f8fafc;
+  min-height: calc(100vh - 75px);
+  display: flex;
+  justify-content: center;
+  font-family: var(--font-sans);
+}
+.contentWrapper {
+  width: 100%;
+  max-width: 1000px;
+  animation: fadeIn 0.4s ease;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.headerArea {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 50px;
+}
+.headerInfo {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.iconBox {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #0a2a54 0%, #153c75 100%);
+  border-radius: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 10px 25px rgba(10, 42, 84, 0.15);
+  font-size: 2.2rem;
+  color: #ffffff;
+}
+.subHeading {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #1a56db;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: block;
+  margin-bottom: 6px;
+}
+.title {
+  color: #0a2a54;
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin: 0 0 8px 0;
+}
+.description {
+  color: #64748b;
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+.addCourseBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #1a56db;
+  color: #ffffff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 15px rgba(26, 86, 219, 0.2);
+}
+.addCourseBtn:hover {
+  background: #0a2a54;
+  transform: translateY(-2px);
+}
+
+/* ================= Vertical Timeline ================= */
+.timelineContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding-left: 20px;
+}
+.timelineLine {
+  position: absolute;
+  left: 40px;
+  top: 20px;
+  bottom: 20px;
+  width: 3px;
+  background: #e2e8f0;
+  border-radius: 3px;
+  z-index: 1;
+}
+
+.stepWrapper {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+/* عقدة الأرقام */
+.timelineNode {
+  width: 44px;
+  height: 44px;
+  background: #ffffff;
+  border: 3px solid #cbd5e1;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 800;
+  color: #64748b;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  transition: all 0.3s;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* ================= Step Card ================= */
+.stepCard {
+  flex: 1;
+  display: flex;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(10, 42, 84, 0.03);
+  transition: all 0.3s ease;
+  height: 140px;
+}
+.stepCard:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 10px 30px rgba(10, 42, 84, 0.06);
+  transform: translateX(5px);
+}
+
+.cardImageArea {
+  width: 220px;
+  height: 100%;
+  position: relative;
+  flex-shrink: 0;
+}
+.thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.lockedOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(241, 245, 249, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5rem;
+  color: #94a3b8;
+  backdrop-filter: blur(2px);
+}
+
+.cardContent {
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+}
+.courseTitle {
+  margin: 0 0 8px 0;
+  color: #0a2a54;
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+.courseDesc {
+  margin: 0 0 12px 0;
+  color: #64748b;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.statusBadge {
+  width: fit-content;
+  padding: 4px 12px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.badgeGreen {
+  background: #dcfce7;
+  color: #059669;
+}
+.badgeBlue {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.cardActions {
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  background: #f8fafc;
+  border-left: 1px solid #f1f5f9;
+}
+
+/* أزرار الإدارة (Manager) */
+.actionBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+}
+.actionBtn:hover {
+  background: #f1f5f9;
+  color: #0a2a54;
+  border-color: #94a3b8;
+}
+.actionBtnDanger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #ef4444;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+}
+.actionBtnDanger:hover {
+  background: #fee2e2;
+}
+
+/* زر المتدرب (Trainee) */
+.startBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #1a56db;
+  color: #ffffff;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1rem;
+}
+.startBtn:hover:not(:disabled) {
+  background: #0a2a54;
+}
+.startBtn:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+}
+
+/* 💡 الحالات الخاصة بالكروت (الأخضر للمكتمل، الرمادي للمقفل) */
+.stepCompleted .timelineNode {
+  background: #10b981;
+  border-color: #10b981;
+  color: #ffffff;
+}
+.stepCompleted .stepCard {
+  border-color: #a7f3d0;
+  background-color: #ecfdf5;
+}
+.stepCompleted .cardActions {
+  background: #dcfce7;
+  border-color: #a7f3d0;
+}
+
+.stepLocked {
+  opacity: 0.7;
+}
+.stepLocked .timelineNode {
+  background: #f1f5f9;
+  border-color: #e2e8f0;
+  color: #cbd5e1;
+}
+
+/* ================= Modal ================= */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 42, 84, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s;
+}
+.modalContainer {
+  background: #ffffff;
+  width: 100%;
+  max-width: 600px;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s;
+}
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modalHeader {
+  padding: 25px 30px;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.modalHeader h3 {
+  margin: 0;
+  color: #0a2a54;
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+.closeBtn {
+  background: transparent;
+  border: none;
+  font-size: 1.6rem;
+  color: #94a3b8;
+  cursor: pointer;
+}
+
+.modalBody {
+  padding: 30px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+.modalHint {
+  color: #64748b;
+  margin: 0 0 20px 0;
+  font-size: 0.95rem;
+}
+
+.assetsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.assetItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  transition: all 0.2s;
+}
+.assetItem:hover {
+  border-color: #1a56db;
+  background: #f8fafc;
+}
+.assetInfo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.assetIcon {
+  font-size: 2rem;
+  color: #1a56db;
+  background: #eff6ff;
+  padding: 10px;
+  border-radius: 10px;
+}
+.assetInfo h4 {
+  margin: 0 0 4px 0;
+  color: #1e293b;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+.assetInfo p {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+.selectBtn {
+  background: #0a2a54;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.selectBtn:hover {
+  background: #1a56db;
+}

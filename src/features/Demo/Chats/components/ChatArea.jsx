@@ -3,57 +3,57 @@ import {
   IoSend,
   IoAttachOutline,
   IoHappyOutline,
-  IoArrowBack,
+  IoEllipsisVertical,
 } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
 import styles from "./Chats.module.css";
+import { useTranslation } from "react-i18next";
 
-const ChatRoom = () => {
-  const navigate = useNavigate();
+const MOCK_MESSAGES = [
+  {
+    id: 1,
+    sender: "Omar Nabil",
+    text: "Hey everyone! Did you see the new React updates?",
+    time: "10:15 AM",
+    isMe: false,
+  },
+  {
+    id: 2,
+    sender: "Me",
+    text: "Yes, the Concurrent Mode looks promising! We should use it.",
+    time: "10:20 AM",
+    isMe: true,
+  },
+  {
+    id: 3,
+    sender: "Sara Majed",
+    text: "I'll start implementing the new hooks tomorrow.",
+    time: "10:22 AM",
+    isMe: false,
+  },
+];
+
+const ChatArea = ({ group }) => {
+  const { t } = useTranslation();
   const [msg, setMsg] = useState("");
 
-  const MOCK_MESSAGES = [
-    {
-      id: 1,
-      sender: "Omar Nabil",
-      text: "Hey everyone! Did you see the new React updates?",
-      time: "10:15 AM",
-      isMe: false,
-    },
-    {
-      id: 2,
-      sender: "Me",
-      text: "Yes, the Concurrent Mode looks promising!",
-      time: "10:20 AM",
-      isMe: true,
-    },
-    {
-      id: 3,
-      sender: "Sara Majed",
-      text: "I'll start implementing the new hooks tomorrow.",
-      time: "10:22 AM",
-      isMe: false,
-    },
-  ];
-
   return (
-    <div className={styles.roomContainer}>
-      {/* رأس الدردشة */}
+    <div className={styles.chatRoomWrapper}>
       <div className={styles.roomHeader}>
         <div className={styles.headerLeft}>
-          <button className={styles.backBtn} onClick={() => navigate(-1)}>
-            <IoArrowBack />
-          </button>
-          <div className={styles.roomAvatar}>F</div>
-          <div>
-            <h3 className={styles.roomTitle}>Front-End Developers</h3>
-            <span className={styles.onlineStatus}>12 members • 5 online</span>
+          <div className={styles.roomAvatar}>{group.name.charAt(0)}</div>
+          <div className={styles.roomMeta}>
+            <h3>{group.name}</h3>
+            <span>
+              {group.members} {t("members")}
+            </span>
           </div>
         </div>
+        <button className={styles.menuBtn}>
+          <IoEllipsisVertical />
+        </button>
       </div>
 
-      {/* منطقة الرسائل */}
-      <div className={styles.messagesArea}>
+      <div className={styles.messagesScrollArea}>
         {MOCK_MESSAGES.map((m) => (
           <div
             key={m.id}
@@ -75,22 +75,24 @@ const ChatRoom = () => {
         ))}
       </div>
 
-      {/* حقل الإدخال */}
-      <div className={styles.inputArea}>
+      <div className={styles.inputStickyArea}>
         <div className={styles.inputWrapper}>
           <button className={styles.actionIcon}>
             <IoAttachOutline />
           </button>
           <input
             type="text"
-            placeholder="Type your message..."
+            placeholder={t("write-your-message")}
             value={msg}
             onChange={(e) => setMsg(e.target.value)}
           />
           <button className={styles.actionIcon}>
             <IoHappyOutline />
           </button>
-          <button className={styles.sendBtn} disabled={!msg.trim()}>
+          <button
+            className={`${styles.sendBtn} ${msg.trim() ? styles.sendBtnActive : ""}`}
+            disabled={!msg.trim()}
+          >
             <IoSend />
           </button>
         </div>
@@ -99,4 +101,4 @@ const ChatRoom = () => {
   );
 };
 
-export default ChatRoom;
+export default ChatArea;
