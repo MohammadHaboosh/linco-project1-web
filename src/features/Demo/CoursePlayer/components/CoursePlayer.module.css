@@ -1,0 +1,515 @@
+/* ================= Global Page Layout ================= */
+.pageWrapper {
+  background-color: #f1f5f9;
+  min-height: 100vh;
+  font-family: var(--font-sans);
+}
+
+/* Top Navigation Bar */
+.topNav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.navLeft {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.backBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #64748b;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.backBtn:hover {
+  color: #0a2a54;
+}
+.divider {
+  width: 1px;
+  height: 24px;
+  background: #cbd5e1;
+}
+.courseHeaderTitle {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #0a2a54;
+}
+
+/* Progress Indicator */
+.progressContainer {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.trophyIcon {
+  font-size: 2rem;
+  color: #f59e0b;
+}
+.progressText {
+  display: flex;
+  flex-direction: column;
+}
+.progressText span {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.progressText strong {
+  font-size: 1rem;
+  color: #0a2a54;
+  font-weight: 800;
+  line-height: 1;
+}
+.progressBarBg {
+  width: 120px;
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-left: 10px;
+}
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #059669);
+  border-radius: 10px;
+}
+
+/* ================= Main Grid Layout ================= */
+.playerGrid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 30px;
+  padding: 30px 40px;
+  max-width: 1800px;
+  margin: 0 auto;
+  align-items: start;
+}
+.mainColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  min-width: 0; /* يمنع خروج الفيديو عن الشاشة */
+}
+
+@media (max-width: 1100px) {
+  .playerGrid {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+}
+
+/* ================= Video Player ================= */
+.videoContainer {
+  background: #011349;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(10, 42, 84, 0.15);
+  aspect-ratio: 16 / 9;
+  position: relative;
+}
+.videoScreen {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.videoTopOverlay {
+  padding: 25px;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 26, 79, 0.8) 0%,
+    transparent 100%
+  );
+}
+.videoLessonTitle {
+  margin: 0;
+  color: #ffffff;
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.videoCenterControls {
+  margin: auto;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.videoContainer:hover .videoCenterControls {
+  opacity: 1;
+}
+.mainPlayBtn {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 5.5rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
+}
+.mainPlayBtn:hover {
+  transform: scale(1.1);
+}
+.seekBtn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 2.5rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.seekBtn:hover {
+  color: #ffffff;
+}
+
+.videoBottomOverlay {
+  padding: 20px 25px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.videoContainer:hover .videoBottomOverlay {
+  opacity: 1;
+}
+.videoTimeline {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  cursor: pointer;
+  position: relative;
+  margin-bottom: 15px;
+}
+.timelinePlayed {
+  height: 100%;
+  background: #1a56db;
+  border-radius: 10px;
+}
+.timelineThumb {
+  width: 14px;
+  height: 14px;
+  background: #ffffff;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.videoToolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.toolbarLeft,
+.toolbarRight {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.toolBtn {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 1.6rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.toolBtn:hover {
+  color: #1a56db;
+}
+.timeDisplay {
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: monospace;
+}
+
+/* ================= Tabs & Content Section ================= */
+.contentContainer {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(10, 42, 84, 0.03);
+  overflow: hidden;
+}
+
+.tabsHeader {
+  display: flex;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 0 20px;
+  background: #ffffff;
+}
+.tabBtn {
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: #64748b;
+  padding: 20px 25px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.tabBtn:hover {
+  color: #0a2a54;
+}
+.activeTab {
+  color: #1a56db;
+  border-bottom-color: #1a56db;
+}
+
+.tabBody {
+  padding: 35px;
+}
+.sectionTitle {
+  margin: 0 0 15px 0;
+  color: #0a2a54;
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+.descriptionText {
+  color: #475569;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin: 0 0 35px 0;
+}
+
+.attachTitle {
+  color: #0a2a54;
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin: 0 0 15px 0;
+}
+.attachmentsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 15px;
+}
+.attachmentCard {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.attachmentCard:hover {
+  border-color: #1a56db;
+  background: #eff6ff;
+  box-shadow: 0 4px 10px rgba(26, 86, 219, 0.05);
+}
+.attachIcon {
+  font-size: 2rem;
+  color: #1a56db;
+}
+.attachInfo {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+.fileName {
+  color: #1e293b;
+  font-weight: 700;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fileSize {
+  color: #94a3b8;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-top: 2px;
+}
+.downloadIcon {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  font-size: 1.3rem;
+  transition: color 0.2s;
+}
+.attachmentCard:hover .downloadIcon {
+  color: #1a56db;
+}
+
+.emptyState {
+  padding: 40px;
+  text-align: center;
+  color: #94a3b8;
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+/* ================= Sidebar Playlist ================= */
+.playlistContainer {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(10, 42, 84, 0.03);
+  overflow: hidden;
+  position: sticky;
+  top: 90px;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(3000vh);
+}
+.playlistHeader {
+  padding: 25px;
+  border-bottom: 1px solid #e2e8f0;
+  background: #ffffff;
+  z-index: 2;
+}
+.playlistHeader h3 {
+  margin: 0;
+  color: #0a2a54;
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.playlistScrollArea {
+  overflow-y: auto;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.playlistScrollArea::-webkit-scrollbar {
+  width: 6px;
+}
+.playlistScrollArea::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 10px;
+}
+
+.moduleWrapper {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.moduleHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: #f8fafc;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.moduleHeader:hover {
+  background: #f1f5f9;
+}
+.moduleHeaderActive {
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.moduleTitleBox h4 {
+  margin: 0 0 4px 0;
+  color: #1e293b;
+  font-size: 1rem;
+  font-weight: 800;
+}
+.moduleTitleBox span {
+  color: #64748b;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.chevron {
+  color: #94a3b8;
+  font-size: 1.2rem;
+  transition: transform 0.3s;
+}
+.rotated {
+  transform: rotate(-180deg);
+}
+
+.moduleLessons {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+}
+.lessonRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 1px solid #f8fafc;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.lessonRow:hover {
+  background: #f8fafc;
+}
+.lessonRow:last-child {
+  border-bottom: none;
+}
+.lessonRowActive {
+  background: #eff6ff;
+  border-left: 3px solid #1a56db;
+}
+.lessonRowActive:hover {
+  background: #eff6ff;
+}
+
+.lessonMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-right: 15px;
+}
+.lessonName {
+  color: #475569;
+  font-weight: 700;
+  font-size: 0.9rem;
+  line-height: 1.3;
+}
+.lessonRowActive .lessonName {
+  color: #1a56db;
+  font-weight: 800;
+}
+.lessonDuration {
+  color: #94a3b8;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.lessonStatus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.statusCompleted {
+  color: #10b981;
+  font-size: 1.3rem;
+}
+.statusPlaying {
+  color: #1a56db;
+  font-size: 1.3rem;
+}
+.statusLocked {
+  color: #cbd5e1;
+  font-size: 1.1rem;
+}

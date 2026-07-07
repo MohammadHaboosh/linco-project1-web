@@ -38,9 +38,7 @@ const CourseCard = ({ course, isOwner, onEdit, onDelete }) => {
           </div>
         ) : (
           <div className={`${styles.statusBadge} ${styles[status]}`}>
-            {status === "draft"
-              ? t("draft", "Draft")
-              : t("published", "Published")}
+            {status === "draft" ? t("draft") : t("published")}
           </div>
         )}
       </div>
@@ -59,7 +57,7 @@ const CourseCard = ({ course, isOwner, onEdit, onDelete }) => {
                   e.stopPropagation();
                   onEdit(course);
                 }}
-                title={t("edit-course", "Edit Course")}
+                title={t("edit-course")}
               >
                 <IoPencilOutline />
               </button>
@@ -69,7 +67,7 @@ const CourseCard = ({ course, isOwner, onEdit, onDelete }) => {
                   e.stopPropagation();
                   onDelete(id);
                 }}
-                title={t("delete-course", "Delete Course")}
+                title={t("delete-course")}
               >
                 <IoTrashOutline />
               </button>
@@ -83,7 +81,7 @@ const CourseCard = ({ course, isOwner, onEdit, onDelete }) => {
 
         <div className={styles.metaTags}>
           <span className={styles.tag}>
-            <IoBookOutline /> {lessonsCount} {t("lessons", "Lessons")}
+            <IoBookOutline /> {lessonsCount} {t("lessons")}
           </span>
           <span className={styles.tag}>
             <IoTimeOutline /> {duration}
@@ -98,18 +96,18 @@ const CourseCard = ({ course, isOwner, onEdit, onDelete }) => {
               <div className={styles.statItem}>
                 <IoEyeOutline />{" "}
                 <span>
-                  {views} {t("views", "Views")}
+                  {views} {t("views")}
                 </span>
               </div>
               <div className={styles.statItem}>
                 <IoPeopleOutline />{" "}
                 <span>
-                  {studentsCount} {t("students", "Students")}
+                  {studentsCount} {t("students")}
                 </span>
               </div>
             </div>
             <div className={styles.lastUpdated}>
-              {t("last-updated", "Last Updated")}: {lastUpdated}
+              {t("last-updated")}: {lastUpdated}
             </div>
           </div>
         ) : (
@@ -128,10 +126,12 @@ const CourseCard = ({ course, isOwner, onEdit, onDelete }) => {
                 ></div>
               </div>
             </div>
-            <button className={styles.primaryCta}>
-              {progress > 0
-                ? t("continue-learning", "Continue Learning")
-                : t("start-learning", "Start Learning")}
+            {/* // console.log(`Navigating to course ${id}`) */}
+            <button
+              className={styles.primaryCta}
+              onClick={() => navigation.navigate(`/course-player`)}
+            >
+              {progress > 0 ? t("continue-learning") : t("start-learning")}
             </button>
           </div>
         )}

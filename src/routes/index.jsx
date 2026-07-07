@@ -38,6 +38,12 @@ import OwnerHomePage from "../pages/OwnerHomePage.jsx";
 import DemoRedirector from "../components/common/DemoRedirector.jsx";
 import CourseStudio from "../features/Demo/PublishCourse/components/CourseStudio/CourseStudio.jsx";
 import OwnerCoursesPage from "../pages/OwnerCoursesPage.jsx";
+import InquiriesPage from "../pages/InquiriesPage.jsx";
+import CoursePlayerPage from "../pages/CoursePlayerPage.jsx";
+import QuizContainer from "../features/Demo/CoursePlayer/components/QuizContainer.jsx";
+import ChatGroups from "../features/Demo/Chats/components/ChatGroups.jsx";
+import ChatRoom from "../features/Demo/Chats/components/ChatRoom.jsx";
+import VideoPlayer from "../features/Demo/CoursePlayer/components/VideoPlayer.jsx";
 // import WeeklyTasksPage from "../pages/WeeklyTasksPage.jsx";
 
 export const router = createBrowserRouter([
@@ -90,6 +96,12 @@ export const router = createBrowserRouter([
         path: PATHS.OWNER_COURSES,
         element: <OwnerCoursesPage />,
       },
+      {
+        path: PATHS.INQUIRIES,
+        element: <InquiriesPage />,
+      },
+      { path: PATHS.CHAT_GROUPS, element: <ChatGroups /> },
+      { path: PATHS.CHAT_ROOM, element: <ChatRoom /> },
       // { path: "certificates", element: <CertificatesPage /> },
     ],
   },
@@ -109,6 +121,15 @@ export const router = createBrowserRouter([
       {
         path: PATHS.LIVES,
         element: <LivesPage />,
+      },
+      {
+        path: PATHS.COURSE_PLAYER,
+        element: <CoursePlayerPage />,
+        children: [
+          { index: true, element: <CoursePlayerPage /> },
+          { path: PATHS.LESSON, element: <VideoPlayer /> },
+          { path: PATHS.QUIZ, element: <QuizContainer /> },
+        ],
       },
       // {
       //   path: PATHS.WEEKLY_TASKS,

@@ -46,7 +46,7 @@ export const DEMO_NAV = {
       {
         name: "Chat Channel",
         icon: <IoChatbubblesOutline />,
-        path: PATHS.CHAT,
+        path: PATHS.CHAT_CHANNEL,
       },
       {
         name: "Inquiries",
@@ -85,7 +85,7 @@ export const DEMO_NAV = {
       {
         name: "Inquiries",
         icon: <IoHelpCircleOutline />,
-        path: PATHS.OWNER_INQUIRIES,
+        path: PATHS.INQUIRIES,
       },
       {
         name: "Chat Channel",
@@ -112,7 +112,7 @@ export const DEMO_NAV = {
       {
         name: "Chat Channel",
         icon: <IoChatbubblesOutline />,
-        path: PATHS.CHAT,
+        path: PATHS.CHAT_CHANNEL,
       },
       {
         name: "Inquiries",
@@ -168,16 +168,6 @@ export const DEPARTMENT_NAV = {
         path: PATHS.SM_ASSETS,
       },
       {
-        name: "Inquiries",
-        icon: <IoHelpCircleOutline />,
-        path: PATHS.SM_INQUIRIES,
-      },
-      {
-        name: "Chat Channel",
-        icon: <IoChatbubblesOutline />,
-        path: PATHS.CHAT,
-      },
-      {
         name: "Tools Settings",
         icon: <IoSettingsOutline />,
         path: PATHS.SM_TOOLS,
@@ -187,13 +177,19 @@ export const DEPARTMENT_NAV = {
         icon: <IoMapOutline />,
         path: PATHS.SM_LEARNING_PATH,
       },
-      { name: "Road Maps", icon: <IoMapOutline />, path: PATHS.SM_ROADMAPS },
-      { name: "Weekly Tasks", icon: <IoListOutline />, path: PATHS.SM_TASKS },
       {
         name: "Leaderboard",
         icon: <IoPersonOutline />,
         path: PATHS.LEADERBOARD,
       },
+
+      {
+        name: "Chat Channel",
+        icon: <IoChatbubblesOutline />,
+        path: PATHS.CHAT_CHANNEL,
+      },
+      { name: "Road Maps", icon: <IoMapOutline />, path: PATHS.SM_ROADMAPS },
+      { name: "Weekly Tasks", icon: <IoListOutline />, path: PATHS.SM_TASKS },
     ],
   },
   owner: {
@@ -208,32 +204,28 @@ export const DEPARTMENT_NAV = {
         path: PATHS.SM_ASSETS,
       },
       {
-        name: "Inquiries",
-        icon: <IoHelpCircleOutline />,
-        path: PATHS.SM_INQUIRIES,
-      },
-      {
-        name: "Chat Channel",
-        icon: <IoChatbubblesOutline />,
-        path: PATHS.CHAT,
-      },
-      {
         name: "Tools Settings",
         icon: <IoSettingsOutline />,
         path: PATHS.SM_TOOLS,
+      },
+      {
+        name: "Leaderboard",
+        icon: <IoPersonOutline />,
+        path: PATHS.LEADERBOARD,
       },
       {
         name: "Learning Path",
         icon: <IoMapOutline />,
         path: PATHS.SM_LEARNING_PATH,
       },
+      {
+        name: "Chat Channel",
+        icon: <IoChatbubblesOutline />,
+        path: PATHS.CHAT_CHANNEL,
+      },
+
       { name: "Road Maps", icon: <IoMapOutline />, path: PATHS.SM_ROADMAPS },
       { name: "Weekly Tasks", icon: <IoListOutline />, path: PATHS.SM_TASKS },
-      {
-        name: "Leaderboard",
-        icon: <IoPersonOutline />,
-        path: PATHS.LEADERBOARD,
-      },
     ],
   },
 };

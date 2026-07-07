@@ -367,5 +367,19 @@
   "you-havent-created-any-workspaces-yet-start-by-creating-one-to-manage-your-team": "لم تقم بإنشاء أية مساحات عمل حتى الآن. \nابدأ بإنشاء واحدة لإدارة فريقك.",
   "collaboration": "تعاون",
   "access-training-spaces-you-have-been-invited-to-and-collaborate-with-your-teams": "يمكنك الوصول إلى مساحات التدريب التي تمت دعوتك إليها والتعاون مع فرقك.",
-  "you-havent-joined-any-workspace-yet-check-your-pending-invitations": "لم تنضم إلى أية غرف حتى الآن. \nتحقق من دعواتك المعلقة."
+  "you-havent-joined-any-workspace-yet-check-your-pending-invitations": "لم تنضم إلى أية غرف حتى الآن. \nتحقق من دعواتك المعلقة.",
+  "my-inquiries": "استفساراتي",
+  "track-your-support-tickets-complaints-and-questions": "تتبع تذاكر الدعم والشكاوى والأسئلة.",
+  "new-inquiry": "استفسار جديد",
+  "answered": "أجاب",
+  "pending": "قيد الانتظار",
+  "sent-to": "تم الإرسال إلى:",
+  "support-reply": "رد الدعم:",
+  "support-inbox": "دعم البريد الوارد",
+  "manage-incoming-inquiries-and-complaints-from-trainees": "إدارة الاستفسارات والشكاوى الواردة من المتدربين.",
+  "search-tickets": "البحث عن التذاكر...",
+  "write-your-response-here": "أكتب ردك هنا...",
+  "support-team": "فريق الدعم",
+  "send-reply": "إرسال الرد",
+  "select-a-ticket-to-view-details": "اختر تذكرة لعرض التفاصيل."
 }

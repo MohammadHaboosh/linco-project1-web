@@ -388,5 +388,19 @@
   "collaboration": "Collaboration",
   "access-training-spaces-you-have-been-invited-to-and-collaborate-with-your-teams": "Access training spaces you have been invited to and collaborate with your teams.",
   "search-room-by-name": "Search room by name...",
-  "you-havent-joined-any-workspace-yet-check-your-pending-invitations": "You haven't joined any rooms yet. Check your pending invitations."
+  "you-havent-joined-any-workspace-yet-check-your-pending-invitations": "You haven't joined any rooms yet. Check your pending invitations.",
+  "my-inquiries": "My Inquiries",
+  "track-your-support-tickets-complaints-and-questions": "Track your support tickets, complaints, and questions.",
+  "new-inquiry": "New Inquiry",
+  "answered": "Answered",
+  "pending": "Pending",
+  "sent-to": "Sent to:",
+  "support-reply": "Support Reply:",
+  "support-inbox": "Support Inbox",
+  "manage-incoming-inquiries-and-complaints-from-trainees": "Manage incoming inquiries and complaints from trainees.",
+  "search-tickets": "Search tickets...",
+  "support-team": "Support Team",
+  "write-your-response-here": "Write your response here...",
+  "send-reply": "Send Reply",
+  "select-a-ticket-to-view-details": "Select a ticket to view details."
 }
