@@ -109,7 +109,21 @@ export const router = createBrowserRouter([
     path: PATHS.DEMO_SECTION,
     element: <DepartmentLayout />,
     children: [
-      { index: true, element: <DepartmentPage /> },
+      {
+        index: true,
+        element: <DepartmentPage />,
+        children: [
+          {
+            path: PATHS.COURSE_PLAYER,
+            element: <CoursePlayerPage />,
+            children: [
+              { index: true, element: <CoursePlayerPage /> },
+              { path: PATHS.LESSON, element: <VideoPlayer /> },
+              { path: PATHS.QUIZ, element: <QuizContainer /> },
+            ],
+          },
+        ],
+      },
       {
         path: PATHS.LEARNING_PATH,
         element: <LearningPathPage />,
@@ -122,15 +136,7 @@ export const router = createBrowserRouter([
         path: PATHS.LIVES,
         element: <LivesPage />,
       },
-      {
-        path: PATHS.COURSE_PLAYER,
-        element: <CoursePlayerPage />,
-        children: [
-          { index: true, element: <CoursePlayerPage /> },
-          { path: PATHS.LESSON, element: <VideoPlayer /> },
-          { path: PATHS.QUIZ, element: <QuizContainer /> },
-        ],
-      },
+
       // {
       //   path: PATHS.WEEKLY_TASKS,
       //   element: <WeeklyTasksPage />,
