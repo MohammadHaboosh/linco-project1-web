@@ -7,6 +7,11 @@ import {
   generate2FA,
   turnOn2FA,
 } from "../api/profileApi.js";
+import {
+  getUploadUrl,
+  uploadFileToCloud,
+  updateUserProfilePhoto,
+} from "../../User/api/userApi.js";
 
 export const useProfile = () => {
   const dispatch = useDispatch();
@@ -14,6 +19,8 @@ export const useProfile = () => {
 
   const [isLoading, setIsLoading] = useState(!profile);
   const [error, setError] = useState(null);
+  const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
+  const [photoUploadError, setPhotoUploadError] = useState("");
 
   const [is2FAEnabled, setIs2FAEnabled] = useState(
     profile?.isTwoFactorEnabled || false,
@@ -102,6 +109,50 @@ export const useProfile = () => {
     }
   };
 
+  const handlePhotoChange = async (file) => {
+    if (!file) return;
+
+    setPhotoUploadError("");
+
+    if (!file.type.startsWith("image/")) {
+      setPhotoUploadError("Please select a valid image file.");
+      return;
+    }
+
+    if (!profile?.id) {
+      setPhotoUploadError("Unable to identify the current user.");
+      return;
+    }
+
+    setIsUploadingPhoto(true);
+
+    try {
+      const { data } = await getUploadUrl(file.name);
+      const { uploadUrl, cdnUrl } = data || {};
+
+      if (!uploadUrl || !cdnUrl) {
+        throw new Error("The image upload URL could not be generated.");
+      }
+
+      await uploadFileToCloud(uploadUrl, file);
+      await updateUserProfilePhoto(profile.id, cdnUrl);
+
+      dispatch(
+        setUser({
+          ...profile,
+          imagePath: cdnUrl,
+        }),
+      );
+    } catch (err) {
+      console.error("Failed to update profile photo:", err);
+      setPhotoUploadError(
+        err.message || "Failed to update profile photo. Please try again.",
+      );
+    } finally {
+      setIsUploadingPhoto(false);
+    }
+  };
+
   const handleGenerate2FA = async () => {
     setTwoFactorMessage({ type: "", message: "" });
     setIsSettingUp2FA(true);
@@ -161,6 +212,9 @@ export const useProfile = () => {
     lastName,
     fullName,
     initials,
+    isUploadingPhoto,
+    photoUploadError,
+    handlePhotoChange,
     // Password
     oldPassword,
     setOldPassword,

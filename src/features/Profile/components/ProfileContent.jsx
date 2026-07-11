@@ -7,8 +7,17 @@ import styles from "./ProfileContent.module.css";
 import { t } from "i18next";
 
 const ProfileContent = () => {
-  const { profile, isLoading, firstName, lastName, fullName, initials } =
-    useProfile();
+  const {
+    profile,
+    isLoading,
+    firstName,
+    lastName,
+    fullName,
+    initials,
+    isUploadingPhoto,
+    photoUploadError,
+    handlePhotoChange,
+  } = useProfile();
   const [activeTab, setActiveTab] = useState("general");
 
   if (isLoading) {
@@ -37,6 +46,9 @@ const ProfileContent = () => {
             initials={initials}
             activeTab={activeTab}
             setActiveTab={setActiveTab}
+            isUploadingPhoto={isUploadingPhoto}
+            photoUploadError={photoUploadError}
+            onPhotoChange={handlePhotoChange}
           />
 
           <main className={styles.tabContentArea}>

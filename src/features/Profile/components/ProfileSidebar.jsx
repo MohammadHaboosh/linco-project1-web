@@ -3,6 +3,7 @@ import {
   IoShieldCheckmarkOutline,
   IoCameraOutline,
 } from "react-icons/io5";
+import { useRef } from "react";
 import styles from "./ProfileContent.module.css";
 import { t } from "i18next";
 
@@ -12,7 +13,18 @@ const ProfileSidebar = ({
   initials,
   activeTab,
   setActiveTab,
+  isUploadingPhoto,
+  photoUploadError,
+  onPhotoChange,
 }) => {
+  const photoInputRef = useRef(null);
+
+  const handleFileSelection = (event) => {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    onPhotoChange(file);
+  };
+
   return (
     <aside className={styles.leftSidebar}>
       <div className={styles.userBriefCard}>
@@ -23,11 +35,41 @@ const ProfileSidebar = ({
             ) : (
               <span>{initials}</span>
             )}
-            <button className={styles.editAvatarBtn} title="Change Avatar">
+            {isUploadingPhoto && (
+              <div
+                className={styles.avatarUploadOverlay}
+                role="status"
+                aria-label="Uploading profile photo"
+              >
+                <span className={styles.avatarSpinner} />
+              </div>
+            )}
+            <input
+              ref={photoInputRef}
+              className={styles.hiddenFileInput}
+              type="file"
+              accept="image/*"
+              onChange={handleFileSelection}
+              disabled={isUploadingPhoto}
+            />
+            <button
+              type="button"
+              className={styles.editAvatarBtn}
+              title="Change Avatar"
+              aria-label="Change profile photo"
+              aria-busy={isUploadingPhoto}
+              disabled={isUploadingPhoto}
+              onClick={() => photoInputRef.current?.click()}
+            >
               <IoCameraOutline />
             </button>
           </div>
         </div>
+        {photoUploadError && (
+          <p className={styles.photoUploadError} role="alert">
+            {photoUploadError}
+          </p>
+        )}
         <h2 className={styles.userName}>{fullName}</h2>
         <p className={styles.userEmail}>
           {profile?.email || "nameusername@gmail.com"}

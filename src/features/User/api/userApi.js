@@ -33,6 +33,24 @@ export const uploadFileToCloud = async (uploadUrl, file) => {
   }
 };
 
+export const updateUserProfilePhoto = async (userId, imagePath) => {
+  const response = await apiFetch(`/users/${userId}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      "x-client-type": "web",
+    },
+    body: JSON.stringify({ imagePath }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || "Failed to update profile photo");
+  }
+
+  return response.json().catch(() => ({}));
+};
+
 export const registerUser = async (userData) => {
   const response = await fetch(`${BASE_URL}/authentication/sign-up`, {
     method: "POST",
