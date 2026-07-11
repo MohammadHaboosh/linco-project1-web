@@ -246,12 +246,6 @@ export const forgotPassword = async (email) => {
 
 export const resetPassword = async (token, newPassword) => {
   try {
-    console.log(
-      "Resetting password with token:",
-      token,
-      "and newPassword:",
-      newPassword,
-    );
     const response = await fetch(`${BASE_URL}/authentication/reset-password`, {
       method: "POST",
       headers: {
@@ -266,8 +260,7 @@ export const resetPassword = async (token, newPassword) => {
     });
 
     const data = await response.json();
-    console.log("Backend Response: ", data);
-
+    
     if (!response.ok) {
       throw new Error(data.message || `HTTP error! status: ${response.status}`);
     }
