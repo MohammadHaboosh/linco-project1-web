@@ -258,6 +258,7 @@ export const resetPassword = async (token, newPassword) => {
         "Content-Type": "application/json",
         "x-client-type": "web",
       },
+      credentials: "include",
       body: JSON.stringify({
         password: newPassword,
         token: token,

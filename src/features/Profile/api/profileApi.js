@@ -2,6 +2,7 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const fetchCurrentUser = async () => {
   const response = await fetch(`${BASE_URL}/user/me`, {
+    method: "GET",
     headers: {
       "Content-Type": "application/json",
       "x-client-type": "web",
