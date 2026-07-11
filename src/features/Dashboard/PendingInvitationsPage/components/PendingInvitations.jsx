@@ -6,34 +6,22 @@ import {
   IoCheckmarkDoneOutline,
 } from "react-icons/io5";
 import InvitationCard from "../../../../components/elements/InvitationCard/InvitationCard";
+import { usePendingInvitations } from "../hooks/usePendingInvitations.jsx";
 import styles from "./PendingInvitations.module.css";
 
 const PendingInvitationsContent = () => {
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
+  const {
+    invitations,
+    isLoading,
+    acceptInvitation,
+    rejectInvitation,
+    processingInvitationId,
+    processingAction,
+    actionError,
+  } = usePendingInvitations();
 
-  // =========================================================
-  // 💡 اللوجيك الخاص بك: استبدل هذه المصفوفة بالـ Hook الخاص بك لجلب البيانات
-  // مثال: const { invitations, isLoading, acceptInvite, rejectInvite } = usePendingInvitations();
-  // =========================================================
-  const [invitations, setInvitations] = useState([
-    {
-      id: 1,
-      company: "Google Workspace",
-      caller: "Ahmad Sami",
-      role: "Trainee",
-      time: "10:30 AM",
-    },
-    {
-      id: 2,
-      company: "Microsoft Team",
-      caller: "Sara Majed",
-      role: "Section Manager",
-      time: "Yesterday",
-    },
-  ]);
-
-  // دالة البحث (تعمل محلياً على تصفية المصفوفة)
   const filteredInvitations = invitations.filter(
     (inv) =>
       inv.company.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -84,7 +72,12 @@ const PendingInvitationsContent = () => {
 
       {/* 3. قائمة الدعوات */}
       <div className={styles.listSection}>
-        {filteredInvitations.length === 0 ? (
+        {isLoading ? (
+          <div className={styles.loadingState}>
+            <span className={styles.loader}></span>
+            <p>{t("loading-invitations", "Loading invitations...")}</p>
+          </div>
+        ) : filteredInvitations.length === 0 ? (
           // حالة عدم وجود دعوات (Empty State)
           <div className={styles.emptyState}>
             <div className={styles.emptyIconBox}>
@@ -104,7 +97,16 @@ const PendingInvitationsContent = () => {
               <InvitationCard
                 key={inv.id}
                 invitation={inv}
-                compact={false} // 💡 تأكد من أن compact=false ليعرض التصميم العريض الخاص بالصفحة
+                compact={false}
+                onAccept={acceptInvitation}
+                onReject={rejectInvitation}
+                isProcessing={processingInvitationId === inv.id}
+                processingAction={processingAction}
+                actionError={
+                  actionError?.invitationId === inv.id
+                    ? actionError.message
+                    : null
+                }
               />
             ))}
           </div>

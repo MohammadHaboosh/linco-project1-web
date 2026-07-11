@@ -4,31 +4,16 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { PATHS } from "../../../../../routes/paths.js";
 
-const PendingInvitations = () => {
+const PendingInvitations = ({
+  invitations,
+  isLoading,
+  onAccept,
+  onReject,
+  processingInvitationId,
+  processingAction,
+  actionError,
+}) => {
   const navigate = useNavigate();
-  const invitations = [
-    {
-      id: 1,
-      company: "Company name",
-      caller: "Name of the caller",
-      role: "As a trainee",
-      time: "13:40 pm",
-    },
-    {
-      id: 2,
-      company: "Company name",
-      caller: "Name of the caller",
-      role: "As a trainee",
-      time: "13:40 pm",
-    },
-    {
-      id: 3,
-      company: "Company name",
-      caller: "Name of the caller",
-      role: "As a trainee",
-      time: "13:40 pm",
-    },
-  ];
   const { t } = useTranslation();
 
   return (
@@ -47,9 +32,33 @@ const PendingInvitations = () => {
       </div>
 
       <div className={styles["list-container"]}>
-        {invitations.map((inv) => (
-          <InvitationCard key={inv.id} invitation={inv} compact={true} />
-        ))}
+        {isLoading ? (
+          <div className={styles["loading-state"]}>
+            <span className={styles.loader}></span>
+            <p>{t("loading-invitations", "Loading invitations...")}</p>
+          </div>
+        ) : invitations.length === 0 ? (
+          <p className={styles["empty-state"]}>
+            {t("no-pending-invitations", "No pending invitations.")}
+          </p>
+        ) : (
+          invitations.map((invitation) => (
+            <InvitationCard
+              key={invitation.id}
+              invitation={invitation}
+              compact={true}
+              onAccept={onAccept}
+              onReject={onReject}
+              isProcessing={processingInvitationId === invitation.id}
+              processingAction={processingAction}
+              actionError={
+                actionError?.invitationId === invitation.id
+                  ? actionError.message
+                  : null
+              }
+            />
+          ))
+        )}
       </div>
     </div>
   );
