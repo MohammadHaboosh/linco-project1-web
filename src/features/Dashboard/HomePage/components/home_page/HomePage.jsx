@@ -8,7 +8,7 @@ import { useHomePage } from "../../hooks/useHomePage.jsx";
 const HomePage = () => {
   const { t } = useTranslation();
   const { profile } = useUser();
-  const { ownedRooms, isLoadingOwnedRooms, activeRooms, workedRooms } =
+  const { ownedRooms, isLoadingOwnedRooms, activeRooms } =
     useHomePage();
 
   return (

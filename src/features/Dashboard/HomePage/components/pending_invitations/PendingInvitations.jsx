@@ -1,8 +1,11 @@
 import styles from "./PendingInvitations.module.css";
 import InvitationCard from "../../../../../components/elements/InvitationCard/InvitationCard.jsx";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { PATHS } from "../../../../../routes/paths.js";
 
 const PendingInvitations = () => {
+  const navigate = useNavigate();
   const invitations = [
     {
       id: 1,
@@ -35,7 +38,10 @@ const PendingInvitations = () => {
     >
       <div className={styles["section-header"]}>
         <h2>{t("new-pending-invitations")}</h2>
-        <button className={styles["view-all"]}>
+        <button
+          className={styles["view-all"]}
+          onClick={() => navigate(PATHS.PENDING_INVITATIONS)}
+        >
           {t("view-all-pending-invitations")}
         </button>
       </div>

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { IoFolderOpenOutline, IoBusinessOutline } from "react-icons/io5";
 import { useOwnedRooms } from "../hooks/useOwnedRooms.jsx";
@@ -6,7 +5,7 @@ import SharedRoomsLayout from "../../components/SharedRoomsLayout";
 
 const MyOwnRooms = () => {
   const { t } = useTranslation();
-  const { ownedRooms, isLoading, error } = useOwnedRooms();
+  const { ownedRooms, isLoading } = useOwnedRooms();
 
   return (
     <SharedRoomsLayout

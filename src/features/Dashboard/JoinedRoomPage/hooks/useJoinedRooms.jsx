@@ -17,11 +17,12 @@ export const useJoinedRooms = () => {
           const mappedRooms = json.data
             .filter((room) => room.isOwner === false)
             .map((room) => ({
+              ...room,
               id: room.id,
               companyName: room.name,
               role: "Trainee",
               dateJoined: new Date(room.createdAt).toLocaleDateString("en-GB"),
-              members: room.membersCount || 0,
+              members: room.membersCount ?? 0,
             }));
 
           setJoinedRooms(mappedRooms);

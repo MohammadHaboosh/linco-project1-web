@@ -16,11 +16,12 @@ export const useOwnedRooms = () => {
           const mappedRooms = json.data
             .filter((room) => room.isOwner === true)
             .map((room) => ({
+              ...room,
               id: room.id,
               companyName: room.name,
               role: "Owner",
               dateJoined: new Date(room.createdAt).toLocaleDateString("en-GB"),
-              members: room.membersCount || 0,
+              members: room.membersCount ?? 0,
             }));
 
           setOwnedRooms(mappedRooms);
