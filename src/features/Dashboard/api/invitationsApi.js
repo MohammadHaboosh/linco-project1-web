@@ -1,9 +1,8 @@
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import { apiFetch } from "../../../api/apiFetch";
 
 export const fetchPendingInvitations = async () => {
-  const response = await fetch(`${BASE_URL}/invitations/cursor`, {
+  const response = await apiFetch("/invitations/cursor", {
     method: "GET",
-    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
@@ -17,11 +16,10 @@ export const fetchPendingInvitations = async () => {
 };
 
 const updateInvitationStatus = async (invitationId, action) => {
-  const response = await fetch(
-    `${BASE_URL}/invitations/${encodeURIComponent(invitationId)}/${action}`,
+  const response = await apiFetch(
+    `/invitations/${encodeURIComponent(invitationId)}/${action}`,
     {
       method: "POST",
-      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },

@@ -1,13 +1,12 @@
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import { apiFetch } from "../../../api/apiFetch";
 
 export const getUploadUrl = async (fileName) => {
-  const response = await fetch(`${BASE_URL}/demos/upload-url`, {
+  const response = await apiFetch("/demos/upload-url", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "x-client-type": "web",
     },
-    credentials: "include",
     body: JSON.stringify({ fileName }),
   });
 
@@ -31,13 +30,12 @@ export const uploadFileToCloud = async (uploadUrl, file) => {
 };
 
 export const createRoom = async (data) => {
-  const response = await fetch(`${BASE_URL}/demos`, {
+  const response = await apiFetch("/demos", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "x-client-type": "web",
     },
-    credentials: "include",
     body: JSON.stringify({
       name: data.name,
       description: data.description,

@@ -1,13 +1,14 @@
+import { apiFetch } from "../../../api/apiFetch";
+
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const getUploadUrl = async (fileName) => {
-  const response = await fetch(`${BASE_URL}/users/upload-url`, {
+  const response = await apiFetch("/users/upload-url", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "x-client-type": "web",
     },
-    credentials: "include",
     body: JSON.stringify({ fileName }),
   });
 
@@ -171,24 +172,18 @@ export const logoutUser = async () => {
 };
 
 export const fetchCurrentUser = async () => {
-  const refreshResponse = await fetch(
-    `${BASE_URL}/authentication/refresh-tokens`,
+  const response = await apiFetch(
+    "/users/me",
     {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-client-type": "web" },
-      credentials: "include",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     },
+    { redirectOnAuthFailure: false },
   );
 
-  if (!refreshResponse.ok) {
-    return null;
-  }
-
-  const response = await fetch(`${BASE_URL}/users/me`, {
-    method: "GET",
-    headers: { "Content-Type": "application/json", "x-client-type": "web" },
-    credentials: "include",
-  });
+  if (!response.ok) return null;
 
   const data = await response.json();
   return data;

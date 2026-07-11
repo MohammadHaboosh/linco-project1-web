@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { apiFetch } from "../api/apiFetch";
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const DemoContext = createContext();
 
 export const DemoProvider = ({ children }) => {
@@ -17,13 +17,12 @@ export const DemoProvider = ({ children }) => {
     const loadDemoData = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`${BASE_URL}/demos/${demoId}`, {
+        const response = await apiFetch(`/demos/${demoId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
             "x-client-type": "web",
           },
-          credentials: "include",
         });
 
         if (!response.ok) {

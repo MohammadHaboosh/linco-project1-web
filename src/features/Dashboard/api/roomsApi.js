@@ -1,9 +1,8 @@
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import { apiFetch } from "../../../api/apiFetch";
 
 export const fetchDemos = async () => {
-  const response = await fetch(`${BASE_URL}/demos`, {
+  const response = await apiFetch("/demos", {
     method: "GET",
-    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },

@@ -1,17 +1,16 @@
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import { apiFetch } from "../../../../api/apiFetch";
 
 export const departmentApi = {
   searchMembers: async (demoId, searchQuery) => {
     try {
-      const response = await fetch(
-        `${BASE_URL}/demos/${demoId}/members?search=${encodeURIComponent(searchQuery)}`,
+      const response = await apiFetch(
+        `/demos/${demoId}/members?search=${encodeURIComponent(searchQuery)}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
             "x-client-type": "web",
           },
-          credentials: "include",
         },
       );
 
@@ -32,13 +31,12 @@ export const departmentApi = {
     try {
       console.log(departmentPayload);
       console.log(JSON.stringify(departmentPayload));
-      const response = await fetch(`${BASE_URL}/demos/${demoId}/departments`, {
+      const response = await apiFetch(`/demos/${demoId}/departments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "x-client-type": "web",
         },
-        credentials: "include",
         body: JSON.stringify(departmentPayload),
       });
 
@@ -56,13 +54,12 @@ export const departmentApi = {
 
   getDepartments: async (demoId) => {
     try {
-      const response = await fetch(`${BASE_URL}/demos/${demoId}/departments`, {
+      const response = await apiFetch(`/demos/${demoId}/departments`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           "x-client-type": "web",
         },
-        credentials: "include",
       });
 
       const data = await response.json();
@@ -91,15 +88,14 @@ export const departmentApi = {
 
   deleteDepartment: async (demoId, departmentId) => {
     try {
-      const response = await fetch(
-        `${BASE_URL}/demos/${demoId}/departments/${departmentId}`,
+      const response = await apiFetch(
+        `/demos/${demoId}/departments/${departmentId}`,
         {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
             "x-client-type": "web",
           },
-          credentials: "include",
         },
       );
 

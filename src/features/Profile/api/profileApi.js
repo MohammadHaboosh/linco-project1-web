@@ -1,13 +1,12 @@
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import { apiFetch } from "../../../api/apiFetch";
 
 export const fetchCurrentUser = async () => {
-  const response = await fetch(`${BASE_URL}/user/me`, {
+  const response = await apiFetch("/user/me", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
       "x-client-type": "web",
     },
-    credentials: "include",
   });
 
   if (!response.ok) {
@@ -18,13 +17,12 @@ export const fetchCurrentUser = async () => {
 };
 
 export const changePassword = async (oldPassword, newPassword) => {
-  const response = await fetch(`${BASE_URL}/authentication/change-password`, {
+  const response = await apiFetch("/authentication/change-password", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "x-client-type": "web",
     },
-    credentials: "include",
     body: JSON.stringify({
       oldPassword,
       newPassword,
@@ -43,13 +41,12 @@ export const changePassword = async (oldPassword, newPassword) => {
 };
 
 export const generate2FA = async () => {
-  const response = await fetch(`${BASE_URL}/authentication/2fa/generate`, {
+  const response = await apiFetch("/authentication/2fa/generate", {
     method: "POST", 
     headers: {
       "Content-Type": "application/json",
       "x-client-type": "web",
     },
-    credentials: "include",
   });
 
   if (!response.ok) {
@@ -61,13 +58,12 @@ export const generate2FA = async () => {
 };
 
 export const turnOn2FA = async (code) => {
-  const response = await fetch(`${BASE_URL}/authentication/2fa/turn-on`, {
+  const response = await apiFetch("/authentication/2fa/turn-on", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "x-client-type": "web",
     },
-    credentials: "include",
     body: JSON.stringify({ 
       "tfaCode": code
      }), 
