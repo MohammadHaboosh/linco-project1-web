@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
@@ -13,12 +12,7 @@ import { useJoinedRooms } from "../hooks/useJoinedRooms.jsx";
 const JoinedRooms = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  // Consume the hook
   const { joinedRooms, isLoading } = useJoinedRooms();
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
   const CheckInvitationsBtn = (
     <button

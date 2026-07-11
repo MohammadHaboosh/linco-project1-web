@@ -17,10 +17,10 @@ const RoomCard = ({ room }) => {
     navigate(PATHS.DEMO.replace(":demoId", room?.id));
   };
 
-  const safeName = room?.name || room?.companyName || "Workspace";
+  const safeName = room?.name || "Workspace";
   const displayDesc =
     room?.description || "No description provided for this workspace.";
-  const displayMembers = room?.membersCount || room?.members || 0;
+  const displayMembers = room?.membersCount || 0;
   const displayRole = room?.isOwner ? "Owner" : room?.role || "Member";
   const displayDate = room?.createdAt
     ? new Date(room.createdAt).toLocaleDateString()
@@ -35,7 +35,7 @@ const RoomCard = ({ room }) => {
       <div className={styles.cardHeader}>
         <div className={styles.brandSection}>
           <div className={styles.logoBox}>
-            {room?.imagePath && room?.imagePath !== "qwertyuikol" ? (
+            {room?.imagePath ? (
               <img
                 src={room.imagePath}
                 alt={safeName}
