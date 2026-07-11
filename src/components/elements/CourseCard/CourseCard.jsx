@@ -126,7 +126,6 @@ const CourseCard = ({ course, isOwner, onEdit, onDelete }) => {
                 ></div>
               </div>
             </div>
-            {/* // console.log(`Navigating to course ${id}`) */}
             <button
               className={styles.primaryCta}
               onClick={() => navigation.navigate(`/course-player`)}

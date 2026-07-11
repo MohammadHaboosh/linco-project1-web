@@ -68,6 +68,12 @@
   transition: all 0.2s;
 }
 
+.list-actions button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+  transform: none;
+}
+
 .btn-accept {
   background-color: #0a2a54;
   color: #ffffff;
@@ -166,4 +172,17 @@
   padding: 8px 16px;
   flex: 1;
   font-size: 0.85rem;
+}
+
+.action-error {
+  flex-basis: 100%;
+  color: #dc2626;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: right;
+  margin: 4px 0 0;
+}
+
+.compact-card .action-error {
+  text-align: center;
 }

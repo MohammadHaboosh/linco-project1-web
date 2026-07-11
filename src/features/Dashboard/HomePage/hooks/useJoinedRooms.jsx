@@ -16,12 +16,12 @@ export const useJoinedRooms = () => {
           const mappedRooms = json.data
             .filter((room) => !room.isOwner)
             .map((room) => ({
+              ...room,
               id: room.id,
               companyName: room.name,
-              // Defaulting to Trainee as seen in your previous mock data
-              role: room.role || "Trainee", 
+              role: room.role || "Trainee",
               dateJoined: new Date(room.createdAt).toLocaleDateString("en-GB"),
-              members: room.membersCount || 0,
+              members: room.membersCount ?? 0,
             }));
 
           setJoinedRooms(mappedRooms);

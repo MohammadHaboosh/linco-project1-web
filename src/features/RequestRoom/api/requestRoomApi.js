@@ -1,13 +1,12 @@
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import { apiFetch } from "../../../api/apiFetch";
 
 export const getUploadUrl = async (fileName) => {
-  const response = await fetch(`${BASE_URL}/demos/upload-url`, {
+  const response = await apiFetch("/demos/upload-url", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "x-client-type": "web",
     },
-    credentials: "include",
     body: JSON.stringify({ fileName }),
   });
 
@@ -30,21 +29,35 @@ export const uploadFileToCloud = async (uploadUrl, file) => {
   }
 };
 
-export const createRoom = async (data) => {
-  const response = await fetch(`${BASE_URL}/demos`, {
+export const createRoom = async ({ name, imagePath, description }) => {
+  const payload = {
+    name,
+    imagePath,
+    description,
+  };
+
+  const hasMissingField = Object.values(payload).some(
+    (value) => typeof value !== "string" || !value.trim(),
+  );
+
+  if (hasMissingField) {
+    throw new Error("Name, image path, and description are required");
+  }
+
+  const response = await apiFetch("/demos", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "x-client-type": "web",
     },
-    credentials: "include",
-    body: JSON.stringify({
-      name: data.name,
-      description: data.description,
-      imagePath: data.imagePath,
-    }),
+    body: JSON.stringify(payload),
   });
-  
-  if (!response.ok) throw new Error("Failed to create the room");
-  return response.json();
+
+  const responseData = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    throw new Error(responseData.message || "Failed to create the room");
+  }
+
+  return responseData;
 };

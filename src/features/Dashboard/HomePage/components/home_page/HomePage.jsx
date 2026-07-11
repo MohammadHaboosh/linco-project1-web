@@ -8,8 +8,18 @@ import { useHomePage } from "../../hooks/useHomePage.jsx";
 const HomePage = () => {
   const { t } = useTranslation();
   const { profile } = useUser();
-  const { ownedRooms, isLoadingOwnedRooms, activeRooms, workedRooms } =
-    useHomePage();
+  const {
+    ownedRooms,
+    isLoadingOwnedRooms,
+    activeRooms,
+    pendingInvitations,
+    isLoadingInvitations,
+    acceptInvitation,
+    rejectInvitation,
+    processingInvitationId,
+    processingAction,
+    invitationActionError,
+  } = useHomePage();
 
   return (
     <div className={styles.dashboardContainer}>
@@ -58,7 +68,15 @@ const HomePage = () => {
         </div>
 
         <div className={styles.sideColumn}>
-          <PendingInvitations />
+          <PendingInvitations
+            invitations={pendingInvitations}
+            isLoading={isLoadingInvitations}
+            onAccept={acceptInvitation}
+            onReject={rejectInvitation}
+            processingInvitationId={processingInvitationId}
+            processingAction={processingAction}
+            actionError={invitationActionError}
+          />
 
           <div className={styles.quickStatsCard}>
             <h3>{t("quick-activity")}</h3>

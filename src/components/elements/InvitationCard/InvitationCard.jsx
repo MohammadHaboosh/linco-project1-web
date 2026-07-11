@@ -2,8 +2,25 @@ import { useTranslation } from "react-i18next";
 import { IoTimeOutline } from "react-icons/io5";
 import styles from "./InvitationCard.module.css";
 
-const InvitationCard = ({ invitation, compact = false }) => {
+const InvitationCard = ({
+  invitation,
+  compact = false,
+  onAccept,
+  onReject,
+  isProcessing = false,
+  processingAction,
+  actionError,
+}) => {
   const { t } = useTranslation();
+
+  const acceptLabel =
+    isProcessing && processingAction === "accept"
+      ? t("accepting", "Accepting...")
+      : t("accept");
+  const rejectLabel =
+    isProcessing && processingAction === "reject"
+      ? t("rejecting", "Rejecting...")
+      : t("reject");
 
   if (compact) {
     return (
@@ -28,9 +45,31 @@ const InvitationCard = ({ invitation, compact = false }) => {
         <div
           className={`${styles["list-actions"]} ${styles["compact-actions"]}`}
         >
-          <button className={styles["btn-accept"]}>{t("accept")}</button>
-          <button className={styles["btn-reject"]}>{t("reject")}</button>
+          <button
+            type="button"
+            className={styles["btn-accept"]}
+            onClick={() => onAccept?.(invitation.id)}
+            disabled={isProcessing}
+            aria-busy={isProcessing && processingAction === "accept"}
+          >
+            {acceptLabel}
+          </button>
+          <button
+            type="button"
+            className={styles["btn-reject"]}
+            onClick={() => onReject?.(invitation.id)}
+            disabled={isProcessing}
+            aria-busy={isProcessing && processingAction === "reject"}
+          >
+            {rejectLabel}
+          </button>
         </div>
+
+        {actionError && (
+          <p className={styles["action-error"]} role="alert">
+            {actionError}
+          </p>
+        )}
       </div>
     );
   }
@@ -46,9 +85,31 @@ const InvitationCard = ({ invitation, compact = false }) => {
       <div className={styles["text-item"]}>{invitation.time}</div>
 
       <div className={styles["list-actions"]}>
-        <button className={styles["btn-accept"]}>{t("accept")}</button>
-        <button className={styles["btn-reject"]}>{t("reject")}</button>
+        <button
+          type="button"
+          className={styles["btn-accept"]}
+          onClick={() => onAccept?.(invitation.id)}
+          disabled={isProcessing}
+          aria-busy={isProcessing && processingAction === "accept"}
+        >
+          {acceptLabel}
+        </button>
+        <button
+          type="button"
+          className={styles["btn-reject"]}
+          onClick={() => onReject?.(invitation.id)}
+          disabled={isProcessing}
+          aria-busy={isProcessing && processingAction === "reject"}
+        >
+          {rejectLabel}
+        </button>
       </div>
+
+      {actionError && (
+        <p className={styles["action-error"]} role="alert">
+          {actionError}
+        </p>
+      )}
     </div>
   );
 };

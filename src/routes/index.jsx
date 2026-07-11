@@ -3,7 +3,7 @@ import { PATHS } from "./paths";
 import { t } from "i18next";
 
 // ==========================================
-import LandingPage from "../pages/LandingPage.jsx";
+import LandingRedirector from "../components/common/LandingRedirector.jsx";
 import SignupPage from "../pages/SignupPage.jsx";
 import SinginPage from "../pages/SigninPage.jsx";
 import VerifyEmailPage from "../pages/VerifyEmailPage.jsx";
@@ -47,7 +47,7 @@ import CertificatesPage from "../pages/CertificatesPage.jsx";
 // import WeeklyTasksPage from "../pages/WeeklyTasksPage.jsx";
 
 export const router = createBrowserRouter([
-  { path: PATHS.LANDING, element: <LandingPage /> },
+  { path: PATHS.LANDING, element: <LandingRedirector /> },
   { path: PATHS.SIGNIN, element: <SinginPage /> },
   { path: PATHS.SIGNUP, element: <SignupPage /> },
   { path: PATHS.CHECK_EMAIL, element: <VerifyEmailPage /> },

@@ -1,13 +1,14 @@
+import { apiFetch } from "../../../api/apiFetch";
+
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const getUploadUrl = async (fileName) => {
-  const response = await fetch(`${BASE_URL}/users/upload-url`, {
+  const response = await apiFetch("/users/upload-url", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "x-client-type": "web",
     },
-    credentials: "include",
     body: JSON.stringify({ fileName }),
   });
 
@@ -30,6 +31,24 @@ export const uploadFileToCloud = async (uploadUrl, file) => {
   if (!response.ok) {
     throw new Error("Failed to upload image to the cloud");
   }
+};
+
+export const updateUserProfilePhoto = async (userId, imagePath) => {
+  const response = await apiFetch(`/users/${userId}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      "x-client-type": "web",
+    },
+    body: JSON.stringify({ imagePath }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || "Failed to update profile photo");
+  }
+
+  return response.json().catch(() => ({}));
 };
 
 export const registerUser = async (userData) => {
@@ -171,24 +190,18 @@ export const logoutUser = async () => {
 };
 
 export const fetchCurrentUser = async () => {
-  const refreshResponse = await fetch(
-    `${BASE_URL}/authentication/refresh-tokens`,
+  const response = await apiFetch(
+    "/users/me",
     {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-client-type": "web" },
-      credentials: "include",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     },
+    { redirectOnAuthFailure: false },
   );
 
-  if (!refreshResponse.ok) {
-    return null;
-  }
-
-  const response = await fetch(`${BASE_URL}/users/me`, {
-    method: "GET",
-    headers: { "Content-Type": "application/json", "x-client-type": "web" },
-    credentials: "include",
-  });
+  if (!response.ok) return null;
 
   const data = await response.json();
   return data;
@@ -246,18 +259,13 @@ export const forgotPassword = async (email) => {
 
 export const resetPassword = async (token, newPassword) => {
   try {
-    console.log(
-      "Resetting password with token:",
-      token,
-      "and newPassword:",
-      newPassword,
-    );
     const response = await fetch(`${BASE_URL}/authentication/reset-password`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "x-client-type": "web",
       },
+      credentials: "include",
       body: JSON.stringify({
         password: newPassword,
         token: token,
@@ -265,8 +273,7 @@ export const resetPassword = async (token, newPassword) => {
     });
 
     const data = await response.json();
-    console.log("Backend Response: ", data);
-
+    
     if (!response.ok) {
       throw new Error(data.message || `HTTP error! status: ${response.status}`);
     }

@@ -1,13 +1,24 @@
 import { useOwnedRooms } from "../../MyOwnRoomsPage/hooks/useOwnedRooms";
-import { useJoinedRooms } from "./useJoinedRooms.jsx"
+import { usePendingInvitations } from "../../PendingInvitationsPage/hooks/usePendingInvitations.jsx";
+import { useJoinedRooms } from "./useJoinedRooms.jsx";
 
 export const useHomePage = () => {
   const { ownedRooms, isLoading: isLoadingOwnedRooms } = useOwnedRooms();
   const { joinedRooms, isLoading: isLoadingJoinedRooms } =
     useJoinedRooms();
+  const {
+    invitations,
+    isLoading: isLoadingInvitations,
+    acceptInvitation,
+    rejectInvitation,
+    processingInvitationId,
+    processingAction,
+    actionError: invitationActionError,
+  } = usePendingInvitations();
 
   const previewOwnedRooms = ownedRooms.slice(0, 2);
   const previewJoinedRooms = joinedRooms.slice(0, 2);
+  const previewInvitations = invitations.slice(0, 3);
 
   const workedRooms = [
     {
@@ -24,6 +35,13 @@ export const useHomePage = () => {
     isLoadingOwnedRooms,
     activeRooms: previewJoinedRooms,
     isLoadingJoinedRooms,
+    pendingInvitations: previewInvitations,
+    isLoadingInvitations,
+    acceptInvitation,
+    rejectInvitation,
+    processingInvitationId,
+    processingAction,
+    invitationActionError,
     workedRooms,
   };
 };
