@@ -22,7 +22,6 @@ export const useCreateDepartment = (demoId, onSuccess) => {
   };
 
   useEffect(() => {
-    // 1. ننشئ وحدة إلغاء للطلب
     const controller = new AbortController();
     const { signal } = controller;
 
