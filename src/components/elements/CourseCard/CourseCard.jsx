@@ -26,6 +26,8 @@ const CourseCard = ({ course, isOwner, onEdit, onDelete }) => {
     status = "published",
     lastUpdated = "Recently",
   } = course || {};
+  // temp edit
+  isOwner = false;
 
   return (
     <div className={styles.card}>
