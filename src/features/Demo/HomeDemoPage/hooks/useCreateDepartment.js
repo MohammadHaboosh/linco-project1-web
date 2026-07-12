@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react";
-import { departmentApi } from "../api/departmentApi";
+import { useState, useEffect } from 'react';
+import { departmentApi } from '../api/departmentApi';
 
 export const useCreateDepartment = (demoId, onSuccess) => {
   const [formData, setFormData] = useState({
-    name: "",
-    description: "",
+    name: '',
+    description: '',
   });
 
   const [selectedUser, setSelectedUser] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
 
   const [isSearching, setIsSearching] = useState(false);
@@ -22,6 +22,9 @@ export const useCreateDepartment = (demoId, onSuccess) => {
   };
 
   useEffect(() => {
+    const controller = new AbortController();
+    const { signal } = controller;
+
     const delayDebounceFn = setTimeout(async () => {
       if (!searchQuery.trim()) {
         setSearchResults([]);
@@ -31,16 +34,28 @@ export const useCreateDepartment = (demoId, onSuccess) => {
 
       setIsSearching(true);
       try {
-        const results = await departmentApi.searchMembers(demoId, searchQuery);
-        setSearchResults(results);
-      } catch (err) {
-        console.error("Search failed", err);
-      } finally {
-        setIsSearching(false);
-      }
-    }, 500);
+        const results = await departmentApi.searchMembers(demoId, searchQuery, {
+          signal,
+        });
 
-    return () => clearTimeout(delayDebounceFn);
+        if (!signal.aborted) {
+          setSearchResults(results);
+        }
+      } catch (err) {
+        if (err.name !== 'AbortError' && err.name !== 'CanceledError') {
+          console.error('Search failed', err);
+        }
+      } finally {
+        if (!signal.aborted) {
+          setIsSearching(false);
+        }
+      }
+    }, 300);
+
+    return () => {
+      clearTimeout(delayDebounceFn);
+      controller.abort();
+    };
   }, [searchQuery, demoId]);
 
   const handleSubmit = async (e) => {
@@ -49,19 +64,19 @@ export const useCreateDepartment = (demoId, onSuccess) => {
     console.log(`${formData.name} Department title is required.`);
     if (!formData.name.trim()) {
       console.log(`${formData.name} Department title is required.`);
-      setError("Department title is required.");
+      setError('Department title is required.');
       return;
     }
     console.log(`${selectedUser} selectedUser is required.`);
     if (!selectedUser) {
       console.log(`${selectedUser} selectedUser is required.`);
-      setError("Please select a manager/member from the search.");
+      setError('Please select a manager/member from the search.');
       return;
     }
     console.log(`${demoId} demoId is required.`);
     if (!demoId) {
       console.log(`${demoId} demoId is required.`);
-      setError("Demo ID is missing.");
+      setError('Demo ID is missing.');
       return;
     }
 
@@ -78,7 +93,7 @@ export const useCreateDepartment = (demoId, onSuccess) => {
       if (onSuccess) onSuccess();
     } catch (err) {
       setError(
-        err.message || "An error occurred while creating the department.",
+        err.message || 'An error occurred while creating the department.',
       );
     } finally {
       setIsSubmitting(false);

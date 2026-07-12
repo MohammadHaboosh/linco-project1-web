@@ -1,55 +1,33 @@
 import { useState } from "react";
-import { IoMapOutline, IoSearchOutline } from "react-icons/io5";
-import RoadmapCard from "./RoadmapCard";
+import {
+  IoAlertCircleOutline,
+  IoArrowForwardOutline,
+  IoMapOutline,
+  IoRefreshOutline,
+  IoSparklesOutline,
+} from "react-icons/io5";
+import GeneratedRoadmap from "./GeneratedRoadmap";
 import styles from "./Roadmaps.module.css";
 import { useTranslation } from "react-i18next";
-
-const MOCK_ROADMAPS = [
-  {
-    id: "rm-1",
-    title: "Front-End Master Developer",
-    description:
-      "A complete journey from HTML/CSS to advanced React architecture and performance optimization.",
-    level: "Intermediate",
-    duration: "6 Months",
-    milestonesCount: 12,
-    tags: ["React", "JavaScript", "Architecture"],
-    image: "/images/linco-logo.jpg",
-  },
-  {
-    id: "rm-2",
-    title: "UI/UX Professional Designer",
-    description:
-      "Learn to build user-centric designs, wireframes, and high-fidelity prototypes using Figma.",
-    level: "Beginner",
-    duration: "3 Months",
-    milestonesCount: 8,
-    tags: ["Figma", "Design", "Research"],
-    image: "/images/linco-logo.jpg",
-  },
-  {
-    id: "rm-3",
-    title: "Backend Scalability & Node.js",
-    description:
-      "Master databases, APIs, microservices, and Docker deployments for robust backends.",
-    level: "Advanced",
-    duration: "8 Months",
-    milestonesCount: 15,
-    tags: ["Node.js", "Docker", "Microservices"],
-    image: "/images/linco-logo.jpg",
-  },
-];
+import { useRoadmapGenerator } from "../hooks/useRoadmapGenerator";
 
 const RoadmapsContent = () => {
   const { t } = useTranslation();
-  const [searchQuery, setSearchQuery] = useState("");
+  const [title, setTitle] = useState("");
+  const { roadmap, isGenerating, error, generateRoadmap, reset } =
+    useRoadmapGenerator();
 
-  const filteredRoadmaps = MOCK_ROADMAPS.filter((rm) =>
-    rm.title.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (!title.trim() || isGenerating) return;
 
-  const handleOpenRoadmap = (id) => {
-    console.log("Opening roadmap to fetch JSON for ID:", id);
+    await generateRoadmap(title);
+  };
+
+  const handleStartOver = () => {
+    reset();
+    setTitle("");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -61,47 +39,133 @@ const RoadmapsContent = () => {
               <IoMapOutline className={styles.headerIcon} />
             </div>
             <div>
-              <span className={styles.subHeading}>{t("guided-journeys")}</span>
-              <h1 className={styles.title}>{t("learning-roadmaps")}</h1>
+              <span className={styles.subHeading}>
+                {t("ai-powered-career-planning", "AI-powered career planning")}
+              </span>
+              <h1 className={styles.title}>
+                {t("roadmap-generator", "Roadmap generator")}
+              </h1>
               <p className={styles.description}>
                 {t(
-                  "follow-structured-step-by-step-paths-curated-by-experts-to-achieve-your-career-goals",
+                  "roadmap-generator-description",
+                  "Tell us what you want to learn and receive a complete, practical career roadmap generated for you.",
                 )}
               </p>
             </div>
           </div>
-        </div>
 
-        <div className={styles.controlsSection}>
-          <div className={styles.searchBox}>
-            <IoSearchOutline className={styles.searchIcon} />
-            <input
-              type="text"
-              placeholder={t("search-for-a-career-path-or-skill")}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className={styles.searchInput}
-            />
-          </div>
-        </div>
-
-        <div className={styles.gridSection}>
-          {filteredRoadmaps.length === 0 ? (
-            <div className={styles.emptyState}>
-              {t("no-roadmaps-found-matching-your-search")}
-            </div>
-          ) : (
-            <div className={styles.roadmapsGrid}>
-              {filteredRoadmaps.map((roadmap) => (
-                <RoadmapCard
-                  key={roadmap.id}
-                  roadmap={roadmap}
-                  onClick={() => handleOpenRoadmap(roadmap.id)}
-                />
-              ))}
-            </div>
+          {roadmap && (
+            <button
+              type="button"
+              className={styles.startOverButton}
+              onClick={handleStartOver}
+            >
+              <IoRefreshOutline />
+              {t("generate-another-roadmap", "Generate another")}
+            </button>
           )}
         </div>
+
+        <section className={styles.generatorCard}>
+          <div className={styles.generatorGlow} />
+          <div className={styles.generatorIntro}>
+            <div className={styles.sparkleIcon}>
+              <IoSparklesOutline />
+            </div>
+            <div>
+              <h2>{t("what-do-you-want-to-learn", "What do you want to learn?")}</h2>
+              <p>
+                {t(
+                  "roadmap-title-help",
+                  "Enter a technology, role, or career goal. Be specific for a more focused roadmap.",
+                )}
+              </p>
+            </div>
+          </div>
+
+          <form className={styles.generatorForm} onSubmit={handleSubmit}>
+            <label htmlFor="roadmap-title" className={styles.srOnly}>
+              {t("roadmap-title", "Roadmap title")}
+            </label>
+            <div className={styles.promptInputWrapper}>
+              <IoMapOutline className={styles.promptIcon} />
+              <input
+                id="roadmap-title"
+                type="text"
+                value={title}
+                onChange={(event) => setTitle(event.target.value)}
+                placeholder={t(
+                  "roadmap-title-placeholder",
+                  "e.g. Backend NestJS, Product Design, or Data Engineering",
+                )}
+                disabled={isGenerating}
+                maxLength={120}
+                autoComplete="off"
+              />
+              <button
+                type="submit"
+                disabled={!title.trim() || isGenerating}
+              >
+                {isGenerating ? (
+                  <>
+                    <span className={styles.buttonLoader} />
+                    {t("generating-roadmap", "Generating...")}
+                  </>
+                ) : (
+                  <>
+                    {t("generate-roadmap", "Generate roadmap")}
+                    <IoArrowForwardOutline />
+                  </>
+                )}
+              </button>
+            </div>
+            <div className={styles.promptExamples}>
+              <span>{t("try-an-example", "Try an example:")}</span>
+              {["Backend NestJS", "Cloud DevOps", "UI/UX Design"].map(
+                (example) => (
+                  <button
+                    type="button"
+                    key={example}
+                    onClick={() => setTitle(example)}
+                    disabled={isGenerating}
+                  >
+                    {example}
+                  </button>
+                ),
+              )}
+            </div>
+          </form>
+
+          {error && (
+            <div className={styles.errorBanner} role="alert">
+              <IoAlertCircleOutline />
+              <div>
+                <strong>{t("roadmap-generation-failed", "Generation failed")}</strong>
+                <p>{error}</p>
+              </div>
+            </div>
+          )}
+        </section>
+
+        {isGenerating && (
+          <section className={styles.generationState} aria-live="polite">
+            <div className={styles.aiOrb}>
+              <IoSparklesOutline />
+            </div>
+            <h2>{t("building-your-roadmap", "Building your roadmap")}</h2>
+            <p>
+              {t(
+                "building-roadmap-description",
+                "The AI is designing your learning sequence, projects, milestones, and career outcomes.",
+              )}
+            </p>
+            <div className={styles.progressTrack}>
+              <span />
+            </div>
+          </section>
+        )}
+
+        {roadmap && !isGenerating && <GeneratedRoadmap roadmap={roadmap} />}
       </div>
     </div>
   );
