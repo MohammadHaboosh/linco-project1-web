@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { useParams } from "react-router-dom";
 import {
   IoPeopleOutline,
   IoSearchOutline,
@@ -9,69 +10,47 @@ import MembersTable from "../MembersTable/MembersTable";
 import InviteModal from "../InviteModal/InviteModal";
 import styles from "./MembersContent.module.css";
 import { useTranslation } from "react-i18next";
-
-const MOCK_MEMBERS = [
-  {
-    id: 1,
-    name: "Abrar Abo Auad",
-    email: "abrar@linco.tech",
-    role: "owner",
-    status: "Owner",
-    joinedAt: "Oct 24, 2025",
-    avatar: null,
-  },
-  {
-    id: 2,
-    name: "Ahmad Sami",
-    email: "ahmad.s@example.com",
-    role: "sectionManager",
-    status: "Manager",
-    joinedAt: "Nov 12, 2025",
-    avatar: "https://i.pravatar.cc/150?img=11",
-  },
-  {
-    id: 3,
-    name: "Lina Hassan",
-    email: "lina.h@example.com",
-    role: "trainee",
-    status: "Senior",
-    joinedAt: "Pending",
-    avatar: "https://i.pravatar.cc/150?img=5",
-  },
-  {
-    id: 4,
-    name: "Omar Nabil",
-    email: "omar.n@example.com",
-    role: "trainee",
-    status: "Junior",
-    joinedAt: "Jan 05, 2026",
-    avatar: "https://i.pravatar.cc/150?img=12",
-  },
-  {
-    id: 5,
-    name: "Sara Majed",
-    email: "sara.m@example.com",
-    role: "sectionManager",
-    status: "Manager",
-    joinedAt: "Feb 20, 2026",
-    avatar: "https://i.pravatar.cc/150?img=9",
-  },
-];
+import { useMembers } from "../../hooks/useMembers";
 
 const MembersContent = () => {
+  const { demoId } = useParams();
   const [searchQuery, setSearchQuery] = useState("");
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
-  const [members, setMembers] = useState(MOCK_MEMBERS);
   const { t } = useTranslation();
+  const {
+    members,
+    isLoading,
+    error,
+    deleteMember,
+    deletingMemberId,
+    deleteError,
+  } = useMembers(demoId);
 
-  const filteredMembers = members.filter(
-    (member) =>
-      member.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      member.email.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+  const filteredMembers = useMemo(() => {
+    const normalizedQuery = searchQuery.trim().toLowerCase();
 
-  const handleDelete = (id) => {
-    setMembers(members.filter((m) => m.id !== id));
+    if (!normalizedQuery) return members;
+
+    return members.filter((member) => {
+      const { firstName = "", lastName = "", email = "" } =
+        member.user ?? {};
+      const searchableText = `${firstName} ${lastName} ${email}`.toLowerCase();
+
+      return searchableText.includes(normalizedQuery);
+    });
+  }, [members, searchQuery]);
+
+  const handleDeleteMember = async (memberId) => {
+    const shouldDelete = window.confirm(
+      t(
+        "remove-member-confirmation",
+        "Are you sure you want to remove this member from the workspace?",
+      ),
+    );
+
+    if (!shouldDelete) return;
+
+    await deleteMember(memberId);
   };
 
   return (
@@ -121,7 +100,14 @@ const MembersContent = () => {
       </div>
 
       <div className={styles.tableContainer}>
-        <MembersTable members={filteredMembers} onDelete={handleDelete} />
+        <MembersTable
+          members={filteredMembers}
+          isLoading={isLoading}
+          error={error}
+          deletingMemberId={deletingMemberId}
+          deleteError={deleteError}
+          onDelete={handleDeleteMember}
+        />
       </div>
 
       {isInviteModalOpen && (

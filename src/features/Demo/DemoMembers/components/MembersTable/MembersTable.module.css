@@ -37,6 +37,14 @@
   font-weight: 600;
 }
 
+.errorState {
+  text-align: center;
+  padding: 14px 24px !important;
+  color: #b91c1c;
+  background-color: #fef2f2;
+  font-weight: 600;
+}
+
 /* User Info Cell */
 .userInfo {
   display: flex;
@@ -159,6 +167,16 @@
 .actionBtn:hover {
   background-color: #f1f5f9;
   color: #1a56db;
+}
+
+.actionBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.actionBtn:disabled:hover {
+  background: transparent;
+  color: #94a3b8;
 }
 
 .deleteBtn:hover {
