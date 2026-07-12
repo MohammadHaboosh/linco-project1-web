@@ -223,6 +223,8 @@
   "joined": "تاريخ الانضمام",
   "actions": "الإجراءات",
   "edit-role": "تعديل الدور",
+  "trainer": "مدرب",
+  "save-role": "حفظ الدور",
   "remove-member": "إزالة العضو",
   "remove-member-confirmation": "هل أنت متأكد من رغبتك في إزالة هذا العضو من مساحة العمل؟",
   "removing-member": "جارٍ إزالة العضو...",

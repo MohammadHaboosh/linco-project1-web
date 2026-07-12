@@ -55,4 +55,41 @@ export const memberApi = {
 
     return responseData;
   },
+
+  updateMemberRole: async (demoId, memberId, role) => {
+    if (!demoId) {
+      throw new Error("Demo ID is required to update a member role.");
+    }
+
+    if (!memberId) {
+      throw new Error("Member ID is required to update a member role.");
+    }
+
+    const normalizedRole = String(role ?? "").trim().toUpperCase();
+    const allowedRoles = ["OWNER", "TRAINER", "MANAGER"];
+
+    if (!allowedRoles.includes(normalizedRole)) {
+      throw new Error("A valid member role is required.");
+    }
+
+    const response = await apiFetch(
+      `/demos/${encodeURIComponent(demoId)}/members/${encodeURIComponent(memberId)}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "x-client-type": "web",
+        },
+        body: JSON.stringify({ role: normalizedRole }),
+      },
+    );
+
+    const responseData = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+      throw new Error(responseData.message || "Failed to update member role.");
+    }
+
+    return responseData;
+  },
 };

@@ -2,7 +2,10 @@ import {
   IoTrashOutline,
   IoCreateOutline,
   IoShieldCheckmark,
+  IoCheckmarkOutline,
+  IoCloseOutline,
 } from "react-icons/io5";
+import { useState } from "react";
 import styles from "./MembersTable.module.css";
 import { useTranslation } from "react-i18next";
 
@@ -12,9 +15,14 @@ const MembersTable = ({
   error,
   deletingMemberId,
   deleteError,
+  updatingMemberId,
+  updateError,
   onDelete,
+  onUpdateRole,
 }) => {
   const { t, i18n } = useTranslation();
+  const [editingMemberId, setEditingMemberId] = useState(null);
+  const [selectedRole, setSelectedRole] = useState("TRAINER");
 
   const normalizeRole = (role) =>
     String(role ?? "")
@@ -36,6 +44,12 @@ const MembersTable = ({
         return (
           <span className={`${styles.badge} ${styles.badgeManager}`}>
             {t("manager")}
+          </span>
+        );
+      case "TRAINER":
+        return (
+          <span className={`${styles.badge} ${styles.badgeTrainee}`}>
+            {t("trainer", "Trainer")}
           </span>
         );
       default:
@@ -61,6 +75,36 @@ const MembersTable = ({
     }).format(date);
   };
 
+  const getEditableRole = (role) => {
+    const normalizedRole = normalizeRole(role);
+
+    if (["SECTION_MANAGER", "SECTIONMANAGER"].includes(normalizedRole)) {
+      return "MANAGER";
+    }
+
+    if (normalizedRole === "TRAINEE") return "TRAINER";
+
+    return ["OWNER", "TRAINER", "MANAGER"].includes(normalizedRole)
+      ? normalizedRole
+      : "TRAINER";
+  };
+
+  const startEditingRole = (member) => {
+    setEditingMemberId(member.id);
+    setSelectedRole(getEditableRole(member.role));
+  };
+
+  const cancelEditingRole = () => {
+    setEditingMemberId(null);
+    setSelectedRole("TRAINER");
+  };
+
+  const saveRole = async (memberId) => {
+    const wasUpdated = await onUpdateRole?.(memberId, selectedRole);
+
+    if (wasUpdated) cancelEditingRole();
+  };
+
   return (
     <div className={styles.tableWrapper}>
       <table className={styles.table}>
@@ -73,10 +117,10 @@ const MembersTable = ({
           </tr>
         </thead>
         <tbody>
-          {deleteError && !isLoading && !error && (
+          {(deleteError || updateError) && !isLoading && !error && (
             <tr>
               <td colSpan="4" className={styles.errorState} role="alert">
-                {deleteError}
+                {deleteError || updateError}
               </td>
             </tr>
           )}
@@ -110,6 +154,11 @@ const MembersTable = ({
                 fullName.charAt(0).toUpperCase();
               const isOwner = normalizeRole(member.role) === "OWNER";
               const isDeleting = deletingMemberId === member.id;
+              const isEditing = editingMemberId === member.id;
+              const isUpdating = updatingMemberId === member.id;
+              const mutationInProgress = Boolean(
+                deletingMemberId || updatingMemberId,
+              );
 
               return (
                 <tr key={member.id} className={styles.tableRow}>
@@ -128,19 +177,63 @@ const MembersTable = ({
                       </div>
                     </div>
                   </td>
-                  <td>{getRoleBadge(member.role)}</td>
+                  <td>
+                    {isEditing ? (
+                      <select
+                        className={styles.roleSelect}
+                        value={selectedRole}
+                        onChange={(event) => setSelectedRole(event.target.value)}
+                        disabled={isUpdating}
+                        aria-label={t("assign-role")}
+                      >
+                        <option value="OWNER">{t("owner")}</option>
+                        <option value="TRAINER">
+                          {t("trainer", "Trainer")}
+                        </option>
+                        <option value="MANAGER">{t("manager")}</option>
+                      </select>
+                    ) : (
+                      getRoleBadge(member.role)
+                    )}
+                  </td>
                   <td className={styles.dateText}>
                     {formatJoinedAt(member.joinedAt)}
                   </td>
                   <td className={styles.actionsCol}>
-                    <button
-                      type="button"
-                      className={styles.actionBtn}
-                      title={t("edit-role")}
-                    >
-                      <IoCreateOutline />
-                    </button>
-                    {!isOwner && (
+                    {isEditing ? (
+                      <>
+                        <button
+                          type="button"
+                          className={`${styles.actionBtn} ${styles.saveBtn}`}
+                          title={t("save-role", "Save role")}
+                          onClick={() => saveRole(member.id)}
+                          disabled={isUpdating}
+                          aria-busy={isUpdating}
+                        >
+                          <IoCheckmarkOutline />
+                        </button>
+                        <button
+                          type="button"
+                          className={`${styles.actionBtn} ${styles.cancelEditBtn}`}
+                          title={t("cancel")}
+                          onClick={cancelEditingRole}
+                          disabled={isUpdating}
+                        >
+                          <IoCloseOutline />
+                        </button>
+                      </>
+                    ) : (
+                      <button
+                        type="button"
+                        className={styles.actionBtn}
+                        title={t("edit-role")}
+                        onClick={() => startEditingRole(member)}
+                        disabled={mutationInProgress}
+                      >
+                        <IoCreateOutline />
+                      </button>
+                    )}
+                    {!isEditing && !isOwner && (
                       <button
                         type="button"
                         className={`${styles.actionBtn} ${styles.deleteBtn}`}
@@ -150,7 +243,7 @@ const MembersTable = ({
                             : t("remove-member")
                         }
                         onClick={() => onDelete?.(member.id)}
-                        disabled={Boolean(deletingMemberId)}
+                        disabled={mutationInProgress}
                         aria-busy={isDeleting}
                       >
                         <IoTrashOutline />

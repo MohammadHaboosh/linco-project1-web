@@ -227,6 +227,8 @@
   "joined": "Date of joining",
   "actions": "Actions",
   "edit-role": "Edit Role",
+  "trainer": "Trainer",
+  "save-role": "Save Role",
   "remove-member": "Remove Member",
   "remove-member-confirmation": "Are you sure you want to remove this member from the workspace?",
   "removing-member": "Removing member...",

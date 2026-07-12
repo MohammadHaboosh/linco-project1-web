@@ -24,6 +24,9 @@ const MembersContent = () => {
     deleteMember,
     deletingMemberId,
     deleteError,
+    updateMemberRole,
+    updatingMemberId,
+    updateError,
   } = useMembers(demoId);
 
   const filteredMembers = useMemo(() => {
@@ -105,7 +108,10 @@ const MembersContent = () => {
           error={error}
           deletingMemberId={deletingMemberId}
           deleteError={deleteError}
+          updatingMemberId={updatingMemberId}
+          updateError={updateError}
           onDelete={handleDeleteMember}
+          onUpdateRole={updateMemberRole}
         />
       </div>
 
