@@ -177,7 +177,7 @@ export const DEPARTMENT_NAV = {
         icon: <IoPersonOutline />,
         path: PATHS.LEADERBOARD,
       },
-      { name: "Road Maps", icon: <IoMapOutline />, path: PATHS.SM_ROADMAPS },
+      { name: "Road Maps", icon: <IoMapOutline />, path: PATHS.ROADMAPS },
       { name: "Weekly Tasks", icon: <IoListOutline />, path: PATHS.SM_TASKS },
     ],
   },
