@@ -36,9 +36,7 @@ export const useMembers = (demoId) => {
   useEffect(() => {
     const controller = new AbortController();
 
-    Promise.resolve().then(() =>
-      loadMembers({ signal: controller.signal }),
-    );
+    Promise.resolve().then(() => loadMembers({ signal: controller.signal }));
 
     return () => controller.abort();
   }, [loadMembers]);

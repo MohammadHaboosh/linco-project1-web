@@ -32,8 +32,7 @@ const MembersContent = () => {
     if (!normalizedQuery) return members;
 
     return members.filter((member) => {
-      const { firstName = "", lastName = "", email = "" } =
-        member.user ?? {};
+      const { firstName = "", lastName = "", email = "" } = member.user ?? {};
       const searchableText = `${firstName} ${lastName} ${email}`.toLowerCase();
 
       return searchableText.includes(normalizedQuery);
