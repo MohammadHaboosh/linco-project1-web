@@ -6,6 +6,7 @@ export const PATHS = {
   PROFILE: "/profile",
   OWN_ROOMS: "/my-own-rooms",
   LEARNING_PATH: "learning-path",
+  COURSES: "courses",
   COURSE_PLAYER: "course-player/:courseId",
   LESSON: "lesson/:lessonId",
   QUIZ: "quiz/:sectionId",
@@ -42,7 +43,6 @@ export const PATHS = {
 
   SM_ASSETS: "demo-assets",
   SM_MEMBERS: "members",
-  SM_COURSES: "courses",
   SM_TOOLS: "tools",
   SM_LEARNING_PATH: "learning-path",
   ROADMAPS: "roadmaps",
