@@ -154,7 +154,7 @@ export const DEPARTMENT_NAV = {
   sectionManager: {
     navLinks: [
       { name: "Home", icon: <IoHomeOutline />, path: "" },
-      { name: "Members", icon: <IoPeopleOutline />, path: PATHS.OWNER_MEMBERS },
+      { name: "Members", icon: <IoPeopleOutline />, path: PATHS.MEMBERS },
       { name: "Courses", icon: <IoBookOutline />, path: PATHS.SM_COURSES },
       { name: "Live Streams", icon: <IoVideocamOutline />, path: PATHS.LIVES },
       {
@@ -184,7 +184,7 @@ export const DEPARTMENT_NAV = {
   owner: {
     navLinks: [
       { name: "Home", icon: <IoHomeOutline />, path: "" },
-      { name: "Members", icon: <IoPeopleOutline />, path: PATHS.OWNER_MEMBERS },
+      { name: "Members", icon: <IoPeopleOutline />, path: PATHS.MEMBERS },
       { name: "Courses", icon: <IoBookOutline />, path: PATHS.SM_COURSES },
       { name: "Live Streams", icon: <IoVideocamOutline />, path: PATHS.LIVES }, // 👈 تم التصحيح
       {

@@ -44,6 +44,7 @@ import VideoPlayer from "../features/Demo/CoursePlayer/components/VideoPlayer.js
 import ChatsPage from "../pages/ChatsPage.jsx";
 import RoadmapsPage from "../pages/RoadmapsPage.jsx";
 import CertificatesPage from "../pages/CertificatesPage.jsx";
+import DepartmentMembersPage from "../pages/DepartmentMembersPage.jsx";
 // import WeeklyTasksPage from "../pages/WeeklyTasksPage.jsx";
 
 export const router = createBrowserRouter([
@@ -110,6 +111,7 @@ export const router = createBrowserRouter([
     element: <DepartmentLayout />,
     children: [
       { index: true, element: <DepartmentPage /> },
+      { path: PATHS.MEMBERS, element: <DepartmentMembersPage /> },
       {
         path: PATHS.LEARNING_PATH,
         element: <LearningPathPage />,
