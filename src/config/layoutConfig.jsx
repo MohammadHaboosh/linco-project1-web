@@ -12,10 +12,6 @@ import {
   IoSettingsOutline,
   IoBusinessOutline,
   IoLibraryOutline,
-  IoNotificationsOutline,
-  IoColorPaletteOutline,
-  IoEarthOutline,
-  IoLogOutOutline,
   IoDocumentTextOutline,
   IoFolderOpenOutline,
 } from "react-icons/io5";

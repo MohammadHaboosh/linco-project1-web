@@ -1,47 +1,186 @@
-import { IoCloseOutline, IoMailOutline } from "react-icons/io5";
-import styles from "./InviteModal.module.css";
+import {
+  IoCheckmarkCircleOutline,
+  IoCloseOutline,
+  IoPersonOutline,
+  IoSearchOutline,
+} from "react-icons/io5";
 import { useTranslation } from "react-i18next";
+import { useInviteMember } from "../../hooks/useInviteMember";
+import styles from "./InviteModal.module.css";
 
-const InviteModal = ({ onClose }) => {
+const InviteModal = ({ demoId, onClose }) => {
   const { t } = useTranslation();
-  const handleInvite = (e) => {
-    e.preventDefault();
-    ///// TO BACKEND
-    onClose();
+  const {
+    searchQuery,
+    setSearchQuery,
+    searchResults,
+    selectedUser,
+    selectUser,
+    clearSelectedUser,
+    role,
+    setRole,
+    isSearching,
+    searchError,
+    isSubmitting,
+    submitError,
+    sendInvitation,
+  } = useInviteMember(demoId, onClose);
+
+  const getInitials = (user) => {
+    const initials = `${user.firstName?.[0] ?? ""}${user.lastName?.[0] ?? ""}`;
+    return initials.toUpperCase() || <IoPersonOutline />;
   };
 
+  const renderAvatar = (user, className) => (
+    <div className={className}>
+      {user.imagePath ? (
+        <img src={user.imagePath} alt="" />
+      ) : (
+        <span>{getInitials(user)}</span>
+      )}
+    </div>
+  );
+
   return (
-    <div className={styles.modalOverlay}>
-      <div className={styles.modalContainer}>
+    <div className={styles.modalOverlay} role="presentation">
+      <div
+        className={styles.modalContainer}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="invite-member-title"
+      >
         <div className={styles.modalHeader}>
-          <h2>{t("invite-new-member")}</h2>
-          <button className={styles.closeBtn} onClick={onClose}>
+          <h2 id="invite-member-title">{t("invite-new-member")}</h2>
+          <button
+            type="button"
+            className={styles.closeBtn}
+            onClick={onClose}
+            disabled={isSubmitting}
+            aria-label={t("close", "Close")}
+          >
             <IoCloseOutline />
           </button>
         </div>
 
-        <form onSubmit={handleInvite} className={styles.modalBody}>
-          <div className={styles.inputGroup}>
-            <label>{t("email-address")}</label>
-            <div className={styles.inputWrapper}>
-              <IoMailOutline className={styles.inputIcon} />
-              <input
-                type="email"
-                placeholder="user@company.com"
-                required
-                autoFocus
-              />
+        <form onSubmit={sendInvitation} className={styles.modalBody}>
+          {submitError && (
+            <div className={styles.errorAlert} role="alert">
+              {submitError}
             </div>
+          )}
+
+          <div className={styles.inputGroup}>
+            <label htmlFor="invite-user-search">
+              {t("find-user", "Find a user")}
+            </label>
+
+            {selectedUser ? (
+              <div className={styles.selectedUserCard}>
+                {renderAvatar(selectedUser, styles.selectedAvatar)}
+                <div className={styles.selectedUserInfo}>
+                  <strong>
+                    {[selectedUser.firstName, selectedUser.lastName]
+                      .filter(Boolean)
+                      .join(" ") || t("member", "Member")}
+                  </strong>
+                  <span>{selectedUser.email}</span>
+                </div>
+                <IoCheckmarkCircleOutline className={styles.selectedIcon} />
+                <button
+                  type="button"
+                  className={styles.changeUserBtn}
+                  onClick={clearSelectedUser}
+                  disabled={isSubmitting}
+                >
+                  {t("change", "Change")}
+                </button>
+              </div>
+            ) : (
+              <div className={styles.userSearch}>
+                <div className={styles.inputWrapper}>
+                  <IoSearchOutline className={styles.inputIcon} />
+                  <input
+                    id="invite-user-search"
+                    type="search"
+                    value={searchQuery}
+                    onChange={(event) => setSearchQuery(event.target.value)}
+                    placeholder={t(
+                      "search-by-name-or-email",
+                      "Search by name or email...",
+                    )}
+                    disabled={isSubmitting}
+                    autoComplete="off"
+                    autoFocus
+                  />
+                  {isSearching && (
+                    <span
+                      className={styles.searchLoader}
+                      aria-label={t("searching", "Searching")}
+                    />
+                  )}
+                </div>
+
+                <div className={styles.searchFeedback} aria-live="polite">
+                  {searchError && (
+                    <span className={styles.searchError}>{searchError}</span>
+                  )}
+                  {!searchError &&
+                    searchQuery.trim() &&
+                    !isSearching &&
+                    searchResults.length === 0 && (
+                      <span>{t("no-users-found", "No users found.")}</span>
+                    )}
+                </div>
+
+                {searchResults.length > 0 && (
+                  <ul className={styles.resultsList}>
+                    {searchResults.map((user) => (
+                      <li key={user.id}>
+                        <button
+                          type="button"
+                          className={styles.resultItem}
+                          onClick={() => selectUser(user)}
+                          disabled={isSubmitting}
+                        >
+                          {renderAvatar(user, styles.resultAvatar)}
+                          <span className={styles.resultInfo}>
+                            <strong>
+                              {[user.firstName, user.lastName]
+                                .filter(Boolean)
+                                .join(" ") || t("member", "Member")}
+                            </strong>
+                            <span>{user.email}</span>
+                          </span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            )}
           </div>
 
           <div className={styles.inputGroup}>
-            <label>{t("assign-role")}</label>
-            <select className={styles.selectInput}>
-              <option value="trainee">{t("trainee")}</option>
-              <option value="sectionManager">{t("section-manager")}</option>
+            <label htmlFor="invite-member-role">{t("assign-role")}</label>
+            <select
+              id="invite-member-role"
+              className={styles.selectInput}
+              value={role}
+              onChange={(event) => setRole(event.target.value)}
+              disabled={isSubmitting}
+            >
+              <option value="TRAINER">{t("trainer", "Trainer")}</option>
+              <option value="MANAGER">
+                {t("section-manager", "Section Manager")}
+              </option>
             </select>
             <span className={styles.helperText}>
-              {t("section-managers-can-manage-courses-and-tasks")}
+              {role === "MANAGER"
+                ? t("section-managers-can-manage-courses-and-tasks")
+                : t(
+                    "trainers-can-access-learning-content",
+                    "Trainers can access the workspace learning content.",
+                  )}
             </span>
           </div>
 
@@ -50,11 +189,18 @@ const InviteModal = ({ onClose }) => {
               type="button"
               className={styles.cancelBtn}
               onClick={onClose}
+              disabled={isSubmitting}
             >
               {t("cancel")}
             </button>
-            <button type="submit" className={styles.submitBtn}>
-              {t("send-invitation")}
+            <button
+              type="submit"
+              className={styles.submitBtn}
+              disabled={!selectedUser || isSubmitting}
+            >
+              {isSubmitting
+                ? t("sending-invitation", "Sending invitation...")
+                : t("send-invitation")}
             </button>
           </div>
         </form>

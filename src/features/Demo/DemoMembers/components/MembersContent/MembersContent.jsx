@@ -116,7 +116,10 @@ const MembersContent = () => {
       </div>
 
       {isInviteModalOpen && (
-        <InviteModal onClose={() => setIsInviteModalOpen(false)} />
+        <InviteModal
+          demoId={demoId}
+          onClose={() => setIsInviteModalOpen(false)}
+        />
       )}
     </div>
   );
