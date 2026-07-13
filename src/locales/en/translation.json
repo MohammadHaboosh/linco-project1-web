@@ -251,6 +251,8 @@
   "trainers-can-access-learning-content": "Trainers can access the workspace learning content.",
   "sending-invitation": "Sending invitation...",
   "searching": "Searching",
+  "invitation-sent": "Invitation sent",
+  "invitation-created-successfully": "Invitation created successfully",
   "quick-activity": "Quick Activity",
   "you-have-accessed": "You have accessed",
   "workspaces-recently": "workspaces recently.",

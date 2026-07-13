@@ -245,6 +245,8 @@
   "trainers-can-access-learning-content": "يمكن للمدربين الوصول إلى المحتوى التعليمي في مساحة العمل.",
   "sending-invitation": "جارٍ إرسال الدعوة...",
   "searching": "جارٍ البحث",
+  "invitation-sent": "تم إرسال الدعوة",
+  "invitation-created-successfully": "تم إنشاء الدعوة بنجاح",
   "quick-activity": "إحصائيات سريعة",
   "you-have-accessed": "لقد وصلت",
   "workspaces-recently": "مساحات عمل مؤخرا.",

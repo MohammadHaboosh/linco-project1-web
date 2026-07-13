@@ -1,6 +1,8 @@
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
+  IoCheckmarkCircleOutline,
+  IoCloseOutline,
   IoPeopleOutline,
   IoSearchOutline,
   IoAddOutline,
@@ -16,6 +18,8 @@ const MembersContent = () => {
   const { demoId } = useParams();
   const [searchQuery, setSearchQuery] = useState("");
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+  const [invitationSuccessMessage, setInvitationSuccessMessage] =
+    useState(null);
   const { t } = useTranslation();
   const {
     members,
@@ -28,6 +32,30 @@ const MembersContent = () => {
     updatingMemberId,
     updateError,
   } = useMembers(demoId);
+
+  useEffect(() => {
+    if (!invitationSuccessMessage) return undefined;
+
+    const dismissTimer = setTimeout(() => {
+      setInvitationSuccessMessage(null);
+    }, 5000);
+
+    return () => clearTimeout(dismissTimer);
+  }, [invitationSuccessMessage]);
+
+  const handleInvitationSuccess = useCallback(
+    (responseData) => {
+      setInvitationSuccessMessage(
+        responseData?.message ||
+          t(
+            "invitation-created-successfully",
+            "Invitation created successfully",
+          ),
+      );
+      setIsInviteModalOpen(false);
+    },
+    [t],
+  );
 
   const filteredMembers = useMemo(() => {
     const normalizedQuery = searchQuery.trim().toLowerCase();
@@ -57,6 +85,24 @@ const MembersContent = () => {
 
   return (
     <div className={styles.contentArea}>
+      {invitationSuccessMessage && (
+        <div className={styles.successToast} role="status" aria-live="polite">
+          <IoCheckmarkCircleOutline className={styles.successToastIcon} />
+          <div className={styles.successToastContent}>
+            <strong>{t("invitation-sent", "Invitation sent")}</strong>
+            <span>{invitationSuccessMessage}</span>
+          </div>
+          <button
+            type="button"
+            className={styles.successToastClose}
+            onClick={() => setInvitationSuccessMessage(null)}
+            aria-label={t("close", "Close")}
+          >
+            <IoCloseOutline />
+          </button>
+        </div>
+      )}
+
       <div className={styles.headerWrapper}>
         <div className={styles.headerInfo}>
           <div className={styles.iconContainer}>
@@ -77,7 +123,10 @@ const MembersContent = () => {
 
         <button
           className={styles.inviteBtn}
-          onClick={() => setIsInviteModalOpen(true)}
+          onClick={() => {
+            setInvitationSuccessMessage(null);
+            setIsInviteModalOpen(true);
+          }}
         >
           <IoAddOutline className={styles.btnIcon} />
           {t("invite-members")}
@@ -119,6 +168,7 @@ const MembersContent = () => {
         <InviteModal
           demoId={demoId}
           onClose={() => setIsInviteModalOpen(false)}
+          onSuccess={handleInvitationSuccess}
         />
       )}
     </div>

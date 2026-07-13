@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { useInviteMember } from "../../hooks/useInviteMember";
 import styles from "./InviteModal.module.css";
 
-const InviteModal = ({ demoId, onClose }) => {
+const InviteModal = ({ demoId, onClose, onSuccess }) => {
   const { t } = useTranslation();
   const {
     searchQuery,
@@ -24,7 +24,7 @@ const InviteModal = ({ demoId, onClose }) => {
     isSubmitting,
     submitError,
     sendInvitation,
-  } = useInviteMember(demoId, onClose);
+  } = useInviteMember(demoId, onSuccess);
 
   const getInitials = (user) => {
     const initials = `${user.firstName?.[0] ?? ""}${user.lastName?.[0] ?? ""}`;
