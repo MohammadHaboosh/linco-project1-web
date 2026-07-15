@@ -1,18 +1,23 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { IoChevronBack, IoCheckmarkOutline } from "react-icons/io5";
 import StepOneDetails from "./StepOneDetails";
 import StepTwoCurriculum from "./StepTwoCurriculum";
 import styles from "./CourseStudio.module.css";
 import { useTranslation } from "react-i18next";
+import { useCreateCourse } from "../../hooks/useCreateCourse";
 
 const CourseStudio = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { demoId } = useParams();
   const [currentStep, setCurrentStep] = useState(1);
   const [isPublishing, setIsPublishing] = useState(false);
 
+  const { createCourse, isCreating } = useCreateCourse(demoId);
+
   const [courseData, setCourseData] = useState({
+    id: null,
     title: "",
     description: "",
     tags: [],
@@ -26,9 +31,25 @@ const CourseStudio = () => {
     setCourseData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleNextStep = () => {
-    setCurrentStep(2);
-    window.scrollTo(0, 0);
+  const handleNextStep = async () => {
+    if (!courseData.title || !courseData.description) {
+      alert("Please fill in the course title and description.");
+      return;
+    }
+
+    if (!courseData.id) {
+      try {
+        const createdCourse = await createCourse(courseData);
+        updateCourseData("id", createdCourse.id);
+        setCurrentStep(2);
+        window.scrollTo(0, 0);
+      } catch (error) {
+        alert(error.message);
+      }
+    } else {
+      setCurrentStep(2);
+      window.scrollTo(0, 0);
+    }
   };
 
   const handlePublish = () => {
