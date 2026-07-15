@@ -1,129 +1,76 @@
-import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { IoFolderOpenOutline } from "react-icons/io5";
-import CourseManagementCard from "../CourseManagementCard/CourseManagementCard";
-import styles from "./OwnerCoursesContent.module.css";
+import { IoReloadOutline } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
-
-const MOCK_MY_COURSES = [
-  {
-    id: 1,
-    title: "Advanced React Patterns",
-    description:
-      "Master complex UI building, SSR, and scalable Front-End architecture.",
-    image: "/images/linco-logo.jpg",
-    tags: ["React", "Front-End"],
-    isPublished: false,
-    stats: { sections: 4, lessons: 12, quizzes: 1 },
-  },
-  {
-    id: 2,
-    title: "LinCo HR Onboarding 2026",
-    description:
-      "Internal onboarding procedures, company culture, and basic setups.",
-    image: "/images/linco-logo.jpg",
-    tags: ["HR", "Internal"],
-    isPublished: true,
-    stats: { sections: 2, lessons: 6, quizzes: 1 },
-  },
-  {
-    id: 3,
-    title: "Advanced React Patterns",
-    description:
-      "Master complex UI building, SSR, and scalable Front-End architecture.",
-    image: "/images/linco-logo.jpg",
-    tags: ["React", "Front-End"],
-    isPublished: false,
-    stats: { sections: 4, lessons: 12, quizzes: 1 },
-  },
-  {
-    id: 4,
-    title: "LinCo HR Onboarding 2026",
-    description:
-      "Internal onboarding procedures, company culture, and basic setups.",
-    image: "/images/linco-logo.jpg",
-    tags: ["HR", "Internal"],
-    isPublished: true,
-    stats: { sections: 2, lessons: 6, quizzes: 1 },
-  },
-  {
-    id: 5,
-    title: "Advanced React Patterns",
-    description:
-      "Master complex UI building, SSR, and scalable Front-End architecture.",
-    image: "/images/linco-logo.jpg",
-    tags: ["React", "Front-End"],
-    isPublished: false,
-    stats: { sections: 4, lessons: 12, quizzes: 1 },
-  },
-  {
-    id: 6,
-    title: "LinCo HR Onboarding 2026",
-    description:
-      "Internal onboarding procedures, company culture, and basic setups.",
-    image: "/images/linco-logo.jpg",
-    tags: ["HR", "Internal"],
-    isPublished: true,
-    stats: { sections: 2, lessons: 6, quizzes: 1 },
-  },
-];
+import CourseManagementCard from "../CourseManagementCard/CourseManagementCard";
+import { useOwnerCourses } from "../../hooks/useOwnerCourses";
+import styles from "./OwnerCoursesContent.module.css";
 
 const OwnerCoursesContent = () => {
-  const { t } = useTranslation("demo");
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { demoId } = useParams();
-  const [courses, setCourses] = useState(MOCK_MY_COURSES);
 
-  const handleAddNewCourse = () => {
-    /// TO DO
+  const { courses, isLoading, error, refetch } = useOwnerCourses(demoId);
+
+  const handleAddNew = () => {
     navigate(`/demos/${demoId}/course-studio`);
   };
 
-  const handleEditCourse = (courseId) => {
-    /// TO DO
-    navigate(`/demos/${demoId}/course-studio/${courseId}`);
+  const handleEdit = (courseId) => {
+    console.log("Editing course:", courseId);
+    // navigate(`/demos/${demoId}/course-studio/${courseId}`);
   };
 
-  const handlePublishToLibrary = (courseId) => {
-    /// TO DO
-    setCourses((prev) =>
-      prev.map((c) => (c.id === courseId ? { ...c, isPublished: true } : c)),
-    );
+  const handlePublish = (courseId) => {
+    console.log("Publishing course:", courseId);
   };
 
   return (
     <div className={styles.pageContainer}>
-      <div className={styles.contentWrapper}>
-        <div className={styles.headerArea}>
-          <div className={styles.headerInfo}>
-            <div className={styles.iconBox}>
-              <IoFolderOpenOutline className={styles.headerIcon} />
-            </div>
-            <div>
-              <h1 className={styles.title}>{t("demo-courses")}</h1>
-              <p className={styles.description}>
-                {t(
-                  "manage-your-created-courses-edit-curriculum-and-publish-them-to-the-public-library",
-                )}
-              </p>
-            </div>
-          </div>
+      <div className={styles.headerArea}>
+        <div>
+          <h1 className={styles.title}>{t("demo-courses")}</h1>
+          <p className={styles.description}>
+            {t(
+              "manage-your-created-courses-edit-curriculum-and-publish-them-to-the-public-library",
+            )}
+          </p>
         </div>
+      </div>
 
-        <div className={styles.coursesGrid}>
-          <CourseManagementCard isAddNew={true} onAddNew={handleAddNewCourse} />
+      {isLoading ? (
+        <div style={{ textAlign: "center", padding: "50px", color: "#64748b" }}>
+          <h2>{t("loading-your-courses")}</h2>
+        </div>
+      ) : error ? (
+        <div style={{ textAlign: "center", padding: "50px", color: "#ef4444" }}>
+          <p>{error}</p>
+          <button
+            onClick={refetch}
+            style={{
+              padding: "10px 20px",
+              marginTop: "15px",
+              cursor: "pointer",
+            }}
+          >
+            <IoReloadOutline /> {t("try-again")}
+          </button>
+        </div>
+      ) : (
+        <div className={styles.gridContainer}>
+          <CourseManagementCard isAddNew={true} onAddNew={handleAddNew} />
 
           {courses.map((course) => (
             <CourseManagementCard
               key={course.id}
               isAddNew={false}
               course={course}
-              onEdit={handleEditCourse}
-              onPublish={handlePublishToLibrary}
+              onEdit={handleEdit}
+              onPublish={handlePublish}
             />
           ))}
         </div>
-      </div>
+      )}
     </div>
   );
 };
