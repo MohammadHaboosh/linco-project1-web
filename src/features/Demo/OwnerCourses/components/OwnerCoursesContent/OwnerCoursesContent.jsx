@@ -17,9 +17,8 @@ const OwnerCoursesContent = () => {
     navigate(`/demos/${demoId}/course-studio`);
   };
 
-  const handleEditCourse = (courseId) => {
-    /// TO DO
-    navigate(`/demos/${demoId}/course-studio/${courseId}`);
+  const handleEditCourse = (assetId) => {
+    navigate(`/demos/${demoId}/manage-course/${assetId}`);
   };
 
   const handlePublishToLibrary = (courseId) => {
