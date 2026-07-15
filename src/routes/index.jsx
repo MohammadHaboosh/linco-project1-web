@@ -35,7 +35,6 @@ import DemoAssetsPage from "../pages/DemoAssetsPage.jsx";
 import LivesPage from "../pages/LivesPage.jsx";
 import OwnerHomePage from "../pages/OwnerHomePage.jsx";
 import DemoRedirector from "../components/common/DemoRedirector.jsx";
-import CourseStudio from "../features/Demo/PublishCourse/components/CourseStudio/CourseStudio.jsx";
 import OwnerCoursesPage from "../pages/OwnerCoursesPage.jsx";
 import InquiriesPage from "../pages/InquiriesPage.jsx";
 import CoursePlayerPage from "../pages/CoursePlayerPage.jsx";
@@ -46,6 +45,9 @@ import RoadmapsPage from "../pages/RoadmapsPage.jsx";
 import CertificatesPage from "../pages/CertificatesPage.jsx";
 import DepartmentMembersPage from "../pages/DepartmentMembersPage.jsx";
 // import WeeklyTasksPage from "../pages/WeeklyTasksPage.jsx";
+
+import CourseStudio from "../features/Demo/PublishCourse/components/CourseStudio/CourseStudio.jsx";
+import CourseManagerLayout from "../features/Demo/OwnerCourses/components/ManageCourse/ccomponents/CourseManagerLayout.jsx";
 
 export const router = createBrowserRouter([
   { path: PATHS.LANDING, element: <LandingRedirector /> },
@@ -84,7 +86,8 @@ export const router = createBrowserRouter([
         path: PATHS.OWNER_LIBRARY,
         element: <PublicLibraryPage />,
       },
-      { path: "course-studio/:assetId?", element: <CourseStudio /> },
+      { path: PATHS.COURSE_STUDIO, element: <CourseStudio /> },
+      { path: PATHS.MANAGE_COURSE, element: <CourseManagerLayout /> },
       {
         path: PATHS.SM_ASSETS,
         element: <DemoAssetsPage />,

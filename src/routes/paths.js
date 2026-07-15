@@ -49,4 +49,7 @@ export const PATHS = {
   // SM_ROADMAPS: "roadmaps",
   SM_TASKS: "weekly-tasks",
   LIVES: "lives",
+
+  COURSE_STUDIO: "course-studio",
+  MANAGE_COURSE: "manage-course/:assetId",
 };
