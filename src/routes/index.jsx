@@ -47,7 +47,7 @@ import DepartmentMembersPage from "../pages/DepartmentMembersPage.jsx";
 // import WeeklyTasksPage from "../pages/WeeklyTasksPage.jsx";
 
 import CourseStudio from "../features/Demo/PublishCourse/components/CourseStudio/CourseStudio.jsx";
-import CourseManagerLayout from "../features/Demo/OwnerCourses/components/ManageCourse/ccomponents/CourseManagerLayout.jsx";
+import CourseManagerLayout from "../features/Demo/OwnerCourses/components/ManageCourse/components/CourseManagerLayout.jsx";
 
 export const router = createBrowserRouter([
   { path: PATHS.LANDING, element: <LandingRedirector /> },

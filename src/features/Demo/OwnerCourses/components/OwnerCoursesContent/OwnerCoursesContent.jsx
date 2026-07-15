@@ -13,7 +13,6 @@ const OwnerCoursesContent = () => {
   const { courses, isLoading, error } = useOwnerCourses(demoId);
 
   const handleAddNewCourse = () => {
-    /// TO DO
     navigate(`/demos/${demoId}/course-studio`);
   };
 
