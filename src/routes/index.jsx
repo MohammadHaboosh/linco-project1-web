@@ -84,7 +84,7 @@ export const router = createBrowserRouter([
         path: PATHS.OWNER_LIBRARY,
         element: <PublicLibraryPage />,
       },
-      { path: "course-studio", element: <CourseStudio /> },
+      { path: "course-studio/:assetId?", element: <CourseStudio /> },
       {
         path: PATHS.SM_ASSETS,
         element: <DemoAssetsPage />,
