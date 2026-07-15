@@ -4,6 +4,7 @@ import { ownerCoursesApi } from "../api/ownerCoursesApi";
 const mapAssetToCourse = (asset) => {
   const c = asset.course;
   return {
+    assetId: asset.id,
     id: c.id,
     title: c.title,
     description: c.description,

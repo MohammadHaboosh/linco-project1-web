@@ -83,7 +83,10 @@ const CourseManagementCard = ({
       </div>
 
       <div className={styles.cardFooter}>
-        <button className={styles.editBtn} onClick={() => onEdit(course.id)}>
+        <button
+          className={styles.editBtn}
+          onClick={() => onEdit(course.assetId)}
+        >
           <IoCreateOutline /> {t("edit")}
         </button>
         <button
