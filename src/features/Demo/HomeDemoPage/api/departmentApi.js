@@ -4,12 +4,13 @@ export const departmentApi = {
   searchMembers: async (demoId, searchQuery) => {
     try {
       const response = await apiFetch(
-        `/demos/${demoId}/members?search=${encodeURIComponent(searchQuery)}`,
+        `/members?search=${encodeURIComponent(searchQuery)}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
             "x-client-type": "web",
+            "x-demo-id": demoId,
           },
         },
       );

@@ -510,5 +510,12 @@
   "resources": "المصادر",
   "loading-your-courses": "جارٍ تحميل الدورات التدريبية الخاصة بك...",
   "admin": "أدمن",
-  "close": "إغلاق"
+  "close": "إغلاق",
+  "search-by-name": "البحث بالاسم...",
+  "Assign Manager ": {
+    " Member": "تعيين مدير/عضو"
+  },
+  "department-desc": "الوصف (اختياري)",
+  "department-title": "عنوان القسم",
+  "create-new-department": "إنشاء قسم جديد"
 }

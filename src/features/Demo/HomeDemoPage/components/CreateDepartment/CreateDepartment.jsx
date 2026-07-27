@@ -32,7 +32,7 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
     <div className={styles.overlay}>
       <div className={styles.modal}>
         <div className={styles.header}>
-          <h3>{t("create-new-department", "Create New Department")}</h3>
+          <h3>{t("create-new-department")}</h3>
           <button
             className={styles.closeBtn}
             onClick={onClose}
@@ -46,7 +46,7 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
           {error && <div className={styles.errorAlert}>{error}</div>}
 
           <div className={styles.formGroup}>
-            <label>{t("department-title", "Department Title")}</label>
+            <label>{t("department-title")}</label>
             <input
               type="text"
               name="name"
@@ -59,7 +59,7 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
           </div>
 
           <div className={styles.formGroup}>
-            <label>{t("department-desc", "Description (Optional)")}</label>
+            <label>{t("department-desc")}</label>
             <textarea
               name="description"
               value={formData.description}
@@ -71,7 +71,7 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
           </div>
 
           <div className={styles.formGroup}>
-            <label>{t("assign-manager", "Assign Manager / Member")}</label>
+            <label>{t("Assign Manager / Member")}</label>
 
             {selectedUser ? (
               <div className={styles.selectedUserCard}>
@@ -87,7 +87,7 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
                   onClick={() => setSelectedUser(null)}
                   disabled={isSubmitting}
                 >
-                  {t("change", "Change")}
+                  {t("change")}
                 </button>
               </div>
             ) : (
@@ -99,7 +99,7 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className={styles.searchInput}
-                    placeholder={t("search-user", "Search by name...")}
+                    placeholder={t('search-by-name')}
                   />
                   {isSearching && <span className={styles.loader}>...</span>}
                 </div>
@@ -137,7 +137,7 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
                   searchResults.length === 0 &&
                   !isSearching && (
                     <div className={styles.noResults}>
-                      {t("no-users-found", "No users found.")}
+                      {t("no-users-found")}
                     </div>
                   )}
               </div>

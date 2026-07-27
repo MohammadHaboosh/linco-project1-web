@@ -510,5 +510,12 @@
   "resources": "Resources",
   "loading-your-courses": "Loading your courses...",
   "admin": "Admin",
-  "close": "Close"
+  "close": "Close",
+  "search-by-name": "Search by name...",
+  "Assign Manager ": {
+    " Member": "Assign Manager / Member"
+  },
+  "department-desc": "Description (Optional)",
+  "department-title": "Department Title",
+  "create-new-department": "Create New Department"
 }
