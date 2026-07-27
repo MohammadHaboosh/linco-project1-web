@@ -17,11 +17,12 @@ export const DemoProvider = ({ children }) => {
     const loadDemoData = async () => {
       setIsLoading(true);
       try {
-        const response = await apiFetch(`/demos/${demoId}`, {
+        const response = await apiFetch(`/demos`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
             "x-client-type": "web",
+            "x-demo-id": demoId,
           },
         });
 
@@ -45,11 +46,7 @@ export const DemoProvider = ({ children }) => {
         setDemoData(data.data);
 
         console.log("data.data.role :", data.data.role);
-        // true :
         const role = data.data.isOwner ? "owner" : "trainee";
-        // const role = data.data.role || "trainee";
-        // temp:
-        // const role = "trainee";
         console.log("Determined role :", role);
 
         setActualRole(role);
