@@ -50,7 +50,7 @@ const CourseManagementCard = ({
         <div className={styles.tagsRow}>
           {course.tags?.map((tag, idx) => (
             <span key={idx} className={styles.tag}>
-              {tag}
+              {tag.name}
             </span>
           ))}
         </div>

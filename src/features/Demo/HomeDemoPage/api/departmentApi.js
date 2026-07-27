@@ -31,11 +31,12 @@ export const departmentApi = {
     try {
       console.log(departmentPayload);
       console.log(JSON.stringify(departmentPayload));
-      const response = await apiFetch(`/demos/${demoId}/departments`, {
+      const response = await apiFetch(`/departments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "x-client-type": "web",
+          "x-demo-id": demoId,
         },
         body: JSON.stringify(departmentPayload),
       });
@@ -54,11 +55,12 @@ export const departmentApi = {
 
   getDepartments: async (demoId) => {
     try {
-      const response = await apiFetch(`/demos/${demoId}/departments`, {
+      const response = await apiFetch(`/departments`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           "x-client-type": "web",
+          "x-demo-id": demoId,
         },
       });
 
@@ -88,16 +90,14 @@ export const departmentApi = {
 
   deleteDepartment: async (demoId, departmentId) => {
     try {
-      const response = await apiFetch(
-        `/demos/${demoId}/departments/${departmentId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            "x-client-type": "web",
-          },
+      const response = await apiFetch(`/departments/${departmentId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "x-client-type": "web",
+          "x-demo-id": demoId,
         },
-      );
+      });
 
       const data = await response.json();
       if (!response.ok)
