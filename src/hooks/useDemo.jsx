@@ -44,7 +44,8 @@ export const DemoProvider = ({ children }) => {
         // "isOwner": false
 
         setDemoData(data.data);
-        const role = data.data.isOwner ? "owner" : "member";
+        console.log("data.data[0].isOwner :", data.data[0].isOwner);
+        const role = data.data[0].isOwner ? "owner" : "member";
         console.log("Determined role :", role);
 
         setActualRole(role);
