@@ -12,7 +12,7 @@ import { SIDEBAR_CONFIG } from "./sidebarConfig";
 import LanguageSwitcher from "../../common/LanguageSwitcher";
 import styles from "./Sidebar.module.css";
 
-const Sidebar = ({ role = "trainee" }) => {
+const Sidebar = ({ role = "member" }) => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const { t } = useTranslation();

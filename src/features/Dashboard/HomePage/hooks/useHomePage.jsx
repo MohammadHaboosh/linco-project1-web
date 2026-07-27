@@ -4,8 +4,7 @@ import { useJoinedRooms } from "./useJoinedRooms.jsx";
 
 export const useHomePage = () => {
   const { ownedRooms, isLoading: isLoadingOwnedRooms } = useOwnedRooms();
-  const { joinedRooms, isLoading: isLoadingJoinedRooms } =
-    useJoinedRooms();
+  const { joinedRooms, isLoading: isLoadingJoinedRooms } = useJoinedRooms();
   const {
     invitations,
     isLoading: isLoadingInvitations,
@@ -24,7 +23,7 @@ export const useHomePage = () => {
     {
       id: 1,
       companyName: "Company Demo Name",
-      role: "Trainee",
+      role: "Member",
       dateJoined: "12/12/2025",
       members: 120,
     },

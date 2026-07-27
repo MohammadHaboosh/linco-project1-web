@@ -22,7 +22,7 @@ const MembersTable = ({
 }) => {
   const { t, i18n } = useTranslation();
   const [editingMemberId, setEditingMemberId] = useState(null);
-  const [selectedRole, setSelectedRole] = useState("TRAINER");
+  const [selectedRole, setSelectedRole] = useState("MEMBER");
 
   const normalizeRole = (role) =>
     String(role ?? "")
@@ -38,18 +38,17 @@ const MembersTable = ({
             <IoShieldCheckmark /> {t("owner")}
           </span>
         );
-      case "SECTION_MANAGER":
-      case "SECTIONMANAGER":
+      case "ADMIN":
       case "MANAGER":
         return (
           <span className={`${styles.badge} ${styles.badgeManager}`}>
             {t("manager")}
           </span>
         );
-      case "TRAINER":
+      case "MEMBER":
         return (
           <span className={`${styles.badge} ${styles.badgeTrainee}`}>
-            {t("trainer", "Trainer")}
+            {t("trainer")}
           </span>
         );
       default:
@@ -78,15 +77,15 @@ const MembersTable = ({
   const getEditableRole = (role) => {
     const normalizedRole = normalizeRole(role);
 
-    if (["SECTION_MANAGER", "SECTIONMANAGER"].includes(normalizedRole)) {
-      return "MANAGER";
+    if (["MANAGER", "ADMIN"].includes(normalizedRole)) {
+      return "ADMIN";
     }
 
-    if (normalizedRole === "TRAINEE") return "TRAINER";
+    if (normalizedRole === "MEMBER") return "MEMBER";
 
-    return ["OWNER", "TRAINER", "MANAGER"].includes(normalizedRole)
+    return ["OWNER", "ADMIN", "MEMBER"].includes(normalizedRole)
       ? normalizedRole
-      : "TRAINER";
+      : "MEMBER";
   };
 
   const startEditingRole = (member) => {
@@ -96,7 +95,7 @@ const MembersTable = ({
 
   const cancelEditingRole = () => {
     setEditingMemberId(null);
-    setSelectedRole("TRAINER");
+    setSelectedRole("MEMBER");
   };
 
   const saveRole = async (memberId) => {
@@ -127,7 +126,7 @@ const MembersTable = ({
           {isLoading ? (
             <tr>
               <td colSpan="4" className={styles.emptyState}>
-                {t("loading-members", "Loading members...")}
+                {t("loading-members")}
               </td>
             </tr>
           ) : error ? (
@@ -182,15 +181,15 @@ const MembersTable = ({
                       <select
                         className={styles.roleSelect}
                         value={selectedRole}
-                        onChange={(event) => setSelectedRole(event.target.value)}
+                        onChange={(event) =>
+                          setSelectedRole(event.target.value)
+                        }
                         disabled={isUpdating}
                         aria-label={t("assign-role")}
                       >
                         <option value="OWNER">{t("owner")}</option>
-                        <option value="TRAINER">
-                          {t("trainer", "Trainer")}
-                        </option>
-                        <option value="MANAGER">{t("manager")}</option>
+                        <option value="MEMBER">{t("member")}</option>
+                        <option value="ADMIN">{t("admin")}</option>
                       </select>
                     ) : (
                       getRoleBadge(member.role)

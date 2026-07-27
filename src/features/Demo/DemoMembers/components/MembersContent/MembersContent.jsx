@@ -46,11 +46,7 @@ const MembersContent = () => {
   const handleInvitationSuccess = useCallback(
     (responseData) => {
       setInvitationSuccessMessage(
-        responseData?.message ||
-          t(
-            "invitation-created-successfully",
-            "Invitation created successfully",
-          ),
+        responseData?.message || t("invitation-created-successfully"),
       );
       setIsInviteModalOpen(false);
     },
@@ -71,12 +67,7 @@ const MembersContent = () => {
   }, [members, searchQuery]);
 
   const handleDeleteMember = async (memberId) => {
-    const shouldDelete = window.confirm(
-      t(
-        "remove-member-confirmation",
-        "Are you sure you want to remove this member from the workspace?",
-      ),
-    );
+    const shouldDelete = window.confirm(t("remove-member-confirmation"));
 
     if (!shouldDelete) return;
 

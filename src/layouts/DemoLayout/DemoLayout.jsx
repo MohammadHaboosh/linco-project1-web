@@ -20,13 +20,9 @@ const LayoutContent = () => {
   );
 
   const safeRole = (currentRoleView || "trainee").toLowerCase();
-  console.log(" [DemoLayout] 2. safeRole (after lowercase):", safeRole);
-
   const roleConfig = DEMO_NAV[safeRole] || DEMO_NAV.trainee;
-  console.log(" [DemoLayout] 3. roleConfig Object found:", roleConfig);
-
   const navLinks = roleConfig?.navLinks || [];
-  console.log(" [DemoLayout] 4. Final navLinks Array:", navLinks);
+  console.log(" [DemoLayout] 4. navLinks Array:", navLinks);
 
   // const navLinks =
   //   DEMO_NAV[currentRoleView]?.navLinks || DEMO_NAV.trainee.navLinks;

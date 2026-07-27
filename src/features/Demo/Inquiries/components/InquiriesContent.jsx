@@ -5,11 +5,11 @@ import ManagerInbox from "./ManagerView/ManagerInbox";
 const InquiriesContent = () => {
   const { currentRoleView } = useDemo();
 
-  if (currentRoleView === "trainee") {
+  if (currentRoleView === "member") {
     return <TraineeInquiries />;
   }
 
-  if (currentRoleView === "owner" || currentRoleView === "sectionManager") {
+  if (currentRoleView === "owner" || currentRoleView === "admin") {
     return <ManagerInbox role={currentRoleView} />;
   }
 

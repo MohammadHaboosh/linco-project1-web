@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 import { departmentMemberApi } from "../api/departmentMemberApi";
+import { useParams } from "react-router-dom";
 
 export const useDepartmentMembers = (departmentId) => {
   const [members, setMembers] = useState([]);
   const [meta, setMeta] = useState(null);
   const [isLoading, setIsLoading] = useState(Boolean(departmentId));
   const [error, setError] = useState(null);
+  const { demoId } = useParams();
 
   const loadMembers = useCallback(
     async ({ signal } = {}) => {
@@ -23,6 +25,7 @@ export const useDepartmentMembers = (departmentId) => {
       try {
         const responseData = await departmentMemberApi.getMembers(
           departmentId,
+          demoId,
           { signal },
         );
 
@@ -35,9 +38,7 @@ export const useDepartmentMembers = (departmentId) => {
 
         setMembers([]);
         setMeta(null);
-        setError(
-          requestError.message || "Failed to load department members.",
-        );
+        setError(requestError.message || "Failed to load department members.");
       } finally {
         if (!signal?.aborted) {
           setIsLoading(false);
@@ -50,9 +51,7 @@ export const useDepartmentMembers = (departmentId) => {
   useEffect(() => {
     const controller = new AbortController();
 
-    Promise.resolve().then(() =>
-      loadMembers({ signal: controller.signal }),
-    );
+    Promise.resolve().then(() => loadMembers({ signal: controller.signal }));
 
     return () => controller.abort();
   }, [loadMembers]);

@@ -56,7 +56,7 @@ const InviteModal = ({ demoId, onClose, onSuccess }) => {
             className={styles.closeBtn}
             onClick={onClose}
             disabled={isSubmitting}
-            aria-label={t("close", "Close")}
+            aria-label={t('close')}
           >
             <IoCloseOutline />
           </button>
@@ -70,9 +70,7 @@ const InviteModal = ({ demoId, onClose, onSuccess }) => {
           )}
 
           <div className={styles.inputGroup}>
-            <label htmlFor="invite-user-search">
-              {t("find-user", "Find a user")}
-            </label>
+            <label htmlFor="invite-user-search">{t("find-user")}</label>
 
             {selectedUser ? (
               <div className={styles.selectedUserCard}>
@@ -92,7 +90,7 @@ const InviteModal = ({ demoId, onClose, onSuccess }) => {
                   onClick={clearSelectedUser}
                   disabled={isSubmitting}
                 >
-                  {t("change", "Change")}
+                  {t("change")}
                 </button>
               </div>
             ) : (
@@ -115,7 +113,7 @@ const InviteModal = ({ demoId, onClose, onSuccess }) => {
                   {isSearching && (
                     <span
                       className={styles.searchLoader}
-                      aria-label={t("searching", "Searching")}
+                      aria-label={t("searching")}
                     />
                   )}
                 </div>
@@ -128,7 +126,7 @@ const InviteModal = ({ demoId, onClose, onSuccess }) => {
                     searchQuery.trim() &&
                     !isSearching &&
                     searchResults.length === 0 && (
-                      <span>{t("no-users-found", "No users found.")}</span>
+                      <span>{t("no-users-found")}</span>
                     )}
                 </div>
 
@@ -147,7 +145,7 @@ const InviteModal = ({ demoId, onClose, onSuccess }) => {
                             <strong>
                               {[user.firstName, user.lastName]
                                 .filter(Boolean)
-                                .join(" ") || t("member", "Member")}
+                                .join(" ") || t("member")}
                             </strong>
                             <span>{user.email}</span>
                           </span>
@@ -169,18 +167,13 @@ const InviteModal = ({ demoId, onClose, onSuccess }) => {
               onChange={(event) => setRole(event.target.value)}
               disabled={isSubmitting}
             >
-              <option value="TRAINER">{t("trainer", "Trainer")}</option>
-              <option value="MANAGER">
-                {t("section-manager", "Section Manager")}
-              </option>
+              <option value="MEMBER">{t("member")}</option>
+              <option value="ADMIN">{t("admin")}</option>
             </select>
             <span className={styles.helperText}>
-              {role === "MANAGER"
+              {role === "ADMIN"
                 ? t("section-managers-can-manage-courses-and-tasks")
-                : t(
-                    "trainers-can-access-learning-content",
-                    "Trainers can access the workspace learning content.",
-                  )}
+                : t("trainers-can-access-learning-content")}
             </span>
           </div>
 

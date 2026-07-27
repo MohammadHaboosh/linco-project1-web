@@ -218,7 +218,7 @@
   "your-password-has-been-successfully-reset-you-can-now-use-your-new-password-to-sign-in": "لقد تم إعادة تعيين كلمة المرور الخاصة بك بنجاح. \nيمكنك الآن استخدام كلمة المرور الجديدة لتسجيل الدخول.",
   "owner": "المالك",
   "manager": "مدير قسم",
-  "member": "العضو",
+  "member": "عضو",
   "status": "المسمى الوظيفي",
   "joined": "تاريخ الانضمام",
   "actions": "الإجراءات",
@@ -242,7 +242,7 @@
   "find-user": "البحث عن مستخدم",
   "no-users-found": "لم يتم العثور على مستخدمين.",
   "change": "تغيير",
-  "trainers-can-access-learning-content": "يمكن للمدربين الوصول إلى المحتوى التعليمي في مساحة العمل.",
+  "trainers-can-access-learning-content": "يمكن للأعضاء المتدربين الوصول إلى المحتوى التعليمي في مساحة العمل.",
   "sending-invitation": "جارٍ إرسال الدعوة...",
   "searching": "جارٍ البحث",
   "invitation-sent": "تم إرسال الدعوة",
@@ -508,5 +508,7 @@
   "projects": "المشاريع",
   "deliverables": "التسليمات",
   "resources": "المصادر",
-  "loading-your-courses": "جارٍ تحميل الدورات التدريبية الخاصة بك..."
+  "loading-your-courses": "جارٍ تحميل الدورات التدريبية الخاصة بك...",
+  "admin": "أدمن",
+  "close": "إغلاق"
 }

@@ -4,10 +4,11 @@ export const ownerCoursesApi = {
   getDemoAssets: async (demoId) => {
     if (!demoId) throw new Error("Demo ID is required");
 
-    const response = await apiFetch(`/demos/${demoId}/assets/cursor`, {
+    const response = await apiFetch(`/assets/cursor`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "x-demo-id": demoId,
       },
     });
 

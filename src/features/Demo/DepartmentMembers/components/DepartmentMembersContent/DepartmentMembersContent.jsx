@@ -57,7 +57,7 @@ const DepartmentMembersContent = () => {
     ).size;
     const managers = members.filter((member) => {
       const role = String(member.demoMember?.role ?? "").toUpperCase();
-      return ["OWNER", "MANAGER", "SECTION_MANAGER"].includes(role);
+      return ["OWNER", "MANAGER", "ADMIN"].includes(role);
     }).length;
 
     return { jobLevels, managers };
@@ -83,7 +83,7 @@ const DepartmentMembersContent = () => {
     const normalizedRole = String(role ?? "").toUpperCase();
 
     if (normalizedRole === "OWNER") return styles.ownerBadge;
-    if (["MANAGER", "SECTION_MANAGER"].includes(normalizedRole)) {
+    if (["MANAGER", "ADMIN"].includes(normalizedRole)) {
       return styles.managerBadge;
     }
 
@@ -100,15 +100,10 @@ const DepartmentMembersContent = () => {
             </div>
             <div>
               <span className={styles.eyebrow}>
-                {t("department-management", "Department management")}
+                {t("department-management")}
               </span>
-              <h1>{t("department-members", "Department members")}</h1>
-              <p>
-                {t(
-                  "department-members-description",
-                  "View everyone assigned to this department and their responsibilities.",
-                )}
-              </p>
+              <h1>{t("department-members")}</h1>
+              <p>{t("department-members-description")}</p>
             </div>
           </div>
 
@@ -138,7 +133,7 @@ const DepartmentMembersContent = () => {
               <IoShieldCheckmarkOutline />
             </div>
             <div>
-              <span>{t("management-roles", "Management roles")}</span>
+              <span>{t("management-roles")}</span>
               <strong>{summary.managers}</strong>
             </div>
           </div>
@@ -147,7 +142,7 @@ const DepartmentMembersContent = () => {
               <IoBriefcaseOutline />
             </div>
             <div>
-              <span>{t("job-levels", "Job levels")}</span>
+              <span>{t("job-levels")}</span>
               <strong>{summary.jobLevels}</strong>
             </div>
           </div>
@@ -156,7 +151,7 @@ const DepartmentMembersContent = () => {
         <section className={styles.membersPanel}>
           <div className={styles.panelToolbar}>
             <div>
-              <h2>{t("members-directory", "Members directory")}</h2>
+              <h2>{t("members-directory")}</h2>
               <p>
                 {searchQuery
                   ? t("members-match-count", {
@@ -190,16 +185,21 @@ const DepartmentMembersContent = () => {
           {error ? (
             <div className={styles.stateMessage} role="alert">
               <div className={styles.stateIcon}>!</div>
-              <h3>{t("members-load-failed", "Members could not be loaded")}</h3>
+              <h3>{t("members-load-failed")}</h3>
               <p>{error}</p>
               <button type="button" onClick={refetch}>
-                <IoRefreshOutline /> {t("try-again", "Try again")}
+                <IoRefreshOutline /> {t("try-again")}
               </button>
             </div>
           ) : isLoading ? (
             <div className={styles.loadingState} aria-live="polite">
               <span className={styles.loader} />
-              <p>{t("loading-department-members", "Loading department members...")}</p>
+              <p>
+                {t(
+                  "loading-department-members",
+                  "Loading department members...",
+                )}
+              </p>
             </div>
           ) : filteredMembers.length === 0 ? (
             <div className={styles.stateMessage}>
@@ -208,19 +208,13 @@ const DepartmentMembersContent = () => {
               </div>
               <h3>
                 {searchQuery
-                  ? t("no-matching-members", "No matching members")
-                  : t("no-department-members", "No department members yet")}
+                  ? t("no-matching-members")
+                  : t("no-department-members")}
               </h3>
               <p>
                 {searchQuery
-                  ? t(
-                      "adjust-member-search",
-                      "Try another name, email, role, or job title.",
-                    )
-                  : t(
-                      "department-members-empty-description",
-                      "Members assigned to this department will appear here.",
-                    )}
+                  ? t("adjust-member-search")
+                  : t("department-members-empty-description")}
               </p>
             </div>
           ) : (
@@ -229,9 +223,9 @@ const DepartmentMembersContent = () => {
                 <thead>
                   <tr>
                     <th>{t("member")}</th>
-                    <th>{t("job-title", "Job title")}</th>
-                    <th>{t("workspace-role", "Workspace role")}</th>
-                    <th>{t("assigned", "Assigned")}</th>
+                    <th>{t("job-title")}</th>
+                    <th>{t("workspace-role")}</th>
+                    <th>{t("assigned")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -278,10 +272,7 @@ const DepartmentMembersContent = () => {
                           <span
                             className={`${styles.roleBadge} ${getRoleClass(demoMember.role)}`}
                           >
-                            {normalizeLabel(
-                              demoMember.role,
-                              t("member"),
-                            )}
+                            {normalizeLabel(demoMember.role, t("member"))}
                           </span>
                         </td>
                         <td className={styles.dateCell}>

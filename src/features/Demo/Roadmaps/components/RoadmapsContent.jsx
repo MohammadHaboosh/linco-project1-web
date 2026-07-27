@@ -40,16 +40,11 @@ const RoadmapsContent = () => {
             </div>
             <div>
               <span className={styles.subHeading}>
-                {t("ai-powered-career-planning", "AI-powered career planning")}
+                {t("ai-powered-career-planning")}
               </span>
-              <h1 className={styles.title}>
-                {t("roadmap-generator", "Roadmap generator")}
-              </h1>
+              <h1 className={styles.title}>{t("roadmap-generator")}</h1>
               <p className={styles.description}>
-                {t(
-                  "roadmap-generator-description",
-                  "Tell us what you want to learn and receive a complete, practical career roadmap generated for you.",
-                )}
+                {t("roadmap-generator-description")}
               </p>
             </div>
           </div>
@@ -73,19 +68,14 @@ const RoadmapsContent = () => {
               <IoSparklesOutline />
             </div>
             <div>
-              <h2>{t("what-do-you-want-to-learn", "What do you want to learn?")}</h2>
-              <p>
-                {t(
-                  "roadmap-title-help",
-                  "Enter a technology, role, or career goal. Be specific for a more focused roadmap.",
-                )}
-              </p>
+              <h2>{t("what-do-you-want-to-learn")}</h2>
+              <p>{t("roadmap-title-help")}</p>
             </div>
           </div>
 
           <form className={styles.generatorForm} onSubmit={handleSubmit}>
             <label htmlFor="roadmap-title" className={styles.srOnly}>
-              {t("roadmap-title", "Roadmap title")}
+              {t("roadmap-title")}
             </label>
             <div className={styles.promptInputWrapper}>
               <IoMapOutline className={styles.promptIcon} />
@@ -94,33 +84,27 @@ const RoadmapsContent = () => {
                 type="text"
                 value={title}
                 onChange={(event) => setTitle(event.target.value)}
-                placeholder={t(
-                  "roadmap-title-placeholder",
-                  "e.g. Backend NestJS, Product Design, or Data Engineering",
-                )}
+                placeholder={t("roadmap-title-placeholder")}
                 disabled={isGenerating}
                 maxLength={120}
                 autoComplete="off"
               />
-              <button
-                type="submit"
-                disabled={!title.trim() || isGenerating}
-              >
+              <button type="submit" disabled={!title.trim() || isGenerating}>
                 {isGenerating ? (
                   <>
                     <span className={styles.buttonLoader} />
-                    {t("generating-roadmap", "Generating...")}
+                    {t("generating-roadmap")}
                   </>
                 ) : (
                   <>
-                    {t("generate-roadmap", "Generate roadmap")}
+                    {t("generate-roadmap")}
                     <IoArrowForwardOutline />
                   </>
                 )}
               </button>
             </div>
             <div className={styles.promptExamples}>
-              <span>{t("try-an-example", "Try an example:")}</span>
+              <span>{t("try-an-example")}</span>
               {["Backend NestJS", "Cloud DevOps", "UI/UX Design"].map(
                 (example) => (
                   <button
@@ -140,7 +124,7 @@ const RoadmapsContent = () => {
             <div className={styles.errorBanner} role="alert">
               <IoAlertCircleOutline />
               <div>
-                <strong>{t("roadmap-generation-failed", "Generation failed")}</strong>
+                <strong>{t("roadmap-generation-failed")}</strong>
                 <p>{error}</p>
               </div>
             </div>
@@ -152,13 +136,8 @@ const RoadmapsContent = () => {
             <div className={styles.aiOrb}>
               <IoSparklesOutline />
             </div>
-            <h2>{t("building-your-roadmap", "Building your roadmap")}</h2>
-            <p>
-              {t(
-                "building-roadmap-description",
-                "The AI is designing your learning sequence, projects, milestones, and career outcomes.",
-              )}
-            </p>
+            <h2>{t("building-your-roadmap")}</h2>
+            <p>{t("building-roadmap-description")}</p>
             <div className={styles.progressTrack}>
               <span />
             </div>

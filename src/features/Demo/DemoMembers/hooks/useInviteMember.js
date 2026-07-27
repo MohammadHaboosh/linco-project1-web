@@ -7,7 +7,7 @@ export const useInviteMember = (demoId, onSuccess) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [role, setRole] = useState("TRAINER");
+  const [role, setRole] = useState("MEMBER");
   const [isSearching, setIsSearching] = useState(false);
   const [searchError, setSearchError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);

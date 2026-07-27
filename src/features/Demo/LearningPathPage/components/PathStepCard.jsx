@@ -10,9 +10,9 @@ import { useTranslation } from "react-i18next";
 
 const PathStepCard = ({ course, index, role, onDelete, onReplace }) => {
   const { t } = useTranslation();
-  const isManager = role === "owner" || role === "sectionManager";
-  const isCompleted = role === "trainee" && course.status === "completed";
-  const isLocked = role === "trainee" && course.status === "locked";
+  const isManager = role === "owner" || role === "admin";
+  const isCompleted = role === "member" && course.status === "completed";
+  const isLocked = role === "member" && course.status === "locked";
 
   return (
     <div

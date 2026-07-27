@@ -20,11 +20,11 @@ const Header = ({ role, currentDepartment, currentRoleView, onRoleChange }) => {
 
         <div className={styles.divider}></div>
 
-        {role === "trainee" && (
+        {role === "member" && (
           <DepartmentSwitcher currentDept={currentDepartment} />
         )}
 
-        {role === "sectionManager" && (
+        {role === "admin" && (
           <div className={styles.staticBadge}>{currentDepartment}</div>
         )}
 

@@ -248,7 +248,7 @@
   "find-user": "Find a user",
   "no-users-found": "No users found.",
   "change": "Change",
-  "trainers-can-access-learning-content": "Trainers can access the workspace learning content.",
+  "trainers-can-access-learning-content": "Members can access the workspace learning content.",
   "sending-invitation": "Sending invitation...",
   "searching": "Searching",
   "invitation-sent": "Invitation sent",
@@ -508,5 +508,7 @@
   "projects": "Projects",
   "deliverables": "Deliverables",
   "resources": "Resources",
-  "loading-your-courses": "Loading your courses..."
+  "loading-your-courses": "Loading your courses...",
+  "admin": "Admin",
+  "close": "Close"
 }

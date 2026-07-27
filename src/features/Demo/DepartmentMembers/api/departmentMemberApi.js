@@ -1,7 +1,7 @@
 import { apiFetch } from "../../../../api/apiFetch";
 
 export const departmentMemberApi = {
-  getMembers: async (departmentId, options = {}) => {
+  getMembers: async (departmentId, demoId, options = {}) => {
     if (!departmentId) {
       throw new Error("Department ID is required to fetch members.");
     }
@@ -13,6 +13,8 @@ export const departmentMemberApi = {
         headers: {
           "Content-Type": "application/json",
           "x-client-type": "web",
+          "x-demo-id": demoId,
+          "x-department-id": departmentId,
         },
         signal: options.signal,
       },

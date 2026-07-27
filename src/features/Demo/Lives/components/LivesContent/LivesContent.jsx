@@ -40,8 +40,7 @@ const LivesContent = () => {
   const { currentRoleView } = useDemo();
   const [activeTab, setActiveTab] = useState("UPCOMING");
 
-  const canManage =
-    currentRoleView === "owner" || currentRoleView === "sectionManager";
+  const canManage = currentRoleView === "owner" || currentRoleView === "admin";
 
   const filteredLives = MOCK_LIVES.filter((live) => {
     if (activeTab === "UPCOMING")

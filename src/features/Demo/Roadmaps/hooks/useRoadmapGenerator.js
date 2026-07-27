@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { roadmapApi } from "../api/roadmapApi";
+import { useParams } from "react-router-dom";
 
 export const useRoadmapGenerator = () => {
   const [roadmap, setRoadmap] = useState(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState(null);
   const activeControllerRef = useRef(null);
+  const { demoId, departmentId } = useParams();
 
   useEffect(
     () => () => {
@@ -25,6 +27,8 @@ export const useRoadmapGenerator = () => {
 
     try {
       const generatedRoadmap = await roadmapApi.generate(title, {
+        demoId: demoId,
+        departmentId: departmentId,
         signal: controller.signal,
       });
 

@@ -19,7 +19,7 @@ export const useJoinedRooms = () => {
               ...room,
               id: room.id,
               companyName: room.name,
-              role: room.role || "Trainee",
+              role: room.role || "Member",
               dateJoined: new Date(room.createdAt).toLocaleDateString("en-GB"),
               members: room.membersCount ?? 0,
             }));

@@ -7,8 +7,8 @@ const DemoContext = createContext();
 export const DemoProvider = ({ children }) => {
   const { demoId } = useParams();
   const [demoData, setDemoData] = useState(null);
-  const [actualRole, setActualRole] = useState("trainee");
-  const [currentRoleView, setCurrentRoleView] = useState("trainee");
+  const [actualRole, setActualRole] = useState("member");
+  const [currentRoleView, setCurrentRoleView] = useState("member");
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -44,9 +44,7 @@ export const DemoProvider = ({ children }) => {
         // "isOwner": false
 
         setDemoData(data.data);
-
-        console.log("data.data.role :", data.data.role);
-        const role = data.data.isOwner ? "owner" : "trainee";
+        const role = data.data.isOwner ? "owner" : "member";
         console.log("Determined role :", role);
 
         setActualRole(role);

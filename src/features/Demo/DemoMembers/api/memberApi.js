@@ -41,8 +41,10 @@ export const memberApi = {
       throw new Error("Demo ID is required to send an invitation.");
     }
 
-    const normalizedRole = String(role ?? "").trim().toUpperCase();
-    const allowedRoles = ["TRAINER", "MANAGER"];
+    const normalizedRole = String(role ?? "")
+      .trim()
+      .toUpperCase();
+    const allowedRoles = ["MEMBER", "ADMIN", "OWNER"];
 
     if (!allowedRoles.includes(normalizedRole)) {
       throw new Error("A valid invitation role is required.");
@@ -53,6 +55,7 @@ export const memberApi = {
       headers: {
         "Content-Type": "application/json",
         "x-client-type": "web",
+        "x-demo-id": demoId,
       },
       body: JSON.stringify({
         receiverId,
@@ -75,17 +78,15 @@ export const memberApi = {
       throw new Error("Demo ID is required to fetch members.");
     }
 
-    const response = await apiFetch(
-      `/demos/${encodeURIComponent(demoId)}/members`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "x-client-type": "web",
-        },
-        signal: options.signal,
+    const response = await apiFetch(`/members`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-client-type": "web",
+        "x-demo-id": demoId,
       },
-    );
+      signal: options.signal,
+    });
 
     const responseData = await response.json().catch(() => ({}));
 
@@ -106,12 +107,13 @@ export const memberApi = {
     }
 
     const response = await apiFetch(
-      `/demos/${encodeURIComponent(demoId)}/members/${encodeURIComponent(memberId)}`,
+      `/members/${encodeURIComponent(memberId)}`,
       {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           "x-client-type": "web",
+          "x-demo-id": demoId,
         },
       },
     );
@@ -134,20 +136,23 @@ export const memberApi = {
       throw new Error("Member ID is required to update a member role.");
     }
 
-    const normalizedRole = String(role ?? "").trim().toUpperCase();
-    const allowedRoles = ["OWNER", "TRAINER", "MANAGER"];
+    const normalizedRole = String(role ?? "")
+      .trim()
+      .toUpperCase();
+    const allowedRoles = ["OWNER", "ADMIN", "MEMBER"];
 
     if (!allowedRoles.includes(normalizedRole)) {
       throw new Error("A valid member role is required.");
     }
 
     const response = await apiFetch(
-      `/demos/${encodeURIComponent(demoId)}/members/${encodeURIComponent(memberId)}`,
+      `/members/${encodeURIComponent(memberId)}`,
       {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
           "x-client-type": "web",
+          "x-demo-id": demoId,
         },
         body: JSON.stringify({ role: normalizedRole }),
       },

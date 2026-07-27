@@ -41,7 +41,7 @@ const LearningPathContent = () => {
   });
 
   const displayCourses = useMemo(() => {
-    if (currentRoleView === "trainee") {
+    if (currentRoleView === "member") {
       const completed = courses.filter((c) => c.status === "completed");
       const pending = courses.filter((c) => c.status !== "completed");
       return [...pending, ...completed];
@@ -87,8 +87,7 @@ const LearningPathContent = () => {
             </div>
           </div>
 
-          {(currentRoleView === "owner" ||
-            currentRoleView === "sectionManager") && (
+          {(currentRoleView === "owner" || currentRoleView === "admin") && (
             <button className={styles.addCourseBtn}>
               <IoAddOutline /> {t("add-course-to-path")}
             </button>

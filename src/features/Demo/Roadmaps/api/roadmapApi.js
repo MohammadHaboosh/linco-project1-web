@@ -1,9 +1,9 @@
 import { apiFetch } from "../../../../api/apiFetch";
 
-const GENERATE_ROADMAP_PATH = "/demos/nothing/departments/generate-roadmap";
+const GENERATE_ROADMAP_PATH = "/departments/generate-roadmap";
 
 export const roadmapApi = {
-  generate: async (title, options = {}) => {
+  generate: async (title, demoId, departmentId, options = {}) => {
     const normalizedTitle = String(title ?? "").trim();
 
     if (!normalizedTitle) {
@@ -15,6 +15,8 @@ export const roadmapApi = {
       headers: {
         "Content-Type": "application/json",
         "x-client-type": "web",
+        "x-demo-id": demoId,
+        "x-department-id": departmentId,
       },
       body: JSON.stringify({ title: normalizedTitle }),
       signal: options.signal,

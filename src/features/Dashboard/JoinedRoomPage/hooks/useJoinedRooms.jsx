@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchDemos } from "../../api/roomsApi.js"; 
+import { fetchDemos } from "../../api/roomsApi.js";
 
 export const useJoinedRooms = () => {
   const [joinedRooms, setJoinedRooms] = useState([]);
@@ -20,7 +20,7 @@ export const useJoinedRooms = () => {
               ...room,
               id: room.id,
               companyName: room.name,
-              role: "Trainee",
+              role: "Member",
               dateJoined: new Date(room.createdAt).toLocaleDateString("en-GB"),
               members: room.membersCount ?? 0,
             }));
