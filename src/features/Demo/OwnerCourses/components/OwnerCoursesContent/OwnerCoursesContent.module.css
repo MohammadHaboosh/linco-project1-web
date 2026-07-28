@@ -29,11 +29,13 @@
   align-items: flex-start;
   margin-bottom: 40px;
 }
+
 .headerInfo {
   display: flex;
   align-items: center;
   gap: 20px;
 }
+
 .iconBox {
   width: 70px;
   height: 70px;
@@ -44,16 +46,19 @@
   align-items: center;
   box-shadow: 0 10px 25px rgba(10, 42, 84, 0.15);
 }
+
 .headerIcon {
   font-size: 2.2rem;
   color: #ffffff;
 }
+
 .title {
   color: #0a2a54;
   font-size: 2.2rem;
   font-weight: 800;
   margin: 0 0 8px 0;
 }
+
 .description {
   color: #64748b;
   font-size: 1.05rem;

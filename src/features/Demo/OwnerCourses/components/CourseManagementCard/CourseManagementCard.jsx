@@ -49,7 +49,6 @@ const CourseManagementCard = ({
 
       <div className={styles.cardBody}>
         <div className={styles.tagsRow}>
-          {/* 💡 الإصلاح هنا: استخدام tag مباشرة أو tag.name في حال اختلفت صيغة البيانات */}
           {course.tags?.map((tag, idx) => (
             <span key={idx} className={styles.tag}>
               {typeof tag === "string" ? tag : tag.name}
@@ -85,16 +84,12 @@ const CourseManagementCard = ({
       </div>
 
       <div className={styles.cardFooter}>
-        {/* 💡 الإصلاح هنا: التأكد من استخدام assetId للتوجيه الصحيح */}
-        <button
-          className={styles.editBtn}
-          onClick={() => onEdit(course.assetId)}
-        >
+        <button className={styles.editBtn} onClick={onEdit}>
           <IoCreateOutline /> {t("edit")}
         </button>
         <button
           className={`${styles.publishBtn} ${course.isPublished ? styles.publishedBtn : ""}`}
-          onClick={() => !course.isPublished && onPublish(course.id)}
+          onClick={onPublish}
           disabled={course.isPublished}
         >
           <IoCloudUploadOutline />{" "}

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { IoFolderOpenOutline } from "react-icons/io5";
 import CourseManagementCard from "../CourseManagementCard/CourseManagementCard";
@@ -21,10 +20,7 @@ const OwnerCoursesContent = () => {
   };
 
   const handlePublishToLibrary = (courseId) => {
-    /// TO DO
-    // setCourses((prev) =>
-    //   prev.map((c) => (c.id === courseId ? { ...c, isPublished: true } : c)),
-    // );
+    // API logic for publishing can go here later
   };
 
   return (
@@ -46,6 +42,7 @@ const OwnerCoursesContent = () => {
           </div>
         </div>
 
+        {/* الكلاس هنا coursesGrid ليتطابق مع CSS ويرتب الكروت بجانب بعضها */}
         <div className={styles.coursesGrid}>
           <CourseManagementCard isAddNew={true} onAddNew={handleAddNewCourse} />
 
@@ -59,8 +56,8 @@ const OwnerCoursesContent = () => {
                 key={course.id}
                 isAddNew={false}
                 course={course}
-                onEdit={handleEditCourse}
-                onPublish={handlePublishToLibrary}
+                onEdit={() => handleEditCourse(course.assetId || course.id)}
+                onPublish={() => handlePublishToLibrary(course.id)}
               />
             ))}
         </div>
