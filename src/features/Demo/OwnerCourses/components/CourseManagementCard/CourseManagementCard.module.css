@@ -1,709 +1,220 @@
-/* =========================================
-   Global Layout (No Double Scrollbars!)
-   ========================================= */
-.pageWrapper {
-  background-color: #f8fafc;
-  min-height: 100vh;
-  font-family: var(--font-sans, "Inter", sans-serif);
-  padding-bottom: 60px; /* مساحة للتنفس من الأسفل */
-}
-
-.loadingScreen {
-  height: 100vh;
+.addNewCard {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 15px;
   background: #f8fafc;
-  color: #0a2a54;
-  font-size: 1.1rem;
-  font-weight: 700;
+  border: 2px dashed #cbd5e1;
+  border-radius: 24px;
+  aspect-ratio: 1 / 1.1;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  padding: 30px;
 }
-
-.spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid #e2e8f0;
-  border-top-color: #1a56db;
+.addNewCard:hover {
+  background: #eff6ff;
+  border-color: #1a56db;
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(26, 86, 219, 0.1);
+}
+.addCircle {
+  width: 70px;
+  height: 70px;
+  background: #ffffff;
   border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* =========================================
-   Sticky Top Header
-   ========================================= */
-.topHeader {
-  position: sticky;
-  top: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 40px;
-  background-color: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid #e2e8f0;
-  box-shadow: 0 4px 20px rgba(10, 42, 84, 0.04);
-  z-index: 50;
-  height: 75px;
-}
-
-.headerLeft {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.backBtn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
-  color: #64748b;
-  border-radius: 12px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.backBtn:hover {
-  background: #e2e8f0;
-  color: #0a2a54;
-  transform: translateX(-2px);
-}
-
-.courseHeaderInfo {
-  display: flex;
-  flex-direction: column;
-}
-.badge {
-  background: #eff6ff;
-  color: #1a56db;
-  font-size: 0.65rem;
-  font-weight: 800;
-  padding: 4px 8px;
-  border-radius: 6px;
-  width: fit-content;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 4px;
-}
-.courseHeaderInfo h2 {
-  margin: 0;
-  color: #0a2a54;
-  font-size: 1.25rem;
-  font-weight: 800;
-}
-
-.saveBtn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: linear-gradient(135deg, #0a2a54 0%, #1a56db 100%);
-  color: #ffffff;
-  border: none;
-  padding: 12px 28px;
-  border-radius: 12px;
-  font-weight: 700;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 4px 15px rgba(26, 86, 219, 0.2);
-}
-.saveBtn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(26, 86, 219, 0.3);
-}
-.saveBtn:disabled {
-  background: #94a3b8;
-  box-shadow: none;
-  cursor: not-allowed;
-}
-.btnSpinner {
-  width: 16px;
-  height: 16px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top-color: #fff;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-/* =========================================
-   Workspace Grid (Main Layout)
-   ========================================= */
-.workspaceGrid {
-  max-width: 1200px;
-  margin: 40px auto 0;
-  padding: 0 20px;
-  display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 40px;
-  align-items: start; /* مهم جداً لعمل الـ sticky للقائمة الجانبية */
-}
-
-/* القائمة الجانبية الثابتة */
-.stickySidebar {
-  position: sticky;
-  top: 100px; /* تترك مسافة أسفل الهيدر */
-}
-
-.navMenu {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.navItem {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 14px 18px;
-  background: transparent;
-  border: none;
-  border-radius: 12px;
-  color: #64748b;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  text-align: left;
-}
-.navItem:hover {
-  background: #ffffff;
-  color: #0a2a54;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
-}
-.activeNav {
-  background: #ffffff;
-  color: #1a56db;
-  font-weight: 800;
-  box-shadow: 0 4px 15px rgba(26, 86, 219, 0.08);
-}
-.navIcon {
-  font-size: 1.3rem;
-  display: flex;
-}
-.activeNav .navIcon {
-  color: #1a56db;
-}
-
-/* المنطقة الرئيسية لا تحتاج سكرول منفصل */
-.mainContent {
-  width: 100%;
-}
-
-.tabContainer {
-  background: #ffffff;
-  border-radius: 20px;
-  border: 1px solid #e2e8f0;
-  padding: 40px;
-  box-shadow: 0 10px 40px rgba(10, 42, 84, 0.03);
-  animation: slideUp 0.4s ease-out;
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.tabHeaderFlex {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 35px;
-  border-bottom: 1px solid #f1f5f9;
-  padding-bottom: 20px;
-}
-.tabTitle {
-  color: #0a2a54;
-  font-size: 1.6rem;
-  font-weight: 800;
-  margin: 0 0 8px 0;
-}
-.tabSubtitle {
-  color: #64748b;
-  font-size: 0.95rem;
-  margin: 0;
-}
-
-/* =========================================
-   Forms & Inputs
-   ========================================= */
-.formGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 25px;
-}
-.fullWidth {
-  grid-column: 1 / -1;
-}
-.formGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.formLabel {
-  color: #1e293b;
-  font-size: 0.9rem;
-  font-weight: 700;
-}
-.required {
-  color: #ef4444;
-}
-.hintText {
-  font-size: 0.8rem;
-  color: #94a3b8;
-  font-weight: 500;
-  margin-top: 4px;
-}
-
-.input,
-.selectInput,
-.textarea {
-  width: 100%;
-  padding: 14px 18px;
-  border: 1px solid #cbd5e1;
-  border-radius: 12px;
-  background: #f8fafc;
-  color: #1e293b;
-  font-size: 0.95rem;
-  font-family: inherit;
-  transition: all 0.2s;
-}
-.input:focus,
-.selectInput:focus,
-.textarea:focus {
-  outline: none;
-  background: #ffffff;
-  border-color: #1a56db;
-  box-shadow: 0 0 0 4px rgba(26, 86, 219, 0.1);
-}
-.textarea {
-  resize: vertical;
-  min-height: 120px;
-}
-
-/* Buttons */
-.primaryBtn {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 8px;
-  background: #1a56db;
-  color: #ffffff;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 12px;
-  font-weight: 700;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 4px 12px rgba(26, 86, 219, 0.2);
-}
-.primaryBtn:hover {
-  background: #0a2a54;
-  transform: translateY(-2px);
-}
-.outlineBtnSmall {
-  background: #ffffff;
-  border: 1px solid #cbd5e1;
-  color: #475569;
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.outlineBtnSmall:hover {
-  border-color: #0a2a54;
-  color: #0a2a54;
-}
-.primaryOutlineBtnSmall {
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
-  color: #1a56db;
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.primaryOutlineBtnSmall:hover {
-  background: #1a56db;
-  color: #ffffff;
-  border-color: #1a56db;
-}
-.ghostDangerBtn {
-  background: transparent;
-  border: none;
-  color: #94a3b8;
-  font-size: 1.2rem;
-  cursor: pointer;
-  padding: 6px;
-  border-radius: 8px;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.ghostDangerBtn:hover {
-  background: #fef2f2;
-  color: #ef4444;
-}
-.dashedAddBtn {
-  width: 100%;
-  padding: 14px;
-  border: 1px dashed #cbd5e1;
-  background: transparent;
-  color: #64748b;
-  font-weight: 700;
-  font-size: 0.9rem;
-  border-radius: 12px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.dashedAddBtn:hover {
-  border-color: #1a56db;
-  color: #1a56db;
-  background: #eff6ff;
-}
-
-/* =========================================
-   Curriculum Accordion 
-   ========================================= */
-.addSectionBlock {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 30px;
-  background: #f8fafc;
-  padding: 20px;
-  border-radius: 16px;
-  border: 1px dashed #cbd5e1;
-  align-items: center;
-}
-.curriculumList {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.accordionCard {
-  border: 1px solid #e2e8f0;
-  border-radius: 16px;
-  background: #ffffff;
-  overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   transition: all 0.3s;
 }
-.accordionCard:hover {
-  border-color: #cbd5e1;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.04);
+.addNewCard:hover .addCircle {
+  background: #1a56db;
 }
-
-.accordionHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 18px 24px;
-  background: #f8fafc;
-  cursor: pointer;
-  user-select: none;
-  transition: background 0.2s;
+.addIcon {
+  font-size: 2.5rem;
+  color: #94a3b8;
+  transition: color 0.3s;
 }
-.accordionHeader:hover {
-  background: #f1f5f9;
+.addNewCard:hover .addIcon {
+  color: #ffffff;
 }
-.accordionHeaderActive {
-  background: #ffffff;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.sectionTitleBlock {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.dragHandle {
-  color: #64748b;
-  font-size: 1.2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f1f5f9;
-  padding: 4px;
-  border-radius: 6px;
-}
-.sectionCounter {
-  color: #1a56db;
-  font-size: 0.85rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-.sectionTitle {
-  margin: 0;
+.addNewCard h3 {
+  margin: 0 0 8px 0;
   color: #0a2a54;
-  font-size: 1.15rem;
-  font-weight: 800;
-}
-
-.accordionBody {
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  background: #ffffff;
-}
-.groupDivider {
-  border: none;
-  border-top: 1px dashed #e2e8f0;
-  margin: 0;
-}
-
-.contentGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-.groupTitle {
-  margin: 0;
-  color: #1e293b;
-  font-size: 1.05rem;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.groupTitle svg {
-  color: #1a56db;
   font-size: 1.3rem;
+  font-weight: 800;
 }
-
-.emptyHint {
-  color: #94a3b8;
-  font-size: 0.9rem;
+.addNewCard p {
   margin: 0;
-  font-style: italic;
-  background: #f8fafc;
-  padding: 15px;
-  border-radius: 10px;
-  text-align: center;
-}
-
-.itemsList {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.lessonItemRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 18px;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  transition: border 0.2s;
-}
-.lessonItemRow:hover {
-  border-color: #cbd5e1;
-}
-.lessonInfoLeft {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.itemIndex {
-  color: #94a3b8;
-  font-weight: 700;
-  font-size: 0.9rem;
-}
-.lessonIconColor {
-  color: #1a56db;
-  font-size: 1.2rem;
-}
-.itemName {
-  color: #1e293b;
-  font-weight: 700;
+  color: #64748b;
   font-size: 0.95rem;
 }
-.pillGray {
-  background: #f1f5f9;
-  color: #64748b;
-  padding: 4px 10px;
-  border-radius: 8px;
-  font-size: 0.8rem;
-  font-weight: 700;
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
+  overflow: hidden;
+  aspect-ratio: 1 / 1.1;
+  box-shadow: 0 4px 15px rgba(10, 42, 84, 0.03);
+  transition: all 0.3s ease;
 }
-.pillGreen {
-  background: #dcfce7;
-  color: #059669;
-  padding: 4px 10px;
-  border-radius: 8px;
-  font-size: 0.8rem;
-  font-weight: 700;
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(10, 42, 84, 0.08);
+  border-color: #cbd5e1;
 }
 
-/* Quiz Box inside Accordion */
-.quizCard {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  padding: 20px;
-  border-radius: 16px;
-}
-.quizInfoBlock {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-.quizIconWrapper {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  background: #fffbeb;
-  color: #d97706;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.5rem;
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  height: 40%;
   flex-shrink: 0;
+  overflow: hidden;
 }
-.quizCard strong {
-  color: #0a2a54;
-  font-size: 1.05rem;
+.courseImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.card:hover .courseImage {
+  transform: scale(1.05);
+}
+.imageOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.3) 0%, transparent 100%);
+}
+.publishedBadge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(16, 185, 129, 0.95);
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
   font-weight: 800;
-  display: block;
-  margin-bottom: 4px;
-}
-.quizMeta {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #64748b;
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-.bullet {
-  color: #cbd5e1;
-}
-.quizActions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.emptyQuizBox {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  background: #f8fafc;
-  border: 1px dashed #cbd5e1;
-  padding: 20px;
-  border-radius: 12px;
-  color: #94a3b8;
-  font-weight: 600;
-}
-.emptyIcon {
-  font-size: 1.5rem;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* =========================================
-   FAQs Tab
-   ========================================= */
-.faqForm {
-  background: #f8fafc;
-  padding: 30px;
-  border-radius: 20px;
-  border: 1px solid #e2e8f0;
-  margin-bottom: 30px;
+.cardBody {
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  flex: 1;
 }
-.faqList {
+.tagsRow {
   display: flex;
-  flex-direction: column;
-  gap: 15px;
+  gap: 8px;
+  margin-bottom: 12px;
 }
-.emptyTextCenter {
-  text-align: center;
-  color: #94a3b8;
-  font-size: 1rem;
-  padding: 40px;
-  background: #f8fafc;
-  border-radius: 16px;
-  border: 1px dashed #cbd5e1;
+.tag {
+  background: #eff6ff;
+  color: #1a56db;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
 }
-.faqCard {
+
+.title {
+  margin: 0 0 8px 0;
+  color: #0a2a54;
+  font-size: 1.2rem;
+  font-weight: 800;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.description {
+  margin: 0 0 15px 0;
+  color: #64748b;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex: 1;
+}
+
+.statsRow {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  padding: 25px;
-  border-radius: 16px;
-  transition: box-shadow 0.2s;
+  align-items: center;
+  background: #f8fafc;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #f1f5f9;
+  margin-top: auto;
 }
-.faqCard:hover {
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.04);
-  border-color: #cbd5e1;
-}
-.faqContent h4 {
-  margin: 0 0 10px 0;
-  color: #0a2a54;
-  font-size: 1.1rem;
-  font-weight: 800;
-}
-.faqContent p {
-  margin: 0;
+.statItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
   color: #475569;
-  font-size: 0.95rem;
-  line-height: 1.6;
+}
+.statIcon {
+  font-size: 1.1rem;
+  color: #94a3b8;
 }
 
-/* Responsive Grid */
-@media (max-width: 1024px) {
-  .workspaceGrid {
-    grid-template-columns: 1fr;
-  }
-  .stickySidebar {
-    position: static;
-    display: flex;
-    overflow-x: auto;
-    padding-bottom: 10px;
-  }
-  .navMenu {
-    flex-direction: row;
-  }
-  .navItem {
-    white-space: nowrap;
-  }
+.cardFooter {
+  display: flex;
+  gap: 12px;
+  padding: 0 20px 20px 20px;
+}
+.editBtn,
+.publishBtn {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.editBtn {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
+.editBtn:hover {
+  background: #e2e8f0;
+  color: #0a2a54;
+}
+.publishBtn {
+  background: #0a2a54;
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 12px rgba(10, 42, 84, 0.2);
+}
+.publishBtn:hover:not(:disabled) {
+  background: #1a56db;
+  transform: translateY(-2px);
+}
+.publishedBtn {
+  background: #ecfdf5;
+  color: #059669;
+  box-shadow: none;
+  border: 1px solid #a7f3d0;
+  cursor: default;
 }

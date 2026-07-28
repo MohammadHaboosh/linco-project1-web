@@ -7,7 +7,7 @@ import {
   IoChatbubblesOutline,
   IoSaveOutline,
 } from "react-icons/io5";
-import { useCourseManager } from "../../../hooks/useCourseManager";
+import { useCourseManager } from "../../hooks/useCourseManager";
 import GeneralInfoTab from "./tabs/GeneralInfoTab";
 import CurriculumTab from "./tabs/CurriculumTab";
 import FAQsTab from "./tabs/FAQsTab";
@@ -37,7 +37,7 @@ const CourseManagerLayout = () => {
     return (
       <div className={styles.loadingScreen}>
         <div className={styles.spinner}></div>
-        <p>Loading Course Data...</p>
+        <p>Loading Course Manager...</p>
       </div>
     );
   }
@@ -62,7 +62,6 @@ const CourseManagerLayout = () => {
 
   return (
     <div className={styles.pageWrapper}>
-      {/* الهيدر العلوي ثابت (Sticky) */}
       <header className={styles.topHeader}>
         <div className={styles.headerLeft}>
           <button className={styles.backBtn} onClick={() => navigate(-1)}>
@@ -94,10 +93,10 @@ const CourseManagerLayout = () => {
         </div>
       </header>
 
-      {/* مساحة العمل: شبكة (Grid) تسمح بالسكرول الطبيعي */}
-      <div className={styles.workspaceGrid}>
-        {/* القائمة الجانبية تلحق بك أثناء السكرول */}
-        <aside className={styles.stickySidebar}>
+      {/* منطقة العمل تأخذ باقي الشاشة، السكرول مفصول بين الجانبين */}
+      <div className={styles.workspaceFlex}>
+        {/* القائمة الجانبية ملتصقة باليسار تماماً */}
+        <aside className={styles.sidebarLeft}>
           <nav className={styles.navMenu}>
             {TABS.map((tab) => (
               <button
@@ -105,6 +104,7 @@ const CourseManagerLayout = () => {
                 className={`${styles.navItem} ${activeTab === tab.id ? styles.activeNav : ""}`}
                 onClick={() => setActiveTab(tab.id)}
               >
+                <div className={styles.activeIndicator}></div>
                 <span className={styles.navIcon}>{tab.icon}</span>
                 <span className={styles.navLabel}>{tab.label}</span>
               </button>
@@ -112,18 +112,20 @@ const CourseManagerLayout = () => {
           </nav>
         </aside>
 
-        {/* المحتوى يأخذ الارتفاع الذي يحتاجه */}
-        <main className={styles.mainContent}>
-          {activeTab === "general" && (
-            <GeneralInfoTab
-              data={generalInfo}
-              onChange={(f, v) => setGeneralInfo({ ...generalInfo, [f]: v })}
-            />
-          )}
-          {activeTab === "curriculum" && (
-            <CurriculumTab sections={sections} setSections={setSections} />
-          )}
-          {activeTab === "faqs" && <FAQsTab faqs={faqs} setFaqs={setFaqs} />}
+        {/* محتوى الصفحة يأخذ كامل المساحة المتبقية بمنتصف الشاشة */}
+        <main className={styles.mainArea}>
+          <div className={styles.contentWrapper}>
+            {activeTab === "general" && (
+              <GeneralInfoTab
+                data={generalInfo}
+                onChange={(f, v) => setGeneralInfo({ ...generalInfo, [f]: v })}
+              />
+            )}
+            {activeTab === "curriculum" && (
+              <CurriculumTab sections={sections} setSections={setSections} />
+            )}
+            {activeTab === "faqs" && <FAQsTab faqs={faqs} setFaqs={setFaqs} />}
+          </div>
         </main>
       </div>
     </div>
