@@ -7,7 +7,7 @@ import {
   IoChatbubblesOutline,
   IoSaveOutline,
 } from "react-icons/io5";
-import { useCourseManager } from "../../../hooks/useCourseManager";
+import { useCourseManager } from "../../hooks/useCourseManager";
 import GeneralInfoTab from "./tabs/GeneralInfoTab";
 import CurriculumTab from "./tabs/CurriculumTab";
 import FAQsTab from "./tabs/FAQsTab";
@@ -31,7 +31,7 @@ const CourseManagerLayout = () => {
     setSections,
   } = useCourseManager(demoId, assetId);
 
-  const [activeTab, setActiveTab] = useState("faqs"); // بدأنا بالـ FAQs كمثال
+  const [activeTab, setActiveTab] = useState("curriculum");
 
   if (isLoading) {
     return (
@@ -51,7 +51,7 @@ const CourseManagerLayout = () => {
     {
       id: "curriculum",
       icon: <IoListOutline />,
-      label: t("curriculum", "Curriculum"),
+      label: t("curriculum", "Curriculum Builder"),
     },
     {
       id: "faqs",
@@ -61,13 +61,14 @@ const CourseManagerLayout = () => {
   ];
 
   return (
-    <div className={styles.managerWrapper}>
+    <div className={styles.managerContainer}>
+      {/* الشريط العلوي - ثابت في أعلى الشاشة */}
       <header className={styles.topHeader}>
         <div className={styles.headerLeft}>
           <button className={styles.backBtn} onClick={() => navigate(-1)}>
             <IoArrowBackOutline />
           </button>
-          <div className={styles.courseInfo}>
+          <div className={styles.courseHeaderInfo}>
             <span className={styles.badge}>
               {t("editing-mode", "Editing Mode")}
             </span>
@@ -93,10 +94,10 @@ const CourseManagerLayout = () => {
         </div>
       </header>
 
-      {/* الـ Layout الجديد المنظم الخالي من السكرول المزدوج */}
-      <div className={styles.mainLayout}>
-        {/* القائمة الجانبية ملتصقة باليسار */}
-        <aside className={styles.sidebar}>
+      {/* مساحة العمل: شبكة تسمح بالسكرول الطبيعي للصفحة ككل */}
+      <div className={styles.workspaceGrid}>
+        {/* القائمة الجانبية: تلحق بك أثناء السكرول */}
+        <aside className={styles.stickySidebar}>
           <nav className={styles.navMenu}>
             {TABS.map((tab) => (
               <button
@@ -114,8 +115,8 @@ const CourseManagerLayout = () => {
           </nav>
         </aside>
 
-        {/* منطقة المحتوى القابلة للسكرول داخلياً */}
-        <main className={styles.contentArea}>
+        {/* المحتوى الرئيسي: يمتد للأسفل بحرية تامة */}
+        <main className={styles.mainContent}>
           <div className={styles.contentWrapper}>
             {activeTab === "general" && (
               <GeneralInfoTab
