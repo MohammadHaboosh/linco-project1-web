@@ -7,7 +7,7 @@ import {
   IoChatbubblesOutline,
   IoSaveOutline,
 } from "react-icons/io5";
-import { useCourseManager } from "../../hooks/useCourseManager";
+import { useCourseManager } from "../../../hooks/useCourseManager";
 import GeneralInfoTab from "./tabs/GeneralInfoTab";
 import CurriculumTab from "./tabs/CurriculumTab";
 import FAQsTab from "./tabs/FAQsTab";
