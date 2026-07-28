@@ -7,12 +7,12 @@ import {
   IoChevronDown,
   IoChevronUp,
   IoLibraryOutline,
+  IoFolderOpenOutline,
 } from "react-icons/io5";
 import styles from "../CourseManager.module.css";
 
 const CurriculumTab = ({ sections, setSections }) => {
   const [newSectionName, setNewSectionName] = useState("");
-  // لتتبع الأقسام المفتوحة
   const [expandedSections, setExpandedSections] = useState([]);
 
   const toggleSection = (id) => {
@@ -36,7 +36,7 @@ const CurriculumTab = ({ sections, setSections }) => {
         quiz: null,
       },
     ]);
-    setExpandedSections([...expandedSections, newId]); // فتح القسم الجديد فوراً
+    setExpandedSections([...expandedSections, newId]);
     setNewSectionName("");
   };
 
@@ -81,8 +81,15 @@ const CurriculumTab = ({ sections, setSections }) => {
     );
   };
 
+  const deleteQuiz = (secId) => {
+    setSections(
+      sections.map((s) => (s.id === secId ? { ...s, quiz: null } : s)),
+    );
+  };
+
   return (
-    <div className={styles.tabContainer}>
+    // هنا تم تصحيح الكلاس ليصبح tabCard بدلاً من tabContainer
+    <div className={styles.tabCard}>
       <div className={styles.tabHeaderFlex}>
         <div>
           <h3 className={styles.tabTitle}>Curriculum & Assessments</h3>
@@ -112,7 +119,6 @@ const CurriculumTab = ({ sections, setSections }) => {
 
           return (
             <div key={section.id} className={styles.accordionCard}>
-              {/* هيدر القسم (الضغط عليه يفتح أو يغلق القسم) */}
               <div
                 className={`${styles.accordionHeader} ${isExpanded ? styles.accordionHeaderActive : ""}`}
                 onClick={() => toggleSection(section.id)}
@@ -126,7 +132,6 @@ const CurriculumTab = ({ sections, setSections }) => {
                   </span>
                   <h4 className={styles.sectionTitle}>{section.title}</h4>
                 </div>
-
                 <button
                   className={styles.ghostDangerBtn}
                   onClick={(e) => deleteSection(e, section.id)}
@@ -136,10 +141,9 @@ const CurriculumTab = ({ sections, setSections }) => {
                 </button>
               </div>
 
-              {/* محتوى القسم (يظهر فقط إذا كان isExpanded === true) */}
               {isExpanded && (
                 <div className={styles.accordionBody}>
-                  {/* قسم الدروس */}
+                  {/* Lessons */}
                   <div className={styles.contentGroup}>
                     <h5 className={styles.groupTitle}>Lessons</h5>
                     {section.lessons.length === 0 ? (
@@ -178,7 +182,7 @@ const CurriculumTab = ({ sections, setSections }) => {
 
                   <hr className={styles.groupDivider} />
 
-                  {/* قسم الكويز وبنك الأسئلة */}
+                  {/* Quiz */}
                   <div className={styles.contentGroup}>
                     <h5 className={styles.groupTitle}>Assessment</h5>
                     {!section.quiz ? (
@@ -214,7 +218,7 @@ const CurriculumTab = ({ sections, setSections }) => {
                           </button>
                           <button
                             className={styles.ghostDangerBtn}
-                            // onClick={() => deleteQuiz(section.id)}
+                            onClick={() => deleteQuiz(section.id)}
                           >
                             <IoTrashOutline />
                           </button>
