@@ -326,7 +326,6 @@
   "in-library": "In Library",
   "publish": "Publish",
   "demo-courses": "Demo Courses",
-  "manage-your-created-courses-edit-curriculum-and-publish-them-to-the-public-library": "Manage your created courses, edit curriculum, and publish them to the Public Library.",
   "you": "You",
   "users": "Users",
   "manage-asset": "Manage Asset",
@@ -517,5 +516,6 @@
   },
   "department-desc": "Description (Optional)",
   "department-title": "Department Title",
-  "create-new-department": "Create New Department"
+  "create-new-department": "Create New Department",
+  "manage-your-created-courses-edit-curriculum-and-publish-them-to-the-public-library": "Manage your created courses, edit curriculum, and publish them to the Public Library."
 }

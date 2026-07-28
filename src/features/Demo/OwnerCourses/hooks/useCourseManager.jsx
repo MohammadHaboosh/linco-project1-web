@@ -5,7 +5,6 @@ export const useCourseManager = (demoId, assetId) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState(null);
-
   const [courseId, setCourseId] = useState(null);
 
   const [generalInfo, setGeneralInfo] = useState({
@@ -16,6 +15,10 @@ export const useCourseManager = (demoId, assetId) => {
     tagIds: [],
   });
 
+  const [faqs, setFaqs] = useState([]);
+
+  const [sections, setSections] = useState([]);
+
   useEffect(() => {
     if (!demoId || !assetId) return;
 
@@ -24,7 +27,6 @@ export const useCourseManager = (demoId, assetId) => {
         setIsLoading(true);
         const assetData = await courseManagerApi.getAsset(demoId, assetId);
         const course = assetData.course;
-
         setCourseId(course.id);
 
         setGeneralInfo({
@@ -32,8 +34,38 @@ export const useCourseManager = (demoId, assetId) => {
           description: course.description || "",
           visibility: course.visibility || "PRIVATE",
           imagePath: course.imagePath || "",
-          tagIds: course.tags?.map((t) => t.id) || [],
+          tagIds: course.tags?.map((t) => t.name) || [],
         });
+
+        // Mock data
+        setFaqs([
+          {
+            id: 1,
+            question: "Is this course for beginners?",
+            answer: "Yes, it starts from scratch.",
+          },
+        ]);
+        setSections([
+          {
+            id: "sec-1",
+            title: "Introduction",
+            lessons: [{ id: "l-1", title: "Welcome Video", duration: "05:00" }],
+            questions: [
+              {
+                id: "q-1",
+                text: "What is React?",
+                options: ["Library", "Framework", "Language", "DB"],
+                correctIndex: 0,
+              },
+            ],
+            quiz: {
+              id: "qz-1",
+              title: "Intro Quiz",
+              duration: 15,
+              questionsCount: 5,
+            },
+          },
+        ]);
       } catch (err) {
         setError(err.message || "Failed to load course details.");
       } finally {
@@ -49,9 +81,9 @@ export const useCourseManager = (demoId, assetId) => {
     setIsSaving(true);
     try {
       await courseManagerApi.updateCourseGeneralInfo(courseId, generalInfo);
-      alert("Course info updated successfully!");
+      alert("Course saved successfully!");
     } catch (err) {
-      alert("Error updating course: " + err.message);
+      alert("Error saving course: " + err.message);
     } finally {
       setIsSaving(false);
     }
@@ -64,5 +96,9 @@ export const useCourseManager = (demoId, assetId) => {
     generalInfo,
     setGeneralInfo,
     saveGeneralInfo,
+    faqs,
+    setFaqs,
+    sections,
+    setSections,
   };
 };

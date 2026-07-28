@@ -316,7 +316,6 @@
   "in-library": "في المكتبة",
   "publish": "نشر",
   "demo-courses": "الدورات الخاصة بالشركة",
-  "manage-your-created-courses-edit-curriculum-and-publish-them-to-the-public-library": "إدارة الدورات التي تم إنشاؤها، وتحرير المناهج الدراسية، ونشرها في المكتبة العامة.",
   "you": "أنت",
   "users": "المستخدمين",
   "manage-asset": "إدارة الأصول",
@@ -517,5 +516,6 @@
   },
   "department-desc": "الوصف (اختياري)",
   "department-title": "عنوان القسم",
-  "create-new-department": "إنشاء قسم جديد"
+  "create-new-department": "إنشاء قسم جديد",
+  "manage-your-created-courses-edit-curriculum-and-publish-them-to-the-public-library": "إدارة الدورات التي تم إنشاؤها، وتحرير المناهج الدراسية، ونشرها في المكتبة العامة."
 }

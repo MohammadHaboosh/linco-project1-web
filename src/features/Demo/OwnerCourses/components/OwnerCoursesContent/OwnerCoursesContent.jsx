@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useOwnerCourses } from "../../hooks/useOwnerCourses";
 
 const OwnerCoursesContent = () => {
-  const { t } = useTranslation("demo");
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { demoId } = useParams();
   const { courses, isLoading, error } = useOwnerCourses(demoId);

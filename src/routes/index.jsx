@@ -48,9 +48,10 @@ import DepartmentMembersPage from "../pages/DepartmentMembersPage.jsx";
 
 import CourseStudio from "../features/Demo/PublishCourse/components/CourseStudio/CourseStudio.jsx";
 import CourseManagerLayout from "../features/Demo/OwnerCourses/components/ManageCourse/components/CourseManagerLayout.jsx";
+import OwnerCoursesContent from "../features/Demo/OwnerCourses/components/OwnerCoursesContent/OwnerCoursesContent.jsx";
 
 export const router = createBrowserRouter([
-  { path: PATHS.LANDING, element: <LandingRedirector /> },
+  { path: PATHS.LANDING, element: <OwnerCoursesContent /> },
   { path: PATHS.SIGNIN, element: <SinginPage /> },
   { path: PATHS.SIGNUP, element: <SignupPage /> },
   { path: PATHS.CHECK_EMAIL, element: <VerifyEmailPage /> },

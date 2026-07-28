@@ -4,15 +4,13 @@ import {
   IoArrowBackOutline,
   IoInformationCircleOutline,
   IoListOutline,
-  IoHelpCircleOutline,
-  IoLibraryOutline,
+  IoChatbubblesOutline,
   IoSaveOutline,
 } from "react-icons/io5";
 import { useCourseManager } from "../../../hooks/useCourseManager";
 import GeneralInfoTab from "./tabs/GeneralInfoTab";
 import CurriculumTab from "./tabs/CurriculumTab";
-import QuizzesTab from "./tabs/QuizzesTab";
-import QuestionBankTab from "./tabs/QuestionBankTab";
+import FAQsTab from "./tabs/FAQsTab";
 import styles from "./CourseManager.module.css";
 import { useTranslation } from "react-i18next";
 
@@ -21,9 +19,19 @@ const CourseManagerLayout = () => {
   const navigate = useNavigate();
   const { demoId, assetId } = useParams();
 
-  const { isLoading, isSaving, generalInfo, setGeneralInfo, saveGeneralInfo } =
-    useCourseManager(demoId, assetId);
-  const [activeTab, setActiveTab] = useState("general");
+  const {
+    isLoading,
+    isSaving,
+    generalInfo,
+    setGeneralInfo,
+    saveGeneralInfo,
+    faqs,
+    setFaqs,
+    sections,
+    setSections,
+  } = useCourseManager(demoId, assetId);
+
+  const [activeTab, setActiveTab] = useState("curriculum");
 
   if (isLoading) {
     return (
@@ -43,17 +51,12 @@ const CourseManagerLayout = () => {
     {
       id: "curriculum",
       icon: <IoListOutline />,
-      label: t("curriculum", "Curriculum"),
+      label: t("curriculum", "Curriculum & Assessments"),
     },
     {
-      id: "quizzes",
-      icon: <IoHelpCircleOutline />,
-      label: t("assessments", "Assessments"),
-    },
-    {
-      id: "qbank",
-      icon: <IoLibraryOutline />,
-      label: t("question-bank", "Question Bank"),
+      id: "faqs",
+      icon: <IoChatbubblesOutline />,
+      label: t("faqs", "Course FAQs"),
     },
   ];
 
@@ -111,14 +114,13 @@ const CourseManagerLayout = () => {
             {activeTab === "general" && (
               <GeneralInfoTab
                 data={generalInfo}
-                onChange={(field, value) =>
-                  setGeneralInfo({ ...generalInfo, [field]: value })
-                }
+                onChange={(f, v) => setGeneralInfo({ ...generalInfo, [f]: v })}
               />
             )}
-            {activeTab === "curriculum" && <CurriculumTab />}
-            {activeTab === "quizzes" && <QuizzesTab />}
-            {activeTab === "qbank" && <QuestionBankTab />}
+            {activeTab === "curriculum" && (
+              <CurriculumTab sections={sections} setSections={setSections} />
+            )}
+            {activeTab === "faqs" && <FAQsTab faqs={faqs} setFaqs={setFaqs} />}
           </div>
         </main>
       </div>
