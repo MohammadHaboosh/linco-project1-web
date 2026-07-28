@@ -69,7 +69,6 @@
   box-shadow: 0 15px 35px rgba(10, 42, 84, 0.08);
   border-color: #cbd5e1;
 }
-
 .imageWrapper {
   position: relative;
   width: 100%;
@@ -107,7 +106,6 @@
   backdrop-filter: blur(4px);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
-
 .cardBody {
   padding: 20px;
   display: flex;
@@ -127,7 +125,6 @@
   font-size: 0.75rem;
   font-weight: 700;
 }
-
 .title {
   margin: 0 0 8px 0;
   color: #0a2a54;
@@ -149,7 +146,6 @@
   overflow: hidden;
   flex: 1;
 }
-
 .statsRow {
   display: flex;
   justify-content: space-between;
@@ -172,7 +168,6 @@
   font-size: 1.1rem;
   color: #94a3b8;
 }
-
 .cardFooter {
   display: flex;
   gap: 12px;

@@ -12,13 +12,13 @@ const FAQsTab = ({ faqs, setFaqs }) => {
   const { t } = useTranslation();
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
-  const [expandedFaqs, setExpandedFaqs] = useState([]); // تتبع الأسئلة المفتوحة
+  const [expandedId, setExpandedId] = useState(null);
 
   const handleAddFaq = () => {
     if (!question.trim() || !answer.trim()) return;
-    const newId = Date.now().toString();
-    setFaqs([...faqs, { id: newId, question, answer }]);
-    setExpandedFaqs([...expandedFaqs, newId]); // فتح السؤال الجديد تلقائياً
+    const newFaq = { id: Date.now().toString(), question, answer };
+    setFaqs([...faqs, newFaq]);
+    setExpandedId(newFaq.id); // فتح الجواب تلقائياً بعد الإضافة
     setQuestion("");
     setAnswer("");
   };
@@ -29,31 +29,27 @@ const FAQsTab = ({ faqs, setFaqs }) => {
   };
 
   const toggleFaq = (id) => {
-    if (expandedFaqs.includes(id)) {
-      setExpandedFaqs(expandedFaqs.filter((fId) => fId !== id));
-    } else {
-      setExpandedFaqs([...expandedFaqs, id]);
-    }
+    setExpandedId(expandedId === id ? null : id);
   };
 
   return (
     <div className={styles.tabCard}>
-      <div className={styles.tabHeaderFlex}>
+      <div className={styles.tabHeader}>
         <div>
           <h3 className={styles.tabTitle}>{t("course-faqs", "Course FAQs")}</h3>
           <p className={styles.tabSubtitle}>
-            Anticipate trainees' questions and provide clear answers.
+            Add and manage frequently asked questions for your trainees.
           </p>
         </div>
       </div>
 
       <div className={styles.splitLayout}>
-        {/* النصف الأيسر: نموذج الإضافة */}
-        <div className={styles.splitLeft}>
-          <div className={styles.faqFormCard}>
-            <h4 className={styles.formSectionTitle}>Add New FAQ</h4>
+        {/* النصف الأيسر: إضافة سؤال جديد */}
+        <div className={styles.leftPane}>
+          <div className={styles.faqForm}>
+            <h4 className={styles.formSectionTitle}>Create New FAQ</h4>
             <div className={styles.formGroup}>
-              <label className={styles.formLabel}>Question</label>
+              <label>Question</label>
               <input
                 type="text"
                 className={styles.input}
@@ -63,7 +59,7 @@ const FAQsTab = ({ faqs, setFaqs }) => {
               />
             </div>
             <div className={styles.formGroup}>
-              <label className={styles.formLabel}>Answer</label>
+              <label>Answer</label>
               <textarea
                 className={styles.textarea}
                 placeholder="e.g. No, this course starts from the absolute basics."
@@ -77,33 +73,31 @@ const FAQsTab = ({ faqs, setFaqs }) => {
           </div>
         </div>
 
-        {/* النصف الأيمن: قائمة الأسئلة بشكل Accordion */}
-        <div className={styles.splitRight}>
+        {/* النصف الأيمن: قائمة الأسئلة بشكل طيات (Accordion) */}
+        <div className={styles.rightPane}>
           <h4 className={styles.formSectionTitle}>
             Created FAQs ({faqs.length})
           </h4>
 
           {faqs.length === 0 ? (
-            <div className={styles.emptyFaqBox}>
-              <p>No FAQs added yet. Start by creating one on the left.</p>
+            <div className={styles.emptyFaq}>
+              No FAQs added yet. Start by creating one on the left.
             </div>
           ) : (
             <div className={styles.faqAccordionList}>
               {faqs.map((faq) => {
-                const isExp = expandedFaqs.includes(faq.id);
+                const isOpen = expandedId === faq.id;
                 return (
-                  <div key={faq.id} className={styles.faqAccordionItem}>
+                  <div key={faq.id} className={styles.faqItem}>
                     <div
-                      className={`${styles.faqAccHeader} ${isExp ? styles.faqAccHeaderActive : ""}`}
+                      className={`${styles.faqItemHeader} ${isOpen ? styles.faqItemHeaderActive : ""}`}
                       onClick={() => toggleFaq(faq.id)}
                     >
-                      <div className={styles.faqQuestion}>
-                        {isExp ? (
-                          <IoChevronUp className={styles.faqChevron} />
-                        ) : (
-                          <IoChevronDown className={styles.faqChevron} />
-                        )}
-                        <h4>{faq.question}</h4>
+                      <div className={styles.faqTitleBox}>
+                        <IoChevronDown
+                          className={`${styles.chevronIcon} ${isOpen ? styles.chevronOpen : ""}`}
+                        />
+                        <h5>{faq.question}</h5>
                       </div>
                       <button
                         className={styles.ghostDangerBtn}
@@ -113,11 +107,8 @@ const FAQsTab = ({ faqs, setFaqs }) => {
                         <IoTrashOutline />
                       </button>
                     </div>
-
-                    {isExp && (
-                      <div className={styles.faqAccBody}>
-                        <p>{faq.answer}</p>
-                      </div>
+                    {isOpen && (
+                      <div className={styles.faqBody}>{faq.answer}</div>
                     )}
                   </div>
                 );

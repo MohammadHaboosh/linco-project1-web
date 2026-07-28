@@ -37,7 +37,6 @@ export const useCourseManager = (demoId, assetId) => {
           tagIds: course.tags?.map((t) => t.name) || [],
         });
 
-        // Mock data
         setFaqs([
           {
             id: 1,

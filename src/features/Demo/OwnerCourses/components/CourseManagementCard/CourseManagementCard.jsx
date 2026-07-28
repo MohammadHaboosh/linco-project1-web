@@ -18,6 +18,7 @@ const CourseManagementCard = ({
   onAddNew,
 }) => {
   const { t } = useTranslation();
+
   if (isAddNew) {
     return (
       <div className={styles.addNewCard} onClick={onAddNew}>
@@ -48,9 +49,10 @@ const CourseManagementCard = ({
 
       <div className={styles.cardBody}>
         <div className={styles.tagsRow}>
+          {/* 💡 الإصلاح هنا: استخدام tag مباشرة أو tag.name في حال اختلفت صيغة البيانات */}
           {course.tags?.map((tag, idx) => (
             <span key={idx} className={styles.tag}>
-              {tag.name}
+              {typeof tag === "string" ? tag : tag.name}
             </span>
           ))}
         </div>
@@ -64,25 +66,26 @@ const CourseManagementCard = ({
           <div className={styles.statItem}>
             <IoListOutline className={styles.statIcon} />
             <span>
-              {course.stats.sections} {t("sections")}
+              {course.stats?.sections || 0} {t("sections")}
             </span>
           </div>
           <div className={styles.statItem}>
             <IoVideocamOutline className={styles.statIcon} />
             <span>
-              {course.stats.lessons} {t("lessons")}
+              {course.stats?.lessons || 0} {t("lessons")}
             </span>
           </div>
           <div className={styles.statItem}>
             <IoHelpCircleOutline className={styles.statIcon} />
             <span>
-              {course.stats.quizzes} {t("quizzes")}
+              {course.stats?.quizzes || 0} {t("quizzes")}
             </span>
           </div>
         </div>
       </div>
 
       <div className={styles.cardFooter}>
+        {/* 💡 الإصلاح هنا: التأكد من استخدام assetId للتوجيه الصحيح */}
         <button
           className={styles.editBtn}
           onClick={() => onEdit(course.assetId)}

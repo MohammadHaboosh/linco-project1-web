@@ -31,13 +31,13 @@ const CourseManagerLayout = () => {
     setSections,
   } = useCourseManager(demoId, assetId);
 
-  const [activeTab, setActiveTab] = useState("curriculum");
+  const [activeTab, setActiveTab] = useState("faqs"); // بدأنا بالـ FAQs كمثال
 
   if (isLoading) {
     return (
       <div className={styles.loadingScreen}>
         <div className={styles.spinner}></div>
-        <p>Loading Course Manager...</p>
+        <p>Loading Workspace...</p>
       </div>
     );
   }
@@ -51,7 +51,7 @@ const CourseManagerLayout = () => {
     {
       id: "curriculum",
       icon: <IoListOutline />,
-      label: t("curriculum", "Curriculum & Assessments"),
+      label: t("curriculum", "Curriculum"),
     },
     {
       id: "faqs",
@@ -61,13 +61,13 @@ const CourseManagerLayout = () => {
   ];
 
   return (
-    <div className={styles.pageWrapper}>
+    <div className={styles.managerWrapper}>
       <header className={styles.topHeader}>
         <div className={styles.headerLeft}>
           <button className={styles.backBtn} onClick={() => navigate(-1)}>
             <IoArrowBackOutline />
           </button>
-          <div className={styles.courseHeaderInfo}>
+          <div className={styles.courseInfo}>
             <span className={styles.badge}>
               {t("editing-mode", "Editing Mode")}
             </span>
@@ -93,10 +93,10 @@ const CourseManagerLayout = () => {
         </div>
       </header>
 
-      {/* منطقة العمل تأخذ باقي الشاشة، السكرول مفصول بين الجانبين */}
-      <div className={styles.workspaceFlex}>
-        {/* القائمة الجانبية ملتصقة باليسار تماماً */}
-        <aside className={styles.sidebarLeft}>
+      {/* الـ Layout الجديد المنظم الخالي من السكرول المزدوج */}
+      <div className={styles.mainLayout}>
+        {/* القائمة الجانبية ملتصقة باليسار */}
+        <aside className={styles.sidebar}>
           <nav className={styles.navMenu}>
             {TABS.map((tab) => (
               <button
@@ -104,7 +104,9 @@ const CourseManagerLayout = () => {
                 className={`${styles.navItem} ${activeTab === tab.id ? styles.activeNav : ""}`}
                 onClick={() => setActiveTab(tab.id)}
               >
-                <div className={styles.activeIndicator}></div>
+                {activeTab === tab.id && (
+                  <div className={styles.activeIndicator}></div>
+                )}
                 <span className={styles.navIcon}>{tab.icon}</span>
                 <span className={styles.navLabel}>{tab.label}</span>
               </button>
@@ -112,8 +114,8 @@ const CourseManagerLayout = () => {
           </nav>
         </aside>
 
-        {/* محتوى الصفحة يأخذ كامل المساحة المتبقية بمنتصف الشاشة */}
-        <main className={styles.mainArea}>
+        {/* منطقة المحتوى القابلة للسكرول داخلياً */}
+        <main className={styles.contentArea}>
           <div className={styles.contentWrapper}>
             {activeTab === "general" && (
               <GeneralInfoTab

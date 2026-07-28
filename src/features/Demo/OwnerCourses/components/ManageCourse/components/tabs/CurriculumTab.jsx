@@ -5,22 +5,16 @@ import {
   IoVideocamOutline,
   IoShieldCheckmarkOutline,
   IoChevronDown,
-  IoChevronUp,
   IoLibraryOutline,
-  IoFolderOpenOutline,
 } from "react-icons/io5";
 import styles from "../CourseManager.module.css";
 
 const CurriculumTab = ({ sections, setSections }) => {
   const [newSectionName, setNewSectionName] = useState("");
-  const [expandedSections, setExpandedSections] = useState([]);
+  const [openSectionId, setOpenSectionId] = useState(null);
 
   const toggleSection = (id) => {
-    if (expandedSections.includes(id)) {
-      setExpandedSections(expandedSections.filter((secId) => secId !== id));
-    } else {
-      setExpandedSections([...expandedSections, id]);
-    }
+    setOpenSectionId(openSectionId === id ? null : id);
   };
 
   const handleAddSection = () => {
@@ -36,7 +30,7 @@ const CurriculumTab = ({ sections, setSections }) => {
         quiz: null,
       },
     ]);
-    setExpandedSections([...expandedSections, newId]);
+    setOpenSectionId(newId);
     setNewSectionName("");
   };
 
@@ -56,6 +50,29 @@ const CurriculumTab = ({ sections, setSections }) => {
               lessons: [
                 ...s.lessons,
                 { id: Date.now(), title, duration: "00:00" },
+              ],
+            }
+          : s,
+      ),
+    );
+  };
+
+  const addQuestion = (secId) => {
+    const text = prompt("Enter question text:");
+    if (!text) return;
+    setSections(
+      sections.map((s) =>
+        s.id === secId
+          ? {
+              ...s,
+              questions: [
+                ...s.questions,
+                {
+                  id: Date.now(),
+                  text,
+                  options: ["A", "B", "C"],
+                  correctIndex: 0,
+                },
               ],
             }
           : s,
@@ -88,13 +105,12 @@ const CurriculumTab = ({ sections, setSections }) => {
   };
 
   return (
-    // هنا تم تصحيح الكلاس ليصبح tabCard بدلاً من tabContainer
     <div className={styles.tabCard}>
-      <div className={styles.tabHeaderFlex}>
+      <div className={styles.tabHeader}>
         <div>
           <h3 className={styles.tabTitle}>Curriculum & Assessments</h3>
           <p className={styles.tabSubtitle}>
-            Organize your course into sections, add lessons, and create quizzes.
+            Organize sections, add lessons, and manage quizzes.
           </p>
         </div>
       </div>
@@ -115,115 +131,130 @@ const CurriculumTab = ({ sections, setSections }) => {
 
       <div className={styles.curriculumList}>
         {sections.map((section, idx) => {
-          const isExpanded = expandedSections.includes(section.id);
+          const isOpen = openSectionId === section.id;
 
           return (
-            <div key={section.id} className={styles.accordionCard}>
+            <div key={section.id} className={styles.sectionCard}>
               <div
-                className={`${styles.accordionHeader} ${isExpanded ? styles.accordionHeaderActive : ""}`}
+                className={`${styles.sectionHeader} ${isOpen ? styles.sectionHeaderActive : ""}`}
                 onClick={() => toggleSection(section.id)}
               >
-                <div className={styles.sectionTitleBlock}>
-                  <div className={styles.dragHandle}>
-                    {isExpanded ? <IoChevronUp /> : <IoChevronDown />}
-                  </div>
-                  <span className={styles.sectionCounter}>
+                <div className={styles.sectionTitleArea}>
+                  <IoChevronDown
+                    className={`${styles.chevronIcon} ${isOpen ? styles.chevronOpen : ""}`}
+                  />
+                  <span className={styles.sectionIndex}>
                     Section {idx + 1}:
                   </span>
-                  <h4 className={styles.sectionTitle}>{section.title}</h4>
+                  <h4>{section.title}</h4>
                 </div>
                 <button
                   className={styles.ghostDangerBtn}
                   onClick={(e) => deleteSection(e, section.id)}
-                  title="Delete Section"
                 >
                   <IoTrashOutline />
                 </button>
               </div>
 
-              {isExpanded && (
-                <div className={styles.accordionBody}>
+              {isOpen && (
+                <div className={styles.sectionBody}>
                   {/* Lessons */}
                   <div className={styles.contentGroup}>
-                    <h5 className={styles.groupTitle}>Lessons</h5>
+                    <div className={styles.groupHeader}>
+                      <h5>
+                        <IoVideocamOutline /> Lessons
+                      </h5>
+                      <button
+                        className={styles.outlineBtnSmall}
+                        onClick={() => addLesson(section.id)}
+                      >
+                        + Add Lesson
+                      </button>
+                    </div>
                     {section.lessons.length === 0 ? (
-                      <p className={styles.emptyHint}>
-                        No lessons added to this section yet.
-                      </p>
+                      <p className={styles.emptyHint}>No lessons added.</p>
                     ) : (
                       <div className={styles.itemsList}>
-                        {section.lessons.map((lesson, lIdx) => (
-                          <div key={lesson.id} className={styles.lessonItemRow}>
-                            <div className={styles.lessonInfoLeft}>
-                              <span className={styles.itemIndex}>
-                                {lIdx + 1}.
-                              </span>
-                              <IoVideocamOutline
-                                className={styles.lessonIconColor}
-                              />
-                              <span className={styles.itemName}>
-                                {lesson.title}
-                              </span>
-                            </div>
-                            <span className={styles.pillGray}>
+                        {section.lessons.map((lesson) => (
+                          <div key={lesson.id} className={styles.innerItem}>
+                            <span>{lesson.title}</span>
+                            <span className={styles.badgeGray}>
                               {lesson.duration}
                             </span>
                           </div>
                         ))}
                       </div>
                     )}
-                    <button
-                      className={styles.dashedAddBtn}
-                      onClick={() => addLesson(section.id)}
-                    >
-                      <IoAddOutline /> Add Lesson
-                    </button>
                   </div>
 
                   <hr className={styles.groupDivider} />
 
-                  {/* Quiz */}
+                  {/* Question Bank */}
                   <div className={styles.contentGroup}>
-                    <h5 className={styles.groupTitle}>Assessment</h5>
-                    {!section.quiz ? (
+                    <div className={styles.groupHeader}>
+                      <h5>
+                        <IoLibraryOutline /> Question Bank
+                      </h5>
                       <button
-                        className={styles.dashedAddBtn}
-                        onClick={() => addQuiz(section.id)}
+                        className={styles.outlineBtnSmall}
+                        onClick={() => addQuestion(section.id)}
                       >
-                        <IoAddOutline /> Setup Section Quiz
+                        + Add Question
                       </button>
+                    </div>
+                    {section.questions.length === 0 ? (
+                      <p className={styles.emptyHint}>Bank is empty.</p>
                     ) : (
-                      <div className={styles.quizCard}>
-                        <div className={styles.quizInfoBlock}>
-                          <div className={styles.quizIconWrapper}>
-                            <IoShieldCheckmarkOutline />
+                      <div className={styles.itemsList}>
+                        {section.questions.map((q) => (
+                          <div key={q.id} className={styles.innerItem}>
+                            <span>{q.text}</span>
+                            <span className={styles.badgeGreen}>
+                              Correct: {q.options[q.correctIndex]}
+                            </span>
                           </div>
-                          <div>
-                            <strong>{section.quiz.title}</strong>
-                            <div className={styles.quizMeta}>
-                              <span>{section.quiz.duration} Mins</span>
-                              <span className={styles.bullet}>•</span>
-                              <span>
-                                {section.quiz.questionsCount} Questions
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                        <div className={styles.quizActions}>
-                          <button className={styles.outlineBtnSmall}>
-                            <IoLibraryOutline /> Question Bank
-                          </button>
-                          <button className={styles.outlineBtnSmall}>
-                            Settings
-                          </button>
-                          <button
-                            className={styles.ghostDangerBtn}
-                            onClick={() => deleteQuiz(section.id)}
-                          >
-                            <IoTrashOutline />
-                          </button>
-                        </div>
+                        ))}
                       </div>
+                    )}
+                  </div>
+
+                  <hr className={styles.groupDivider} />
+
+                  {/* Section Quiz */}
+                  <div className={styles.contentGroup}>
+                    <div className={styles.groupHeader}>
+                      <h5>
+                        <IoShieldCheckmarkOutline /> Section Quiz
+                      </h5>
+                      {!section.quiz && (
+                        <button
+                          className={styles.outlineBtnSmall}
+                          onClick={() => addQuiz(section.id)}
+                        >
+                          + Setup Quiz
+                        </button>
+                      )}
+                    </div>
+                    {section.quiz ? (
+                      <div className={styles.quizBox}>
+                        <div>
+                          <strong>{section.quiz.title}</strong>
+                          <div className={styles.quizMeta}>
+                            <span>{section.quiz.duration} Mins</span> •{" "}
+                            <span>{section.quiz.questionsCount} Questions</span>
+                          </div>
+                        </div>
+                        <button
+                          className={styles.ghostDangerBtn}
+                          onClick={() => deleteQuiz(section.id)}
+                        >
+                          <IoTrashOutline />
+                        </button>
+                      </div>
+                    ) : (
+                      <p className={styles.emptyHint}>
+                        No quiz assigned to this section.
+                      </p>
                     )}
                   </div>
                 </div>
