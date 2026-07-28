@@ -37,7 +37,7 @@ const CourseManagerLayout = () => {
     return (
       <div className={styles.loadingScreen}>
         <div className={styles.spinner}></div>
-        <p>Loading Workspace...</p>
+        <p>Loading Course Data...</p>
       </div>
     );
   }
@@ -61,7 +61,8 @@ const CourseManagerLayout = () => {
   ];
 
   return (
-    <div className={styles.managerContainer}>
+    <div className={styles.pageWrapper}>
+      {/* الهيدر العلوي ثابت (Sticky) */}
       <header className={styles.topHeader}>
         <div className={styles.headerLeft}>
           <button className={styles.backBtn} onClick={() => navigate(-1)}>
@@ -93,8 +94,10 @@ const CourseManagerLayout = () => {
         </div>
       </header>
 
-      <div className={styles.workspace}>
-        <aside className={styles.innerSidebar}>
+      {/* مساحة العمل: شبكة (Grid) تسمح بالسكرول الطبيعي */}
+      <div className={styles.workspaceGrid}>
+        {/* القائمة الجانبية تلحق بك أثناء السكرول */}
+        <aside className={styles.stickySidebar}>
           <nav className={styles.navMenu}>
             {TABS.map((tab) => (
               <button
@@ -109,19 +112,18 @@ const CourseManagerLayout = () => {
           </nav>
         </aside>
 
+        {/* المحتوى يأخذ الارتفاع الذي يحتاجه */}
         <main className={styles.mainContent}>
-          <div className={styles.contentWrapper}>
-            {activeTab === "general" && (
-              <GeneralInfoTab
-                data={generalInfo}
-                onChange={(f, v) => setGeneralInfo({ ...generalInfo, [f]: v })}
-              />
-            )}
-            {activeTab === "curriculum" && (
-              <CurriculumTab sections={sections} setSections={setSections} />
-            )}
-            {activeTab === "faqs" && <FAQsTab faqs={faqs} setFaqs={setFaqs} />}
-          </div>
+          {activeTab === "general" && (
+            <GeneralInfoTab
+              data={generalInfo}
+              onChange={(f, v) => setGeneralInfo({ ...generalInfo, [f]: v })}
+            />
+          )}
+          {activeTab === "curriculum" && (
+            <CurriculumTab sections={sections} setSections={setSections} />
+          )}
+          {activeTab === "faqs" && <FAQsTab faqs={faqs} setFaqs={setFaqs} />}
         </main>
       </div>
     </div>
