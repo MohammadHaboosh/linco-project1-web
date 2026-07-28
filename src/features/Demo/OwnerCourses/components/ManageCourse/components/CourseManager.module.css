@@ -1,28 +1,24 @@
 /* =========================================
-   1. Global Layout (NO DOUBLE SCROLL)
+   1. Global Layout (Natural Scroll)
    ========================================= */
-.managerContainer {
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - 70px); /* يطرح ارتفاع النافبار الأساسي للموقع إن وجد */
+.pageContainer {
   background-color: #f8fafc;
+  min-height: 100vh;
   font-family: var(--font-sans, "Inter", sans-serif);
-  overflow: hidden; /* يمنع السكرول للصفحة بالكامل، السكرول سيكون داخلياً فقط */
+  /* أزلنا overflow: hidden لنسمح بالنزول الطبيعي للصفحة */
 }
 
 .loadingScreen {
-  height: 100vh;
+  height: 80vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 15px;
-  background: #f8fafc;
   color: #0a2a54;
   font-size: 1.1rem;
   font-weight: 700;
 }
-
 .spinner {
   width: 40px;
   height: 40px;
@@ -38,44 +34,43 @@
 }
 
 /* =========================================
-   2. Top Header (Sticky)
+   2. Top Header
    ========================================= */
 .topHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 40px;
-  height: 80px;
+  height: 85px;
   background-color: #ffffff;
   border-bottom: 1px solid #e2e8f0;
-  box-shadow: 0 4px 15px rgba(10, 42, 84, 0.02);
-  flex-shrink: 0; /* يمنع الهيدر من الانضغاط */
+  position: sticky;
+  top: 0;
   z-index: 50;
 }
-
 .headerLeft {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 24px;
 }
 .backBtn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
+  width: 45px;
+  height: 45px;
   background: #f1f5f9;
   border: 1px solid #e2e8f0;
   color: #64748b;
   border-radius: 12px;
   font-size: 1.3rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s;
 }
 .backBtn:hover {
   background: #e2e8f0;
   color: #0a2a54;
-  transform: translateX(-2px);
+  transform: translateX(-3px);
 }
 
 .courseHeaderInfo {
@@ -85,26 +80,21 @@
 .badge {
   background: #eff6ff;
   color: #1a56db;
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   font-weight: 800;
   padding: 4px 10px;
   border-radius: 6px;
   width: fit-content;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 4px;
+  margin-bottom: 5px;
 }
 .courseHeaderInfo h2 {
   margin: 0;
   color: #0a2a54;
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   font-weight: 800;
 }
 
-.headerRight {
-  display: flex;
-  align-items: center;
-}
 .saveBtn {
   display: flex;
   align-items: center;
@@ -117,118 +107,79 @@
   font-weight: 700;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s;
   box-shadow: 0 4px 15px rgba(26, 86, 219, 0.2);
 }
 .saveBtn:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(26, 86, 219, 0.3);
 }
-.saveBtn:disabled {
-  background: #94a3b8;
-  box-shadow: none;
-  cursor: not-allowed;
-}
-.btnSpinner {
-  width: 16px;
-  height: 16px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top-color: #fff;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
 
 /* =========================================
-   3. Workspace Body (Sidebar + Main Content)
+   3. Main Grid (The Core Fix!)
    ========================================= */
-.workspaceBody {
-  display: flex;
-  flex: 1; /* يأخذ باقي الشاشة */
-  overflow: hidden; /* إخفاء أي شيء يخرج عن الشاشة */
+.layoutGrid {
+  display: grid;
+  grid-template-columns: 260px 1fr; /* عمودين صارمين: 260px للقائمة، والباقي للمحتوى */
+  max-width: 1500px;
+  margin: 0 auto;
+  align-items: start; /* مهم جداً لتفعيل التثبيت Sticky */
+  padding: 40px 20px;
+  gap: 40px;
 }
 
-/* القائمة الجانبية (ملتصقة باليسار) */
+/* Sidebar Styling */
 .sidebar {
-  width: 280px;
-  background-color: #ffffff;
-  border-right: 1px solid #e2e8f0;
-  padding: 30px 15px;
-  flex-shrink: 0;
-  overflow-y: auto;
-  z-index: 10;
+  position: sticky;
+  top: 110px; /* تلتصق بالأعلى عند النزول، تحت الهيدر */
+  background: transparent;
 }
-
 .navMenu {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
-
 .navItem {
-  position: relative;
   display: flex;
   align-items: center;
   gap: 14px;
   padding: 16px 20px;
-  background: transparent;
-  border: none;
   border-radius: 14px;
+  border: none;
+  background: transparent;
   color: #64748b;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s;
   text-align: left;
-  overflow: hidden;
 }
 .navItem:hover {
-  background: #f8fafc;
+  background: #e2e8f0;
   color: #0a2a54;
 }
 .activeNav {
-  background: #eff6ff;
+  background: #ffffff;
   color: #1a56db;
   font-weight: 800;
+  box-shadow: 0 4px 15px rgba(10, 42, 84, 0.05);
+  border: 1px solid #e2e8f0;
 }
 .navIcon {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   display: flex;
-  transition: transform 0.2s;
-}
-.activeNav .navIcon {
-  transform: scale(1.15);
-}
-.navLabel {
-  z-index: 2;
 }
 
-/* المؤشر التفاعلي للتاب الفعال */
-.activeIndicator {
-  position: absolute;
-  left: 0;
-  top: 10%;
-  bottom: 10%;
-  width: 5px;
-  background-color: #1a56db;
-  border-radius: 0 4px 4px 0;
-  box-shadow: 2px 0 8px rgba(26, 86, 219, 0.4);
+/* Main Content Panel */
+.mainPanel {
+  width: 100%;
+  min-width: 0; /* يمنع انفجار الـ Grid وتمدده لخارج الشاشة */
 }
-
-/* مساحة المحتوى الرئيسية القابلة للسكرول */
-.mainContent {
-  flex: 1;
-  background-color: #f8fafc;
-  padding: 50px 40px;
-  overflow-y: auto; /* السكرول الوحيد للصفحة موجود هنا */
-}
-
 .contentWrapper {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding-bottom: 60px;
-  animation: slideUp 0.4s ease-out;
+  animation: fadeIn 0.4s ease-out;
+  padding-bottom: 60px; /* مساحة راحة قبل الفوتر */
 }
-@keyframes slideUp {
+@keyframes fadeIn {
   from {
     opacity: 0;
     transform: translateY(15px);
@@ -240,23 +191,22 @@
 }
 
 /* =========================================
-   4. Shared Tab Elements (Cards & Headers)
+   4. Shared Cards & Forms
    ========================================= */
 .tabCard {
   background: #ffffff;
-  border-radius: 24px;
+  border-radius: 20px;
   border: 1px solid #e2e8f0;
   padding: 40px;
   box-shadow: 0 10px 40px rgba(10, 42, 84, 0.03);
   margin-bottom: 30px;
 }
-
 .tabHeader,
 .tabHeaderFlex {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: 40px;
+  margin-bottom: 35px;
   border-bottom: 1px solid #f1f5f9;
   padding-bottom: 20px;
 }
@@ -272,9 +222,6 @@
   margin: 0;
 }
 
-/* =========================================
-   5. Forms, Inputs, & Buttons
-   ========================================= */
 .formGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -288,25 +235,14 @@
   flex-direction: column;
   gap: 8px;
 }
-.formLabel,
-.formGroup label {
+.formLabel {
   color: #1e293b;
   font-size: 0.95rem;
   font-weight: 700;
 }
-.required {
-  color: #ef4444;
-}
-.hintText {
-  font-size: 0.85rem;
-  color: #94a3b8;
-  font-weight: 500;
-  margin-top: 4px;
-}
-
 .input,
-.selectInput,
-.textarea {
+.textarea,
+.selectInput {
   width: 100%;
   padding: 14px 18px;
   border: 1px solid #cbd5e1;
@@ -315,11 +251,12 @@
   color: #1e293b;
   font-size: 1rem;
   font-family: inherit;
-  transition: all 0.2s ease;
+  transition: all 0.2s;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02);
 }
 .input:focus,
-.selectInput:focus,
-.textarea:focus {
+.textarea:focus,
+.selectInput:focus {
   outline: none;
   background: #ffffff;
   border-color: #1a56db;
@@ -328,9 +265,6 @@
 .textarea {
   resize: vertical;
   min-height: 120px;
-}
-.selectWrapper {
-  position: relative;
 }
 
 .primaryBtn {
@@ -347,83 +281,42 @@
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.2s;
-  box-shadow: 0 4px 12px rgba(26, 86, 219, 0.2);
 }
 .primaryBtn:hover {
   background: #0a2a54;
   transform: translateY(-2px);
 }
 
-/* الأزرار الصغيرة للأيقونات */
-.iconBtn {
+/* الأزرار الصغيرة للصيغ */
+.iconBtn,
+.iconBtnDanger,
+.ghostDangerBtn {
   background: transparent;
   border: none;
-  color: #64748b;
   font-size: 1.3rem;
   cursor: pointer;
-  padding: 6px;
+  padding: 8px;
   border-radius: 8px;
   transition: 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.iconBtn {
+  color: #64748b;
 }
 .iconBtn:hover {
   background: #f1f5f9;
   color: #1a56db;
 }
-.iconBtnDanger {
-  background: transparent;
-  border: none;
-  color: #94a3b8;
-  font-size: 1.3rem;
-  cursor: pointer;
-  padding: 6px;
-  border-radius: 8px;
-  transition: 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.iconBtnDanger:hover {
-  background: #fef2f2;
-  color: #ef4444;
-}
+.iconBtnDanger,
 .ghostDangerBtn {
-  background: transparent;
-  border: none;
   color: #94a3b8;
-  font-size: 1.3rem;
-  cursor: pointer;
-  padding: 6px;
-  border-radius: 8px;
-  transition: 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
+.iconBtnDanger:hover,
 .ghostDangerBtn:hover {
   background: #fef2f2;
   color: #ef4444;
-}
-
-.outlineBtnSmall {
-  background: #ffffff;
-  border: 1px solid #cbd5e1;
-  color: #475569;
-  padding: 8px 16px;
-  border-radius: 10px;
-  font-weight: 700;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.outlineBtnSmall:hover {
-  border-color: #0a2a54;
-  color: #0a2a54;
 }
 
 /* Image Upload & Tags */
@@ -436,7 +329,6 @@
   border: 1px solid #cbd5e1;
   border-radius: 12px;
   background: #ffffff;
-  transition: 0.2s;
   min-height: 50px;
 }
 .tagsInputContainer:focus-within {
@@ -458,7 +350,6 @@
 .tagRemoveIcon {
   cursor: pointer;
   color: #94a3b8;
-  font-size: 1.1rem;
   transition: 0.2s;
 }
 .tagRemoveIcon:hover {
@@ -471,7 +362,6 @@
   min-width: 150px;
   background: transparent;
   font-size: 1rem;
-  padding: 6px 4px;
 }
 
 .imageUploadArea {
@@ -501,54 +391,12 @@
 .uploadIcon {
   font-size: 3rem;
   color: #94a3b8;
-  margin-bottom: 15px;
-}
-.uploadText {
-  color: #475569;
-  font-size: 1rem;
-  margin: 0 0 5px 0;
-}
-.uploadText strong {
-  color: #1a56db;
-}
-.uploadHint {
-  color: #94a3b8;
-  font-size: 0.85rem;
-  margin: 0;
-}
-.imagePreviewWrapper {
-  width: 100%;
-  height: 100%;
-  position: relative;
+  margin-bottom: 10px;
 }
 .previewImage {
   width: 100%;
   height: 280px;
   object-fit: cover;
-  display: block;
-}
-.imageOverlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(10, 42, 84, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  transition: 0.2s;
-  backdrop-filter: blur(4px);
-}
-.imagePreviewWrapper:hover .imageOverlay {
-  opacity: 1;
-}
-.changeImageBtn {
-  background: #ffffff;
-  color: #0a2a54;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-weight: 800;
-  cursor: pointer;
 }
 .fileInputHidden {
   position: absolute;
@@ -560,7 +408,7 @@
 }
 
 /* =========================================
-   6. Curriculum Builder (Accordion Cards)
+   5. Curriculum Builder
    ========================================= */
 .addSectionBlock {
   display: flex;
@@ -622,7 +470,7 @@
 }
 .chevronIcon {
   color: #64748b;
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -648,10 +496,6 @@
   color: #0a2a54;
   font-size: 1.2rem;
   font-weight: 800;
-}
-.sectionActions {
-  display: flex;
-  gap: 5px;
 }
 
 .accordionBody,
@@ -707,7 +551,6 @@
   border-radius: 12px;
   text-align: center;
 }
-
 .itemsWrapper,
 .itemsList {
   display: flex;
@@ -730,7 +573,6 @@
   border-color: #cbd5e1;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
 }
-
 .lessonItemLeft {
   display: flex;
   align-items: center;
@@ -751,7 +593,6 @@
   font-weight: 700;
   font-size: 1rem;
 }
-
 .lessonItemRight {
   display: flex;
   align-items: center;
@@ -812,7 +653,7 @@
   align-items: center;
   background: #fffbeb;
   border: 1px solid #fde68a;
-  padding: 20px;
+  padding: 25px;
   border-radius: 16px;
 }
 .quizInfo {
@@ -853,9 +694,26 @@
   align-items: center;
   gap: 12px;
 }
+.outlineBtn {
+  background: #ffffff;
+  border: 1px solid #fcd34d;
+  color: #b45309;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.outlineBtn:hover {
+  background: #fef3c7;
+}
 
 /* =========================================
-   7. FAQs Split Layout
+   6. Split FAQs Layout
    ========================================= */
 .splitLayout {
   display: grid;
@@ -863,14 +721,13 @@
   gap: 40px;
   align-items: start;
 }
-
-/* Left Side (Form) */
 .leftPane {
   display: flex;
   flex-direction: column;
   position: sticky;
-  top: 0;
+  top: 110px;
 }
+.faqFormCard,
 .faqForm {
   background: #f8fafc;
   padding: 30px;
@@ -890,7 +747,6 @@
   padding-bottom: 15px;
 }
 
-/* Right Side (Accordion) */
 .rightPane {
   display: flex;
   flex-direction: column;
@@ -960,6 +816,7 @@
   line-height: 1.5;
 }
 
+.faqAccBody,
 .faqBody {
   padding: 25px 25px 25px 50px;
   background: #ffffff;
@@ -967,65 +824,40 @@
   font-size: 1rem;
   line-height: 1.6;
 }
+.faqAccBody p,
 .faqBody p {
   margin: 0;
 }
 
-/* =========================================
-   8. Responsive Adjustments
-   ========================================= */
-@media (max-width: 1024px) {
-  .workspaceBody {
-    flex-direction: column;
+/* Responsive Form for Mobile ONLY */
+@media (max-width: 768px) {
+  .layoutGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 20px;
   }
   .sidebar {
+    position: static;
     width: 100%;
-    border-right: none;
-    border-bottom: 1px solid #e2e8f0;
-    padding: 15px 40px;
     display: flex;
     overflow-x: auto;
-    flex-shrink: 0;
+    padding: 10px 0;
+    border-right: none;
+    border-bottom: 1px solid #e2e8f0;
   }
   .navMenu {
     flex-direction: row;
     gap: 10px;
-    width: max-content;
   }
   .navItem {
     padding: 10px 20px;
     white-space: nowrap;
-  }
-  .activeIndicator {
-    top: auto;
-    bottom: 0;
-    left: 10%;
-    right: 10%;
-    height: 4px;
-    width: auto;
-    border-radius: 4px 4px 0 0;
+    border: 1px solid #e2e8f0;
   }
   .splitLayout {
     grid-template-columns: 1fr;
   }
   .leftPane {
     position: static;
-  }
-}
-@media (max-width: 768px) {
-  .topHeader {
-    padding: 0 20px;
-  }
-  .sidebar {
-    padding: 15px 20px;
-  }
-  .mainContent {
-    padding: 20px;
-  }
-  .tabCard {
-    padding: 20px;
-  }
-  .formGrid {
-    grid-template-columns: 1fr;
   }
 }

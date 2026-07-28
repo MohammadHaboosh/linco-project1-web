@@ -7,7 +7,7 @@ import {
   IoChatbubblesOutline,
   IoSaveOutline,
 } from "react-icons/io5";
-import { useCourseManager } from "../../../hooks/useCourseManager";
+import { useCourseManager } from "../../hooks/useCourseManager";
 import GeneralInfoTab from "./tabs/GeneralInfoTab";
 import CurriculumTab from "./tabs/CurriculumTab";
 import FAQsTab from "./tabs/FAQsTab";
@@ -61,8 +61,8 @@ const CourseManagerLayout = () => {
   ];
 
   return (
-    <div className={styles.managerContainer}>
-      {/* الشريط العلوي - ثابت في أعلى الشاشة */}
+    <div className={styles.pageContainer}>
+      {/* الترويسة العلوية */}
       <header className={styles.topHeader}>
         <div className={styles.headerLeft}>
           <button className={styles.backBtn} onClick={() => navigate(-1)}>
@@ -94,10 +94,10 @@ const CourseManagerLayout = () => {
         </div>
       </header>
 
-      {/* مساحة العمل: شبكة تسمح بالسكرول الطبيعي للصفحة ككل */}
-      <div className={styles.workspaceGrid}>
-        {/* القائمة الجانبية: تلحق بك أثناء السكرول */}
-        <aside className={styles.stickySidebar}>
+      {/* الشبكة الأساسية: تجبر القائمة لتكون يساراً والمحتوى يميناً */}
+      <div className={styles.layoutGrid}>
+        {/* القائمة الجانبية */}
+        <aside className={styles.sidebar}>
           <nav className={styles.navMenu}>
             {TABS.map((tab) => (
               <button
@@ -105,9 +105,6 @@ const CourseManagerLayout = () => {
                 className={`${styles.navItem} ${activeTab === tab.id ? styles.activeNav : ""}`}
                 onClick={() => setActiveTab(tab.id)}
               >
-                {activeTab === tab.id && (
-                  <div className={styles.activeIndicator}></div>
-                )}
                 <span className={styles.navIcon}>{tab.icon}</span>
                 <span className={styles.navLabel}>{tab.label}</span>
               </button>
@@ -115,8 +112,8 @@ const CourseManagerLayout = () => {
           </nav>
         </aside>
 
-        {/* المحتوى الرئيسي: يمتد للأسفل بحرية تامة */}
-        <main className={styles.mainContent}>
+        {/* منطقة المحتوى المتغير */}
+        <main className={styles.mainPanel}>
           <div className={styles.contentWrapper}>
             {activeTab === "general" && (
               <GeneralInfoTab
