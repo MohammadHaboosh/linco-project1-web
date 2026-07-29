@@ -24,6 +24,7 @@ const CourseManagerLayout = () => {
     isSaving,
     generalInfo,
     setGeneralInfo,
+    handleGeneralInfoChange,
     saveGeneralInfo,
     faqs,
     setFaqs,
@@ -94,7 +95,6 @@ const CourseManagerLayout = () => {
         </div>
       </header>
 
-      {/* الشبكة الأساسية: تجبر القائمة لتكون يساراً والمحتوى يميناً */}
       <div className={styles.layoutGrid}>
         {/* القائمة الجانبية */}
         <aside className={styles.sidebar}>
@@ -118,7 +118,7 @@ const CourseManagerLayout = () => {
             {activeTab === "general" && (
               <GeneralInfoTab
                 data={generalInfo}
-                onChange={(f, v) => setGeneralInfo({ ...generalInfo, [f]: v })}
+                onChange={handleGeneralInfoChange}
               />
             )}
             {activeTab === "curriculum" && (

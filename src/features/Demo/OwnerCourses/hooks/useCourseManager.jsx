@@ -24,7 +24,7 @@ export const useCourseManager = (demoId, assetId) => {
   const [sections, setSections] = useState([]);
   const handleGeneralInfoChange = useCallback((keyOrObject, value) => {
     setGeneralInfo((prev) => {
-      if (typeof keyOrObject === "object") {
+      if (typeof keyOrObject === "object" && keyOrObject !== null) {
         return { ...prev, ...keyOrObject };
       }
       return { ...prev, [keyOrObject]: value };
@@ -93,7 +93,7 @@ export const useCourseManager = (demoId, assetId) => {
 
       if (generalInfo.imageFile) {
         console.log(
-          "New Image Detected -> Calling uploadAndSaveCourseImage...",
+          "File found! Uploading image...",
           generalInfo.imageFile.name,
         );
         result = await courseManagerApi.uploadAndSaveCourseImage(

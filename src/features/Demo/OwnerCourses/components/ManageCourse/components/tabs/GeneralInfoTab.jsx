@@ -24,10 +24,11 @@ const GeneralInfoTab = ({ data, onChange }) => {
         size: file.size,
         type: file.type,
       });
+      const previewUrl = URL.createObjectURL(file);
 
       onChange({
         imageFile: file,
-        imagePreview: URL.createObjectURL(file),
+        imagePreview: previewUrl,
       });
     }
   };
