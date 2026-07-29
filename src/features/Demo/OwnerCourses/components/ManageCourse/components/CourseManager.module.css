@@ -5,7 +5,6 @@
   background-color: #f8fafc;
   min-height: 100vh;
   font-family: var(--font-sans, "Inter", sans-serif);
-  /* أزلنا overflow: hidden لنسمح بالنزول الطبيعي للصفحة */
 }
 
 .loadingScreen {
@@ -120,10 +119,10 @@
    ========================================= */
 .layoutGrid {
   display: grid;
-  grid-template-columns: 260px 1fr; /* عمودين صارمين: 260px للقائمة، والباقي للمحتوى */
+  grid-template-columns: 260px 1fr;
   max-width: 1500px;
   margin: 0 auto;
-  align-items: start; /* مهم جداً لتفعيل التثبيت Sticky */
+  align-items: start;
   padding: 40px 20px;
   gap: 40px;
 }
@@ -131,7 +130,7 @@
 /* Sidebar Styling */
 .sidebar {
   position: sticky;
-  top: 110px; /* تلتصق بالأعلى عند النزول، تحت الهيدر */
+  top: 110px;
   background: transparent;
 }
 .navMenu {
@@ -173,11 +172,11 @@
 /* Main Content Panel */
 .mainPanel {
   width: 100%;
-  min-width: 0; /* يمنع انفجار الـ Grid وتمدده لخارج الشاشة */
+  min-width: 0;
 }
 .contentWrapper {
   animation: fadeIn 0.4s ease-out;
-  padding-bottom: 60px; /* مساحة راحة قبل الفوتر */
+  padding-bottom: 60px;
 }
 @keyframes fadeIn {
   from {
@@ -218,7 +217,7 @@
 }
 .tabSubtitle {
   color: #64748b;
-  font-size: 1rem;
+  font-size: 0.95rem;
   margin: 0;
 }
 
@@ -252,7 +251,6 @@
   font-size: 1rem;
   font-family: inherit;
   transition: all 0.2s;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02);
 }
 .input:focus,
 .textarea:focus,
@@ -260,7 +258,6 @@
   outline: none;
   background: #ffffff;
   border-color: #1a56db;
-  box-shadow: 0 0 0 4px rgba(26, 86, 219, 0.1);
 }
 .textarea {
   resize: vertical;
@@ -284,7 +281,6 @@
 }
 .primaryBtn:hover {
   background: #0a2a54;
-  transform: translateY(-2px);
 }
 
 /* الأزرار الصغيرة للصيغ */
@@ -333,7 +329,6 @@
 }
 .tagsInputContainer:focus-within {
   border-color: #1a56db;
-  box-shadow: 0 0 0 4px rgba(26, 86, 219, 0.1);
 }
 .tagPill {
   display: flex;
@@ -377,10 +372,6 @@
   justify-content: center;
   align-items: center;
 }
-.imageUploadArea:hover {
-  border-color: #1a56db;
-  background: #eff6ff;
-}
 .uploadPlaceholder {
   text-align: center;
   padding: 30px;
@@ -408,363 +399,257 @@
 }
 
 /* =========================================
-   5. Curriculum Builder
+   5. Curriculum Builder (Identical to Old CourseBuilder)
    ========================================= */
-.addSectionBlock {
-  display: flex;
-  gap: 15px;
-  background: #ffffff;
-  padding: 25px;
-  border-radius: 20px;
-  border: 1px dashed #cbd5e1;
-  margin-bottom: 30px;
-  align-items: center;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
-}
 .curriculumList {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  margin-bottom: 24px;
 }
 
-.accordionCard,
-.sectionCard {
-  border: 1px solid #e2e8f0;
-  border-radius: 20px;
+.accordionCard {
   background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
-  transition: 0.3s;
-}
-.accordionCard:hover,
-.sectionCard:hover {
-  border-color: #cbd5e1;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
-.accordionHeader,
-.sectionHeader {
+.accordionHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 25px;
+  padding: 16px 20px;
   background: #f8fafc;
-  cursor: pointer;
-  user-select: none;
-  transition: 0.2s;
-}
-.accordionHeader:hover,
-.sectionHeader:hover {
-  background: #f1f5f9;
-}
-.accordionHeaderActive,
-.sectionHeaderActive {
-  background: #ffffff;
   border-bottom: 1px solid #e2e8f0;
 }
 
-.sectionTitleArea {
+.accordionTitleArea {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 12px;
+  flex: 1;
 }
-.chevronIcon {
-  color: #64748b;
-  font-size: 1.4rem;
+
+.collapseBtn {
+  background: transparent;
+  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #e2e8f0;
-  padding: 6px;
-  border-radius: 8px;
-  transition: 0.3s;
-}
-.chevronOpen {
-  transform: rotate(180deg);
-  background: #1a56db;
-  color: #ffffff;
-}
-.sectionIndex {
-  color: #1a56db;
-  font-size: 0.9rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-.sectionTitleText {
-  margin: 0;
-  color: #0a2a54;
   font-size: 1.2rem;
-  font-weight: 800;
+  color: #0a2a54;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: 0.2s;
+}
+.collapseBtn:hover {
+  background: #e2e8f0;
 }
 
-.accordionBody,
-.sectionBody {
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
+.sectionPrefix {
+  font-weight: 800;
+  color: #0a2a54;
+  font-size: 1rem;
+}
+
+.sectionTitleInput {
+  flex: 1;
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 6px 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e293b;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.sectionTitleInput:focus,
+.sectionTitleInput:hover {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  outline: none;
+}
+
+.accordionBody {
+  padding: 20px;
   background: #ffffff;
 }
+
+.lessonItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  transition: all 0.2s;
+}
+.lessonItem:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.lessonInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.dragHandle {
+  color: #94a3b8;
+  font-size: 1.4rem;
+  cursor: grab;
+}
+.lessonNumber {
+  font-weight: 700;
+  color: #0a2a54;
+  font-size: 0.9rem;
+}
+.lessonTypeIcon {
+  color: #64748b;
+  font-size: 1.1rem;
+}
+.lessonTitle {
+  color: #1e293b;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.lessonMeta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.lessonDuration {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #64748b;
+  font-size: 0.85rem;
+  background: #f1f5f9;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.addLessonBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px dashed #cbd5e1;
+  color: #1a56db;
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 10px;
+}
+.addLessonBtn:hover {
+  background: #eff6ff;
+  border-color: #1a56db;
+}
+
+.addSectionBtnRoot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #ffffff;
+  border: 2px dashed #cbd5e1;
+  color: #0a2a54;
+  width: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.addSectionBtnRoot:hover {
+  background: #f8fafc;
+  border-color: #0a2a54;
+}
+
 .groupDivider {
   border: none;
   border-top: 1px dashed #e2e8f0;
-  margin: 0;
+  margin: 25px 0;
 }
-
-.subGroup,
-.contentGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-.subGroupHeader,
 .groupHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 15px;
 }
-.subGroupHeader h5,
 .groupHeader h5 {
   margin: 0;
   color: #1e293b;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 800;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
-.subGroupHeader h5 svg,
 .groupHeader h5 svg {
   color: #1a56db;
-  font-size: 1.4rem;
-}
-
-.emptyText,
-.emptyHint {
-  color: #94a3b8;
-  font-size: 0.95rem;
-  margin: 0;
-  font-style: italic;
-  background: #f8fafc;
-  padding: 20px;
-  border-radius: 12px;
-  text-align: center;
-}
-.itemsWrapper,
-.itemsList {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.lessonItemRow,
-.innerItem {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 20px;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  transition: 0.2s;
-}
-.lessonItemRow:hover,
-.innerItem:hover {
-  border-color: #cbd5e1;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
-}
-.lessonItemLeft {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-.dragIcon {
-  color: #cbd5e1;
-  font-size: 1.4rem;
-  cursor: grab;
-}
-.lessonIndex {
-  color: #94a3b8;
-  font-weight: 700;
-  font-size: 0.95rem;
-}
-.lessonName {
-  color: #1e293b;
-  font-weight: 700;
-  font-size: 1rem;
-}
-.lessonItemRight {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-.lessonDuration,
-.badgeGray {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: #f1f5f9;
-  color: #64748b;
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-size: 0.85rem;
-  font-weight: 700;
-}
-.badgeGreen {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: #dcfce7;
-  color: #059669;
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-size: 0.85rem;
-  font-weight: 700;
-}
-
-.dashedAddBtn {
-  width: 100%;
-  padding: 16px;
-  border: 2px dashed #cbd5e1;
-  background: transparent;
-  color: #64748b;
-  font-weight: 700;
-  font-size: 1rem;
-  border-radius: 12px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  transition: 0.2s;
-  margin-top: 5px;
-}
-.dashedAddBtn:hover {
-  border-color: #1a56db;
-  color: #1a56db;
-  background: #eff6ff;
-}
-
-/* Quiz Box inside Accordion */
-.quizCard,
-.quizBox {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #fffbeb;
-  border: 1px solid #fde68a;
-  padding: 25px;
-  border-radius: 16px;
-}
-.quizInfo {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-}
-.quizIconBox {
-  width: 55px;
-  height: 55px;
-  border-radius: 14px;
-  background: #f59e0b;
-  color: #ffffff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.8rem;
-  flex-shrink: 0;
-}
-.quizCard strong,
-.quizBox strong {
-  color: #92400e;
-  font-size: 1.15rem;
-  font-weight: 800;
-  display: block;
-  margin-bottom: 6px;
-}
-.quizMeta {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #b45309;
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-.quizActions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.outlineBtn {
-  background: #ffffff;
-  border: 1px solid #fcd34d;
-  color: #b45309;
-  padding: 8px 16px;
-  border-radius: 10px;
-  font-weight: 700;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.outlineBtn:hover {
-  background: #fef3c7;
+  font-size: 1.3rem;
 }
 
 /* =========================================
-   6. Split FAQs Layout
+   6. Split Layout (FAQs)
    ========================================= */
 .splitLayout {
   display: grid;
-  grid-template-columns: 1fr 1.2fr;
+  grid-template-columns: 1fr 1fr;
   gap: 40px;
   align-items: start;
 }
 .leftPane {
-  display: flex;
-  flex-direction: column;
   position: sticky;
-  top: 110px;
+  top: 0;
 }
-.faqFormCard,
 .faqForm {
   background: #f8fafc;
   padding: 30px;
-  border-radius: 20px;
+  border-radius: 16px;
   border: 1px solid #e2e8f0;
   display: flex;
   flex-direction: column;
   gap: 20px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
 }
 .formSectionTitle {
   margin: 0 0 15px 0;
   color: #0a2a54;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 800;
   border-bottom: 1px solid #e2e8f0;
-  padding-bottom: 15px;
+  padding-bottom: 10px;
 }
 
 .rightPane {
   display: flex;
   flex-direction: column;
+  gap: 20px;
 }
-.emptyFaq,
-.emptyFaqBox {
+.emptyFaq {
+  text-align: center;
+  padding: 40px;
   background: #f8fafc;
   border: 2px dashed #cbd5e1;
   border-radius: 16px;
-  padding: 50px;
-  text-align: center;
   color: #94a3b8;
-  font-size: 1rem;
   font-weight: 600;
 }
-
-.faqAccordionList,
-.faqList {
+.faqAccordionList {
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -773,64 +658,45 @@
   border: 1px solid #e2e8f0;
   border-radius: 16px;
   background: #ffffff;
+  transition: 0.2s;
   overflow: hidden;
-  transition: 0.3s;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
 }
-.faqItem:hover {
-  border-color: #cbd5e1;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
-}
-
-.faqItemHeader,
-.faqHeader {
+.faqItemHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 25px;
+  padding: 18px 20px;
   cursor: pointer;
+  background: #f8fafc;
   transition: 0.2s;
   user-select: none;
 }
-.faqItemHeader:hover,
-.faqHeader:hover {
-  background: #f8fafc;
-}
-.faqItemHeaderActive,
-.faqHeaderOpen {
+.faqItemHeaderActive {
   background: #eff6ff;
   border-bottom: 1px solid #e2e8f0;
 }
-
 .faqTitleBox {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 12px;
 }
-.faqTitleBox h5,
-.faqQuestionText {
+.faqTitleBox h5 {
   margin: 0;
   color: #0a2a54;
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 700;
-  line-height: 1.5;
+  line-height: 1.4;
 }
-
-.faqAccBody,
 .faqBody {
-  padding: 25px 25px 25px 50px;
+  padding: 20px 20px 20px 45px;
   background: #ffffff;
   color: #475569;
-  font-size: 1rem;
+  font-size: 0.95rem;
   line-height: 1.6;
 }
-.faqAccBody p,
-.faqBody p {
-  margin: 0;
-}
 
-/* Responsive Form for Mobile ONLY */
-@media (max-width: 768px) {
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
   .layoutGrid {
     grid-template-columns: 1fr;
     gap: 20px;
