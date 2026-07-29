@@ -23,6 +23,22 @@ const GeneralInfoTab = ({ data, onChange }) => {
     );
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      onChange("imageFile", file);
+      onChange("imagePreview", URL.createObjectURL(file));
+    }
+  };
+
+  const currentImageDisplay =
+    data.imagePreview ||
+    (data.imagePath &&
+    data.imagePath !== "default" &&
+    data.imagePath !== "qwertyuiop"
+      ? data.imagePath
+      : null);
+
   return (
     <div className={styles.tabCard}>
       <div className={styles.tabHeader}>
@@ -41,12 +57,10 @@ const GeneralInfoTab = ({ data, onChange }) => {
             Course Thumbnail <span className={styles.required}>*</span>
           </label>
           <div className={styles.imageUploadArea}>
-            {data.imagePath &&
-            data.imagePath !== "default" &&
-            data.imagePath !== "qwertyuiop" ? (
+            {currentImageDisplay ? (
               <div className={styles.imagePreviewWrapper}>
                 <img
-                  src={data.imagePath}
+                  src={currentImageDisplay}
                   alt="Course Cover"
                   className={styles.previewImage}
                 />
@@ -71,6 +85,7 @@ const GeneralInfoTab = ({ data, onChange }) => {
               type="file"
               className={styles.fileInputHidden}
               accept="image/*"
+              onChange={handleImageChange}
             />
           </div>
         </div>

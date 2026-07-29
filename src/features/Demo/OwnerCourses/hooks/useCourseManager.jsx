@@ -75,11 +75,30 @@ export const useCourseManager = (demoId, assetId) => {
     loadCourseData();
   }, [demoId, assetId]);
 
+  const [selectedImageFile, setSelectedImageFile] = useState(null);
+
   const saveGeneralInfo = useCallback(async () => {
     if (!courseId) return;
     setIsSaving(true);
     try {
-      await courseManagerApi.updateCourseGeneralInfo(courseId, generalInfo);
+      const payload = {
+        title: generalInfo.title,
+        description: generalInfo.description,
+        visibility: generalInfo.visibility,
+        tagIds: generalInfo.tagIds,
+        imagePath: generalInfo.imagePath,
+      };
+
+      if (generalInfo.imageFile) {
+        await courseManagerApi.uploadAndSaveCourseImage(
+          courseId,
+          generalInfo.imageFile,
+          payload,
+        );
+      } else {
+        await courseManagerApi.updateCourseGeneralInfo(courseId, payload);
+      }
+
       alert("Course saved successfully!");
     } catch (err) {
       alert("Error saving course: " + err.message);

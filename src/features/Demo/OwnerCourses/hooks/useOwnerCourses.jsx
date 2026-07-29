@@ -1,8 +1,23 @@
 import { useState, useEffect, useCallback } from "react";
 import { ownerCoursesApi } from "../api/ownerCoursesApi";
 
+const STORAGE_CDN_URL = "https://lincostorage.blob.core.windows.net/uploads";
+
 const mapAssetToCourse = (asset) => {
   const c = asset.course;
+
+  const getCourseImage = (imagePath) => {
+    if (!imagePath || imagePath === "default" || imagePath === "qwertyuiop") {
+      return "/images/linco-logo.jpg";
+    }
+
+    if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
+      return imagePath;
+    }
+
+    return `${STORAGE_CDN_URL}/${imagePath}`;
+  };
+
   return {
     assetId: asset.id,
     id: c.id,
@@ -15,10 +30,7 @@ const mapAssetToCourse = (asset) => {
       lessons: c.lessonCount || 0,
       quizzes: 0,
     },
-    image:
-      c.imagePath && c.imagePath !== "default" && c.imagePath !== "qwertyuiop"
-        ? c.imagePath
-        : "/images/linco-logo.jpg",
+    image: getCourseImage(c.imagePath),
   };
 };
 
