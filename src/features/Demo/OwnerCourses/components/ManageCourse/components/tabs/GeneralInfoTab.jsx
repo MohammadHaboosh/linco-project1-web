@@ -19,14 +19,16 @@ const GeneralInfoTab = ({ data, onChange }) => {
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
-      console.log("📷 [UI] Image File Selected:", {
+      console.log("[UI] Image File Selected:", {
         name: file.name,
         size: file.size,
         type: file.type,
       });
 
-      onChange("imageFile", file);
-      onChange("imagePreview", URL.createObjectURL(file));
+      onChange({
+        imageFile: file,
+        imagePreview: URL.createObjectURL(file),
+      });
     }
   };
 

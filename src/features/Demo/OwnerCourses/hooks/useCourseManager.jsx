@@ -22,12 +22,13 @@ export const useCourseManager = (demoId, assetId) => {
   const [faqs, setFaqs] = useState([]);
 
   const [sections, setSections] = useState([]);
-  const handleGeneralInfoChange = useCallback((key, value) => {
-    console.log(`[STATE UPDATE] ${key}:`, value);
-    setGeneralInfo((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
+  const handleGeneralInfoChange = useCallback((keyOrObject, value) => {
+    setGeneralInfo((prev) => {
+      if (typeof keyOrObject === "object") {
+        return { ...prev, ...keyOrObject };
+      }
+      return { ...prev, [keyOrObject]: value };
+    });
   }, []);
 
   useEffect(() => {
