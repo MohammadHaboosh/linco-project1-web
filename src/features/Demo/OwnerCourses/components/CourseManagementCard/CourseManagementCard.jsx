@@ -10,6 +10,24 @@ import {
 import styles from "./CourseManagementCard.module.css";
 import { useTranslation } from "react-i18next";
 
+const PASTEL_COLORS = [
+  { bg: "#eff6ff", color: "#1a56db" },
+  { bg: "#ecfdf5", color: "#059669" },
+  { bg: "#fef2f2", color: "#dc2626" },
+  { bg: "#fffbeb", color: "#d97706" },
+  { bg: "#faf5ff", color: "#4f46e5" },
+  { bg: "#fdf4ff", color: "#9333ea" },
+  { bg: "#f0fdf4", color: "#16a34a" },
+];
+
+const getTagStyle = (tagName) => {
+  let hash = 0;
+  for (let i = 0; i < tagName.length; i++) {
+    hash = tagName.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return PASTEL_COLORS[Math.abs(hash) % PASTEL_COLORS.length];
+};
+
 const CourseManagementCard = ({
   isAddNew,
   course,
@@ -49,11 +67,19 @@ const CourseManagementCard = ({
 
       <div className={styles.cardBody}>
         <div className={styles.tagsRow}>
-          {course.tags?.map((tag, idx) => (
-            <span key={idx} className={styles.tag}>
-              {typeof tag === "string" ? tag : tag.name}
-            </span>
-          ))}
+          {course.tags?.map((tag, idx) => {
+            const tagName = typeof tag === "string" ? tag : tag.name;
+            const tagStyle = getTagStyle(tagName);
+            return (
+              <span
+                key={idx}
+                className={styles.tag}
+                style={{ backgroundColor: tagStyle.bg, color: tagStyle.color }}
+              >
+                {tagName}
+              </span>
+            );
+          })}
         </div>
 
         <h3 className={styles.title} title={course.title}>
