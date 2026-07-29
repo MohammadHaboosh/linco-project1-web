@@ -22,6 +22,13 @@ export const useCourseManager = (demoId, assetId) => {
   const [faqs, setFaqs] = useState([]);
 
   const [sections, setSections] = useState([]);
+  const handleGeneralInfoChange = useCallback((key, value) => {
+    console.log(`[STATE UPDATE] ${key}:`, value);
+    setGeneralInfo((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  }, []);
 
   useEffect(() => {
     if (!demoId || !assetId) return;
@@ -58,12 +65,12 @@ export const useCourseManager = (demoId, assetId) => {
     if (!courseId) return;
     setIsSaving(true);
     console.log("START SAVING COURSE GENERAL INFO");
+    console.log("Current generalInfo state at save:", generalInfo);
 
     try {
       const tagNames = (generalInfo.tags || []).map((tag) =>
         typeof tag === "object" ? tag.name : tag,
       );
-      console.log("Processing Tag Names:", tagNames);
 
       const tagPromises = tagNames.map((name) =>
         publishCourseApi.createTag(name),
@@ -71,7 +78,6 @@ export const useCourseManager = (demoId, assetId) => {
       const createdTagsResponses = await Promise.all(tagPromises);
 
       const tagIds = createdTagsResponses.map((res) => res.data?.id || res.id);
-      console.log("Extracted Tag IDs:", tagIds);
 
       const basePayload = {
         title: generalInfo.title,
@@ -87,6 +93,7 @@ export const useCourseManager = (demoId, assetId) => {
       if (generalInfo.imageFile) {
         console.log(
           "New Image Detected -> Calling uploadAndSaveCourseImage...",
+          generalInfo.imageFile.name,
         );
         result = await courseManagerApi.uploadAndSaveCourseImage(
           courseId,
@@ -94,7 +101,9 @@ export const useCourseManager = (demoId, assetId) => {
           basePayload,
         );
       } else {
-        console.log("No new image -> Updating text details only...");
+        console.log(
+          "No imageFile found in state! Updating text details only...",
+        );
         result = await courseManagerApi.updateCourseGeneralInfo(
           courseId,
           basePayload,
@@ -128,6 +137,7 @@ export const useCourseManager = (demoId, assetId) => {
     error,
     generalInfo,
     setGeneralInfo,
+    handleGeneralInfoChange,
     saveGeneralInfo,
     faqs,
     setFaqs,

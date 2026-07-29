@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { IoCloudUploadOutline, IoCloseOutline } from "react-icons/io5";
 import styles from "../CourseManager.module.css";
 import { useTranslation } from "react-i18next";
@@ -6,6 +7,28 @@ import { courseManagerApi } from "../../../../api/courseManagerApi";
 const GeneralInfoTab = ({ data, onChange }) => {
   const tagsList = data.tags || [];
   const { t } = useTranslation();
+
+  const fileInputRef = useRef(null);
+
+  const handleTriggerFileInput = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      console.log("📷 [UI] Image File Selected:", {
+        name: file.name,
+        size: file.size,
+        type: file.type,
+      });
+
+      onChange("imageFile", file);
+      onChange("imagePreview", URL.createObjectURL(file));
+    }
+  };
 
   const handleTagKeyDown = (e) => {
     if (e.key === "Enter" && e.target.value.trim() !== "") {
@@ -35,17 +58,13 @@ const GeneralInfoTab = ({ data, onChange }) => {
     onChange("tags", updatedTags);
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      onChange("imageFile", file);
-      onChange("imagePreview", URL.createObjectURL(file));
-    }
-  };
-
   const currentImageDisplay =
     data.imagePreview ||
-    (data.imagePath && data.imagePath !== "default" ? data.imagePath : null);
+    (data.imagePath &&
+    data.imagePath !== "default" &&
+    data.imagePath !== "qwertyuiop"
+      ? data.imagePath
+      : null);
 
   return (
     <div className={styles.tabCard}>
@@ -64,7 +83,12 @@ const GeneralInfoTab = ({ data, onChange }) => {
           <label className={styles.formLabel}>
             Course Thumbnail <span className={styles.required}>*</span>
           </label>
-          <div className={styles.imageUploadArea}>
+
+          <div
+            className={styles.imageUploadArea}
+            onClick={handleTriggerFileInput}
+            style={{ cursor: "pointer" }}
+          >
             {currentImageDisplay ? (
               <div className={styles.imagePreviewWrapper}>
                 <img
@@ -89,9 +113,12 @@ const GeneralInfoTab = ({ data, onChange }) => {
                 </p>
               </div>
             )}
+
             <input
+              ref={fileInputRef}
               type="file"
               className={styles.fileInputHidden}
+              style={{ display: "none" }}
               accept="image/*"
               onChange={handleImageChange}
             />
@@ -142,7 +169,10 @@ const GeneralInfoTab = ({ data, onChange }) => {
                 {tag.name}
                 <IoCloseOutline
                   className={styles.tagRemoveIcon}
-                  onClick={() => removeTag(tag.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    removeTag(tag);
+                  }}
                 />
               </span>
             ))}
