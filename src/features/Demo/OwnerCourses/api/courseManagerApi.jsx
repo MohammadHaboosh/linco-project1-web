@@ -2,7 +2,13 @@ import { apiFetch } from "../../../../api/apiFetch";
 
 export const courseManagerApi = {
   getAsset: async (demoId, assetId) => {
-    const response = await apiFetch(`/demos/${demoId}/assets/${assetId}`);
+    const response = await apiFetch(`/assets/${assetId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-demo-id": demoId,
+      },
+    });
     const data = await response.json();
     if (!response.ok || !data.success) throw new Error(data.message);
 

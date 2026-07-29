@@ -21,17 +21,4 @@ export const ownerCoursesApi = {
     console.log("Fetched Demo Assets:", data.data);
     return data.data;
   },
-
-  updateCourseGeneralInfo: async (courseId, payload) => {
-    const response = await apiFetch(`/courses/${courseId}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    const data = await response.json();
-    if (!response.ok || !data.success) throw new Error(data.message);
-
-    console.log("Updated Course General Info:", data.data);
-    return data.data;
-  },
 };
