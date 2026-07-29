@@ -67,12 +67,16 @@ const CourseManagementCard = ({
 
       <div className={styles.cardBody}>
         <div className={styles.tagsRow}>
-          {course.tags?.map((tag, idx) => {
-            const tagName = typeof tag === "string" ? tag : tag.name;
-            const tagStyle = getTagStyle(tagName);
+          {course.tags?.map((tag) => {
+            const tagId = tag.id || tag;
+            const tagName = tag.name || tag;
+            const tagStyle = getTagStyle
+              ? getTagStyle(tagName)
+              : { bg: "#f0f2f5", color: "#333" };
+
             return (
               <span
-                key={idx}
+                key={tagId}
                 className={styles.tag}
                 style={{ backgroundColor: tagStyle.bg, color: tagStyle.color }}
               >

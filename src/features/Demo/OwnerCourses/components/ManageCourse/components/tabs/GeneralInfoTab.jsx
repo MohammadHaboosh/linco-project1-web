@@ -3,6 +3,7 @@ import styles from "../CourseManager.module.css";
 import { useTranslation } from "react-i18next";
 
 const GeneralInfoTab = ({ data, onChange }) => {
+  const tagsList = data.tags || [];
   const { t } = useTranslation();
 
   const handleTagKeyDown = (e) => {
@@ -16,11 +17,9 @@ const GeneralInfoTab = ({ data, onChange }) => {
     }
   };
 
-  const removeTag = (tagToRemove) => {
-    onChange(
-      "tagIds",
-      data.tagIds.filter((tag) => tag !== tagToRemove),
-    );
+  const removeTag = (idToRemove) => {
+    const updatedTags = tagsList.filter((tag) => tag.id !== idToRemove);
+    onChange("tags", updatedTags);
   };
 
   const handleImageChange = (e) => {
@@ -129,12 +128,12 @@ const GeneralInfoTab = ({ data, onChange }) => {
         <div className={`${styles.formGroup} ${styles.fullWidth}`}>
           <label className={styles.formLabel}>Course Tags</label>
           <div className={styles.tagsInputContainer}>
-            {data.tagIds?.map((tag, index) => (
-              <span key={index} className={styles.tagPill}>
-                {tag}{" "}
+            {tagsList.map((tag) => (
+              <span key={tag.id} className={styles.tagPill}>
+                {tag.name}
                 <IoCloseOutline
                   className={styles.tagRemoveIcon}
-                  onClick={() => removeTag(tag)}
+                  onClick={() => removeTag(tag.id)}
                 />
               </span>
             ))}

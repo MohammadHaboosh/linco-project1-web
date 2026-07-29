@@ -84,9 +84,9 @@ export const useCourseManager = (demoId, assetId) => {
       const payload = {
         title: generalInfo.title,
         description: generalInfo.description,
-        visibility: generalInfo.visibility,
-        tagIds: generalInfo.tagIds,
         imagePath: generalInfo.imagePath,
+        visibility: generalInfo.visibility,
+        tagIds: (generalInfo.tags || []).map((tag) => tag.id),
       };
 
       if (generalInfo.imageFile) {
@@ -99,9 +99,9 @@ export const useCourseManager = (demoId, assetId) => {
         await courseManagerApi.updateCourseGeneralInfo(courseId, payload);
       }
 
-      alert("Course saved successfully!");
+      alert("Course updated successfully!");
     } catch (err) {
-      alert("Error saving course: " + err.message);
+      alert("Error updating course: " + err.message);
     } finally {
       setIsSaving(false);
     }
