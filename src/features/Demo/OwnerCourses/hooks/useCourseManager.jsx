@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { courseManagerApi } from "../api/courseManagerApi";
+import { publishCourseApi } from "../../PublishCourse/api/publishCourseApi";
 
 export const useCourseManager = (demoId, assetId) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -89,7 +90,7 @@ export const useCourseManager = (demoId, assetId) => {
       );
 
       const tagPromises = tagNames.map((name) =>
-        courseManagerApi.createTag({ name }),
+        publishCourseApi.createTag({ name }),
       );
       const createdTagsResponses = await Promise.all(tagPromises);
 
