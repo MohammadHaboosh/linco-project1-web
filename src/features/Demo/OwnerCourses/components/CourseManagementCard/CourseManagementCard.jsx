@@ -53,7 +53,7 @@ const CourseManagementCard = ({
     <div className={styles.card}>
       <div className={styles.imageWrapper}>
         <img
-          src={course.image}
+          src={course.imagePath}
           alt={course.title}
           className={styles.courseImage}
         />
@@ -95,13 +95,13 @@ const CourseManagementCard = ({
           <div className={styles.statItem}>
             <IoListOutline className={styles.statIcon} />
             <span>
-              {course.stats?.sections || 0} {t("sections")}
+              {course.sectionsCount || 0} {t("sections")}
             </span>
           </div>
           <div className={styles.statItem}>
             <IoVideocamOutline className={styles.statIcon} />
             <span>
-              {course.stats?.lessons || 0} {t("lessons")}
+              {course.lessonCount || 0} {t("lessons")}
             </span>
           </div>
           <div className={styles.statItem}>
