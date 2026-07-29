@@ -11,15 +11,14 @@ export const useCreateCourse = (demoId) => {
       setError(null);
 
       try {
-        const tagIds = [];
-        if (courseData.tags && courseData.tags.length > 0) {
-          const tagPromises = courseData.tags.map((tag) =>
-            publishCourseApi.createTag(
-              typeof tag === "string" ? tag : tag.name || tag.text,
+        let tagIds = [];
+        if (courseData.tags?.length > 0) {
+          const createdTags = await Promise.all(
+            courseData.tags.map((tagName) =>
+              publishCourseApi.createTag(tagName),
             ),
           );
-          const createdTags = await Promise.all(tagPromises);
-          tagIds.push(...createdTags.map((t) => t.id));
+          tagIds = createdTags.map((tag) => tag.id);
         }
 
         const payload = {
@@ -28,8 +27,7 @@ export const useCreateCourse = (demoId) => {
             ? courseData.privacy.toUpperCase()
             : "PRIVATE",
           description: courseData.description,
-          imagePath: courseData.thumbnail ? "uploaded-image-path" : "default",
-          demoId: demoId,
+          imagePath: courseData.imagePath || "default",
           price: Number(courseData.price) || 0,
           tagIds: tagIds,
         };
