@@ -6,18 +6,6 @@ const STORAGE_CDN_URL = "https://lincostorage.blob.core.windows.net/uploads";
 const mapAssetToCourse = (asset) => {
   const c = asset.course;
 
-  const getCourseImage = (imagePath) => {
-    if (!imagePath || imagePath === "default" || imagePath === "qwertyuiop") {
-      return "/images/linco-logo.jpg";
-    }
-
-    if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
-      return imagePath;
-    }
-
-    return `${STORAGE_CDN_URL}/${imagePath}`;
-  };
-
   return {
     assetId: asset.id,
     id: c.id,
@@ -25,12 +13,10 @@ const mapAssetToCourse = (asset) => {
     description: c.description,
     isPublished: c.isPublished,
     tags: c.tags ? c.tags.map((t) => t.name) : [],
-    stats: {
-      sections: c.sectionsCount || 0,
-      lessons: c.lessonCount || 0,
-      quizzes: 0,
-    },
-    image: getCourseImage(c.imagePath),
+    sectionsCount: c.sectionsCount || 0,
+    lessonCount: c.lessonCount || 0,
+    quizzes: 0,
+    imagePath: c.imagePath,
   };
 };
 
