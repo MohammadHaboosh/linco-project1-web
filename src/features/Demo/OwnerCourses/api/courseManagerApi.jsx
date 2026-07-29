@@ -1,6 +1,7 @@
 import { apiFetch } from "../../../../api/apiFetch";
 
 export const courseManagerApi = {
+  // 1. جلب تفاصيل الكورس/الأصل
   getAsset: async (demoId, assetId) => {
     const response = await apiFetch(`/assets/${assetId}`, {
       method: "GET",
@@ -64,16 +65,18 @@ export const courseManagerApi = {
 
     const uploadData = await courseManagerApi.getCourseUploadUrl(file.name);
     const uploadUrl = uploadData.uploadUrl;
-    const key = uploadData.fileKey || uploadData.cdnUrl || uploadData.key;
 
-    console.log(" Target Upload URL:", uploadUrl);
-    console.log(" Generated File Key / Image Path:", key);
+    const fullCdnUrl =
+      uploadData.cdnUrl || uploadData.fileKey || uploadData.key;
+
+    console.log("Target Upload URL:", uploadUrl);
+    console.log("Full CDN Image URL to be stored:", fullCdnUrl);
 
     await courseManagerApi.uploadImageToStorage(uploadUrl, file);
 
     const updatedPayload = {
       ...currentPayload,
-      imagePath: key,
+      imagePath: fullCdnUrl,
     };
 
     console.log(" Sending Final Course Payload:", updatedPayload);
