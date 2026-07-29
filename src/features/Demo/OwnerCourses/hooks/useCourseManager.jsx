@@ -84,12 +84,24 @@ export const useCourseManager = (demoId, assetId) => {
     if (!courseId) return;
     setIsSaving(true);
     try {
+      const tagNames = (generalInfo.tags || []).map((tag) =>
+        typeof tag === "object" ? tag.name : tag,
+      );
+
+      const tagPromises = tagNames.map((name) =>
+        courseManagerApi.createTag({ name }),
+      );
+      const createdTagsResponses = await Promise.all(tagPromises);
+
+      const tagIds = createdTagsResponses.map((res) => res.data?.id || res.id);
+
       const payload = {
         title: generalInfo.title,
         description: generalInfo.description,
         imagePath: generalInfo.imagePath,
         visibility: generalInfo.visibility,
-        tagIds: (generalInfo.tags || []).map((tag) => tag.id),
+        price: Number(generalInfo.price) || 0,
+        tagIds: tagIds,
       };
 
       if (generalInfo.imageFile) {
@@ -104,7 +116,10 @@ export const useCourseManager = (demoId, assetId) => {
 
       alert("Course updated successfully!");
     } catch (err) {
-      alert("Error updating course: " + err.message);
+      alert(
+        "Error updating course: " +
+          (err.response?.data?.message || err.message),
+      );
     } finally {
       setIsSaving(false);
     }

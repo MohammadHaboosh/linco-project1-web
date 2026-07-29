@@ -7,29 +7,31 @@ const GeneralInfoTab = ({ data, onChange }) => {
   const tagsList = data.tags || [];
   const { t } = useTranslation();
 
-  const handleTagKeyDown = async (e) => {
+  const handleTagKeyDown = (e) => {
     if (e.key === "Enter" && e.target.value.trim() !== "") {
       e.preventDefault();
-      const tagName = e.target.value.trim();
+      const newTagName = e.target.value.trim();
 
       const isDuplicate = tagsList.some(
-        (tag) => tag.name?.toLowerCase() === tagName.toLowerCase(),
+        (tag) =>
+          (typeof tag === "object" ? tag.name : tag).toLowerCase() ===
+          newTagName.toLowerCase(),
       );
 
       if (!isDuplicate) {
-        try {
-          const newTag = await courseManagerApi.createTag(tagName);
-          onChange("tags", [...tagsList, newTag]);
-        } catch (err) {
-          console.error("Failed to create tag:", err);
-        }
+        onChange("tags", [...tagsList, { name: newTagName }]);
       }
       e.target.value = "";
     }
   };
 
-  const removeTag = (idToRemove) => {
-    const updatedTags = tagsList.filter((tag) => tag.id !== idToRemove);
+  const removeTag = (tagToRemove) => {
+    const targetName =
+      typeof tagToRemove === "object" ? tagToRemove.name : tagToRemove;
+    const updatedTags = tagsList.filter((tag) => {
+      const currentName = typeof tag === "object" ? tag.name : tag;
+      return currentName !== targetName;
+    });
     onChange("tags", updatedTags);
   };
 
