@@ -90,7 +90,7 @@ export const useCourseManager = (demoId, assetId) => {
       );
 
       const tagPromises = tagNames.map((name) =>
-        publishCourseApi.createTag({ name }),
+        publishCourseApi.createTag(name),
       );
       const createdTagsResponses = await Promise.all(tagPromises);
 
