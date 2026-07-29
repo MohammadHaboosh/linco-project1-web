@@ -1,17 +1,28 @@
 import { IoCloudUploadOutline, IoCloseOutline } from "react-icons/io5";
 import styles from "../CourseManager.module.css";
 import { useTranslation } from "react-i18next";
+import { courseManagerApi } from "../../../../api/courseManagerApi";
 
 const GeneralInfoTab = ({ data, onChange }) => {
   const tagsList = data.tags || [];
   const { t } = useTranslation();
 
-  const handleTagKeyDown = (e) => {
+  const handleTagKeyDown = async (e) => {
     if (e.key === "Enter" && e.target.value.trim() !== "") {
       e.preventDefault();
-      const newTag = e.target.value.trim();
-      if (!data.tagIds?.includes(newTag)) {
-        onChange("tagIds", [...(data.tagIds || []), newTag]);
+      const tagName = e.target.value.trim();
+
+      const isDuplicate = tagsList.some(
+        (tag) => tag.name?.toLowerCase() === tagName.toLowerCase(),
+      );
+
+      if (!isDuplicate) {
+        try {
+          const newTag = await courseManagerApi.createTag(tagName);
+          onChange("tags", [...tagsList, newTag]);
+        } catch (err) {
+          console.error("Failed to create tag:", err);
+        }
       }
       e.target.value = "";
     }
@@ -32,11 +43,7 @@ const GeneralInfoTab = ({ data, onChange }) => {
 
   const currentImageDisplay =
     data.imagePreview ||
-    (data.imagePath &&
-    data.imagePath !== "default" &&
-    data.imagePath !== "qwertyuiop"
-      ? data.imagePath
-      : null);
+    (data.imagePath && data.imagePath !== "default" ? data.imagePath : null);
 
   return (
     <div className={styles.tabCard}>
@@ -64,7 +71,7 @@ const GeneralInfoTab = ({ data, onChange }) => {
                   className={styles.previewImage}
                 />
                 <div className={styles.imageOverlay}>
-                  <button className={styles.changeImageBtn}>
+                  <button type="button" className={styles.changeImageBtn}>
                     Change Image
                   </button>
                 </div>
@@ -112,7 +119,7 @@ const GeneralInfoTab = ({ data, onChange }) => {
           <div className={styles.selectWrapper}>
             <select
               className={styles.selectInput}
-              value={data.visibility}
+              value={data.visibility || "PRIVATE"}
               onChange={(e) => onChange("visibility", e.target.value)}
             >
               <option value="PUBLIC">Public (Available in Library)</option>

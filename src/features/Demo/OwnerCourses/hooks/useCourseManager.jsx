@@ -12,7 +12,9 @@ export const useCourseManager = (demoId, assetId) => {
     description: "",
     visibility: "PUBLIC",
     imagePath: "",
-    tagIds: [],
+    tags: [],
+    imageFile: null,
+    imagePreview: null,
   });
 
   const [faqs, setFaqs] = useState([]);
@@ -26,7 +28,8 @@ export const useCourseManager = (demoId, assetId) => {
       try {
         setIsLoading(true);
         const assetData = await courseManagerApi.getAsset(demoId, assetId);
-        const course = assetData.course;
+
+        const course = assetData.course || assetData.data?.course || assetData;
         setCourseId(course.id);
 
         setGeneralInfo({
@@ -34,7 +37,9 @@ export const useCourseManager = (demoId, assetId) => {
           description: course.description || "",
           visibility: course.visibility || "PRIVATE",
           imagePath: course.imagePath || "",
-          tagIds: course.tags?.map((t) => t.name) || [],
+          tags: course.tags || [],
+          imageFile: null,
+          imagePreview: null,
         });
 
         setFaqs([
@@ -74,8 +79,6 @@ export const useCourseManager = (demoId, assetId) => {
 
     loadCourseData();
   }, [demoId, assetId]);
-
-  const [selectedImageFile, setSelectedImageFile] = useState(null);
 
   const saveGeneralInfo = useCallback(async () => {
     if (!courseId) return;
