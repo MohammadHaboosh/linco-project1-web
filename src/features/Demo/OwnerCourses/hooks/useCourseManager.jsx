@@ -13,6 +13,7 @@ export const useCourseManager = (demoId, assetId) => {
     description: "",
     visibility: "PUBLIC",
     imagePath: "",
+    price: 0,
     tags: [],
     imageFile: null,
     imagePreview: null,
@@ -38,39 +39,11 @@ export const useCourseManager = (demoId, assetId) => {
           description: course.description || "",
           visibility: course.visibility || "PRIVATE",
           imagePath: course.imagePath || "",
+          price: course.price || 0,
           tags: course.tags || [],
           imageFile: null,
           imagePreview: null,
         });
-
-        setFaqs([
-          {
-            id: 1,
-            question: "Is this course for beginners?",
-            answer: "Yes, it starts from scratch.",
-          },
-        ]);
-        setSections([
-          {
-            id: "sec-1",
-            title: "Introduction",
-            lessons: [{ id: "l-1", title: "Welcome Video", duration: "05:00" }],
-            questions: [
-              {
-                id: "q-1",
-                text: "What is React?",
-                options: ["Library", "Framework", "Language", "DB"],
-                correctIndex: 0,
-              },
-            ],
-            quiz: {
-              id: "qz-1",
-              title: "Intro Quiz",
-              duration: 15,
-              questionsCount: 5,
-            },
-          },
-        ]);
       } catch (err) {
         setError(err.message || "Failed to load course details.");
       } finally {
@@ -105,15 +78,26 @@ export const useCourseManager = (demoId, assetId) => {
         tagIds: tagIds,
       };
 
+      let result;
+
       if (generalInfo.imageFile) {
-        await courseManagerApi.uploadAndSaveCourseImage(
+        result = await courseManagerApi.uploadAndSaveCourseImage(
           courseId,
           generalInfo.imageFile,
           payload,
         );
       } else {
-        await courseManagerApi.updateCourseGeneralInfo(courseId, payload);
+        result = await courseManagerApi.updateCourseGeneralInfo(
+          courseId,
+          payload,
+        );
       }
+      setGeneralInfo((prev) => ({
+        ...prev,
+        imagePath: result?.imagePath || prev.imagePath,
+        imageFile: null,
+        imagePreview: null,
+      }));
 
       alert("Course updated successfully!");
     } catch (err) {

@@ -25,7 +25,7 @@ export const courseManagerApi = {
     const data = await response.json();
     if (!response.ok || !data.success) throw new Error(data.message);
 
-    console.log("Fetched Course Upload URL:", data.data);
+    console.log("Fetched Course Upload URL Data:", data.data);
     return data.data;
   },
 
@@ -34,7 +34,7 @@ export const courseManagerApi = {
       method: "PUT",
       headers: {
         "x-ms-blob-type": "BlockBlob",
-        "Content-Type": file.type,
+        "Content-Type": file.type || "application/octet-stream",
       },
       body: file,
     });
@@ -42,6 +42,7 @@ export const courseManagerApi = {
     if (!response.ok) {
       throw new Error("Failed to upload image to storage service.");
     }
+    console.log(" Image successfully uploaded to Azure Blob Storage");
     return true;
   },
 
@@ -59,15 +60,26 @@ export const courseManagerApi = {
   },
 
   uploadAndSaveCourseImage: async (courseId, file, currentPayload) => {
-    const { uploadUrl, fileKey } = await courseManagerApi.getCourseUploadUrl(
-      file.name,
-    );
+    console.log(" Starting Full Image Upload & Save Flow for:", file.name);
+
+    const uploadData = await courseManagerApi.getCourseUploadUrl(file.name);
+    const uploadUrl = uploadData.uploadUrl;
+    const key = uploadData.fileKey || uploadData.cdnUrl || uploadData.key;
+
+    console.log(" Target Upload URL:", uploadUrl);
+    console.log(" Generated File Key / Image Path:", key);
 
     await courseManagerApi.uploadImageToStorage(uploadUrl, file);
 
-    return await courseManagerApi.updateCourseGeneralInfo(courseId, {
+    const updatedPayload = {
       ...currentPayload,
-      imagePath: fileKey,
-    });
+      imagePath: key,
+    };
+
+    console.log(" Sending Final Course Payload:", updatedPayload);
+    return await courseManagerApi.updateCourseGeneralInfo(
+      courseId,
+      updatedPayload,
+    );
   },
 };
