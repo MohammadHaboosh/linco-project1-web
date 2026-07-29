@@ -57,10 +57,13 @@ export const useCourseManager = (demoId, assetId) => {
   const saveGeneralInfo = useCallback(async () => {
     if (!courseId) return;
     setIsSaving(true);
+    console.log("START SAVING COURSE GENERAL INFO");
+
     try {
       const tagNames = (generalInfo.tags || []).map((tag) =>
         typeof tag === "object" ? tag.name : tag,
       );
+      console.log("Processing Tag Names:", tagNames);
 
       const tagPromises = tagNames.map((name) =>
         publishCourseApi.createTag(name),
@@ -68,8 +71,9 @@ export const useCourseManager = (demoId, assetId) => {
       const createdTagsResponses = await Promise.all(tagPromises);
 
       const tagIds = createdTagsResponses.map((res) => res.data?.id || res.id);
+      console.log("Extracted Tag IDs:", tagIds);
 
-      const payload = {
+      const basePayload = {
         title: generalInfo.title,
         description: generalInfo.description,
         imagePath: generalInfo.imagePath,
@@ -81,17 +85,24 @@ export const useCourseManager = (demoId, assetId) => {
       let result;
 
       if (generalInfo.imageFile) {
+        console.log(
+          "New Image Detected -> Calling uploadAndSaveCourseImage...",
+        );
         result = await courseManagerApi.uploadAndSaveCourseImage(
           courseId,
           generalInfo.imageFile,
-          payload,
+          basePayload,
         );
       } else {
+        console.log("No new image -> Updating text details only...");
         result = await courseManagerApi.updateCourseGeneralInfo(
           courseId,
-          payload,
+          basePayload,
         );
       }
+
+      console.log("Course Saved Successfully! Returned Data:", result);
+
       setGeneralInfo((prev) => ({
         ...prev,
         imagePath: result?.imagePath || prev.imagePath,
@@ -101,12 +112,13 @@ export const useCourseManager = (demoId, assetId) => {
 
       alert("Course updated successfully!");
     } catch (err) {
+      console.error("Error Saving Course:", err);
       alert(
-        "Error updating course: " +
-          (err.response?.data?.message || err.message),
+        "Error updating course: " + (err.message || "Something went wrong"),
       );
     } finally {
       setIsSaving(false);
+      console.log("END SAVING PROCESS");
     }
   }, [courseId, generalInfo]);
 
