@@ -1,6 +1,18 @@
 import { apiFetch } from "../../../../api/apiFetch";
 
 export const lessonApi = {
+  getLessons: async (sectionId) => {
+    const response = await apiFetch(`/sections/${sectionId}/lessons/cursor`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    const data = await response.json();
+    if (!response.ok || !data.success) throw new Error(data.message);
+
+    console.log("Fetched Section Lessons:", data.data);
+    return data.data;
+  },
+
   getUploadUrl: async (sectionId, fileName) => {
     const response = await apiFetch(
       `/sections/${sectionId}/lessons/upload-url`,

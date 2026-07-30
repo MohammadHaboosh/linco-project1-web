@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { courseManagerApi } from "../api/courseManagerApi";
 import { publishCourseApi } from "../../PublishCourse/api/publishCourseApi";
 import { sectionApi } from "../api/sectionApi";
+import { lessonApi } from "../api/lessonApi";
 
 export const useCourseManager = (demoId, assetId) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -58,15 +59,34 @@ export const useCourseManager = (demoId, assetId) => {
 
         if (course.id) {
           const sectionsData = await sectionApi.getSections(course.id);
-          const formattedSections = (sectionsData || []).map((sec) => ({
-            id: sec.id,
-            title: sec.title,
-            order: sec.order,
-            lessons: sec.lessons || [],
-            questions: sec.questions || [],
-            quiz: sec.quiz || null,
-            isNew: false,
-          }));
+          const formattedSections = await Promise.all(
+            (sectionsData || []).map(async (sec) => {
+              let lessonsList = sec.lessons || [];
+
+              if (!lessonsList || lessonsList.length === 0) {
+                try {
+                  lessonsList = await lessonApi.getLessons(sec.id);
+                } catch (err) {
+                  console.error(
+                    `Failed to fetch lessons for section ${sec.id}:`,
+                    err,
+                  );
+                  lessonsList = [];
+                }
+              }
+
+              return {
+                id: sec.id,
+                title: sec.title,
+                order: sec.order,
+                lessons: lessonsList,
+                questions: sec.questions || [],
+                quiz: sec.quiz || null,
+                isNew: false,
+              };
+            }),
+          );
+
           setSections(formattedSections);
         }
       } catch (err) {
