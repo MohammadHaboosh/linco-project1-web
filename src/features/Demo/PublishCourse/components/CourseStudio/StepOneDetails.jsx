@@ -10,7 +10,12 @@ import {
 import styles from "./StepOneDetails.module.css";
 import { useTranslation } from "react-i18next";
 
-const StepOneDetails = ({ courseData, updateCourseData, onNext }) => {
+const StepOneDetails = ({
+  courseData,
+  updateCourseData,
+  onNext,
+  isCreating,
+}) => {
   const { t } = useTranslation();
   const [tagInput, setTagInput] = useState("");
   const [error, setError] = useState("");
@@ -49,13 +54,20 @@ const StepOneDetails = ({ courseData, updateCourseData, onNext }) => {
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  const validateAndProceed = () => {
+  const validateAndProceed = async () => {
     if (!courseData.title.trim() || !courseData.description.trim()) {
       setError(t("please-fill-in-the-course-title-and-description-to-proceed"));
       return;
     }
     setError("");
-    onNext();
+
+    try {
+      await onNext();
+    } catch (err) {
+      setError(
+        err.message || "Error occurred while proceeding to the next step.",
+      );
+    }
   };
 
   return (
@@ -254,7 +266,11 @@ const StepOneDetails = ({ courseData, updateCourseData, onNext }) => {
       </div>
 
       <div className={styles.bottomActions}>
-        <button className={styles.proceedBtn} onClick={validateAndProceed}>
+        <button
+          className={styles.proceedBtn}
+          onClick={validateAndProceed}
+          disabled={isCreating}
+        >
           {t("proceed-to-curriculum")} <IoArrowForwardOutline />
         </button>
       </div>
