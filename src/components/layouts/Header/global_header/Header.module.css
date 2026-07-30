@@ -83,3 +83,70 @@
   color: #ffffff;
   font-size: 1.05rem;
 }
+
+@media (max-width: 768px) {
+  .topHeader {
+    height: 60px;
+    gap: 10px;
+    padding-inline: 12px;
+  }
+
+  .logoArea {
+    flex-shrink: 0;
+    margin-inline-start: 46px;
+  }
+
+  .brand {
+    font-size: 1.15rem;
+  }
+
+  .company,
+  .rightArea,
+  .divider {
+    display: none;
+  }
+
+  .centerArea {
+    min-width: 0;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+
+  .backLink {
+    flex-shrink: 0;
+    padding: 8px;
+    font-size: 0;
+  }
+
+  .backLink svg {
+    font-size: 1.15rem;
+  }
+
+  .staticBadge {
+    max-width: min(48vw, 210px);
+    overflow: hidden;
+    padding: 7px 10px;
+    font-size: 0.78rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 400px) {
+  .topHeader {
+    gap: 6px;
+    padding-inline: 8px;
+  }
+
+  .logoArea {
+    margin-inline-start: 44px;
+  }
+
+  .brand {
+    font-size: 1rem;
+  }
+
+  .backLink {
+    padding-inline: 5px;
+  }
+}
