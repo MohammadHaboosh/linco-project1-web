@@ -14,6 +14,18 @@ import CurriculumTab from "./tabs/CurriculumTab/CurriculumTab";
 import FAQsTab from "./tabs/FAQsTab";
 import styles from "./CourseManager.module.css";
 import { useTranslation } from "react-i18next";
+import { lessonApi } from "../../../api/lessonApi";
+import { sectionApi } from "../../../api/sectionApi";
+
+const isTempId = (id) => {
+  if (!id) return true;
+  const strId = String(id);
+  return (
+    strId.startsWith("temp") ||
+    strId.startsWith("temp_") ||
+    strId.includes("temp")
+  );
+};
 
 const CourseManagerLayout = () => {
   const { t } = useTranslation();
@@ -23,6 +35,7 @@ const CourseManagerLayout = () => {
   const {
     isLoading,
     isSaving,
+    setIsSaving,
     courseId,
     generalInfo,
     handleGeneralInfoChange,
@@ -31,9 +44,148 @@ const CourseManagerLayout = () => {
     setFaqs,
     sections,
     setSections,
+    deletedSectionIds,
+    setDeletedSectionIds,
   } = useCourseManager(demoId, assetId);
 
   const [activeTab, setActiveTab] = useState("curriculum");
+
+  const handleDeleteSection = (sectionId) => {
+    if (sectionId && !isTempId(sectionId)) {
+      setDeletedSectionIds((prev) => [...(prev || []), sectionId]);
+    }
+    setSections((prev) => prev.filter((s) => s.id !== sectionId));
+  };
+
+  const handleSaveAll = async () => {
+    try {
+      if (setIsSaving) setIsSaving(true);
+
+      const activeCourseId = courseId || assetId || demoId;
+
+      if (saveGeneralInfo) {
+        await saveGeneralInfo();
+      }
+
+      if (deletedSectionIds && deletedSectionIds.length > 0) {
+        await Promise.all(
+          deletedSectionIds.map((secId) =>
+            sectionApi.deleteSection(activeCourseId, secId),
+          ),
+        );
+        if (setDeletedSectionIds) setDeletedSectionIds([]);
+      }
+
+      // 3. إنشاء أو تحديث الأقسام والحصول على Real IDs
+      const updatedSectionsList = [];
+
+      for (let i = 0; i < (sections || []).length; i++) {
+        const sec = sections[i];
+        const payload = {
+          title: sec.title,
+          order: sec.order || i + 1,
+        };
+
+        const isNewSection = !sec.id || sec.isNew || isTempId(sec.id);
+
+        let savedSection;
+        if (isNewSection) {
+          savedSection = await sectionApi.createSection(
+            activeCourseId,
+            payload,
+          );
+        } else {
+          savedSection = await sectionApi.updateSection(
+            activeCourseId,
+            sec.id,
+            payload,
+          );
+        }
+
+        const realSectionId =
+          savedSection?.id || savedSection?.data?.id || sec.id;
+
+        const currentLessons = sec.lessons || [];
+        const updatedLessonsList = [];
+
+        for (let index = 0; index < currentLessons.length; index++) {
+          const lesson = currentLessons[index];
+          const isNewLesson =
+            !lesson.id || lesson.isNew === true || isTempId(lesson.id);
+
+          if (isNewLesson) {
+            let finalVideoUrl = lesson.videoUrl || "";
+
+            if (lesson.videoFile) {
+              const uploadData = await lessonApi.getUploadUrl(
+                realSectionId,
+                lesson.videoFile.name,
+              );
+
+              const uploadUrl = uploadData.uploadUrl || uploadData.url;
+              finalVideoUrl =
+                uploadData.videoUrl ||
+                uploadData.fileUrl ||
+                uploadData.publicUrl ||
+                finalVideoUrl;
+
+              if (uploadUrl) {
+                await lessonApi.uploadVideoToStorage(
+                  uploadUrl,
+                  lesson.videoFile,
+                );
+              }
+            }
+
+            const lessonPayload = {
+              title: lesson.title,
+              order: lesson.order || index + 1,
+              videoUrl: finalVideoUrl,
+              courseId: activeCourseId,
+              description: lesson.description || "",
+              duration: Number(lesson.duration) || 0,
+            };
+
+            const createdLesson = await lessonApi.createLesson(
+              realSectionId,
+              lessonPayload,
+            );
+
+            const realLessonId =
+              createdLesson?.id || createdLesson?.data?.id || lesson.id;
+
+            updatedLessonsList.push({
+              ...lesson,
+              id: realLessonId,
+              videoUrl: finalVideoUrl,
+              videoFile: null,
+              isNew: false,
+            });
+          } else {
+            updatedLessonsList.push(lesson);
+          }
+        }
+
+        updatedSectionsList.push({
+          ...sec,
+          id: realSectionId,
+          isNew: false,
+          lessons: updatedLessonsList,
+        });
+      }
+
+      setSections(updatedSectionsList);
+
+      alert("All changes saved successfully!");
+    } catch (error) {
+      console.error("Error during full course save:", error);
+      alert(
+        "Failed to save changes: " + (error.message || "Something went wrong"),
+      );
+    } finally {
+      if (setIsSaving) setIsSaving(false);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -84,7 +236,7 @@ const CourseManagerLayout = () => {
         <div className={styles.headerRight}>
           <button
             className={styles.saveBtn}
-            onClick={saveGeneralInfo}
+            onClick={handleSaveAll}
             disabled={isSaving}
           >
             {isSaving ? (
@@ -143,6 +295,7 @@ const CourseManagerLayout = () => {
                 courseId={courseId}
                 sections={sections}
                 setSections={setSections}
+                onDeleteSection={handleDeleteSection}
               />
             )}
             {activeTab === "faqs" && <FAQsTab faqs={faqs} setFaqs={setFaqs} />}
