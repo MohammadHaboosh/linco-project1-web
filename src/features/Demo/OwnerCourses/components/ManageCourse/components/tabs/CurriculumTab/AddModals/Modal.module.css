@@ -404,3 +404,30 @@
     transform: translateY(0) scale(1);
   }
 }
+.amberBadge {
+  background-color: #fffbeb;
+  color: #d97706;
+}
+
+.amberBtn {
+  background-color: #f59e0b;
+}
+
+.amberBtn:hover {
+  background-color: #d97706;
+}
+
+.amberDropzone {
+  background-color: #fffbeb;
+  border-color: #fcd34d;
+}
+
+.amberDropzone:hover {
+  border-color: #d97706;
+  background-color: #fef3c7;
+}
+
+.amberDropzoneIcon {
+  font-size: 2.4rem;
+  color: #f59e0b;
+}
