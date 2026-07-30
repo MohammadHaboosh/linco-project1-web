@@ -10,13 +10,7 @@ const StepOneDetails = ({
   isCreating,
 }) => {
   const handleDataChange = (fieldOrObject, value) => {
-    if (typeof fieldOrObject === "object") {
-      Object.entries(fieldOrObject).forEach(([k, v]) => {
-        updateCourseData(k, v);
-      });
-    } else {
-      updateCourseData(fieldOrObject, value);
-    }
+    updateCourseData(fieldOrObject, value);
   };
 
   return (

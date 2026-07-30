@@ -25,13 +25,20 @@ const CourseStudio = () => {
     description: "",
     tags: [],
     imagePath: "",
+    imageFile: null,
+    imagePreview: null,
     privacy: "public",
     price: 0,
     sections: [],
   });
 
-  const updateCourseData = (field, value) => {
-    setCourseData((prev) => ({ ...prev, [field]: value }));
+  const updateCourseData = (fieldOrObject, value) => {
+    setCourseData((prev) => {
+      if (typeof fieldOrObject === "object" && fieldOrObject !== null) {
+        return { ...prev, ...fieldOrObject };
+      }
+      return { ...prev, [fieldOrObject]: value };
+    });
   };
 
   const handleNextStep = async () => {
@@ -43,11 +50,20 @@ const CourseStudio = () => {
     if (!courseData.id) {
       try {
         const createdCourse = await createCourse(courseData);
-        updateCourseData("id", createdCourse.id);
+
+        setCourseData((prev) => ({
+          ...prev,
+          ...createdCourse,
+          id: createdCourse.id,
+          imagePath: createdCourse.imagePath || prev.imagePath,
+          imageFile: null,
+        }));
+
         setCurrentStep(2);
         window.scrollTo(0, 0);
       } catch (error) {
-        alert(error.message);
+        console.error("Error creating course:", error);
+        alert(error.message || "Failed to create course");
       }
     } else {
       setCurrentStep(2);
