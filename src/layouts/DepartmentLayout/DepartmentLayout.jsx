@@ -34,7 +34,11 @@ const LayoutContent = () => {
 
         <SubHeader navLinks={navLinks} />
 
-        <main className={styles.pageContent}>
+        <main
+          className={`${styles.pageContent} ${
+            isChatPage ? styles.chatPageContent : ""
+          }`}
+        >
           <Outlet />
         </main>
         {!isChatPage && <Footer />}
