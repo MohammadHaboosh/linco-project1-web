@@ -18,7 +18,7 @@ const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
     videoUrl: "",
   });
 
-  const fileInputRef = useRef(null);
+  const videoInputRef = useRef(null);
 
   if (!isOpen) return null;
 
@@ -26,27 +26,34 @@ const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleFileSelect = (e) => {
+  const handleVideoSelect = (e) => {
     const file = e.target.files?.[0];
     if (file) {
       setFormData((prev) => ({
         ...prev,
         videoFile: file,
-        videoUrl: URL.createObjectURL(file), // المعاينة المؤقتة
+        videoUrl: URL.createObjectURL(file),
       }));
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // إرسال البيانات النهائية متوافقة مع الباك إند
     onSubmit({
       title: formData.title,
-      order: Number(formData.order),
-      videoUrl: formData.videoUrl || "https://example.com/video.mp4",
       description: formData.description,
       duration: Number(formData.duration),
-      videoFile: formData.videoFile, // في حال الرفع المباشر
+      videoFile: formData.videoFile,
+      videoUrl: formData.videoUrl || "https://example.com/video.mp4",
+      attachments: [],
+    });
+
+    setFormData({
+      title: "",
+      description: "",
+      duration: 0,
+      videoFile: null,
+      videoUrl: "",
     });
     onClose();
   };
@@ -54,10 +61,9 @@ const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
       <div
-        className={styles.modalContainer}
+        className={`${styles.modalContainer} ${styles.largeModal}`}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* رأس النافذة */}
         <div className={styles.modalHeader}>
           <div className={styles.headerTitleGroup}>
             <div className={`${styles.iconBadge} ${styles.blueBadge}`}>
@@ -65,7 +71,7 @@ const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
             </div>
             <div>
               <h3>Add New Lesson</h3>
-              <p>Upload video lecture and setup lesson details</p>
+              <p>Upload video lecture and lesson details</p>
             </div>
           </div>
           <button className={styles.closeBtn} onClick={onClose}>
@@ -73,23 +79,20 @@ const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
           </button>
         </div>
 
-        {/* جسم النموذج */}
         <form onSubmit={handleSubmit} className={styles.modalBody}>
-          {/* عنوان الدرس */}
-          <div className={styles.formGroup}>
-            <label className={styles.label}>Lesson Title *</label>
-            <input
-              type="text"
-              required
-              className={styles.input}
-              placeholder="e.g. Introduction to Authentication"
-              value={formData.title}
-              onChange={(e) => handleChange("title", e.target.value)}
-            />
-          </div>
-
           <div className={styles.gridTwoCols}>
-            {/* مدة الدرس */}
+            <div className={styles.formGroup}>
+              <label className={styles.label}>Lesson Title *</label>
+              <input
+                type="text"
+                required
+                className={styles.input}
+                placeholder="e.g. Introduction to Authentication"
+                value={formData.title}
+                onChange={(e) => handleChange("title", e.target.value)}
+              />
+            </div>
+
             <div className={styles.formGroup}>
               <label className={styles.label}>
                 <IoTimeOutline /> Duration (Minutes) *
@@ -104,27 +107,13 @@ const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
                 onChange={(e) => handleChange("duration", e.target.value)}
               />
             </div>
-
-            {/* الترتيب */}
-            <div className={styles.formGroup}>
-              <label className={styles.label}>Lesson Order</label>
-              <input
-                type="number"
-                min="1"
-                className={styles.input}
-                placeholder="1"
-                value={formData.order}
-                onChange={(e) => handleChange("order", e.target.value)}
-              />
-            </div>
           </div>
 
-          {/* منطقة رفع الفيديو */}
           <div className={styles.formGroup}>
             <label className={styles.label}>Lecture Video File *</label>
             <div
               className={styles.dropzone}
-              onClick={() => fileInputRef.current?.click()}
+              onClick={() => videoInputRef.current?.click()}
             >
               <IoCloudUploadOutline className={styles.dropzoneIcon} />
               {formData.videoFile ? (
@@ -145,16 +134,15 @@ const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
                 </>
               )}
               <input
-                ref={fileInputRef}
+                ref={videoInputRef}
                 type="file"
                 accept="video/*"
                 hidden
-                onChange={handleFileSelect}
+                onChange={handleVideoSelect}
               />
             </div>
           </div>
 
-          {/* وصف الدرس */}
           <div className={styles.formGroup}>
             <label className={styles.label}>
               <IoDocumentTextOutline /> Lesson Description
@@ -168,7 +156,6 @@ const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
             />
           </div>
 
-          {/* أزرار الإجراءات */}
           <div className={styles.modalFooter}>
             <button
               type="button"

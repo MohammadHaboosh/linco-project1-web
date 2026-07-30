@@ -23,7 +23,7 @@ const CurriculumTab = ({ sections, setSections }) => {
     sections.map((s) => s.id),
   );
 
-  const [activeModal, setActiveModal] = useState(null); // 'lesson' | 'quiz' | 'question' | null
+  const [activeModal, setActiveModal] = useState(null);
   const [activeSectionId, setActiveSectionId] = useState(null);
 
   const toggleSection = (id) => {
@@ -82,20 +82,35 @@ const CurriculumTab = ({ sections, setSections }) => {
 
   const handleSaveLesson = (lessonData) => {
     if (!activeSectionId) return;
+
+    setSections(
+      sections.map((s) => {
+        if (s.id === activeSectionId) {
+          const currentLessons = s.lessons || [];
+          const newLesson = {
+            id: Date.now().toString(),
+            ...lessonData,
+            order: currentLessons.length + 1,
+          };
+          return {
+            ...s,
+            lessons: [...currentLessons, newLesson],
+          };
+        }
+        return s;
+      }),
+    );
+  };
+
+  const handleReorderLessons = (secId, reorderedLessons) => {
+    const updatedLessonsWithOrder = reorderedLessons.map((lesson, index) => ({
+      ...lesson,
+      order: index + 1,
+    }));
+
     setSections(
       sections.map((s) =>
-        s.id === activeSectionId
-          ? {
-              ...s,
-              lessons: [
-                ...s.lessons,
-                {
-                  id: Date.now().toString(),
-                  ...lessonData,
-                },
-              ],
-            }
-          : s,
+        s.id === secId ? { ...s, lessons: updatedLessonsWithOrder } : s,
       ),
     );
   };
@@ -139,11 +154,18 @@ const CurriculumTab = ({ sections, setSections }) => {
 
   const deleteLesson = (secId, lessonId) => {
     setSections(
-      sections.map((s) =>
-        s.id === secId
-          ? { ...s, lessons: s.lessons.filter((l) => l.id !== lessonId) }
-          : s,
-      ),
+      sections.map((s) => {
+        if (s.id === secId) {
+          const filtered = s.lessons.filter((l) => l.id !== lessonId);
+          // اعادة ترتيب الـ order بعد الحذف
+          const reordered = filtered.map((item, idx) => ({
+            ...item,
+            order: idx + 1,
+          }));
+          return { ...s, lessons: reordered };
+        }
+        return s;
+      }),
     );
   };
 
@@ -160,6 +182,48 @@ const CurriculumTab = ({ sections, setSections }) => {
   const deleteQuiz = (secId) => {
     setSections(
       sections.map((s) => (s.id === secId ? { ...s, quiz: null } : s)),
+    );
+  };
+
+  const handleAddAttachment = (secId, lessonId, attachmentData) => {
+    setSections(
+      sections.map((s) => {
+        if (s.id === secId) {
+          const updatedLessons = s.lessons.map((l) => {
+            if (l.id === lessonId) {
+              return {
+                ...l,
+                attachments: [...(l.attachments || []), attachmentData],
+              };
+            }
+            return l;
+          });
+          return { ...s, lessons: updatedLessons };
+        }
+        return s;
+      }),
+    );
+  };
+
+  const handleDeleteAttachment = (secId, lessonId, attachmentId) => {
+    setSections(
+      sections.map((s) => {
+        if (s.id === secId) {
+          const updatedLessons = s.lessons.map((l) => {
+            if (l.id === lessonId) {
+              return {
+                ...l,
+                attachments: (l.attachments || []).filter(
+                  (att) => att.id !== attachmentId,
+                ),
+              };
+            }
+            return l;
+          });
+          return { ...s, lessons: updatedLessons };
+        }
+        return s;
+      }),
     );
   };
 
@@ -235,6 +299,15 @@ const CurriculumTab = ({ sections, setSections }) => {
                     onAddLesson={() => openLessonModal(section.id)}
                     onDeleteLesson={(lessonId) =>
                       deleteLesson(section.id, lessonId)
+                    }
+                    onReorderLessons={(reordered) =>
+                      handleReorderLessons(section.id, reordered)
+                    }
+                    onAddAttachment={(lessonId, attData) =>
+                      handleAddAttachment(section.id, lessonId, attData)
+                    }
+                    onDeleteAttachment={(lessonId, attId) =>
+                      handleDeleteAttachment(section.id, lessonId, attId)
                     }
                   />
 
