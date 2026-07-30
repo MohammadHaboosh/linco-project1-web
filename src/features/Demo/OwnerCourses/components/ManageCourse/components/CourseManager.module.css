@@ -1,729 +1,250 @@
-/* =========================================
-   1. Global Layout (Natural Scroll)
-   ========================================= */
 .pageContainer {
-  background-color: #f8fafc;
   min-height: 100vh;
-  font-family: var(--font-sans, "Inter", sans-serif);
-}
-
-.loadingScreen {
-  height: 80vh;
+  background-color: #f8fafc;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-  color: #0a2a54;
-  font-size: 1.1rem;
-  font-weight: 700;
-}
-.spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid #e2e8f0;
-  border-top-color: #1a56db;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
 }
 
-/* =========================================
-   2. Top Header
-   ========================================= */
+/* الترويسة العلوية */
 .topHeader {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 0 40px;
-  height: 85px;
-  background-color: #ffffff;
+  justify-content: space-between;
+  padding: 16px 32px;
+  background: #ffffff;
   border-bottom: 1px solid #e2e8f0;
   position: sticky;
   top: 0;
   z-index: 50;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
+
 .headerLeft {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 16px;
 }
+
 .backBtn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 45px;
-  height: 45px;
-  background: #f1f5f9;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
   border: 1px solid #e2e8f0;
-  color: #64748b;
-  border-radius: 12px;
-  font-size: 1.3rem;
+  background-color: #ffffff;
+  color: #475569;
+  font-size: 1.2rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
 }
+
 .backBtn:hover {
-  background: #e2e8f0;
-  color: #0a2a54;
-  transform: translateX(-3px);
+  background-color: #f1f5f9;
+  color: #0f172a;
 }
 
 .courseHeaderInfo {
   display: flex;
   flex-direction: column;
+  gap: 2px;
 }
+
 .badge {
-  background: #eff6ff;
-  color: #1a56db;
-  font-size: 0.7rem;
-  font-weight: 800;
-  padding: 4px 10px;
-  border-radius: 6px;
-  width: fit-content;
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
-  margin-bottom: 5px;
+  color: #2563eb;
+  background-color: #eff6ff;
+  padding: 2px 8px;
+  border-radius: 4px;
+  width: fit-content;
 }
+
 .courseHeaderInfo h2 {
   margin: 0;
-  color: #0a2a54;
-  font-size: 1.3rem;
-  font-weight: 800;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
 }
 
 .saveBtn {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: linear-gradient(135deg, #0a2a54 0%, #1a56db 100%);
+  padding: 10px 20px;
+  background-color: #2563eb;
   color: #ffffff;
   border: none;
-  padding: 12px 28px;
-  border-radius: 12px;
-  font-weight: 700;
-  font-size: 0.95rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
   cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 4px 15px rgba(26, 86, 219, 0.2);
-}
-.saveBtn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(26, 86, 219, 0.3);
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
 }
 
-/* =========================================
-   3. Main Grid (The Core Fix!)
-   ========================================= */
+.saveBtn:hover {
+  background-color: #1d4ed8;
+  box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);
+}
+
+.saveBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* الشبكة العامة */
 .layoutGrid {
   display: grid;
-  grid-template-columns: 260px 1fr;
-  max-width: 1500px;
+  grid-template-columns: 280px 1fr;
+  gap: 32px;
+  max-width: 1440px;
   margin: 0 auto;
-  align-items: start;
-  padding: 40px 20px;
-  gap: 40px;
+  width: 100%;
+  padding: 32px;
+  flex: 1;
 }
 
-/* Sidebar Styling */
+/* القائمة الجانبية الجذابة */
 .sidebar {
-  position: sticky;
-  top: 110px;
-  background: transparent;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px 16px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03);
+  height: fit-content;
 }
+
+.sidebarHeader {
+  padding: 0 12px 12px 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #94a3b8;
+  letter-spacing: 0.8px;
+}
+
 .navMenu {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
+
 .navItem {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 16px 20px;
-  border-radius: 14px;
-  border: none;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid transparent;
+  border-radius: 12px;
   background: transparent;
   color: #64748b;
-  font-size: 1rem;
-  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
-  text-align: left;
-}
-.navItem:hover {
-  background: #e2e8f0;
-  color: #0a2a54;
-}
-.activeNav {
-  background: #ffffff;
-  color: #1a56db;
-  font-weight: 800;
-  box-shadow: 0 4px 15px rgba(10, 42, 84, 0.05);
-  border: 1px solid #e2e8f0;
-}
-.navIcon {
-  font-size: 1.3rem;
-  display: flex;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Main Content Panel */
+.navItemContent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navIcon {
+  display: flex;
+  align-items: center;
+  font-size: 1.3rem;
+  color: #94a3b8;
+  transition: color 0.2s;
+}
+
+.navLabel {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.navItem:hover {
+  background-color: #f8fafc;
+  color: #1e293b;
+}
+
+.navItem:hover .navIcon {
+  color: #475569;
+}
+
+/* العنصر النشط Active Tab */
+.activeNav {
+  background-color: #eff6ff;
+  border-color: #bfdbfe;
+  color: #1d4ed8;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+}
+
+.activeNav .navIcon {
+  color: #2563eb;
+}
+
+.activeArrow {
+  font-size: 1rem;
+  color: #2563eb;
+}
+
+/* اللوحة الرئيسية */
 .mainPanel {
-  width: 100%;
   min-width: 0;
 }
+
 .contentWrapper {
-  animation: fadeIn 0.4s ease-out;
-  padding-bottom: 60px;
+  background: transparent;
 }
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(15px);
-  }
+
+/* الشاشة أثناء التحميل */
+.loadingScreen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 16px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.btnSpinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
   to {
-    opacity: 1;
-    transform: translateY(0);
+    transform: rotate(360deg);
   }
 }
 
-/* =========================================
-   4. Shared Cards & Forms
-   ========================================= */
-.tabCard {
-  background: #ffffff;
-  border-radius: 20px;
-  border: 1px solid #e2e8f0;
-  padding: 40px;
-  box-shadow: 0 10px 40px rgba(10, 42, 84, 0.03);
-  margin-bottom: 30px;
-}
-.tabHeader,
-.tabHeaderFlex {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 35px;
-  border-bottom: 1px solid #f1f5f9;
-  padding-bottom: 20px;
-}
-.tabTitle {
-  color: #0a2a54;
-  font-size: 1.6rem;
-  font-weight: 800;
-  margin: 0 0 8px 0;
-}
-.tabSubtitle {
-  color: #64748b;
-  font-size: 0.95rem;
-  margin: 0;
-}
-
-.formGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 30px;
-}
-.fullWidth {
-  grid-column: 1 / -1;
-}
-.formGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.formLabel {
-  color: #1e293b;
-  font-size: 0.95rem;
-  font-weight: 700;
-}
-.input,
-.textarea,
-.selectInput {
-  width: 100%;
-  padding: 14px 18px;
-  border: 1px solid #cbd5e1;
-  border-radius: 12px;
-  background: #f8fafc;
-  color: #1e293b;
-  font-size: 1rem;
-  font-family: inherit;
-  transition: all 0.2s;
-}
-.input:focus,
-.textarea:focus,
-.selectInput:focus {
-  outline: none;
-  background: #ffffff;
-  border-color: #1a56db;
-}
-.textarea {
-  resize: vertical;
-  min-height: 120px;
-}
-
-.primaryBtn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  background: #1a56db;
-  color: #ffffff;
-  border: none;
-  padding: 14px 28px;
-  border-radius: 12px;
-  font-weight: 700;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.primaryBtn:hover {
-  background: #0a2a54;
-}
-
-/* الأزرار الصغيرة للصيغ */
-.iconBtn,
-.iconBtnDanger,
-.ghostDangerBtn {
-  background: transparent;
-  border: none;
-  font-size: 1.3rem;
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 8px;
-  transition: 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.iconBtn {
-  color: #64748b;
-}
-.iconBtn:hover {
-  background: #f1f5f9;
-  color: #1a56db;
-}
-.iconBtnDanger,
-.ghostDangerBtn {
-  color: #94a3b8;
-}
-.iconBtnDanger:hover,
-.ghostDangerBtn:hover {
-  background: #fef2f2;
-  color: #ef4444;
-}
-
-/* Image Upload & Tags */
-.tagsInputContainer {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border: 1px solid #cbd5e1;
-  border-radius: 12px;
-  background: #ffffff;
-  min-height: 50px;
-}
-.tagsInputContainer:focus-within {
-  border-color: #1a56db;
-}
-.tagPill {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: #f1f5f9;
-  color: #0a2a54;
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  border: 1px solid #e2e8f0;
-}
-.tagRemoveIcon {
-  cursor: pointer;
-  color: #94a3b8;
-  transition: 0.2s;
-}
-.tagRemoveIcon:hover {
-  color: #ef4444;
-}
-.tagInputField {
-  border: none;
-  outline: none;
-  flex: 1;
-  min-width: 150px;
-  background: transparent;
-  font-size: 1rem;
-}
-
-.imageUploadArea {
-  position: relative;
-  border: 2px dashed #cbd5e1;
-  border-radius: 16px;
-  background: #f8fafc;
-  overflow: hidden;
-  transition: 0.2s;
-  cursor: pointer;
-  min-height: 200px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.uploadPlaceholder {
-  text-align: center;
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.uploadIcon {
-  font-size: 3rem;
-  color: #94a3b8;
-  margin-bottom: 10px;
-}
-.previewImage {
-  width: 100%;
-  height: 280px;
-  object-fit: cover;
-}
-.fileInputHidden {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  cursor: pointer;
-  width: 100%;
-  height: 100%;
-}
-
-/* =========================================
-   5. Curriculum Builder (Identical to Old CourseBuilder)
-   ========================================= */
-.curriculumList {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  margin-bottom: 24px;
-}
-
-.accordionCard {
-  background: #ffffff;
-  border: 1px solid #cbd5e1;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-}
-
-.accordionHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 20px;
-  background: #f8fafc;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.accordionTitleArea {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex: 1;
-}
-
-.collapseBtn {
-  background: transparent;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  color: #0a2a54;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
-  transition: 0.2s;
-}
-.collapseBtn:hover {
-  background: #e2e8f0;
-}
-
-.sectionPrefix {
-  font-weight: 800;
-  color: #0a2a54;
-  font-size: 1rem;
-}
-
-.sectionTitleInput {
-  flex: 1;
-  background: transparent;
-  border: 1px solid transparent;
-  padding: 6px 10px;
-  font-size: 1rem;
-  font-weight: 700;
-  color: #1e293b;
-  border-radius: 6px;
-  transition: all 0.2s;
-}
-.sectionTitleInput:focus,
-.sectionTitleInput:hover {
-  background: #ffffff;
-  border-color: #cbd5e1;
-  outline: none;
-}
-
-.accordionBody {
-  padding: 20px;
-  background: #ffffff;
-}
-
-.lessonItem {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 16px;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  transition: all 0.2s;
-}
-.lessonItem:hover {
-  border-color: #cbd5e1;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-}
-
-.lessonInfo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.dragHandle {
-  color: #94a3b8;
-  font-size: 1.4rem;
-  cursor: grab;
-}
-.lessonNumber {
-  font-weight: 700;
-  color: #0a2a54;
-  font-size: 0.9rem;
-}
-.lessonTypeIcon {
-  color: #64748b;
-  font-size: 1.1rem;
-}
-.lessonTitle {
-  color: #1e293b;
-  font-weight: 500;
-  font-size: 0.95rem;
-}
-
-.lessonMeta {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.lessonDuration {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  color: #64748b;
-  font-size: 0.85rem;
-  background: #f1f5f9;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-weight: 600;
-}
-
-.addLessonBtn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background: transparent;
-  border: 1px dashed #cbd5e1;
-  color: #1a56db;
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-top: 10px;
-}
-.addLessonBtn:hover {
-  background: #eff6ff;
-  border-color: #1a56db;
-}
-
-.addSectionBtnRoot {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background: #ffffff;
-  border: 2px dashed #cbd5e1;
-  color: #0a2a54;
-  width: 100%;
-  padding: 16px;
-  border-radius: 12px;
-  font-weight: 800;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.addSectionBtnRoot:hover {
-  background: #f8fafc;
-  border-color: #0a2a54;
-}
-
-.groupDivider {
-  border: none;
-  border-top: 1px dashed #e2e8f0;
-  margin: 25px 0;
-}
-.groupHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-}
-.groupHeader h5 {
-  margin: 0;
-  color: #1e293b;
-  font-size: 1.05rem;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.groupHeader h5 svg {
-  color: #1a56db;
-  font-size: 1.3rem;
-}
-
-/* =========================================
-   6. Split Layout (FAQs)
-   ========================================= */
-.splitLayout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  align-items: start;
-}
-.leftPane {
-  position: sticky;
-  top: 0;
-}
-.faqForm {
-  background: #f8fafc;
-  padding: 30px;
-  border-radius: 16px;
-  border: 1px solid #e2e8f0;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-.formSectionTitle {
-  margin: 0 0 15px 0;
-  color: #0a2a54;
-  font-size: 1.1rem;
-  font-weight: 800;
-  border-bottom: 1px solid #e2e8f0;
-  padding-bottom: 10px;
-}
-
-.rightPane {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-.emptyFaq {
-  text-align: center;
-  padding: 40px;
-  background: #f8fafc;
-  border: 2px dashed #cbd5e1;
-  border-radius: 16px;
-  color: #94a3b8;
-  font-weight: 600;
-}
-.faqAccordionList {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-.faqItem {
-  border: 1px solid #e2e8f0;
-  border-radius: 16px;
-  background: #ffffff;
-  transition: 0.2s;
-  overflow: hidden;
-}
-.faqItemHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 18px 20px;
-  cursor: pointer;
-  background: #f8fafc;
-  transition: 0.2s;
-  user-select: none;
-}
-.faqItemHeaderActive {
-  background: #eff6ff;
-  border-bottom: 1px solid #e2e8f0;
-}
-.faqTitleBox {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.faqTitleBox h5 {
-  margin: 0;
-  color: #0a2a54;
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1.4;
-}
-.faqBody {
-  padding: 20px 20px 20px 45px;
-  background: #ffffff;
-  color: #475569;
-  font-size: 0.95rem;
-  line-height: 1.6;
-}
-
-/* Responsive Adjustments */
-@media (max-width: 1024px) {
+@media (max-width: 992px) {
   .layoutGrid {
     grid-template-columns: 1fr;
-    gap: 20px;
-    padding: 20px;
-  }
-  .sidebar {
-    position: static;
-    width: 100%;
-    display: flex;
-    overflow-x: auto;
-    padding: 10px 0;
-    border-right: none;
-    border-bottom: 1px solid #e2e8f0;
-  }
-  .navMenu {
-    flex-direction: row;
-    gap: 10px;
-  }
-  .navItem {
-    padding: 10px 20px;
-    white-space: nowrap;
-    border: 1px solid #e2e8f0;
-  }
-  .splitLayout {
-    grid-template-columns: 1fr;
-  }
-  .leftPane {
-    position: static;
+    padding: 16px;
   }
 }

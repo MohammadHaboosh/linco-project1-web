@@ -12,38 +12,49 @@ import styles from "./LessonList.module.css";
 const LessonList = ({ lessons = [], onAddLesson, onDeleteLesson }) => {
   return (
     <div className={styles.lessonsContainer}>
-      {lessons.map((lesson, lIdx) => (
-        <div key={lesson.id} className={styles.lessonItem}>
-          <div className={styles.lessonInfo}>
-            <IoReorderTwoOutline className={styles.dragHandle} />
-            <span className={styles.lessonNumber}>Lesson {lIdx + 1}:</span>
-            <IoVideocamOutline className={styles.lessonTypeIcon} />
-            <span className={styles.lessonTitle}>{lesson.title}</span>
-          </div>
-          <div className={styles.lessonMeta}>
-            <span className={styles.lessonDuration}>
-              <IoTimeOutline /> {lesson.duration || "0:00"}
-            </span>
-            <button className={styles.iconBtn} type="button">
-              <IoPencilOutline />
-            </button>
-            <button
-              className={styles.iconBtnDanger}
-              type="button"
-              onClick={() => onDeleteLesson && onDeleteLesson(lesson.id)}
-            >
-              <IoTrashOutline />
-            </button>
-          </div>
+      {lessons.length > 0 && (
+        <div className={styles.lessonsList}>
+          {lessons.map((lesson, lIdx) => (
+            <div key={lesson.id} className={styles.lessonItem}>
+              <div className={styles.lessonInfo}>
+                <IoReorderTwoOutline className={styles.dragHandle} />
+                <span className={styles.lessonNumber}>Lesson {lIdx + 1}:</span>
+                <IoVideocamOutline className={styles.lessonTypeIcon} />
+                <span className={styles.lessonTitle}>{lesson.title}</span>
+              </div>
+              <div className={styles.lessonMeta}>
+                <span className={styles.lessonDuration}>
+                  <IoTimeOutline /> {lesson.duration || "00:00"}
+                </span>
+                <button
+                  className={styles.iconBtn}
+                  type="button"
+                  title="Edit Lesson"
+                >
+                  <IoPencilOutline />
+                </button>
+                <button
+                  className={styles.iconBtnDanger}
+                  type="button"
+                  title="Delete Lesson"
+                  onClick={() => onDeleteLesson && onDeleteLesson(lesson.id)}
+                >
+                  <IoTrashOutline />
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
-      ))}
+      )}
 
+      {/* مستطيل إضافة الدرس المحدث - بنفس طراز مستطيلي الكويز والبنك ولكن باللون الأزرق */}
       <button
         type="button"
-        className={styles.addLessonBtn}
+        className={styles.addLessonBox}
         onClick={onAddLesson}
       >
-        <IoAddCircleOutline /> Add Lesson
+        <IoAddCircleOutline className={styles.addIcon} />
+        <span>Add Lesson</span>
       </button>
     </div>
   );

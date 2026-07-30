@@ -4,18 +4,20 @@ import {
   IoChevronUpOutline,
   IoTrashOutline,
   IoAddCircleOutline,
+  IoFolderOpenOutline,
 } from "react-icons/io5";
 import styles from "./CurriculumTab.module.css";
 import { useTranslation } from "react-i18next";
 
-// استدعاء المكونات الفرعية التلاتة
 import LessonList from "./LessonList";
 import QuestionBankSection from "./QuestionBankSection";
 import SectionQuizSection from "./SectionQuizSection";
 
 const CurriculumTab = ({ sections, setSections }) => {
   const { t } = useTranslation();
-  const [expandedSections, setExpandedSections] = useState([]);
+  const [expandedSections, setExpandedSections] = useState(
+    sections.map((s) => s.id), // توسيع الأقسام افتراضياً
+  );
 
   const toggleSection = (id) => {
     if (expandedSections.includes(id)) {
@@ -39,16 +41,19 @@ const CurriculumTab = ({ sections, setSections }) => {
     ]);
     setExpandedSections([...expandedSections, newId]);
   };
+
   const deleteSection = (e, id) => {
     e.stopPropagation();
     if (window.confirm("Are you sure you want to delete this section?")) {
       setSections(sections.filter((s) => s.id !== id));
     }
   };
+
   const updateSectionTitle = (id, title) => {
     setSections(sections.map((s) => (s.id === id ? { ...s, title } : s)));
   };
 
+  // دوال الدروس
   const addLesson = (secId) => {
     const title = prompt("Enter lesson title:");
     if (!title) return;
@@ -66,6 +71,7 @@ const CurriculumTab = ({ sections, setSections }) => {
       ),
     );
   };
+
   const deleteLesson = (secId, lessonId) => {
     setSections(
       sections.map((s) =>
@@ -76,6 +82,7 @@ const CurriculumTab = ({ sections, setSections }) => {
     );
   };
 
+  // دوال بنك الأسئلة
   const addQuestion = (secId) => {
     const text = prompt("Enter question text:");
     if (!text) return;
@@ -87,6 +94,7 @@ const CurriculumTab = ({ sections, setSections }) => {
       ),
     );
   };
+
   const deleteQuestion = (secId, qId) => {
     setSections(
       sections.map((s) =>
@@ -97,6 +105,7 @@ const CurriculumTab = ({ sections, setSections }) => {
     );
   };
 
+  // دوال الكويز
   const addQuiz = (secId) => {
     setSections(
       sections.map((s) =>
@@ -109,6 +118,7 @@ const CurriculumTab = ({ sections, setSections }) => {
       ),
     );
   };
+
   const deleteQuiz = (secId) => {
     setSections(
       sections.map((s) => (s.id === secId ? { ...s, quiz: null } : s)),
@@ -134,13 +144,20 @@ const CurriculumTab = ({ sections, setSections }) => {
           const isExpanded = expandedSections.includes(section.id);
 
           return (
-            <div key={section.id} className={styles.accordionCard}>
-              <div className={styles.accordionHeader}>
-                <div className={styles.accordionTitleArea}>
+            <div key={section.id} className={styles.sectionCard}>
+              {/* ترويسة بطاقة القسم العصرية */}
+              <div
+                className={styles.sectionHeader}
+                onClick={() => toggleSection(section.id)}
+              >
+                <div className={styles.sectionHeaderLeft}>
                   <button
                     type="button"
                     className={styles.collapseBtn}
-                    onClick={() => toggleSection(section.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleSection(section.id);
+                    }}
                   >
                     {isExpanded ? (
                       <IoChevronUpOutline />
@@ -148,29 +165,36 @@ const CurriculumTab = ({ sections, setSections }) => {
                       <IoChevronDownOutline />
                     )}
                   </button>
-                  <span className={styles.sectionPrefix}>
-                    Section {idx + 1}:
-                  </span>
+                  <div className={styles.sectionBadge}>
+                    <IoFolderOpenOutline />
+                    <span>Section {idx + 1}</span>
+                  </div>
                   <input
                     type="text"
                     className={styles.sectionTitleInput}
                     value={section.title}
+                    onClick={(e) => e.stopPropagation()}
                     onChange={(e) =>
                       updateSectionTitle(section.id, e.target.value)
                     }
                   />
                 </div>
-                <button
-                  type="button"
-                  className={styles.iconBtnDanger}
-                  onClick={(e) => deleteSection(e, section.id)}
-                >
-                  <IoTrashOutline />
-                </button>
+                <div className={styles.sectionHeaderRight}>
+                  <button
+                    type="button"
+                    className={styles.deleteSectionBtn}
+                    onClick={(e) => deleteSection(e, section.id)}
+                    title="Delete Section"
+                  >
+                    <IoTrashOutline />
+                  </button>
+                </div>
               </div>
 
+              {/* محتوى القسم */}
               {isExpanded && (
-                <div className={styles.accordionBody}>
+                <div className={styles.sectionBody}>
+                  {/* 1. قائمة الدروس (زر الإضافة المحدث بالأزرق أصبح بداخلها) */}
                   <LessonList
                     lessons={section.lessons}
                     onAddLesson={() => addLesson(section.id)}
@@ -179,6 +203,7 @@ const CurriculumTab = ({ sections, setSections }) => {
                     }
                   />
 
+                  {/* 2. المستطيلان جنباً إلى جنب (بنك الأسئلة باليسار والأخضر / الكويز باليمين والبرتقالي) */}
                   <div className={styles.bottomAssessmentRow}>
                     <QuestionBankSection
                       questions={section.questions}
@@ -201,12 +226,14 @@ const CurriculumTab = ({ sections, setSections }) => {
         })}
       </div>
 
+      {/* زر إضافة قسم جديد بالكامل */}
       <button
         type="button"
         className={styles.addSectionBtnRoot}
         onClick={handleAddSection}
       >
-        <IoAddCircleOutline /> Add New Section
+        <IoAddCircleOutline className={styles.rootAddIcon} />
+        <span>Add New Section</span>
       </button>
     </div>
   );

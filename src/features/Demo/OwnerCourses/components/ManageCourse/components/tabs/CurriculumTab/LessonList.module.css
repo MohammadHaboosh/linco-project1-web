@@ -1,8 +1,14 @@
 .lessonsContainer {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   width: 100%;
+}
+
+.lessonsList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .lessonItem {
@@ -10,9 +16,15 @@
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  background-color: #f8fafc;
+  background-color: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.lessonItem:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
 .lessonInfo {
@@ -28,13 +40,13 @@
 }
 
 .lessonNumber {
-  font-weight: 600;
-  color: #475569;
-  font-size: 0.9rem;
+  font-weight: 700;
+  color: #3b82f6;
+  font-size: 0.85rem;
 }
 
 .lessonTypeIcon {
-  color: #2563eb;
+  color: #64748b;
   font-size: 1.1rem;
 }
 
@@ -56,6 +68,9 @@
   gap: 4px;
   font-size: 0.85rem;
   color: #64748b;
+  background-color: #f1f5f9;
+  padding: 4px 8px;
+  border-radius: 6px;
 }
 
 .iconBtn,
@@ -64,12 +79,12 @@
   border: none;
   font-size: 1.1rem;
   cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
+  padding: 6px;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
 }
 
 .iconBtn {
@@ -77,7 +92,7 @@
 }
 
 .iconBtn:hover {
-  background-color: #e2e8f0;
+  background-color: #f1f5f9;
   color: #1e293b;
 }
 
@@ -89,25 +104,33 @@
   background-color: #fee2e2;
 }
 
-/* زر إضافة درس - النمط الأزرق الافتراضي */
-.addLessonBtn {
+/* ========================================================
+   مستطيل إضافة الدرس المحدث (الأزرق المماثل للبنك والكويز)
+   ======================================================== */
+.addLessonBox {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   width: 100%;
-  padding: 14px;
-  background-color: #ffffff;
-  border: 1.5px dashed #3b82f6;
-  border-radius: 8px;
-  color: #2563eb;
+  padding: 14px 16px;
+  background-color: #eff6ff; /* خلفية زرقاء فاتحة جداً */
+  border: 1.5px dashed #2563eb; /* حدود متقطعة بلون أزرق غامق */
+  border-radius: 10px;
+  color: #1d4ed8; /* لون النص والإيقونة */
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s ease-in-out;
+  outline: none;
 }
 
-.addLessonBtn:hover {
-  background-color: #eff6ff;
+.addLessonBox:hover {
+  background-color: #dbeafe;
   border-color: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.addIcon {
+  font-size: 1.25rem;
 }

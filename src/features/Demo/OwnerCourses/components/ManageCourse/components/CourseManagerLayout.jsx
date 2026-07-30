@@ -6,6 +6,7 @@ import {
   IoListOutline,
   IoChatbubblesOutline,
   IoSaveOutline,
+  IoChevronForwardOutline,
 } from "react-icons/io5";
 import { useCourseManager } from "../../../hooks/useCourseManager";
 import GeneralInfoTab from "./tabs/GeneralInfoTab";
@@ -23,7 +24,6 @@ const CourseManagerLayout = () => {
     isLoading,
     isSaving,
     generalInfo,
-    setGeneralInfo,
     handleGeneralInfoChange,
     saveGeneralInfo,
     faqs,
@@ -66,7 +66,11 @@ const CourseManagerLayout = () => {
       {/* الترويسة العلوية */}
       <header className={styles.topHeader}>
         <div className={styles.headerLeft}>
-          <button className={styles.backBtn} onClick={() => navigate(-1)}>
+          <button
+            className={styles.backBtn}
+            onClick={() => navigate(-1)}
+            title="Go back"
+          >
             <IoArrowBackOutline />
           </button>
           <div className={styles.courseHeaderInfo}>
@@ -88,27 +92,42 @@ const CourseManagerLayout = () => {
             ) : (
               <IoSaveOutline />
             )}
-            {isSaving
-              ? t("saving", "Saving...")
-              : t("save-changes", "Save Changes")}
+            <span>
+              {isSaving
+                ? t("saving", "Saving...")
+                : t("save-changes", "Save Changes")}
+            </span>
           </button>
         </div>
       </header>
 
       <div className={styles.layoutGrid}>
-        {/* القائمة الجانبية */}
+        {/* القائمة الجانبية المحدثة */}
         <aside className={styles.sidebar}>
+          <div className={styles.sidebarHeader}>
+            <span>NAVIGATION</span>
+          </div>
           <nav className={styles.navMenu}>
-            {TABS.map((tab) => (
-              <button
-                key={tab.id}
-                className={`${styles.navItem} ${activeTab === tab.id ? styles.activeNav : ""}`}
-                onClick={() => setActiveTab(tab.id)}
-              >
-                <span className={styles.navIcon}>{tab.icon}</span>
-                <span className={styles.navLabel}>{tab.label}</span>
-              </button>
-            ))}
+            {TABS.map((tab) => {
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  className={`${styles.navItem} ${
+                    isActive ? styles.activeNav : ""
+                  }`}
+                  onClick={() => setActiveTab(tab.id)}
+                >
+                  <div className={styles.navItemContent}>
+                    <span className={styles.navIcon}>{tab.icon}</span>
+                    <span className={styles.navLabel}>{tab.label}</span>
+                  </div>
+                  {isActive && (
+                    <IoChevronForwardOutline className={styles.activeArrow} />
+                  )}
+                </button>
+              );
+            })}
           </nav>
         </aside>
 
