@@ -40,6 +40,7 @@ export const sectionApi = {
     );
 
     const data = await response.json();
+    console.log("Update Section Response:", data);
     if (!response.ok || !data.success) {
       throw new Error(data.message || "Failed to update section");
     }
@@ -56,6 +57,7 @@ export const sectionApi = {
     );
 
     const data = await response.json();
+    console.log("Delete Section Response:", data);
     if (!response.ok || !data.success) {
       throw new Error(data.message || "Failed to delete section");
     }

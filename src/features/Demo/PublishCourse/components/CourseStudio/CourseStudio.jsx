@@ -9,7 +9,7 @@ import { useCreateCourse } from "../../hooks/useCreateCourse";
 
 import { sectionApi } from "../../../OwnerCourses/api/sectionApi";
 import { courseManagerApi } from "../../../OwnerCourses/api/courseManagerApi";
-import { publishCourseApi } from "../../api/publishCourseApi";
+import { lessonApi } from "../../../OwnerCourses/api/lessonApi";
 
 const CourseStudio = () => {
   const { t } = useTranslation();
@@ -43,18 +43,24 @@ const CourseStudio = () => {
     });
   };
 
-  const handleRemoveSection = (sectionId) => {
-    if (
-      sectionId &&
-      typeof sectionId === "string" &&
-      !sectionId.startsWith("temp-")
-    ) {
-      setDeletedSectionIds((prev) => [...prev, sectionId]);
+  const isTempId = (id) => {
+    if (!id) return true;
+    const strId = String(id);
+    return strId.startsWith("temp-") || strId.startsWith("temp_");
+  };
+
+  const handleRemoveSection = (section, sectionId) => {
+    const targetId =
+      sectionId || (typeof section === "object" ? section?.id : section);
+    const isNew = typeof section === "object" ? section?.isNew : false;
+
+    if (targetId && !isNew && !isTempId(targetId)) {
+      setDeletedSectionIds((prev) => [...prev, targetId]);
     }
 
     setCourseData((prev) => ({
       ...prev,
-      sections: prev.sections.filter((sec) => sec.id !== sectionId),
+      sections: prev.sections.filter((sec) => sec.id !== targetId),
     }));
   };
 
@@ -129,32 +135,90 @@ const CourseStudio = () => {
         );
       }
 
-      if (sections.length > 0) {
-        await Promise.all(
-          sections.map((sec, index) => {
-            const payload = {
-              title: sec.title,
-              order: sec.order || index + 1,
+      const processedSections = await Promise.all(
+        sections.map(async (sec, index) => {
+          const payload = {
+            title: sec.title,
+            order: sec.order || index + 1,
+          };
+
+          const isNewSection = !sec.id || sec.isNew || isTempId(sec.id);
+
+          let savedSection;
+          if (isNewSection) {
+            savedSection = await sectionApi.createSection(
+              activeCourseId,
+              payload,
+            );
+          } else {
+            savedSection = await sectionApi.updateSection(
+              activeCourseId,
+              sec.id,
+              payload,
+            );
+          }
+
+          const realSectionId =
+            savedSection?.id || savedSection?.data?.id || sec.id;
+
+          return {
+            ...sec,
+            realId: realSectionId,
+          };
+        }),
+      );
+
+      for (const section of processedSections) {
+        const lessons = section.lessons || [];
+
+        for (let index = 0; index < lessons.length; index++) {
+          const lesson = lessons[index];
+          const isNewLesson = !lesson.id || lesson.isNew || isTempId(lesson.id);
+
+          if (isNewLesson) {
+            let finalVideoUrl = lesson.videoUrl || "";
+
+            if (lesson.videoFile) {
+              const uploadData = await lessonApi.getUploadUrl(
+                section.realId,
+                lesson.videoFile.name,
+              );
+
+              const uploadUrl = uploadData.uploadUrl || uploadData.url;
+              finalVideoUrl =
+                uploadData.videoUrl ||
+                uploadData.fileUrl ||
+                uploadData.publicUrl ||
+                finalVideoUrl;
+
+              if (uploadUrl) {
+                await lessonApi.uploadVideoToStorage(
+                  uploadUrl,
+                  lesson.videoFile,
+                );
+              }
+            }
+
+            const lessonPayload = {
+              title: lesson.title,
+              order: lesson.order || index + 1,
+              videoUrl: finalVideoUrl,
+              courseId: activeCourseId,
+              description: lesson.description || "",
+              duration: Number(lesson.duration) || 0,
             };
 
-            if (!sec.id || sec.isNew) {
-              return sectionApi.createSection(activeCourseId, payload);
-            } else {
-              return sectionApi.updateSection(activeCourseId, sec.id, payload);
-            }
-          }),
-        );
+            await lessonApi.createLesson(section.realId, lessonPayload);
+          }
+        }
       }
 
       setDeletedSectionIds([]);
-
-      alert("Course Saved successfully!");
+      alert("Course, sections, and lessons saved successfully!");
       navigate(-1);
     } catch (error) {
-      console.error("Error saving course:", error);
-      alert(
-        "Failed to save course: " + (error.message || "Something went wrong"),
-      );
+      console.error("Error saving curriculum:", error);
+      alert("Failed to save: " + (error.message || "Something went wrong"));
     } finally {
       setIsPublishing(false);
     }
