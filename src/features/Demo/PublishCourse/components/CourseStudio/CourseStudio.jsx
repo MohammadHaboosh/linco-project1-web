@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { useCreateCourse } from "../../hooks/useCreateCourse";
 
 import { sectionApi } from "../../../OwnerCourses/api/sectionApi";
+import { courseManagerApi } from "../../../OwnerCourses/api/courseManagerApi";
 import { publishCourseApi } from "../../api/publishCourseApi";
 
 const CourseStudio = () => {
@@ -27,7 +28,7 @@ const CourseStudio = () => {
     imagePath: "",
     imageFile: null,
     imagePreview: null,
-    privacy: "public",
+    visibility: "PUBLIC",
     price: 0,
     sections: [],
   });
@@ -47,8 +48,8 @@ const CourseStudio = () => {
       return;
     }
 
-    if (!courseData.id) {
-      try {
+    try {
+      if (!courseData.id) {
         const createdCourse = await createCourse(courseData);
 
         setCourseData((prev) => ({
@@ -57,17 +58,38 @@ const CourseStudio = () => {
           id: createdCourse.id,
           imagePath: createdCourse.imagePath || prev.imagePath,
           imageFile: null,
+          imagePreview: null,
         }));
+      } else {
+        if (courseData.imageFile) {
+          const basePayload = {
+            title: courseData.title,
+            description: courseData.description,
+            imagePath: courseData.imagePath,
+            visibility: courseData.visibility || "PUBLIC",
+            price: Number(courseData.price) || 0,
+          };
 
-        setCurrentStep(2);
-        window.scrollTo(0, 0);
-      } catch (error) {
-        console.error("Error creating course:", error);
-        alert(error.message || "Failed to create course");
+          const updateResult = await courseManagerApi.uploadAndSaveCourseImage(
+            courseData.id,
+            courseData.imageFile,
+            basePayload,
+          );
+
+          setCourseData((prev) => ({
+            ...prev,
+            imagePath: updateResult?.imagePath || prev.imagePath,
+            imageFile: null,
+            imagePreview: null,
+          }));
+        }
       }
-    } else {
+
       setCurrentStep(2);
       window.scrollTo(0, 0);
+    } catch (error) {
+      console.error("Error in Step 1 Next:", error);
+      alert(error.message || "Failed to proceed to next step");
     }
   };
 
@@ -99,8 +121,6 @@ const CourseStudio = () => {
           );
         }
       }
-
-      // await publishCourseApi.publishCourse(activeCourseId);
 
       alert("Course Saved successfully!");
       navigate(-1);
