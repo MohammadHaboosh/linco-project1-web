@@ -13,9 +13,46 @@ export const departmentApi = {
     }
 
     try {
-      const response = await apiFetch(
-        `/members?search=${encodeURIComponent(normalizedQuery)}`,
+      const usersResponse = await apiFetch(
+        `/users/cursor?search=${encodeURIComponent(normalizedQuery)}`,
         {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-client-type": "web",
+          },
+          signal: options.signal,
+        },
+      );
+
+      const usersData = await usersResponse.json().catch(() => ({}));
+
+      if (!usersResponse.ok || usersData.success === false) {
+        throw new Error(usersData.message || "Failed to search users.");
+      }
+
+      const matchingUserIds = new Set(
+        (Array.isArray(usersData.data) ? usersData.data : [])
+          .map((user) => user?.id)
+          .filter(Boolean),
+      );
+
+      if (matchingUserIds.size === 0) {
+        return [];
+      }
+
+      const matchingMembers = [];
+      let cursor = null;
+      let hasNextPage = true;
+
+      while (hasNextPage) {
+        const query = new URLSearchParams({ take: "50" });
+
+        if (cursor) {
+          query.set("cursor", cursor);
+        }
+
+        const membersResponse = await apiFetch(`/members?${query.toString()}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -23,16 +60,30 @@ export const departmentApi = {
             "x-demo-id": demoId,
           },
           signal: options.signal,
-        },
-      );
+        });
+        const membersData = await membersResponse.json().catch(() => ({}));
 
-      const data = await response.json().catch(() => ({}));
+        if (!membersResponse.ok || membersData.success === false) {
+          throw new Error(
+            membersData.message || "Failed to load demo members.",
+          );
+        }
 
-      if (!response.ok || data.success === false) {
-        throw new Error(data.message || "Failed to search members");
+        const members = Array.isArray(membersData.data)
+          ? membersData.data
+          : [];
+
+        matchingMembers.push(
+          ...members.filter((member) =>
+            matchingUserIds.has(member?.userId ?? member?.user?.id),
+          ),
+        );
+
+        cursor = membersData.meta?.endCursor ?? null;
+        hasNextPage = Boolean(membersData.meta?.hasNextPage && cursor);
       }
 
-      return Array.isArray(data.data) ? data.data : [];
+      return matchingMembers;
     } catch (error) {
       if (error.name !== "AbortError") {
         console.error("API Error during member search:", error);
