@@ -16,8 +16,9 @@ import SectionQuizSection from "./SectionQuizSection/SectionQuizSection";
 import AddLessonModal from "./AddModals/AddLessonModal";
 import AddQuizModal from "./AddModals/AddQuizModal";
 import AddQuestionModal from "./AddModals/AddQuestionModal";
+import { sectionApi } from "../../../../../api/sectionApi";
 
-const CurriculumTab = ({ sections, setSections }) => {
+const CurriculumTab = ({ courseId, sections, setSections }) => {
   const { t } = useTranslation();
   const [expandedSections, setExpandedSections] = useState(
     sections.map((s) => s.id),
@@ -25,6 +26,7 @@ const CurriculumTab = ({ sections, setSections }) => {
 
   const [activeModal, setActiveModal] = useState(null);
   const [activeSectionId, setActiveSectionId] = useState(null);
+  const [isCreatingSection, setIsCreatingSection] = useState(false);
 
   const toggleSection = (id) => {
     if (expandedSections.includes(id)) {
@@ -34,19 +36,21 @@ const CurriculumTab = ({ sections, setSections }) => {
     }
   };
 
-  const handleAddSection = () => {
-    const newId = Date.now().toString();
-    setSections([
-      ...sections,
-      {
-        id: newId,
-        title: "New Section",
-        lessons: [],
-        questions: [],
-        quiz: null,
-      },
-    ]);
-    setExpandedSections([...expandedSections, newId]);
+  const handleAddSection = (titleInput) => {
+    const nextOrder = sections.length + 1;
+
+    const newSection = {
+      id: `temp_${Date.now()}`,
+      title: titleInput,
+      order: nextOrder,
+      lessons: [],
+      questions: [],
+      quiz: null,
+      isNew: true,
+    };
+
+    setSections((prev) => [...prev, newSection]);
+    setExpandedSections((prev) => [...prev, newSection.id]);
   };
 
   const deleteSection = (e, id) => {
@@ -337,9 +341,12 @@ const CurriculumTab = ({ sections, setSections }) => {
         type="button"
         className={styles.addSectionBtnRoot}
         onClick={handleAddSection}
+        disabled={isCreatingSection}
       >
         <IoAddCircleOutline className={styles.rootAddIcon} />
-        <span>Add New Section</span>
+        <span>
+          {isCreatingSection ? "Creating Section..." : "Add New Section"}
+        </span>
       </button>
 
       <AddLessonModal

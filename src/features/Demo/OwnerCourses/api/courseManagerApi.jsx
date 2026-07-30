@@ -1,7 +1,6 @@
 import { apiFetch } from "../../../../api/apiFetch";
 
 export const courseManagerApi = {
-  // 1. جلب تفاصيل الكورس/الأصل
   getAsset: async (demoId, assetId) => {
     const response = await apiFetch(`/assets/${assetId}`, {
       method: "GET",
