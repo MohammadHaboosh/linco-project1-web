@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { courseManagerApi } from "../api/courseManagerApi";
 import { publishCourseApi } from "../../PublishCourse/api/publishCourseApi";
-import { sectionApi } from "../api/sectionApi";
 
 export const useCourseManager = (demoId, assetId) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -21,8 +20,8 @@ export const useCourseManager = (demoId, assetId) => {
   });
 
   const [faqs, setFaqs] = useState([]);
-
   const [sections, setSections] = useState([]);
+
   const handleGeneralInfoChange = useCallback((keyOrObject, value) => {
     setGeneralInfo((prev) => {
       if (typeof keyOrObject === "object" && keyOrObject !== null) {
@@ -54,8 +53,10 @@ export const useCourseManager = (demoId, assetId) => {
           imagePreview: null,
         });
 
+        // جلب أقسام الكورس فور الحصول على course.id
         if (course.id) {
-          const sectionsData = await sectionApi.getSections(course.id);
+          const sectionsData = await courseManagerApi.getSections(course.id);
+          // تهيئة الأقسام القادمة من الباك إند مع المصفوفات الداخلية للواجهة
           const formattedSections = (sectionsData || []).map((sec) => ({
             id: sec.id,
             title: sec.title,
@@ -63,7 +64,6 @@ export const useCourseManager = (demoId, assetId) => {
             lessons: sec.lessons || [],
             questions: sec.questions || [],
             quiz: sec.quiz || null,
-            isNew: false,
           }));
           setSections(formattedSections);
         }
@@ -80,7 +80,8 @@ export const useCourseManager = (demoId, assetId) => {
   const saveGeneralInfo = useCallback(async () => {
     if (!courseId) return;
     setIsSaving(true);
-    console.log("START SAVING EVERYTHING");
+    console.log("START SAVING COURSE GENERAL INFO");
+    console.log("Current generalInfo state at save:", generalInfo);
 
     try {
       const tagNames = (generalInfo.tags || []).map((tag) =>
@@ -103,63 +104,38 @@ export const useCourseManager = (demoId, assetId) => {
         tagIds: tagIds,
       };
 
-      let generalResult;
+      let result;
+
       if (generalInfo.imageFile) {
-        generalResult = await courseManagerApi.uploadAndSaveCourseImage(
+        console.log(
+          "File found! Uploading image...",
+          generalInfo.imageFile.name,
+        );
+        result = await courseManagerApi.uploadAndSaveCourseImage(
           courseId,
           generalInfo.imageFile,
           basePayload,
         );
       } else {
-        generalResult = await courseManagerApi.updateCourseGeneralInfo(
+        console.log(
+          "No imageFile found in state! Updating text details only...",
+        );
+        result = await courseManagerApi.updateCourseGeneralInfo(
           courseId,
           basePayload,
         );
       }
 
-      console.log("Course Saved Successfully! Returned Data:", generalResult);
+      console.log("Course Saved Successfully! Returned Data:", result);
 
       setGeneralInfo((prev) => ({
         ...prev,
-        imagePath: generalResult?.imagePath || prev.imagePath,
+        imagePath: result?.imagePath || prev.imagePath,
         imageFile: null,
         imagePreview: null,
       }));
 
-      const newSections = sections.filter((sec) => sec.isNew);
-
-      if (newSections.length > 0) {
-        console.log("Saving new sections to backend...", newSections);
-
-        const createdSectionsResults = await Promise.all(
-          newSections.map((sec) =>
-            sectionApi.createSection(courseId, {
-              title: sec.title,
-              order: sec.order,
-            }),
-          ),
-        );
-
-        setSections((prevSections) => {
-          let resultIdx = 0;
-          return prevSections.map((sec) => {
-            if (sec.isNew) {
-              const resData =
-                createdSectionsResults[resultIdx]?.data ||
-                createdSectionsResults[resultIdx];
-              resultIdx++;
-              return {
-                ...sec,
-                id: resData.id,
-                isNew: false,
-              };
-            }
-            return sec;
-          });
-        });
-      }
-
-      alert("All changes updated successfully!");
+      alert("Course updated successfully!");
     } catch (err) {
       console.error("Error Saving Course:", err);
       alert(
@@ -169,7 +145,7 @@ export const useCourseManager = (demoId, assetId) => {
       setIsSaving(false);
       console.log("END SAVING PROCESS");
     }
-  }, [courseId, generalInfo, sections]);
+  }, [courseId, generalInfo]);
 
   return {
     isLoading,

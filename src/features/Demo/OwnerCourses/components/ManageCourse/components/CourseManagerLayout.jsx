@@ -23,6 +23,7 @@ const CourseManagerLayout = () => {
   const {
     isLoading,
     isSaving,
+    courseId,
     generalInfo,
     handleGeneralInfoChange,
     saveGeneralInfo,
@@ -63,7 +64,6 @@ const CourseManagerLayout = () => {
 
   return (
     <div className={styles.pageContainer}>
-      {/* الترويسة العلوية */}
       <header className={styles.topHeader}>
         <div className={styles.headerLeft}>
           <button
@@ -102,7 +102,6 @@ const CourseManagerLayout = () => {
       </header>
 
       <div className={styles.layoutGrid}>
-        {/* القائمة الجانبية المحدثة */}
         <aside className={styles.sidebar}>
           <div className={styles.sidebarHeader}>
             <span>NAVIGATION</span>
@@ -131,7 +130,6 @@ const CourseManagerLayout = () => {
           </nav>
         </aside>
 
-        {/* منطقة المحتوى المتغير */}
         <main className={styles.mainPanel}>
           <div className={styles.contentWrapper}>
             {activeTab === "general" && (
@@ -141,7 +139,11 @@ const CourseManagerLayout = () => {
               />
             )}
             {activeTab === "curriculum" && (
-              <CurriculumTab sections={sections} setSections={setSections} />
+              <CurriculumTab
+                courseId={courseId}
+                sections={sections}
+                setSections={setSections}
+              />
             )}
             {activeTab === "faqs" && <FAQsTab faqs={faqs} setFaqs={setFaqs} />}
           </div>
