@@ -21,10 +21,10 @@ const CurriculumFooter = ({
         disabled={!canPublish || isPublishing}
       >
         {isPublishing ? (
-          "Publishing..."
+          t("saving")
         ) : (
           <>
-            <IoCheckmarkCircleOutline /> {t("publish-course")}
+            <IoCheckmarkCircleOutline /> {t("create-course")}
           </>
         )}
       </button>

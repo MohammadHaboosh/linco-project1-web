@@ -7,6 +7,9 @@ import styles from "./CourseStudio.module.css";
 import { useTranslation } from "react-i18next";
 import { useCreateCourse } from "../../hooks/useCreateCourse";
 
+import { sectionApi } from "../../../OwnerCourses/api/sectionApi";
+import { publishCourseApi } from "../../api/publishCourseApi";
+
 const CourseStudio = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -52,12 +55,47 @@ const CourseStudio = () => {
     }
   };
 
-  const handlePublish = () => {
+  const handlePublish = async () => {
+    if (!courseData.id) {
+      alert("Course ID is missing. Please complete step 1 first.");
+      return;
+    }
+
     setIsPublishing(true);
-    console.log("Publishing Course:", courseData);
-    setTimeout(() => {
+
+    try {
+      const activeCourseId = courseData.id;
+      const sectionsToCreate = courseData.sections || [];
+
+      if (sectionsToCreate.length > 0) {
+        const newSections = sectionsToCreate.filter(
+          (sec) => sec.isNew !== false,
+        );
+
+        if (newSections.length > 0) {
+          await Promise.all(
+            newSections.map((sec, index) =>
+              sectionApi.createSection(activeCourseId, {
+                title: sec.title,
+                order: sec.order || index + 1,
+              }),
+            ),
+          );
+        }
+      }
+
+      // await publishCourseApi.publishCourse(activeCourseId);
+
+      alert("Course Saved successfully!");
       navigate(-1);
-    }, 1500);
+    } catch (error) {
+      console.error("Error saving course:", error);
+      alert(
+        "Failed to save course: " + (error.message || "Something went wrong"),
+      );
+    } finally {
+      setIsPublishing(false);
+    }
   };
 
   return (
