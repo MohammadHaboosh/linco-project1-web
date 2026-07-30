@@ -34,7 +34,7 @@ export const DemoProvider = ({ children }) => {
         console.log("Fetched demo data :", data);
 
         setDemoData(data.data);
-        console.log("data.data.isOwner :", data.data[0].isOwner);
+        console.log("data.data.isOwner :", data.data.isOwner);
         const role = data.data.isOwner ? "owner" : "member";
         console.log("Determined role :", role);
 
