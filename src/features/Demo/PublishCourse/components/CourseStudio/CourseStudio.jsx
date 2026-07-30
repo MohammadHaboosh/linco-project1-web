@@ -17,6 +17,7 @@ const CourseStudio = () => {
   const { demoId } = useParams();
   const [currentStep, setCurrentStep] = useState(1);
   const [isPublishing, setIsPublishing] = useState(false);
+  const [deletedSectionIds, setDeletedSectionIds] = useState([]);
 
   const { createCourse, isCreating } = useCreateCourse(demoId);
 
@@ -40,6 +41,21 @@ const CourseStudio = () => {
       }
       return { ...prev, [fieldOrObject]: value };
     });
+  };
+
+  const handleRemoveSection = (sectionId) => {
+    if (
+      sectionId &&
+      typeof sectionId === "string" &&
+      !sectionId.startsWith("temp-")
+    ) {
+      setDeletedSectionIds((prev) => [...prev, sectionId]);
+    }
+
+    setCourseData((prev) => ({
+      ...prev,
+      sections: prev.sections.filter((sec) => sec.id !== sectionId),
+    }));
   };
 
   const handleNextStep = async () => {
@@ -103,24 +119,34 @@ const CourseStudio = () => {
 
     try {
       const activeCourseId = courseData.id;
-      const sectionsToCreate = courseData.sections || [];
+      const sections = courseData.sections || [];
 
-      if (sectionsToCreate.length > 0) {
-        const newSections = sectionsToCreate.filter(
-          (sec) => sec.isNew !== false,
+      if (deletedSectionIds.length > 0) {
+        await Promise.all(
+          deletedSectionIds.map((secId) =>
+            sectionApi.deleteSection(activeCourseId, secId),
+          ),
         );
-
-        if (newSections.length > 0) {
-          await Promise.all(
-            newSections.map((sec, index) =>
-              sectionApi.createSection(activeCourseId, {
-                title: sec.title,
-                order: sec.order || index + 1,
-              }),
-            ),
-          );
-        }
       }
+
+      if (sections.length > 0) {
+        await Promise.all(
+          sections.map((sec, index) => {
+            const payload = {
+              title: sec.title,
+              order: sec.order || index + 1,
+            };
+
+            if (!sec.id || sec.isNew) {
+              return sectionApi.createSection(activeCourseId, payload);
+            } else {
+              return sectionApi.updateSection(activeCourseId, sec.id, payload);
+            }
+          }),
+        );
+      }
+
+      setDeletedSectionIds([]);
 
       alert("Course Saved successfully!");
       navigate(-1);
@@ -189,6 +215,7 @@ const CourseStudio = () => {
             onPublish={handlePublish}
             isPublishing={isPublishing}
             onBack={() => setCurrentStep(1)}
+            onDeleteSection={handleRemoveSection}
           />
         )}
       </div>

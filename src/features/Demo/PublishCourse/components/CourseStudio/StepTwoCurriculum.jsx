@@ -10,6 +10,7 @@ const StepTwoCurriculum = ({
   onPublish,
   isPublishing,
   onBack,
+  onDeleteSection,
 }) => {
   const { t } = useTranslation();
 
@@ -36,6 +37,7 @@ const StepTwoCurriculum = ({
         courseId={courseData.id}
         sections={courseData.sections || []}
         setSections={handleSetSections}
+        onDeleteSection={onDeleteSection}
       />
 
       <CurriculumFooter

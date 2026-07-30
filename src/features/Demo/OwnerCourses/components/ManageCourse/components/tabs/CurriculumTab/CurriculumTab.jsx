@@ -18,7 +18,12 @@ import AddQuizModal from "./AddModals/AddQuizModal";
 import AddQuestionModal from "./AddModals/AddQuestionModal";
 import { sectionApi } from "../../../../../api/sectionApi";
 
-const CurriculumTab = ({ courseId, sections, setSections }) => {
+const CurriculumTab = ({
+  courseId,
+  sections,
+  setSections,
+  onDeleteSection,
+}) => {
   const { t } = useTranslation();
   const [expandedSections, setExpandedSections] = useState(
     sections.map((s) => s.id),
@@ -56,7 +61,11 @@ const CurriculumTab = ({ courseId, sections, setSections }) => {
   const deleteSection = (e, id) => {
     e.stopPropagation();
     if (window.confirm("Are you sure you want to delete this section?")) {
-      setSections(sections.filter((s) => s.id !== id));
+      if (onDeleteSection) {
+        onDeleteSection(id);
+      } else {
+        setSections(sections.filter((s) => s.id !== id));
+      }
     }
   };
 
