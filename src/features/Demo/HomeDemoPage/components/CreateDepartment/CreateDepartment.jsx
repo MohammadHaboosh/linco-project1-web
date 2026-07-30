@@ -18,8 +18,10 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
     setSearchQuery,
     searchResults,
     isSearching,
+    searchError,
     selectedUser,
-    setSelectedUser,
+    selectUser,
+    clearSelectedUser,
     isSubmitting,
     error,
     handleSubmit,
@@ -83,8 +85,9 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
                   <span>{selectedUser.user.email}</span>
                 </div>
                 <button
+                  type="button"
                   className={styles.changeUserBtn}
-                  onClick={() => setSelectedUser(null)}
+                  onClick={clearSelectedUser}
                   disabled={isSubmitting}
                 >
                   {t("change")}
@@ -95,30 +98,35 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
                 <div className={styles.searchBox}>
                   <IoSearchOutline className={styles.searchIcon} />
                   <input
-                    type="text"
+                    type="search"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className={styles.searchInput}
-                    placeholder={t('search-by-name')}
+                    placeholder={t(
+                      "search-by-name-or-email",
+                      "Search by name or email...",
+                    )}
+                    autoComplete="off"
                   />
                   {isSearching && <span className={styles.loader}>...</span>}
                 </div>
 
-                {searchQuery.trim() !== "" && searchResults.length > 0 && (
+                {searchError && !isSearching && (
+                  <div className={styles.noResults} role="alert">
+                    {searchError}
+                  </div>
+                )}
+
+                {!searchError &&
+                  searchQuery.trim() !== "" &&
+                  searchResults.length > 0 && (
                   <ul className={styles.resultsList}>
-                    {console.log(searchResults)}
-                    {console.log(searchResults[0].id)}
-                    {console.log(searchResults[0].firstName)}
                     {searchResults.map((user) => (
                       <li
                         key={user.id}
                         className={styles.resultItem}
-                        onClick={() => {
-                          setSelectedUser(user);
-                          setSearchQuery("");
-                        }}
+                        onClick={() => selectUser(user)}
                       >
-                        {console.log(user)}
                         <IoPersonOutline className={styles.userIcon} />
                         <div>
                           <p className={styles.resultName}>
@@ -131,9 +139,10 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
                       </li>
                     ))}
                   </ul>
-                )}
+                  )}
 
-                {searchQuery.trim() !== "" &&
+                {!searchError &&
+                  searchQuery.trim() !== "" &&
                   searchResults.length === 0 &&
                   !isSearching && (
                     <div className={styles.noResults}>

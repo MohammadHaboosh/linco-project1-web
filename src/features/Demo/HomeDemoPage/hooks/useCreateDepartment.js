@@ -1,5 +1,7 @@
-import { useState, useEffect } from 'react';
-import { departmentApi } from '../api/departmentApi';
+import { useCallback, useEffect, useState } from "react";
+import { departmentApi } from "../api/departmentApi";
+
+const SEARCH_DEBOUNCE_MS = 300;
 
 export const useCreateDepartment = (demoId, onSuccess) => {
   const [formData, setFormData] = useState({
@@ -8,75 +10,97 @@ export const useCreateDepartment = (demoId, onSuccess) => {
   });
 
   const [selectedUser, setSelectedUser] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
   const [isSearching, setIsSearching] = useState(false);
+  const [searchError, setSearchError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    console.log(formData);
   };
 
   useEffect(() => {
+    const normalizedQuery = searchQuery.trim();
+
+    if (!normalizedQuery || selectedUser) {
+      return undefined;
+    }
+
     const controller = new AbortController();
-    const { signal } = controller;
 
     const delayDebounceFn = setTimeout(async () => {
-      if (!searchQuery.trim()) {
-        setSearchResults([]);
-        setIsSearching(false);
-        return;
-      }
-
-      setIsSearching(true);
       try {
-        const results = await departmentApi.searchMembers(demoId, searchQuery, {
-          signal,
-        });
+        const results = await departmentApi.searchMembers(
+          demoId,
+          normalizedQuery,
+          { signal: controller.signal },
+        );
 
-        if (!signal.aborted) {
+        if (!controller.signal.aborted) {
           setSearchResults(results);
         }
       } catch (err) {
-        if (err.name !== 'AbortError' && err.name !== 'CanceledError') {
-          console.error('Search failed', err);
+        if (err.name === "AbortError") return;
+
+        if (!controller.signal.aborted) {
+          setSearchResults([]);
+          setSearchError(err.message || "Failed to search members.");
         }
       } finally {
-        if (!signal.aborted) {
+        if (!controller.signal.aborted) {
           setIsSearching(false);
         }
       }
-    }, 300);
+    }, SEARCH_DEBOUNCE_MS);
 
     return () => {
       clearTimeout(delayDebounceFn);
       controller.abort();
     };
-  }, [searchQuery, demoId]);
+  }, [demoId, searchQuery, selectedUser]);
+
+  const updateSearchQuery = useCallback((value) => {
+    const nextQuery = String(value ?? "");
+
+    setSearchQuery(nextQuery);
+    setSearchResults([]);
+    setSearchError(null);
+    setIsSearching(Boolean(nextQuery.trim()));
+  }, []);
+
+  const selectUser = useCallback((user) => {
+    setSelectedUser(user);
+    setSearchQuery("");
+    setSearchResults([]);
+    setSearchError(null);
+    setIsSearching(false);
+  }, []);
+
+  const clearSelectedUser = useCallback(() => {
+    setSelectedUser(null);
+    setSearchQuery("");
+    setSearchResults([]);
+    setSearchError(null);
+    setIsSearching(false);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-    console.log(`${formData.name} Department title is required.`);
     if (!formData.name.trim()) {
-      console.log(`${formData.name} Department title is required.`);
-      setError('Department title is required.');
+      setError("Department title is required.");
       return;
     }
-    console.log(`${selectedUser} selectedUser is required.`);
     if (!selectedUser) {
-      console.log(`${selectedUser} selectedUser is required.`);
-      setError('Please select a manager/member from the search.');
+      setError("Please select a manager/member from the search.");
       return;
     }
-    console.log(`${demoId} demoId is required.`);
     if (!demoId) {
-      console.log(`${demoId} demoId is required.`);
-      setError('Demo ID is missing.');
+      setError("Demo ID is missing.");
       return;
     }
 
@@ -87,13 +111,12 @@ export const useCreateDepartment = (demoId, onSuccess) => {
         description: formData.description,
         managerId: selectedUser.id,
       };
-      console.log(`${payload.managerId} payload`);
       await departmentApi.createDepartment(demoId, payload);
 
       if (onSuccess) onSuccess();
     } catch (err) {
       setError(
-        err.message || 'An error occurred while creating the department.',
+        err.message || "An error occurred while creating the department.",
       );
     } finally {
       setIsSubmitting(false);
@@ -104,11 +127,13 @@ export const useCreateDepartment = (demoId, onSuccess) => {
     formData,
     handleChange,
     searchQuery,
-    setSearchQuery,
+    setSearchQuery: updateSearchQuery,
     searchResults,
     isSearching,
+    searchError,
     selectedUser,
-    setSelectedUser,
+    selectUser,
+    clearSelectedUser,
     isSubmitting,
     error,
     handleSubmit,

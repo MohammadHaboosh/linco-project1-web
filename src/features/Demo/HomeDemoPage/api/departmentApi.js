@@ -1,10 +1,20 @@
 import { apiFetch } from "../../../../api/apiFetch";
 
 export const departmentApi = {
-  searchMembers: async (demoId, searchQuery) => {
+  searchMembers: async (demoId, searchQuery, options = {}) => {
+    const normalizedQuery = String(searchQuery ?? "").trim();
+
+    if (!normalizedQuery) {
+      return [];
+    }
+
+    if (!demoId) {
+      throw new Error("Demo ID is required to search members.");
+    }
+
     try {
       const response = await apiFetch(
-        `/members?search=${encodeURIComponent(searchQuery)}`,
+        `/members?search=${encodeURIComponent(normalizedQuery)}`,
         {
           method: "GET",
           headers: {
@@ -12,18 +22,21 @@ export const departmentApi = {
             "x-client-type": "web",
             "x-demo-id": demoId,
           },
+          signal: options.signal,
         },
       );
 
-      const data = await response.json();
+      const data = await response.json().catch(() => ({}));
 
-      if (!response.ok) {
+      if (!response.ok || data.success === false) {
         throw new Error(data.message || "Failed to search members");
       }
 
-      return data.data;
+      return Array.isArray(data.data) ? data.data : [];
     } catch (error) {
-      console.error("API Error during member search:", error);
+      if (error.name !== "AbortError") {
+        console.error("API Error during member search:", error);
+      }
       throw error;
     }
   },
