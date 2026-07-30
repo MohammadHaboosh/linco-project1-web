@@ -7,11 +7,11 @@ import {
   IoTimeOutline,
   IoChevronDownOutline,
   IoChevronUpOutline,
-  IoPaperclipOutline,
+  IoAttachOutline,
   IoDocumentAttachOutline,
 } from "react-icons/io5";
-import styles from "./CurriculumTab.module.css";
-import AddAttachmentModal from "./AddAttachmentModal";
+import styles from "../CurriculumTab.module.css";
+import AddAttachmentModal from "../AddModals/AddAttachmentModal";
 
 const LessonList = ({
   lessons = [],
@@ -125,7 +125,7 @@ const LessonList = ({
                       className={styles.attachmentBadgeCount}
                       onClick={(e) => toggleLessonExpand(lesson.id, e)}
                     >
-                      <IoPaperclipOutline /> {attachmentsCount} Attachments
+                      <IoAttachOutline /> {attachmentsCount} Attachments
                     </span>
 
                     <button
@@ -143,7 +143,7 @@ const LessonList = ({
                   <div className={styles.attachmentsDrawer}>
                     <div className={styles.drawerHeader}>
                       <h5>
-                        <IoPaperclipOutline /> Lesson Resources & Attachments
+                        <IoAttachOutline /> Lesson Resources & Attachments
                       </h5>
                     </div>
 

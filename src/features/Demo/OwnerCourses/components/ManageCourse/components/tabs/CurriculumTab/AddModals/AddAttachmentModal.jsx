@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import {
   IoCloseOutline,
-  IoPaperclipOutline,
+  IoAttachOutline,
   IoCloudUploadOutline,
   IoDocumentTextOutline,
 } from "react-icons/io5";
@@ -51,11 +51,10 @@ const AddAttachmentModal = ({ isOpen, onClose, onSubmit }) => {
         className={styles.modalContainer}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* رأس النافذة التابع للون الأصفر */}
         <div className={styles.modalHeader}>
           <div className={styles.headerTitleGroup}>
             <div className={`${styles.iconBadge} ${styles.amberBadge}`}>
-              <IoPaperclipOutline />
+              <IoAttachOutline />
             </div>
             <div>
               <h3>Add Lesson Attachment</h3>

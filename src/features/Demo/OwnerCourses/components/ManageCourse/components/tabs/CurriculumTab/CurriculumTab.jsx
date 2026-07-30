@@ -9,13 +9,13 @@ import {
 import styles from "./CurriculumTab.module.css";
 import { useTranslation } from "react-i18next";
 
-import LessonList from "./LessonList";
-import QuestionBankSection from "./QuestionBankSection";
-import SectionQuizSection from "./SectionQuizSection";
+import LessonList from "./LessonList/LessonList";
+import QuestionBankSection from "./QuestionBankSection/QuestionBankSection";
+import SectionQuizSection from "./SectionQuizSection/SectionQuizSection";
 
-import AddLessonModal from "./AddLessonModal";
-import AddQuizModal from "./AddQuizModal";
-import AddQuestionModal from "./AddQuestionModal";
+import AddLessonModal from "./AddModals/AddLessonModal";
+import AddQuizModal from "./AddModals/AddQuizModal";
+import AddQuestionModal from "./AddModals/AddQuestionModal";
 
 const CurriculumTab = ({ sections, setSections }) => {
   const { t } = useTranslation();
