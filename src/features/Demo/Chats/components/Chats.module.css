@@ -208,7 +208,8 @@
   flex-direction: column;
   gap: 7px;
   padding: clamp(14px, 2.5vw, 24px) clamp(14px, 4vw, 54px);
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
+  overflow-anchor: none;
   overscroll-behavior: contain;
 }
 

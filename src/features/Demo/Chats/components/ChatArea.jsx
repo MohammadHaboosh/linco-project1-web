@@ -54,6 +54,8 @@ const ChatArea = ({
   const shouldStickToBottomRef = useRef(true);
   const hasCompletedInitialScrollRef = useRef(false);
   const pendingScrollPreservationRef = useRef(null);
+  const isRestoringScrollRef = useRef(false);
+  const restoreScrollFrameRef = useRef(null);
 
   const isConnected = connectionStatus === "connected";
 
@@ -69,7 +71,16 @@ const ChatArea = ({
     }
   }, [sendTypingStatus]);
 
-  useEffect(() => () => stopTyping(), [stopTyping]);
+  useEffect(
+    () => () => {
+      stopTyping();
+
+      if (restoreScrollFrameRef.current) {
+        cancelAnimationFrame(restoreScrollFrameRef.current);
+      }
+    },
+    [stopTyping],
+  );
 
   useEffect(() => {
     if (!isConnected) {
@@ -92,7 +103,15 @@ const ChatArea = ({
       if (messages.length > pendingPreservation.messageCount) {
         const addedHeight =
           scrollArea.scrollHeight - pendingPreservation.scrollHeight;
+        isRestoringScrollRef.current = true;
         scrollArea.scrollTop = pendingPreservation.scrollTop + addedHeight;
+
+        restoreScrollFrameRef.current = requestAnimationFrame(() => {
+          restoreScrollFrameRef.current = requestAnimationFrame(() => {
+            isRestoringScrollRef.current = false;
+            restoreScrollFrameRef.current = null;
+          });
+        });
       }
       pendingScrollPreservationRef.current = null;
       return;
@@ -237,6 +256,7 @@ const ChatArea = ({
     const scrollArea = scrollAreaRef.current;
     if (
       !scrollArea ||
+      isRestoringScrollRef.current ||
       !hasNextPage ||
       isLoadingOlder ||
       pendingScrollPreservationRef.current
@@ -258,7 +278,7 @@ const ChatArea = ({
 
   const handleScroll = () => {
     const scrollArea = scrollAreaRef.current;
-    if (!scrollArea) {
+    if (!scrollArea || isRestoringScrollRef.current) {
       return;
     }
 
