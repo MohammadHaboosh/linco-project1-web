@@ -143,7 +143,6 @@ export const router = createBrowserRouter([
       { path: PATHS.ROADMAPS, element: <RoadmapsPage /> },
       { path: PATHS.TOOLS, element: <WorkspaceToolsPage /> },
       { path: PATHS.CHAT_GROUPS, element: <ChatsPage /> },
-      { path: `${PATHS.CHAT_GROUPS}/:chatId`, element: <ChatsPage /> },
     ],
   },
   {

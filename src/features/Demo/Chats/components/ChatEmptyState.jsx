@@ -1,20 +1,17 @@
-import { IoChatbubbles } from "react-icons/io5";
+import { IoChatbubblesOutline } from "react-icons/io5";
 import styles from "./Chats.module.css";
 import { useTranslation } from "react-i18next";
 
 const ChatEmptyState = () => {
   const { t } = useTranslation();
+
   return (
     <div className={styles.emptyStateContainer}>
       <div className={styles.emptyIconCircle}>
-        <IoChatbubbles />
+        <IoChatbubblesOutline />
       </div>
-      <h3>{t("your-workspace-chats")}</h3>
-      <p>
-        {t(
-          "select-a-channel-from-the-left-menu-to-start-collaborating-and-sharing-ideas-with-your-team",
-        )}
-      </p>
+      <h3>{t("chat-no-messages")}</h3>
+      <p>{t("chat-start-conversation")}</p>
     </div>
   );
 };
