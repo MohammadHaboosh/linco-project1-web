@@ -11,6 +11,14 @@ export const useCreateCourse = (demoId) => {
       setError(null);
 
       try {
+        const activeDemoId = demoId || courseData?.demoId;
+
+        if (!activeDemoId) {
+          throw new Error(
+            "Missing demoId: Cannot create course without a valid demoId.",
+          );
+        }
+
         let tagIds = [];
         if (courseData.tags?.length > 0) {
           const createdTags = await Promise.all(
@@ -28,6 +36,7 @@ export const useCreateCourse = (demoId) => {
             : "PRIVATE",
           description: courseData.description,
           imagePath: courseData.imagePath || "default",
+          demoId: String(activeDemoId),
           price: Number(courseData.price) || 0,
           tagIds: tagIds,
         };

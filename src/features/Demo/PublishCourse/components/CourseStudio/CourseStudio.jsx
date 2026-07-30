@@ -21,7 +21,7 @@ const CourseStudio = () => {
     title: "",
     description: "",
     tags: [],
-    thumbnail: null,
+    imagePath: "",
     privacy: "public",
     price: 0,
     sections: [],
@@ -32,7 +32,7 @@ const CourseStudio = () => {
   };
 
   const handleNextStep = async () => {
-    if (!courseData.title || !courseData.description) {
+    if (!courseData.title.trim() || !courseData.description.trim()) {
       alert("Please fill in the course title and description.");
       return;
     }
@@ -53,7 +53,6 @@ const CourseStudio = () => {
   };
 
   const handlePublish = () => {
-    // TODO :
     setIsPublishing(true);
     console.log("Publishing Course:", courseData);
     setTimeout(() => {
@@ -72,7 +71,9 @@ const CourseStudio = () => {
 
         <div className={styles.stepperContainer}>
           <div
-            className={`${styles.stepIndicator} ${currentStep >= 1 ? styles.stepActive : ""}`}
+            className={`${styles.stepIndicator} ${
+              currentStep >= 1 ? styles.stepActive : ""
+            }`}
           >
             <div className={styles.stepCircle}>
               {currentStep > 1 ? <IoCheckmarkOutline /> : "1"}
@@ -80,10 +81,14 @@ const CourseStudio = () => {
             <span>{t("course-setup")}</span>
           </div>
           <div
-            className={`${styles.stepLine} ${currentStep === 2 ? styles.lineActive : ""}`}
+            className={`${styles.stepLine} ${
+              currentStep === 2 ? styles.lineActive : ""
+            }`}
           ></div>
           <div
-            className={`${styles.stepIndicator} ${currentStep === 2 ? styles.stepActive : ""}`}
+            className={`${styles.stepIndicator} ${
+              currentStep === 2 ? styles.stepActive : ""
+            }`}
           >
             <div className={styles.stepCircle}>2</div>
             <span>{t("curriculum-builder")}</span>
@@ -99,6 +104,7 @@ const CourseStudio = () => {
             courseData={courseData}
             updateCourseData={updateCourseData}
             onNext={handleNextStep}
+            isCreating={isCreating}
           />
         )}
 
