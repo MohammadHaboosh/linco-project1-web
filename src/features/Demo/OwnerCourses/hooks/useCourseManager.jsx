@@ -38,6 +38,7 @@ export const useCourseManager = (demoId, assetId) => {
     const loadCourseData = async () => {
       try {
         setIsLoading(true);
+        setError(null);
         const assetData = await courseManagerApi.getAsset(demoId, assetId);
 
         const course = assetData.course || assetData.data?.course || assetData;
@@ -83,16 +84,28 @@ export const useCourseManager = (demoId, assetId) => {
     console.log("START SAVING EVERYTHING");
 
     try {
-      const tagNames = (generalInfo.tags || []).map((tag) =>
-        typeof tag === "object" ? tag.name : tag,
-      );
+      let tagIds = [];
+      if (generalInfo.tags && generalInfo.tags.length > 0) {
+        const tagIdResults = await Promise.all(
+          generalInfo.tags.map(async (tag) => {
+            if (typeof tag === "object" && tag !== null && tag.id) {
+              return tag.id;
+            }
 
-      const tagPromises = tagNames.map((name) =>
-        publishCourseApi.createTag(name),
-      );
-      const createdTagsResponses = await Promise.all(tagPromises);
+            const tagName =
+              typeof tag === "string"
+                ? tag
+                : tag?.name || tag?.label || tag?.value || "";
 
-      const tagIds = createdTagsResponses.map((res) => res.data?.id || res.id);
+            if (!tagName || !tagName.trim()) return null;
+
+            const res = await publishCourseApi.createTag(tagName.trim());
+            return res.data?.id || res.id;
+          }),
+        );
+
+        tagIds = tagIdResults.filter(Boolean);
+      }
 
       const basePayload = {
         title: generalInfo.title,
@@ -150,7 +163,7 @@ export const useCourseManager = (demoId, assetId) => {
               resultIdx++;
               return {
                 ...sec,
-                id: resData.id,
+                id: resData?.id || sec.id,
                 isNew: false,
               };
             }
