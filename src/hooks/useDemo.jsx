@@ -17,7 +17,7 @@ export const DemoProvider = ({ children }) => {
     const loadDemoData = async () => {
       setIsLoading(true);
       try {
-        const response = await apiFetch(`/demos`, {
+        const response = await apiFetch(`/demos/${demoId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -34,8 +34,8 @@ export const DemoProvider = ({ children }) => {
         console.log("Fetched demo data :", data);
 
         setDemoData(data.data);
-        console.log("data.data[0].isOwner :", data.data[0].isOwner);
-        const role = data.data[0].isOwner ? "owner" : "member";
+        console.log("data.data.isOwner :", data.data[0].isOwner);
+        const role = data.data.isOwner ? "owner" : "member";
         console.log("Determined role :", role);
 
         setActualRole(role);
