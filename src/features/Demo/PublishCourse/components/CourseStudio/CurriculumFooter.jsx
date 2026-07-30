@@ -11,11 +11,12 @@ const CurriculumFooter = ({
 }) => {
   return (
     <div className={styles.publishActionArea}>
-      <button className={styles.backStepBtn} onClick={onBack}>
+      <button className={styles.backStepBtn} type="button" onClick={onBack}>
         <IoArrowBackOutline style={{ marginRight: "6px" }} /> {t("back")}
       </button>
       <button
         className={styles.finalPublishBtn}
+        type="button"
         onClick={onPublish}
         disabled={!canPublish || isPublishing}
       >
