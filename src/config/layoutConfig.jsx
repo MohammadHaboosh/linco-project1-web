@@ -40,11 +40,6 @@ export const DEMO_NAV = {
       },
       { name: "Live Streams", icon: <IoVideocamOutline />, path: PATHS.LIVES },
       {
-        name: "Chats",
-        icon: <IoChatbubblesOutline />,
-        path: PATHS.CHAT_GROUPS,
-      },
-      {
         name: "Inquiries",
         icon: <IoHelpCircleOutline />,
         path: PATHS.INQUIRIES,
@@ -83,11 +78,6 @@ export const DEMO_NAV = {
         icon: <IoHelpCircleOutline />,
         path: PATHS.INQUIRIES,
       },
-      {
-        name: "Chats",
-        icon: <IoChatbubblesOutline />,
-        path: PATHS.CHAT_GROUPS,
-      },
       { name: "Lives", icon: <IoVideocamOutline />, path: PATHS.LIVES },
       {
         name: "Public Library",
@@ -105,11 +95,6 @@ export const DEMO_NAV = {
         path: PATHS.CERTIFICATES,
       },
       { name: "Lives", icon: <IoVideocamOutline />, path: PATHS.LIVES },
-      {
-        name: "Chats",
-        icon: <IoChatbubblesOutline />,
-        path: PATHS.CHAT_GROUPS,
-      },
       {
         name: "Inquiries",
         icon: <IoHelpCircleOutline />,
@@ -139,6 +124,11 @@ export const DEPARTMENT_NAV = {
         name: "Leaderboard",
         icon: <IoPersonOutline />,
         path: PATHS.LEADERBOARD,
+      },
+      {
+        name: "Chats",
+        icon: <IoChatbubblesOutline />,
+        path: PATHS.CHAT_GROUPS,
       },
       {
         name: "Workspace Tools",
@@ -173,6 +163,11 @@ export const DEPARTMENT_NAV = {
         icon: <IoPersonOutline />,
         path: PATHS.LEADERBOARD,
       },
+      {
+        name: "Chats",
+        icon: <IoChatbubblesOutline />,
+        path: PATHS.CHAT_GROUPS,
+      },
       { name: "Road Maps", icon: <IoMapOutline />, path: PATHS.ROADMAPS },
       { name: "Weekly Tasks", icon: <IoListOutline />, path: PATHS.SM_TASKS },
     ],
@@ -197,6 +192,11 @@ export const DEPARTMENT_NAV = {
         name: "Leaderboard",
         icon: <IoPersonOutline />,
         path: PATHS.LEADERBOARD,
+      },
+      {
+        name: "Chats",
+        icon: <IoChatbubblesOutline />,
+        path: PATHS.CHAT_GROUPS,
       },
       {
         name: "Learning Path",

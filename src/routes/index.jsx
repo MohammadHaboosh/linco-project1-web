@@ -104,8 +104,6 @@ export const router = createBrowserRouter([
         path: PATHS.INQUIRIES,
         element: <InquiriesPage />,
       },
-      { path: PATHS.CHAT_GROUPS, element: <ChatsPage /> },
-      { path: `${PATHS.CHAT_GROUPS}/:chatId`, element: <ChatsPage /> },
       { path: PATHS.CERTIFICATES, element: <CertificatesPage /> },
     ],
   },
@@ -144,6 +142,8 @@ export const router = createBrowserRouter([
       { path: PATHS.LEADERBOARD, element: <LeaderboardPage /> },
       { path: PATHS.ROADMAPS, element: <RoadmapsPage /> },
       { path: PATHS.TOOLS, element: <WorkspaceToolsPage /> },
+      { path: PATHS.CHAT_GROUPS, element: <ChatsPage /> },
+      { path: `${PATHS.CHAT_GROUPS}/:chatId`, element: <ChatsPage /> },
     ],
   },
   {

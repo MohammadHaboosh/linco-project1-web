@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 const ChatSidebar = ({ groups, activeChatId }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { demoId } = useParams();
+  const { demoId, departmentId } = useParams();
 
   return (
     <div className={styles.sidebar}>
@@ -30,7 +30,11 @@ const ChatSidebar = ({ groups, activeChatId }) => {
           <div
             key={group.id}
             className={`${styles.groupItem} ${activeChatId === group.id ? styles.activeGroup : ""}`}
-            onClick={() => navigate(`/demos/${demoId}/chats/${group.id}`)}
+            onClick={() =>
+              navigate(
+                `/demos/${demoId}/departments/${departmentId}/chats/${group.id}`,
+              )
+            }
           >
             <div className={styles.groupAvatar}>{group.name.charAt(0)}</div>
             <div className={styles.groupInfo}>

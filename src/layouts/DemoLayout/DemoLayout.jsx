@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { DemoProvider, useDemo } from "../../hooks/useDemo";
 import Sidebar from "../../components/layouts/SideBar/Sidebar";
 import Header from "../../components/layouts/Header/global_header/Header";
@@ -9,8 +9,6 @@ import Footer from "../../components/layouts/Footer/Footer";
 
 const LayoutContent = () => {
   const { role, currentRoleView, setRoleView, isLoading, demoData } = useDemo();
-  const location = useLocation();
-  const isChatPage = location.pathname.includes("/chats");
 
   if (isLoading)
     return <div className={styles.loader}>Loading Workspace...</div>;
@@ -44,7 +42,7 @@ const LayoutContent = () => {
         <main className={styles.pageContent}>
           <Outlet />
         </main>
-        {!isChatPage && <Footer />}
+        <Footer />
       </div>
     </div>
   );
