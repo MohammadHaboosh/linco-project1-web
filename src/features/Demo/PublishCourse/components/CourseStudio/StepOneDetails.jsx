@@ -1,18 +1,20 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
-  IoImageOutline,
   IoGlobeOutline,
   IoLockClosedOutline,
   IoArrowForwardOutline,
   IoCloseCircleOutline,
+  IoCloudUploadOutline,
+  IoTrashOutline,
 } from "react-icons/io5";
-import styles from "./CourseStudio.module.css";
+import styles from "./StepOneDetails.module.css";
 import { useTranslation } from "react-i18next";
 
 const StepOneDetails = ({ courseData, updateCourseData, onNext }) => {
   const { t } = useTranslation();
   const [tagInput, setTagInput] = useState("");
   const [error, setError] = useState("");
+  const fileInputRef = useRef(null);
 
   const handleTagKeyDown = (e) => {
     if (e.key === "Enter" && tagInput.trim() !== "") {
@@ -22,6 +24,29 @@ const StepOneDetails = ({ courseData, updateCourseData, onNext }) => {
       }
       setTagInput("");
     }
+  };
+
+  const handleRemoveTag = (tagToRemove) => {
+    updateCourseData(
+      "tags",
+      courseData.tags.filter((t) => t !== tagToRemove),
+    );
+  };
+
+  const handleImageSelect = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      updateCourseData("thumbnail", file);
+      const previewUrl = URL.createObjectURL(file);
+      updateCourseData("imagePreview", previewUrl);
+    }
+  };
+
+  const handleRemoveImage = (e) => {
+    e.stopPropagation();
+    updateCourseData("thumbnail", null);
+    updateCourseData("imagePreview", null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   const validateAndProceed = () => {
@@ -50,7 +75,7 @@ const StepOneDetails = ({ courseData, updateCourseData, onNext }) => {
             <label>{t("course-title")} *</label>
             <input
               type="text"
-              placeholder="e.g. Master React in 30 Days"
+              placeholder="e.g. Master React & Modern Web Development"
               value={courseData.title}
               onChange={(e) => updateCourseData("title", e.target.value)}
             />
@@ -68,26 +93,24 @@ const StepOneDetails = ({ courseData, updateCourseData, onNext }) => {
 
           <div className={styles.inputGroup}>
             <label>
-              {t("course-tags")} {t("press-enter-to-add")}
+              {t("course-tags")}{" "}
+              <small style={{ color: "#64748b" }}>
+                ({t("press-enter-to-add")})
+              </small>
             </label>
             <div className={styles.tagsInputContainer}>
               {courseData.tags.map((tag) => (
                 <span key={tag} className={styles.tagChip}>
-                  {tag}{" "}
+                  {tag}
                   <IoCloseCircleOutline
-                    onClick={() =>
-                      updateCourseData(
-                        "tags",
-                        courseData.tags.filter((t) => t !== tag),
-                      )
-                    }
+                    onClick={() => handleRemoveTag(tag)}
                     className={styles.removeTagIcon}
                   />
                 </span>
               ))}
               <input
                 type="text"
-                placeholder={t("add-tags")}
+                placeholder={courseData.tags.length === 0 ? t("add-tags") : ""}
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
                 onKeyDown={handleTagKeyDown}
@@ -98,11 +121,59 @@ const StepOneDetails = ({ courseData, updateCourseData, onNext }) => {
 
           <div className={styles.inputGroup} style={{ marginBottom: 0 }}>
             <label>{t("course-thumbnail")}</label>
-            <div className={styles.uploadBox}>
-              <IoImageOutline className={styles.uploadIcon} />
-              <span>{t("upload-thumbnail")} (16:9 ratio)</span>
-              <small>{t("recommended")} 1280x720 pixels</small>
-            </div>
+            <input
+              type="file"
+              ref={fileInputRef}
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={handleImageSelect}
+            />
+
+            {courseData.imagePreview || courseData.thumbnail ? (
+              <div
+                className={`${styles.uploadBox} ${styles.uploaded}`}
+                style={{ padding: "15px", position: "relative" }}
+              >
+                <img
+                  src={
+                    courseData.imagePreview ||
+                    (typeof courseData.thumbnail === "string"
+                      ? courseData.thumbnail
+                      : "")
+                  }
+                  alt="Thumbnail Preview"
+                  style={{
+                    maxHeight: "180px",
+                    borderRadius: "12px",
+                    objectFit: "cover",
+                    width: "100%",
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={handleRemoveImage}
+                  className={styles.iconBtnDanger}
+                  style={{
+                    position: "absolute",
+                    top: "25px",
+                    right: "25px",
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+                  }}
+                  title="Remove Image"
+                >
+                  <IoTrashOutline />
+                </button>
+              </div>
+            ) : (
+              <div
+                className={styles.uploadBox}
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <IoCloudUploadOutline className={styles.uploadIcon} />
+                <span>{t("upload-thumbnail")} (16:9 ratio)</span>
+                <small>{t("recommended")} 1280x720 pixels</small>
+              </div>
+            )}
           </div>
         </div>
 
@@ -113,7 +184,9 @@ const StepOneDetails = ({ courseData, updateCourseData, onNext }) => {
             <label className={styles.fieldLabel}>{t("access-level")}</label>
             <div className={styles.radioGroup}>
               <label
-                className={`${styles.radioCard} ${courseData.privacy === "public" ? styles.activeRadioCard : ""}`}
+                className={`${styles.radioCard} ${
+                  courseData.privacy === "public" ? styles.activeRadioCard : ""
+                }`}
               >
                 <input
                   type="radio"
@@ -132,7 +205,9 @@ const StepOneDetails = ({ courseData, updateCourseData, onNext }) => {
               </label>
 
               <label
-                className={`${styles.radioCard} ${courseData.privacy === "private" ? styles.activeRadioCard : ""}`}
+                className={`${styles.radioCard} ${
+                  courseData.privacy === "private" ? styles.activeRadioCard : ""
+                }`}
               >
                 <input
                   type="radio"
@@ -169,7 +244,9 @@ const StepOneDetails = ({ courseData, updateCourseData, onNext }) => {
                 className={styles.priceInput}
               />
             </div>
-            <small style={{ color: "#64748b", marginTop: "6px" }}>
+            <small
+              style={{ color: "#64748b", marginTop: "8px", display: "block" }}
+            >
               {t("leave-at-0-00-to-make-it-free")}
             </small>
           </div>

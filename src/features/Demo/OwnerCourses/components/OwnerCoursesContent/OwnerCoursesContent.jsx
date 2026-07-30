@@ -42,7 +42,6 @@ const OwnerCoursesContent = () => {
           </div>
         </div>
 
-        {/* الكلاس هنا coursesGrid ليتطابق مع CSS ويرتب الكروت بجانب بعضها */}
         <div className={styles.coursesGrid}>
           <CourseManagementCard isAddNew={true} onAddNew={handleAddNewCourse} />
 

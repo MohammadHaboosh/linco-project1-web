@@ -1,18 +1,10 @@
 import { useState } from "react";
-import {
-  IoAddOutline,
-  IoTrashOutline,
-  IoVideocamOutline,
-  IoHelpCircleOutline,
-  IoShieldCheckmarkOutline,
-  IoChevronDownOutline,
-  IoPencilOutline,
-  IoCheckmarkCircleOutline,
-  IoDocumentAttachOutline,
-} from "react-icons/io5";
+import { IoAddOutline } from "react-icons/io5";
 import LessonBuilderModal from "./LessonBuilderModal";
 import QuizBuilderModal from "./QuizBuilderModal";
-import styles from "./CourseStudio.module.css";
+import SectionCard from "./SectionCard";
+import CurriculumFooter from "./CurriculumFooter";
+import styles from "./StepTwoCurriculum.module.css";
 import { useTranslation } from "react-i18next";
 
 const StepTwoCurriculum = ({
@@ -20,6 +12,7 @@ const StepTwoCurriculum = ({
   updateCourseData,
   onPublish,
   isPublishing,
+  onBack,
 }) => {
   const { t } = useTranslation();
   const [modalState, setModalState] = useState({
@@ -36,7 +29,7 @@ const StepTwoCurriculum = ({
       ...courseData.sections,
       {
         id: Date.now(),
-        title: "New Section",
+        title: `New Section ${courseData.sections.length + 1}`,
         isExpanded: true,
         lessons: [],
         quiz: null,
@@ -95,6 +88,8 @@ const StepTwoCurriculum = ({
     e.preventDefault();
     if (draggedSectionId === sectionId && draggedLessonIdx !== targetIndex) {
       const section = courseData.sections.find((s) => s.id === sectionId);
+      if (!section) return;
+
       const newLessons = [...section.lessons];
       const [draggedItem] = newLessons.splice(draggedLessonIdx, 1);
       newLessons.splice(targetIndex, 0, draggedItem);
@@ -158,178 +153,28 @@ const StepTwoCurriculum = ({
 
       <div className={styles.sectionsList}>
         {courseData.sections.map((section, sIndex) => (
-          <div key={section.id} className={styles.sectionCard}>
-            {/* رأس القسم (الأكورديون) */}
-            <div className={styles.sectionHeader}>
-              <div
-                className={styles.sectionHeaderLeft}
-                onClick={() => toggleSection(section.id)}
-              >
-                <IoChevronDownOutline
-                  className={`${styles.chevronIcon} ${section.isExpanded ? styles.rotated : ""}`}
-                />
-                <span className={styles.sectionNum}>Section {sIndex + 1}:</span>
-              </div>
-              <input
-                type="text"
-                value={section.title}
-                onChange={(e) =>
-                  updateCourseData(
-                    "sections",
-                    courseData.sections.map((s) =>
-                      s.id === section.id ? { ...s, title: e.target.value } : s,
-                    ),
-                  )
-                }
-                className={styles.sectionTitleInput}
-              />
-              <button
-                className={styles.deleteIcon}
-                onClick={() => deleteSection(section.id)}
-                title="Delete Section"
-              >
-                <IoTrashOutline />
-              </button>
-            </div>
-
-            {/* محتوى القسم */}
-            {section.isExpanded && (
-              <div className={styles.lessonsList}>
-                {/* 1. الدروس */}
-                {section.lessons.map((lesson, lIndex) => (
-                  <div
-                    key={lesson.id}
-                    className={`${styles.lessonItem} ${draggedLessonIdx === lIndex && draggedSectionId === section.id ? styles.dragging : ""}`}
-                    draggable
-                    onDragStart={(e) => handleDragStart(e, section.id, lIndex)}
-                    onDragOver={(e) => e.preventDefault()}
-                    onDrop={(e) => handleDrop(e, section.id, lIndex)}
-                  >
-                    <div className={styles.lessonLeft}>
-                      <span
-                        className={styles.dragHandle}
-                        title="Drag to reorder"
-                      >
-                        ⋮⋮
-                      </span>
-                      <div className={styles.typeIconWrapper}>
-                        <IoVideocamOutline />
-                      </div>
-                      <div className={styles.itemDetails}>
-                        <span className={styles.itemTitle}>{lesson.title}</span>
-                        {lesson.pdfs?.length > 0 && (
-                          <span className={styles.attachmentBadge}>
-                            <IoDocumentAttachOutline /> {lesson.pdfs.length}{" "}
-                            files
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    <div className={styles.lessonRight}>
-                      <button
-                        className={styles.iconBtn}
-                        onClick={() =>
-                          setModalState({
-                            isOpen: true,
-                            type: "video",
-                            sectionId: section.id,
-                            editData: lesson,
-                          })
-                        }
-                      >
-                        <IoPencilOutline />
-                      </button>
-                      <button
-                        className={styles.iconBtnDanger}
-                        onClick={() => deleteLesson(section.id, lesson.id)}
-                      >
-                        <IoTrashOutline />
-                      </button>
-                    </div>
-                  </div>
-                ))}
-
-                {/* 2. الاختبار النهائي */}
-                {section.quiz && (
-                  <div className={styles.finalQuizItem}>
-                    <div className={styles.lessonLeft}>
-                      <div className={styles.quizIconWrapper}>
-                        <IoShieldCheckmarkOutline />
-                      </div>
-                      <div className={styles.itemDetails}>
-                        <span className={styles.itemTitle}>
-                          {section.quiz.title}{" "}
-                          <span className={styles.finalTag}>Section Final</span>
-                        </span>
-                        <span className={styles.quizMeta}>
-                          {section.quiz.questionsCount} Questions • Random
-                          Generation
-                        </span>
-                      </div>
-                    </div>
-                    <div className={styles.lessonRight}>
-                      <button
-                        className={styles.iconBtn}
-                        onClick={() =>
-                          setModalState({
-                            isOpen: true,
-                            type: "quiz",
-                            sectionId: section.id,
-                            editData: section.quiz,
-                          })
-                        }
-                      >
-                        <IoPencilOutline />
-                      </button>
-                      <button
-                        className={styles.iconBtnDanger}
-                        onClick={() => deleteQuiz(section.id)}
-                      >
-                        <IoTrashOutline />
-                      </button>
-                    </div>
-                  </div>
-                )}
-
-                {/* 3. أزرار الإضافة */}
-                <div className={styles.addItemsActions}>
-                  <button
-                    className={styles.addLessonBtn}
-                    onClick={() =>
-                      setModalState({
-                        isOpen: true,
-                        type: "video",
-                        sectionId: section.id,
-                        editData: null,
-                      })
-                    }
-                  >
-                    <IoVideocamOutline /> Add Video Lesson
-                  </button>
-                  {!section.quiz && (
-                    <button
-                      className={styles.addQuizBtn}
-                      onClick={() =>
-                        setModalState({
-                          isOpen: true,
-                          type: "quiz",
-                          sectionId: section.id,
-                          editData: null,
-                        })
-                      }
-                    >
-                      <IoHelpCircleOutline /> Add Final Assessment
-                    </button>
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
+          <SectionCard
+            key={section.id}
+            section={section}
+            sIndex={sIndex}
+            courseData={courseData}
+            updateCourseData={updateCourseData}
+            toggleSection={toggleSection}
+            deleteSection={deleteSection}
+            deleteLesson={deleteLesson}
+            deleteQuiz={deleteQuiz}
+            setModalState={setModalState}
+            draggedLessonIdx={draggedLessonIdx}
+            draggedSectionId={draggedSectionId}
+            handleDragStart={handleDragStart}
+            handleDrop={handleDrop}
+            styles={styles}
+          />
         ))}
 
         {courseData.sections.length === 0 && (
           <div className={styles.emptyCurriculum}>
-            <IoAddOutline className={styles.emptyIcon} />
+            <IoAddOutline style={{ fontSize: "3rem", color: "#94a3b8" }} />
             <h4>{t("no-sections-yet")}</h4>
             <p>
               {t("start-by-adding-a-section-to-build-your-course-structure")}
@@ -338,34 +183,42 @@ const StepTwoCurriculum = ({
         )}
       </div>
 
-      <div className={styles.publishActionArea}>
-        <span></span>
-        <button
-          className={styles.finalPublishBtn}
-          onClick={onPublish}
-          disabled={!canPublish || isPublishing}
-        >
-          {isPublishing ? (
-            "Publishing..."
-          ) : (
-            <>
-              <IoCheckmarkCircleOutline /> {t("publish-course")}
-            </>
-          )}
-        </button>
-      </div>
+      {/* Footer Actions */}
+      <CurriculumFooter
+        onBack={onBack}
+        onPublish={onPublish}
+        canPublish={canPublish}
+        isPublishing={isPublishing}
+        styles={styles}
+        t={t}
+      />
 
+      {/* Modals */}
       {modalState.isOpen && modalState.type === "video" && (
         <LessonBuilderModal
           initialData={modalState.editData}
-          onClose={() => setModalState({ isOpen: false })}
+          onClose={() =>
+            setModalState({
+              isOpen: false,
+              type: null,
+              sectionId: null,
+              editData: null,
+            })
+          }
           onSave={handleSaveItem}
         />
       )}
       {modalState.isOpen && modalState.type === "quiz" && (
         <QuizBuilderModal
           initialData={modalState.editData}
-          onClose={() => setModalState({ isOpen: false })}
+          onClose={() =>
+            setModalState({
+              isOpen: false,
+              type: null,
+              sectionId: null,
+              editData: null,
+            })
+          }
           onSave={handleSaveItem}
         />
       )}
