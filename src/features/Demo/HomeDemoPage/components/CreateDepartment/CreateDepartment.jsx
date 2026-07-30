@@ -146,10 +146,7 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
                   searchResults.length === 0 &&
                   !isSearching && (
                     <div className={styles.noResults}>
-                      {t(
-                        "no-matching-demo-members",
-                        "No matching demo members found. Invite this user to the demo first.",
-                      )}
+                      {t("no-users-found")}
                     </div>
                   )}
               </div>
