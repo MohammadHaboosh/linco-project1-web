@@ -32,16 +32,6 @@ export const DemoProvider = ({ children }) => {
 
         const data = await response.json();
         console.log("Fetched demo data :", data);
-        // "id": "019f0fe8-d807-73b9-a0c7-891a13776c4b",
-        // "name": "Google",
-        // "imagePath": "qwertyuikol",
-        // "description": "nothing for now",
-        // "plan": "STARTER",
-        // "createdAt": "2026-06-28T20:25:45.735Z",
-        // "updatedAt": "2026-06-30T18:00:20.727Z",
-        // "ownerName": "Abrar Abo Auad",
-        // "membersCount": 1,
-        // "isOwner": false
 
         setDemoData(data.data);
         console.log("data.data[0].isOwner :", data.data[0].isOwner);

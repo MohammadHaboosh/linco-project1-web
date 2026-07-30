@@ -1,0 +1,122 @@
+.questionBankBox {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background-color: #ecfdf5;
+  border: 1.5px dashed #059669;
+  border-radius: 10px;
+  height: 100%;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #047857;
+}
+
+.titleIcon {
+  font-size: 1.25rem;
+}
+
+.questionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.questionItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background-color: #ffffff;
+  border: 1px solid #a7f3d0;
+  border-radius: 6px;
+}
+
+.questionInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dragHandle {
+  color: #6ee7b7;
+  cursor: grab;
+}
+
+.qNumber {
+  font-weight: 600;
+  color: #047857;
+  font-size: 0.85rem;
+}
+
+.qText {
+  font-size: 0.9rem;
+  color: #064e3b;
+}
+
+.actions {
+  display: flex;
+  gap: 4px;
+}
+
+.iconBtn,
+.iconBtnDanger {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.iconBtn {
+  color: #047857;
+}
+
+.iconBtn:hover {
+  background-color: #d1fae5;
+}
+
+.iconBtnDanger {
+  color: #ef4444;
+}
+
+.iconBtnDanger:hover {
+  background-color: #fee2e2;
+}
+
+.addQuestionBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px;
+  background-color: #ffffff;
+  border: 1px dashed #059669;
+  border-radius: 6px;
+  color: #047857;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: auto;
+}
+
+.addQuestionBtn:hover {
+  background-color: #d1fae5;
+}

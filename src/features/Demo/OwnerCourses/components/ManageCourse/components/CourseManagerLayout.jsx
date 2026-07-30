@@ -9,7 +9,7 @@ import {
 } from "react-icons/io5";
 import { useCourseManager } from "../../../hooks/useCourseManager";
 import GeneralInfoTab from "./tabs/GeneralInfoTab";
-import CurriculumTab from "./tabs/CurriculumTab";
+import CurriculumTab from "./tabs/CurriculumTab/CurriculumTab";
 import FAQsTab from "./tabs/FAQsTab";
 import styles from "./CourseManager.module.css";
 import { useTranslation } from "react-i18next";
