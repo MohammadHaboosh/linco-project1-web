@@ -1,0 +1,406 @@
+/* ========================================================
+   خلفية النافذة ورأس التراكب (Backdrop & Container)
+   ======================================================== */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-color: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.25s ease-out forwards;
+}
+
+.modalContainer {
+  background: #ffffff;
+  width: 100%;
+  max-width: 540px;
+  border-radius: 20px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  overflow: hidden;
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.largeModal {
+  max-width: 650px;
+}
+
+/* ========================================================
+   رأس النافذة (Header & Badges)
+   ======================================================== */
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 28px;
+  border-bottom: 1px solid #f1f5f9;
+  background-color: #ffffff;
+}
+
+.headerTitleGroup {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.headerTitleGroup h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.headerTitleGroup p {
+  margin: 2px 0 0 0;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.iconBadge {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.blueBadge {
+  background-color: #eff6ff;
+  color: #2563eb;
+}
+
+.purpleBadge {
+  background-color: #faf5ff;
+  color: #9333ea;
+}
+
+.emeraldBadge {
+  background-color: #ecfdf5;
+  color: #10b981;
+}
+
+.closeBtn {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.closeBtn:hover {
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+
+/* ========================================================
+   جسم النموذج وحقول الإدخال (Body & Form Elements)
+   ======================================================== */
+.modalBody {
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gridTwoCols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.labelRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #334155;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hintLabel {
+  font-size: 0.78rem;
+  color: #64748b;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  background-color: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  color: #0f172a;
+  outline: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.input:hover,
+.textarea:hover {
+  background-color: #ffffff;
+  border-color: #94a3b8;
+}
+
+.input:focus,
+.textarea:focus {
+  background-color: #ffffff;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+.textarea {
+  resize: vertical;
+  line-height: 1.5;
+}
+
+/* ========================================================
+   منطقة رفع الفيديو (Dropzone)
+   ======================================================== */
+.dropzone {
+  border: 2px dashed #cbd5e1;
+  border-radius: 14px;
+  background-color: #f8fafc;
+  padding: 28px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.dropzone:hover {
+  border-color: #2563eb;
+  background-color: #eff6ff;
+}
+
+.dropzoneIcon {
+  font-size: 2.4rem;
+  color: #3b82f6;
+  margin-bottom: 4px;
+}
+
+.dropzoneTitle {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.dropzoneSub {
+  font-size: 0.78rem;
+  color: #64748b;
+}
+
+.fileSelectedInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  color: #2563eb;
+}
+
+.fileSelectedInfo strong {
+  font-size: 0.9rem;
+  word-break: break-all;
+}
+
+.fileSelectedInfo span {
+  font-size: 0.78rem;
+  color: #64748b;
+}
+
+/* ========================================================
+   خيارات بنك الأسئلة (Choices Setup)
+   ======================================================== */
+.choicesList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.choiceRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.correctRadioBtn {
+  background: transparent;
+  border: none;
+  font-size: 1.6rem;
+  color: #cbd5e1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: all 0.2s ease;
+}
+
+.correctRadioBtn:hover {
+  color: #10b981;
+}
+
+.activeChoice {
+  color: #10b981 !important;
+  transform: scale(1.08);
+}
+
+.removeChoiceBtn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.removeChoiceBtn:hover {
+  color: #ef4444;
+  background-color: #fee2e2;
+}
+
+.addChoiceBtn {
+  background: transparent;
+  border: 1px dashed #94a3b8;
+  color: #475569;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  margin-top: 4px;
+}
+
+.addChoiceBtn:hover {
+  border-color: #10b981;
+  color: #10b981;
+  background-color: #ecfdf5;
+}
+
+/* ========================================================
+   أسفل النافذة والأزرار (Footer & Action Buttons)
+   ======================================================== */
+.modalFooter {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 10px;
+  padding-top: 16px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.cancelBtn {
+  background-color: #f1f5f9;
+  color: #475569;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancelBtn:hover {
+  background-color: #e2e8f0;
+  color: #0f172a;
+}
+
+.submitBtn {
+  border: none;
+  color: #ffffff;
+  padding: 10px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.submitBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.blueBtn {
+  background-color: #2563eb;
+}
+.blueBtn:hover {
+  background-color: #1d4ed8;
+}
+
+.purpleBtn {
+  background-color: #9333ea;
+}
+.purpleBtn:hover {
+  background-color: #7e22ce;
+}
+
+.emeraldBtn {
+  background-color: #10b981;
+}
+.emeraldBtn:hover {
+  background-color: #059669;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

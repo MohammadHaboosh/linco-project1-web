@@ -13,11 +13,18 @@ import LessonList from "./LessonList";
 import QuestionBankSection from "./QuestionBankSection";
 import SectionQuizSection from "./SectionQuizSection";
 
+import AddLessonModal from "./AddLessonModal";
+import AddQuizModal from "./AddQuizModal";
+import AddQuestionModal from "./AddQuestionModal";
+
 const CurriculumTab = ({ sections, setSections }) => {
   const { t } = useTranslation();
   const [expandedSections, setExpandedSections] = useState(
-    sections.map((s) => s.id), // توسيع الأقسام افتراضياً
+    sections.map((s) => s.id),
   );
+
+  const [activeModal, setActiveModal] = useState(null); // 'lesson' | 'quiz' | 'question' | null
+  const [activeSectionId, setActiveSectionId] = useState(null);
 
   const toggleSection = (id) => {
     if (expandedSections.includes(id)) {
@@ -53,18 +60,76 @@ const CurriculumTab = ({ sections, setSections }) => {
     setSections(sections.map((s) => (s.id === id ? { ...s, title } : s)));
   };
 
-  // دوال الدروس
-  const addLesson = (secId) => {
-    const title = prompt("Enter lesson title:");
-    if (!title) return;
+  const openLessonModal = (secId) => {
+    setActiveSectionId(secId);
+    setActiveModal("lesson");
+  };
+
+  const openQuizModal = (secId) => {
+    setActiveSectionId(secId);
+    setActiveModal("quiz");
+  };
+
+  const openQuestionModal = (secId) => {
+    setActiveSectionId(secId);
+    setActiveModal("question");
+  };
+
+  const handleCloseModal = () => {
+    setActiveModal(null);
+    setActiveSectionId(null);
+  };
+
+  const handleSaveLesson = (lessonData) => {
+    if (!activeSectionId) return;
     setSections(
       sections.map((s) =>
-        s.id === secId
+        s.id === activeSectionId
           ? {
               ...s,
               lessons: [
                 ...s.lessons,
-                { id: Date.now(), title, duration: "00:00" },
+                {
+                  id: Date.now().toString(),
+                  ...lessonData,
+                },
+              ],
+            }
+          : s,
+      ),
+    );
+  };
+
+  const handleSaveQuiz = (quizData) => {
+    if (!activeSectionId) return;
+    setSections(
+      sections.map((s) =>
+        s.id === activeSectionId
+          ? {
+              ...s,
+              quiz: {
+                id: Date.now().toString(),
+                ...quizData,
+              },
+            }
+          : s,
+      ),
+    );
+  };
+
+  const handleSaveQuestion = (questionData) => {
+    if (!activeSectionId) return;
+    setSections(
+      sections.map((s) =>
+        s.id === activeSectionId
+          ? {
+              ...s,
+              questions: [
+                ...s.questions,
+                {
+                  id: Date.now().toString(),
+                  ...questionData,
+                },
               ],
             }
           : s,
@@ -82,38 +147,11 @@ const CurriculumTab = ({ sections, setSections }) => {
     );
   };
 
-  // دوال بنك الأسئلة
-  const addQuestion = (secId) => {
-    const text = prompt("Enter question text:");
-    if (!text) return;
-    setSections(
-      sections.map((s) =>
-        s.id === secId
-          ? { ...s, questions: [...s.questions, { id: Date.now(), text }] }
-          : s,
-      ),
-    );
-  };
-
   const deleteQuestion = (secId, qId) => {
     setSections(
       sections.map((s) =>
         s.id === secId
           ? { ...s, questions: s.questions.filter((q) => q.id !== qId) }
-          : s,
-      ),
-    );
-  };
-
-  // دوال الكويز
-  const addQuiz = (secId) => {
-    setSections(
-      sections.map((s) =>
-        s.id === secId
-          ? {
-              ...s,
-              quiz: { id: Date.now(), title: "Section Quiz", duration: 15 },
-            }
           : s,
       ),
     );
@@ -145,7 +183,6 @@ const CurriculumTab = ({ sections, setSections }) => {
 
           return (
             <div key={section.id} className={styles.sectionCard}>
-              {/* ترويسة بطاقة القسم العصرية */}
               <div
                 className={styles.sectionHeader}
                 onClick={() => toggleSection(section.id)}
@@ -191,23 +228,20 @@ const CurriculumTab = ({ sections, setSections }) => {
                 </div>
               </div>
 
-              {/* محتوى القسم */}
               {isExpanded && (
                 <div className={styles.sectionBody}>
-                  {/* 1. قائمة الدروس (زر الإضافة المحدث بالأزرق أصبح بداخلها) */}
                   <LessonList
                     lessons={section.lessons}
-                    onAddLesson={() => addLesson(section.id)}
+                    onAddLesson={() => openLessonModal(section.id)}
                     onDeleteLesson={(lessonId) =>
                       deleteLesson(section.id, lessonId)
                     }
                   />
 
-                  {/* 2. المستطيلان جنباً إلى جنب (بنك الأسئلة باليسار والأخضر / الكويز باليمين والبرتقالي) */}
                   <div className={styles.bottomAssessmentRow}>
                     <QuestionBankSection
                       questions={section.questions}
-                      onAddQuestion={() => addQuestion(section.id)}
+                      onAddQuestion={() => openQuestionModal(section.id)}
                       onDeleteQuestion={(qId) =>
                         deleteQuestion(section.id, qId)
                       }
@@ -215,7 +249,7 @@ const CurriculumTab = ({ sections, setSections }) => {
 
                     <SectionQuizSection
                       quiz={section.quiz}
-                      onAddQuiz={() => addQuiz(section.id)}
+                      onAddQuiz={() => openQuizModal(section.id)}
                       onDeleteQuiz={() => deleteQuiz(section.id)}
                     />
                   </div>
@@ -226,7 +260,6 @@ const CurriculumTab = ({ sections, setSections }) => {
         })}
       </div>
 
-      {/* زر إضافة قسم جديد بالكامل */}
       <button
         type="button"
         className={styles.addSectionBtnRoot}
@@ -235,6 +268,24 @@ const CurriculumTab = ({ sections, setSections }) => {
         <IoAddCircleOutline className={styles.rootAddIcon} />
         <span>Add New Section</span>
       </button>
+
+      <AddLessonModal
+        isOpen={activeModal === "lesson"}
+        onClose={handleCloseModal}
+        onSubmit={handleSaveLesson}
+      />
+
+      <AddQuizModal
+        isOpen={activeModal === "quiz"}
+        onClose={handleCloseModal}
+        onSubmit={handleSaveQuiz}
+      />
+
+      <AddQuestionModal
+        isOpen={activeModal === "question"}
+        onClose={handleCloseModal}
+        onSubmit={handleSaveQuestion}
+      />
     </div>
   );
 };
