@@ -9,7 +9,7 @@ import {
   IoChevronForwardOutline,
 } from "react-icons/io5";
 import { useCourseManager } from "../../../hooks/useCourseManager";
-import GeneralInfoTab from "./tabs/GeneralInfoTab";
+import GeneralInfoTab from "./tabs/GeneralInfoTab/GeneralInfoTab";
 import CurriculumTab from "./tabs/CurriculumTab/CurriculumTab";
 import FAQsTab from "./tabs/FAQsTab";
 import styles from "./CourseManager.module.css";

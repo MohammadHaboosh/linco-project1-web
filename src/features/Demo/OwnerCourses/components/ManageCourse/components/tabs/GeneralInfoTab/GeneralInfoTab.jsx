@@ -1,8 +1,7 @@
 import { useRef } from "react";
 import { IoCloudUploadOutline, IoCloseOutline } from "react-icons/io5";
-import styles from "../CourseManager.module.css";
+import styles from "./GeneralInfoTab.module.css";
 import { useTranslation } from "react-i18next";
-import { courseManagerApi } from "../../../../api/courseManagerApi";
 
 const GeneralInfoTab = ({ data, onChange }) => {
   const tagsList = data.tags || [];
