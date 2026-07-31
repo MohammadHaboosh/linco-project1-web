@@ -20,18 +20,22 @@ const LessonList = ({
   onReorderLessons,
   onAddAttachment,
   onDeleteAttachment,
+  onFetchAttachments,
 }) => {
   const [draggedIndex, setDraggedIndex] = useState(null);
-  const [expandedLessons, setExpandedLessons] = useState([]); // لحفظ الدروس المفتوحة
+  const [expandedLessons, setExpandedLessons] = useState([]);
   const [activeLessonForAttachment, setActiveLessonForAttachment] =
     useState(null);
 
   const toggleLessonExpand = (lessonId, e) => {
-    e.stopPropagation();
+    if (e) e.stopPropagation();
     if (expandedLessons.includes(lessonId)) {
       setExpandedLessons(expandedLessons.filter((id) => id !== lessonId));
     } else {
       setExpandedLessons([...expandedLessons, lessonId]);
+      if (onFetchAttachments) {
+        onFetchAttachments(lessonId);
+      }
     }
   };
 
@@ -148,36 +152,46 @@ const LessonList = ({
                     </div>
 
                     <div className={styles.attachmentsGrid}>
-                      {lesson.attachments?.map((attachment) => (
-                        <div
-                          key={attachment.id}
-                          className={styles.attachmentItemCard}
-                        >
-                          <div className={styles.attachmentInfo}>
-                            <IoDocumentAttachOutline
-                              className={styles.fileIcon}
-                            />
-                            <div>
-                              <p className={styles.fileName}>
-                                {attachment.title}
-                              </p>
-                              <span className={styles.fileMeta}>
-                                {attachment.fileName} ({attachment.fileSize})
-                              </span>
-                            </div>
-                          </div>
-                          <button
-                            type="button"
-                            className={styles.deleteAttachmentBtn}
-                            onClick={() =>
-                              onDeleteAttachment(lesson.id, attachment.id)
-                            }
-                            title="Remove attachment"
+                      {lesson.attachments?.map((attachment) => {
+                        const title =
+                          attachment.title || attachment.name || "Resource";
+                        const fileName =
+                          attachment.fileName || attachment.name || "";
+                        const fileSizeStr = attachment.fileSize
+                          ? ` (${attachment.fileSize})`
+                          : "";
+
+                        return (
+                          <div
+                            key={attachment.id}
+                            className={styles.attachmentItemCard}
                           >
-                            <IoTrashOutline />
-                          </button>
-                        </div>
-                      ))}
+                            <div className={styles.attachmentInfo}>
+                              <IoDocumentAttachOutline
+                                className={styles.fileIcon}
+                              />
+                              <div>
+                                <p className={styles.fileName}>{title}</p>
+                                <span className={styles.fileMeta}>
+                                  {fileName}
+                                  {fileSizeStr}
+                                </span>
+                              </div>
+                            </div>
+                            <button
+                              type="button"
+                              className={styles.deleteAttachmentBtn}
+                              onClick={() =>
+                                onDeleteAttachment &&
+                                onDeleteAttachment(lesson.id, attachment.id)
+                              }
+                              title="Remove attachment"
+                            >
+                              <IoTrashOutline />
+                            </button>
+                          </div>
+                        );
+                      })}
 
                       <button
                         type="button"
@@ -200,7 +214,9 @@ const LessonList = ({
         isOpen={Boolean(activeLessonForAttachment)}
         onClose={() => setActiveLessonForAttachment(null)}
         onSubmit={(attachmentData) => {
-          onAddAttachment(activeLessonForAttachment, attachmentData);
+          if (onAddAttachment && activeLessonForAttachment) {
+            onAddAttachment(activeLessonForAttachment, attachmentData);
+          }
           setActiveLessonForAttachment(null);
         }}
       />

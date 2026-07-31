@@ -23,9 +23,14 @@ const AddAttachmentModal = ({ isOpen, onClose, onSubmit }) => {
       setFormData((prev) => ({
         ...prev,
         file: file,
-        title: prev.title || file.name, // استخدام اسم الملف كعنوان افتراضي
+        title: prev.title || file.name,
       }));
     }
+  };
+
+  const handleClose = () => {
+    setFormData({ title: "", file: null });
+    onClose();
   };
 
   const handleSubmit = (e) => {
@@ -33,12 +38,13 @@ const AddAttachmentModal = ({ isOpen, onClose, onSubmit }) => {
     if (!formData.file) return;
 
     onSubmit({
-      id: Date.now().toString(),
-      title: formData.title,
+      id: `temp-${Date.now()}`,
+      title: formData.title.trim() || formData.file.name,
       fileName: formData.file.name,
       fileSize: (formData.file.size / 1024).toFixed(1) + " KB",
       fileType: formData.file.type || "document",
       file: formData.file,
+      isNew: true,
     });
 
     setFormData({ title: "", file: null });
@@ -46,7 +52,7 @@ const AddAttachmentModal = ({ isOpen, onClose, onSubmit }) => {
   };
 
   return (
-    <div className={styles.modalOverlay} onClick={onClose}>
+    <div className={styles.modalOverlay} onClick={handleClose}>
       <div
         className={styles.modalContainer}
         onClick={(e) => e.stopPropagation()}
@@ -61,14 +67,16 @@ const AddAttachmentModal = ({ isOpen, onClose, onSubmit }) => {
               <p>Upload supplementary files, slides, or resources</p>
             </div>
           </div>
-          <button className={styles.closeBtn} onClick={onClose}>
+          <button
+            className={styles.closeBtn}
+            onClick={handleClose}
+            type="button"
+          >
             <IoCloseOutline />
           </button>
         </div>
 
-        {/* جسم النموذج */}
         <form onSubmit={handleSubmit} className={styles.modalBody}>
-          {/* عنوان الملحق */}
           <div className={styles.formGroup}>
             <label className={styles.label}>
               <IoDocumentTextOutline /> Attachment Title *
@@ -85,7 +93,6 @@ const AddAttachmentModal = ({ isOpen, onClose, onSubmit }) => {
             />
           </div>
 
-          {/* منطقة رفع الملف */}
           <div className={styles.formGroup}>
             <label className={styles.label}>Resource File *</label>
             <div
@@ -119,12 +126,11 @@ const AddAttachmentModal = ({ isOpen, onClose, onSubmit }) => {
             </div>
           </div>
 
-          {/* أزرار الإجراءات */}
           <div className={styles.modalFooter}>
             <button
               type="button"
               className={styles.cancelBtn}
-              onClick={onClose}
+              onClick={handleClose}
             >
               Cancel
             </button>

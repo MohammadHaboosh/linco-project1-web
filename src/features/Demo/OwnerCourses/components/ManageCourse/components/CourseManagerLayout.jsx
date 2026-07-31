@@ -17,6 +17,7 @@ import styles from "./CourseManager.module.css";
 import { useTranslation } from "react-i18next";
 import { lessonApi } from "../../../api/lessonApi";
 import { sectionApi } from "../../../api/sectionApi";
+import { attachmentApi } from "../../../api/attachmentApi";
 
 const isTempId = (id) => {
   if (!id) return true;
@@ -172,9 +173,59 @@ const CourseManagerLayout = () => {
             const realLessonId =
               createdLesson?.id || createdLesson?.data?.id || lesson.id;
 
+            const currentAttachments = lesson.attachments || [];
+            const updatedAttachmentsList = [];
+
+            for (const att of currentAttachments) {
+              if (att.isNew && att.file) {
+                // 1. طلب رابط الرفع للملحق
+                const uploadUrls = await attachmentApi.getUploadUrl(
+                  realLessonId,
+                  [att.file.name],
+                );
+                const uploadInfo = uploadUrls?.find(
+                  (u) => u.fileName === att.file.name,
+                );
+
+                const uploadUrl = uploadInfo?.uploadUrl || uploadInfo?.url;
+                const finalPath =
+                  uploadInfo?.fileKey ||
+                  uploadInfo?.cdnUrl ||
+                  uploadInfo?.path ||
+                  "";
+
+                // 2. رفع ملف الملحق على Azure / Storage
+                if (uploadUrl) {
+                  await attachmentApi.uploadAttachmentToStorage(
+                    uploadUrl,
+                    att.file,
+                  );
+                }
+
+                const createdAtt = await attachmentApi.createAttachment(
+                  realLessonId,
+                  {
+                    name: att.title || att.fileName,
+                    path: finalPath,
+                  },
+                );
+
+                updatedAttachmentsList.push({
+                  id: createdAtt?.id || createdAtt?.data?.id,
+                  title: createdAtt?.name || att.title,
+                  fileName: createdAtt?.name || att.fileName,
+                  path: finalPath,
+                  isNew: false,
+                });
+              } else {
+                updatedAttachmentsList.push(att);
+              }
+            }
+
             updatedLessonsList.push({
               ...lesson,
               id: realLessonId,
+              attachments: updatedAttachmentsList,
               videoUrl: finalVideoUrl,
               videoFile: null,
               isNew: false,
