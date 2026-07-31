@@ -242,56 +242,83 @@ const CurriculumTab = ({
     }
   };
 
-  const handleAddAttachment = (lessonId, attachmentData) => {
-    console.log("Adding attachment to lessonId:", lessonId, attachmentData);
+  const handleAddAttachment = (arg1, arg2, arg3) => {
+    let targetSecId = null;
+    let targetLessonId = arg1;
+    let attachmentData = arg2;
+
+    if (typeof arg2 === "string" || typeof arg3 === "object") {
+      targetSecId = arg1;
+      targetLessonId = arg2;
+      attachmentData = arg3;
+    }
+
+    console.log("Adding attachment to lesson:", targetLessonId, attachmentData);
+
+    if (!targetLessonId || !attachmentData) return;
 
     setSections((prev) =>
-      prev.map((s) => ({
-        ...s,
-        lessons: (s.lessons || []).map((l) => {
-          if (String(l.id) === String(lessonId)) {
-            const rawFile =
-              attachmentData.file ||
-              attachmentData.selectedFile ||
-              (attachmentData instanceof File ? attachmentData : null);
+      prev.map((s) => {
+        if (targetSecId && String(s.id) !== String(targetSecId)) {
+          return s;
+        }
 
-            const newAttachment = {
-              id: attachmentData.id || `temp_att_${Date.now()}`,
-              title:
-                attachmentData.title ||
-                attachmentData.name ||
-                rawFile?.name ||
-                "New Attachment",
-              fileName:
-                attachmentData.fileName ||
-                rawFile?.name ||
-                attachmentData.name ||
-                "",
-              file: rawFile,
-              isNew: true,
-              isExisting: false,
-            };
-            return {
-              ...l,
-              attachments: [...(l.attachments || []), newAttachment],
-            };
-          }
-          return l;
-        }),
-      })),
+        return {
+          ...s,
+          lessons: (s.lessons || []).map((l) => {
+            if (String(l.id) === String(targetLessonId)) {
+              const rawFile =
+                attachmentData.file ||
+                attachmentData.selectedFile ||
+                (attachmentData instanceof File ? attachmentData : null);
+
+              const newAttachment = {
+                id: attachmentData.id || `temp_att_${Date.now()}`,
+                title:
+                  attachmentData.title ||
+                  attachmentData.name ||
+                  rawFile?.name ||
+                  "New Attachment",
+                fileName:
+                  attachmentData.fileName ||
+                  rawFile?.name ||
+                  attachmentData.name ||
+                  "",
+                file: rawFile,
+                isNew: true,
+                isExisting: false,
+              };
+
+              return {
+                ...l,
+                attachments: [...(l.attachments || []), newAttachment],
+              };
+            }
+            return l;
+          }),
+        };
+      }),
     );
   };
 
-  const handleDeleteAttachment = (lessonId, attachmentId) => {
+  const handleDeleteAttachment = (arg1, arg2, arg3) => {
+    let targetLessonId = arg1;
+    let targetAttId = arg2;
+
+    if (arg3 !== undefined) {
+      targetLessonId = arg2;
+      targetAttId = arg3;
+    }
+
     setSections((prev) =>
       prev.map((s) => ({
         ...s,
         lessons: (s.lessons || []).map((l) => {
-          if (l.id === lessonId) {
+          if (String(l.id) === String(targetLessonId)) {
             return {
               ...l,
               attachments: (l.attachments || []).filter(
-                (att) => att.id !== attachmentId,
+                (att) => String(att.id) !== String(targetAttId),
               ),
             };
           }
