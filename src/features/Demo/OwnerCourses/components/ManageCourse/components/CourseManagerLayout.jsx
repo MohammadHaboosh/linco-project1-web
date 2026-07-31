@@ -349,22 +349,25 @@ const CourseManagerLayout = () => {
         </div>
 
         <div className={styles.headerRight}>
-          <button
-            className={styles.saveBtn}
-            onClick={handleSaveAll}
-            disabled={isSaving}
-          >
-            {isSaving ? (
-              <div className={styles.btnSpinner}></div>
-            ) : (
-              <IoSaveOutline />
+          {!activeTab.id ===
+            "faqs"(
+              <button
+                className={styles.saveBtn}
+                onClick={handleSaveAll}
+                disabled={isSaving}
+              >
+                {isSaving ? (
+                  <div className={styles.btnSpinner}></div>
+                ) : (
+                  <IoSaveOutline />
+                )}
+                <span>
+                  {isSaving
+                    ? t("saving", "Saving...")
+                    : t("save-changes", "Save Changes")}
+                </span>
+              </button>,
             )}
-            <span>
-              {isSaving
-                ? t("saving", "Saving...")
-                : t("save-changes", "Save Changes")}
-            </span>
-          </button>
         </div>
       </header>
 

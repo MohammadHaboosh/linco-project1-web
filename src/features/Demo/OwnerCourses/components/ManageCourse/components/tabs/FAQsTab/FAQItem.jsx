@@ -18,29 +18,32 @@ const FAQItem = ({ faq, onEdit, onDelete }) => {
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className={styles.faqHeaderLeft}>
-          <IoHelpCircleOutline className={styles.faqIcon} />
+          <IoHelpCircleOutline className={styles.faqIcon} size={20} />
           <span className={styles.faqQuestionText}>{faq.question}</span>
         </div>
+
         <div className={styles.faqActions} onClick={(e) => e.stopPropagation()}>
           <button
             type="button"
             className={styles.actionBtn}
             onClick={() => onEdit(faq)}
-            title="Edit FAQ"
           >
-            <IoCreateOutline size={18} />
+            <IoCreateOutline size={15} />
+            <span>Edit</span>
           </button>
+
           <button
             type="button"
             className={`${styles.actionBtn} ${styles.deleteBtn}`}
             onClick={() => onDelete(faq.id)}
-            title="Delete FAQ"
           >
-            <IoTrashOutline size={18} />
+            <IoTrashOutline size={15} />
+            <span>Delete</span>
           </button>
+
           <button
             type="button"
-            className={styles.actionBtn}
+            className={styles.iconOnlyBtn}
             onClick={() => setIsExpanded(!isExpanded)}
           >
             {isExpanded ? (

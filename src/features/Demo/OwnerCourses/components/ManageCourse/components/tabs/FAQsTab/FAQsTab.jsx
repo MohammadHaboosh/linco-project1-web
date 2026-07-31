@@ -1,47 +1,31 @@
 import { useState } from "react";
 import { IoAddCircleOutline, IoHelpCircleOutline } from "react-icons/io5";
-import { useTranslation } from "react-i18next";
 import styles from "./FAQsTab.module.css";
 import FAQItem from "./FAQItem";
 import AddEditFAQModal from "./AddEditFAQModal";
+import { useFAQs } from "./useFAQs"; // استدعي الـ Hook هنا
+import { useTranslation } from "react-i18next";
 
-const FAQsTab = ({ faqs = [], setFaqs }) => {
+const FAQsTab = ({ courseId }) => {
   const { t } = useTranslation();
+  const { faqs, loading, addFaq, removeFaq } = useFAQs(courseId);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedFaq, setSelectedFaq] = useState(null);
 
-  const handleOpenAddModal = () => {
-    setSelectedFaq(null);
-    setIsModalOpen(true);
-  };
-
-  const handleOpenEditModal = (faq) => {
-    setSelectedFaq(faq);
-    setIsModalOpen(true);
-  };
-
-  const handleSaveFAQ = (faqData) => {
-    if (selectedFaq) {
-      // تعديل سؤال موجود
-      setFaqs((prev) =>
-        prev.map((item) =>
-          item.id === selectedFaq.id ? { ...item, ...faqData } : item,
-        ),
-      );
+  const handleSaveFAQ = async (faqData) => {
+    const result = await addFaq(faqData);
+    if (result.success) {
+      setIsModalOpen(false);
     } else {
-      // إضافة سؤال جديد محلياً
-      const newFaq = {
-        id: `temp_faq_${Date.now()}`,
-        ...faqData,
-        isNew: true,
-      };
-      setFaqs((prev) => [...prev, newFaq]);
+      alert("Failed to create FAQ");
     }
   };
 
-  const handleDeleteFAQ = (id) => {
+  const handleDeleteFAQ = async (id) => {
     if (window.confirm("Are you sure you want to delete this FAQ?")) {
-      setFaqs((prev) => prev.filter((item) => item.id !== id));
+      const result = await removeFaq(id);
+      if (!result.success) {
+        alert("Failed to delete FAQ");
+      }
     }
   };
 
@@ -49,31 +33,26 @@ const FAQsTab = ({ faqs = [], setFaqs }) => {
     <div className={styles.tabCard}>
       <div className={styles.tabHeader}>
         <div>
-          <h3 className={styles.tabTitle}>{t("course-faqs", "Course FAQs")}</h3>
+          <h3 className={styles.tabTitle}>{t("course-faqs")}</h3>
           <p className={styles.tabSubtitle}>
-            Add frequently asked questions and answers to help students
-            understand your course better.
+            {t("manage-questions-and-answers-for-your-students")}
           </p>
         </div>
       </div>
 
-      {faqs.length === 0 ? (
+      {loading ? (
         <div className={styles.emptyState}>
-          <IoHelpCircleOutline className={styles.emptyIcon} />
-          <p>
-            No FAQs added yet. Click the button below to add your first
-            question.
-          </p>
+          <p>{t("loading-faqs")}</p>
+        </div>
+      ) : faqs.length === 0 ? (
+        <div className={styles.emptyState}>
+          <IoHelpCircleOutline className={styles.emptyIcon} size={36} />
+          <p>{t("no-faqs-added-yet-click-below-to-create-one")}</p>
         </div>
       ) : (
         <div className={styles.faqsList}>
           {faqs.map((faq) => (
-            <FAQItem
-              key={faq.id}
-              faq={faq}
-              onEdit={handleOpenEditModal}
-              onDelete={handleDeleteFAQ}
-            />
+            <FAQItem key={faq.id} faq={faq} onDelete={handleDeleteFAQ} />
           ))}
         </div>
       )}
@@ -81,18 +60,16 @@ const FAQsTab = ({ faqs = [], setFaqs }) => {
       <button
         type="button"
         className={styles.addBtnRoot}
-        onClick={handleOpenAddModal}
+        onClick={() => setIsModalOpen(true)}
       >
-        <IoAddCircleOutline size={20} />
-        <span>Add New FAQ</span>
+        <IoAddCircleOutline size={18} />
+        <span>{t("add-new-faq")}</span>
       </button>
 
       <AddEditFAQModal
-        key={selectedFaq ? selectedFaq.id : "new-faq"}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleSaveFAQ}
-        initialData={selectedFaq}
       />
     </div>
   );

@@ -26,7 +26,11 @@ const AddEditFAQModal = ({ isOpen, onClose, onSubmit, initialData }) => {
           <h3 className={styles.modalTitle}>
             {initialData ? "Edit FAQ" : "Add New FAQ"}
           </h3>
-          <button type="button" className={styles.actionBtn} onClick={onClose}>
+          <button
+            type="button"
+            className={styles.iconOnlyBtn}
+            onClick={onClose}
+          >
             <IoCloseOutline size={22} />
           </button>
         </div>
@@ -37,7 +41,7 @@ const AddEditFAQModal = ({ isOpen, onClose, onSubmit, initialData }) => {
             <input
               type="text"
               className={styles.formInput}
-              placeholder="e.g. What are the prerequisites for this course?"
+              placeholder="e.g. What are the prerequisites?"
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               required
@@ -48,7 +52,7 @@ const AddEditFAQModal = ({ isOpen, onClose, onSubmit, initialData }) => {
             <label className={styles.formLabel}>Answer</label>
             <textarea
               className={styles.formTextarea}
-              placeholder="Provide a clear and concise answer..."
+              placeholder="Provide a clear answer..."
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
               required
