@@ -27,6 +27,7 @@ import {
 import styles from "./Chats.module.css";
 
 const TYPING_IDLE_DELAY = 1500;
+const COMPOSER_MAX_HEIGHT = 120;
 
 const ChatArea = ({
   messages,
@@ -74,6 +75,18 @@ const ChatArea = ({
   const restoreScrollFrameRef = useRef(null);
 
   const isConnected = connectionStatus === "connected";
+
+  const resizeComposer = useCallback((composer) => {
+    if (!composer) {
+      return;
+    }
+
+    composer.style.height = "auto";
+    composer.style.height = `${Math.min(
+      composer.scrollHeight,
+      COMPOSER_MAX_HEIGHT,
+    )}px`;
+  }, []);
 
   const clearSelectedAttachment = useCallback(() => {
     discardPreparedAttachment(selectedAttachmentRef.current);
@@ -197,6 +210,11 @@ const ChatArea = ({
     [onlineMembers],
   );
 
+  const messagesById = useMemo(
+    () => new Map(messages.map((message) => [message.id, message])),
+    [messages],
+  );
+
   const typingText = useMemo(() => {
     if (typingMemberIds.length === 0) {
       return "";
@@ -243,6 +261,7 @@ const ChatArea = ({
   const handleDraftChange = (event) => {
     const nextDraft = event.target.value;
     setDraft(nextDraft);
+    resizeComposer(event.target);
 
     if (editingMessage || !isConnected || !nextDraft.trim()) {
       stopTyping();
@@ -267,6 +286,10 @@ const ChatArea = ({
     setEditingMessage(null);
     clearSelectedAttachment();
     stopTyping();
+
+    if (inputRef.current) {
+      inputRef.current.style.height = "auto";
+    }
   }, [clearSelectedAttachment, stopTyping]);
 
   const uploadSelectedAttachment = useCallback(
@@ -366,7 +389,21 @@ const ChatArea = ({
     requestAnimationFrame(() => {
       inputRef.current?.focus();
       inputRef.current?.select();
+      resizeComposer(inputRef.current);
     });
+  };
+
+  const handleComposerKeyDown = (event) => {
+    if (
+      event.key !== "Enter" ||
+      event.shiftKey ||
+      event.nativeEvent.isComposing
+    ) {
+      return;
+    }
+
+    event.preventDefault();
+    event.currentTarget.form?.requestSubmit();
   };
 
   const handleDelete = async (message) => {
@@ -638,12 +675,25 @@ const ChatArea = ({
               : hasNextInGroup
                 ? "first"
                 : "single";
+            const referencedMessage = message.replyTo?.id
+              ? messagesById.get(message.replyTo.id)
+              : null;
+            const replySenderId =
+              message.replyTo?.sender?.id || referencedMessage?.sender?.id;
+            const replySenderName =
+              getDepartmentMemberName(message.replyTo?.sender, "") ||
+              getDepartmentMemberName(referencedMessage?.sender, "") ||
+              getDepartmentMemberName(
+                onlineMembersById.get(replySenderId),
+                "",
+              );
 
             return (
               <MessageItem
                 key={message.id}
                 message={message}
                 groupPosition={groupPosition}
+                replySenderName={replySenderName}
                 isMe={message.sender.id === currentDepartmentMemberId}
                 isPending={Boolean(pendingActionId) || isSending}
                 onReply={handleReply}
@@ -766,9 +816,8 @@ const ChatArea = ({
             <IoAttachOutline />
           </button>
 
-          <input
+          <textarea
             ref={inputRef}
-            type="text"
             placeholder={
               isConnected
                 ? t("write-your-message")
@@ -776,8 +825,10 @@ const ChatArea = ({
             }
             value={draft}
             onChange={handleDraftChange}
+            onKeyDown={handleComposerKeyDown}
             disabled={!isConnected}
             autoComplete="off"
+            rows={1}
           />
 
           <button

@@ -952,24 +952,27 @@
   box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.1);
 }
 
-.inputWrapper input {
+.inputWrapper textarea {
   min-width: 0;
   flex: 1;
   padding: 8px;
   border: 0;
   outline: 0;
+  resize: none;
+  overflow-y: auto;
   background: transparent;
   color: #1e293b;
   font: inherit;
   font-size: 0.96rem;
   font-weight: 500;
+  line-height: 1.4;
 }
 
-.inputWrapper input::placeholder {
+.inputWrapper textarea::placeholder {
   color: #94a3b8;
 }
 
-.inputWrapper input:disabled {
+.inputWrapper textarea:disabled {
   cursor: not-allowed;
 }
 
@@ -1281,7 +1284,7 @@
     padding: 5px 6px 5px 9px;
   }
 
-  .inputWrapper input {
+  .inputWrapper textarea {
     padding: 7px 3px;
     font-size: 1rem;
   }

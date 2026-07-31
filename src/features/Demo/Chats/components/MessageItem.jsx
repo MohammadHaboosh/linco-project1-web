@@ -94,6 +94,7 @@ const MessageItem = ({
   isMe,
   isPending,
   groupPosition = "single",
+  replySenderName,
   onReply,
   onEdit,
   onDelete,
@@ -137,7 +138,7 @@ const MessageItem = ({
         <div className={styles.messageBubble}>
           {message.replyTo && (
             <div className={styles.replyReference}>
-              <span>{t("chat-reply")}</span>
+              <span>{replySenderName || t("chat-unknown-member")}</span>
               <p>
                 {message.replyTo.content ||
                   message.replyTo.attachment?.fileName ||
