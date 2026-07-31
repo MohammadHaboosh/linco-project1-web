@@ -32,12 +32,22 @@ export const lessonApi = {
     return data.data;
   },
 
-  uploadVideoToStorage: async (uploadUrl, videoFile) => {
+  uploadVideoToStorage: async (uploadUrl, videoFile, onProgress) => {
     const response = await fetch(uploadUrl, {
       method: "PUT",
       headers: {
         "x-ms-blob-type": "BlockBlob",
         "Content-Type": videoFile.type || "application/octet-stream",
+      },
+      onUploadProgress: (progressEvent) => {
+        if (progressEvent.total) {
+          const percentCompleted = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total,
+          );
+          if (onProgress) {
+            onProgress(percentCompleted);
+          }
+        }
       },
       body: videoFile,
     });
