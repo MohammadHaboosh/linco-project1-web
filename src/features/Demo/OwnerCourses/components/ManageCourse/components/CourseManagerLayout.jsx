@@ -311,7 +311,7 @@ const CourseManagerLayout = () => {
             <div className={styles.progressIcon}>
               <IoCloudUploadOutline />
             </div>
-            <h3>Uploading Video to Storage...</h3>
+            <h3>Uploading your files to Storage...</h3>
             <p className={styles.lessonName}>{uploadProgress.title}</p>
 
             <div className={styles.progressBarWrapper}>
