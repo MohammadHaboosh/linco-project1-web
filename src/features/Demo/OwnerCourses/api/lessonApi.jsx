@@ -9,7 +9,7 @@ export const lessonApi = {
     const data = await response.json();
     if (!response.ok || !data.success) throw new Error(data.message);
 
-    console.log("Fetched Section Lessons:", data.data);
+    console.log("Fetched Section Lessons::::", data.data);
     return data.data;
   },
 
