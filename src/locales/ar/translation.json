@@ -554,6 +554,8 @@
   "chat-message-deleted": "تم حذف هذه الرسالة",
   "chat-edited": "تم التعديل",
   "chat-image-attachment": "صورة مرفقة",
+  "chat-audio-attachment": "مقطع صوتي مرفق",
+  "chat-file-attachment": "ملف مرفق",
   "chat-open-attachment": "فتح المرفق",
   "chat-edit-message": "تعديل الرسالة",
   "chat-delete-message": "حذف الرسالة",

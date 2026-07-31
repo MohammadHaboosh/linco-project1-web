@@ -29,6 +29,49 @@ import styles from "./Chats.module.css";
 const TYPING_IDLE_DELAY = 1500;
 const COMPOSER_MAX_HEIGHT = 120;
 
+const getMessagePreviewText = (message, t) => {
+  if (!message) {
+    return "";
+  }
+
+  if (message.isDeleted) {
+    return t("chat-message-deleted");
+  }
+
+  const content = String(message.content || "").trim();
+  if (content) {
+    return content;
+  }
+
+  const attachment = message.attachment;
+  const fileName = attachment?.fileName || message.fileName;
+  if (fileName) {
+    return fileName;
+  }
+
+  const type = String(message.type || "").toUpperCase();
+  const mimeType = attachment?.mimeType || message.mimeType || "";
+  const hasAttachment = Boolean(
+    attachment ||
+      message.fileUrl ||
+      ["IMAGE", "AUDIO", "FILE"].includes(type),
+  );
+
+  if (!hasAttachment) {
+    return "";
+  }
+
+  if (type === "IMAGE" || mimeType.startsWith("image/")) {
+    return t("chat-image-attachment");
+  }
+
+  if (type === "AUDIO" || mimeType.startsWith("audio/")) {
+    return t("chat-audio-attachment");
+  }
+
+  return t("chat-file-attachment");
+};
+
 const ChatArea = ({
   messages,
   currentDepartmentMemberId,
@@ -491,6 +534,7 @@ const ChatArea = ({
     : t("chat-replying-to", {
         name: replyingTo ? getSenderName(replyingTo) : "",
       });
+  const composerContextPreview = getMessagePreviewText(composerContext, t);
 
   const isSubmitting = isSending || Boolean(pendingActionId);
   const isAttachmentUploading =
@@ -709,6 +753,9 @@ const ChatArea = ({
                 onlineMembersById.get(replySenderId),
                 "",
               );
+            const replyPreviewText =
+              getMessagePreviewText(message.replyTo, t) ||
+              getMessagePreviewText(referencedMessage, t);
 
             return (
               <MessageItem
@@ -716,6 +763,7 @@ const ChatArea = ({
                 message={message}
                 groupPosition={groupPosition}
                 replySenderName={replySenderName}
+                replyPreviewText={replyPreviewText}
                 onOpenImage={setOpenImage}
                 isMe={message.sender.id === currentDepartmentMemberId}
                 isPending={Boolean(pendingActionId) || isSending}
@@ -738,8 +786,7 @@ const ChatArea = ({
             <div>
               <strong>{composerContextLabel}</strong>
               <span>
-                {composerContext.content ||
-                  composerContext.attachment?.fileName ||
+                {composerContextPreview ||
                   t("chat-referenced-message-unavailable")}
               </span>
             </div>

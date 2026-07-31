@@ -554,6 +554,8 @@
   "chat-message-deleted": "This message was deleted",
   "chat-edited": "Edited",
   "chat-image-attachment": "Image attachment",
+  "chat-audio-attachment": "Audio attachment",
+  "chat-file-attachment": "File attachment",
   "chat-open-attachment": "Open attachment",
   "chat-edit-message": "Edit message",
   "chat-delete-message": "Delete message",

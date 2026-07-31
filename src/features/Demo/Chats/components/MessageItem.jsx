@@ -95,6 +95,7 @@ const MessageItem = ({
   isPending,
   groupPosition = "single",
   replySenderName,
+  replyPreviewText,
   onOpenImage,
   onReply,
   onEdit,
@@ -141,8 +142,7 @@ const MessageItem = ({
             <div className={styles.replyReference}>
               <span>{replySenderName || t("chat-unknown-member")}</span>
               <p>
-                {message.replyTo.content ||
-                  message.replyTo.attachment?.fileName ||
+                {replyPreviewText ||
                   t("chat-referenced-message-unavailable")}
               </p>
             </div>
