@@ -6,19 +6,16 @@ export const departmentMemberApi = {
       throw new Error("Department ID is required to fetch members.");
     }
 
-    const response = await apiFetch(
-      `/departments/${encodeURIComponent(departmentId)}/members`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "x-client-type": "web",
-          "x-demo-id": demoId,
-          "x-department-id": departmentId,
-        },
-        signal: options.signal,
+    const response = await apiFetch(`/departmentMembers`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-client-type": "web",
+        "x-demo-id": demoId,
+        "x-department-id": departmentId,
       },
-    );
+      signal: options.signal,
+    });
 
     const responseData = await response.json().catch(() => ({}));
 
