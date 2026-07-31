@@ -210,6 +210,12 @@ const CourseManagerLayout = () => {
                   await attachmentApi.uploadAttachmentToStorage(
                     uploadUrl,
                     att.file,
+                    (percent) => {
+                      setUploadProgress({
+                        title: `Uploading: ${att.file.name}`,
+                        percent: percent,
+                      });
+                    },
                   );
                 }
 

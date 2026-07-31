@@ -16,6 +16,7 @@ import SectionQuizSection from "./SectionQuizSection/SectionQuizSection";
 import AddLessonModal from "./AddModals/AddLessonModal";
 import AddQuizModal from "./AddModals/AddQuizModal";
 import AddQuestionModal from "./AddModals/AddQuestionModal";
+import { attachmentApi } from "../../../../../api/attachmentApi";
 
 const CurriculumTab = ({
   courseId,
@@ -204,45 +205,81 @@ const CurriculumTab = ({
     );
   };
 
-  const handleAddAttachment = (secId, lessonId, attachmentData) => {
-    setSections((prev) =>
-      prev.map((s) => {
-        if (s.id === secId) {
-          const updatedLessons = (s.lessons || []).map((l) => {
+  const handleFetchAttachments = async (lessonId) => {
+    if (!lessonId || String(lessonId).startsWith("temp_")) return;
+
+    try {
+      const fetchedAtts = await attachmentApi.getAttachments(lessonId);
+
+      const formatted = (fetchedAtts || []).map((att) => ({
+        id: att.id,
+        title: att.name || "Resource",
+        fileName: att.name || "",
+        path: att.path,
+        isExisting: true,
+        isNew: false,
+      }));
+
+      setSections((prevSections) =>
+        prevSections.map((sec) => ({
+          ...sec,
+          lessons: (sec.lessons || []).map((l) => {
             if (l.id === lessonId) {
+              const localNewAttachments = (l.attachments || []).filter(
+                (att) => att.isNew,
+              );
               return {
                 ...l,
-                attachments: [...(l.attachments || []), attachmentData],
+                attachments: [...formatted, ...localNewAttachments],
               };
             }
             return l;
-          });
-          return { ...s, lessons: updatedLessons };
-        }
-        return s;
-      }),
+          }),
+        })),
+      );
+    } catch (error) {
+      console.error("Error fetching attachments for lesson:", lessonId, error);
+    }
+  };
+
+  const handleAddAttachment = (lessonId, attachmentData) => {
+    setSections((prev) =>
+      prev.map((s) => ({
+        ...s,
+        lessons: (s.lessons || []).map((l) => {
+          if (l.id === lessonId) {
+            const newAttachment = {
+              ...attachmentData,
+              id: attachmentData.id || `temp_att_${Date.now()}`,
+              isNew: true,
+            };
+            return {
+              ...l,
+              attachments: [...(l.attachments || []), newAttachment],
+            };
+          }
+          return l;
+        }),
+      })),
     );
   };
 
-  const handleDeleteAttachment = (secId, lessonId, attachmentId) => {
+  const handleDeleteAttachment = (lessonId, attachmentId) => {
     setSections((prev) =>
-      prev.map((s) => {
-        if (s.id === secId) {
-          const updatedLessons = (s.lessons || []).map((l) => {
-            if (l.id === lessonId) {
-              return {
-                ...l,
-                attachments: (l.attachments || []).filter(
-                  (att) => att.id !== attachmentId,
-                ),
-              };
-            }
-            return l;
-          });
-          return { ...s, lessons: updatedLessons };
-        }
-        return s;
-      }),
+      prev.map((s) => ({
+        ...s,
+        lessons: (s.lessons || []).map((l) => {
+          if (l.id === lessonId) {
+            return {
+              ...l,
+              attachments: (l.attachments || []).filter(
+                (att) => att.id !== attachmentId,
+              ),
+            };
+          }
+          return l;
+        }),
+      })),
     );
   };
 
@@ -327,6 +364,9 @@ const CurriculumTab = ({
                     }
                     onDeleteAttachment={(lessonId, attId) =>
                       handleDeleteAttachment(section.id, lessonId, attId)
+                    }
+                    onFetchAttachments={(lessonId) =>
+                      handleFetchAttachments(lessonId)
                     }
                   />
 
