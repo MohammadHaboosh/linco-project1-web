@@ -36,7 +36,7 @@ const formatMessageTime = (value, language) => {
   ).format(date);
 };
 
-const Attachment = ({ attachment, type }) => {
+const Attachment = ({ attachment, type, onOpenImage }) => {
   const { t, i18n } = useTranslation();
 
   if (!attachment?.fileUrl) {
@@ -47,11 +47,11 @@ const Attachment = ({ attachment, type }) => {
 
   if (type === "IMAGE" || mimeType.startsWith("image/")) {
     return (
-      <a
-        href={attachment.fileUrl}
-        target="_blank"
-        rel="noreferrer"
-        className={styles.imageAttachmentLink}
+      <button
+        type="button"
+        className={styles.imageAttachmentButton}
+        onClick={() => onOpenImage(attachment)}
+        aria-label={attachment.fileName || t("chat-image-attachment")}
       >
         <img
           src={attachment.fileUrl}
@@ -59,7 +59,7 @@ const Attachment = ({ attachment, type }) => {
           className={styles.imageAttachment}
           loading="lazy"
         />
-      </a>
+      </button>
     );
   }
 
@@ -95,6 +95,7 @@ const MessageItem = ({
   isPending,
   groupPosition = "single",
   replySenderName,
+  onOpenImage,
   onReply,
   onEdit,
   onDelete,
@@ -159,6 +160,7 @@ const MessageItem = ({
               <Attachment
                 attachment={message.attachment}
                 type={message.type}
+                onOpenImage={onOpenImage}
               />
             </>
           )}

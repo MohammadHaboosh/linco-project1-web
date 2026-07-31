@@ -61,6 +61,7 @@ const ChatArea = ({
   const [selectedAttachment, setSelectedAttachment] = useState(null);
   const [attachmentPreviewUrl, setAttachmentPreviewUrl] = useState("");
   const [attachmentUploadStatus, setAttachmentUploadStatus] = useState("idle");
+  const [openImage, setOpenImage] = useState(null);
   const inputRef = useRef(null);
   const fileInputRef = useRef(null);
   const selectedAttachmentRef = useRef(null);
@@ -140,6 +141,27 @@ const ChatArea = ({
       stopTyping();
     }
   }, [isConnected, stopTyping]);
+
+  useEffect(() => {
+    if (!openImage) {
+      return undefined;
+    }
+
+    const previousBodyOverflow = document.body.style.overflow;
+    const handlePreviewKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setOpenImage(null);
+      }
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handlePreviewKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousBodyOverflow;
+      window.removeEventListener("keydown", handlePreviewKeyDown);
+    };
+  }, [openImage]);
 
   useLayoutEffect(() => {
     const scrollArea = scrollAreaRef.current;
@@ -694,6 +716,7 @@ const ChatArea = ({
                 message={message}
                 groupPosition={groupPosition}
                 replySenderName={replySenderName}
+                onOpenImage={setOpenImage}
                 isMe={message.sender.id === currentDepartmentMemberId}
                 isPending={Boolean(pendingActionId) || isSending}
                 onReply={handleReply}
@@ -845,6 +868,42 @@ const ChatArea = ({
           </button>
         </form>
       </footer>
+
+      {openImage && (
+        <div
+          className={styles.imagePreviewBackdrop}
+          role="dialog"
+          aria-modal="true"
+          aria-label={openImage.fileName || t("chat-image-attachment")}
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) {
+              setOpenImage(null);
+            }
+          }}
+        >
+          <div className={styles.imagePreviewDialog}>
+            <button
+              type="button"
+              className={styles.imagePreviewClose}
+              onClick={() => setOpenImage(null)}
+              aria-label={t("close")}
+              autoFocus
+            >
+              <IoCloseOutline />
+            </button>
+            <img
+              src={openImage.fileUrl}
+              alt={openImage.fileName || t("chat-image-attachment")}
+              className={styles.imagePreviewFull}
+            />
+            {openImage.fileName && (
+              <span className={styles.imagePreviewCaption}>
+                {openImage.fileName}
+              </span>
+            )}
+          </div>
+        </div>
+      )}
     </section>
   );
 };
