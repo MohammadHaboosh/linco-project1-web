@@ -1085,14 +1085,11 @@
 }
 
 .emojiPicker {
-  width: min(320px, calc(100vw - 28px));
-  max-height: min(310px, 45vh);
-  overflow-y: auto;
+  width: min(360px, calc(100vw - 28px));
   position: absolute;
   z-index: 40;
   inset-block-end: calc(100% + 16px);
   inset-inline-start: -10px;
-  padding: 12px;
   border: 1px solid #e2e8f0;
   border-radius: 16px;
   background: #ffffff;
@@ -1112,44 +1109,18 @@
   transform: rotate(45deg);
 }
 
-.emojiPickerTitle {
-  display: block;
-  margin-bottom: 9px;
-  color: #334155;
-  font-size: 0.78rem;
-  font-weight: 800;
+.emojiPickerMount {
+  width: 100%;
+  display: flex;
 }
 
-.emojiGrid {
-  display: grid;
-  grid-template-columns: repeat(8, minmax(30px, 1fr));
-  gap: 3px;
-}
-
-.emojiButton {
-  min-width: 0;
-  aspect-ratio: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  border: 0;
-  border-radius: 9px;
-  background: transparent;
-  font-family: "Segoe UI Emoji", "Apple Color Emoji", sans-serif;
-  font-size: 1.35rem;
-  line-height: 1;
-  cursor: pointer;
-  transition:
-    background 0.15s ease,
-    transform 0.15s ease;
-}
-
-.emojiButton:hover,
-.emojiButton:focus-visible {
-  background: #eff6ff;
-  outline: 0;
-  transform: scale(1.12);
+.emojiPickerMount > em-emoji-picker {
+  width: 100%;
+  height: min(380px, 52vh);
+  min-height: 230px;
+  --border-radius: 15px;
+  --rgb-accent: 26, 86, 219;
+  --shadow: none;
 }
 
 .sendBtn {
@@ -1451,11 +1422,6 @@
 
   .emojiPicker {
     inset-inline-start: -6px;
-    padding: 10px;
-  }
-
-  .emojiGrid {
-    grid-template-columns: repeat(7, minmax(30px, 1fr));
   }
 
   .sendBtn {

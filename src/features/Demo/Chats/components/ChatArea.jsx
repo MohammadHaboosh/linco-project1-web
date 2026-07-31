@@ -29,55 +29,6 @@ import styles from "./Chats.module.css";
 
 const TYPING_IDLE_DELAY = 1500;
 const COMPOSER_MAX_HEIGHT = 120;
-const CHAT_EMOJIS = [
-  "😀",
-  "😃",
-  "😄",
-  "😁",
-  "😆",
-  "😅",
-  "😂",
-  "🤣",
-  "😊",
-  "😇",
-  "🙂",
-  "🙃",
-  "😉",
-  "😍",
-  "🥰",
-  "😘",
-  "😎",
-  "🤩",
-  "🥳",
-  "😢",
-  "😭",
-  "😤",
-  "😡",
-  "🤔",
-  "🤗",
-  "🤭",
-  "🤫",
-  "😴",
-  "🤒",
-  "🤯",
-  "😱",
-  "👍",
-  "👎",
-  "👏",
-  "🙌",
-  "🤝",
-  "🙏",
-  "💪",
-  "❤️",
-  "💔",
-  "🔥",
-  "🎉",
-  "✨",
-  "✅",
-  "💯",
-  "🚀",
-  "👀",
-];
 
 const getMessagePreviewText = (message, t) => {
   if (!message) {
@@ -159,6 +110,8 @@ const ChatArea = ({
   const inputRef = useRef(null);
   const fileInputRef = useRef(null);
   const emojiPickerRef = useRef(null);
+  const emojiPickerMountRef = useRef(null);
+  const emojiSelectionHandlerRef = useRef(null);
   const selectedAttachmentRef = useRef(null);
   const attachmentPreviewUrlRef = useRef("");
   const scrollAreaRef = useRef(null);
@@ -283,6 +236,54 @@ const ChatArea = ({
       window.removeEventListener("keydown", handlePickerKeyDown);
     };
   }, [isEmojiPickerOpen]);
+
+  useEffect(() => {
+    if (!isEmojiPickerOpen || !emojiPickerMountRef.current) {
+      return undefined;
+    }
+
+    const pickerMount = emojiPickerMountRef.current;
+    const isArabic = String(i18n.resolvedLanguage || i18n.language)
+      .toLowerCase()
+      .startsWith("ar");
+    let isCancelled = false;
+
+    const mountEmojiPicker = async () => {
+      const [{ default: emojiData }, { Picker }, arabicTranslations] =
+        await Promise.all([
+          import("@emoji-mart/data"),
+          import("emoji-mart"),
+          isArabic
+            ? import("@emoji-mart/data/i18n/ar.json")
+            : Promise.resolve(null),
+        ]);
+
+      if (isCancelled) {
+        return;
+      }
+
+      const picker = new Picker({
+        data: emojiData,
+        dynamicWidth: true,
+        i18n: arabicTranslations?.default,
+        locale: isArabic ? "ar" : "en",
+        onEmojiSelect: (emoji) =>
+          emojiSelectionHandlerRef.current?.(emoji.native),
+        previewPosition: "none",
+        set: "native",
+        theme: "light",
+      });
+
+      pickerMount.replaceChildren(picker);
+    };
+
+    mountEmojiPicker();
+
+    return () => {
+      isCancelled = true;
+      pickerMount.replaceChildren();
+    };
+  }, [i18n.language, i18n.resolvedLanguage, isEmojiPickerOpen]);
 
   useLayoutEffect(() => {
     const scrollArea = scrollAreaRef.current;
@@ -451,6 +452,10 @@ const ChatArea = ({
       resizeComposer(inputRef.current);
     });
   };
+
+  useEffect(() => {
+    emojiSelectionHandlerRef.current = handleEmojiSelect;
+  });
 
   const resetComposer = useCallback(() => {
     setDraft("");
@@ -1016,24 +1021,10 @@ const ChatArea = ({
                 role="dialog"
                 aria-label={t("chat-emoji-picker")}
               >
-                <strong className={styles.emojiPickerTitle}>
-                  {t("chat-emoji-picker")}
-                </strong>
-                <div className={styles.emojiGrid}>
-                  {CHAT_EMOJIS.map((emoji) => (
-                    <button
-                      type="button"
-                      className={styles.emojiButton}
-                      key={emoji}
-                      onMouseDown={(event) => event.preventDefault()}
-                      onClick={() => handleEmojiSelect(emoji)}
-                      title={t("chat-insert-emoji", { emoji })}
-                      aria-label={t("chat-insert-emoji", { emoji })}
-                    >
-                      {emoji}
-                    </button>
-                  ))}
-                </div>
+                <div
+                  className={styles.emojiPickerMount}
+                  ref={emojiPickerMountRef}
+                />
               </div>
             )}
           </div>
