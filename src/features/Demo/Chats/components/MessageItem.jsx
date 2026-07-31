@@ -94,9 +94,11 @@ const MessageItem = ({
   isMe,
   isPending,
   groupPosition = "single",
+  isHighlighted = false,
   replySenderName,
   replyPreviewText,
   onOpenImage,
+  onNavigateToReply,
   onReply,
   onEdit,
   onDelete,
@@ -112,9 +114,12 @@ const MessageItem = ({
     <article
       className={`${styles.messageRow} ${
         isMe ? styles.rowMe : styles.rowThem
-      } ${styles[`group-${groupPosition}`] || ""}`}
+      } ${styles[`group-${groupPosition}`] || ""} ${
+        isHighlighted ? styles.messageHighlighted : ""
+      }`}
       data-message-id={message.id}
       data-group-position={groupPosition}
+      tabIndex={-1}
     >
       {!isMe && (
         <div
@@ -139,13 +144,20 @@ const MessageItem = ({
 
         <div className={styles.messageBubble}>
           {message.replyTo && (
-            <div className={styles.replyReference}>
+            <button
+              type="button"
+              className={styles.replyReference}
+              onClick={() => onNavigateToReply(message.replyTo?.id)}
+              disabled={!message.replyTo?.id}
+              title={t("chat-go-to-replied-message")}
+              aria-label={t("chat-go-to-replied-message")}
+            >
               <span>{replySenderName || t("chat-unknown-member")}</span>
               <p>
                 {replyPreviewText ||
                   t("chat-referenced-message-unavailable")}
               </p>
-            </div>
+            </button>
           )}
 
           {message.isDeleted ? (

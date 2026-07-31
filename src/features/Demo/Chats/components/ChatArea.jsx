@@ -7,6 +7,7 @@ import {
   useState,
 } from "react";
 import {
+  IoArrowDownOutline,
   IoAttachOutline,
   IoChatbubblesOutline,
   IoCloseOutline,
@@ -29,6 +30,12 @@ import styles from "./Chats.module.css";
 
 const TYPING_IDLE_DELAY = 1500;
 const COMPOSER_MAX_HEIGHT = 120;
+const SCROLL_BOTTOM_THRESHOLD = 120;
+
+const getProgrammaticScrollBehavior = () =>
+  window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+    ? "auto"
+    : "smooth";
 
 const getMessagePreviewText = (message, t) => {
   if (!message) {
@@ -107,6 +114,10 @@ const ChatArea = ({
   const [attachmentUploadStatus, setAttachmentUploadStatus] = useState("idle");
   const [openImage, setOpenImage] = useState(null);
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
+  const [showScrollToBottom, setShowScrollToBottom] = useState(false);
+  const [pendingNavigationMessageId, setPendingNavigationMessageId] =
+    useState(null);
+  const [highlightedMessageId, setHighlightedMessageId] = useState(null);
   const inputRef = useRef(null);
   const fileInputRef = useRef(null);
   const emojiPickerRef = useRef(null);
@@ -122,6 +133,7 @@ const ChatArea = ({
   const pendingScrollPreservationRef = useRef(null);
   const isRestoringScrollRef = useRef(false);
   const restoreScrollFrameRef = useRef(null);
+  const highlightTimeoutRef = useRef(null);
 
   const isConnected = connectionStatus === "connected";
 
@@ -174,6 +186,10 @@ const ChatArea = ({
 
       if (restoreScrollFrameRef.current) {
         cancelAnimationFrame(restoreScrollFrameRef.current);
+      }
+
+      if (highlightTimeoutRef.current) {
+        clearTimeout(highlightTimeoutRef.current);
       }
 
       if (attachmentPreviewUrlRef.current) {
@@ -634,12 +650,122 @@ const ChatArea = ({
 
     const distanceFromBottom =
       scrollArea.scrollHeight - scrollArea.scrollTop - scrollArea.clientHeight;
-    shouldStickToBottomRef.current = distanceFromBottom < 120;
+    const isNearBottom = distanceFromBottom < SCROLL_BOTTOM_THRESHOLD;
+    shouldStickToBottomRef.current = isNearBottom;
+    setShowScrollToBottom(!isNearBottom);
 
     if (scrollArea.scrollTop < 80 && hasNextPage && !isLoadingOlder) {
       handleLoadOlder();
     }
   };
+
+  const handleNavigateToReply = useCallback((messageId) => {
+    if (messageId === null || messageId === undefined || messageId === "") {
+      return;
+    }
+
+    setPendingNavigationMessageId(String(messageId));
+  }, []);
+
+  const handleScrollToBottom = useCallback(() => {
+    const scrollArea = scrollAreaRef.current;
+    if (!scrollArea) {
+      return;
+    }
+
+    setPendingNavigationMessageId(null);
+    shouldStickToBottomRef.current = true;
+    scrollArea.scrollTo({
+      top: scrollArea.scrollHeight,
+      behavior: getProgrammaticScrollBehavior(),
+    });
+  }, []);
+
+  useEffect(() => {
+    if (
+      pendingNavigationMessageId === null ||
+      isLoadingHistory ||
+      isLoadingOlder ||
+      pendingScrollPreservationRef.current
+    ) {
+      return undefined;
+    }
+
+    const navigationFrame = requestAnimationFrame(() => {
+      const scrollArea = scrollAreaRef.current;
+      if (!scrollArea) {
+        return;
+      }
+
+      const targetMessage = Array.from(
+        scrollArea.querySelectorAll("[data-message-id]"),
+      ).find(
+        (element) =>
+          element.dataset.messageId === pendingNavigationMessageId,
+      );
+
+      if (!targetMessage) {
+        if (hasNextPage) {
+          void handleLoadOlder().then((loaded) => {
+            if (!loaded) {
+              setPendingNavigationMessageId((currentId) =>
+                currentId === pendingNavigationMessageId ? null : currentId,
+              );
+            }
+          });
+        } else {
+          setPendingNavigationMessageId(null);
+        }
+        return;
+      }
+
+      const scrollAreaRect = scrollArea.getBoundingClientRect();
+      const targetRect = targetMessage.getBoundingClientRect();
+      const maximumScrollTop =
+        scrollArea.scrollHeight - scrollArea.clientHeight;
+      const targetScrollTop = Math.max(
+        0,
+        Math.min(
+          maximumScrollTop,
+          scrollArea.scrollTop +
+            targetRect.top -
+            scrollAreaRect.top -
+            (scrollArea.clientHeight - targetRect.height) / 2,
+        ),
+      );
+      const willBeAwayFromBottom =
+        maximumScrollTop - targetScrollTop >= SCROLL_BOTTOM_THRESHOLD;
+
+      shouldStickToBottomRef.current = !willBeAwayFromBottom;
+      setShowScrollToBottom(willBeAwayFromBottom);
+      scrollArea.scrollTo({
+        top: targetScrollTop,
+        behavior: getProgrammaticScrollBehavior(),
+      });
+      targetMessage.focus({ preventScroll: true });
+
+      if (highlightTimeoutRef.current) {
+        clearTimeout(highlightTimeoutRef.current);
+      }
+      setHighlightedMessageId(pendingNavigationMessageId);
+      highlightTimeoutRef.current = setTimeout(() => {
+        setHighlightedMessageId((currentId) =>
+          currentId === pendingNavigationMessageId ? null : currentId,
+        );
+        highlightTimeoutRef.current = null;
+      }, 1800);
+      setPendingNavigationMessageId(null);
+    });
+
+    return () => cancelAnimationFrame(navigationFrame);
+  }, [
+    handleLoadOlder,
+    hasNextPage,
+    isLoadingHistory,
+    isLoadingOlder,
+    messages,
+    pendingNavigationMessageId,
+  ]);
 
   const composerContext = editingMessage || replyingTo;
   const composerContextLabel = editingMessage
@@ -812,11 +938,12 @@ const ChatArea = ({
         </div>
       )}
 
-      <div
-        className={styles.messagesScrollArea}
-        ref={scrollAreaRef}
-        onScroll={handleScroll}
-      >
+      <div className={styles.messagesViewport}>
+        <div
+          className={styles.messagesScrollArea}
+          ref={scrollAreaRef}
+          onScroll={handleScroll}
+        >
         {hasNextPage && (
           <button
             type="button"
@@ -875,9 +1002,13 @@ const ChatArea = ({
                 key={message.id}
                 message={message}
                 groupPosition={groupPosition}
+                isHighlighted={
+                  String(message.id) === highlightedMessageId
+                }
                 replySenderName={replySenderName}
                 replyPreviewText={replyPreviewText}
                 onOpenImage={setOpenImage}
+                onNavigateToReply={handleNavigateToReply}
                 isMe={message.sender.id === currentDepartmentMemberId}
                 isPending={Boolean(pendingActionId) || isSending}
                 onReply={handleReply}
@@ -886,6 +1017,19 @@ const ChatArea = ({
               />
             );
           })
+        )}
+        </div>
+
+        {showScrollToBottom && (
+          <button
+            type="button"
+            className={styles.scrollToBottomButton}
+            onClick={handleScrollToBottom}
+            title={t("chat-jump-to-latest")}
+            aria-label={t("chat-jump-to-latest")}
+          >
+            <IoArrowDownOutline aria-hidden="true" />
+          </button>
         )}
       </div>
 

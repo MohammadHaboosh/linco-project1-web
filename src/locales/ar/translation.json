@@ -550,6 +550,8 @@
   "chat-load-older": "تحميل الرسائل الأقدم",
   "chat-loading-older": "جارٍ تحميل الرسائل الأقدم...",
   "chat-reply": "رد",
+  "chat-go-to-replied-message": "الانتقال إلى الرسالة التي تم الرد عليها",
+  "chat-jump-to-latest": "الانتقال إلى أحدث الرسائل",
   "chat-referenced-message-unavailable": "الرسالة المشار إليها غير متاحة",
   "chat-message-deleted": "تم حذف هذه الرسالة",
   "chat-edited": "تم التعديل",
