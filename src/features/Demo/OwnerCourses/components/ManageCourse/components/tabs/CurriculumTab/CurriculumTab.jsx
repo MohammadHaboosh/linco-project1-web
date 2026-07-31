@@ -243,15 +243,33 @@ const CurriculumTab = ({
   };
 
   const handleAddAttachment = (lessonId, attachmentData) => {
+    console.log("Adding attachment to lessonId:", lessonId, attachmentData);
+
     setSections((prev) =>
       prev.map((s) => ({
         ...s,
         lessons: (s.lessons || []).map((l) => {
-          if (l.id === lessonId) {
+          if (String(l.id) === String(lessonId)) {
+            const rawFile =
+              attachmentData.file ||
+              attachmentData.selectedFile ||
+              (attachmentData instanceof File ? attachmentData : null);
+
             const newAttachment = {
-              ...attachmentData,
               id: attachmentData.id || `temp_att_${Date.now()}`,
+              title:
+                attachmentData.title ||
+                attachmentData.name ||
+                rawFile?.name ||
+                "New Attachment",
+              fileName:
+                attachmentData.fileName ||
+                rawFile?.name ||
+                attachmentData.name ||
+                "",
+              file: rawFile,
               isNew: true,
+              isExisting: false,
             };
             return {
               ...l,
