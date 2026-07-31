@@ -141,7 +141,7 @@ export const DEPARTMENT_NAV = {
     navLinks: [
       { name: "Home", icon: <IoHomeOutline />, path: "" },
       { name: "Members", icon: <IoPeopleOutline />, path: PATHS.MEMBERS },
-      { name: "Courses", icon: <IoBookOutline />, path: PATHS.SM_COURSES },
+      { name: "Courses", icon: <IoBookOutline />, path: PATHS.COURSES },
       { name: "Live Streams", icon: <IoVideocamOutline />, path: PATHS.LIVES },
       {
         name: "Demo Assets",
@@ -176,7 +176,7 @@ export const DEPARTMENT_NAV = {
     navLinks: [
       { name: "Home", icon: <IoHomeOutline />, path: "" },
       { name: "Members", icon: <IoPeopleOutline />, path: PATHS.MEMBERS },
-      { name: "Courses", icon: <IoBookOutline />, path: PATHS.SM_COURSES },
+      { name: "Courses", icon: <IoBookOutline />, path: PATHS.COURSES },
       { name: "Live Streams", icon: <IoVideocamOutline />, path: PATHS.LIVES }, // 👈 تم التصحيح
       {
         name: "Demo Assets",
