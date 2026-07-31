@@ -21,7 +21,7 @@ export const quizApi = {
   },
 
   getQuizBySectionId: async (sectionId) => {
-    const response = await apiFetch(`/sections/${sectionId}/exams`, {
+    const response = await apiFetch(`/sections/${sectionId}/exams/cursor`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });
