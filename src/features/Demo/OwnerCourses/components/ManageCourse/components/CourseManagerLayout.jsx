@@ -146,6 +146,12 @@ const CourseManagerLayout = () => {
                     });
                   },
                 );
+
+                setUploadProgress({
+                  title: lesson.title || `Lesson ${index + 1}`,
+                  percent: 100,
+                });
+                await new Promise((resolve) => setTimeout(resolve, 400));
               }
             }
 

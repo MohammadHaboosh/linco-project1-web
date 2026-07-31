@@ -32,31 +32,45 @@ export const lessonApi = {
     return data.data;
   },
 
-  uploadVideoToStorage: async (uploadUrl, videoFile, onProgress) => {
-    const response = await fetch(uploadUrl, {
-      method: "PUT",
-      headers: {
-        "x-ms-blob-type": "BlockBlob",
-        "Content-Type": videoFile.type || "application/octet-stream",
-      },
-      onUploadProgress: (progressEvent) => {
-        if (progressEvent.total) {
+  uploadVideoToStorage: (uploadUrl, videoFile, onProgress) => {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+
+      xhr.upload.addEventListener("progress", (event) => {
+        if (event.lengthComputable) {
           const percentCompleted = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total,
+            (event.loaded * 100) / event.total,
           );
           if (onProgress) {
             onProgress(percentCompleted);
           }
         }
-      },
-      body: videoFile,
-    });
+      });
 
-    if (!response.ok) {
-      throw new Error("Failed to upload video file to storage server");
-    }
-    console.log("Video file successfully uploaded to Azure Blob Storage");
-    return true;
+      xhr.addEventListener("load", () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          console.log("Video file successfully uploaded to Azure Blob Storage");
+          resolve(true);
+        } else {
+          reject(
+            new Error(`Failed to upload video file (Status: ${xhr.status})`),
+          );
+        }
+      });
+
+      xhr.addEventListener("error", () => {
+        reject(new Error("Failed to upload video file to storage server"));
+      });
+
+      xhr.open("PUT", uploadUrl, true);
+      xhr.setRequestHeader("x-ms-blob-type", "BlockBlob");
+      xhr.setRequestHeader(
+        "Content-Type",
+        videoFile.type || "application/octet-stream",
+      );
+
+      xhr.send(videoFile);
+    });
   },
 
   createLesson: async (sectionId, lessonPayload) => {
