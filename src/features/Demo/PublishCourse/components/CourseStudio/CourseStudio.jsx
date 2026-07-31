@@ -19,6 +19,9 @@ const CourseStudio = () => {
   const [isPublishing, setIsPublishing] = useState(false);
   const [deletedSectionIds, setDeletedSectionIds] = useState([]);
 
+  // حالة لتتبع نسبة رفع الفيديو الحالي
+  const [uploadProgress, setUploadProgress] = useState(null);
+
   const { createCourse, isCreating } = useCreateCourse(demoId);
 
   const [courseData, setCourseData] = useState({
@@ -192,10 +195,30 @@ const CourseStudio = () => {
                 finalVideoUrl;
 
               if (uploadUrl) {
+                // البدء بتهيئة النسبة عند 0%
+                setUploadProgress({
+                  title: lesson.title || `Lesson ${index + 1}`,
+                  percent: 0,
+                });
+
+                // رفع الفيديو وتتبع النسبة لحظة بلحظة
                 await lessonApi.uploadVideoToStorage(
                   uploadUrl,
                   lesson.videoFile,
+                  (percent) => {
+                    setUploadProgress({
+                      title: lesson.title || `Lesson ${index + 1}`,
+                      percent: percent,
+                    });
+                  },
                 );
+
+                // تثبيت النسبة عند 100% لفترة قصيرة لإعطاء انطباع بصري باكتماها
+                setUploadProgress({
+                  title: lesson.title || `Lesson ${index + 1}`,
+                  percent: 100,
+                });
+                await new Promise((resolve) => setTimeout(resolve, 400));
               }
             }
 
@@ -221,6 +244,7 @@ const CourseStudio = () => {
       alert("Failed to save: " + (error.message || "Something went wrong"));
     } finally {
       setIsPublishing(false);
+      setUploadProgress(null); // تفريغ نسبة الرفع بعد الانتهاء أو عند الخطأ
     }
   };
 
@@ -283,6 +307,25 @@ const CourseStudio = () => {
           />
         )}
       </div>
+
+      {/* نافذة شريط تقدم الرفع عند رفع الدروس */}
+      {uploadProgress && (
+        <div className={styles.progressOverlay}>
+          <div className={styles.progressCard}>
+            <h4>Uploading Video...</h4>
+            <p className={styles.lessonTitle}>{uploadProgress.title}</p>
+            <div className={styles.progressBarTrack}>
+              <div
+                className={styles.progressBarFill}
+                style={{ width: `${uploadProgress.percent}%` }}
+              ></div>
+            </div>
+            <span className={styles.progressPercentage}>
+              {uploadProgress.percent}%
+            </span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
