@@ -1,0 +1,64 @@
+import { useState } from "react";
+import {
+  IoChevronDownOutline,
+  IoChevronUpOutline,
+  IoHelpCircleOutline,
+  IoCreateOutline,
+  IoTrashOutline,
+} from "react-icons/io5";
+import styles from "./FAQsTab.module.css";
+
+const FAQItem = ({ faq, onEdit, onDelete }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <div className={styles.faqCard}>
+      <div
+        className={styles.faqHeader}
+        onClick={() => setIsExpanded(!isExpanded)}
+      >
+        <div className={styles.faqHeaderLeft}>
+          <IoHelpCircleOutline className={styles.faqIcon} />
+          <span className={styles.faqQuestionText}>{faq.question}</span>
+        </div>
+        <div className={styles.faqActions} onClick={(e) => e.stopPropagation()}>
+          <button
+            type="button"
+            className={styles.actionBtn}
+            onClick={() => onEdit(faq)}
+            title="Edit FAQ"
+          >
+            <IoCreateOutline size={18} />
+          </button>
+          <button
+            type="button"
+            className={`${styles.actionBtn} ${styles.deleteBtn}`}
+            onClick={() => onDelete(faq.id)}
+            title="Delete FAQ"
+          >
+            <IoTrashOutline size={18} />
+          </button>
+          <button
+            type="button"
+            className={styles.actionBtn}
+            onClick={() => setIsExpanded(!isExpanded)}
+          >
+            {isExpanded ? (
+              <IoChevronUpOutline size={18} />
+            ) : (
+              <IoChevronDownOutline size={18} />
+            )}
+          </button>
+        </div>
+      </div>
+
+      {isExpanded && (
+        <div className={styles.faqBody}>
+          <p>{faq.answer}</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default FAQItem;

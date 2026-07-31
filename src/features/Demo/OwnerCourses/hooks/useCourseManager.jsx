@@ -10,6 +10,7 @@ export const useCourseManager = (demoId, assetId) => {
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState(null);
   const [courseId, setCourseId] = useState(null);
+  const [deletedQuizzes, setDeletedQuizzes] = useState([]);
 
   const [generalInfo, setGeneralInfo] = useState({
     title: "",
