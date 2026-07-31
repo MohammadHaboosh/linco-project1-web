@@ -9,9 +9,11 @@ import {
 } from "react-icons/io5";
 import styles from "./CourseCard.module.css";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 const CourseCard = ({ course, isOwner, onEdit, onDelete }) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const {
     id,
@@ -130,7 +132,7 @@ const CourseCard = ({ course, isOwner, onEdit, onDelete }) => {
             </div>
             <button
               className={styles.primaryCta}
-              onClick={() => navigation.navigate(`/course-player`)}
+              onClick={() => navigate(`/course-player`)}
             >
               {progress > 0 ? t("continue-learning") : t("start-learning")}
             </button>

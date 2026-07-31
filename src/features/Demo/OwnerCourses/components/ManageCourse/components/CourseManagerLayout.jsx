@@ -286,7 +286,6 @@ const CourseManagerLayout = () => {
 
   return (
     <div className={styles.pageContainer}>
-      {/* نافذة شريط التقدم للرفع على Azure Blob Storage */}
       {uploadProgress !== null && (
         <div className={styles.progressOverlay}>
           <div className={styles.progressCard}>
