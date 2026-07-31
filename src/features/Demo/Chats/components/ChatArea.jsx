@@ -11,6 +11,7 @@ import {
   IoChatbubblesOutline,
   IoCloseOutline,
   IoCloudOfflineOutline,
+  IoHappyOutline,
   IoRefreshOutline,
   IoSend,
 } from "react-icons/io5";
@@ -28,6 +29,55 @@ import styles from "./Chats.module.css";
 
 const TYPING_IDLE_DELAY = 1500;
 const COMPOSER_MAX_HEIGHT = 120;
+const CHAT_EMOJIS = [
+  "😀",
+  "😃",
+  "😄",
+  "😁",
+  "😆",
+  "😅",
+  "😂",
+  "🤣",
+  "😊",
+  "😇",
+  "🙂",
+  "🙃",
+  "😉",
+  "😍",
+  "🥰",
+  "😘",
+  "😎",
+  "🤩",
+  "🥳",
+  "😢",
+  "😭",
+  "😤",
+  "😡",
+  "🤔",
+  "🤗",
+  "🤭",
+  "🤫",
+  "😴",
+  "🤒",
+  "🤯",
+  "😱",
+  "👍",
+  "👎",
+  "👏",
+  "🙌",
+  "🤝",
+  "🙏",
+  "💪",
+  "❤️",
+  "💔",
+  "🔥",
+  "🎉",
+  "✨",
+  "✅",
+  "💯",
+  "🚀",
+  "👀",
+];
 
 const getMessagePreviewText = (message, t) => {
   if (!message) {
@@ -105,8 +155,10 @@ const ChatArea = ({
   const [attachmentPreviewUrl, setAttachmentPreviewUrl] = useState("");
   const [attachmentUploadStatus, setAttachmentUploadStatus] = useState("idle");
   const [openImage, setOpenImage] = useState(null);
+  const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
   const inputRef = useRef(null);
   const fileInputRef = useRef(null);
+  const emojiPickerRef = useRef(null);
   const selectedAttachmentRef = useRef(null);
   const attachmentPreviewUrlRef = useRef("");
   const scrollAreaRef = useRef(null);
@@ -205,6 +257,32 @@ const ChatArea = ({
       window.removeEventListener("keydown", handlePreviewKeyDown);
     };
   }, [openImage]);
+
+  useEffect(() => {
+    if (!isEmojiPickerOpen) {
+      return undefined;
+    }
+
+    const handlePickerPointerDown = (event) => {
+      if (!emojiPickerRef.current?.contains(event.target)) {
+        setIsEmojiPickerOpen(false);
+      }
+    };
+    const handlePickerKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setIsEmojiPickerOpen(false);
+        inputRef.current?.focus();
+      }
+    };
+
+    document.addEventListener("pointerdown", handlePickerPointerDown);
+    window.addEventListener("keydown", handlePickerKeyDown);
+
+    return () => {
+      document.removeEventListener("pointerdown", handlePickerPointerDown);
+      window.removeEventListener("keydown", handlePickerKeyDown);
+    };
+  }, [isEmojiPickerOpen]);
 
   useLayoutEffect(() => {
     const scrollArea = scrollAreaRef.current;
@@ -323,11 +401,7 @@ const ChatArea = ({
     [actionError, connectionError, historyError],
   );
 
-  const handleDraftChange = (event) => {
-    const nextDraft = event.target.value;
-    setDraft(nextDraft);
-    resizeComposer(event.target);
-
+  const updateTypingActivity = (nextDraft) => {
     if (editingMessage || !isConnected || !nextDraft.trim()) {
       stopTyping();
       return;
@@ -345,10 +419,44 @@ const ChatArea = ({
     typingTimeoutRef.current = setTimeout(stopTyping, TYPING_IDLE_DELAY);
   };
 
+  const handleDraftChange = (event) => {
+    const nextDraft = event.target.value;
+    setDraft(nextDraft);
+    resizeComposer(event.target);
+    updateTypingActivity(nextDraft);
+  };
+
+  const handleEmojiSelect = (emoji) => {
+    const composer = inputRef.current;
+    const selectionStart = composer?.selectionStart ?? draft.length;
+    const selectionEnd = composer?.selectionEnd ?? draft.length;
+    const nextDraft = `${draft.slice(0, selectionStart)}${emoji}${draft.slice(
+      selectionEnd,
+    )}`;
+    const nextCaretPosition = selectionStart + emoji.length;
+
+    setDraft(nextDraft);
+    updateTypingActivity(nextDraft);
+
+    requestAnimationFrame(() => {
+      if (!inputRef.current) {
+        return;
+      }
+
+      inputRef.current.focus();
+      inputRef.current.setSelectionRange(
+        nextCaretPosition,
+        nextCaretPosition,
+      );
+      resizeComposer(inputRef.current);
+    });
+  };
+
   const resetComposer = useCallback(() => {
     setDraft("");
     setReplyingTo(null);
     setEditingMessage(null);
+    setIsEmojiPickerOpen(false);
     clearSelectedAttachment();
     stopTyping();
 
@@ -885,6 +993,50 @@ const ChatArea = ({
           >
             <IoAttachOutline />
           </button>
+
+          <div className={styles.emojiPickerContainer} ref={emojiPickerRef}>
+            <button
+              type="button"
+              className={`${styles.actionIcon} ${
+                isEmojiPickerOpen ? styles.emojiActionActive : ""
+              }`}
+              onClick={() => setIsEmojiPickerOpen((isOpen) => !isOpen)}
+              disabled={!isConnected || isSubmitting}
+              title={t("chat-select-emoji")}
+              aria-label={t("chat-select-emoji")}
+              aria-expanded={isEmojiPickerOpen}
+              aria-haspopup="dialog"
+            >
+              <IoHappyOutline />
+            </button>
+
+            {isEmojiPickerOpen && (
+              <div
+                className={styles.emojiPicker}
+                role="dialog"
+                aria-label={t("chat-emoji-picker")}
+              >
+                <strong className={styles.emojiPickerTitle}>
+                  {t("chat-emoji-picker")}
+                </strong>
+                <div className={styles.emojiGrid}>
+                  {CHAT_EMOJIS.map((emoji) => (
+                    <button
+                      type="button"
+                      className={styles.emojiButton}
+                      key={emoji}
+                      onMouseDown={(event) => event.preventDefault()}
+                      onClick={() => handleEmojiSelect(emoji)}
+                      title={t("chat-insert-emoji", { emoji })}
+                      aria-label={t("chat-insert-emoji", { emoji })}
+                    >
+                      {emoji}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
 
           <textarea
             ref={inputRef}
