@@ -545,7 +545,7 @@ export const useDepartmentChat = ({ demoId, departmentId }) => {
             const mimeType = file.type || "application/octet-stream";
             preparedAttachment = {
               type: getAttachmentMessageType(mimeType),
-              fileKey: upload.fileKey,
+              fileUrl: upload.cdnUrl,
               fileName: upload.fileName || file.name,
               mimeType,
               fileSize: file.size,
@@ -564,7 +564,7 @@ export const useDepartmentChat = ({ demoId, departmentId }) => {
           ...(replyToId ? { replyToId } : {}),
           ...(preparedAttachment
             ? {
-                fileKey: preparedAttachment.fileKey,
+                fileUrl: preparedAttachment.fileUrl,
                 fileName: preparedAttachment.fileName,
                 mimeType: preparedAttachment.mimeType,
                 fileSize: preparedAttachment.fileSize,

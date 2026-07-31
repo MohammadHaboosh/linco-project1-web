@@ -95,7 +95,6 @@ export const departmentMessagesApi = {
 
       if (
         !upload?.uploadUrl ||
-        !upload?.fileKey ||
         !upload?.fileName ||
         !upload?.cdnUrl
       ) {
