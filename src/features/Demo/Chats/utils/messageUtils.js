@@ -3,6 +3,37 @@ const asTimestamp = (value) => {
   return Number.isNaN(timestamp) ? 0 : timestamp;
 };
 
+const MESSAGE_GROUP_WINDOW = 5 * 60 * 1000;
+
+export const shouldGroupMessages = (previousMessage, nextMessage) => {
+  const previousSenderId = previousMessage?.sender?.id;
+  const nextSenderId = nextMessage?.sender?.id;
+
+  if (!previousSenderId || previousSenderId !== nextSenderId) {
+    return false;
+  }
+
+  const previousTimestamp = asTimestamp(previousMessage.createdAt);
+  const nextTimestamp = asTimestamp(nextMessage?.createdAt);
+  if (!previousTimestamp || !nextTimestamp) {
+    return false;
+  }
+
+  const previousDate = new Date(previousTimestamp);
+  const nextDate = new Date(nextTimestamp);
+  const isSameDay =
+    previousDate.getFullYear() === nextDate.getFullYear() &&
+    previousDate.getMonth() === nextDate.getMonth() &&
+    previousDate.getDate() === nextDate.getDate();
+  const timeDifference = nextTimestamp - previousTimestamp;
+
+  return (
+    isSameDay &&
+    timeDifference >= 0 &&
+    timeDifference <= MESSAGE_GROUP_WINDOW
+  );
+};
+
 const hasOwn = (value, key) =>
   Object.prototype.hasOwnProperty.call(value || {}, key);
 

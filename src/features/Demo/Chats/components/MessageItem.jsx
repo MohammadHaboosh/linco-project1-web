@@ -93,32 +93,46 @@ const MessageItem = ({
   message,
   isMe,
   isPending,
+  groupPosition = "single",
   onReply,
   onEdit,
   onDelete,
 }) => {
   const { t, i18n } = useTranslation();
   const senderName = getSenderName(message);
+  const isGroupStart =
+    groupPosition === "single" || groupPosition === "first";
+  const isGroupEnd =
+    groupPosition === "single" || groupPosition === "last";
 
   return (
     <article
       className={`${styles.messageRow} ${
         isMe ? styles.rowMe : styles.rowThem
-      }`}
+      } ${styles[`group-${groupPosition}`] || ""}`}
       data-message-id={message.id}
+      data-group-position={groupPosition}
     >
       {!isMe && (
-        <div className={styles.senderAvatarSmall} aria-hidden="true">
-          {message.sender.imagePath ? (
-            <img src={message.sender.imagePath} alt="" />
-          ) : (
-            getSenderInitials(message)
-          )}
+        <div
+          className={`${styles.senderAvatarSmall} ${
+            isGroupEnd ? "" : styles.senderAvatarPlaceholder
+          }`}
+          aria-hidden="true"
+        >
+          {isGroupEnd &&
+            (message.sender.imagePath ? (
+              <img src={message.sender.imagePath} alt="" />
+            ) : (
+              getSenderInitials(message)
+            ))}
         </div>
       )}
 
       <div className={styles.messageContent}>
-        {!isMe && <span className={styles.senderName}>{senderName}</span>}
+        {!isMe && isGroupStart && (
+          <span className={styles.senderName}>{senderName}</span>
+        )}
 
         <div className={styles.messageBubble}>
           {message.replyTo && (

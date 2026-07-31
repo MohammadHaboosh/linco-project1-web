@@ -22,6 +22,7 @@ import {
   getDepartmentMemberInitials,
   getDepartmentMemberName,
   getSenderName,
+  shouldGroupMessages,
 } from "../utils/messageUtils";
 import styles from "./Chats.module.css";
 
@@ -621,17 +622,36 @@ const ChatArea = ({
         ) : messages.length === 0 ? (
           <ChatEmptyState />
         ) : (
-          messages.map((message) => (
-            <MessageItem
-              key={message.id}
-              message={message}
-              isMe={message.sender.id === currentDepartmentMemberId}
-              isPending={Boolean(pendingActionId) || isSending}
-              onReply={handleReply}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-            />
-          ))
+          messages.map((message, index) => {
+            const hasPreviousInGroup = shouldGroupMessages(
+              messages[index - 1],
+              message,
+            );
+            const hasNextInGroup = shouldGroupMessages(
+              message,
+              messages[index + 1],
+            );
+            const groupPosition = hasPreviousInGroup
+              ? hasNextInGroup
+                ? "middle"
+                : "last"
+              : hasNextInGroup
+                ? "first"
+                : "single";
+
+            return (
+              <MessageItem
+                key={message.id}
+                message={message}
+                groupPosition={groupPosition}
+                isMe={message.sender.id === currentDepartmentMemberId}
+                isPending={Boolean(pendingActionId) || isSending}
+                onReply={handleReply}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+              />
+            );
+          })
         )}
       </div>
 
