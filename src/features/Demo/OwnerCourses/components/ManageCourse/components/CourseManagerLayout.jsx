@@ -115,9 +115,9 @@ const CourseManagerLayout = () => {
           const isNewLesson =
             !lesson.id || lesson.isNew === true || isTempId(lesson.id);
 
+          let realLessonId = lesson.id;
+          let finalVideoUrl = lesson.videoUrl || "";
           if (isNewLesson) {
-            let finalVideoUrl = lesson.videoUrl || "";
-
             if (lesson.videoFile) {
               setUploadProgress({
                 title: lesson.title || `Lesson ${index + 1}`,
@@ -170,21 +170,33 @@ const CourseManagerLayout = () => {
               lessonPayload,
             );
 
-            const realLessonId =
+            realLessonId =
               createdLesson?.id || createdLesson?.data?.id || lesson.id;
+          }
+          const currentAttachments = lesson.attachments || [];
+          const updatedAttachmentsList = [];
 
-            const currentAttachments = lesson.attachments || [];
-            const updatedAttachmentsList = [];
+          const newAttachments = currentAttachments.filter(
+            (att) => att.isNew && att.file,
+          );
+          const existingAttachments = currentAttachments.filter(
+            (att) => !att.isNew || !att.file,
+          );
 
-            for (const att of currentAttachments) {
-              if (att.isNew && att.file) {
-                // 1. طلب رابط الرفع للملحق
-                const uploadUrls = await attachmentApi.getUploadUrl(
-                  realLessonId,
-                  [att.file.name],
-                );
+          updatedAttachmentsList.push(...existingAttachments);
+
+          if (newAttachments.length > 0 && realLessonId) {
+            try {
+              const fileNames = newAttachments.map((att) => att.file.name);
+              const uploadUrls = await attachmentApi.getUploadUrl(
+                realLessonId,
+                fileNames,
+              );
+
+              for (const att of newAttachments) {
                 const uploadInfo = uploadUrls?.find(
-                  (u) => u.fileName === att.file.name,
+                  (u) =>
+                    u.fileName === att.file.name || u.name === att.file.name,
                 );
 
                 const uploadUrl = uploadInfo?.uploadUrl || uploadInfo?.url;
@@ -194,7 +206,6 @@ const CourseManagerLayout = () => {
                   uploadInfo?.path ||
                   "";
 
-                // 2. رفع ملف الملحق على Azure / Storage
                 if (uploadUrl) {
                   await attachmentApi.uploadAttachmentToStorage(
                     uploadUrl,
@@ -205,7 +216,7 @@ const CourseManagerLayout = () => {
                 const createdAtt = await attachmentApi.createAttachment(
                   realLessonId,
                   {
-                    name: att.title || att.fileName,
+                    name: att.title || att.fileName || att.file.name,
                     path: finalPath,
                   },
                 );
@@ -214,26 +225,28 @@ const CourseManagerLayout = () => {
                   id: createdAtt?.id || createdAtt?.data?.id,
                   title: createdAtt?.name || att.title,
                   fileName: createdAtt?.name || att.fileName,
-                  path: finalPath,
+                  path: createdAtt?.path || finalPath,
                   isNew: false,
                 });
-              } else {
-                updatedAttachmentsList.push(att);
               }
+            } catch (attError) {
+              console.error(
+                `Failed to process attachments for lesson ID ${realLessonId}:`,
+                attError,
+              );
             }
-
-            updatedLessonsList.push({
-              ...lesson,
-              id: realLessonId,
-              attachments: updatedAttachmentsList,
-              videoUrl: finalVideoUrl,
-              videoFile: null,
-              isNew: false,
-            });
-            setUploadProgress(null);
-          } else {
-            updatedLessonsList.push(lesson);
           }
+
+          updatedLessonsList.push({
+            ...lesson,
+            id: realLessonId,
+            attachments: updatedAttachmentsList,
+            videoUrl: finalVideoUrl,
+            videoFile: null,
+            isNew: false,
+          });
+
+          setUploadProgress(null);
         }
 
         updatedSectionsList.push({
