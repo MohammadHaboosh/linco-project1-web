@@ -27,6 +27,10 @@ const getAttachmentErrorKey = (error) => {
     return "chat-attachment-upload-failed";
   }
 
+  if (error?.code === "CHAT_ATTACHMENT_NOT_READY") {
+    return "chat-attachment-not-ready";
+  }
+
   return "";
 };
 
@@ -500,6 +504,85 @@ export const useDepartmentChat = ({ demoId, departmentId }) => {
     });
   }, []);
 
+  const prepareAttachment = useCallback(
+    async (file) => {
+      const actionContextKey = contextKey;
+      if (!file) {
+        throw new Error("A file is required.");
+      }
+
+      const cachedAttachment = preparedAttachmentRef.current;
+      if (cachedAttachment?.file === file) {
+        return cachedAttachment.metadata;
+      }
+
+      uploadControllerRef.current?.abort();
+      const uploadController = new AbortController();
+      uploadControllerRef.current = uploadController;
+      setIsUploadingAttachment(true);
+      setActionError("");
+
+      try {
+        const upload = await departmentMessagesApi.requestUploadUrl({
+          demoId,
+          departmentId,
+          fileName: file.name,
+          signal: uploadController.signal,
+        });
+
+        await departmentMessagesApi.uploadFile({
+          uploadUrl: upload.uploadUrl,
+          file,
+          signal: uploadController.signal,
+        });
+
+        if (activeContextKeyRef.current !== actionContextKey) {
+          throw new DOMException("The chat context changed.", "AbortError");
+        }
+
+        const mimeType = file.type || "application/octet-stream";
+        const preparedAttachment = {
+          type: getAttachmentMessageType(mimeType),
+          fileUrl: upload.cdnUrl,
+          fileName: upload.fileName || file.name,
+          mimeType,
+          fileSize: file.size,
+        };
+        preparedAttachmentRef.current = {
+          file,
+          metadata: preparedAttachment,
+        };
+
+        return preparedAttachment;
+      } catch (error) {
+        if (preparedAttachmentRef.current?.file === file) {
+          preparedAttachmentRef.current = null;
+        }
+
+        if (
+          activeContextKeyRef.current === actionContextKey &&
+          error.name !== "AbortError"
+        ) {
+          const attachmentErrorKey = getAttachmentErrorKey(error);
+          setActionError(
+            attachmentErrorKey ||
+              getErrorMessage(error, "Unable to upload the attachment."),
+          );
+        }
+        throw error;
+      } finally {
+        if (uploadControllerRef.current === uploadController) {
+          uploadControllerRef.current = null;
+        }
+
+        if (activeContextKeyRef.current === actionContextKey) {
+          setIsUploadingAttachment(false);
+        }
+      }
+    },
+    [contextKey, demoId, departmentId],
+  );
+
   const sendMessage = useCallback(
     async ({ content, replyToId, file }) => {
       const actionContextKey = contextKey;
@@ -508,56 +591,23 @@ export const useDepartmentChat = ({ demoId, departmentId }) => {
         throw new Error("A message or attachment is required.");
       }
 
-      setIsSending(true);
-      setActionError("");
-      let uploadController = null;
-
-      try {
-        let preparedAttachment = null;
-
-        if (file) {
-          const cachedAttachment = preparedAttachmentRef.current;
-
-          if (cachedAttachment?.file === file) {
-            preparedAttachment = cachedAttachment.metadata;
-          } else {
-            uploadController = new AbortController();
-            uploadControllerRef.current = uploadController;
-            setIsUploadingAttachment(true);
-
-            const upload = await departmentMessagesApi.requestUploadUrl({
-              demoId,
-              departmentId,
-              fileName: file.name,
-              signal: uploadController.signal,
-            });
-
-            await departmentMessagesApi.uploadFile({
-              uploadUrl: upload.uploadUrl,
-              file,
-              signal: uploadController.signal,
-            });
-
-            if (activeContextKeyRef.current !== actionContextKey) {
-              throw new DOMException("The chat context changed.", "AbortError");
-            }
-
-            const mimeType = file.type || "application/octet-stream";
-            preparedAttachment = {
-              type: getAttachmentMessageType(mimeType),
-              fileUrl: upload.cdnUrl,
-              fileName: upload.fileName || file.name,
-              mimeType,
-              fileSize: file.size,
-            };
-            preparedAttachmentRef.current = {
-              file,
-              metadata: preparedAttachment,
-            };
-            setIsUploadingAttachment(false);
-          }
+      let preparedAttachment = null;
+      if (file) {
+        const cachedAttachment = preparedAttachmentRef.current;
+        if (cachedAttachment?.file !== file) {
+          const error = new Error("The attachment is not ready yet.");
+          error.code = "CHAT_ATTACHMENT_NOT_READY";
+          setActionError(getAttachmentErrorKey(error));
+          throw error;
         }
 
+        preparedAttachment = cachedAttachment.metadata;
+      }
+
+      setIsSending(true);
+      setActionError("");
+
+      try {
         const response = await emitWithAcknowledgement("sendMessage", {
           type: preparedAttachment?.type || "TEXT",
           ...(normalizedContent ? { content: normalizedContent } : {}),
@@ -589,17 +639,12 @@ export const useDepartmentChat = ({ demoId, departmentId }) => {
         }
         throw error;
       } finally {
-        if (uploadControllerRef.current === uploadController) {
-          uploadControllerRef.current = null;
-        }
-
         if (activeContextKeyRef.current === actionContextKey) {
-          setIsUploadingAttachment(false);
           setIsSending(false);
         }
       }
     },
-    [contextKey, demoId, departmentId, emitWithAcknowledgement],
+    [contextKey, emitWithAcknowledgement],
   );
 
   const editMessage = useCallback(
@@ -769,6 +814,7 @@ export const useDepartmentChat = ({ demoId, departmentId }) => {
     historyError,
     connectionError,
     actionError,
+    prepareAttachment,
     sendMessage,
     editMessage,
     deleteMessage,

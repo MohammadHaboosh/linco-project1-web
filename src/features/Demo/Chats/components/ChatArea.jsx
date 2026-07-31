@@ -44,6 +44,7 @@ const ChatArea = ({
   retry,
   clearActionError,
   discardPreparedAttachment,
+  prepareAttachment,
 }) => {
   const { t, i18n } = useTranslation();
   const [draft, setDraft] = useState("");
@@ -51,6 +52,7 @@ const ChatArea = ({
   const [editingMessage, setEditingMessage] = useState(null);
   const [selectedAttachment, setSelectedAttachment] = useState(null);
   const [attachmentPreviewUrl, setAttachmentPreviewUrl] = useState("");
+  const [attachmentUploadStatus, setAttachmentUploadStatus] = useState("idle");
   const inputRef = useRef(null);
   const fileInputRef = useRef(null);
   const selectedAttachmentRef = useRef(null);
@@ -78,6 +80,7 @@ const ChatArea = ({
 
     setSelectedAttachment(null);
     setAttachmentPreviewUrl("");
+    setAttachmentUploadStatus("idle");
 
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
@@ -224,11 +227,33 @@ const ChatArea = ({
     stopTyping();
   }, [clearSelectedAttachment, stopTyping]);
 
+  const uploadSelectedAttachment = useCallback(
+    async (file) => {
+      setAttachmentUploadStatus("uploading");
+
+      try {
+        await prepareAttachment(file);
+        if (selectedAttachmentRef.current === file) {
+          setAttachmentUploadStatus("ready");
+        }
+      } catch (error) {
+        if (
+          selectedAttachmentRef.current === file &&
+          error.name !== "AbortError"
+        ) {
+          setAttachmentUploadStatus("error");
+        }
+      }
+    },
+    [prepareAttachment],
+  );
+
   const handleAttachmentChange = (event) => {
     const file = event.target.files?.[0];
     if (!file) {
       return;
     }
+    event.target.value = "";
 
     discardPreparedAttachment(selectedAttachmentRef.current);
     clearActionError();
@@ -246,13 +271,23 @@ const ChatArea = ({
     selectedAttachmentRef.current = file;
     setAttachmentPreviewUrl(previewUrl);
     setSelectedAttachment(file);
-    event.target.value = "";
+    void uploadSelectedAttachment(file);
+  };
+
+  const retrySelectedAttachment = () => {
+    if (selectedAttachmentRef.current) {
+      void uploadSelectedAttachment(selectedAttachmentRef.current);
+    }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const content = draft.trim();
-    if ((!content && !selectedAttachment) || !isConnected) {
+    if (
+      (!content && !selectedAttachment) ||
+      (selectedAttachment && attachmentUploadStatus !== "ready") ||
+      !isConnected
+    ) {
       return;
     }
 
@@ -357,10 +392,16 @@ const ChatArea = ({
       });
 
   const isSubmitting = isSending || Boolean(pendingActionId);
+  const isAttachmentUploading =
+    attachmentUploadStatus === "uploading" || isUploadingAttachment;
+  const hasReadyAttachment =
+    Boolean(selectedAttachment) && attachmentUploadStatus === "ready";
   const canSubmit =
     isConnected &&
-    Boolean(draft.trim() || selectedAttachment) &&
-    !isSubmitting;
+    Boolean(draft.trim() || hasReadyAttachment) &&
+    (!selectedAttachment || hasReadyAttachment) &&
+    !isSubmitting &&
+    !isAttachmentUploading;
 
   return (
     <section className={styles.chatRoomWrapper}>
@@ -401,7 +442,15 @@ const ChatArea = ({
               <IoCloudOfflineOutline aria-hidden="true" />
               <span>{t(error, { defaultValue: error })}</span>
               <div className={styles.errorActions}>
-                <button type="button" onClick={retry}>
+                <button
+                  type="button"
+                  onClick={
+                    error === actionError &&
+                    attachmentUploadStatus === "error"
+                      ? retrySelectedAttachment
+                      : retry
+                  }
+                >
                   {t("try-again")}
                 </button>
                 {error === actionError && (
@@ -505,12 +554,23 @@ const ChatArea = ({
               <strong>{selectedAttachment.name}</strong>
               <span
                 className={
-                  isUploadingAttachment ? styles.attachmentUploading : ""
+                  isAttachmentUploading
+                    ? styles.attachmentUploading
+                    : attachmentUploadStatus === "error"
+                      ? styles.attachmentUploadError
+                      : styles.attachmentReady
                 }
               >
-                {isUploadingAttachment
+                {isAttachmentUploading
                   ? t("chat-uploading-attachment")
-                  : formatFileSize(selectedAttachment.size, i18n.language)}
+                  : attachmentUploadStatus === "error"
+                    ? t("chat-attachment-upload-failed")
+                    : t("chat-attachment-ready", {
+                        size: formatFileSize(
+                          selectedAttachment.size,
+                          i18n.language,
+                        ),
+                      })}
               </span>
             </div>
 
@@ -518,7 +578,7 @@ const ChatArea = ({
               type="button"
               className={styles.removeAttachmentButton}
               onClick={clearSelectedAttachment}
-              disabled={isSubmitting}
+              disabled={isSubmitting || isAttachmentUploading}
               title={t("chat-remove-attachment")}
               aria-label={t("chat-remove-attachment")}
             >
@@ -533,14 +593,18 @@ const ChatArea = ({
             type="file"
             hidden
             onChange={handleAttachmentChange}
-            disabled={isSubmitting || Boolean(editingMessage)}
+            disabled={
+              isSubmitting || isAttachmentUploading || Boolean(editingMessage)
+            }
           />
 
           <button
             type="button"
             className={styles.actionIcon}
             onClick={() => fileInputRef.current?.click()}
-            disabled={isSubmitting || Boolean(editingMessage)}
+            disabled={
+              isSubmitting || isAttachmentUploading || Boolean(editingMessage)
+            }
             title={
               editingMessage
                 ? t("chat-edit-attachment-unavailable")

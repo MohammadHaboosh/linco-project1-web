@@ -625,6 +625,14 @@
   animation: spin 0.8s linear infinite;
 }
 
+.attachmentReady {
+  color: #15803d !important;
+}
+
+.attachmentUploadError {
+  color: #dc2626 !important;
+}
+
 .removeAttachmentButton {
   width: 30px;
   height: 30px;
