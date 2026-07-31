@@ -3,6 +3,7 @@ import { courseManagerApi } from "../api/courseManagerApi";
 import { publishCourseApi } from "../../PublishCourse/api/publishCourseApi";
 import { sectionApi } from "../api/sectionApi";
 import { lessonApi } from "../api/lessonApi";
+import { quizApi } from "../api/quizApi";
 
 export const useCourseManager = (demoId, assetId) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -33,7 +34,11 @@ export const useCourseManager = (demoId, assetId) => {
       return { ...prev, [keyOrObject]: value };
     });
   }, []);
-
+  const isTempId = (id) => {
+    if (!id) return true;
+    const strId = String(id);
+    return strId.startsWith("temp-") || strId.startsWith("temp_");
+  };
   useEffect(() => {
     if (!demoId || !assetId) return;
 
@@ -158,6 +163,30 @@ export const useCourseManager = (demoId, assetId) => {
     return generalResult;
   }, [courseId, generalInfo]);
 
+  const handleDeleteQuiz = async (sectionId, quizId) => {
+    if (String(quizId).startsWith("temp_") || isTempId?.(sectionId)) {
+      setSections((prev) =>
+        prev.map((sec) =>
+          sec.id === sectionId ? { ...sec, quiz: null } : sec,
+        ),
+      );
+      return;
+    }
+
+    try {
+      await quizApi.deleteQuiz(sectionId, quizId);
+
+      setSections((prev) =>
+        prev.map((sec) =>
+          sec.id === sectionId ? { ...sec, quiz: null } : sec,
+        ),
+      );
+    } catch (err) {
+      console.error("Failed to delete quiz:", err);
+      throw err;
+    }
+  };
+
   return {
     isLoading,
     isSaving,
@@ -167,6 +196,7 @@ export const useCourseManager = (demoId, assetId) => {
     generalInfo,
     setGeneralInfo,
     handleGeneralInfoChange,
+    handleDeleteQuiz,
     saveGeneralInfo,
     faqs,
     setFaqs,

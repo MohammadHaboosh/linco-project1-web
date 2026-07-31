@@ -234,10 +234,36 @@ const CurriculumTab = ({
     }
   }, [sections.length]);
 
-  const deleteQuiz = (secId) => {
-    setSections((prev) =>
-      prev.map((s) => (s.id === secId ? { ...s, quiz: null } : s)),
-    );
+  const deleteQuiz = async (secId) => {
+    const targetSection = sections.find((s) => s.id === secId);
+    const quizId = targetSection?.quiz?.id;
+
+    if (!quizId) {
+      setSections((prev) =>
+        prev.map((s) => (s.id === secId ? { ...s, quiz: null } : s)),
+      );
+      return;
+    }
+
+    if (window.confirm("Are you sure you want to delete this exam?")) {
+      try {
+        if (isTempId(secId) || String(quizId).startsWith("temp_")) {
+          setSections((prev) =>
+            prev.map((s) => (s.id === secId ? { ...s, quiz: null } : s)),
+          );
+          return;
+        }
+
+        await quizApi.deleteQuiz(secId, quizId);
+
+        setSections((prev) =>
+          prev.map((s) => (s.id === secId ? { ...s, quiz: null } : s)),
+        );
+      } catch (error) {
+        console.error("Failed to delete quiz:", error);
+        alert("Failed to delete the exam. Please try again.");
+      }
+    }
   };
 
   const handleFetchAttachments = async (lessonId) => {

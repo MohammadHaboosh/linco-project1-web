@@ -35,4 +35,18 @@ export const quizApi = {
     console.log("Fetched Quiz for section", sectionId, ":", quiz);
     return quiz;
   },
+
+  deleteQuiz: async (sectionId, examId) => {
+    const response = await apiFetch(`/sections/${sectionId}/exams/${examId}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const data = await response.json();
+    console.log("Delete Quiz Response:", data);
+    if (!response.ok || !data.success) {
+      throw new Error(data.message || "Failed to delete quiz");
+    }
+    return data.data;
+  },
 };
