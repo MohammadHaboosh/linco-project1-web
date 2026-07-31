@@ -3,6 +3,44 @@ const asTimestamp = (value) => {
   return Number.isNaN(timestamp) ? 0 : timestamp;
 };
 
+export const formatFileSize = (value, language) => {
+  const size = Number(value);
+  if (!Number.isFinite(size) || size < 0) {
+    return "";
+  }
+
+  if (size < 1024) {
+    return `${size} B`;
+  }
+
+  const units = ["KB", "MB", "GB", "TB"];
+  let unitIndex = -1;
+  let formattedSize = size;
+
+  do {
+    formattedSize /= 1024;
+    unitIndex += 1;
+  } while (formattedSize >= 1024 && unitIndex < units.length - 1);
+
+  return `${new Intl.NumberFormat(language, {
+    maximumFractionDigits: 1,
+  }).format(formattedSize)} ${units[unitIndex]}`;
+};
+
+const normalizeAttachment = (attachment) => {
+  if (!attachment) {
+    return null;
+  }
+
+  return {
+    fileUrl: attachment.fileUrl || "",
+    fileName: attachment.fileName || "",
+    mimeType: attachment.mimeType || "application/octet-stream",
+    fileSize:
+      typeof attachment.fileSize === "number" ? attachment.fileSize : null,
+  };
+};
+
 export const normalizeMessage = (message) => ({
   ...message,
   content: message?.content ?? "",
@@ -12,7 +50,7 @@ export const normalizeMessage = (message) => ({
     lastName: message?.sender?.lastName || "",
     imagePath: message?.sender?.imagePath || "",
   },
-  attachment: message?.attachment || null,
+  attachment: normalizeAttachment(message?.attachment),
   replyTo: message?.replyTo || null,
 });
 
@@ -62,4 +100,3 @@ export const getSenderInitials = (message) => {
 
   return initials || "?";
 };
-

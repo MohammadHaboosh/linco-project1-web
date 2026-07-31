@@ -6,6 +6,30 @@ import { mergeMessagesById } from "../utils/messageUtils";
 const ACK_TIMEOUT = 10000;
 const TYPING_EXPIRY = 3000;
 
+const getAttachmentMessageType = (mimeType) => {
+  if (mimeType?.startsWith("image/")) {
+    return "IMAGE";
+  }
+
+  if (mimeType?.startsWith("audio/")) {
+    return "AUDIO";
+  }
+
+  return "FILE";
+};
+
+const getAttachmentErrorKey = (error) => {
+  if (error?.code === "CHAT_UPLOAD_URL_FAILED") {
+    return "chat-attachment-preparation-failed";
+  }
+
+  if (error?.code === "CHAT_FILE_UPLOAD_FAILED") {
+    return "chat-attachment-upload-failed";
+  }
+
+  return "";
+};
+
 const getErrorMessage = (error, fallback) => {
   if (typeof error === "string") {
     return error;
@@ -35,6 +59,7 @@ export const useDepartmentChat = ({ demoId, departmentId }) => {
   const [isLoadingHistory, setIsLoadingHistory] = useState(true);
   const [isLoadingOlder, setIsLoadingOlder] = useState(false);
   const [isSending, setIsSending] = useState(false);
+  const [isUploadingAttachment, setIsUploadingAttachment] = useState(false);
   const [pendingActionId, setPendingActionId] = useState(null);
   const [typingMemberIds, setTypingMemberIds] = useState([]);
   const [onlineMemberIds, setOnlineMemberIds] = useState([]);
@@ -43,6 +68,8 @@ export const useDepartmentChat = ({ demoId, departmentId }) => {
   const [actionError, setActionError] = useState("");
 
   const socketRef = useRef(null);
+  const uploadControllerRef = useRef(null);
+  const preparedAttachmentRef = useRef(null);
   const connectionStatusRef = useRef("idle");
   const currentMemberIdRef = useRef(null);
   const activeContextKeyRef = useRef(contextKey);
@@ -390,6 +417,7 @@ export const useDepartmentChat = ({ demoId, departmentId }) => {
       setOnlineMemberIds([]);
       setIsLoadingOlder(false);
       setIsSending(false);
+      setIsUploadingAttachment(false);
       setPendingActionId(null);
       setHistoryError("");
       setConnectionError("");
@@ -417,6 +445,9 @@ export const useDepartmentChat = ({ demoId, departmentId }) => {
       isActive = false;
       joinAttempt += 1;
       historyController.abort();
+      uploadControllerRef.current?.abort();
+      uploadControllerRef.current = null;
+      preparedAttachmentRef.current = null;
 
       typingTimeouts.forEach((timeout) => clearTimeout(timeout));
       typingTimeouts.clear();
@@ -470,38 +501,105 @@ export const useDepartmentChat = ({ demoId, departmentId }) => {
   }, []);
 
   const sendMessage = useCallback(
-    async ({ content, replyToId }) => {
+    async ({ content, replyToId, file }) => {
       const actionContextKey = contextKey;
       const normalizedContent = String(content || "").trim();
-      if (!normalizedContent) {
-        throw new Error("A message cannot be empty.");
+      if (!normalizedContent && !file) {
+        throw new Error("A message or attachment is required.");
       }
 
       setIsSending(true);
       setActionError("");
+      let uploadController = null;
 
       try {
-        return await emitWithAcknowledgement("sendMessage", {
-          type: "TEXT",
-          content: normalizedContent,
+        let preparedAttachment = null;
+
+        if (file) {
+          const cachedAttachment = preparedAttachmentRef.current;
+
+          if (cachedAttachment?.file === file) {
+            preparedAttachment = cachedAttachment.metadata;
+          } else {
+            uploadController = new AbortController();
+            uploadControllerRef.current = uploadController;
+            setIsUploadingAttachment(true);
+
+            const upload = await departmentMessagesApi.requestUploadUrl({
+              demoId,
+              departmentId,
+              fileName: file.name,
+              signal: uploadController.signal,
+            });
+
+            await departmentMessagesApi.uploadFile({
+              uploadUrl: upload.uploadUrl,
+              file,
+              signal: uploadController.signal,
+            });
+
+            if (activeContextKeyRef.current !== actionContextKey) {
+              throw new DOMException("The chat context changed.", "AbortError");
+            }
+
+            const mimeType = file.type || "application/octet-stream";
+            preparedAttachment = {
+              type: getAttachmentMessageType(mimeType),
+              fileKey: upload.fileKey,
+              fileName: upload.fileName || file.name,
+              mimeType,
+              fileSize: file.size,
+            };
+            preparedAttachmentRef.current = {
+              file,
+              metadata: preparedAttachment,
+            };
+            setIsUploadingAttachment(false);
+          }
+        }
+
+        const response = await emitWithAcknowledgement("sendMessage", {
+          type: preparedAttachment?.type || "TEXT",
+          ...(normalizedContent ? { content: normalizedContent } : {}),
           ...(replyToId ? { replyToId } : {}),
+          ...(preparedAttachment
+            ? {
+                fileKey: preparedAttachment.fileKey,
+                fileName: preparedAttachment.fileName,
+                mimeType: preparedAttachment.mimeType,
+                fileSize: preparedAttachment.fileSize,
+              }
+            : {}),
         });
+
+        preparedAttachmentRef.current = null;
+        return response;
       } catch (error) {
-        if (activeContextKeyRef.current === actionContextKey) {
+        if (
+          activeContextKeyRef.current === actionContextKey &&
+          error.name !== "AbortError"
+        ) {
+          const attachmentErrorKey = getAttachmentErrorKey(error);
           setActionError(
             (currentError) =>
               currentError ||
+              attachmentErrorKey ||
               getErrorMessage(error, "Unable to send the message."),
           );
         }
         throw error;
       } finally {
+        if (uploadControllerRef.current === uploadController) {
+          uploadControllerRef.current = null;
+        }
+
         if (activeContextKeyRef.current === actionContextKey) {
+          setIsUploadingAttachment(false);
           setIsSending(false);
         }
       }
     },
-    [contextKey, emitWithAcknowledgement],
+    [contextKey, demoId, departmentId, emitWithAcknowledgement],
   );
 
   const editMessage = useCallback(
@@ -650,6 +748,12 @@ export const useDepartmentChat = ({ demoId, departmentId }) => {
 
   const clearActionError = useCallback(() => setActionError(""), []);
 
+  const discardPreparedAttachment = useCallback((file) => {
+    if (!file || preparedAttachmentRef.current?.file === file) {
+      preparedAttachmentRef.current = null;
+    }
+  }, []);
+
   return {
     messages,
     currentDepartmentMemberId,
@@ -657,6 +761,7 @@ export const useDepartmentChat = ({ demoId, departmentId }) => {
     isLoadingHistory,
     isLoadingOlder,
     isSending,
+    isUploadingAttachment,
     pendingActionId,
     typingMemberIds,
     onlineMemberIds,
@@ -671,5 +776,6 @@ export const useDepartmentChat = ({ demoId, departmentId }) => {
     loadOlderMessages,
     retry,
     clearActionError,
+    discardPreparedAttachment,
   };
 };

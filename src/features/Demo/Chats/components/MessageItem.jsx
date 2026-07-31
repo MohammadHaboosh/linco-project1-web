@@ -5,6 +5,7 @@ import {
 } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
 import {
+  formatFileSize,
   getSenderInitials,
   getSenderName,
 } from "../utils/messageUtils";
@@ -36,13 +37,15 @@ const formatMessageTime = (value, language) => {
 };
 
 const Attachment = ({ attachment, type }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   if (!attachment?.fileUrl) {
     return null;
   }
 
-  if (type === "IMAGE") {
+  const mimeType = attachment.mimeType || "";
+
+  if (type === "IMAGE" || mimeType.startsWith("image/")) {
     return (
       <a
         href={attachment.fileUrl}
@@ -60,7 +63,7 @@ const Attachment = ({ attachment, type }) => {
     );
   }
 
-  if (type === "AUDIO") {
+  if (type === "AUDIO" || mimeType.startsWith("audio/")) {
     return (
       <audio className={styles.audioAttachment} controls preload="metadata">
         <source src={attachment.fileUrl} type={attachment.mimeType} />
@@ -75,7 +78,13 @@ const Attachment = ({ attachment, type }) => {
       rel="noreferrer"
       className={styles.fileAttachment}
     >
-      {attachment.fileName || t("chat-open-attachment")}
+      <span>{attachment.fileName || t("chat-open-attachment")}</span>
+      {attachment.fileSize !== null &&
+        attachment.fileSize !== undefined && (
+          <small>
+            {formatFileSize(attachment.fileSize, i18n.language)}
+          </small>
+        )}
     </a>
   );
 };
@@ -117,6 +126,7 @@ const MessageItem = ({
               <span>{t("chat-reply")}</span>
               <p>
                 {message.replyTo.content ||
+                  message.replyTo.attachment?.fileName ||
                   t("chat-referenced-message-unavailable")}
               </p>
             </div>
@@ -192,4 +202,3 @@ const MessageItem = ({
 };
 
 export default MessageItem;
-

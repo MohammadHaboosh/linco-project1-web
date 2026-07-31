@@ -17,7 +17,7 @@ import {
 import { useTranslation } from "react-i18next";
 import ChatEmptyState from "./ChatEmptyState";
 import MessageItem from "./MessageItem";
-import { getSenderName } from "../utils/messageUtils";
+import { formatFileSize, getSenderName } from "../utils/messageUtils";
 import styles from "./Chats.module.css";
 
 const TYPING_IDLE_DELAY = 1500;
@@ -29,6 +29,7 @@ const ChatArea = ({
   isLoadingHistory,
   isLoadingOlder,
   isSending,
+  isUploadingAttachment,
   pendingActionId,
   typingMemberIds,
   hasNextPage,
@@ -42,12 +43,18 @@ const ChatArea = ({
   loadOlderMessages,
   retry,
   clearActionError,
+  discardPreparedAttachment,
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [draft, setDraft] = useState("");
   const [replyingTo, setReplyingTo] = useState(null);
   const [editingMessage, setEditingMessage] = useState(null);
+  const [selectedAttachment, setSelectedAttachment] = useState(null);
+  const [attachmentPreviewUrl, setAttachmentPreviewUrl] = useState("");
   const inputRef = useRef(null);
+  const fileInputRef = useRef(null);
+  const selectedAttachmentRef = useRef(null);
+  const attachmentPreviewUrlRef = useRef("");
   const scrollAreaRef = useRef(null);
   const typingTimeoutRef = useRef(null);
   const isTypingRef = useRef(false);
@@ -58,6 +65,24 @@ const ChatArea = ({
   const restoreScrollFrameRef = useRef(null);
 
   const isConnected = connectionStatus === "connected";
+
+  const clearSelectedAttachment = useCallback(() => {
+    discardPreparedAttachment(selectedAttachmentRef.current);
+    selectedAttachmentRef.current = null;
+    clearActionError();
+
+    if (attachmentPreviewUrlRef.current) {
+      URL.revokeObjectURL(attachmentPreviewUrlRef.current);
+      attachmentPreviewUrlRef.current = "";
+    }
+
+    setSelectedAttachment(null);
+    setAttachmentPreviewUrl("");
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  }, [clearActionError, discardPreparedAttachment]);
 
   const stopTyping = useCallback(() => {
     if (typingTimeoutRef.current) {
@@ -77,6 +102,11 @@ const ChatArea = ({
 
       if (restoreScrollFrameRef.current) {
         cancelAnimationFrame(restoreScrollFrameRef.current);
+      }
+
+      if (attachmentPreviewUrlRef.current) {
+        URL.revokeObjectURL(attachmentPreviewUrlRef.current);
+        attachmentPreviewUrlRef.current = "";
       }
     },
     [stopTyping],
@@ -190,13 +220,39 @@ const ChatArea = ({
     setDraft("");
     setReplyingTo(null);
     setEditingMessage(null);
+    clearSelectedAttachment();
     stopTyping();
-  }, [stopTyping]);
+  }, [clearSelectedAttachment, stopTyping]);
+
+  const handleAttachmentChange = (event) => {
+    const file = event.target.files?.[0];
+    if (!file) {
+      return;
+    }
+
+    discardPreparedAttachment(selectedAttachmentRef.current);
+    clearActionError();
+
+    if (attachmentPreviewUrlRef.current) {
+      URL.revokeObjectURL(attachmentPreviewUrlRef.current);
+      attachmentPreviewUrlRef.current = "";
+    }
+
+    const previewUrl = file.type.startsWith("image/")
+      ? URL.createObjectURL(file)
+      : "";
+
+    attachmentPreviewUrlRef.current = previewUrl;
+    selectedAttachmentRef.current = file;
+    setAttachmentPreviewUrl(previewUrl);
+    setSelectedAttachment(file);
+    event.target.value = "";
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const content = draft.trim();
-    if (!content || !isConnected) {
+    if ((!content && !selectedAttachment) || !isConnected) {
       return;
     }
 
@@ -207,6 +263,7 @@ const ChatArea = ({
         await sendMessage({
           content,
           replyToId: replyingTo?.id,
+          file: selectedAttachment,
         });
       }
 
@@ -225,6 +282,7 @@ const ChatArea = ({
 
   const handleEdit = (message) => {
     stopTyping();
+    clearSelectedAttachment();
     setReplyingTo(null);
     setEditingMessage(message);
     setDraft(message.content || "");
@@ -299,7 +357,10 @@ const ChatArea = ({
       });
 
   const isSubmitting = isSending || Boolean(pendingActionId);
-  const canSubmit = isConnected && Boolean(draft.trim()) && !isSubmitting;
+  const canSubmit =
+    isConnected &&
+    Boolean(draft.trim() || selectedAttachment) &&
+    !isSubmitting;
 
   return (
     <section className={styles.chatRoomWrapper}>
@@ -409,6 +470,7 @@ const ChatArea = ({
               <strong>{composerContextLabel}</strong>
               <span>
                 {composerContext.content ||
+                  composerContext.attachment?.fileName ||
                   t("chat-referenced-message-unavailable")}
               </span>
             </div>
@@ -422,13 +484,73 @@ const ChatArea = ({
           </div>
         )}
 
+        {selectedAttachment && (
+          <div className={styles.selectedAttachment} aria-live="polite">
+            {attachmentPreviewUrl ? (
+              <img
+                src={attachmentPreviewUrl}
+                alt=""
+                className={styles.selectedAttachmentPreview}
+              />
+            ) : (
+              <span
+                className={styles.selectedAttachmentIcon}
+                aria-hidden="true"
+              >
+                <IoAttachOutline />
+              </span>
+            )}
+
+            <div className={styles.selectedAttachmentDetails}>
+              <strong>{selectedAttachment.name}</strong>
+              <span
+                className={
+                  isUploadingAttachment ? styles.attachmentUploading : ""
+                }
+              >
+                {isUploadingAttachment
+                  ? t("chat-uploading-attachment")
+                  : formatFileSize(selectedAttachment.size, i18n.language)}
+              </span>
+            </div>
+
+            <button
+              type="button"
+              className={styles.removeAttachmentButton}
+              onClick={clearSelectedAttachment}
+              disabled={isSubmitting}
+              title={t("chat-remove-attachment")}
+              aria-label={t("chat-remove-attachment")}
+            >
+              <IoCloseOutline />
+            </button>
+          </div>
+        )}
+
         <form className={styles.inputWrapper} onSubmit={handleSubmit}>
+          <input
+            ref={fileInputRef}
+            type="file"
+            hidden
+            onChange={handleAttachmentChange}
+            disabled={isSubmitting || Boolean(editingMessage)}
+          />
+
           <button
             type="button"
             className={styles.actionIcon}
-            disabled
-            title={t("chat-attachments-coming-soon")}
-            aria-label={t("chat-attachments-coming-soon")}
+            onClick={() => fileInputRef.current?.click()}
+            disabled={isSubmitting || Boolean(editingMessage)}
+            title={
+              editingMessage
+                ? t("chat-edit-attachment-unavailable")
+                : t("chat-select-attachment")
+            }
+            aria-label={
+              editingMessage
+                ? t("chat-edit-attachment-unavailable")
+                : t("chat-select-attachment")
+            }
           >
             <IoAttachOutline />
           </button>
