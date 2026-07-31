@@ -12,7 +12,7 @@ import {
 import { useCourseManager } from "../../../hooks/useCourseManager";
 import GeneralInfoTab from "./tabs/GeneralInfoTab/GeneralInfoTab";
 import CurriculumTab from "./tabs/CurriculumTab/CurriculumTab";
-import FAQsTab from "./tabs/FAQsTab";
+import FAQsTab from "./tabs/FAQsTab/FAQsTab";
 import styles from "./CourseManager.module.css";
 import { useTranslation } from "react-i18next";
 import { lessonApi } from "../../../api/lessonApi";
