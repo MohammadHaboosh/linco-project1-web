@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   IoChevronDownOutline,
   IoChevronUpOutline,
@@ -17,6 +17,7 @@ import AddLessonModal from "./AddModals/AddLessonModal";
 import AddQuizModal from "./AddModals/AddQuizModal";
 import AddQuestionModal from "./AddModals/AddQuestionModal";
 import { attachmentApi } from "../../../../../api/attachmentApi";
+import { quizApi } from "../../../../../api/quizApi";
 
 const CurriculumTab = ({
   courseId,
@@ -26,18 +27,35 @@ const CurriculumTab = ({
 }) => {
   const { t } = useTranslation();
   const [expandedSections, setExpandedSections] = useState(
-    sections.map((s) => s.id),
+    sections.length > 0 ? [sections[0].id] : [],
   );
 
   const [activeModal, setActiveModal] = useState(null);
   const [activeSectionId, setActiveSectionId] = useState(null);
   const [isCreatingSection, setIsCreatingSection] = useState(false);
 
+  const isTempId = (id) => {
+    if (!id) return true;
+    const strId = String(id);
+    return (
+      strId.startsWith("temp") ||
+      strId.startsWith("temp_") ||
+      strId.includes("temp")
+    );
+  };
+
   const toggleSection = (id) => {
-    if (expandedSections.includes(id)) {
-      setExpandedSections(expandedSections.filter((secId) => secId !== id));
-    } else {
+    const isExpanding = !expandedSections.includes(id);
+
+    if (isExpanding) {
       setExpandedSections([...expandedSections, id]);
+
+      const targetSec = sections.find((s) => s.id === id);
+      if (targetSec && !isTempId(id) && targetSec.quiz === undefined) {
+        handleFetchQuizForSection(id);
+      }
+    } else {
+      setExpandedSections(expandedSections.filter((secId) => secId !== id));
     }
   };
 
@@ -141,11 +159,7 @@ const CurriculumTab = ({
         s.id === activeSectionId
           ? {
               ...s,
-              quiz: {
-                id: `temp_quiz_${Date.now()}`,
-                ...quizData,
-                isNew: true,
-              },
+              quiz: quizData,
             }
           : s,
       ),
@@ -198,6 +212,31 @@ const CurriculumTab = ({
       ),
     );
   };
+
+  const handleFetchQuizForSection = async (sectionId) => {
+    if (isTempId(sectionId)) return;
+
+    try {
+      const fetchedQuiz = await quizApi.getQuizBySectionId(sectionId);
+      if (fetchedQuiz) {
+        setSections((prev) =>
+          prev.map((sec) =>
+            sec.id === sectionId ? { ...sec, quiz: fetchedQuiz } : sec,
+          ),
+        );
+      }
+    } catch (error) {
+      console.error(`Failed to fetch quiz for section ${sectionId}:`, error);
+    }
+  };
+  useEffect(() => {
+    if (sections.length > 0) {
+      const firstSection = sections[0];
+      if (!isTempId(firstSection.id) && firstSection.quiz === undefined) {
+        handleFetchQuizForSection(firstSection.id);
+      }
+    }
+  }, [sections.length]);
 
   const deleteQuiz = (secId) => {
     setSections((prev) =>
@@ -457,6 +496,7 @@ const CurriculumTab = ({
 
       <AddQuizModal
         isOpen={activeModal === "quiz"}
+        sectionId={activeSectionId}
         onClose={handleCloseModal}
         onSubmit={handleSaveQuiz}
       />

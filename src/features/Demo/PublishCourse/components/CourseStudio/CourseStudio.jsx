@@ -15,6 +15,7 @@ import { sectionApi } from "../../../OwnerCourses/api/sectionApi";
 import { courseManagerApi } from "../../../OwnerCourses/api/courseManagerApi";
 import { lessonApi } from "../../../OwnerCourses/api/lessonApi";
 import { attachmentApi } from "../../../OwnerCourses/api/attachmentApi";
+import { quizApi } from "../../../OwnerCourses/api/quizApi";
 
 const CourseStudio = () => {
   const { t } = useTranslation();
@@ -176,6 +177,20 @@ const CourseStudio = () => {
       );
 
       for (const section of processedSections) {
+        if (section.quiz && (section.quiz.isNew || isTempId(section.quiz.id))) {
+          try {
+            await quizApi.createQuiz(section.realId, {
+              title: section.quiz.title,
+              numberOfQuestions: section.quiz.numberOfQuestions,
+              durationMinutes: section.quiz.durationMinutes,
+            });
+          } catch (quizError) {
+            console.error(
+              `Failed to create quiz for section ${section.realId}:`,
+              quizError,
+            );
+          }
+        }
         const lessons = section.lessons || [];
 
         for (let index = 0; index < lessons.length; index++) {
@@ -297,7 +312,9 @@ const CourseStudio = () => {
       }
 
       setDeletedSectionIds([]);
-      alert("Course, sections, lessons, and attachments saved successfully!");
+      alert(
+        "Course, sections, lessons, attachments, and quizze saved successfully!",
+      );
       navigate(-1);
     } catch (error) {
       console.error("Error saving curriculum:", error);

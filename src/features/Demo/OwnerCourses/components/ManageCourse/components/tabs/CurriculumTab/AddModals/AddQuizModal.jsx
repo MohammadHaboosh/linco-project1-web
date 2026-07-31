@@ -6,13 +6,15 @@ import {
   IoListOutline,
 } from "react-icons/io5";
 import styles from "./Modal.module.css";
+import { useQuiz } from "../../../../../../hooks/useQuiz";
 
-const AddQuizModal = ({ isOpen, onClose, onSubmit }) => {
+const AddQuizModal = ({ isOpen, onClose, onSubmit, sectionId }) => {
   const [formData, setFormData] = useState({
     title: "",
     numberOfQuestions: 5,
     durationMinutes: 30,
   });
+  const { createQuiz, isCreating } = useQuiz();
 
   if (!isOpen) return null;
 
@@ -20,15 +22,47 @@ const AddQuizModal = ({ isOpen, onClose, onSubmit }) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const isTempId = (id) => {
+    if (!id) return true;
+    const strId = String(id);
+    return strId.startsWith("temp-") || strId.startsWith("temp_");
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // إرجاع البنية المحددة للباك إند تماماً
-    onSubmit({
-      title: formData.title,
+
+    const quizPayload = {
+      title: formData.title.trim(),
       numberOfQuestions: Number(formData.numberOfQuestions),
       durationMinutes: Number(formData.durationMinutes),
-    });
-    onClose();
+    };
+
+    try {
+      if (sectionId && !isTempId(sectionId)) {
+        const createdQuiz = await createQuiz(sectionId, quizPayload);
+        if (onSubmit) {
+          onSubmit(createdQuiz);
+        }
+      } else {
+        if (onSubmit) {
+          onSubmit({
+            id: `temp_quiz_${Date.now()}`,
+            ...quizPayload,
+            isNew: true,
+          });
+        }
+      }
+
+      setFormData({
+        title: "",
+        numberOfQuestions: 5,
+        durationMinutes: 30,
+      });
+      onClose();
+    } catch (err) {
+      console.error("Error creating quiz:", err);
+      alert(err.message || "Failed to create quiz");
+    }
   };
 
   return (
@@ -37,7 +71,6 @@ const AddQuizModal = ({ isOpen, onClose, onSubmit }) => {
         className={styles.modalContainer}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* رأس النافذة */}
         <div className={styles.modalHeader}>
           <div className={styles.headerTitleGroup}>
             <div className={`${styles.iconBadge} ${styles.purpleBadge}`}>
@@ -48,19 +81,22 @@ const AddQuizModal = ({ isOpen, onClose, onSubmit }) => {
               <p>Configure assessment details and time constraints</p>
             </div>
           </div>
-          <button className={styles.closeBtn} onClick={onClose}>
+          <button
+            className={styles.closeBtn}
+            onClick={onClose}
+            disabled={isCreating}
+          >
             <IoCloseOutline />
           </button>
         </div>
 
-        {/* جسم النموذج */}
         <form onSubmit={handleSubmit} className={styles.modalBody}>
-          {/* عنوان الكويز */}
           <div className={styles.formGroup}>
             <label className={styles.label}>Quiz Title *</label>
             <input
               type="text"
               required
+              disabled={isCreating}
               className={styles.input}
               placeholder="e.g. Section 1 Exam: Auth"
               value={formData.title}
@@ -69,7 +105,6 @@ const AddQuizModal = ({ isOpen, onClose, onSubmit }) => {
           </div>
 
           <div className={styles.gridTwoCols}>
-            {/* عدد الأسئلة */}
             <div className={styles.formGroup}>
               <label className={styles.label}>
                 <IoListOutline /> Number of Questions *
@@ -78,6 +113,7 @@ const AddQuizModal = ({ isOpen, onClose, onSubmit }) => {
                 type="number"
                 min="1"
                 required
+                disabled={isCreating}
                 className={styles.input}
                 placeholder="5"
                 value={formData.numberOfQuestions}
@@ -87,7 +123,6 @@ const AddQuizModal = ({ isOpen, onClose, onSubmit }) => {
               />
             </div>
 
-            {/* المدة بالدقائق */}
             <div className={styles.formGroup}>
               <label className={styles.label}>
                 <IoTimeOutline /> Duration (Minutes) *
@@ -96,6 +131,7 @@ const AddQuizModal = ({ isOpen, onClose, onSubmit }) => {
                 type="number"
                 min="1"
                 required
+                disabled={isCreating}
                 className={styles.input}
                 placeholder="30"
                 value={formData.durationMinutes}
@@ -106,20 +142,21 @@ const AddQuizModal = ({ isOpen, onClose, onSubmit }) => {
             </div>
           </div>
 
-          {/* أزرار الإجراءات */}
           <div className={styles.modalFooter}>
             <button
               type="button"
               className={styles.cancelBtn}
               onClick={onClose}
+              disabled={isCreating}
             >
               Cancel
             </button>
             <button
               type="submit"
+              disabled={isCreating}
               className={`${styles.submitBtn} ${styles.purpleBtn}`}
             >
-              Save Quiz
+              {isCreating ? "Saving..." : "Save Quiz"}
             </button>
           </div>
         </form>
