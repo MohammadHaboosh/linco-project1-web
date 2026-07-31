@@ -45,7 +45,7 @@ export const useDepartmentMembers = (departmentId) => {
         }
       }
     },
-    [departmentId],
+    [demoId, departmentId],
   );
 
   useEffect(() => {

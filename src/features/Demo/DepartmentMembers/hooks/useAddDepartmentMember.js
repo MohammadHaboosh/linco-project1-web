@@ -1,0 +1,143 @@
+import { useCallback, useEffect, useState } from "react";
+import { departmentMemberApi } from "../api/departmentMemberApi";
+
+const SEARCH_DEBOUNCE_MS = 300;
+const ALLOWED_JOB_TITLES = ["INTERN", "JUNIOR", "SENIOR"];
+
+export const useAddDepartmentMember = ({
+  demoId,
+  departmentId,
+  onSuccess,
+}) => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [selectedMember, setSelectedMember] = useState(null);
+  const [jobTitle, setJobTitle] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchError, setSearchError] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
+
+  useEffect(() => {
+    const normalizedQuery = searchQuery.trim();
+
+    if (!normalizedQuery || selectedMember) {
+      return undefined;
+    }
+
+    const controller = new AbortController();
+    const debounceTimer = setTimeout(async () => {
+      try {
+        const responseData = await departmentMemberApi.searchDemoMembers(
+          demoId,
+          normalizedQuery,
+          { signal: controller.signal },
+        );
+
+        if (!controller.signal.aborted) {
+          setSearchResults(responseData.data);
+          setSearchError(null);
+        }
+      } catch (requestError) {
+        if (requestError.name === "AbortError") return;
+
+        if (!controller.signal.aborted) {
+          setSearchResults([]);
+          setSearchError(
+            requestError.message || "Failed to search demo members.",
+          );
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setIsSearching(false);
+        }
+      }
+    }, SEARCH_DEBOUNCE_MS);
+
+    return () => {
+      clearTimeout(debounceTimer);
+      controller.abort();
+    };
+  }, [demoId, searchQuery, selectedMember]);
+
+  const updateSearchQuery = useCallback((value) => {
+    const nextQuery = String(value ?? "");
+
+    setSearchQuery(nextQuery);
+    setSearchResults([]);
+    setSearchError(null);
+    setSubmitError(null);
+    setIsSearching(Boolean(nextQuery.trim()));
+  }, []);
+
+  const selectMember = useCallback((member) => {
+    setSelectedMember(member);
+    setSearchQuery("");
+    setSearchResults([]);
+    setSearchError(null);
+    setIsSearching(false);
+    setSubmitError(null);
+  }, []);
+
+  const clearSelectedMember = useCallback(() => {
+    setSelectedMember(null);
+    setSearchQuery("");
+    setSearchResults([]);
+    setSearchError(null);
+    setIsSearching(false);
+    setSubmitError(null);
+  }, []);
+
+  const submitMember = useCallback(
+    async (event) => {
+      event.preventDefault();
+      setSubmitError(null);
+
+      if (!selectedMember) {
+        setSubmitError("Please select a demo member.");
+        return;
+      }
+
+      if (!ALLOWED_JOB_TITLES.includes(jobTitle)) {
+        setSubmitError("Please select a job title.");
+        return;
+      }
+
+      setIsSubmitting(true);
+
+      try {
+        const responseData = await departmentMemberApi.addMember({
+          demoId,
+          departmentId,
+          demoMemberId: selectedMember.id,
+          jobTitle,
+        });
+
+        await onSuccess?.(responseData);
+      } catch (requestError) {
+        setSubmitError(
+          requestError.message || "Failed to add the department member.",
+        );
+      } finally {
+        setIsSubmitting(false);
+      }
+    },
+    [demoId, departmentId, jobTitle, onSuccess, selectedMember],
+  );
+
+  return {
+    searchQuery,
+    setSearchQuery: updateSearchQuery,
+    searchResults,
+    selectedMember,
+    selectMember,
+    clearSelectedMember,
+    jobTitle,
+    setJobTitle,
+    isSearching,
+    searchError,
+    isSubmitting,
+    submitError,
+    submitMember,
+  };
+};

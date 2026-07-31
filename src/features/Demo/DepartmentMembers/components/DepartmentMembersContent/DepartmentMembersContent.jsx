@@ -4,11 +4,13 @@ import { useTranslation } from "react-i18next";
 import {
   IoBriefcaseOutline,
   IoPeopleOutline,
+  IoPersonAddOutline,
   IoRefreshOutline,
   IoSearchOutline,
   IoShieldCheckmarkOutline,
 } from "react-icons/io5";
 import { useDepartmentMembers } from "../../hooks/useDepartmentMembers";
+import AddDepartmentMemberModal from "../AddDepartmentMemberModal/AddDepartmentMemberModal";
 import styles from "./DepartmentMembersContent.module.css";
 
 const normalizeLabel = (value, fallback = "—") => {
@@ -22,9 +24,10 @@ const normalizeLabel = (value, fallback = "—") => {
 };
 
 const DepartmentMembersContent = () => {
-  const { departmentId } = useParams();
+  const { demoId, departmentId } = useParams();
   const { t, i18n } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
+  const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
   const { members, meta, isLoading, error, refetch } =
     useDepartmentMembers(departmentId);
 
@@ -109,12 +112,11 @@ const DepartmentMembersContent = () => {
 
           <button
             type="button"
-            className={styles.refreshButton}
-            onClick={refetch}
-            disabled={isLoading}
+            className={styles.addMemberButton}
+            onClick={() => setIsAddMemberOpen(true)}
           >
-            <IoRefreshOutline className={isLoading ? styles.spinning : ""} />
-            {t("refresh", "Refresh")}
+            <IoPersonAddOutline />
+            {t("add-members")}
           </button>
         </header>
 
@@ -303,6 +305,18 @@ const DepartmentMembersContent = () => {
           )}
         </section>
       </div>
+
+      {isAddMemberOpen && (
+        <AddDepartmentMemberModal
+          demoId={demoId}
+          departmentId={departmentId}
+          onClose={() => setIsAddMemberOpen(false)}
+          onSuccess={async () => {
+            await refetch();
+            setIsAddMemberOpen(false);
+          }}
+        />
+      )}
     </div>
   );
 };
