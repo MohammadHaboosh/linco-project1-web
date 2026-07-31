@@ -37,11 +37,7 @@ const CurriculumTab = ({
   const isTempId = (id) => {
     if (!id) return true;
     const strId = String(id);
-    return (
-      strId.startsWith("temp") ||
-      strId.startsWith("temp_") ||
-      strId.includes("temp")
-    );
+    return strId.startsWith("temp-") || strId.startsWith("temp_");
   };
 
   const toggleSection = (id) => {
@@ -232,7 +228,7 @@ const CurriculumTab = ({
   useEffect(() => {
     if (sections.length > 0) {
       const firstSection = sections[0];
-      if (!isTempId(firstSection.id) && firstSection.quiz === undefined) {
+      if (!isTempId(firstSection.id) && firstSection.quiz === null) {
         handleFetchQuizForSection(firstSection.id);
       }
     }
