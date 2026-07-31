@@ -67,7 +67,7 @@
   "course-details": "تفاصيل الدورة",
   "course-title": "عنوان الدورة",
   "course-desc": "وصف الدورة",
-  "saving": "جاري الحفظ",
+  "saving": "...جاري الحفظ",
   "save-changes": "حفظ التغييرات",
   "general": "عام",
   "video": "فيديو",
@@ -548,5 +548,6 @@
   "chat-attachments-coming-soon": "ستتوفر مرفقات الملفات قريبًا",
   "chat-waiting-for-connection": "في انتظار الاتصال بالدردشة...",
   "chat-send-message": "إرسال الرسالة",
-  "chat-save-edit": "حفظ الرسالة المعدلة"
+  "chat-save-edit": "حفظ الرسالة المعدلة",
+  "create-course": "حفظ محتوى الدورة"
 }

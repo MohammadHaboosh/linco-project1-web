@@ -37,29 +37,44 @@ const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit({
-      title: formData.title,
-      description: formData.description,
-      duration: Number(formData.duration),
-      videoFile: formData.videoFile,
-      videoUrl: formData.videoUrl || "https://example.com/video.mp4",
-      attachments: [],
-    });
-
+  const resetForm = () => {
+    if (formData.videoUrl && formData.videoUrl.startsWith("blob:")) {
+      URL.revokeObjectURL(formData.videoUrl);
+    }
     setFormData({
       title: "",
       description: "",
       duration: 0,
+      order: 1,
       videoFile: null,
       videoUrl: "",
     });
+  };
+
+  const handleClose = () => {
+    resetForm();
+    onClose();
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit({
+      id: `temp_lesson_${Date.now()}`,
+      title: formData.title,
+      description: formData.description,
+      duration: Number(formData.duration) || 0,
+      videoFile: formData.videoFile,
+      videoUrl: formData.videoUrl,
+      isNew: true,
+      attachments: [],
+    });
+
+    resetForm();
     onClose();
   };
 
   return (
-    <div className={styles.modalOverlay} onClick={onClose}>
+    <div className={styles.modalOverlay} onClick={handleClose}>
       <div
         className={`${styles.modalContainer} ${styles.largeModal}`}
         onClick={(e) => e.stopPropagation()}
@@ -74,7 +89,7 @@ const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
               <p>Upload video lecture and lesson details</p>
             </div>
           </div>
-          <button className={styles.closeBtn} onClick={onClose}>
+          <button className={styles.closeBtn} onClick={handleClose}>
             <IoCloseOutline />
           </button>
         </div>
@@ -95,7 +110,7 @@ const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
 
             <div className={styles.formGroup}>
               <label className={styles.label}>
-                <IoTimeOutline /> Duration (Minutes) *
+                <IoTimeOutline /> Duration (Minutes / Seconds) *
               </label>
               <input
                 type="number"
@@ -160,7 +175,7 @@ const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
             <button
               type="button"
               className={styles.cancelBtn}
-              onClick={onClose}
+              onClick={handleClose}
             >
               Cancel
             </button>

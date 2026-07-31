@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { courseManagerApi } from "../api/courseManagerApi";
 import { publishCourseApi } from "../../PublishCourse/api/publishCourseApi";
 import { sectionApi } from "../api/sectionApi";
+import { lessonApi } from "../api/lessonApi";
 
 export const useCourseManager = (demoId, assetId) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -23,6 +24,7 @@ export const useCourseManager = (demoId, assetId) => {
   const [faqs, setFaqs] = useState([]);
 
   const [sections, setSections] = useState([]);
+  const [deletedSectionIds, setDeletedSectionIds] = useState([]);
   const handleGeneralInfoChange = useCallback((keyOrObject, value) => {
     setGeneralInfo((prev) => {
       if (typeof keyOrObject === "object" && keyOrObject !== null) {
@@ -38,6 +40,7 @@ export const useCourseManager = (demoId, assetId) => {
     const loadCourseData = async () => {
       try {
         setIsLoading(true);
+        setError(null);
         const assetData = await courseManagerApi.getAsset(demoId, assetId);
 
         const course = assetData.course || assetData.data?.course || assetData;
@@ -56,15 +59,34 @@ export const useCourseManager = (demoId, assetId) => {
 
         if (course.id) {
           const sectionsData = await sectionApi.getSections(course.id);
-          const formattedSections = (sectionsData || []).map((sec) => ({
-            id: sec.id,
-            title: sec.title,
-            order: sec.order,
-            lessons: sec.lessons || [],
-            questions: sec.questions || [],
-            quiz: sec.quiz || null,
-            isNew: false,
-          }));
+          const formattedSections = await Promise.all(
+            (sectionsData || []).map(async (sec) => {
+              let lessonsList = sec.lessons || [];
+
+              if (!lessonsList || lessonsList.length === 0) {
+                try {
+                  lessonsList = await lessonApi.getLessons(sec.id);
+                } catch (err) {
+                  console.error(
+                    `Failed to fetch lessons for section ${sec.id}:`,
+                    err,
+                  );
+                  lessonsList = [];
+                }
+              }
+
+              return {
+                id: sec.id,
+                title: sec.title,
+                order: sec.order,
+                lessons: lessonsList,
+                questions: sec.questions || [],
+                quiz: sec.quiz || null,
+                isNew: false,
+              };
+            }),
+          );
+
           setSections(formattedSections);
         }
       } catch (err) {
@@ -79,101 +101,67 @@ export const useCourseManager = (demoId, assetId) => {
 
   const saveGeneralInfo = useCallback(async () => {
     if (!courseId) return;
-    setIsSaving(true);
-    console.log("START SAVING EVERYTHING");
 
-    try {
-      const tagNames = (generalInfo.tags || []).map((tag) =>
-        typeof tag === "object" ? tag.name : tag,
+    let tagIds = [];
+    if (generalInfo.tags && generalInfo.tags.length > 0) {
+      const tagIdResults = await Promise.all(
+        generalInfo.tags.map(async (tag) => {
+          if (typeof tag === "object" && tag !== null && tag.id) {
+            return tag.id;
+          }
+
+          const tagName =
+            typeof tag === "string"
+              ? tag
+              : tag?.name || tag?.label || tag?.value || "";
+
+          if (!tagName || !tagName.trim()) return null;
+
+          const res = await publishCourseApi.createTag(tagName.trim());
+          return res.data?.id || res.id;
+        }),
       );
 
-      const tagPromises = tagNames.map((name) =>
-        publishCourseApi.createTag(name),
-      );
-      const createdTagsResponses = await Promise.all(tagPromises);
-
-      const tagIds = createdTagsResponses.map((res) => res.data?.id || res.id);
-
-      const basePayload = {
-        title: generalInfo.title,
-        description: generalInfo.description,
-        imagePath: generalInfo.imagePath,
-        visibility: generalInfo.visibility,
-        price: Number(generalInfo.price) || 0,
-        tagIds: tagIds,
-      };
-
-      let generalResult;
-      if (generalInfo.imageFile) {
-        generalResult = await courseManagerApi.uploadAndSaveCourseImage(
-          courseId,
-          generalInfo.imageFile,
-          basePayload,
-        );
-      } else {
-        generalResult = await courseManagerApi.updateCourseGeneralInfo(
-          courseId,
-          basePayload,
-        );
-      }
-
-      console.log("Course Saved Successfully! Returned Data:", generalResult);
-
-      setGeneralInfo((prev) => ({
-        ...prev,
-        imagePath: generalResult?.imagePath || prev.imagePath,
-        imageFile: null,
-        imagePreview: null,
-      }));
-
-      const newSections = sections.filter((sec) => sec.isNew);
-
-      if (newSections.length > 0) {
-        console.log("Saving new sections to backend...", newSections);
-
-        const createdSectionsResults = await Promise.all(
-          newSections.map((sec) =>
-            sectionApi.createSection(courseId, {
-              title: sec.title,
-              order: sec.order,
-            }),
-          ),
-        );
-
-        setSections((prevSections) => {
-          let resultIdx = 0;
-          return prevSections.map((sec) => {
-            if (sec.isNew) {
-              const resData =
-                createdSectionsResults[resultIdx]?.data ||
-                createdSectionsResults[resultIdx];
-              resultIdx++;
-              return {
-                ...sec,
-                id: resData.id,
-                isNew: false,
-              };
-            }
-            return sec;
-          });
-        });
-      }
-
-      alert("All changes updated successfully!");
-    } catch (err) {
-      console.error("Error Saving Course:", err);
-      alert(
-        "Error updating course: " + (err.message || "Something went wrong"),
-      );
-    } finally {
-      setIsSaving(false);
-      console.log("END SAVING PROCESS");
+      tagIds = tagIdResults.filter(Boolean);
     }
-  }, [courseId, generalInfo, sections]);
+
+    const basePayload = {
+      title: generalInfo.title,
+      description: generalInfo.description,
+      imagePath: generalInfo.imagePath,
+      visibility: generalInfo.visibility,
+      price: Number(generalInfo.price) || 0,
+      tagIds: tagIds,
+    };
+
+    let generalResult;
+    if (generalInfo.imageFile) {
+      generalResult = await courseManagerApi.uploadAndSaveCourseImage(
+        courseId,
+        generalInfo.imageFile,
+        basePayload,
+      );
+    } else {
+      generalResult = await courseManagerApi.updateCourseGeneralInfo(
+        courseId,
+        basePayload,
+      );
+    }
+
+    setGeneralInfo((prev) => ({
+      ...prev,
+      imagePath: generalResult?.imagePath || prev.imagePath,
+      imageFile: null,
+      imagePreview: null,
+    }));
+
+    return generalResult;
+  }, [courseId, generalInfo]);
 
   return {
     isLoading,
     isSaving,
+    setIsSaving,
     error,
     courseId,
     generalInfo,
@@ -184,5 +172,7 @@ export const useCourseManager = (demoId, assetId) => {
     setFaqs,
     sections,
     setSections,
+    deletedSectionIds,
+    setDeletedSectionIds,
   };
 };

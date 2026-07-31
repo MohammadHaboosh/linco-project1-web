@@ -73,8 +73,10 @@ export const courseManagerApi = {
 
     await courseManagerApi.uploadImageToStorage(uploadUrl, file);
 
+    const { imageFile, imagePreview, ...cleanPayload } = currentPayload || {};
+
     const updatedPayload = {
-      ...currentPayload,
+      ...cleanPayload,
       imagePath: fullCdnUrl,
     };
 

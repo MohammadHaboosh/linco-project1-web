@@ -1,11 +1,19 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { IoChevronBack, IoCheckmarkOutline } from "react-icons/io5";
+import {
+  IoChevronBack,
+  IoCheckmarkOutline,
+  IoCloudUploadOutline,
+} from "react-icons/io5";
 import StepOneDetails from "./StepOneDetails";
 import StepTwoCurriculum from "./StepTwoCurriculum";
 import styles from "./CourseStudio.module.css";
 import { useTranslation } from "react-i18next";
 import { useCreateCourse } from "../../hooks/useCreateCourse";
+
+import { sectionApi } from "../../../OwnerCourses/api/sectionApi";
+import { courseManagerApi } from "../../../OwnerCourses/api/courseManagerApi";
+import { lessonApi } from "../../../OwnerCourses/api/lessonApi";
 
 const CourseStudio = () => {
   const { t } = useTranslation();
@@ -13,6 +21,9 @@ const CourseStudio = () => {
   const { demoId } = useParams();
   const [currentStep, setCurrentStep] = useState(1);
   const [isPublishing, setIsPublishing] = useState(false);
+  const [deletedSectionIds, setDeletedSectionIds] = useState([]);
+
+  const [uploadProgress, setUploadProgress] = useState(null);
 
   const { createCourse, isCreating } = useCreateCourse(demoId);
 
@@ -22,13 +33,41 @@ const CourseStudio = () => {
     description: "",
     tags: [],
     imagePath: "",
-    privacy: "public",
+    imageFile: null,
+    imagePreview: null,
+    visibility: "PUBLIC",
     price: 0,
     sections: [],
   });
 
-  const updateCourseData = (field, value) => {
-    setCourseData((prev) => ({ ...prev, [field]: value }));
+  const updateCourseData = (fieldOrObject, value) => {
+    setCourseData((prev) => {
+      if (typeof fieldOrObject === "object" && fieldOrObject !== null) {
+        return { ...prev, ...fieldOrObject };
+      }
+      return { ...prev, [fieldOrObject]: value };
+    });
+  };
+
+  const isTempId = (id) => {
+    if (!id) return true;
+    const strId = String(id);
+    return strId.startsWith("temp-") || strId.startsWith("temp_");
+  };
+
+  const handleRemoveSection = (section, sectionId) => {
+    const targetId =
+      sectionId || (typeof section === "object" ? section?.id : section);
+    const isNew = typeof section === "object" ? section?.isNew : false;
+
+    if (targetId && !isNew && !isTempId(targetId)) {
+      setDeletedSectionIds((prev) => [...prev, targetId]);
+    }
+
+    setCourseData((prev) => ({
+      ...prev,
+      sections: prev.sections.filter((sec) => sec.id !== targetId),
+    }));
   };
 
   const handleNextStep = async () => {
@@ -37,31 +76,206 @@ const CourseStudio = () => {
       return;
     }
 
-    if (!courseData.id) {
-      try {
+    try {
+      if (!courseData.id) {
         const createdCourse = await createCourse(courseData);
-        updateCourseData("id", createdCourse.id);
-        setCurrentStep(2);
-        window.scrollTo(0, 0);
-      } catch (error) {
-        alert(error.message);
+
+        setCourseData((prev) => ({
+          ...prev,
+          ...createdCourse,
+          id: createdCourse.id,
+          imagePath: createdCourse.imagePath || prev.imagePath,
+          imageFile: null,
+          imagePreview: null,
+        }));
+      } else {
+        if (courseData.imageFile) {
+          const basePayload = {
+            title: courseData.title,
+            description: courseData.description,
+            imagePath: courseData.imagePath,
+            visibility: courseData.visibility || "PUBLIC",
+            price: Number(courseData.price) || 0,
+          };
+
+          const updateResult = await courseManagerApi.uploadAndSaveCourseImage(
+            courseData.id,
+            courseData.imageFile,
+            basePayload,
+          );
+
+          setCourseData((prev) => ({
+            ...prev,
+            imagePath: updateResult?.imagePath || prev.imagePath,
+            imageFile: null,
+            imagePreview: null,
+          }));
+        }
       }
-    } else {
+
       setCurrentStep(2);
       window.scrollTo(0, 0);
+    } catch (error) {
+      console.error("Error in Step 1 Next:", error);
+      alert(error.message || "Failed to proceed to next step");
     }
   };
 
-  const handlePublish = () => {
+  const handlePublish = async () => {
+    if (!courseData.id) {
+      alert("Course ID is missing. Please complete step 1 first.");
+      return;
+    }
+
     setIsPublishing(true);
-    console.log("Publishing Course:", courseData);
-    setTimeout(() => {
+
+    try {
+      const activeCourseId = courseData.id;
+      const sections = courseData.sections || [];
+
+      if (deletedSectionIds.length > 0) {
+        await Promise.all(
+          deletedSectionIds.map((secId) =>
+            sectionApi.deleteSection(activeCourseId, secId),
+          ),
+        );
+      }
+
+      const processedSections = await Promise.all(
+        sections.map(async (sec, index) => {
+          const payload = {
+            title: sec.title,
+            order: sec.order || index + 1,
+          };
+
+          const isNewSection = !sec.id || sec.isNew || isTempId(sec.id);
+
+          let savedSection;
+          if (isNewSection) {
+            savedSection = await sectionApi.createSection(
+              activeCourseId,
+              payload,
+            );
+          } else {
+            savedSection = await sectionApi.updateSection(
+              activeCourseId,
+              sec.id,
+              payload,
+            );
+          }
+
+          const realSectionId =
+            savedSection?.id || savedSection?.data?.id || sec.id;
+
+          return {
+            ...sec,
+            realId: realSectionId,
+          };
+        }),
+      );
+
+      for (const section of processedSections) {
+        const lessons = section.lessons || [];
+
+        for (let index = 0; index < lessons.length; index++) {
+          const lesson = lessons[index];
+          const isNewLesson = !lesson.id || lesson.isNew || isTempId(lesson.id);
+
+          if (isNewLesson) {
+            let finalVideoUrl = lesson.videoUrl || "";
+
+            if (lesson.videoFile) {
+              setUploadProgress({
+                title: lesson.title || `Lesson ${index + 1}`,
+                percent: 0,
+              });
+
+              const uploadData = await lessonApi.getUploadUrl(
+                section.realId,
+                lesson.videoFile.name,
+              );
+
+              const uploadUrl = uploadData.uploadUrl || uploadData.url;
+              finalVideoUrl =
+                uploadData.videoUrl ||
+                uploadData.fileUrl ||
+                uploadData.publicUrl ||
+                finalVideoUrl;
+
+              if (uploadUrl) {
+                await lessonApi.uploadVideoToStorage(
+                  uploadUrl,
+                  lesson.videoFile,
+                  (percent) => {
+                    setUploadProgress({
+                      title: lesson.title || `Lesson ${index + 1}`,
+                      percent: percent,
+                    });
+                  },
+                );
+
+                setUploadProgress({
+                  title: lesson.title || `Lesson ${index + 1}`,
+                  percent: 100,
+                });
+                await new Promise((resolve) => setTimeout(resolve, 400));
+              }
+            }
+
+            const lessonPayload = {
+              title: lesson.title,
+              order: lesson.order || index + 1,
+              videoUrl: finalVideoUrl,
+              courseId: activeCourseId,
+              description: lesson.description || "",
+              duration: Number(lesson.duration) || 0,
+            };
+
+            await lessonApi.createLesson(section.realId, lessonPayload);
+          }
+        }
+      }
+
+      setDeletedSectionIds([]);
+      alert("Course, sections, and lessons saved successfully!");
       navigate(-1);
-    }, 1500);
+    } catch (error) {
+      console.error("Error saving curriculum:", error);
+      alert("Failed to save: " + (error.message || "Something went wrong"));
+    } finally {
+      setIsPublishing(false);
+      setUploadProgress(null);
+    }
   };
 
   return (
     <div className={styles.studioContainer}>
+      {uploadProgress !== null && (
+        <div className={styles.progressOverlay}>
+          <div className={styles.progressCard}>
+            <div className={styles.progressIcon}>
+              <IoCloudUploadOutline />
+            </div>
+            <h3>Uploading Video to Storage...</h3>
+            <p className={styles.lessonName}>{uploadProgress.title}</p>
+
+            <div className={styles.progressBarWrapper}>
+              <div
+                className={styles.progressBarFill}
+                style={{ width: `${uploadProgress.percent}%` }}
+              ></div>
+            </div>
+
+            <div className={styles.progressStats}>
+              <span>Progress</span>
+              <span className={styles.percentText}>
+                {uploadProgress.percent}%
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className={styles.topBar}>
         <div className={styles.topBarLeft}>
           <button className={styles.backBtn} onClick={() => navigate(-1)}>
@@ -115,6 +329,7 @@ const CourseStudio = () => {
             onPublish={handlePublish}
             isPublishing={isPublishing}
             onBack={() => setCurrentStep(1)}
+            onDeleteSection={handleRemoveSection}
           />
         )}
       </div>

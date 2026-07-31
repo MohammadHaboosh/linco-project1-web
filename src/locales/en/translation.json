@@ -67,7 +67,7 @@
   "course-details": "Course Details",
   "course-title": "Course Title",
   "course-desc": "Course Description",
-  "saving": "Saving",
+  "saving": "Saving...",
   "save-changes": "Save Changes",
   "general": "General",
   "video": "Video",
@@ -548,5 +548,6 @@
   "chat-attachments-coming-soon": "File attachments will be available soon",
   "chat-waiting-for-connection": "Waiting for chat connection...",
   "chat-send-message": "Send message",
-  "chat-save-edit": "Save edited message"
+  "chat-save-edit": "Save edited message",
+  "create-course": "Save Course Content"
 }

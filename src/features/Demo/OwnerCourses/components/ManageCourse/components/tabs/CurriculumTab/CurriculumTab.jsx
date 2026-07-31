@@ -16,9 +16,13 @@ import SectionQuizSection from "./SectionQuizSection/SectionQuizSection";
 import AddLessonModal from "./AddModals/AddLessonModal";
 import AddQuizModal from "./AddModals/AddQuizModal";
 import AddQuestionModal from "./AddModals/AddQuestionModal";
-import { sectionApi } from "../../../../../api/sectionApi";
 
-const CurriculumTab = ({ courseId, sections, setSections }) => {
+const CurriculumTab = ({
+  courseId,
+  sections,
+  setSections,
+  onDeleteSection,
+}) => {
   const { t } = useTranslation();
   const [expandedSections, setExpandedSections] = useState(
     sections.map((s) => s.id),
@@ -37,11 +41,16 @@ const CurriculumTab = ({ courseId, sections, setSections }) => {
   };
 
   const handleAddSection = (titleInput) => {
+    const sectionTitle =
+      typeof titleInput === "string" && titleInput.trim()
+        ? titleInput
+        : `Section ${sections.length + 1}`;
+
     const nextOrder = sections.length + 1;
 
     const newSection = {
-      id: `temp_${Date.now()}`,
-      title: titleInput,
+      id: `temp_section_${Date.now()}`,
+      title: sectionTitle,
       order: nextOrder,
       lessons: [],
       questions: [],
@@ -56,7 +65,11 @@ const CurriculumTab = ({ courseId, sections, setSections }) => {
   const deleteSection = (e, id) => {
     e.stopPropagation();
     if (window.confirm("Are you sure you want to delete this section?")) {
-      setSections(sections.filter((s) => s.id !== id));
+      if (onDeleteSection) {
+        onDeleteSection(id);
+      } else {
+        setSections(sections.filter((s) => s.id !== id));
+      }
     }
   };
 
@@ -87,14 +100,15 @@ const CurriculumTab = ({ courseId, sections, setSections }) => {
   const handleSaveLesson = (lessonData) => {
     if (!activeSectionId) return;
 
-    setSections(
-      sections.map((s) => {
+    setSections((prevSections) =>
+      prevSections.map((s) => {
         if (s.id === activeSectionId) {
           const currentLessons = s.lessons || [];
           const newLesson = {
-            id: Date.now().toString(),
             ...lessonData,
+            id: `temp_lesson_${Date.now()}`,
             order: currentLessons.length + 1,
+            isNew: true,
           };
           return {
             ...s,
@@ -112,8 +126,8 @@ const CurriculumTab = ({ courseId, sections, setSections }) => {
       order: index + 1,
     }));
 
-    setSections(
-      sections.map((s) =>
+    setSections((prev) =>
+      prev.map((s) =>
         s.id === secId ? { ...s, lessons: updatedLessonsWithOrder } : s,
       ),
     );
@@ -121,14 +135,15 @@ const CurriculumTab = ({ courseId, sections, setSections }) => {
 
   const handleSaveQuiz = (quizData) => {
     if (!activeSectionId) return;
-    setSections(
-      sections.map((s) =>
+    setSections((prev) =>
+      prev.map((s) =>
         s.id === activeSectionId
           ? {
               ...s,
               quiz: {
-                id: Date.now().toString(),
+                id: `temp_quiz_${Date.now()}`,
                 ...quizData,
+                isNew: true,
               },
             }
           : s,
@@ -138,16 +153,17 @@ const CurriculumTab = ({ courseId, sections, setSections }) => {
 
   const handleSaveQuestion = (questionData) => {
     if (!activeSectionId) return;
-    setSections(
-      sections.map((s) =>
+    setSections((prev) =>
+      prev.map((s) =>
         s.id === activeSectionId
           ? {
               ...s,
               questions: [
-                ...s.questions,
+                ...(s.questions || []),
                 {
-                  id: Date.now().toString(),
+                  id: `temp_q_${Date.now()}`,
                   ...questionData,
+                  isNew: true,
                 },
               ],
             }
@@ -157,11 +173,10 @@ const CurriculumTab = ({ courseId, sections, setSections }) => {
   };
 
   const deleteLesson = (secId, lessonId) => {
-    setSections(
-      sections.map((s) => {
+    setSections((prev) =>
+      prev.map((s) => {
         if (s.id === secId) {
-          const filtered = s.lessons.filter((l) => l.id !== lessonId);
-          // اعادة ترتيب الـ order بعد الحذف
+          const filtered = (s.lessons || []).filter((l) => l.id !== lessonId);
           const reordered = filtered.map((item, idx) => ({
             ...item,
             order: idx + 1,
@@ -174,26 +189,26 @@ const CurriculumTab = ({ courseId, sections, setSections }) => {
   };
 
   const deleteQuestion = (secId, qId) => {
-    setSections(
-      sections.map((s) =>
+    setSections((prev) =>
+      prev.map((s) =>
         s.id === secId
-          ? { ...s, questions: s.questions.filter((q) => q.id !== qId) }
+          ? { ...s, questions: (s.questions || []).filter((q) => q.id !== qId) }
           : s,
       ),
     );
   };
 
   const deleteQuiz = (secId) => {
-    setSections(
-      sections.map((s) => (s.id === secId ? { ...s, quiz: null } : s)),
+    setSections((prev) =>
+      prev.map((s) => (s.id === secId ? { ...s, quiz: null } : s)),
     );
   };
 
   const handleAddAttachment = (secId, lessonId, attachmentData) => {
-    setSections(
-      sections.map((s) => {
+    setSections((prev) =>
+      prev.map((s) => {
         if (s.id === secId) {
-          const updatedLessons = s.lessons.map((l) => {
+          const updatedLessons = (s.lessons || []).map((l) => {
             if (l.id === lessonId) {
               return {
                 ...l,
@@ -210,10 +225,10 @@ const CurriculumTab = ({ courseId, sections, setSections }) => {
   };
 
   const handleDeleteAttachment = (secId, lessonId, attachmentId) => {
-    setSections(
-      sections.map((s) => {
+    setSections((prev) =>
+      prev.map((s) => {
         if (s.id === secId) {
-          const updatedLessons = s.lessons.map((l) => {
+          const updatedLessons = (s.lessons || []).map((l) => {
             if (l.id === lessonId) {
               return {
                 ...l,
@@ -277,7 +292,7 @@ const CurriculumTab = ({ courseId, sections, setSections }) => {
                   <input
                     type="text"
                     className={styles.sectionTitleInput}
-                    value={section.title}
+                    value={section.title || ""}
                     onClick={(e) => e.stopPropagation()}
                     onChange={(e) =>
                       updateSectionTitle(section.id, e.target.value)
@@ -299,7 +314,7 @@ const CurriculumTab = ({ courseId, sections, setSections }) => {
               {isExpanded && (
                 <div className={styles.sectionBody}>
                   <LessonList
-                    lessons={section.lessons}
+                    lessons={section.lessons || []}
                     onAddLesson={() => openLessonModal(section.id)}
                     onDeleteLesson={(lessonId) =>
                       deleteLesson(section.id, lessonId)
@@ -317,7 +332,7 @@ const CurriculumTab = ({ courseId, sections, setSections }) => {
 
                   <div className={styles.bottomAssessmentRow}>
                     <QuestionBankSection
-                      questions={section.questions}
+                      questions={section.questions || []}
                       onAddQuestion={() => openQuestionModal(section.id)}
                       onDeleteQuestion={(qId) =>
                         deleteQuestion(section.id, qId)
@@ -340,7 +355,7 @@ const CurriculumTab = ({ courseId, sections, setSections }) => {
       <button
         type="button"
         className={styles.addSectionBtnRoot}
-        onClick={handleAddSection}
+        onClick={() => handleAddSection()}
         disabled={isCreatingSection}
       >
         <IoAddCircleOutline className={styles.rootAddIcon} />
