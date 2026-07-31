@@ -17,7 +17,12 @@ import {
 import { useTranslation } from "react-i18next";
 import ChatEmptyState from "./ChatEmptyState";
 import MessageItem from "./MessageItem";
-import { formatFileSize, getSenderName } from "../utils/messageUtils";
+import {
+  formatFileSize,
+  getDepartmentMemberInitials,
+  getDepartmentMemberName,
+  getSenderName,
+} from "../utils/messageUtils";
 import styles from "./Chats.module.css";
 
 const TYPING_IDLE_DELAY = 1500;
@@ -32,6 +37,7 @@ const ChatArea = ({
   isUploadingAttachment,
   pendingActionId,
   typingMemberIds,
+  onlineMembers = [],
   hasNextPage,
   historyError,
   connectionError,
@@ -161,6 +167,35 @@ const ChatArea = ({
     }
   }, [isLoadingHistory, isLoadingOlder, messages]);
 
+  const sortedOnlineMembers = useMemo(
+    () =>
+      [...onlineMembers].sort((first, second) => {
+        if (first.departmentMemberId === currentDepartmentMemberId) {
+          return -1;
+        }
+
+        if (second.departmentMemberId === currentDepartmentMemberId) {
+          return 1;
+        }
+
+        return getDepartmentMemberName(first, "").localeCompare(
+          getDepartmentMemberName(second, ""),
+        );
+      }),
+    [currentDepartmentMemberId, onlineMembers],
+  );
+
+  const onlineMembersById = useMemo(
+    () =>
+      new Map(
+        onlineMembers.map((member) => [
+          member.departmentMemberId,
+          member,
+        ]),
+      ),
+    [onlineMembers],
+  );
+
   const typingText = useMemo(() => {
     if (typingMemberIds.length === 0) {
       return "";
@@ -174,7 +209,13 @@ const ChatArea = ({
     });
 
     const knownNames = typingMemberIds
-      .map((memberId) => senderNames.get(memberId))
+      .map((memberId) => {
+        const storedOnlineMember = onlineMembersById.get(memberId);
+        return (
+          getDepartmentMemberName(storedOnlineMember, "") ||
+          senderNames.get(memberId)
+        );
+      })
       .filter(Boolean);
 
     if (typingMemberIds.length === 1 && knownNames[0]) {
@@ -186,7 +227,7 @@ const ChatArea = ({
     }
 
     return t("chat-people-typing", { count: typingMemberIds.length });
-  }, [messages, t, typingMemberIds]);
+  }, [messages, onlineMembersById, t, typingMemberIds]);
 
   const connectionLabel = t(`chat-status-${connectionStatus}`, {
     defaultValue: t("chat-status-disconnected"),
@@ -423,16 +464,102 @@ const ChatArea = ({
           </div>
         </div>
 
-        {connectionStatus !== "connected" && (
-          <button
-            type="button"
-            className={styles.retryHeaderButton}
-            onClick={retry}
-          >
-            <IoRefreshOutline />
-            {t("try-again")}
-          </button>
-        )}
+        <div className={styles.headerActions}>
+          {isConnected && sortedOnlineMembers.length > 0 && (
+            <details className={styles.onlineMembersMenu}>
+              <summary
+                className={styles.onlineMembersSummary}
+                aria-label={t("chat-online-count", {
+                  count: sortedOnlineMembers.length,
+                })}
+              >
+                <span className={styles.onlineAvatarStack} aria-hidden="true">
+                  {sortedOnlineMembers.slice(0, 3).map((member) => {
+                    const memberName = getDepartmentMemberName(
+                      member,
+                      t("chat-unknown-member"),
+                    );
+
+                    return (
+                      <span
+                        className={styles.onlineAvatar}
+                        key={member.departmentMemberId}
+                        title={memberName}
+                      >
+                        {member.imagePath ? (
+                          <img src={member.imagePath} alt="" />
+                        ) : (
+                          getDepartmentMemberInitials(member)
+                        )}
+                      </span>
+                    );
+                  })}
+                  {sortedOnlineMembers.length > 3 && (
+                    <span className={styles.onlineAvatarOverflow}>
+                      +{sortedOnlineMembers.length - 3}
+                    </span>
+                  )}
+                </span>
+                <span className={styles.onlineCountLabel}>
+                  {t("chat-online-count", {
+                    count: sortedOnlineMembers.length,
+                  })}
+                </span>
+              </summary>
+
+              <div className={styles.onlineMembersPopover}>
+                <strong className={styles.onlineMembersTitle}>
+                  {t("chat-online-members")}
+                </strong>
+                <ul className={styles.onlineMembersList}>
+                  {sortedOnlineMembers.map((member) => {
+                    const memberName = getDepartmentMemberName(
+                      member,
+                      t("chat-unknown-member"),
+                    );
+                    const isCurrentMember =
+                      member.departmentMemberId ===
+                      currentDepartmentMemberId;
+
+                    return (
+                      <li
+                        className={styles.onlineMemberItem}
+                        key={member.departmentMemberId}
+                      >
+                        <span className={styles.onlineMemberAvatar}>
+                          {member.imagePath ? (
+                            <img src={member.imagePath} alt="" />
+                          ) : (
+                            getDepartmentMemberInitials(member)
+                          )}
+                          <span className={styles.onlinePresenceDot} />
+                        </span>
+                        <span className={styles.onlineMemberDetails}>
+                          <strong>
+                            {memberName}
+                            {isCurrentMember && ` (${t("chat-you")})`}
+                          </strong>
+                          <small>{t("chat-online-now")}</small>
+                        </span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            </details>
+          )}
+
+          {connectionStatus !== "connected" && (
+            <button
+              type="button"
+              className={styles.retryHeaderButton}
+              onClick={retry}
+            >
+              <IoRefreshOutline />
+              {t("try-again")}
+            </button>
+          )}
+        </div>
       </header>
 
       {visibleErrors.length > 0 && (

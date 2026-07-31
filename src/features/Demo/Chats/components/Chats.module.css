@@ -90,6 +90,188 @@
   white-space: nowrap;
 }
 
+.headerActions {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.onlineMembersMenu {
+  position: relative;
+}
+
+.onlineMembersSummary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 5px 11px 5px 8px;
+  border: 1px solid #dcfce7;
+  border-radius: 999px;
+  background: #f0fdf4;
+  color: #166534;
+  font-size: 0.78rem;
+  font-weight: 750;
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+}
+
+.onlineMembersSummary::-webkit-details-marker {
+  display: none;
+}
+
+.onlineMembersSummary:hover,
+.onlineMembersMenu[open] .onlineMembersSummary {
+  border-color: #bbf7d0;
+  background: #dcfce7;
+}
+
+.onlineAvatarStack {
+  display: inline-flex;
+  align-items: center;
+  padding-inline-start: 3px;
+}
+
+.onlineAvatar,
+.onlineAvatarOverflow {
+  width: 29px;
+  height: 29px;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  background: #dbeafe;
+  color: #1e3a8a;
+  font-size: 0.65rem;
+  font-weight: 850;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.12);
+}
+
+.onlineAvatar:not(:first-child),
+.onlineAvatarOverflow {
+  margin-inline-start: -8px;
+}
+
+.onlineAvatar img,
+.onlineMemberAvatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.onlineAvatarOverflow {
+  background: #166534;
+  color: #ffffff;
+}
+
+.onlineCountLabel {
+  white-space: nowrap;
+}
+
+.onlineMembersPopover {
+  width: min(290px, calc(100vw - 32px));
+  max-height: min(380px, 65vh);
+  overflow-y: auto;
+  position: absolute;
+  z-index: 30;
+  inset-block-start: calc(100% + 9px);
+  inset-inline-end: 0;
+  padding: 13px;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  background: #ffffff;
+  color: #1e293b;
+  box-shadow: 0 16px 38px rgba(15, 23, 42, 0.16);
+}
+
+.onlineMembersTitle {
+  display: block;
+  padding: 2px 3px 10px;
+  color: #0a2a54;
+  font-size: 0.82rem;
+  font-weight: 850;
+}
+
+.onlineMembersList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.onlineMemberItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px;
+  border-radius: 10px;
+}
+
+.onlineMemberItem:hover {
+  background: #f8fafc;
+}
+
+.onlineMemberAvatar {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  position: relative;
+  overflow: visible;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #dbeafe;
+  color: #1e3a8a;
+  font-size: 0.75rem;
+  font-weight: 850;
+}
+
+.onlineMemberAvatar img {
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.onlinePresenceDot {
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  inset-inline-end: 0;
+  inset-block-end: 0;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  background: #16a34a;
+}
+
+.onlineMemberDetails {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.onlineMemberDetails strong {
+  overflow: hidden;
+  color: #1e293b;
+  font-size: 0.8rem;
+  font-weight: 750;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.onlineMemberDetails small {
+  color: #16a34a;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
 .connectionStatus {
   max-width: 100%;
   display: inline-flex;
@@ -854,6 +1036,12 @@
     padding: 8px;
   }
 
+  .onlineMembersSummary {
+    gap: 7px;
+    min-height: 38px;
+    padding: 4px 9px 4px 6px;
+  }
+
   .retryHeaderButton svg {
     font-size: 1.1rem;
   }
@@ -917,6 +1105,28 @@
 
   .retryHeaderButton {
     border-radius: 8px;
+  }
+
+  .headerActions {
+    gap: 5px;
+  }
+
+  .onlineMembersSummary {
+    padding: 3px 5px;
+  }
+
+  .onlineCountLabel {
+    display: none;
+  }
+
+  .onlineAvatar,
+  .onlineAvatarOverflow {
+    width: 27px;
+    height: 27px;
+  }
+
+  .onlineMembersPopover {
+    inset-inline-end: -2px;
   }
 
   .errorBanner {

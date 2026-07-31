@@ -3,6 +3,89 @@ const asTimestamp = (value) => {
   return Number.isNaN(timestamp) ? 0 : timestamp;
 };
 
+const hasOwn = (value, key) =>
+  Object.prototype.hasOwnProperty.call(value || {}, key);
+
+export const normalizeDepartmentMember = (member, currentMember = null) => {
+  const departmentMemberId =
+    member?.departmentMemberId || member?.id || currentMember?.departmentMemberId;
+
+  if (!departmentMemberId) {
+    return null;
+  }
+
+  return {
+    departmentMemberId,
+    firstName: hasOwn(member, "firstName")
+      ? member.firstName || ""
+      : currentMember?.firstName || "",
+    lastName: hasOwn(member, "lastName")
+      ? member.lastName || ""
+      : currentMember?.lastName || "",
+    imagePath: hasOwn(member, "imagePath")
+      ? member.imagePath || ""
+      : currentMember?.imagePath || "",
+  };
+};
+
+export const mergeDepartmentMembersById = (
+  currentMembers,
+  incomingMembers,
+) => {
+  const memberMap = new Map(
+    currentMembers
+      .map((member) => normalizeDepartmentMember(member))
+      .filter(Boolean)
+      .map((member) => [member.departmentMemberId, member]),
+  );
+  const safeIncomingMembers = Array.isArray(incomingMembers)
+    ? incomingMembers
+    : [incomingMembers];
+
+  safeIncomingMembers.forEach((member) => {
+    const memberId = member?.departmentMemberId || member?.id;
+    if (!memberId) {
+      return;
+    }
+
+    const normalizedMember = normalizeDepartmentMember(
+      member,
+      memberMap.get(memberId),
+    );
+    memberMap.set(memberId, normalizedMember);
+  });
+
+  return Array.from(memberMap.values()).sort((first, second) => {
+    const firstName = `${first.firstName} ${first.lastName}`.trim();
+    const secondName = `${second.firstName} ${second.lastName}`.trim();
+    return (
+      firstName.localeCompare(secondName) ||
+      first.departmentMemberId.localeCompare(second.departmentMemberId)
+    );
+  });
+};
+
+export const getDepartmentMemberName = (member, fallback = "Unknown member") => {
+  const fullName = [member?.firstName, member?.lastName]
+    .filter(Boolean)
+    .join(" ")
+    .trim();
+
+  return fullName || fallback;
+};
+
+export const getDepartmentMemberInitials = (member) => {
+  const initials = [
+    member?.firstName?.charAt(0),
+    member?.lastName?.charAt(0),
+  ]
+    .filter(Boolean)
+    .join("")
+    .toUpperCase();
+
+  return initials || "?";
+};
+
 export const formatFileSize = (value, language) => {
   const size = Number(value);
   if (!Number.isFinite(size) || size < 0) {
@@ -78,25 +161,9 @@ export const mergeMessagesById = (currentMessages, incomingMessages) => {
 };
 
 export const getSenderName = (message) => {
-  const fullName = [
-    message?.sender?.firstName,
-    message?.sender?.lastName,
-  ]
-    .filter(Boolean)
-    .join(" ")
-    .trim();
-
-  return fullName || "Unknown member";
+  return getDepartmentMemberName(message?.sender);
 };
 
 export const getSenderInitials = (message) => {
-  const initials = [
-    message?.sender?.firstName?.charAt(0),
-    message?.sender?.lastName?.charAt(0),
-  ]
-    .filter(Boolean)
-    .join("")
-    .toUpperCase();
-
-  return initials || "?";
+  return getDepartmentMemberInitials(message?.sender);
 };

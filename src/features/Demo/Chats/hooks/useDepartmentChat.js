@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { departmentMessagesApi } from "../api/departmentMessagesApi";
 import { createDepartmentChatSocket } from "../services/departmentChatSocket";
-import { mergeMessagesById } from "../utils/messageUtils";
+import {
+  mergeDepartmentMembersById,
+  mergeMessagesById,
+  normalizeDepartmentMember,
+} from "../utils/messageUtils";
 
 const ACK_TIMEOUT = 10000;
 const TYPING_EXPIRY = 3000;
@@ -66,7 +70,7 @@ export const useDepartmentChat = ({ demoId, departmentId }) => {
   const [isUploadingAttachment, setIsUploadingAttachment] = useState(false);
   const [pendingActionId, setPendingActionId] = useState(null);
   const [typingMemberIds, setTypingMemberIds] = useState([]);
-  const [onlineMemberIds, setOnlineMemberIds] = useState([]);
+  const [onlineMembers, setOnlineMembers] = useState([]);
   const [historyError, setHistoryError] = useState("");
   const [connectionError, setConnectionError] = useState("");
   const [actionError, setActionError] = useState("");
@@ -92,6 +96,12 @@ export const useDepartmentChat = ({ demoId, departmentId }) => {
 
     setMessages((currentMessages) =>
       mergeMessagesById(currentMessages, safeMessages),
+    );
+  }, []);
+
+  const upsertOnlineMembers = useCallback((incomingMembers) => {
+    setOnlineMembers((currentMembers) =>
+      mergeDepartmentMembersById(currentMembers, incomingMembers),
     );
   }, []);
 
@@ -201,7 +211,8 @@ export const useDepartmentChat = ({ demoId, departmentId }) => {
       );
     };
 
-    const handleTypingStatus = ({ departmentMemberId, isTyping } = {}) => {
+    const handleTypingStatus = (member = {}) => {
+      const { departmentMemberId, isTyping } = member;
       if (
         !isCurrentContext() ||
         !departmentMemberId ||
@@ -216,6 +227,11 @@ export const useDepartmentChat = ({ demoId, departmentId }) => {
         return;
       }
 
+      // New servers send the complete member profile. Legacy servers may only
+      // send the ID, which preserves any profile already stored from the
+      // initial online roster or a userOnline event.
+      upsertOnlineMembers(member);
+
       setTypingMemberIds((currentIds) =>
         currentIds.includes(departmentMemberId)
           ? currentIds
@@ -228,16 +244,13 @@ export const useDepartmentChat = ({ demoId, departmentId }) => {
       typingTimeouts.set(departmentMemberId, timeout);
     };
 
-    const handleUserOnline = ({ departmentMemberId } = {}) => {
+    const handleUserOnline = (member = {}) => {
+      const { departmentMemberId } = member;
       if (!isCurrentContext() || !departmentMemberId) {
         return;
       }
 
-      setOnlineMemberIds((currentIds) =>
-        currentIds.includes(departmentMemberId)
-          ? currentIds
-          : [...currentIds, departmentMemberId],
-      );
+      upsertOnlineMembers(member);
     };
 
     const handleUserOffline = ({ departmentMemberId } = {}) => {
@@ -245,8 +258,10 @@ export const useDepartmentChat = ({ demoId, departmentId }) => {
         return;
       }
 
-      setOnlineMemberIds((currentIds) =>
-        currentIds.filter((id) => id !== departmentMemberId),
+      setOnlineMembers((currentMembers) =>
+        currentMembers.filter(
+          (member) => member.departmentMemberId !== departmentMemberId,
+        ),
       );
       removeTypingMember(departmentMemberId);
     };
@@ -353,9 +368,25 @@ export const useDepartmentChat = ({ demoId, departmentId }) => {
             return;
           }
 
-          const memberId = response.departmentMemberId || null;
+          const joinedMember = normalizeDepartmentMember(
+            response?.member || {
+              departmentMemberId: response?.departmentMemberId,
+            },
+          );
+          const memberId = joinedMember?.departmentMemberId || null;
+          const responseOnlineMembers = Array.isArray(response?.onlineMembers)
+            ? response.onlineMembers
+            : Array.isArray(response?.onlineMemberIds)
+              ? response.onlineMemberIds.map((departmentMemberId) => ({
+                  departmentMemberId,
+                }))
+              : [];
+
           currentMemberIdRef.current = memberId;
           setCurrentDepartmentMemberId(memberId);
+          setOnlineMembers(
+            mergeDepartmentMembersById(responseOnlineMembers, joinedMember),
+          );
           setConnectionError("");
           updateConnectionStatus("connected");
 
@@ -418,7 +449,7 @@ export const useDepartmentChat = ({ demoId, departmentId }) => {
       setCurrentDepartmentMemberId(null);
       currentMemberIdRef.current = null;
       setTypingMemberIds([]);
-      setOnlineMemberIds([]);
+      setOnlineMembers([]);
       setIsLoadingOlder(false);
       setIsSending(false);
       setIsUploadingAttachment(false);
@@ -470,6 +501,7 @@ export const useDepartmentChat = ({ demoId, departmentId }) => {
     departmentId,
     fetchLatestMessages,
     mergeMessages,
+    upsertOnlineMembers,
     updateConnectionStatus,
   ]);
 
@@ -809,7 +841,7 @@ export const useDepartmentChat = ({ demoId, departmentId }) => {
     isUploadingAttachment,
     pendingActionId,
     typingMemberIds,
-    onlineMemberIds,
+    onlineMembers,
     hasNextPage: pageMeta.hasNextPage,
     historyError,
     connectionError,
