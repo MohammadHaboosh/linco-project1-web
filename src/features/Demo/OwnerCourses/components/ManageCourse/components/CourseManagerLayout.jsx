@@ -42,8 +42,6 @@ const CourseManagerLayout = () => {
     generalInfo,
     handleGeneralInfoChange,
     saveGeneralInfo,
-    faqs,
-    setFaqs,
     sections,
     setSections,
     deletedSectionIds,
@@ -415,7 +413,7 @@ const CourseManagerLayout = () => {
                 onDeleteSection={handleDeleteSection}
               />
             )}
-            {activeTab === "faqs" && <FAQsTab faqs={faqs} setFaqs={setFaqs} />}
+            {activeTab === "faqs" && <FAQsTab courseId={courseId} />}
           </div>
         </main>
       </div>
