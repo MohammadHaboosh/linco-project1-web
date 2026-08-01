@@ -12,7 +12,7 @@ export const faqsApi = {
     if (!response.ok || !data.success) throw new Error(data.message);
 
     console.log("Fetched FAQs:", data.data);
-    return data.data;
+    return data;
   },
 
   createFaq: async (courseId, payload) => {
@@ -25,7 +25,7 @@ export const faqsApi = {
     if (!response.ok || !data.success) throw new Error(data.message);
 
     console.log("Created FAQ:", data.data);
-    return data.data;
+    return data;
   },
 
   deleteFaq: async (courseId, faqId) => {
@@ -41,6 +41,6 @@ export const faqsApi = {
     if (!response.ok || !data.success) {
       throw new Error(data.message || "Failed to delete FAQ");
     }
-    return data.data;
+    return data;
   },
 };
