@@ -278,7 +278,7 @@ const CourseManagerLayout = () => {
     return (
       <div className={styles.loadingScreen}>
         <div className={styles.spinner}></div>
-        <p>Loading Workspace...</p>
+        <p>{t("loading-workspace")}</p>
       </div>
     );
   }
@@ -309,7 +309,7 @@ const CourseManagerLayout = () => {
             <div className={styles.progressIcon}>
               <IoCloudUploadOutline />
             </div>
-            <h3>Uploading your files to Storage...</h3>
+            <h3>{t("uploading-your-files-to-storage")}</h3>
             <p className={styles.lessonName}>{uploadProgress.title}</p>
 
             <div className={styles.progressBarWrapper}>
@@ -320,7 +320,7 @@ const CourseManagerLayout = () => {
             </div>
 
             <div className={styles.progressStats}>
-              <span>Progress</span>
+              <span>{t("progress")}</span>
               <span className={styles.percentText}>
                 {uploadProgress.percent}%
               </span>
@@ -334,7 +334,7 @@ const CourseManagerLayout = () => {
           <button
             className={styles.backBtn}
             onClick={() => navigate(-1)}
-            title="Go back"
+            title={t("go-back")}
           >
             <IoArrowBackOutline />
           </button>
