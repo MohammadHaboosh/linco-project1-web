@@ -3,7 +3,7 @@ import { IoAddCircleOutline, IoHelpCircleOutline } from "react-icons/io5";
 import styles from "./FAQsTab.module.css";
 import FAQItem from "./FAQItem";
 import AddEditFAQModal from "./AddEditFAQModal";
-import { useFAQs } from "./useFAQs"; // استدعي الـ Hook هنا
+import { useFAQs } from "../../../../../hooks/useFAQs";
 import { useTranslation } from "react-i18next";
 
 const FAQsTab = ({ courseId }) => {
