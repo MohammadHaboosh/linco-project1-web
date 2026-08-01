@@ -5,21 +5,25 @@ import {
   IoSearchOutline,
   IoFilterOutline,
   IoChevronDownOutline,
+  IoCheckmarkOutline,
 } from "react-icons/io5";
 import MarketplaceCard from "../MarketplaceCard/MarketplaceCard";
 import CourseDetailsModal from "../CourseDetailsModal/CourseDetailsModal";
 import styles from "./PublicLibraryContent.module.css";
 import { useTranslation } from "react-i18next";
-import { usePublicCourses } from "../../hooks/usePublicCourses"; // استيراد الـ Hook
+import { usePublicCourses } from "../../hooks/usePublicCourses";
+import { useTags } from "../../hooks/useTags";
 
 const PublicLibraryContent = () => {
   const { t } = useTranslation();
   const { demoId } = useParams();
-  const { courses, isLoading, error, refetch } = usePublicCourses(demoId);
+
+  const { courses, isLoading, error } = usePublicCourses(demoId);
+  const { tags, isLoadingTags } = useTags();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [selectedTagIds, setSelectedTagIds] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const filterRef = useRef(null);
 
@@ -32,20 +36,24 @@ const PublicLibraryContent = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const categories = [
-    "All",
-    "Front-End",
-    "Back-End",
-    "UI/UX",
-    "JavaScript",
-    "SQL",
-  ];
+  const toggleTagSelection = (tagId) => {
+    setSelectedTagIds((prev) =>
+      prev.includes(tagId)
+        ? prev.filter((id) => id !== tagId)
+        : [...prev, tagId],
+    );
+  };
 
   const filteredCourses = courses.filter((course) => {
     const matchesSearch =
       course.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       course.description?.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesSearch;
+
+    const matchesTags =
+      selectedTagIds.length === 0 ||
+      course.tags?.some((courseTag) => selectedTagIds.includes(courseTag.id));
+
+    return matchesSearch && matchesTags;
   });
 
   const handleEnrollOrBuy = (course) => {
@@ -98,23 +106,58 @@ const PublicLibraryContent = () => {
               className={styles.filterBtn}
               onClick={() => setIsFilterOpen(!isFilterOpen)}
             >
-              <IoFilterOutline className={styles.filterIcon} /> {activeCategory}{" "}
+              <IoFilterOutline className={styles.filterIcon} />
+              {selectedTagIds.length === 0
+                ? t("all-tags")
+                : `${selectedTagIds.length} ${t("tags-selected")}`}
               <IoChevronDownOutline />
             </button>
             {isFilterOpen && (
-              <div className={styles.filterDropdown}>
-                {categories.map((cat) => (
-                  <button
-                    key={cat}
-                    className={`${styles.catItem} ${activeCategory === cat ? styles.catActive : ""}`}
-                    onClick={() => {
-                      setActiveCategory(cat);
-                      setIsFilterOpen(false);
+              <div
+                className={styles.filterDropdown}
+                style={{ minWidth: "200px" }}
+              >
+                {isLoadingTags ? (
+                  <div
+                    style={{
+                      padding: "10px",
+                      textAlign: "center",
+                      fontSize: "0.85rem",
                     }}
                   >
-                    {cat}
-                  </button>
-                ))}
+                    {t("loading-tags")}
+                  </div>
+                ) : tags.length > 0 ? (
+                  tags.map((tag) => {
+                    const isSelected = selectedTagIds.includes(tag.id);
+                    return (
+                      <button
+                        key={tag.id}
+                        type="button"
+                        className={`${styles.catItem} ${isSelected ? styles.catActive : ""}`}
+                        onClick={() => toggleTagSelection(tag.id)}
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <span>{tag.name}</span>
+                        {isSelected && <IoCheckmarkOutline size={16} />}
+                      </button>
+                    );
+                  })
+                ) : (
+                  <div
+                    style={{
+                      padding: "10px",
+                      textAlign: "center",
+                      fontSize: "0.85rem",
+                    }}
+                  >
+                    {t("no-tags-found")}
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -135,7 +178,7 @@ const PublicLibraryContent = () => {
       {!isLoading && !error && (
         <div className={styles.coursesGrid}>
           {filteredCourses.length > 0 ? (
-            courses.map((course) => (
+            filteredCourses.map((course) => (
               <MarketplaceCard
                 key={course.id}
                 course={course}
@@ -150,7 +193,7 @@ const PublicLibraryContent = () => {
                 color: "#64748b",
               }}
             >
-              {t("no-courses-found-0")}
+              {t("no-courses-found-matching-your-criteria")}
             </p>
           )}
         </div>

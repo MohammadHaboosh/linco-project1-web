@@ -619,5 +619,10 @@
   "ok": "OK",
   "no-courses-found-0": "No courses found.",
   "loading-courses": "Loading courses...",
-  "explore-public-courses-published-by-developer-teams-and-start-learning": "Explore public courses published by developer teams and start learning."
+  "explore-public-courses-published-by-developer-teams-and-start-learning": "Explore public courses published by developer teams and start learning.",
+  "all-tags": "All Tags",
+  "tags-selected": "Tags Selected",
+  "loading-tags": "Loading tags...",
+  "no-tags-found": "No tags found",
+  "no-courses-found-matching-your-criteria": "No courses found matching your criteria."
 }

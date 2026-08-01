@@ -614,5 +614,11 @@
   "oops-something-went-wrong": "أُووبس! \nحدث خطأ ما",
   "for-everyone-in-the-public-library": "للجميع في المكتبة العامة.",
   "once-published-it-will-be-available": "وبمجرد نشره، سيكون متاحا",
-  "ok": "نعم"
+  "ok": "نعم",
+  "all-tags": "جميع التاغات",
+  "tags-selected": "التاغات المحددة",
+  "loading-tags": "جارٍ تحميل التاغات...",
+  "no-tags-found": "لم يتم العثور على تاغات",
+  "loading-courses": "جارٍ تحميل الدورات...",
+  "no-courses-found-matching-your-criteria": "لم يتم العثور على دورات تدريبية مطابقة لمعاييرك."
 }

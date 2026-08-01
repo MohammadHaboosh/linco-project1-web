@@ -20,4 +20,22 @@ export const libraryApi = {
     console.log("Fetched public Courses:", data.data);
     return data.data;
   },
+
+  getAllTags: async () => {
+    const response = await apiFetch(`/tags`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.message || "Failed to fetch tags");
+    }
+
+    console.log("Fetched Tags:", data.data);
+    return data.data;
+  },
 };
