@@ -7,8 +7,10 @@ import {
   IoTrashOutline,
 } from "react-icons/io5";
 import styles from "./FAQsTab.module.css";
+import { useTranslation } from "react-i18next";
 
-const FAQItem = ({ faq, onEdit, onDelete }) => {
+const FAQItem = ({ faq, onDelete }) => {
+  const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
@@ -25,20 +27,11 @@ const FAQItem = ({ faq, onEdit, onDelete }) => {
         <div className={styles.faqActions} onClick={(e) => e.stopPropagation()}>
           <button
             type="button"
-            className={styles.actionBtn}
-            onClick={() => onEdit(faq)}
-          >
-            <IoCreateOutline size={15} />
-            <span>Edit</span>
-          </button>
-
-          <button
-            type="button"
             className={`${styles.actionBtn} ${styles.deleteBtn}`}
             onClick={() => onDelete(faq.id)}
           >
             <IoTrashOutline size={15} />
-            <span>Delete</span>
+            <span>{t("delete")}</span>
           </button>
 
           <button

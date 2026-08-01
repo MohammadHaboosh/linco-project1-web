@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { IoCloseOutline } from "react-icons/io5";
 import styles from "./FAQsTab.module.css";
+import { useTranslation } from "react-i18next";
 
 const AddEditFAQModal = ({ isOpen, onClose, onSubmit, initialData }) => {
+  const { t } = useTranslation();
+
   const [question, setQuestion] = useState(initialData?.question || "");
   const [answer, setAnswer] = useState(initialData?.answer || "");
 
@@ -23,9 +26,7 @@ const AddEditFAQModal = ({ isOpen, onClose, onSubmit, initialData }) => {
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <div className={styles.modalHeader}>
-          <h3 className={styles.modalTitle}>
-            {initialData ? "Edit FAQ" : "Add New FAQ"}
-          </h3>
+          <h3 className={styles.modalTitle}>{t("add-new-faq")}</h3>
           <button
             type="button"
             className={styles.iconOnlyBtn}
@@ -37,11 +38,13 @@ const AddEditFAQModal = ({ isOpen, onClose, onSubmit, initialData }) => {
 
         <form onSubmit={handleSubmit}>
           <div className={styles.formGroup}>
-            <label className={styles.formLabel}>Question</label>
+            <label className={styles.formLabel}>{t("question")}</label>
             <input
               type="text"
               className={styles.formInput}
-              placeholder="e.g. What are the prerequisites?"
+              placeholder={t(
+                "e-g-what-are-the-prerequisites-for-taking-this-course",
+              )}
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               required
@@ -49,10 +52,12 @@ const AddEditFAQModal = ({ isOpen, onClose, onSubmit, initialData }) => {
           </div>
 
           <div className={styles.formGroup}>
-            <label className={styles.formLabel}>Answer</label>
+            <label className={styles.formLabel}>{t("answer")}</label>
             <textarea
               className={styles.formTextarea}
-              placeholder="Provide a clear answer..."
+              placeholder={t(
+                "provide-a-clear-detailed-answer-for-the-students",
+              )}
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
               required
@@ -65,10 +70,10 @@ const AddEditFAQModal = ({ isOpen, onClose, onSubmit, initialData }) => {
               className={styles.cancelBtn}
               onClick={onClose}
             >
-              Cancel
+              {t("cancel")}
             </button>
             <button type="submit" className={styles.submitBtn}>
-              {initialData ? "Save Changes" : "Add FAQ"}
+              {initialData ? t("save-changes") : t("add-faq")}
             </button>
           </div>
         </form>

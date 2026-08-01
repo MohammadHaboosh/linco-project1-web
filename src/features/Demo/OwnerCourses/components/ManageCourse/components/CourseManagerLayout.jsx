@@ -347,7 +347,7 @@ const CourseManagerLayout = () => {
         </div>
 
         <div className={styles.headerRight}>
-          {activeTab.id !== "faqs" && (
+          {activeTab !== "faqs" && (
             <button
               className={styles.saveBtn}
               onClick={handleSaveAll}

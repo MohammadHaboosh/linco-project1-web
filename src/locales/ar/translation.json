@@ -595,5 +595,6 @@
   "no-faqs-added-yet": "لم تتم إضافة أي أسئلة شائعة حتى الآن",
   "add-new-faq": "أضف أسئلة وأجوبة جديدة",
   "loading-faqs": "جارٍ تحميل الأسئلة الشائعة...",
-  "no-faqs-added-yet-click-below-to-create-one": "لم تتم إضافة أي أسئلة شائعة حتى الآن. \nانقر أدناه لإنشاء واحدة."
+  "no-faqs-added-yet-click-below-to-create-one": "لم تتم إضافة أي أسئلة شائعة حتى الآن. \nانقر أدناه لإنشاء واحدة.",
+  "provide-a-clear-detailed-answer-for-the-students": "تقديم إجابة واضحة ومفصلة للطلاب..."
 }
