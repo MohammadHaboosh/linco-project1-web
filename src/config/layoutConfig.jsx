@@ -59,7 +59,7 @@ export const DEMO_NAV = {
         path: PATHS.OWNER_COURSES,
       },
       {
-        name: "Purchased courses",
+        name: "Demo Courses",
         icon: <IoLibraryOutline />,
         path: PATHS.PSD_COURSES,
       },

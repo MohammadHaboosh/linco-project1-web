@@ -1,18 +1,17 @@
 import {
-  IoSettingsOutline,
   IoCartOutline,
-  IoLockClosed,
   IoGlobeOutline,
   IoBusinessOutline,
-  IoStar,
-  IoPeopleOutline,
+  IoTimeOutline,
+  IoBookOutline,
   IoDownloadOutline,
 } from "react-icons/io5";
 import styles from "./MarketplaceCard.module.css";
 import { useTranslation } from "react-i18next";
 
-const MarketplaceCard = ({ course }) => {
+const MarketplaceCard = ({ course, onViewDetails }) => {
   const { t } = useTranslation();
+
   const tagColorClasses = [
     styles.tagBlue,
     styles.tagGreen,
@@ -25,10 +24,10 @@ const MarketplaceCard = ({ course }) => {
     tagColorClasses[index % tagColorClasses.length];
 
   return (
-    <div className={styles.card}>
+    <div className={styles.card} onClick={onViewDetails}>
       <div className={styles.imageWrapper}>
         <img
-          src={course.image}
+          src={course.imagePath}
           alt={course.title}
           className={styles.coverImage}
         />
@@ -40,35 +39,16 @@ const MarketplaceCard = ({ course }) => {
           {course.price === 0 ? t("free") : `$${course.price}`}
         </div>
 
-        {course.isMyDemo && (
-          <div
-            className={`${styles.privacyBadge} ${course.isPrivate ? styles.private : styles.public}`}
-          >
-            {course.isPrivate ? (
-              <>
-                <IoLockClosed /> {t("private")}
-              </>
-            ) : (
-              <>
-                <IoGlobeOutline /> {t("public")}
-              </>
-            )}
-          </div>
-        )}
+        <div className={`${styles.privacyBadge} ${styles.public}`}>
+          <IoGlobeOutline /> {t("public")}
+        </div>
       </div>
 
       <div className={styles.cardBody}>
         <div className={styles.metaRow}>
           <div className={styles.companyInfo}>
             <IoBusinessOutline className={styles.metaIcon} />
-            <span className={styles.companyText}>{course.company}</span>
-            {course.isMyDemo && (
-              <span className={styles.myDemoTag}>({t("you")})</span>
-            )}
-          </div>
-          <div className={styles.ratingInfo}>
-            <IoStar className={styles.starIcon} />
-            <span>{course.rating}</span>
+            <span className={styles.companyText}>{course.demo?.name}</span>
           </div>
         </div>
 
@@ -77,8 +57,11 @@ const MarketplaceCard = ({ course }) => {
 
         <div className={styles.tagsContainer}>
           {course.tags?.map((tag, index) => (
-            <span key={index} className={`${styles.tag} ${getTagColor(index)}`}>
-              {tag}
+            <span
+              key={tag.id || index}
+              className={`${styles.tag} ${getTagColor(index)}`}
+            >
+              {tag.name}
             </span>
           ))}
         </div>
@@ -86,28 +69,26 @@ const MarketplaceCard = ({ course }) => {
         <div className={styles.divider}></div>
 
         <div className={styles.footerRow}>
-          <div className={styles.studentsInfo}>
-            <IoPeopleOutline className={styles.metaIcon} />
-            <span>
-              {course.students.toLocaleString()} {t("users")}
+          <div className={styles.courseStats}>
+            <span title="Lessons">
+              <IoBookOutline /> {course.lessonCount} lessons
+            </span>
+            <span title="Duration">
+              <IoTimeOutline /> {course.totalDuration}m
             </span>
           </div>
 
           <div className={styles.actionArea}>
-            {course.isMyDemo ? (
-              <button className={styles.manageBtn} title={t("manage-asset")}>
-                <IoSettingsOutline />
-              </button>
-            ) : (
-              <button
-                className={styles.buyBtn}
-                title={
-                  course.price === 0 ? t("get-for-free") : t("purchase-course")
-                }
-              >
-                {course.price === 0 ? <IoDownloadOutline /> : <IoCartOutline />}
-              </button>
-            )}
+            <button
+              className={styles.buyBtn}
+              onClick={(e) => {
+                e.stopPropagation();
+                onViewDetails();
+              }}
+              title={course.price === 0 ? "Enroll Free" : "Purchase Course"}
+            >
+              {course.price === 0 ? <IoDownloadOutline /> : <IoCartOutline />}
+            </button>
           </div>
         </div>
       </div>

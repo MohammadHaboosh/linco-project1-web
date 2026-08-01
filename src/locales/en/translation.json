@@ -616,5 +616,8 @@
   "oops-something-went-wrong": "Oops! Something went wrong",
   "once-published-it-will-be-available": "Once published, it will be available",
   "for-everyone-in-the-public-library": "for everyone in the public library.",
-  "ok": "OK"
+  "ok": "OK",
+  "no-courses-found-0": "No courses found.",
+  "loading-courses": "Loading courses...",
+  "explore-public-courses-published-by-developer-teams-and-start-learning": "Explore public courses published by developer teams and start learning."
 }
