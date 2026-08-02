@@ -14,6 +14,8 @@ import { useCreateCourse } from "../../hooks/useCreateCourse";
 import { sectionApi } from "../../../OwnerCourses/api/sectionApi";
 import { courseManagerApi } from "../../../OwnerCourses/api/courseManagerApi";
 import { lessonApi } from "../../../OwnerCourses/api/lessonApi";
+import { attachmentApi } from "../../../OwnerCourses/api/attachmentApi";
+import { quizApi } from "../../../OwnerCourses/api/quizApi";
 
 const CourseStudio = () => {
   const { t } = useTranslation();
@@ -175,15 +177,30 @@ const CourseStudio = () => {
       );
 
       for (const section of processedSections) {
+        if (section.quiz && (section.quiz.isNew || isTempId(section.quiz.id))) {
+          try {
+            await quizApi.createQuiz(section.realId, {
+              title: section.quiz.title,
+              numberOfQuestions: section.quiz.numberOfQuestions,
+              durationMinutes: section.quiz.durationMinutes,
+            });
+          } catch (quizError) {
+            console.error(
+              `Failed to create quiz for section ${section.realId}:`,
+              quizError,
+            );
+          }
+        }
         const lessons = section.lessons || [];
 
         for (let index = 0; index < lessons.length; index++) {
           const lesson = lessons[index];
           const isNewLesson = !lesson.id || lesson.isNew || isTempId(lesson.id);
 
-          if (isNewLesson) {
-            let finalVideoUrl = lesson.videoUrl || "";
+          let realLessonId = lesson.id;
+          let finalVideoUrl = lesson.videoUrl || "";
 
+          if (isNewLesson) {
             if (lesson.videoFile) {
               setUploadProgress({
                 title: lesson.title || `Lesson ${index + 1}`,
@@ -231,13 +248,73 @@ const CourseStudio = () => {
               duration: Number(lesson.duration) || 0,
             };
 
-            await lessonApi.createLesson(section.realId, lessonPayload);
+            const createdLesson = await lessonApi.createLesson(
+              section.realId,
+              lessonPayload,
+            );
+
+            realLessonId =
+              createdLesson?.id || createdLesson?.data?.id || lesson.id;
+          }
+
+          const currentAttachments = lesson.attachments || [];
+          const newAttachments = currentAttachments.filter(
+            (att) => att.isNew && att.file,
+          );
+
+          if (newAttachments.length > 0 && realLessonId) {
+            try {
+              const fileNames = newAttachments.map((att) => att.file.name);
+              const uploadUrls = await attachmentApi.getUploadUrl(
+                realLessonId,
+                fileNames,
+              );
+
+              for (const att of newAttachments) {
+                const uploadInfo = uploadUrls?.find(
+                  (u) =>
+                    u.fileName === att.file.name || u.name === att.file.name,
+                );
+
+                const uploadUrl = uploadInfo?.uploadUrl || uploadInfo?.url;
+                const finalPath =
+                  uploadInfo?.fileKey ||
+                  uploadInfo?.cdnUrl ||
+                  uploadInfo?.path ||
+                  "";
+
+                if (uploadUrl) {
+                  await attachmentApi.uploadAttachmentToStorage(
+                    uploadUrl,
+                    att.file,
+                    (percent) => {
+                      setUploadProgress({
+                        title: `Uploading Attachment: ${att.file.name}`,
+                        percent: percent,
+                      });
+                    },
+                  );
+                }
+
+                await attachmentApi.createAttachment(realLessonId, {
+                  name: att.title || att.fileName || att.file.name,
+                  path: finalPath,
+                });
+              }
+            } catch (attError) {
+              console.error(
+                `Failed to process attachments for lesson ID ${realLessonId}:`,
+                attError,
+              );
+            }
           }
         }
       }
 
       setDeletedSectionIds([]);
-      alert("Course, sections, and lessons saved successfully!");
+      alert(
+        "Course, sections, lessons, attachments, and quizze saved successfully!",
+      );
       navigate(-1);
     } catch (error) {
       console.error("Error saving curriculum:", error);
@@ -256,7 +333,7 @@ const CourseStudio = () => {
             <div className={styles.progressIcon}>
               <IoCloudUploadOutline />
             </div>
-            <h3>Uploading Video to Storage...</h3>
+            <h3>Uploading File to Storage...</h3>
             <p className={styles.lessonName}>{uploadProgress.title}</p>
 
             <div className={styles.progressBarWrapper}>

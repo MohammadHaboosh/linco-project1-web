@@ -8,18 +8,22 @@ export const useAttachments = () => {
   const [error, setError] = useState(null);
 
   const fetchAttachments = useCallback(async (lessonId) => {
-    if (!lessonId) return [];
+    if (!lessonId || String(lessonId).startsWith("temp")) return [];
+
     setIsLoading(true);
     setError(null);
     try {
-      const data = await attachmentApi.getAttachments(lessonId);
-      const formatted = (data || []).map((item) => ({
+      const rawData = await attachmentApi.getAttachments(lessonId);
+
+      const formatted = (rawData || []).map((item) => ({
         id: item.id,
-        title: item.name || item.title || "Attachment",
-        fileName: item.name || item.fileName || "File",
+        title: item.name || "Attachment",
+        fileName: item.name || "File",
         path: item.path,
+        lessonId: item.lessonId,
         status: "uploaded",
         isExisting: true,
+        isNew: false,
       }));
       setAttachments(formatted);
       return formatted;

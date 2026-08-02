@@ -21,4 +21,13 @@ export const ownerCoursesApi = {
     console.log("Fetched Demo Assets:", data.data);
     return data.data;
   },
+
+  publishCourse: async (courseId) => {
+    const response = await apiFetch(`/courses/${courseId}/publish`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
+    console.log("Course Publish response:", response);
+    return response;
+  },
 };

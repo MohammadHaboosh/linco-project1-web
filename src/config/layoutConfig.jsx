@@ -38,7 +38,7 @@ export const DEMO_NAV = {
         icon: <IoDocumentTextOutline />,
         path: PATHS.CERTIFICATES,
       },
-      { name: "Live Streams", icon: <IoVideocamOutline />, path: PATHS.LIVES },
+      { name: "Lives", icon: <IoVideocamOutline />, path: PATHS.LIVES },
       {
         name: "Inquiries",
         icon: <IoHelpCircleOutline />,
@@ -54,14 +54,9 @@ export const DEMO_NAV = {
         path: PATHS.OWNER_HOME,
       },
       {
-        name: "My Courses",
+        name: "Demo Courses",
         icon: <IoFolderOpenOutline />,
         path: PATHS.OWNER_COURSES,
-      },
-      {
-        name: "Purchased courses",
-        icon: <IoLibraryOutline />,
-        path: PATHS.PSD_COURSES,
       },
       {
         name: "Departments",
@@ -116,17 +111,12 @@ export const DEPARTMENT_NAV = {
       { name: "Courses", icon: <IoBookOutline />, path: PATHS.COURSES },
       { name: "Road Maps", icon: <IoMapOutline />, path: PATHS.ROADMAPS },
       {
-        name: "Weekly Tasks",
-        icon: <IoListOutline />,
-        path: PATHS.WEEKLY_TASKS,
-      },
-      {
         name: "Leaderboard",
         icon: <IoPersonOutline />,
         path: PATHS.LEADERBOARD,
       },
       {
-        name: "Chats",
+        name: "Chat",
         icon: <IoChatbubblesOutline />,
         path: PATHS.CHAT_GROUPS,
       },
@@ -142,9 +132,9 @@ export const DEPARTMENT_NAV = {
       { name: "Home", icon: <IoHomeOutline />, path: "" },
       { name: "Members", icon: <IoPeopleOutline />, path: PATHS.MEMBERS },
       { name: "Courses", icon: <IoBookOutline />, path: PATHS.COURSES },
-      { name: "Live Streams", icon: <IoVideocamOutline />, path: PATHS.LIVES },
+      { name: "Lives", icon: <IoVideocamOutline />, path: PATHS.LIVES },
       {
-        name: "Demo Assets",
+        name: "Demo Library",
         icon: <IoLibraryOutline />,
         path: PATHS.SM_ASSETS,
       },
@@ -164,12 +154,11 @@ export const DEPARTMENT_NAV = {
         path: PATHS.LEADERBOARD,
       },
       {
-        name: "Chats",
+        name: "Chat",
         icon: <IoChatbubblesOutline />,
         path: PATHS.CHAT_GROUPS,
       },
       { name: "Road Maps", icon: <IoMapOutline />, path: PATHS.ROADMAPS },
-      { name: "Weekly Tasks", icon: <IoListOutline />, path: PATHS.SM_TASKS },
     ],
   },
   owner: {
@@ -177,9 +166,9 @@ export const DEPARTMENT_NAV = {
       { name: "Home", icon: <IoHomeOutline />, path: "" },
       { name: "Members", icon: <IoPeopleOutline />, path: PATHS.MEMBERS },
       { name: "Courses", icon: <IoBookOutline />, path: PATHS.COURSES },
-      { name: "Live Streams", icon: <IoVideocamOutline />, path: PATHS.LIVES }, // 👈 تم التصحيح
+      { name: "Lives", icon: <IoVideocamOutline />, path: PATHS.LIVES }, // 👈 تم التصحيح
       {
-        name: "Demo Assets",
+        name: "Demo Library",
         icon: <IoLibraryOutline />,
         path: PATHS.SM_ASSETS,
       },
@@ -194,7 +183,7 @@ export const DEPARTMENT_NAV = {
         path: PATHS.LEADERBOARD,
       },
       {
-        name: "Chats",
+        name: "Chat",
         icon: <IoChatbubblesOutline />,
         path: PATHS.CHAT_GROUPS,
       },
@@ -204,7 +193,6 @@ export const DEPARTMENT_NAV = {
         path: PATHS.SM_LEARNING_PATH,
       },
       { name: "Road Maps", icon: <IoMapOutline />, path: PATHS.ROADMAPS },
-      { name: "Weekly Tasks", icon: <IoListOutline />, path: PATHS.SM_TASKS },
     ],
   },
 };

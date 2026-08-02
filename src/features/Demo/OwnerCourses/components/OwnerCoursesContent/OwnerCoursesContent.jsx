@@ -1,15 +1,24 @@
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { IoFolderOpenOutline } from "react-icons/io5";
 import CourseManagementCard from "../CourseManagementCard/CourseManagementCard";
 import styles from "./OwnerCoursesContent.module.css";
 import { useTranslation } from "react-i18next";
 import { useOwnerCourses } from "../../hooks/useOwnerCourses";
+import { usePublishCourse } from "../../hooks/usePublishCourse";
+import PublishConfirmationModal from "./PublishConfirmationModal";
+import ErrorModal from "./ErrorModal";
 
 const OwnerCoursesContent = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { demoId } = useParams();
-  const { courses, isLoading, error } = useOwnerCourses(demoId);
+  const { courses, isLoading, error, refetch } = useOwnerCourses(demoId);
+  const { publishCourse, isPublishing } = usePublishCourse();
+
+  const [selectedCourseForPublish, setSelectedCourseForPublish] =
+    useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const handleAddNewCourse = () => {
     navigate(`/demos/${demoId}/course-studio`);
@@ -19,8 +28,23 @@ const OwnerCoursesContent = () => {
     navigate(`/demos/${demoId}/manage-course/${assetId}`);
   };
 
-  const handlePublishToLibrary = (courseId) => {
-    // API logic for publishing can go here later
+  const handleOpenPublishModal = (course) => {
+    setSelectedCourseForPublish(course);
+  };
+
+  const handleConfirmPublish = async () => {
+    if (!selectedCourseForPublish) return;
+
+    const result = await publishCourse(selectedCourseForPublish.id);
+
+    if (result.success) {
+      setSelectedCourseForPublish(null);
+      if (refetch) refetch();
+      alert(t("course-published-successfully"));
+    } else {
+      setSelectedCourseForPublish(null);
+      setErrorMessage(t("an-error-occurred-please-try-again-later"));
+    }
   };
 
   return (
@@ -56,11 +80,23 @@ const OwnerCoursesContent = () => {
                 isAddNew={false}
                 course={course}
                 onEdit={() => handleEditCourse(course.assetId || course.id)}
-                onPublish={() => handlePublishToLibrary(course.id)}
+                onPublish={() => handleOpenPublishModal(course)}
               />
             ))}
         </div>
       </div>
+
+      <PublishConfirmationModal
+        course={selectedCourseForPublish}
+        isPublishing={isPublishing}
+        onClose={() => setSelectedCourseForPublish(null)}
+        onConfirm={handleConfirmPublish}
+      />
+
+      <ErrorModal
+        message={errorMessage}
+        onClose={() => setErrorMessage(null)}
+      />
     </div>
   );
 };

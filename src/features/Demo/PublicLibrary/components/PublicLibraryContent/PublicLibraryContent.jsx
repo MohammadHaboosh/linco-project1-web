@@ -1,87 +1,30 @@
 import { useState, useRef, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import {
   IoGlobeOutline,
   IoSearchOutline,
   IoFilterOutline,
   IoChevronDownOutline,
+  IoCheckmarkOutline,
 } from "react-icons/io5";
 import MarketplaceCard from "../MarketplaceCard/MarketplaceCard";
+import CourseDetailsModal from "../CourseDetailsModal/CourseDetailsModal";
 import styles from "./PublicLibraryContent.module.css";
 import { useTranslation } from "react-i18next";
-
-const MARKETPLACE_COURSES = [
-  {
-    id: 101,
-    title: "Advanced React & Next.js",
-    company: "Google Workspace",
-    description: "Master complex UI building and SSR architecture.",
-    price: 49.99,
-    isMyDemo: false,
-    isPrivate: false,
-    rating: 4.9,
-    students: 1240,
-    tags: ["React", "Architecture", "Web"],
-    image: "/images/linco-logo.jpg",
-  },
-  {
-    id: 102,
-    title: "Company Onboarding 2026",
-    company: "LinCo.TechCorp",
-    description: "Internal onboarding procedures and HR guidelines.",
-    price: 0,
-    isMyDemo: true,
-    isPrivate: true,
-    rating: 4.5,
-    students: 85,
-    tags: ["HR", "Onboarding", "Internal"],
-    image: "/images/linco-logo.jpg",
-  },
-  {
-    id: 103,
-    title: "Figma UI/UX Masterclass",
-    company: "Design Academy",
-    description: "Create professional design systems from scratch.",
-    price: 0,
-    isMyDemo: false,
-    isPrivate: false,
-    rating: 4.8,
-    students: 3450,
-    tags: ["Figma", "UI/UX", "Design"],
-    image: "/images/linco-logo.jpg",
-  },
-  {
-    id: 104,
-    title: "Node.js Microservices",
-    company: "LinCo.TechCorp",
-    description: "Learn to build scalable backend systems using Node & Docker.",
-    price: 89.99,
-    isMyDemo: true,
-    isPrivate: false,
-    rating: 5.0,
-    students: 432,
-    tags: ["Node.js", "Backend", "Docker"],
-    image: "/images/linco-logo.jpg",
-  },
-  {
-    id: 105,
-    title: "Python for Data Science",
-    company: "DataCamp",
-    description: "Comprehensive guide to Data Analysis and Machine Learning.",
-    price: 29.99,
-    isMyDemo: false,
-    isPrivate: false,
-    rating: 4.7,
-    students: 890,
-    tags: ["Python", "Data", "AI"],
-    image: "/images/linco-logo.jpg",
-  },
-];
+import { usePublicCourses } from "../../hooks/usePublicCourses";
+import { useTags } from "../../hooks/useTags";
 
 const PublicLibraryContent = () => {
   const { t } = useTranslation();
+  const { demoId } = useParams();
+
+  const { courses, isLoading, error } = usePublicCourses(demoId);
+  const { tags, isLoadingTags } = useTags();
+
   const [searchQuery, setSearchQuery] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [activeCategory, setActiveCategory] = useState(t("all-categories"));
+  const [selectedTagIds, setSelectedTagIds] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState(null);
   const filterRef = useRef(null);
 
   useEffect(() => {
@@ -93,13 +36,36 @@ const PublicLibraryContent = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const categories = [
-    "All Categories",
-    "Front-End",
-    "Back-End",
-    "UI/UX",
-    "Management",
-  ];
+  const toggleTagSelection = (tagId) => {
+    setSelectedTagIds((prev) =>
+      prev.includes(tagId)
+        ? prev.filter((id) => id !== tagId)
+        : [...prev, tagId],
+    );
+  };
+
+  const filteredCourses = courses.filter((course) => {
+    const matchesSearch =
+      course.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      course.description?.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const matchesTags =
+      selectedTagIds.length === 0 ||
+      course.tags?.some((courseTag) => selectedTagIds.includes(courseTag.id));
+
+    return matchesSearch && matchesTags;
+  });
+
+  const handleEnrollOrBuy = (course) => {
+    if (course.price === 0) {
+      alert(`Successfully enrolled in "${course.title}" for free!`);
+      setSelectedCourse(null);
+    } else {
+      alert(
+        `Redirecting to payment gateway for "${course.title}" ($${course.price})`,
+      );
+    }
+  };
 
   return (
     <div className={styles.pageContainer}>
@@ -112,7 +78,9 @@ const PublicLibraryContent = () => {
             <span className={styles.subHeading}>{t("global-marketplace")}</span>
             <h1 className={styles.title}>{t("ublic-course-library")}</h1>
             <p className={styles.description}>
-              {t("explore-premium-courses-or-publish-your-own-assets")}
+              {t(
+                "explore-public-courses-published-by-developer-teams-and-start-learning",
+              )}
             </p>
           </div>
         </div>
@@ -138,34 +106,104 @@ const PublicLibraryContent = () => {
               className={styles.filterBtn}
               onClick={() => setIsFilterOpen(!isFilterOpen)}
             >
-              <IoFilterOutline className={styles.filterIcon} /> {activeCategory}{" "}
+              <IoFilterOutline className={styles.filterIcon} />
+              {selectedTagIds.length === 0
+                ? t("all-tags")
+                : `${selectedTagIds.length} ${t("tags-selected")}`}
               <IoChevronDownOutline />
             </button>
             {isFilterOpen && (
-              <div className={styles.filterDropdown}>
-                {categories.map((cat) => (
-                  <button
-                    key={cat}
-                    className={`${styles.catItem} ${activeCategory === cat ? styles.catActive : ""}`}
-                    onClick={() => {
-                      setActiveCategory(cat);
-                      setIsFilterOpen(false);
+              <div
+                className={styles.filterDropdown}
+                style={{ minWidth: "200px" }}
+              >
+                {isLoadingTags ? (
+                  <div
+                    style={{
+                      padding: "10px",
+                      textAlign: "center",
+                      fontSize: "0.85rem",
                     }}
                   >
-                    {cat}
-                  </button>
-                ))}
+                    {t("loading-tags")}
+                  </div>
+                ) : tags.length > 0 ? (
+                  tags.map((tag) => {
+                    const isSelected = selectedTagIds.includes(tag.id);
+                    return (
+                      <button
+                        key={tag.id}
+                        type="button"
+                        className={`${styles.catItem} ${isSelected ? styles.catActive : ""}`}
+                        onClick={() => toggleTagSelection(tag.id)}
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <span>{tag.name}</span>
+                        {isSelected && <IoCheckmarkOutline size={16} />}
+                      </button>
+                    );
+                  })
+                ) : (
+                  <div
+                    style={{
+                      padding: "10px",
+                      textAlign: "center",
+                      fontSize: "0.85rem",
+                    }}
+                  >
+                    {t("no-tags-found")}
+                  </div>
+                )}
               </div>
             )}
           </div>
         </div>
       </div>
 
-      <div className={styles.coursesGrid}>
-        {MARKETPLACE_COURSES.map((course) => (
-          <MarketplaceCard key={course.id} course={course} />
-        ))}
-      </div>
+      {isLoading && (
+        <p style={{ textAlign: "center", padding: "40px" }}>
+          {t("loading-courses")}
+        </p>
+      )}
+      {error && (
+        <p style={{ textAlign: "center", padding: "40px", color: "red" }}>
+          {error}
+        </p>
+      )}
+
+      {!isLoading && !error && (
+        <div className={styles.coursesGrid}>
+          {filteredCourses.length > 0 ? (
+            filteredCourses.map((course) => (
+              <MarketplaceCard
+                key={course.id}
+                course={course}
+                onViewDetails={() => setSelectedCourse(course)}
+              />
+            ))
+          ) : (
+            <p
+              style={{
+                gridColumn: "1 / -1",
+                textAlign: "center",
+                color: "#64748b",
+              }}
+            >
+              {t("no-courses-found-matching-your-criteria")}
+            </p>
+          )}
+        </div>
+      )}
+
+      <CourseDetailsModal
+        course={selectedCourse}
+        onClose={() => setSelectedCourse(null)}
+        onEnroll={handleEnrollOrBuy}
+      />
     </div>
   );
 };

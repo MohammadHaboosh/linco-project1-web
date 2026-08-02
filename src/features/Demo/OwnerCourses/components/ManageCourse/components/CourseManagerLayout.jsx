@@ -12,7 +12,7 @@ import {
 import { useCourseManager } from "../../../hooks/useCourseManager";
 import GeneralInfoTab from "./tabs/GeneralInfoTab/GeneralInfoTab";
 import CurriculumTab from "./tabs/CurriculumTab/CurriculumTab";
-import FAQsTab from "./tabs/FAQsTab";
+import FAQsTab from "./tabs/FAQsTab/FAQsTab";
 import styles from "./CourseManager.module.css";
 import { useTranslation } from "react-i18next";
 import { lessonApi } from "../../../api/lessonApi";
@@ -42,8 +42,6 @@ const CourseManagerLayout = () => {
     generalInfo,
     handleGeneralInfoChange,
     saveGeneralInfo,
-    faqs,
-    setFaqs,
     sections,
     setSections,
     deletedSectionIds,
@@ -115,9 +113,9 @@ const CourseManagerLayout = () => {
           const isNewLesson =
             !lesson.id || lesson.isNew === true || isTempId(lesson.id);
 
+          let realLessonId = lesson.id;
+          let finalVideoUrl = lesson.videoUrl || "";
           if (isNewLesson) {
-            let finalVideoUrl = lesson.videoUrl || "";
-
             if (lesson.videoFile) {
               setUploadProgress({
                 title: lesson.title || `Lesson ${index + 1}`,
@@ -170,21 +168,33 @@ const CourseManagerLayout = () => {
               lessonPayload,
             );
 
-            const realLessonId =
+            realLessonId =
               createdLesson?.id || createdLesson?.data?.id || lesson.id;
+          }
+          const currentAttachments = lesson.attachments || [];
+          const updatedAttachmentsList = [];
 
-            const currentAttachments = lesson.attachments || [];
-            const updatedAttachmentsList = [];
+          const newAttachments = currentAttachments.filter(
+            (att) => att.isNew && att.file,
+          );
+          const existingAttachments = currentAttachments.filter(
+            (att) => !att.isNew || !att.file,
+          );
 
-            for (const att of currentAttachments) {
-              if (att.isNew && att.file) {
-                // 1. طلب رابط الرفع للملحق
-                const uploadUrls = await attachmentApi.getUploadUrl(
-                  realLessonId,
-                  [att.file.name],
-                );
+          updatedAttachmentsList.push(...existingAttachments);
+
+          if (newAttachments.length > 0 && realLessonId) {
+            try {
+              const fileNames = newAttachments.map((att) => att.file.name);
+              const uploadUrls = await attachmentApi.getUploadUrl(
+                realLessonId,
+                fileNames,
+              );
+
+              for (const att of newAttachments) {
                 const uploadInfo = uploadUrls?.find(
-                  (u) => u.fileName === att.file.name,
+                  (u) =>
+                    u.fileName === att.file.name || u.name === att.file.name,
                 );
 
                 const uploadUrl = uploadInfo?.uploadUrl || uploadInfo?.url;
@@ -194,18 +204,23 @@ const CourseManagerLayout = () => {
                   uploadInfo?.path ||
                   "";
 
-                // 2. رفع ملف الملحق على Azure / Storage
                 if (uploadUrl) {
                   await attachmentApi.uploadAttachmentToStorage(
                     uploadUrl,
                     att.file,
+                    (percent) => {
+                      setUploadProgress({
+                        title: `Uploading: ${att.file.name}`,
+                        percent: percent,
+                      });
+                    },
                   );
                 }
 
                 const createdAtt = await attachmentApi.createAttachment(
                   realLessonId,
                   {
-                    name: att.title || att.fileName,
+                    name: att.title || att.fileName || att.file.name,
                     path: finalPath,
                   },
                 );
@@ -214,26 +229,28 @@ const CourseManagerLayout = () => {
                   id: createdAtt?.id || createdAtt?.data?.id,
                   title: createdAtt?.name || att.title,
                   fileName: createdAtt?.name || att.fileName,
-                  path: finalPath,
+                  path: createdAtt?.path || finalPath,
                   isNew: false,
                 });
-              } else {
-                updatedAttachmentsList.push(att);
               }
+            } catch (attError) {
+              console.error(
+                `Failed to process attachments for lesson ID ${realLessonId}:`,
+                attError,
+              );
             }
-
-            updatedLessonsList.push({
-              ...lesson,
-              id: realLessonId,
-              attachments: updatedAttachmentsList,
-              videoUrl: finalVideoUrl,
-              videoFile: null,
-              isNew: false,
-            });
-            setUploadProgress(null);
-          } else {
-            updatedLessonsList.push(lesson);
           }
+
+          updatedLessonsList.push({
+            ...lesson,
+            id: realLessonId,
+            attachments: updatedAttachmentsList,
+            videoUrl: finalVideoUrl,
+            videoFile: null,
+            isNew: false,
+          });
+
+          setUploadProgress(null);
         }
 
         updatedSectionsList.push({
@@ -261,7 +278,7 @@ const CourseManagerLayout = () => {
     return (
       <div className={styles.loadingScreen}>
         <div className={styles.spinner}></div>
-        <p>Loading Workspace...</p>
+        <p>{t("loading-workspace")}</p>
       </div>
     );
   }
@@ -292,7 +309,7 @@ const CourseManagerLayout = () => {
             <div className={styles.progressIcon}>
               <IoCloudUploadOutline />
             </div>
-            <h3>Uploading Video to Storage...</h3>
+            <h3>{t("uploading-your-files-to-storage")}</h3>
             <p className={styles.lessonName}>{uploadProgress.title}</p>
 
             <div className={styles.progressBarWrapper}>
@@ -303,7 +320,7 @@ const CourseManagerLayout = () => {
             </div>
 
             <div className={styles.progressStats}>
-              <span>Progress</span>
+              <span>{t("progress")}</span>
               <span className={styles.percentText}>
                 {uploadProgress.percent}%
               </span>
@@ -317,7 +334,7 @@ const CourseManagerLayout = () => {
           <button
             className={styles.backBtn}
             onClick={() => navigate(-1)}
-            title="Go back"
+            title={t("go-back")}
           >
             <IoArrowBackOutline />
           </button>
@@ -330,22 +347,24 @@ const CourseManagerLayout = () => {
         </div>
 
         <div className={styles.headerRight}>
-          <button
-            className={styles.saveBtn}
-            onClick={handleSaveAll}
-            disabled={isSaving}
-          >
-            {isSaving ? (
-              <div className={styles.btnSpinner}></div>
-            ) : (
-              <IoSaveOutline />
-            )}
-            <span>
-              {isSaving
-                ? t("saving", "Saving...")
-                : t("save-changes", "Save Changes")}
-            </span>
-          </button>
+          {activeTab !== "faqs" && (
+            <button
+              className={styles.saveBtn}
+              onClick={handleSaveAll}
+              disabled={isSaving}
+            >
+              {isSaving ? (
+                <div className={styles.btnSpinner}></div>
+              ) : (
+                <IoSaveOutline />
+              )}
+              <span>
+                {isSaving
+                  ? t("saving", "Saving...")
+                  : t("save-changes", "Save Changes")}
+              </span>
+            </button>
+          )}
         </div>
       </header>
 
@@ -394,7 +413,7 @@ const CourseManagerLayout = () => {
                 onDeleteSection={handleDeleteSection}
               />
             )}
-            {activeTab === "faqs" && <FAQsTab faqs={faqs} setFaqs={setFaqs} />}
+            {activeTab === "faqs" && <FAQsTab courseId={courseId} />}
           </div>
         </main>
       </div>

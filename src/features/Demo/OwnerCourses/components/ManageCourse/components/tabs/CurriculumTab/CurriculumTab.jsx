@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   IoChevronDownOutline,
   IoChevronUpOutline,
@@ -16,6 +16,8 @@ import SectionQuizSection from "./SectionQuizSection/SectionQuizSection";
 import AddLessonModal from "./AddModals/AddLessonModal";
 import AddQuizModal from "./AddModals/AddQuizModal";
 import AddQuestionModal from "./AddModals/AddQuestionModal";
+import { attachmentApi } from "../../../../../api/attachmentApi";
+import { quizApi } from "../../../../../api/quizApi";
 
 const CurriculumTab = ({
   courseId,
@@ -25,18 +27,31 @@ const CurriculumTab = ({
 }) => {
   const { t } = useTranslation();
   const [expandedSections, setExpandedSections] = useState(
-    sections.map((s) => s.id),
+    sections.length > 0 ? [sections[0].id] : [],
   );
 
   const [activeModal, setActiveModal] = useState(null);
   const [activeSectionId, setActiveSectionId] = useState(null);
   const [isCreatingSection, setIsCreatingSection] = useState(false);
 
+  const isTempId = (id) => {
+    if (!id) return true;
+    const strId = String(id);
+    return strId.startsWith("temp-") || strId.startsWith("temp_");
+  };
+
   const toggleSection = (id) => {
-    if (expandedSections.includes(id)) {
-      setExpandedSections(expandedSections.filter((secId) => secId !== id));
-    } else {
+    const isExpanding = !expandedSections.includes(id);
+
+    if (isExpanding) {
       setExpandedSections([...expandedSections, id]);
+
+      const targetSec = sections.find((s) => s.id === id);
+      if (targetSec && !isTempId(id) && targetSec.quiz === undefined) {
+        handleFetchQuizForSection(id);
+      }
+    } else {
+      setExpandedSections(expandedSections.filter((secId) => secId !== id));
     }
   };
 
@@ -140,11 +155,7 @@ const CurriculumTab = ({
         s.id === activeSectionId
           ? {
               ...s,
-              quiz: {
-                id: `temp_quiz_${Date.now()}`,
-                ...quizData,
-                isNew: true,
-              },
+              quiz: quizData,
             }
           : s,
       ),
@@ -198,51 +209,183 @@ const CurriculumTab = ({
     );
   };
 
-  const deleteQuiz = (secId) => {
-    setSections((prev) =>
-      prev.map((s) => (s.id === secId ? { ...s, quiz: null } : s)),
-    );
+  const handleFetchQuizForSection = async (sectionId) => {
+    if (isTempId(sectionId)) return;
+
+    try {
+      const fetchedQuiz = await quizApi.getQuizBySectionId(sectionId);
+      if (fetchedQuiz) {
+        setSections((prev) =>
+          prev.map((sec) =>
+            sec.id === sectionId ? { ...sec, quiz: fetchedQuiz } : sec,
+          ),
+        );
+      }
+    } catch (error) {
+      console.error(`Failed to fetch quiz for section ${sectionId}:`, error);
+    }
+  };
+  useEffect(() => {
+    if (sections.length > 0) {
+      const firstSection = sections[0];
+      if (!isTempId(firstSection.id) && firstSection.quiz === null) {
+        handleFetchQuizForSection(firstSection.id);
+      }
+    }
+  }, [sections.length]);
+
+  const deleteQuiz = async (secId) => {
+    const targetSection = sections.find((s) => s.id === secId);
+    const quizId = targetSection?.quiz?.id;
+
+    if (!quizId) {
+      setSections((prev) =>
+        prev.map((s) => (s.id === secId ? { ...s, quiz: null } : s)),
+      );
+      return;
+    }
+
+    if (window.confirm("Are you sure you want to delete this exam?")) {
+      try {
+        if (isTempId(secId) || String(quizId).startsWith("temp_")) {
+          setSections((prev) =>
+            prev.map((s) => (s.id === secId ? { ...s, quiz: null } : s)),
+          );
+          return;
+        }
+
+        await quizApi.deleteQuiz(secId, quizId);
+
+        setSections((prev) =>
+          prev.map((s) => (s.id === secId ? { ...s, quiz: null } : s)),
+        );
+      } catch (error) {
+        console.error("Failed to delete quiz:", error);
+        alert("Failed to delete the exam. Please try again.");
+      }
+    }
   };
 
-  const handleAddAttachment = (secId, lessonId, attachmentData) => {
-    setSections((prev) =>
-      prev.map((s) => {
-        if (s.id === secId) {
-          const updatedLessons = (s.lessons || []).map((l) => {
+  const handleFetchAttachments = async (lessonId) => {
+    if (!lessonId || String(lessonId).startsWith("temp_")) return;
+
+    try {
+      const fetchedAtts = await attachmentApi.getAttachments(lessonId);
+
+      const formatted = (fetchedAtts || []).map((att) => ({
+        id: att.id,
+        title: att.name || "Resource",
+        fileName: att.name || "",
+        path: att.path,
+        isExisting: true,
+        isNew: false,
+      }));
+
+      setSections((prevSections) =>
+        prevSections.map((sec) => ({
+          ...sec,
+          lessons: (sec.lessons || []).map((l) => {
             if (l.id === lessonId) {
+              const localNewAttachments = (l.attachments || []).filter(
+                (att) => att.isNew,
+              );
               return {
                 ...l,
-                attachments: [...(l.attachments || []), attachmentData],
+                attachments: [...formatted, ...localNewAttachments],
               };
             }
             return l;
-          });
-          return { ...s, lessons: updatedLessons };
+          }),
+        })),
+      );
+    } catch (error) {
+      console.error("Error fetching attachments for lesson:", lessonId, error);
+    }
+  };
+
+  const handleAddAttachment = (arg1, arg2, arg3) => {
+    let targetSecId = null;
+    let targetLessonId = arg1;
+    let attachmentData = arg2;
+
+    if (typeof arg2 === "string" || typeof arg3 === "object") {
+      targetSecId = arg1;
+      targetLessonId = arg2;
+      attachmentData = arg3;
+    }
+
+    console.log("Adding attachment to lesson:", targetLessonId, attachmentData);
+
+    if (!targetLessonId || !attachmentData) return;
+
+    setSections((prev) =>
+      prev.map((s) => {
+        if (targetSecId && String(s.id) !== String(targetSecId)) {
+          return s;
         }
-        return s;
+
+        return {
+          ...s,
+          lessons: (s.lessons || []).map((l) => {
+            if (String(l.id) === String(targetLessonId)) {
+              const rawFile =
+                attachmentData.file ||
+                attachmentData.selectedFile ||
+                (attachmentData instanceof File ? attachmentData : null);
+
+              const newAttachment = {
+                id: attachmentData.id || `temp_att_${Date.now()}`,
+                title:
+                  attachmentData.title ||
+                  attachmentData.name ||
+                  rawFile?.name ||
+                  "New Attachment",
+                fileName:
+                  attachmentData.fileName ||
+                  rawFile?.name ||
+                  attachmentData.name ||
+                  "",
+                file: rawFile,
+                isNew: true,
+                isExisting: false,
+              };
+
+              return {
+                ...l,
+                attachments: [...(l.attachments || []), newAttachment],
+              };
+            }
+            return l;
+          }),
+        };
       }),
     );
   };
 
-  const handleDeleteAttachment = (secId, lessonId, attachmentId) => {
+  const handleDeleteAttachment = (arg1, arg2, arg3) => {
+    let targetLessonId = arg1;
+    let targetAttId = arg2;
+
+    if (arg3 !== undefined) {
+      targetLessonId = arg2;
+      targetAttId = arg3;
+    }
+
     setSections((prev) =>
-      prev.map((s) => {
-        if (s.id === secId) {
-          const updatedLessons = (s.lessons || []).map((l) => {
-            if (l.id === lessonId) {
-              return {
-                ...l,
-                attachments: (l.attachments || []).filter(
-                  (att) => att.id !== attachmentId,
-                ),
-              };
-            }
-            return l;
-          });
-          return { ...s, lessons: updatedLessons };
-        }
-        return s;
-      }),
+      prev.map((s) => ({
+        ...s,
+        lessons: (s.lessons || []).map((l) => {
+          if (String(l.id) === String(targetLessonId)) {
+            return {
+              ...l,
+              attachments: (l.attachments || []).filter(
+                (att) => String(att.id) !== String(targetAttId),
+              ),
+            };
+          }
+          return l;
+        }),
+      })),
     );
   };
 
@@ -328,6 +471,9 @@ const CurriculumTab = ({
                     onDeleteAttachment={(lessonId, attId) =>
                       handleDeleteAttachment(section.id, lessonId, attId)
                     }
+                    onFetchAttachments={(lessonId) =>
+                      handleFetchAttachments(lessonId)
+                    }
                   />
 
                   <div className={styles.bottomAssessmentRow}>
@@ -372,6 +518,7 @@ const CurriculumTab = ({
 
       <AddQuizModal
         isOpen={activeModal === "quiz"}
+        sectionId={activeSectionId}
         onClose={handleCloseModal}
         onSubmit={handleSaveQuiz}
       />

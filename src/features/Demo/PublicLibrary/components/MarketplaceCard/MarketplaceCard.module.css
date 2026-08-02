@@ -238,3 +238,17 @@
   color: #0a2a54;
   border-color: #94a3b8;
 }
+.courseStats {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.courseStats span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}

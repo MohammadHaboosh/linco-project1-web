@@ -2,6 +2,10 @@ import { apiFetch } from "../../../../api/apiFetch";
 
 export const attachmentApi = {
   getAttachments: async (lessonId) => {
+    if (!lessonId || String(lessonId).startsWith("temp_")) {
+      return [];
+    }
+
     const response = await apiFetch(`/lessons/${lessonId}/attachments/cursor`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
@@ -14,7 +18,7 @@ export const attachmentApi = {
       throw new Error(data.message || "Failed to fetch attachments");
     }
 
-    return data.data;
+    return data.data || [];
   },
 
   getUploadUrl: async (lessonId, fileNames) => {
