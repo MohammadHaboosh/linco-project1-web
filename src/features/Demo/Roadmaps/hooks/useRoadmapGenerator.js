@@ -16,38 +16,42 @@ export const useRoadmapGenerator = () => {
     [],
   );
 
-  const generateRoadmap = useCallback(async (title) => {
-    activeControllerRef.current?.abort();
+  const generateRoadmap = useCallback(
+    async (title) => {
+      activeControllerRef.current?.abort();
 
-    const controller = new AbortController();
-    activeControllerRef.current = controller;
-    setIsGenerating(true);
-    setError(null);
-    setRoadmap(null);
+      const controller = new AbortController();
+      activeControllerRef.current = controller;
+      setIsGenerating(true);
+      setError(null);
+      setRoadmap(null);
 
-    try {
-      const generatedRoadmap = await roadmapApi.generate(title, {
-        demoId: demoId,
-        departmentId: departmentId,
-        signal: controller.signal,
-      });
+      try {
+        const generatedRoadmap = await roadmapApi.generate(
+          title,
+          demoId,
+          departmentId,
+          { signal: controller.signal },
+        );
 
-      if (controller.signal.aborted) return false;
+        if (controller.signal.aborted) return false;
 
-      setRoadmap(generatedRoadmap);
-      return true;
-    } catch (requestError) {
-      if (requestError.name === "AbortError") return false;
+        setRoadmap(generatedRoadmap);
+        return true;
+      } catch (requestError) {
+        if (requestError.name === "AbortError") return false;
 
-      setError(requestError.message || "Failed to generate roadmap.");
-      return false;
-    } finally {
-      if (activeControllerRef.current === controller) {
-        activeControllerRef.current = null;
-        setIsGenerating(false);
+        setError(requestError.message || "Failed to generate roadmap.");
+        return false;
+      } finally {
+        if (activeControllerRef.current === controller) {
+          activeControllerRef.current = null;
+          setIsGenerating(false);
+        }
       }
-    }
-  }, []);
+    },
+    [demoId, departmentId],
+  );
 
   const reset = useCallback(() => {
     activeControllerRef.current?.abort();
