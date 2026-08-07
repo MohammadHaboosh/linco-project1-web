@@ -5,12 +5,13 @@ import {
   IoTimeOutline,
   IoBookOutline,
   IoLayersOutline,
-  IoHelpCircleOutline,
 } from "react-icons/io5";
 import styles from "./CourseDetailsModal.module.css";
 import { useCourseCurriculum } from "../../hooks/useCourseCurriculum";
 import CourseSectionItem from "../CourseSectionItem/CourseSectionItem";
 import { useTranslation } from "react-i18next";
+import { useCourseFaqs } from "../../hooks/useCourseFaqs";
+import CourseFaqItem from "../CourseFaqItem/CourseFaqItem";
 
 const CourseDetailsModal = ({ course, onClose, onEnroll }) => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -22,6 +23,10 @@ const CourseDetailsModal = ({ course, onClose, onEnroll }) => {
     toggleSection,
     isLoadingSections,
   } = useCourseCurriculum(course?.id, activeTab === "curriculum");
+  const { faqs, isLoadingFaqs } = useCourseFaqs(
+    course?.id,
+    activeTab === "faqs",
+  );
 
   const { t } = useTranslation();
 
@@ -156,17 +161,33 @@ const CourseDetailsModal = ({ course, onClose, onEnroll }) => {
 
           {activeTab === "faqs" && (
             <div className={styles.faqsSection}>
-              <h3>{t("frequently-asked-questions")}</h3>
-              <div className={styles.faqItem}>
-                <h4>
-                  <IoHelpCircleOutline /> {t("how-do-i-access-the-lessons")}
-                </h4>
-                <p>
-                  {t(
-                    "once-you-click-enroll-for-free-courses-or-purchase-full-access-to-sections-and-lessons-will-be-granted-instantly",
-                  )}
+              <h3 style={{ marginBottom: "16px", color: "#0a2a54" }}>
+                Frequently Asked Questions
+              </h3>
+
+              {isLoadingFaqs ? (
+                <p
+                  style={{
+                    textAlign: "center",
+                    color: "#64748b",
+                    padding: "20px",
+                  }}
+                >
+                  Loading FAQs...
                 </p>
-              </div>
+              ) : faqs && faqs.length > 0 ? (
+                faqs.map((faq) => <CourseFaqItem key={faq.id} faq={faq} />)
+              ) : (
+                <p
+                  style={{
+                    textAlign: "center",
+                    color: "#64748b",
+                    padding: "20px",
+                  }}
+                >
+                  No FAQs available for this course.
+                </p>
+              )}
             </div>
           )}
         </div>
