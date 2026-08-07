@@ -636,5 +636,7 @@
   "overview": "ملخص",
   "curriculum-0": "مقرر",
   "no-lessons-in-this-section": "لا توجد دروس في هذا القسم.",
-  "loading-lessons": "جارٍ تحميل الدروس..."
+  "loading-lessons": "جارٍ تحميل الدروس...",
+  "no-published-assets-found": "لم يتم العثور على دورات منشورة.",
+  "loading-assets": "جارٍ تحميل الدورات المتاحة للنشر..."
 }

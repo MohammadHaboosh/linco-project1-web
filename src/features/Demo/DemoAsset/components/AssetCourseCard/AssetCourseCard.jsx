@@ -7,7 +7,7 @@ import {
 import styles from "./AssetCourseCard.module.css";
 import { useTranslation } from "react-i18next";
 
-const AssetCourseCard = ({ course }) => {
+const AssetCourseCard = ({ course, accessMethod }) => {
   const { t } = useTranslation();
   const [isImported, setIsImported] = useState(false);
 
@@ -20,7 +20,7 @@ const AssetCourseCard = ({ course }) => {
     <div className={styles.card}>
       <div className={styles.imageWrapper}>
         <img
-          src={course.image}
+          src={course.imagePath}
           alt={course.title}
           className={styles.coverImage}
         />
@@ -29,7 +29,7 @@ const AssetCourseCard = ({ course }) => {
 
       <div className={styles.cardBody}>
         <div className={styles.sourceInfo}>
-          <IoInformationCircleOutline /> {course.source}
+          <IoInformationCircleOutline /> {accessMethod || course.demo?.name}
         </div>
 
         <h3 className={styles.title}>{course.title}</h3>

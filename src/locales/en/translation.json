@@ -640,5 +640,7 @@
   "overview": "Overview",
   "curriculum-0": "Curriculum",
   "no-lessons-in-this-section": "No lessons in this section.",
-  "loading-lessons": "Loading lessons..."
+  "loading-lessons": "Loading lessons...",
+  "no-published-assets-found": "No published assets found.",
+  "loading-assets": "Loading assets..."
 }
