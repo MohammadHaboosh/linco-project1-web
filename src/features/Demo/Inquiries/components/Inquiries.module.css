@@ -141,6 +141,7 @@
   text-align: center;
 }
 .ticketCard {
+  min-width: 0;
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 20px;
@@ -200,6 +201,8 @@
 }
 
 .ticketMessage {
+  min-width: 0;
+  overflow: hidden;
   background: #f8fafc;
   padding: 15px;
   border-radius: 12px;
@@ -211,6 +214,9 @@
 }
 .ticketMessage p {
   margin: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: pre-wrap;
 }
 .ticketMessage strong {
   display: block;
@@ -221,6 +227,8 @@
 }
 
 .ticketReply {
+  min-width: 0;
+  overflow: hidden;
   background: #eff6ff;
   padding: 15px;
   border-radius: 12px;
@@ -238,6 +246,12 @@
 }
 .ticketReply p {
   margin: 0;
+  max-height: 14rem;
+  padding-inline-end: 4px;
+  overflow-y: auto;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: pre-wrap;
 }
 
 /* ================= Modal Styles ================= */
@@ -482,6 +496,8 @@
 /* Right Detail View */
 .inboxDetail {
   flex: 1;
+  min-width: 0;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   background: #ffffff;
@@ -526,8 +542,10 @@
 
 .detailContent {
   flex: 1;
+  min-width: 0;
   padding: 30px;
   overflow-y: auto;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -536,6 +554,10 @@
 .questionPanel,
 .responsePanel {
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
   padding: 20px;
   border-radius: 16px;
   font-size: 0.95rem;
@@ -554,6 +576,14 @@
 .questionPanel p,
 .responsePanel p {
   margin: 8px 0 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+.responsePanel p {
+  max-height: min(45vh, 28rem);
+  padding-inline-end: 4px;
+  overflow-y: auto;
 }
 .panelLabel {
   color: #0a2a54;
@@ -569,6 +599,7 @@
   font-size: 0.75rem;
   color: #64748b;
   font-weight: 600;
+  overflow-wrap: anywhere;
 }
 
 .responseArea {
