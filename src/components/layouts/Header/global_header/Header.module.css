@@ -57,6 +57,16 @@
   color: #ffffff;
 }
 
+.demoBackLink {
+  background-color: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+}
+
+.demoBackLink:hover {
+  background-color: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
 .divider {
   width: 1px;
   height: 24px;
@@ -120,6 +130,10 @@
 
   .backLink svg {
     font-size: 1.15rem;
+  }
+
+  .demoBackLink {
+    border-color: transparent;
   }
 
   .staticBadge {
