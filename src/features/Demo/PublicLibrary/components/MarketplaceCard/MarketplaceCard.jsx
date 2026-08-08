@@ -71,7 +71,7 @@ const MarketplaceCard = ({ course, onViewDetails }) => {
         <div className={styles.footerRow}>
           <div className={styles.courseStats}>
             <span title="Lessons">
-              <IoBookOutline /> {course.lessonCount} lessons
+              <IoBookOutline /> {course.lessonCount} {t("lessons")}
             </span>
             <span title="Duration">
               <IoTimeOutline /> {course.totalDuration}m

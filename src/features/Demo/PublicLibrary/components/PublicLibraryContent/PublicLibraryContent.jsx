@@ -13,6 +13,7 @@ import styles from "./PublicLibraryContent.module.css";
 import { useTranslation } from "react-i18next";
 import { usePublicCourses } from "../../hooks/usePublicCourses";
 import { useTags } from "../../hooks/useTags";
+import { useBuyCourse } from "../../hooks/useBuyCourse";
 
 const PublicLibraryContent = () => {
   const { t } = useTranslation();
@@ -25,6 +26,8 @@ const PublicLibraryContent = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [selectedTagIds, setSelectedTagIds] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
+
+  const { initiatePurchase, isBuying, buyError } = useBuyCourse();
   const filterRef = useRef(null);
 
   useEffect(() => {
@@ -57,13 +60,11 @@ const PublicLibraryContent = () => {
   });
 
   const handleEnrollOrBuy = (course) => {
-    if (course.price === 0) {
-      alert(`Successfully enrolled in "${course.title}" for free!`);
-      setSelectedCourse(null);
+    if (course.price > 0) {
+      initiatePurchase(course.id);
     } else {
-      alert(
-        `Redirecting to payment gateway for "${course.title}" ($${course.price})`,
-      );
+      console.log("Free enrollment");
+      setSelectedCourse(null);
     }
   };
 
@@ -199,11 +200,17 @@ const PublicLibraryContent = () => {
         </div>
       )}
 
-      <CourseDetailsModal
-        course={selectedCourse}
-        onClose={() => setSelectedCourse(null)}
-        onEnroll={handleEnrollOrBuy}
-      />
+      {selectedCourse && (
+        <CourseDetailsModal
+          course={selectedCourse}
+          onClose={() => {
+            if (!isBuying) setSelectedCourse(null);
+          }}
+          onEnroll={handleEnrollOrBuy}
+          isBuying={isBuying}
+          buyError={buyError}
+        />
+      )}
     </div>
   );
 };

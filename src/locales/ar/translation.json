@@ -644,7 +644,7 @@
   "loading-courses": "جارٍ تحميل الدورات...",
   "no-courses-found-matching-your-criteria": "لم يتم العثور على دورات تدريبية مطابقة لمعاييرك.",
   "no-curriculum-data-available": "لا توجد دروس في هذه الدورة .",
-  "frequently-asked-questions": "الأسئلة المتداولة",
+  "frequently-asked-questions": "الأسئلة الشائعة",
   "how-do-i-access-the-lessons": "كيف يمكنني الوصول إلى الدروس؟",
   "once-you-click-enroll-for-free-courses-or-purchase-full-access-to-sections-and-lessons-will-be-granted-instantly": "بمجرد النقر فوق تسجيل (للدورات المجانية) أو الشراء، سيتم منح حق الوصول الكامل إلى الأقسام والدروس على الفور.",
   "free-course": "دورة مجانية",
@@ -697,5 +697,6 @@
   "could-not-verify-payment": "تعذر التحقق من هذه الدفعة",
   "payment-verification-error-description": "يرجى محاولة التحقق مرة أخرى أو العودة إلى لوحة التحكم.",
   "payment-secured-by-stripe": "تمت معالجة الدفع بأمان بواسطة Stripe",
-  "linco-brand": "LinCo"
+  "linco-brand": "LinCo",
+  "no-faqs-available-for-this-course": "لا توجد أسئلة وأجوبة متاحة لهذه الدورة."
 }

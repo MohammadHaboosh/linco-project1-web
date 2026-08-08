@@ -13,7 +13,13 @@ import { useTranslation } from "react-i18next";
 import { useCourseFaqs } from "../../hooks/useCourseFaqs";
 import CourseFaqItem from "../CourseFaqItem/CourseFaqItem";
 
-const CourseDetailsModal = ({ course, onClose, onEnroll }) => {
+const CourseDetailsModal = ({
+  course,
+  onClose,
+  onEnroll,
+  isBuying,
+  buyError,
+}) => {
   const [activeTab, setActiveTab] = useState("overview");
 
   const {
@@ -162,7 +168,7 @@ const CourseDetailsModal = ({ course, onClose, onEnroll }) => {
           {activeTab === "faqs" && (
             <div className={styles.faqsSection}>
               <h3 style={{ marginBottom: "16px", color: "#0a2a54" }}>
-                Frequently Asked Questions
+                {t("frequently-asked-questions")}
               </h3>
 
               {isLoadingFaqs ? (
@@ -173,7 +179,7 @@ const CourseDetailsModal = ({ course, onClose, onEnroll }) => {
                     padding: "20px",
                   }}
                 >
-                  Loading FAQs...
+                  {t("loading-faqs")}
                 </p>
               ) : faqs && faqs.length > 0 ? (
                 faqs.map((faq) => <CourseFaqItem key={faq.id} faq={faq} />)
@@ -185,7 +191,7 @@ const CourseDetailsModal = ({ course, onClose, onEnroll }) => {
                     padding: "20px",
                   }}
                 >
-                  No FAQs available for this course.
+                  {t("no-faqs-available-for-this-course")}
                 </p>
               )}
             </div>
@@ -200,7 +206,18 @@ const CourseDetailsModal = ({ course, onClose, onEnroll }) => {
               <span className={styles.priceText}>${course.price}</span>
             )}
           </div>
-          <button className={styles.enrollBtn} onClick={() => onEnroll(course)}>
+          {buyError && (
+            <div
+              style={{ color: "red", marginBottom: "10px", fontSize: "14px" }}
+            >
+              {buyError}
+            </div>
+          )}
+          <button
+            className={styles.enrollBtn}
+            disabled={isBuying}
+            onClick={() => onEnroll(course)}
+          >
             {course.price === 0
               ? t("enroll-for-free")
               : `${t("buy-course")} ($${course.price})`}

@@ -131,13 +131,13 @@ export const DEPARTMENT_NAV = {
     navLinks: [
       { name: "Home", icon: <IoHomeOutline />, path: "" },
       { name: "Members", icon: <IoPeopleOutline />, path: PATHS.MEMBERS },
-      { name: "Courses", icon: <IoBookOutline />, path: PATHS.COURSES },
-      { name: "Lives", icon: <IoVideocamOutline />, path: PATHS.LIVES },
       {
         name: "Demo Library",
         icon: <IoLibraryOutline />,
         path: PATHS.SM_ASSETS,
       },
+      { name: "Courses", icon: <IoBookOutline />, path: PATHS.COURSES },
+      { name: "Lives", icon: <IoVideocamOutline />, path: PATHS.LIVES },
       {
         name: "Tools Settings",
         icon: <IoSettingsOutline />,
