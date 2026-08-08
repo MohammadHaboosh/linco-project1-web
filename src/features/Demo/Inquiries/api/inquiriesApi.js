@@ -90,7 +90,7 @@ const createInquiryReply = async (demoId, inquiryId, replyMessage) => {
   }
 
   const response = await apiFetch(
-    `/inqueries/${encodeURIComponent(inquiryId)}/inquiryReplies`,
+    `/inquiries/${encodeURIComponent(inquiryId)}/inquiryReplies`,
     {
       method: "POST",
       headers: {
