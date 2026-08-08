@@ -31,15 +31,25 @@ const PlanUpgradeCard = ({ demoId, currentPlan }) => {
 
   const plans = useMemo(
     () => [
-      { id: "FREE", description: t("free-plan-description") },
-      { id: "STARTER", description: t("starter-plan-description") },
+      {
+        id: "FREE",
+        price: "$0",
+        description: t("free-plan-description"),
+      },
+      {
+        id: "STARTER",
+        price: "$20",
+        description: t("starter-plan-description"),
+      },
       {
         id: "PRO",
+        price: "$100",
         description: t("pro-plan-description"),
         featured: true,
       },
       {
         id: "ENTERPRISE",
+        price: "$200",
         description: t("enterprise-plan-description"),
       },
     ],
@@ -154,6 +164,7 @@ const PlanUpgradeCard = ({ demoId, currentPlan }) => {
                       </span>
                       <h3>{plan.id}</h3>
                     </div>
+                    <div className={styles.planPrice}>{plan.price}</div>
                     <p>{plan.description}</p>
                     <button
                       type="button"
