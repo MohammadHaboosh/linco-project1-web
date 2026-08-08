@@ -5,13 +5,30 @@ import {
   IoTimeOutline,
   IoBookOutline,
   IoLayersOutline,
-  IoCheckmarkCircleOutline,
-  IoHelpCircleOutline,
 } from "react-icons/io5";
 import styles from "./CourseDetailsModal.module.css";
+import { useCourseCurriculum } from "../../hooks/useCourseCurriculum";
+import CourseSectionItem from "../CourseSectionItem/CourseSectionItem";
+import { useTranslation } from "react-i18next";
+import { useCourseFaqs } from "../../hooks/useCourseFaqs";
+import CourseFaqItem from "../CourseFaqItem/CourseFaqItem";
 
 const CourseDetailsModal = ({ course, onClose, onEnroll }) => {
-  const [activeTab, setActiveTab] = useState("overview"); // overview | curriculum | faqs
+  const [activeTab, setActiveTab] = useState("overview");
+
+  const {
+    sections,
+    lessonsState,
+    expandedSections,
+    toggleSection,
+    isLoadingSections,
+  } = useCourseCurriculum(course?.id, activeTab === "curriculum");
+  const { faqs, isLoadingFaqs } = useCourseFaqs(
+    course?.id,
+    activeTab === "faqs",
+  );
+
+  const { t } = useTranslation();
 
   if (!course) return null;
 
@@ -21,7 +38,6 @@ const CourseDetailsModal = ({ course, onClose, onEnroll }) => {
         className={styles.modalContainer}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
         <div className={styles.modalHeader}>
           <div className={styles.headerInfo}>
             <img
@@ -41,51 +57,54 @@ const CourseDetailsModal = ({ course, onClose, onEnroll }) => {
           </button>
         </div>
 
-        {/* Navigation Tabs */}
         <div className={styles.tabsRow}>
           <button
             className={`${styles.tabBtn} ${activeTab === "overview" ? styles.activeTab : ""}`}
             onClick={() => setActiveTab("overview")}
           >
-            Overview
+            {t("overview")}
           </button>
           <button
             className={`${styles.tabBtn} ${activeTab === "curriculum" ? styles.activeTab : ""}`}
             onClick={() => setActiveTab("curriculum")}
           >
-            Curriculum ({course.sectionsCount} Sections)
+            {t("curriculum-0")} ({course.sectionsCount} {t("sections")})
           </button>
           <button
             className={`${styles.tabBtn} ${activeTab === "faqs" ? styles.activeTab : ""}`}
             onClick={() => setActiveTab("faqs")}
           >
-            FAQs
+            {t("faqs")}
           </button>
         </div>
 
-        {/* Modal Body */}
         <div className={styles.modalBody}>
           {activeTab === "overview" && (
             <div className={styles.overviewSection}>
-              <h3>About this course</h3>
+              <h3>{t("about-this-course")}</h3>
               <p className={styles.description}>{course.description}</p>
-
               <div className={styles.statsGrid}>
                 <div className={styles.statBox}>
                   <IoBookOutline size={20} />
-                  <span>{course.lessonCount} Lessons</span>
+                  <span>
+                    {course.lessonCount} {t("lessons")}
+                  </span>
                 </div>
                 <div className={styles.statBox}>
                   <IoTimeOutline size={20} />
-                  <span>{course.totalDuration} Minutes</span>
+                  <span>
+                    {course.totalDuration} {t("minutes")}
+                  </span>
                 </div>
                 <div className={styles.statBox}>
                   <IoLayersOutline size={20} />
-                  <span>{course.sectionsCount} Sections</span>
+                  <span>
+                    {course.sectionsCount} {t("sections")}
+                  </span>
                 </div>
               </div>
 
-              <h3>Tags</h3>
+              <h3>{t("tags")}</h3>
               <div className={styles.tagsFlex}>
                 {course.tags?.map((tag) => (
                   <span key={tag.id} className={styles.tagBadge}>
@@ -100,56 +119,91 @@ const CourseDetailsModal = ({ course, onClose, onEnroll }) => {
             <div className={styles.curriculumSection}>
               <div className={styles.lockNotice}>
                 <p>
-                  🔒 You must enroll in this course to access the internal
-                  lesson contents and videos[cite: 1].
+                  {t(
+                    "you-must-enroll-in-this-course-to-access-the-internal-lesson-contents-and-videos",
+                  )}
                 </p>
               </div>
-              {/* عرض الأقسام والدروس بشكل عام دون السماح بالدخول المباشر */}
-              <div className={styles.sectionItem}>
-                <div className={styles.sectionHeader}>
-                  <IoLayersOutline /> Course Content Structure (
-                  {course.sectionsCount} Sections, {course.lessonCount} Lessons)
-                </div>
-                <ul className={styles.lessonsList}>
-                  <li>
-                    <span>Lesson 1: Introduction & Basics</span>{" "}
-                    <span className={styles.lockTag}>Locked</span>
-                  </li>
-                </ul>
-              </div>
+
+              {isLoadingSections ? (
+                <p
+                  style={{
+                    textAlign: "center",
+                    color: "#64748b",
+                    padding: "20px",
+                  }}
+                >
+                  {t("loading-sections")}
+                </p>
+              ) : sections.length > 0 ? (
+                sections.map((section) => (
+                  <CourseSectionItem
+                    key={section.id}
+                    section={section}
+                    isExpanded={expandedSections[section.id]}
+                    onToggle={toggleSection}
+                    lessonsInfo={lessonsState[section.id]}
+                  />
+                ))
+              ) : (
+                <p
+                  style={{
+                    textAlign: "center",
+                    color: "#64748b",
+                    padding: "20px",
+                  }}
+                >
+                  {t("no-curriculum-data-available")}
+                </p>
+              )}
             </div>
           )}
 
           {activeTab === "faqs" && (
             <div className={styles.faqsSection}>
-              <h3>Frequently Asked Questions</h3>
-              <div className={styles.faqItem}>
-                <h4>
-                  <IoHelpCircleOutline /> How do I access the lessons?
-                </h4>
-                <p>
-                  Once you click Enroll (for free courses) or purchase, full
-                  access to sections and lessons will be granted instantly[cite:
-                  1].
+              <h3 style={{ marginBottom: "16px", color: "#0a2a54" }}>
+                Frequently Asked Questions
+              </h3>
+
+              {isLoadingFaqs ? (
+                <p
+                  style={{
+                    textAlign: "center",
+                    color: "#64748b",
+                    padding: "20px",
+                  }}
+                >
+                  Loading FAQs...
                 </p>
-              </div>
+              ) : faqs && faqs.length > 0 ? (
+                faqs.map((faq) => <CourseFaqItem key={faq.id} faq={faq} />)
+              ) : (
+                <p
+                  style={{
+                    textAlign: "center",
+                    color: "#64748b",
+                    padding: "20px",
+                  }}
+                >
+                  No FAQs available for this course.
+                </p>
+              )}
             </div>
           )}
         </div>
 
-        {/* Footer Actions */}
         <div className={styles.modalFooter}>
           <div className={styles.priceTag}>
             {course.price === 0 ? (
-              <span className={styles.freeText}>Free Course</span>
+              <span className={styles.freeText}>{t("free-course")}</span>
             ) : (
               <span className={styles.priceText}>${course.price}</span>
             )}
           </div>
           <button className={styles.enrollBtn} onClick={() => onEnroll(course)}>
             {course.price === 0
-              ? "Enroll for Free"
-              : `Buy Course ($${course.price})`}
+              ? t("enroll-for-free")
+              : `${t("buy-course")} ($${course.price})`}
           </button>
         </div>
       </div>

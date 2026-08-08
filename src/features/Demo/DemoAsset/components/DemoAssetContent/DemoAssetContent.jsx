@@ -1,31 +1,26 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import { IoFolderOpenOutline, IoSearchOutline } from "react-icons/io5";
 import AssetCourseCard from "../AssetCourseCard/AssetCourseCard";
 import styles from "./DemoAssetContent.module.css";
 import { useTranslation } from "react-i18next";
-
-const DEMO_ASSETS = [
-  {
-    id: 201,
-    title: "Company Onboarding 2026",
-    source: "Internal Creation",
-    description: "Internal onboarding procedures and HR guidelines.",
-    tags: ["HR", "Onboarding"],
-    image: "/images/linco-logo.jpg",
-  },
-  {
-    id: 202,
-    title: "Figma UI/UX Design System",
-    source: "Purchased from Design Academy",
-    description: "Create professional, reusable design systems.",
-    tags: ["Figma", "Design"],
-    image: "/images/linco-logo.jpg",
-  },
-];
+import { useDemoAssets } from "../../hooks/useDemoAssets";
 
 const DemoAssetContent = () => {
   const { t } = useTranslation();
+  const { demoId } = useParams();
   const [searchQuery, setSearchQuery] = useState("");
+
+  const { assets, isLoading, error } = useDemoAssets(demoId);
+
+  const filteredAssets = assets.filter((asset) => {
+    const course = asset.course;
+    if (!course || !course.isPublished) return false;
+
+    if (searchQuery.trim() === "") return true;
+
+    return course.title.toLowerCase().includes(searchQuery.toLowerCase());
+  });
 
   return (
     <div className={styles.pageContainer}>
@@ -61,11 +56,29 @@ const DemoAssetContent = () => {
         </div>
       </div>
 
-      <div className={styles.coursesGrid}>
-        {DEMO_ASSETS.map((course) => (
-          <AssetCourseCard key={course.id} course={course} />
-        ))}
-      </div>
+      {isLoading ? (
+        <p style={{ textAlign: "center", color: "#64748b", padding: "40px" }}>
+          {t("loading-assets")}
+        </p>
+      ) : error ? (
+        <p style={{ textAlign: "center", color: "#dc2626", padding: "40px" }}>
+          {error}
+        </p>
+      ) : filteredAssets.length > 0 ? (
+        <div className={styles.coursesGrid}>
+          {filteredAssets.map((asset) => (
+            <AssetCourseCard
+              key={asset.id}
+              course={asset.course}
+              accessMethod={asset.accessMethod}
+            />
+          ))}
+        </div>
+      ) : (
+        <p style={{ textAlign: "center", color: "#64748b", padding: "40px" }}>
+          {t("no-published-assets-found")}
+        </p>
+      )}
     </div>
   );
 };
