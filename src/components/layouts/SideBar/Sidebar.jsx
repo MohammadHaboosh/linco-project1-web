@@ -54,6 +54,8 @@ const Sidebar = () => {
         </div>
 
         <div className={styles["bottom-section"]}>
+          <div className={styles["sidebar-actions"]} aria-hidden="true"></div>
+
           <button
             type="button"
             className={`${styles["menu-item"]} ${styles["logout-item"]}`}
