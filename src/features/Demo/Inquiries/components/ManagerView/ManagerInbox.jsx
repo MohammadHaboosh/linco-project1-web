@@ -13,16 +13,18 @@ const ManagerInbox = ({ demoId }) => {
   const { t, i18n } = useTranslation();
   const {
     inquiries,
-    setInquiries,
     isLoading,
     isLoadingMore,
+    replyingInquiryId,
     error,
     hasNextPage,
     loadMore,
     refetch,
+    replyToInquiry,
   } = useInquiries({ demoId, scope: "manager" });
   const [activeInquiryId, setActiveInquiryId] = useState(null);
   const [responseText, setResponseText] = useState("");
+  const [responseError, setResponseError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const activeInquiry =
     inquiries.find((inquiry) => inquiry.id === activeInquiryId) ||
@@ -58,20 +60,29 @@ const ManagerInbox = ({ demoId }) => {
   const handleSelectInquiry = (inquiryId) => {
     setActiveInquiryId(inquiryId);
     setResponseText("");
+    setResponseError("");
   };
 
-  const handleSendResponse = () => {
+  const handleSendResponse = async () => {
     const response = responseText.trim();
-    if (!response || !activeInquiry || activeInquiry.response) return;
+    if (
+      !response ||
+      !activeInquiry ||
+      activeInquiry.response ||
+      replyingInquiryId === activeInquiry.id
+    ) {
+      return;
+    }
 
-    setInquiries((currentInquiries) =>
-      currentInquiries.map((inquiry) =>
-        inquiry.id === activeInquiry.id
-          ? { ...inquiry, response, status: "answered" }
-          : inquiry,
-      ),
-    );
-    setResponseText("");
+    setResponseError("");
+    try {
+      await replyToInquiry(activeInquiry.id, response);
+      setResponseText("");
+    } catch (requestError) {
+      setResponseError(
+        requestError.message || t("failed-to-send-response"),
+      );
+    }
   };
 
   return (
@@ -202,7 +213,12 @@ const ManagerInbox = ({ demoId }) => {
                     <strong className={styles.panelLabel}>{t("response")}</strong>
                     <p>{activeInquiry.response}</p>
                     <span className={styles.panelMeta}>
-                      {activeInquiry.responseSenderName || t("support-team")}
+                      {[
+                        activeInquiry.responseSenderName || t("support-team"),
+                        formatDate(activeInquiry.responseCreatedAt),
+                      ]
+                        .filter(Boolean)
+                        .join(" · ")}
                     </span>
                   </section>
                 )}
@@ -213,16 +229,31 @@ const ManagerInbox = ({ demoId }) => {
                   <textarea
                     placeholder={t("write-your-response-here")}
                     value={responseText}
-                    onChange={(event) => setResponseText(event.target.value)}
+                    onChange={(event) => {
+                      setResponseText(event.target.value);
+                      setResponseError("");
+                    }}
                     rows="3"
+                    disabled={replyingInquiryId === activeInquiry.id}
                   />
+                  {responseError && (
+                    <div className={styles.responseError} role="alert">
+                      {responseError}
+                    </div>
+                  )}
                   <div className={styles.responseActions}>
                     <button
                       className={styles.sendResponseBtn}
                       onClick={handleSendResponse}
-                      disabled={!responseText.trim()}
+                      disabled={
+                        !responseText.trim() ||
+                        replyingInquiryId === activeInquiry.id
+                      }
                     >
-                      <IoSendOutline /> {t("send-response")}
+                      <IoSendOutline />
+                      {replyingInquiryId === activeInquiry.id
+                        ? t("sending-response")
+                        : t("send-response")}
                     </button>
                   </div>
                 </div>

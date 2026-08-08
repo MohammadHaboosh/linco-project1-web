@@ -36,6 +36,7 @@ const normalizeInquiry = (inquiry) => {
     creatorImagePath: inquiry?.creator?.user?.imagePath || "",
     responseSender: inquiry?.reply?.sender || null,
     responseSenderName: getPersonName(inquiry?.reply?.sender),
+    responseCreatedAt: inquiry?.reply?.createdAt || null,
   };
 };
 
@@ -58,6 +59,8 @@ export const useInquiries = ({ demoId, scope }) => {
   const [meta, setMeta] = useState(EMPTY_META);
   const [isLoading, setIsLoading] = useState(Boolean(demoId));
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [isCreatingInquiry, setIsCreatingInquiry] = useState(false);
+  const [replyingInquiryId, setReplyingInquiryId] = useState(null);
   const [error, setError] = useState("");
 
   const fetchPage = useCallback(
@@ -142,14 +145,77 @@ export const useInquiries = ({ demoId, scope }) => {
 
   const refetch = useCallback(() => loadInquiries(), [loadInquiries]);
 
+  const createInquiry = useCallback(
+    async ({ subject, question }) => {
+      setIsCreatingInquiry(true);
+
+      try {
+        const createdInquiry = await inquiriesApi.createInquiry(demoId, {
+          subject,
+          message: question,
+        });
+        const normalizedInquiry = normalizeInquiry(createdInquiry);
+
+        setInquiries((currentInquiries) => [
+          normalizedInquiry,
+          ...currentInquiries.filter(
+            (inquiry) => inquiry.id !== normalizedInquiry.id,
+          ),
+        ]);
+
+        return normalizedInquiry;
+      } finally {
+        setIsCreatingInquiry(false);
+      }
+    },
+    [demoId],
+  );
+
+  const replyToInquiry = useCallback(
+    async (inquiryId, message) => {
+      setReplyingInquiryId(inquiryId);
+
+      try {
+        const createdReply = await inquiriesApi.createInquiryReply(
+          demoId,
+          inquiryId,
+          message,
+        );
+
+        setInquiries((currentInquiries) =>
+          currentInquiries.map((inquiry) =>
+            inquiry.id === inquiryId
+              ? {
+                  ...inquiry,
+                  response: createdReply.message || "",
+                  status: "answered",
+                  responseSender: createdReply.sender || null,
+                  responseSenderName: getPersonName(createdReply.sender),
+                  responseCreatedAt: createdReply.createdAt || null,
+                }
+              : inquiry,
+          ),
+        );
+
+        return createdReply;
+      } finally {
+        setReplyingInquiryId(null);
+      }
+    },
+    [demoId],
+  );
+
   return {
     inquiries,
-    setInquiries,
     isLoading,
     isLoadingMore,
+    isCreatingInquiry,
+    replyingInquiryId,
     error,
     hasNextPage: meta.hasNextPage,
     loadMore,
     refetch,
+    createInquiry,
+    replyToInquiry,
   };
 };

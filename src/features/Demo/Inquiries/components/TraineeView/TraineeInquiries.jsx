@@ -15,13 +15,14 @@ const TraineeInquiries = ({ demoId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const {
     inquiries,
-    setInquiries,
     isLoading,
     isLoadingMore,
+    isCreatingInquiry,
     error,
     hasNextPage,
     loadMore,
     refetch,
+    createInquiry,
   } = useInquiries({ demoId, scope: "member" });
 
   const formatDate = (value) => {
@@ -36,17 +37,8 @@ const TraineeInquiries = ({ demoId }) => {
     }).format(date);
   };
 
-  const handleSendInquiry = (newInquiry) => {
-    setInquiries((currentInquiries) => [
-      {
-        ...newInquiry,
-        id: `local-${Date.now()}`,
-        status: "pending",
-        createdAt: new Date().toISOString(),
-        response: null,
-      },
-      ...currentInquiries,
-    ]);
+  const handleSendInquiry = async (newInquiry) => {
+    await createInquiry(newInquiry);
     setIsModalOpen(false);
   };
 
@@ -148,6 +140,7 @@ const TraineeInquiries = ({ demoId }) => {
         <NewInquiryModal
           onClose={() => setIsModalOpen(false)}
           onSend={handleSendInquiry}
+          isSubmitting={isCreatingInquiry}
         />
       )}
     </div>
