@@ -23,6 +23,10 @@ const Header = ({
       </div>
 
       <div className={styles.centerArea}>
+        <Link to={PATHS.HOME} className={styles.backLink}>
+          <IoChevronBack /> Go to my dashboard
+        </Link>
+
         {demoPath && (
           <Link
             to={demoPath}
@@ -33,10 +37,6 @@ const Header = ({
             <IoBusinessOutline /> {t("back-to-demo")}
           </Link>
         )}
-
-        <Link to={PATHS.HOME} className={styles.backLink}>
-          <IoChevronBack /> Go to my dashboard
-        </Link>
 
         <div className={styles.divider}></div>
 

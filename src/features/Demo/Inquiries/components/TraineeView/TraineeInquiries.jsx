@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {
-  IoChatbubblesOutline,
+  IoHelpCircleOutline,
   IoAddOutline,
   IoTimeOutline,
   IoCheckmarkDoneOutline,
@@ -16,8 +16,8 @@ const MOCK_MY_INQUIRIES = [
     to: "Front-End Manager",
     status: "answered",
     date: "Oct 12, 2026",
-    message: "I keep getting an error when opening lesson 2.",
-    reply: "We have fixed the permission issue. Please try again.",
+    question: "Why do I keep getting an error when opening lesson 2?",
+    response: "We fixed the permission issue. Please try opening the lesson again.",
   },
   {
     id: 2,
@@ -25,8 +25,8 @@ const MOCK_MY_INQUIRIES = [
     to: "Owner",
     status: "pending",
     date: "Oct 14, 2026",
-    message: "My name on the certificate has a typo.",
-    reply: null,
+    question: "How can I correct a typo in my certificate name?",
+    response: null,
   },
 ];
 
@@ -42,7 +42,7 @@ const TraineeInquiries = () => {
         id: Date.now(),
         status: "pending",
         date: "Today",
-        reply: null,
+        response: null,
       },
       ...inquiries,
     ]);
@@ -54,7 +54,7 @@ const TraineeInquiries = () => {
       <div className={styles.headerArea}>
         <div className={styles.headerInfo}>
           <div className={styles.iconBox}>
-            <IoChatbubblesOutline className={styles.headerIcon} />
+            <IoHelpCircleOutline className={styles.headerIcon} />
           </div>
           <div>
             <h1 className={styles.title}>{t("my-inquiries")}</h1>
@@ -94,13 +94,14 @@ const TraineeInquiries = () => {
             </p>
 
             <div className={styles.ticketMessage}>
-              <p>{ticket.message}</p>
+              <strong>{t("question")}</strong>
+              <p>{ticket.question}</p>
             </div>
 
-            {ticket.status === "answered" && (
+            {ticket.response && (
               <div className={styles.ticketReply}>
-                <strong>{t("support-reply")}</strong>
-                <p>{ticket.reply}</p>
+                <strong>{t("response")}</strong>
+                <p>{ticket.response}</p>
               </div>
             )}
           </div>

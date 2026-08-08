@@ -149,6 +149,13 @@
 .ticketMessage p {
   margin: 0;
 }
+.ticketMessage strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #0a2a54;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
 
 .ticketReply {
   background: #eff6ff;
@@ -437,7 +444,7 @@
   font-size: 0.85rem;
 }
 
-.detailMessages {
+.detailContent {
   flex: 1;
   padding: 30px;
   overflow-y: auto;
@@ -446,42 +453,50 @@
   gap: 20px;
   background: #f8fafc;
 }
-.messageBubble,
-.replyBubble {
-  max-width: 80%;
+.questionPanel,
+.responsePanel {
+  width: 100%;
   padding: 20px;
   border-radius: 16px;
   font-size: 0.95rem;
   line-height: 1.6;
 }
-.messageBubble {
+.questionPanel {
   background: #ffffff;
   border: 1px solid #e2e8f0;
   color: #475569;
-  align-self: flex-start;
-  border-bottom-left-radius: 4px;
 }
-.replyBubble {
-  background: #0a2a54;
-  color: #ffffff;
-  align-self: flex-end;
-  border-bottom-right-radius: 4px;
+.responsePanel {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1e3a8a;
 }
-.msgTime {
+.questionPanel p,
+.responsePanel p {
+  margin: 8px 0 0;
+}
+.panelLabel {
+  color: #0a2a54;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+.responsePanel .panelLabel {
+  color: #1d4ed8;
+}
+.panelMeta {
   display: block;
   margin-top: 10px;
   font-size: 0.75rem;
-  opacity: 0.7;
+  color: #64748b;
   font-weight: 600;
-  text-align: right;
 }
 
-.replyArea {
+.responseArea {
   padding: 25px 30px;
   border-top: 1px solid #e2e8f0;
   background: #ffffff;
 }
-.replyArea textarea {
+.responseArea textarea {
   width: 100%;
   padding: 16px;
   border: 1px solid #cbd5e1;
@@ -492,14 +507,14 @@
   resize: none;
   margin-bottom: 15px;
 }
-.replyArea textarea:focus {
+.responseArea textarea:focus {
   border-color: #1a56db;
 }
-.replyActions {
+.responseActions {
   display: flex;
   justify-content: flex-end;
 }
-.sendReplyBtn {
+.sendResponseBtn {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -512,8 +527,12 @@
   cursor: pointer;
   transition: all 0.2s;
 }
-.sendReplyBtn:hover {
+.sendResponseBtn:hover:not(:disabled) {
   background: #0a2a54;
+}
+.sendResponseBtn:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
 }
 
 .emptyInbox {

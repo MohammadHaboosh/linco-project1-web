@@ -1,18 +1,20 @@
 import { useState } from "react";
 import { IoCloseOutline, IoSendOutline } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
 import styles from "../Inquiries.module.css";
 
 const NewInquiryModal = ({ onClose, onSend }) => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     to: "Owner",
     subject: "",
-    message: "",
+    question: "",
   });
   const [error, setError] = useState("");
 
   const handleSubmit = () => {
-    if (!formData.subject || !formData.message) {
-      setError("Please fill in all fields.");
+    if (!formData.subject.trim() || !formData.question.trim()) {
+      setError(t("please-fill-all-fields"));
       return;
     }
     onSend(formData);
@@ -22,8 +24,12 @@ const NewInquiryModal = ({ onClose, onSend }) => {
     <div className={styles.modalOverlay}>
       <div className={styles.modalContainer}>
         <div className={styles.modalHeader}>
-          <h3>Submit New Inquiry</h3>
-          <button className={styles.closeBtn} onClick={onClose}>
+          <h3>{t("submit-new-inquiry")}</h3>
+          <button
+            className={styles.closeBtn}
+            onClick={onClose}
+            aria-label={t("close")}
+          >
             <IoCloseOutline />
           </button>
         </div>
@@ -32,22 +38,22 @@ const NewInquiryModal = ({ onClose, onSend }) => {
           {error && <div className={styles.errorAlert}>{error}</div>}
 
           <div className={styles.inputGroup}>
-            <label>Recipient *</label>
+            <label>{t("recipient")} *</label>
             <select
               value={formData.to}
               onChange={(e) => setFormData({ ...formData, to: e.target.value })}
             >
-              <option value="Owner">Workspace Owner (General issues)</option>
-              <option value="Front-End Manager">Front-End Manager</option>
-              <option value="UI/UX Manager">UI/UX Manager</option>
+              <option value="Owner">{t("workspace-owner-general-issues")}</option>
+              <option value="Front-End Manager">{t("front-end-manager")}</option>
+              <option value="UI/UX Manager">{t("ui-ux-manager")}</option>
             </select>
           </div>
 
           <div className={styles.inputGroup}>
-            <label>Subject *</label>
+            <label>{t("subject")} *</label>
             <input
               type="text"
-              placeholder="e.g. Missing Certificate"
+              placeholder={t("subject-placeholder")}
               value={formData.subject}
               onChange={(e) =>
                 setFormData({ ...formData, subject: e.target.value })
@@ -56,13 +62,13 @@ const NewInquiryModal = ({ onClose, onSend }) => {
           </div>
 
           <div className={styles.inputGroup}>
-            <label>Message *</label>
+            <label>{t("question")} *</label>
             <textarea
               rows="5"
-              placeholder="Describe your issue in detail..."
-              value={formData.message}
+              placeholder={t("question-placeholder")}
+              value={formData.question}
               onChange={(e) =>
-                setFormData({ ...formData, message: e.target.value })
+                setFormData({ ...formData, question: e.target.value })
               }
             ></textarea>
           </div>
@@ -70,10 +76,10 @@ const NewInquiryModal = ({ onClose, onSend }) => {
 
         <div className={styles.modalFooter}>
           <button className={styles.cancelBtn} onClick={onClose}>
-            Cancel
+            {t("cancel")}
           </button>
           <button className={styles.submitBtn} onClick={handleSubmit}>
-            <IoSendOutline /> Send Inquiry
+            <IoSendOutline /> {t("send-inquiry")}
           </button>
         </div>
       </div>

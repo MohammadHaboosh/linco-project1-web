@@ -14,32 +14,49 @@ const MOCK_INBOX = [
     from: "Omar Nabil",
     role: "Trainee",
     subject: "Missing Certificate",
-    message: "Hello, I finished the course but didn't receive the certificate.",
+    question: "I finished the course but didn't receive the certificate. When will it be available?",
     date: "10:30 AM",
     status: "pending",
+    response: null,
   },
   {
     id: 102,
     from: "Sara Majed",
     role: "Trainee",
     subject: "Login Issue",
-    message: "I can't access the weekly tasks section.",
+    question: "Why can't I access the weekly tasks section?",
     date: "Yesterday",
     status: "answered",
-    reply: "Try clearing your browser cache.",
+    response: "Please clear your browser cache, sign in again, and retry.",
   },
 ];
 
-const ManagerInbox = ({ role }) => {
+const ManagerInbox = () => {
   const { t } = useTranslation();
-  const [activeTicket, setActiveTicket] = useState(MOCK_INBOX[0]);
-  const [replyText, setReplyText] = useState("");
+  const [inquiries, setInquiries] = useState(MOCK_INBOX);
+  const [activeInquiryId, setActiveInquiryId] = useState(MOCK_INBOX[0]?.id);
+  const [responseText, setResponseText] = useState("");
+  const activeInquiry = inquiries.find(
+    (inquiry) => inquiry.id === activeInquiryId,
+  );
 
-  const handleSendReply = () => {
-    // TODO :
-    if (!replyText.trim()) return;
-    console.log("Replying to ticket", activeTicket.id, "with:", replyText);
-    setReplyText("");
+  const handleSelectInquiry = (inquiryId) => {
+    setActiveInquiryId(inquiryId);
+    setResponseText("");
+  };
+
+  const handleSendResponse = () => {
+    const response = responseText.trim();
+    if (!response || !activeInquiry || activeInquiry.response) return;
+
+    setInquiries((currentInquiries) =>
+      currentInquiries.map((inquiry) =>
+        inquiry.id === activeInquiry.id
+          ? { ...inquiry, response, status: "answered" }
+          : inquiry,
+      ),
+    );
+    setResponseText("");
   };
 
   return (
@@ -70,21 +87,21 @@ const ManagerInbox = ({ role }) => {
           </div>
 
           <div className={styles.ticketsList}>
-            {MOCK_INBOX.map((ticket) => (
+            {inquiries.map((inquiry) => (
               <div
-                key={ticket.id}
-                className={`${styles.inboxItem} ${activeTicket?.id === ticket.id ? styles.inboxItemActive : ""}`}
-                onClick={() => setActiveTicket(ticket)}
+                key={inquiry.id}
+                className={`${styles.inboxItem} ${activeInquiry?.id === inquiry.id ? styles.inboxItemActive : ""}`}
+                onClick={() => handleSelectInquiry(inquiry.id)}
               >
                 <div className={styles.itemHeader}>
-                  <span className={styles.senderName}>{ticket.from}</span>
-                  <span className={styles.itemDate}>{ticket.date}</span>
+                  <span className={styles.senderName}>{inquiry.from}</span>
+                  <span className={styles.itemDate}>{inquiry.date}</span>
                 </div>
-                <div className={styles.itemSubject}>{ticket.subject}</div>
+                <div className={styles.itemSubject}>{inquiry.subject}</div>
                 <span
-                  className={`${styles.statusDot} ${ticket.status === "pending" ? styles.dotPending : styles.dotAnswered}`}
+                  className={`${styles.statusDot} ${inquiry.status === "pending" ? styles.dotPending : styles.dotAnswered}`}
                 >
-                  {ticket.status}
+                  {inquiry.status === "answered" ? t("answered") : t("pending")}
                 </span>
               </div>
             ))}
@@ -92,49 +109,54 @@ const ManagerInbox = ({ role }) => {
         </div>
 
         <div className={styles.inboxDetail}>
-          {activeTicket ? (
+          {activeInquiry ? (
             <>
               <div className={styles.detailHeader}>
-                <h2>{activeTicket.subject}</h2>
+                <h2>{activeInquiry.subject}</h2>
                 <div className={styles.senderInfo}>
                   <IoPersonCircleOutline className={styles.senderAvatar} />
                   <div>
-                    <strong>{activeTicket.from}</strong>
-                    <span>{activeTicket.role}</span>
+                    <strong>{activeInquiry.from}</strong>
+                    <span>{activeInquiry.role}</span>
                   </div>
                 </div>
               </div>
 
-              <div className={styles.detailMessages}>
-                <div className={styles.messageBubble}>
-                  <p>{activeTicket.message}</p>
-                  <span className={styles.msgTime}>{activeTicket.date}</span>
-                </div>
+              <div className={styles.detailContent}>
+                <section className={styles.questionPanel}>
+                  <strong className={styles.panelLabel}>{t("question")}</strong>
+                  <p>{activeInquiry.question}</p>
+                  <span className={styles.panelMeta}>{activeInquiry.date}</span>
+                </section>
 
-                {activeTicket.status === "answered" && (
-                  <div className={styles.replyBubble}>
-                    <p>{activeTicket.reply}</p>
-                    <span className={styles.msgTime}>{t("support-team")}</span>
-                  </div>
+                {activeInquiry.response && (
+                  <section className={styles.responsePanel}>
+                    <strong className={styles.panelLabel}>{t("response")}</strong>
+                    <p>{activeInquiry.response}</p>
+                    <span className={styles.panelMeta}>{t("support-team")}</span>
+                  </section>
                 )}
               </div>
 
-              <div className={styles.replyArea}>
-                <textarea
-                  placeholder={t("write-your-response-here")}
-                  value={replyText}
-                  onChange={(e) => setReplyText(e.target.value)}
-                  rows="3"
-                ></textarea>
-                <div className={styles.replyActions}>
-                  <button
-                    className={styles.sendReplyBtn}
-                    onClick={handleSendReply}
-                  >
-                    <IoSendOutline /> {t("send-reply")}
-                  </button>
+              {!activeInquiry.response && (
+                <div className={styles.responseArea}>
+                  <textarea
+                    placeholder={t("write-your-response-here")}
+                    value={responseText}
+                    onChange={(event) => setResponseText(event.target.value)}
+                    rows="3"
+                  />
+                  <div className={styles.responseActions}>
+                    <button
+                      className={styles.sendResponseBtn}
+                      onClick={handleSendResponse}
+                      disabled={!responseText.trim()}
+                    >
+                      <IoSendOutline /> {t("send-response")}
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
             </>
           ) : (
             <div className={styles.emptyInbox}>

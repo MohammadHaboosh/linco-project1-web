@@ -10,7 +10,7 @@ const InquiriesContent = () => {
   }
 
   if (currentRoleView === "owner" || currentRoleView === "admin") {
-    return <ManagerInbox role={currentRoleView} />;
+    return <ManagerInbox />;
   }
 
   return null;
