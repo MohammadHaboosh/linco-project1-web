@@ -92,7 +92,7 @@ const OwnerHomeContent = () => {
         <div className={styles.bannerContent}>
           <h1 className={styles.greeting}>
             {t("overview-for")}
-            <span className={styles.highlight}>{workspaceName}</span>
+            <span className={styles.highlight}> {workspaceName}</span>
           </h1>
           <p className={styles.bannerDesc}>
             {t("heres-what-happening-in-your-workspace-today")}

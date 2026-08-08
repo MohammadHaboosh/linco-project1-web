@@ -60,35 +60,6 @@
   transform: translateX(0);
 }
 
-.sidebar-actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 15px;
-  margin: 0 15px 15px;
-  background-color: rgba(255, 255, 255, 0.03);
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.action-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 35px;
-  height: 35px;
-  border-radius: 8px;
-  color: #cbd5e1;
-  font-size: 1.2rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.action-btn:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #d4af37; /* لون ذهبي فاخر عند التمرير */
-}
-
 .top-section {
   display: flex;
   justify-content: space-between;
@@ -195,6 +166,13 @@
 .logout-item:hover {
   background-color: rgba(239, 68, 68, 0.1);
   color: #ef4444;
+}
+
+.logout-item {
+  width: calc(100% - 30px);
+  border: 0;
+  background: transparent;
+  font-family: inherit;
 }
 
 .logout-item:hover .icon {

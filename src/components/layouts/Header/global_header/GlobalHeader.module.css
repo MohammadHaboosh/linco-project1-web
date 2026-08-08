@@ -37,10 +37,8 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  cursor: pointer;
   padding-left: 20px;
   border-left: 1px solid rgba(255, 255, 255, 0.2);
-  position: relative;
   user-select: none;
 }
 
@@ -60,112 +58,6 @@
 .user-name {
   font-size: 0.85rem;
   font-weight: 600;
-}
-
-.dropdown-icon {
-  width: 8px;
-  height: 8px;
-  border-right: 2px solid #ffffff;
-  border-bottom: 2px solid #ffffff;
-  transform: rotate(45deg);
-  margin-bottom: 4px;
-  opacity: 0.8;
-  transition: transform 0.2s ease;
-}
-
-.dropdown-icon.open {
-  transform: rotate(-135deg);
-  margin-bottom: -4px;
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: calc(100% + 15px);
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: var(--color-white);
-  border-radius: 16px;
-  box-shadow: 0 12px 40px rgba(17, 41, 80, 0.15);
-  border: 3px solid var(--color-linco-light);
-  min-width: 200px;
-  display: flex;
-  flex-direction: column;
-  padding: 8px;
-  z-index: 1000;
-  animation: slideDown 0.2s ease-out forwards;
-}
-
-.dropdown-menu::before {
-  content: "";
-  position: absolute;
-  top: -8px;
-  left: 50%;
-  transform: translateX(-50%) rotate(45deg);
-  width: 12px;
-  height: 12px;
-  background-color: var(--color-white);
-  border-top: 1px solid var(--color-linco-light);
-  border-left: 1px solid var(--color-linco-light);
-  z-index: 1;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -10px);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, 0);
-  }
-}
-
-.dropdown-item {
-  position: relative;
-  z-index: 2;
-  padding: 12px 20px;
-  color: var(--color-linco-navy);
-  text-decoration: none;
-  font-size: 0.95rem;
-  font-weight: 600;
-  text-align: center;
-  background: none;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  width: 100%;
-  display: block;
-  transition: all 0.2s ease;
-  font-family: inherit;
-  box-sizing: border-box;
-}
-
-.dropdown-item:hover {
-  background-color: var(--color-blue-50);
-  color: var(--color-linco-blue);
-  transform: scale(0.98);
-}
-
-.logout-btn {
-  color: var(--color-error-main);
-  margin-top: 4px;
-  position: relative;
-}
-
-.logout-btn::before {
-  content: "";
-  position: absolute;
-  top: -4px;
-  left: 10%;
-  width: 80%;
-  height: 1px;
-  background-color: var(--color-slate-300);
-  opacity: 0.5;
-}
-
-.logout-btn:hover {
-  background-color: var(--color-error-bg);
-  color: var(--color-error-main);
 }
 
 .nav-links {

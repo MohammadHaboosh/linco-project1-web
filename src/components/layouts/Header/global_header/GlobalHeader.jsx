@@ -12,15 +12,9 @@ const GlobalHeader = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const {
-    dropdownRef,
-    isDropdownOpen,
-    isAuthenticated,
     fullName,
     initials,
     imagePath,
-    toggleDropdown,
-    closeDropdown,
-    handleLogout,
   } = useHeader();
 
   const globalLinks = DASHBOARD_NAV.global.navLinks;
@@ -35,11 +29,7 @@ const GlobalHeader = () => {
           </span>
         </div>
 
-        <div
-          className={styles["user-profile"]}
-          ref={dropdownRef}
-          onClick={toggleDropdown}
-        >
+        <div className={styles["user-profile"]}>
           <div className={styles["user-avatar"]}>
             {imagePath ? (
               <img
@@ -52,48 +42,6 @@ const GlobalHeader = () => {
             )}
           </div>
           <span className={styles["user-name"]}>{fullName}</span>
-          <div
-            className={`${styles["dropdown-icon"]} ${isDropdownOpen ? styles["open"] : ""}`}
-          ></div>
-
-          {isDropdownOpen && (
-            <div className={styles["dropdown-menu"]}>
-              {isAuthenticated ? (
-                <>
-                  <Link
-                    to={PATHS.PROFILE}
-                    className={styles["dropdown-item"]}
-                    onClick={closeDropdown}
-                  >
-                    {t("my-profile", "My Profile")}
-                  </Link>
-                  <button
-                    onClick={handleLogout}
-                    className={`${styles["dropdown-item"]} ${styles["logout-btn"]}`}
-                  >
-                    {t("sign-out", "Sign out")}
-                  </button>
-                </>
-              ) : (
-                <>
-                  <Link
-                    to={PATHS.SIGNIN}
-                    className={styles["dropdown-item"]}
-                    onClick={closeDropdown}
-                  >
-                    {t("sign-in", "Sign in")}
-                  </Link>
-                  <Link
-                    to={PATHS.SIGNUP}
-                    className={styles["dropdown-item"]}
-                    onClick={closeDropdown}
-                  >
-                    {t("sign-up", "Sign up")}
-                  </Link>
-                </>
-              )}
-            </div>
-          )}
         </div>
       </div>
 
