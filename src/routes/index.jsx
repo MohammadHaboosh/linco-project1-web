@@ -10,6 +10,7 @@ import VerifyEmailPage from "../pages/VerifyEmailPage.jsx";
 import VerifyAccountPage from "../pages/VerifyAccountPage.jsx";
 import ForgotPasswordPage from "../pages/ForgotPasswordPage.jsx";
 import ResetPasswordPage from "../pages/ResetPasswordPage.jsx";
+import PaymentSuccessPage from "../pages/PaymentSuccessPage.jsx";
 
 // ==========================================
 import HomePage from "../pages/HomePage.jsx";
@@ -57,6 +58,7 @@ export const router = createBrowserRouter([
   { path: PATHS.VERIFY_EMAIL, element: <VerifyAccountPage /> },
   { path: PATHS.FORGOT_PASSWORD, element: <ForgotPasswordPage /> },
   { path: PATHS.RESET_PASSWORD, element: <ResetPasswordPage /> },
+  { path: PATHS.PAYMENT_SUCCESS, element: <PaymentSuccessPage /> },
   { path: PATHS.REQUEST_ROOM, element: <RequestRoomPage /> },
 
   // ==========================================

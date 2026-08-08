@@ -8,6 +8,7 @@ import {
   IoTimeOutline,
 } from "react-icons/io5";
 import { useDemo } from "../../../../../hooks/useDemo";
+import PlanUpgradeCard from "../../../Subscription/components/PlanUpgradeCard/PlanUpgradeCard";
 import styles from "./OwnerHomeContent.module.css";
 
 const StatCard = ({ title, value, icon, trend, trendText, isPositive }) => (
@@ -32,9 +33,15 @@ const StatCard = ({ title, value, icon, trend, trendText, isPositive }) => (
 
 const OwnerHomeContent = () => {
   const { t } = useTranslation();
-  const { demoData } = useDemo();
+  const { demoId, demoData } = useDemo();
 
   const workspaceName = demoData?.name || "Your Workspace";
+  const currentPlan =
+    demoData?.plan ||
+    demoData?.subscription?.plan ||
+    demoData?.subscriptionPlan ||
+    demoData?.tier ||
+    "FREE";
 
   const chartData = [
     { day: "Mon", value: 40 },
@@ -95,6 +102,8 @@ const OwnerHomeContent = () => {
           <IoPulseOutline className={styles.bgIcon} />
         </div>
       </div>
+
+      <PlanUpgradeCard demoId={demoId} currentPlan={currentPlan} />
 
       <div className={styles.statsGrid}>
         <StatCard
