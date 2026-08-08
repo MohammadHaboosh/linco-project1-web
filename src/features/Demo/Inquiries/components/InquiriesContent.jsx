@@ -3,14 +3,14 @@ import TraineeInquiries from "./TraineeView/TraineeInquiries";
 import ManagerInbox from "./ManagerView/ManagerInbox";
 
 const InquiriesContent = () => {
-  const { currentRoleView } = useDemo();
+  const { demoId, currentRoleView } = useDemo();
 
   if (currentRoleView === "member") {
-    return <TraineeInquiries />;
+    return <TraineeInquiries demoId={demoId} />;
   }
 
   if (currentRoleView === "owner" || currentRoleView === "admin") {
-    return <ManagerInbox />;
+    return <ManagerInbox demoId={demoId} />;
   }
 
   return null;

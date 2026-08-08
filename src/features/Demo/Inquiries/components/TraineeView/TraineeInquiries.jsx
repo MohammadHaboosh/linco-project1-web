@@ -8,43 +8,44 @@ import {
 import NewInquiryModal from "./NewInquiryModal";
 import styles from "../Inquiries.module.css";
 import { useTranslation } from "react-i18next";
+import { useInquiries } from "../../hooks/useInquiries";
 
-const MOCK_MY_INQUIRIES = [
-  {
-    id: 1,
-    subject: "Cannot access React Course",
-    to: "Front-End Manager",
-    status: "answered",
-    date: "Oct 12, 2026",
-    question: "Why do I keep getting an error when opening lesson 2?",
-    response: "We fixed the permission issue. Please try opening the lesson again.",
-  },
-  {
-    id: 2,
-    subject: "Certificate Issue",
-    to: "Owner",
-    status: "pending",
-    date: "Oct 14, 2026",
-    question: "How can I correct a typo in my certificate name?",
-    response: null,
-  },
-];
-
-const TraineeInquiries = () => {
-  const { t } = useTranslation();
+const TraineeInquiries = ({ demoId }) => {
+  const { t, i18n } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [inquiries, setInquiries] = useState(MOCK_MY_INQUIRIES);
+  const {
+    inquiries,
+    setInquiries,
+    isLoading,
+    isLoadingMore,
+    error,
+    hasNextPage,
+    loadMore,
+    refetch,
+  } = useInquiries({ demoId, scope: "member" });
+
+  const formatDate = (value) => {
+    if (!value) return "";
+
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "";
+
+    return new Intl.DateTimeFormat(i18n.language, {
+      dateStyle: "medium",
+      timeStyle: "short",
+    }).format(date);
+  };
 
   const handleSendInquiry = (newInquiry) => {
-    setInquiries([
+    setInquiries((currentInquiries) => [
       {
         ...newInquiry,
-        id: Date.now(),
+        id: `local-${Date.now()}`,
         status: "pending",
-        date: "Today",
+        createdAt: new Date().toISOString(),
         response: null,
       },
-      ...inquiries,
+      ...currentInquiries,
     ]);
     setIsModalOpen(false);
   };
@@ -71,42 +72,77 @@ const TraineeInquiries = () => {
         </button>
       </div>
 
-      <div className={styles.ticketsGrid}>
-        {inquiries.map((ticket) => (
-          <div key={ticket.id} className={styles.ticketCard}>
-            <div className={styles.ticketHeader}>
-              <span
-                className={`${styles.statusBadge} ${ticket.status === "answered" ? styles.answered : styles.pending}`}
-              >
-                {ticket.status === "answered" ? (
-                  <IoCheckmarkDoneOutline />
-                ) : (
-                  <IoTimeOutline />
+      {isLoading ? (
+        <div className={styles.pageState}>{t("loading-inquiries")}</div>
+      ) : error && inquiries.length === 0 ? (
+        <div className={styles.pageState} role="alert">
+          <p>{error}</p>
+          <button type="button" onClick={refetch}>
+            {t("try-again")}
+          </button>
+        </div>
+      ) : inquiries.length === 0 ? (
+        <div className={styles.pageState}>{t("no-inquiries-found")}</div>
+      ) : (
+        <>
+          <div className={styles.ticketsGrid}>
+            {inquiries.map((inquiry) => (
+              <div key={inquiry.id} className={styles.ticketCard}>
+                <div className={styles.ticketHeader}>
+                  <span
+                    className={`${styles.statusBadge} ${inquiry.status === "answered" ? styles.answered : styles.pending}`}
+                  >
+                    {inquiry.status === "answered" ? (
+                      <IoCheckmarkDoneOutline />
+                    ) : (
+                      <IoTimeOutline />
+                    )}
+                    {inquiry.status === "answered"
+                      ? t("answered")
+                      : t("pending")}
+                  </span>
+                  <span className={styles.ticketDate}>
+                    {formatDate(inquiry.createdAt)}
+                  </span>
+                </div>
+
+                <h3 className={styles.ticketSubject}>{inquiry.subject}</h3>
+
+                <div className={styles.ticketMessage}>
+                  <strong>{t("question")}</strong>
+                  <p>{inquiry.question}</p>
+                </div>
+
+                {inquiry.response && (
+                  <div className={styles.ticketReply}>
+                    <strong>{t("response")}</strong>
+                    <p>{inquiry.response}</p>
+                  </div>
                 )}
-                {ticket.status === "answered" ? t("answered") : t("pending")}
-              </span>
-              <span className={styles.ticketDate}>{ticket.date}</span>
-            </div>
-
-            <h3 className={styles.ticketSubject}>{ticket.subject}</h3>
-            <p className={styles.ticketTo}>
-              <strong>{t("sent-to")}</strong> {ticket.to}
-            </p>
-
-            <div className={styles.ticketMessage}>
-              <strong>{t("question")}</strong>
-              <p>{ticket.question}</p>
-            </div>
-
-            {ticket.response && (
-              <div className={styles.ticketReply}>
-                <strong>{t("response")}</strong>
-                <p>{ticket.response}</p>
               </div>
-            )}
+            ))}
           </div>
-        ))}
-      </div>
+
+          {hasNextPage && (
+            <div className={styles.loadMoreRow}>
+              <button
+                type="button"
+                className={styles.loadMoreButton}
+                onClick={loadMore}
+                disabled={isLoadingMore}
+              >
+                {isLoadingMore ? t("loading-inquiries") : t("load-more")}
+              </button>
+            </div>
+          )}
+
+          {error && (
+            <div className={styles.inlineError} role="alert">
+              {error}
+            </div>
+          )}
+        </>
+      )}
 
       {isModalOpen && (
         <NewInquiryModal

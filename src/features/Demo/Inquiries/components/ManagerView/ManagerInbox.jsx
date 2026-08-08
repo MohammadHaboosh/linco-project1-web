@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   IoMailUnreadOutline,
   IoSearchOutline,
@@ -7,38 +7,53 @@ import {
 } from "react-icons/io5";
 import styles from "../Inquiries.module.css";
 import { useTranslation } from "react-i18next";
+import { useInquiries } from "../../hooks/useInquiries";
 
-const MOCK_INBOX = [
-  {
-    id: 101,
-    from: "Omar Nabil",
-    role: "Trainee",
-    subject: "Missing Certificate",
-    question: "I finished the course but didn't receive the certificate. When will it be available?",
-    date: "10:30 AM",
-    status: "pending",
-    response: null,
-  },
-  {
-    id: 102,
-    from: "Sara Majed",
-    role: "Trainee",
-    subject: "Login Issue",
-    question: "Why can't I access the weekly tasks section?",
-    date: "Yesterday",
-    status: "answered",
-    response: "Please clear your browser cache, sign in again, and retry.",
-  },
-];
-
-const ManagerInbox = () => {
-  const { t } = useTranslation();
-  const [inquiries, setInquiries] = useState(MOCK_INBOX);
-  const [activeInquiryId, setActiveInquiryId] = useState(MOCK_INBOX[0]?.id);
+const ManagerInbox = ({ demoId }) => {
+  const { t, i18n } = useTranslation();
+  const {
+    inquiries,
+    setInquiries,
+    isLoading,
+    isLoadingMore,
+    error,
+    hasNextPage,
+    loadMore,
+    refetch,
+  } = useInquiries({ demoId, scope: "manager" });
+  const [activeInquiryId, setActiveInquiryId] = useState(null);
   const [responseText, setResponseText] = useState("");
-  const activeInquiry = inquiries.find(
-    (inquiry) => inquiry.id === activeInquiryId,
+  const [searchQuery, setSearchQuery] = useState("");
+  const activeInquiry =
+    inquiries.find((inquiry) => inquiry.id === activeInquiryId) ||
+    inquiries[0] ||
+    null;
+  const filteredInquiries = useMemo(
+    () =>
+      inquiries.filter((inquiry) => {
+        const query = searchQuery.trim().toLowerCase();
+        if (!query) return true;
+
+        return [inquiry.subject, inquiry.question, inquiry.creatorName]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase()
+          .includes(query);
+      }),
+    [inquiries, searchQuery],
   );
+
+  const formatDate = (value) => {
+    if (!value) return "";
+
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "";
+
+    return new Intl.DateTimeFormat(i18n.language, {
+      dateStyle: "medium",
+      timeStyle: "short",
+    }).format(date);
+  };
 
   const handleSelectInquiry = (inquiryId) => {
     setActiveInquiryId(inquiryId);
@@ -83,28 +98,69 @@ const ManagerInbox = () => {
               type="text"
               placeholder={t("search-tickets")}
               className={styles.inboxSearch}
+              value={searchQuery}
+              onChange={(event) => setSearchQuery(event.target.value)}
             />
           </div>
 
           <div className={styles.ticketsList}>
-            {inquiries.map((inquiry) => (
-              <div
-                key={inquiry.id}
-                className={`${styles.inboxItem} ${activeInquiry?.id === inquiry.id ? styles.inboxItemActive : ""}`}
-                onClick={() => handleSelectInquiry(inquiry.id)}
-              >
-                <div className={styles.itemHeader}>
-                  <span className={styles.senderName}>{inquiry.from}</span>
-                  <span className={styles.itemDate}>{inquiry.date}</span>
-                </div>
-                <div className={styles.itemSubject}>{inquiry.subject}</div>
-                <span
-                  className={`${styles.statusDot} ${inquiry.status === "pending" ? styles.dotPending : styles.dotAnswered}`}
-                >
-                  {inquiry.status === "answered" ? t("answered") : t("pending")}
-                </span>
+            {isLoading ? (
+              <div className={styles.listState}>{t("loading-inquiries")}</div>
+            ) : error && inquiries.length === 0 ? (
+              <div className={styles.listState} role="alert">
+                <p>{error}</p>
+                <button type="button" onClick={refetch}>
+                  {t("try-again")}
+                </button>
               </div>
-            ))}
+            ) : filteredInquiries.length === 0 ? (
+              <div className={styles.listState}>{t("no-inquiries-found")}</div>
+            ) : (
+              <>
+                {filteredInquiries.map((inquiry) => (
+                  <button
+                    type="button"
+                    key={inquiry.id}
+                    className={`${styles.inboxItem} ${activeInquiry?.id === inquiry.id ? styles.inboxItemActive : ""}`}
+                    onClick={() => handleSelectInquiry(inquiry.id)}
+                  >
+                    <div className={styles.itemHeader}>
+                      <span className={styles.senderName}>
+                        {inquiry.creatorName || t("unknown-user")}
+                      </span>
+                      <span className={styles.itemDate}>
+                        {formatDate(inquiry.createdAt)}
+                      </span>
+                    </div>
+                    <div className={styles.itemSubject}>{inquiry.subject}</div>
+                    <span
+                      className={`${styles.statusDot} ${inquiry.status === "pending" ? styles.dotPending : styles.dotAnswered}`}
+                    >
+                      {inquiry.status === "answered"
+                        ? t("answered")
+                        : t("pending")}
+                    </span>
+                  </button>
+                ))}
+
+                {hasNextPage && (
+                  <button
+                    type="button"
+                    className={styles.loadMoreButton}
+                    onClick={loadMore}
+                    disabled={isLoadingMore}
+                  >
+                    {isLoadingMore ? t("loading-inquiries") : t("load-more")}
+                  </button>
+                )}
+              </>
+            )}
+
+            {error && inquiries.length > 0 && (
+              <div className={styles.inlineError} role="alert">
+                {error}
+              </div>
+            )}
           </div>
         </div>
 
@@ -114,10 +170,20 @@ const ManagerInbox = () => {
               <div className={styles.detailHeader}>
                 <h2>{activeInquiry.subject}</h2>
                 <div className={styles.senderInfo}>
-                  <IoPersonCircleOutline className={styles.senderAvatar} />
+                  {activeInquiry.creatorImagePath ? (
+                    <img
+                      src={activeInquiry.creatorImagePath}
+                      alt=""
+                      className={styles.senderAvatarImage}
+                    />
+                  ) : (
+                    <IoPersonCircleOutline className={styles.senderAvatar} />
+                  )}
                   <div>
-                    <strong>{activeInquiry.from}</strong>
-                    <span>{activeInquiry.role}</span>
+                    <strong>
+                      {activeInquiry.creatorName || t("unknown-user")}
+                    </strong>
+                    <span>{activeInquiry.creatorRole || t("trainee")}</span>
                   </div>
                 </div>
               </div>
@@ -126,14 +192,18 @@ const ManagerInbox = () => {
                 <section className={styles.questionPanel}>
                   <strong className={styles.panelLabel}>{t("question")}</strong>
                   <p>{activeInquiry.question}</p>
-                  <span className={styles.panelMeta}>{activeInquiry.date}</span>
+                  <span className={styles.panelMeta}>
+                    {formatDate(activeInquiry.createdAt)}
+                  </span>
                 </section>
 
                 {activeInquiry.response && (
                   <section className={styles.responsePanel}>
                     <strong className={styles.panelLabel}>{t("response")}</strong>
                     <p>{activeInquiry.response}</p>
-                    <span className={styles.panelMeta}>{t("support-team")}</span>
+                    <span className={styles.panelMeta}>
+                      {activeInquiry.responseSenderName || t("support-team")}
+                    </span>
                   </section>
                 )}
               </div>

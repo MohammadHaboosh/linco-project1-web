@@ -77,6 +77,69 @@
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 25px;
 }
+.pageState,
+.listState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #64748b;
+  text-align: center;
+}
+.pageState {
+  min-height: 260px;
+  padding: 30px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+}
+.listState {
+  min-height: 180px;
+  padding: 24px;
+}
+.pageState p,
+.listState p {
+  margin: 0;
+}
+.pageState button,
+.listState button,
+.loadMoreButton {
+  padding: 9px 16px;
+  background: #1a56db;
+  border: 0;
+  border-radius: 9px;
+  color: #ffffff;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+}
+.loadMoreRow {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+.loadMoreButton {
+  align-self: center;
+  margin: 16px;
+}
+.loadMoreRow .loadMoreButton {
+  margin: 0;
+}
+.loadMoreButton:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+.inlineError {
+  margin: 14px;
+  padding: 10px 12px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 9px;
+  color: #dc2626;
+  font-size: 0.85rem;
+  text-align: center;
+}
 .ticketCard {
   background: #ffffff;
   border: 1px solid #e2e8f0;
@@ -353,9 +416,14 @@
   flex-direction: column;
 }
 .inboxItem {
+  width: 100%;
   padding: 20px;
+  background: transparent;
+  border: 0;
   border-bottom: 1px solid #e2e8f0;
   cursor: pointer;
+  font: inherit;
+  text-align: start;
   transition: background 0.2s;
 }
 .inboxItem:hover {
@@ -363,7 +431,7 @@
 }
 .inboxItemActive {
   background: #ffffff;
-  border-left: 4px solid #1a56db;
+  border-inline-start: 4px solid #1a56db;
 }
 .itemHeader {
   display: flex;
@@ -430,6 +498,12 @@
 .senderAvatar {
   font-size: 2.5rem;
   color: #cbd5e1;
+}
+.senderAvatarImage {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 .senderInfo div {
   display: flex;
