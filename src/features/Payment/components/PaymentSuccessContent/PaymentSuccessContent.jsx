@@ -22,9 +22,9 @@ const formatAmount = (amountTotal, currency, language) => {
     return new Intl.NumberFormat(language, {
       style: "currency",
       currency: String(currency || "usd").toUpperCase(),
-    }).format(amount / 100);
+    }).format(amount);
   } catch {
-    return `${amount / 100} ${String(currency || "usd").toUpperCase()}`;
+    return `${amount} ${String(currency || "usd").toUpperCase()}`;
   }
 };
 
