@@ -61,13 +61,36 @@
 }
 
 .sidebar-actions {
-  min-height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 10px 15px;
   margin: 0 15px 15px;
   background-color: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 12px;
   box-sizing: border-box;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #cbd5e1;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #d4af37;
 }
 
 .top-section {

@@ -1,8 +1,14 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { IoMenu, IoLogOutOutline, IoClose } from "react-icons/io5";
+import {
+  IoMenu,
+  IoLogOutOutline,
+  IoClose,
+  IoMoonOutline,
+} from "react-icons/io5";
 import { SIDEBAR_CONFIG } from "./sidebarConfig";
+import LanguageSwitcher from "../../common/LanguageSwitcher";
 import { useHeader } from "../Header/hooks/useHeader.jsx";
 import styles from "./Sidebar.module.css";
 
@@ -54,7 +60,17 @@ const Sidebar = () => {
         </div>
 
         <div className={styles["bottom-section"]}>
-          <div className={styles["sidebar-actions"]} aria-hidden="true"></div>
+          <div className={styles["sidebar-actions"]}>
+            <LanguageSwitcher />
+            <button
+              type="button"
+              className={styles["action-btn"]}
+              title={t("theme", "Theme")}
+              aria-label={t("theme", "Theme")}
+            >
+              <IoMoonOutline />
+            </button>
+          </div>
 
           <button
             type="button"
