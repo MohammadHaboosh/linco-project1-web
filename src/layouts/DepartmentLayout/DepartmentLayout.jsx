@@ -48,7 +48,7 @@ const LayoutContent = () => {
         >
           <Outlet />
         </main>
-        {!isCoursePlayerPage && !isChatPage && <Footer />}
+        {!isCoursePlayerPage && !isChatPage && <Footer location="department" />}
       </div>
     </div>
   );

@@ -45,19 +45,7 @@ const Header = ({
         )} */}
 
         <div className={styles.divider}></div>
-
-        {/* {role === "member" && ( */}
         <DepartmentSwitcher currentDepartment={selectedDepartmentName} />
-        {/* )} */}
-
-        {/* {role === "admin" && (
-          <div className={styles.staticBadge}>{selectedDepartmentName}</div>
-        )}
-
-        {role === "owner" && (
-          <div></div>
-          // <RoleSwitcher currentRole={currentRoleView} onChange={onRoleChange} />
-        )} */}
       </div>
 
       <div className={styles.rightArea}>

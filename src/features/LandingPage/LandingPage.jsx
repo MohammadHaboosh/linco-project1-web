@@ -165,7 +165,7 @@ const LandingPage = () => {
       <FAQSection />
       <CTASection />
       <div className={styles.footerContainer}>
-        <Footer role="global" />
+        <Footer location="dashboard" />
       </div>
     </div>
   );

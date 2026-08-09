@@ -99,7 +99,7 @@ const RoomsListLayout = ({
         </div>
 
         <div className={styles["footer-wrapper"]}>
-          <Footer />
+          <Footer location="dashboard" />
         </div>
       </div>
     </div>

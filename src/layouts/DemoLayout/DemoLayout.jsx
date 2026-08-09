@@ -6,25 +6,16 @@ import SubHeader from "../../components/layouts/Header/sub_header/SubHeader";
 import { DEMO_NAV } from "../../config/layoutConfig";
 import styles from "../MainLayout/MainLayout.module.css";
 import Footer from "../../components/layouts/Footer/Footer";
+import { FOOTER_CONFIG } from "../../components/layouts/Footer/footerConfig";
 
 const LayoutContent = () => {
   const { role, currentRoleView, setRoleView, isLoading, demoData } = useDemo();
 
   if (isLoading)
     return <div className={styles.loader}>Loading Workspace...</div>;
-  console.log(
-    " [DemoLayout] 1. currentRoleView from Context:",
-    currentRoleView,
-  );
 
-  const safeRole = (currentRoleView || "trainee").toLowerCase();
-  const roleConfig = DEMO_NAV[safeRole] || DEMO_NAV.trainee;
-  const navLinks = roleConfig?.navLinks || [];
-  console.log(" [DemoLayout] 4. navLinks Array:", navLinks);
-
-  // const navLinks =
-  //   DEMO_NAV[currentRoleView]?.navLinks || DEMO_NAV.trainee.navLinks;
-  // console.log("demo navLinks :", navLinks);
+  const navLinks = DEMO_NAV[role.toLowerCase()]?.navLinks || [];
+  // const footerLinks = FOOTER_CONFIG[`demo_${role.toLowerCase()}`] || [];
 
   return (
     <div className={styles.appContainer}>
@@ -42,7 +33,7 @@ const LayoutContent = () => {
         <main className={styles.pageContent}>
           <Outlet />
         </main>
-        <Footer />
+        <Footer location="demo" />
       </div>
     </div>
   );

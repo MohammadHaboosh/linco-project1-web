@@ -2,9 +2,14 @@ import { Link } from "react-router-dom";
 import styles from "./Footer.module.css";
 import { FOOTER_CONFIG } from "./footerConfig";
 import { useTranslation } from "react-i18next";
+import { useDemo } from "../../../hooks/useDemo";
 
-const Footer = ({ role = "global" }) => {
-  const quickLinks = FOOTER_CONFIG[role] || FOOTER_CONFIG.global;
+const Footer = ({ location }) => {
+  const { role } = useDemo();
+  const footerLinks =
+    location === "dashboard"
+      ? FOOTER_CONFIG.dashboard
+      : FOOTER_CONFIG[`${location}_${role}`] || FOOTER_CONFIG.dashboard;
   const { t } = useTranslation();
 
   return (
@@ -13,7 +18,7 @@ const Footer = ({ role = "global" }) => {
         <div className={styles["footer-col"]}>
           <h4>{t("quick-links")}</h4>
           <ul>
-            {quickLinks.map((link, index) => (
+            {footerLinks.map((link, index) => (
               <li key={index}>
                 <Link
                   to={link.path}
