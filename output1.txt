@@ -1,0 +1,1764 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+api/
+  .gitkeep
+components/
+  CoursePlayer.module.css
+  CoursePlayerContent.jsx
+  CurriculumSidebar.jsx
+  LessonTabs.jsx
+  Quiz.module.css
+  QuizContainer.jsx
+  QuizResult.jsx
+  QuizTaker.jsx
+  VideoPlayer.jsx
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="api/.gitkeep">
+
+</file>
+
+<file path="components/CoursePlayer.module.css">
+/* ================= Global Page Layout ================= */
+.pageWrapper {
+  background-color: #f1f5f9;
+  min-height: 100vh;
+  font-family: var(--font-sans);
+}
+
+/* Top Navigation Bar */
+.topNav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.navLeft {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.backBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #64748b;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.backBtn:hover {
+  color: #0a2a54;
+}
+.divider {
+  width: 1px;
+  height: 24px;
+  background: #cbd5e1;
+}
+.courseHeaderTitle {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #0a2a54;
+}
+
+/* Progress Indicator */
+.progressContainer {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.trophyIcon {
+  font-size: 2rem;
+  color: #f59e0b;
+}
+.progressText {
+  display: flex;
+  flex-direction: column;
+}
+.progressText span {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.progressText strong {
+  font-size: 1rem;
+  color: #0a2a54;
+  font-weight: 800;
+  line-height: 1;
+}
+.progressBarBg {
+  width: 120px;
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-left: 10px;
+}
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #059669);
+  border-radius: 10px;
+}
+
+/* ================= Main Grid Layout ================= */
+.playerGrid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 30px;
+  padding: 30px 40px;
+  max-width: 1800px;
+  margin: 0 auto;
+  align-items: start;
+}
+.mainColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  min-width: 0; /* يمنع خروج الفيديو عن الشاشة */
+}
+
+@media (max-width: 1100px) {
+  .playerGrid {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+}
+
+/* ================= Video Player ================= */
+.videoContainer {
+  background: #011349;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(10, 42, 84, 0.15);
+  aspect-ratio: 16 / 9;
+  position: relative;
+}
+.videoScreen {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.videoTopOverlay {
+  padding: 25px;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 26, 79, 0.8) 0%,
+    transparent 100%
+  );
+}
+.videoLessonTitle {
+  margin: 0;
+  color: #ffffff;
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.videoCenterControls {
+  margin: auto;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.videoContainer:hover .videoCenterControls {
+  opacity: 1;
+}
+.mainPlayBtn {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 5.5rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
+}
+.mainPlayBtn:hover {
+  transform: scale(1.1);
+}
+.seekBtn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 2.5rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.seekBtn:hover {
+  color: #ffffff;
+}
+
+.videoBottomOverlay {
+  padding: 20px 25px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.videoContainer:hover .videoBottomOverlay {
+  opacity: 1;
+}
+.videoTimeline {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  cursor: pointer;
+  position: relative;
+  margin-bottom: 15px;
+}
+.timelinePlayed {
+  height: 100%;
+  background: #1a56db;
+  border-radius: 10px;
+}
+.timelineThumb {
+  width: 14px;
+  height: 14px;
+  background: #ffffff;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.videoToolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.toolbarLeft,
+.toolbarRight {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.toolBtn {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 1.6rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.toolBtn:hover {
+  color: #1a56db;
+}
+.timeDisplay {
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: monospace;
+}
+
+/* ================= Tabs & Content Section ================= */
+.contentContainer {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(10, 42, 84, 0.03);
+  overflow: hidden;
+}
+
+.tabsHeader {
+  display: flex;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 0 20px;
+  background: #ffffff;
+}
+.tabBtn {
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: #64748b;
+  padding: 20px 25px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.tabBtn:hover {
+  color: #0a2a54;
+}
+.activeTab {
+  color: #1a56db;
+  border-bottom-color: #1a56db;
+}
+
+.tabBody {
+  padding: 35px;
+}
+.sectionTitle {
+  margin: 0 0 15px 0;
+  color: #0a2a54;
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+.descriptionText {
+  color: #475569;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin: 0 0 35px 0;
+}
+
+.attachTitle {
+  color: #0a2a54;
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin: 0 0 15px 0;
+}
+.attachmentsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 15px;
+}
+.attachmentCard {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.attachmentCard:hover {
+  border-color: #1a56db;
+  background: #eff6ff;
+  box-shadow: 0 4px 10px rgba(26, 86, 219, 0.05);
+}
+.attachIcon {
+  font-size: 2rem;
+  color: #1a56db;
+}
+.attachInfo {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+.fileName {
+  color: #1e293b;
+  font-weight: 700;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fileSize {
+  color: #94a3b8;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-top: 2px;
+}
+.downloadIcon {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  font-size: 1.3rem;
+  transition: color 0.2s;
+}
+.attachmentCard:hover .downloadIcon {
+  color: #1a56db;
+}
+
+.emptyState {
+  padding: 40px;
+  text-align: center;
+  color: #94a3b8;
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+/* ================= Sidebar Playlist ================= */
+.playlistContainer {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(10, 42, 84, 0.03);
+  overflow: hidden;
+  position: sticky;
+  top: 90px;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(3000vh);
+}
+.playlistHeader {
+  padding: 25px;
+  border-bottom: 1px solid #e2e8f0;
+  background: #ffffff;
+  z-index: 2;
+}
+.playlistHeader h3 {
+  margin: 0;
+  color: #0a2a54;
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.playlistScrollArea {
+  overflow-y: auto;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.playlistScrollArea::-webkit-scrollbar {
+  width: 6px;
+}
+.playlistScrollArea::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 10px;
+}
+
+.moduleWrapper {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.moduleHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: #f8fafc;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.moduleHeader:hover {
+  background: #f1f5f9;
+}
+.moduleHeaderActive {
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.moduleTitleBox h4 {
+  margin: 0 0 4px 0;
+  color: #1e293b;
+  font-size: 1rem;
+  font-weight: 800;
+}
+.moduleTitleBox span {
+  color: #64748b;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.chevron {
+  color: #94a3b8;
+  font-size: 1.2rem;
+  transition: transform 0.3s;
+}
+.rotated {
+  transform: rotate(-180deg);
+}
+
+.moduleLessons {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+}
+.lessonRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 1px solid #f8fafc;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.lessonRow:hover {
+  background: #f8fafc;
+}
+.lessonRow:last-child {
+  border-bottom: none;
+}
+.lessonRowActive {
+  background: #eff6ff;
+  border-left: 3px solid #1a56db;
+}
+.lessonRowActive:hover {
+  background: #eff6ff;
+}
+
+.lessonMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-right: 15px;
+}
+.lessonName {
+  color: #475569;
+  font-weight: 700;
+  font-size: 0.9rem;
+  line-height: 1.3;
+}
+.lessonRowActive .lessonName {
+  color: #1a56db;
+  font-weight: 800;
+}
+.lessonDuration {
+  color: #94a3b8;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.lessonStatus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.statusCompleted {
+  color: #10b981;
+  font-size: 1.3rem;
+}
+.statusPlaying {
+  color: #1a56db;
+  font-size: 1.3rem;
+}
+.statusLocked {
+  color: #cbd5e1;
+  font-size: 1.1rem;
+}
+</file>
+
+<file path="components/CoursePlayerContent.jsx">
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { IoChevronBack, IoTrophyOutline } from "react-icons/io5";
+import VideoPlayer from "./VideoPlayer";
+import CurriculumSidebar from "./CurriculumSidebar";
+import LessonTabs from "./LessonTabs";
+import styles from "./CoursePlayer.module.css";
+
+const MOCK_COURSE = {
+  title: "Advanced Front-End Architecture",
+  department: "Web Development",
+  progress: 35, // نسبة الإنجاز
+  sections: [
+    {
+      id: 1,
+      title: "Chapter 1 - Introduction",
+      isCompleted: true,
+      lessons: [
+        {
+          id: 101,
+          title: "Welcome to the course",
+          duration: "05:00",
+          status: "completed",
+        },
+        {
+          id: 102,
+          title: "Setting up the environment",
+          duration: "12:30",
+          status: "completed",
+        },
+      ],
+    },
+    {
+      id: 2,
+      title: "Chapter 2 - Core Concepts",
+      isCompleted: false,
+      lessons: [
+        {
+          id: 201,
+          title: "Understanding the DOM",
+          duration: "15:20",
+          status: "playing",
+        },
+        {
+          id: 202,
+          title: "State Management Basics",
+          duration: "20:00",
+          status: "locked",
+        },
+      ],
+    },
+    {
+      id: 3,
+      title: "Chapter 3 - Advanced Topics",
+      isCompleted: false,
+      lessons: [
+        {
+          id: 301,
+          title: "Welcome to the course",
+          duration: "05:00",
+          status: "completed",
+        },
+        {
+          id: 302,
+          title: "Advanced CSS Techniques",
+          duration: "18:45",
+          status: "locked",
+        },
+      ],
+    },
+    {
+      id: 4,
+      title: "Chapter 4 - Performance Optimization",
+      isCompleted: false,
+      quiz: {
+        id: 555,
+        title: "Section 1 Final Assessment",
+      },
+      lessons: [
+        {
+          id: 401,
+          title: "Understanding the DOM",
+          duration: "15:20",
+          status: "playing",
+        },
+        {
+          id: 402,
+          title: "State Management Basics",
+          duration: "20:00",
+          status: "locked",
+        },
+      ],
+    },
+  ],
+  currentLesson: {
+    id: 401,
+    title: "Understanding the DOM",
+    description:
+      "In this lesson, we will dive deep into how the Document Object Model works behind the scenes. We cover rendering strategies, reconciliation, and common performance pitfalls.",
+    attachments: [
+      { id: 1, name: "DOM_CheatSheet.pdf", size: "2.4 MB" },
+      { id: 2, name: "Starter_Template.zip", size: "15 MB" },
+    ],
+  },
+};
+
+const CoursePlayerContent = () => {
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("overview");
+
+  return (
+    <div className={styles.pageWrapper}>
+      {/* الشريط العلوي الفخم */}
+      <div className={styles.topNav}>
+        <div className={styles.navLeft}>
+          <button className={styles.backBtn} onClick={() => navigate(-1)}>
+            <IoChevronBack /> Back
+          </button>
+          <div className={styles.divider}></div>
+          <h1 className={styles.courseHeaderTitle}>{MOCK_COURSE.title}</h1>
+        </div>
+        <div className={styles.navRight}>
+          <div className={styles.progressContainer}>
+            <IoTrophyOutline className={styles.trophyIcon} />
+            <div className={styles.progressText}>
+              <span>Your Progress</span>
+              <strong>{MOCK_COURSE.progress}%</strong>
+            </div>
+            <div className={styles.progressBarBg}>
+              <div
+                className={styles.progressFill}
+                style={{ width: `${MOCK_COURSE.progress}%` }}
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* تخطيط المشغل (اليسار للفيديو، اليمين للمنهج) */}
+      <div className={styles.playerGrid}>
+        <div className={styles.mainColumn}>
+          <VideoPlayer lessonTitle={MOCK_COURSE.currentLesson.title} />
+          <LessonTabs
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            lessonDetails={MOCK_COURSE.currentLesson}
+          />
+        </div>
+
+        <div className={styles.sidebarColumn}>
+          <CurriculumSidebar sections={MOCK_COURSE.sections} />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CoursePlayerContent;
+</file>
+
+<file path="components/CurriculumSidebar.jsx">
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  IoCheckmarkCircle,
+  IoLockClosed,
+  IoPlayCircle,
+  IoChevronDown,
+  IoShieldCheckmarkOutline,
+  IoChevronForwardOutline,
+} from "react-icons/io5";
+import styles from "./CoursePlayer.module.css"; // تأكد أن هذا هو الملف المستدعى لديك
+
+const CurriculumSidebar = ({ sections }) => {
+  const navigate = useNavigate();
+  const [expandedSections, setExpandedSections] = useState([2]); // فتح السيكشن الثاني افتراضياً
+
+  const toggleSection = (id) => {
+    setExpandedSections((prev) =>
+      prev.includes(id) ? prev.filter((s) => s !== id) : [...prev, id],
+    );
+  };
+
+  return (
+    <div className={styles.playlistContainer}>
+      <div className={styles.playlistHeader}>
+        <h3>Course Content</h3>
+      </div>
+
+      <div className={styles.playlistScrollArea}>
+        {sections?.map((section) => {
+          const isExpanded = expandedSections.includes(section.id);
+          return (
+            <div key={section.id} className={styles.moduleWrapper}>
+              {/* رأس السيكشن */}
+              <div
+                className={`${styles.moduleHeader} ${isExpanded ? styles.moduleHeaderActive : ""}`}
+                onClick={() => toggleSection(section.id)}
+              >
+                <div className={styles.moduleTitleBox}>
+                  <h4>{section.title}</h4>
+                  <span>{section.lessons?.length || 0} lessons</span>
+                </div>
+                <IoChevronDown
+                  className={`${styles.chevron} ${isExpanded ? styles.rotated : ""}`}
+                />
+              </div>
+
+              {/* قائمة الدروس والكويز */}
+              {isExpanded && (
+                <div className={styles.moduleLessons}>
+                  {/* عرض الدروس أولاً */}
+                  {section.lessons?.map((lesson) => (
+                    <div
+                      key={lesson.id}
+                      className={`${styles.lessonRow} ${lesson.status === "playing" ? styles.lessonRowActive : ""}`}
+                      onClick={() => navigate(`lesson/${lesson.id}`)} // 👈 توجيه نسبي آمن
+                    >
+                      <div className={styles.lessonMeta}>
+                        <span className={styles.lessonName}>
+                          {lesson.title}
+                        </span>
+                        <span className={styles.lessonDuration}>
+                          {lesson.duration}
+                        </span>
+                      </div>
+                      <div className={styles.lessonStatus}>
+                        {lesson.status === "completed" && (
+                          <IoCheckmarkCircle
+                            className={styles.statusCompleted}
+                          />
+                        )}
+                        {lesson.status === "playing" && (
+                          <IoPlayCircle className={styles.statusPlaying} />
+                        )}
+                        {lesson.status === "locked" && (
+                          <IoLockClosed className={styles.statusLocked} />
+                        )}
+                      </div>
+                    </div>
+                  ))}
+
+                  {/* 💡 كويز نهاية السيكشن الفخم بالتوجيه النسبي الآمن */}
+                  <div
+                    className={styles.sidebarQuizItem}
+                    onClick={() => navigate(`quiz/${section.id}`)} // 👈 سيفتح الكويز فوراً بدون undefined
+                  >
+                    <div className={styles.quizLeftContent}>
+                      <div className={styles.quizIconCircle}>
+                        <IoShieldCheckmarkOutline />
+                      </div>
+                      <div className={styles.quizMetaText}>
+                        <span className={styles.quizTitle}>
+                          Final Assessment
+                        </span>
+                        <span className={styles.quizSub}>
+                          Requires {section.passingScore || 80}% to pass
+                        </span>
+                      </div>
+                    </div>
+                    <IoChevronForwardOutline className={styles.quizArrow} />
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+export default CurriculumSidebar;
+</file>
+
+<file path="components/LessonTabs.jsx">
+import { IoDocumentTextOutline, IoDownloadOutline } from "react-icons/io5";
+import styles from "./CoursePlayer.module.css";
+
+const LessonTabs = ({ activeTab, setActiveTab, lessonDetails }) => {
+  const tabs = [
+    { id: "overview", label: "Overview" },
+    { id: "qa", label: "Q&A" },
+    { id: "notes", label: "My Notes" },
+  ];
+
+  return (
+    <div className={styles.contentContainer}>
+      {/* التبويبات بخط سفلي (Modern Underline) */}
+      <div className={styles.tabsHeader}>
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            className={`${styles.tabBtn} ${activeTab === tab.id ? styles.activeTab : ""}`}
+            onClick={() => setActiveTab(tab.id)}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {/* المحتوى */}
+      <div className={styles.tabBody}>
+        {activeTab === "overview" && (
+          <div className={styles.overviewSection}>
+            <h3 className={styles.sectionTitle}>About this lesson</h3>
+            <p className={styles.descriptionText}>
+              {lessonDetails.description}
+            </p>
+
+            {lessonDetails.attachments?.length > 0 && (
+              <div className={styles.attachmentsWrapper}>
+                <h4 className={styles.attachTitle}>Lesson Resources</h4>
+                <div className={styles.attachmentsGrid}>
+                  {lessonDetails.attachments.map((file) => (
+                    <div key={file.id} className={styles.attachmentCard}>
+                      <div className={styles.attachIcon}>
+                        <IoDocumentTextOutline />
+                      </div>
+                      <div className={styles.attachInfo}>
+                        <span className={styles.fileName}>{file.name}</span>
+                        <span className={styles.fileSize}>{file.size}</span>
+                      </div>
+                      <button className={styles.downloadIcon}>
+                        <IoDownloadOutline />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab === "qa" && (
+          <div className={styles.emptyState}>
+            No questions yet. Be the first to ask!
+          </div>
+        )}
+        {activeTab === "notes" && (
+          <div className={styles.emptyState}>
+            Start typing your private notes here...
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default LessonTabs;
+</file>
+
+<file path="components/Quiz.module.css">
+/* ================= Wrapper & Start ================= */
+.quizWrapper {
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 10px 40px rgba(10, 42, 84, 0.05);
+  padding: 40px;
+  max-width: 800px;
+  margin: 40px auto;
+  font-family: var(--font-sans);
+  animation: fadeIn 0.4s ease;
+  border: 1px solid #e2e8f0;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.startScreen {
+  text-align: center;
+  padding: 40px 20px;
+}
+.startScreen h2 {
+  color: #0a2a54;
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 15px;
+}
+.startScreen p {
+  color: #64748b;
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+}
+.startBtn {
+  background: #1a56db;
+  color: #ffffff;
+  border: none;
+  padding: 16px 35px;
+  border-radius: 100px;
+  font-weight: 800;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 8px 20px rgba(26, 86, 219, 0.2);
+}
+.startBtn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 25px rgba(26, 86, 219, 0.3);
+}
+
+/* ================= Quiz Taker ================= */
+.takerContainer {
+  display: flex;
+  flex-direction: column;
+}
+.takerHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.progressInfo {
+  flex: 1;
+  max-width: 300px;
+}
+.progressInfo span {
+  display: block;
+  color: #64748b;
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.progressBar {
+  width: 100%;
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.progressFill {
+  height: 100%;
+  background: #1a56db;
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}
+
+.timerBox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 10px 18px;
+  border-radius: 100px;
+  color: #0a2a54;
+  font-weight: 800;
+  font-size: 1.1rem;
+  font-family: monospace;
+  transition: all 0.3s;
+}
+.timerIcon {
+  font-size: 1.3rem;
+  color: #1a56db;
+}
+.timerWarning {
+  background: #fef2f2;
+  border-color: #fca5a5;
+  color: #ef4444;
+}
+.timerWarning .timerIcon {
+  color: #ef4444;
+}
+
+.questionArea {
+  margin-bottom: 40px;
+}
+.questionText {
+  color: #0a2a54;
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.5;
+  margin-bottom: 30px;
+}
+
+.optionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.optionCard {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 20px 25px;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #ffffff;
+}
+.optionCard:hover {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+}
+.optionSelected {
+  border-color: #1a56db;
+  background: #eff6ff;
+}
+.hiddenRadio {
+  display: none;
+}
+.radioCustom {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #cbd5e1;
+  border-radius: 50%;
+  position: relative;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+.optionSelected .radioCustom {
+  border-color: #1a56db;
+  background: #1a56db;
+}
+.optionSelected .radioCustom::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #ffffff;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.optionText {
+  color: #1e293b;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.takerFooter {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 20px;
+  border-top: 1px solid #f1f5f9;
+}
+.nextBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #0a2a54;
+  color: #ffffff;
+  padding: 16px 35px;
+  border: none;
+  border-radius: 100px;
+  font-weight: 800;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 5px 15px rgba(10, 42, 84, 0.2);
+}
+.nextBtn:hover:not(:disabled) {
+  background: #1a56db;
+  transform: translateX(5px);
+}
+.nextBtn:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ================= Quiz Result & Squid Mascot ================= */
+.resultContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.mascotWrapper {
+  margin-bottom: 25px;
+}
+.mascotImage {
+  width: 180px;
+  height: auto;
+}
+/* تأثير قفز للحبار السعيد */
+.mascotBounce {
+  animation: bounce 2s infinite ease-in-out;
+}
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+/* تأثير اهتزاز للحبار الحزين */
+.mascotShake {
+  animation: shake 3s infinite ease-in-out;
+}
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-5px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+.resultMessage h2 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin: 0 0 10px 0;
+}
+.textSuccess {
+  color: #10b981;
+}
+.textDanger {
+  color: #ef4444;
+}
+.resultMessage p {
+  color: #64748b;
+  font-size: 1.1rem;
+  max-width: 450px;
+  margin: 0 auto 35px auto;
+  line-height: 1.6;
+}
+
+.scoreBoard {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  background: #f8fafc;
+  padding: 30px 40px;
+  border-radius: 24px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 40px;
+}
+.scoreCircle {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 8px solid;
+}
+.circleSuccess {
+  border-color: #10b981;
+  background: #ecfdf5;
+  color: #065f46;
+}
+.circleDanger {
+  border-color: #ef4444;
+  background: #fef2f2;
+  color: #991b1b;
+}
+.scoreValue {
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1;
+}
+.scoreLabel {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-top: 5px;
+  opacity: 0.8;
+}
+
+.scoreDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  text-align: left;
+}
+.detailItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+.iconSuccess {
+  color: #10b981;
+  font-size: 1.5rem;
+}
+.iconDanger {
+  color: #ef4444;
+  font-size: 1.5rem;
+}
+
+.resultActions {
+  display: flex;
+  gap: 15px;
+}
+.retryBtn,
+.continueBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 35px;
+  border-radius: 100px;
+  font-weight: 800;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.retryBtn {
+  background: #ffffff;
+  color: #ef4444;
+  border: 2px solid #fca5a5;
+}
+.retryBtn:hover {
+  background: #fef2f2;
+}
+.continueBtn {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+}
+.continueBtn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(16, 185, 129, 0.4);
+}
+/* ================= Sidebar Quiz Item Styling ================= */
+.sidebarQuizItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background-color: #fffbeb; /* خلفية صفراء خفيفة جداً تدل على التميز */
+  border-top: 1px solid #fef3c7;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sidebarQuizItem:hover {
+  background-color: #fef3c7;
+}
+
+.quizLeftContent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.quizIconCircle {
+  width: 36px;
+  height: 36px;
+  background-color: #f59e0b; /* لون ذهبي فخم للحبار والجوائز */
+  color: #ffffff;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 10px rgba(245, 158, 11, 0.2);
+}
+
+.quizMetaText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.quizTitle {
+  color: #0a2a54;
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+.quizSub {
+  color: #d97706;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.quizArrow {
+  color: #d97706;
+  font-size: 1.1rem;
+  transition: transform 0.2s ease;
+}
+
+.sidebarQuizItem:hover .quizArrow {
+  transform: translateX(3px);
+}
+</file>
+
+<file path="components/QuizContainer.jsx">
+import { useState } from "react";
+import QuizTaker from "./QuizTaker";
+import QuizResult from "./QuizResult";
+import styles from "./Quiz.module.css";
+
+// بيانات وهمية للاختبار (تأتي من الباك-إند لاحقاً)
+const MOCK_QUIZ = {
+  title: "Section 1 Final Assessment",
+  timeLimit: 15, // بالدقائق
+  passingScore: 80, // نسبة النجاح
+  questions: [
+    {
+      id: 1,
+      text: "What is the primary purpose of the Virtual DOM in React?",
+      options: [
+        "To directly manipulate HTML elements faster.",
+        "To create a lightweight copy of the UI to optimize rendering performance.",
+        "To manage global application state.",
+        "To route between different pages securely.",
+      ],
+      correctAnswer: 1, // الإجابة الصحيحة هي الثانية (Index 1)
+    },
+    {
+      id: 2,
+      text: "Which hook is used to handle side effects in functional components?",
+      options: ["useState", "useContext", "useEffect", "useReducer"],
+      correctAnswer: 2,
+    },
+    {
+      id: 3,
+      text: "What does 'SSR' stand for in Next.js?",
+      options: [
+        "Server-Side Rendering",
+        "Static Site Routing",
+        "Single State React",
+        "System Server Request",
+      ],
+      correctAnswer: 0,
+    },
+  ],
+};
+
+const QuizContainer = ({ onCompleteSection }) => {
+  const [quizState, setQuizState] = useState("start"); // "start" | "taking" | "result"
+  const [userAnswers, setUserAnswers] = useState({});
+  const [scoreInfo, setScoreInfo] = useState(null);
+
+  // بدء الامتحان
+  const startQuiz = () => setQuizState("taking");
+
+  // إنهاء الامتحان وحساب النتيجة
+  const finishQuiz = (answers) => {
+    let correctCount = 0;
+    MOCK_QUIZ.questions.forEach((q, index) => {
+      if (answers[index] === q.correctAnswer) correctCount++;
+    });
+
+    const percentage = Math.round(
+      (correctCount / MOCK_QUIZ.questions.length) * 100,
+    );
+    const isPassed = percentage >= MOCK_QUIZ.passingScore;
+
+    setScoreInfo({
+      percentage,
+      isPassed,
+      correctCount,
+      total: MOCK_QUIZ.questions.length,
+    });
+    setQuizState("result");
+  };
+
+  // إعادة الامتحان
+  const retryQuiz = () => {
+    setUserAnswers({});
+    setScoreInfo(null);
+    setQuizState("taking");
+  };
+
+  return (
+    <div className={styles.quizWrapper}>
+      {quizState === "start" && (
+        <div className={styles.startScreen}>
+          <h2>{MOCK_QUIZ.title}</h2>
+          <p>
+            This assessment contains {MOCK_QUIZ.questions.length} questions. You
+            need {MOCK_QUIZ.passingScore}% to pass.
+          </p>
+          <button className={styles.startBtn} onClick={startQuiz}>
+            Start Assessment
+          </button>
+        </div>
+      )}
+
+      {quizState === "taking" && (
+        <QuizTaker quiz={MOCK_QUIZ} onSubmit={finishQuiz} />
+      )}
+
+      {quizState === "result" && (
+        <QuizResult
+          scoreInfo={scoreInfo}
+          onRetry={retryQuiz}
+          onContinue={onCompleteSection}
+        />
+      )}
+    </div>
+  );
+};
+
+export default QuizContainer;
+</file>
+
+<file path="components/QuizResult.jsx">
+import {
+  IoCheckmarkCircle,
+  IoCloseCircle,
+  IoRefreshOutline,
+  IoArrowForwardOutline,
+} from "react-icons/io5";
+import styles from "./Quiz.module.css";
+
+const QuizResult = ({ scoreInfo, onRetry, onContinue }) => {
+  const { percentage, isPassed, correctCount, total } = scoreInfo;
+
+  return (
+    <div className={styles.resultContainer}>
+      {/* 💡 الحبار (Squid Mascot) */}
+      <div className={styles.mascotWrapper}>
+        <img
+          src={isPassed ? "/images/squid-happy.png" : "/images/squid-sad.png"}
+          alt={isPassed ? "Celebrating Squid" : "Sad Squid"}
+          className={`${styles.mascotImage} ${isPassed ? styles.mascotBounce : styles.mascotShake}`}
+          // ملاحظة: تأكد من إضافة صور الحبار في مجلد public/images
+        />
+      </div>
+
+      {/* رسالة النتيجة */}
+      <div className={styles.resultMessage}>
+        <h2 className={isPassed ? styles.textSuccess : styles.textDanger}>
+          {isPassed ? "Awesome Job!" : "Needs More Practice!"}
+        </h2>
+        <p>
+          {isPassed
+            ? "You have successfully passed the assessment. The next section is now unlocked."
+            : "Don't worry, even the smartest squids make mistakes. Review the material and try again."}
+        </p>
+      </div>
+
+      {/* الدائرة الإحصائية الفخمة */}
+      <div className={styles.scoreBoard}>
+        <div
+          className={`${styles.scoreCircle} ${isPassed ? styles.circleSuccess : styles.circleDanger}`}
+        >
+          <span className={styles.scoreValue}>{percentage}%</span>
+          <span className={styles.scoreLabel}>Score</span>
+        </div>
+
+        <div className={styles.scoreDetails}>
+          <div className={styles.detailItem}>
+            <IoCheckmarkCircle className={styles.iconSuccess} />
+            <span>{correctCount} Correct</span>
+          </div>
+          <div className={styles.detailItem}>
+            <IoCloseCircle className={styles.iconDanger} />
+            <span>{total - correctCount} Incorrect</span>
+          </div>
+        </div>
+      </div>
+
+      {/* الإجراءات */}
+      <div className={styles.resultActions}>
+        {!isPassed ? (
+          <button className={styles.retryBtn} onClick={onRetry}>
+            <IoRefreshOutline /> Retry Assessment
+          </button>
+        ) : (
+          <button className={styles.continueBtn} onClick={onContinue}>
+            Continue Course <IoArrowForwardOutline />
+          </button>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default QuizResult;
+</file>
+
+<file path="components/QuizTaker.jsx">
+import { useState, useEffect } from "react";
+import { IoTimeOutline, IoChevronForwardOutline } from "react-icons/io5";
+import styles from "./Quiz.module.css";
+
+const QuizTaker = ({ quiz, onSubmit }) => {
+  const [currentQIndex, setCurrentQIndex] = useState(0);
+  const [answers, setAnswers] = useState({});
+  const [timeLeft, setTimeLeft] = useState(quiz.timeLimit * 60); // تحويل الدقائق لثواني
+
+  // مؤقت تنازلي
+  useEffect(() => {
+    if (timeLeft <= 0) {
+      onSubmit(answers); // تسليم تلقائي عند انتهاء الوقت
+      return;
+    }
+    const timerId = setInterval(() => setTimeLeft((prev) => prev - 1), 1000);
+    return () => clearInterval(timerId);
+  }, [timeLeft, answers, onSubmit]);
+
+  // تنسيق الوقت (MM:SS)
+  const formatTime = (seconds) => {
+    const m = Math.floor(seconds / 60)
+      .toString()
+      .padStart(2, "0");
+    const s = (seconds % 60).toString().padStart(2, "0");
+    return `${m}:${s}`;
+  };
+
+  const handleSelectOption = (optIndex) => {
+    setAnswers({ ...answers, [currentQIndex]: optIndex });
+  };
+
+  const handleNext = () => {
+    if (currentQIndex < quiz.questions.length - 1) {
+      setCurrentQIndex(currentQIndex + 1);
+    } else {
+      onSubmit(answers);
+    }
+  };
+
+  const currentQuestion = quiz.questions[currentQIndex];
+  const progressPercent = ((currentQIndex + 1) / quiz.questions.length) * 100;
+  const hasAnsweredCurrent = answers[currentQIndex] !== undefined;
+
+  return (
+    <div className={styles.takerContainer}>
+      {/* الترويسة: المؤقت والتقدم */}
+      <div className={styles.takerHeader}>
+        <div className={styles.progressInfo}>
+          <span>
+            Question {currentQIndex + 1} of {quiz.questions.length}
+          </span>
+          <div className={styles.progressBar}>
+            <div
+              className={styles.progressFill}
+              style={{ width: `${progressPercent}%` }}
+            ></div>
+          </div>
+        </div>
+
+        <div
+          className={`${styles.timerBox} ${timeLeft < 60 ? styles.timerWarning : ""}`}
+        >
+          <IoTimeOutline className={styles.timerIcon} />
+          <span>{formatTime(timeLeft)}</span>
+        </div>
+      </div>
+
+      {/* منطقة السؤال */}
+      <div className={styles.questionArea}>
+        <h3 className={styles.questionText}>{currentQuestion.text}</h3>
+
+        <div className={styles.optionsList}>
+          {currentQuestion.options.map((opt, idx) => (
+            <label
+              key={idx}
+              className={`${styles.optionCard} ${answers[currentQIndex] === idx ? styles.optionSelected : ""}`}
+            >
+              <input
+                type="radio"
+                name={`question_${currentQIndex}`}
+                checked={answers[currentQIndex] === idx}
+                onChange={() => handleSelectOption(idx)}
+                className={styles.hiddenRadio}
+              />
+              <div className={styles.radioCustom}></div>
+              <span className={styles.optionText}>{opt}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* أزرار التحكم */}
+      <div className={styles.takerFooter}>
+        <button
+          className={styles.nextBtn}
+          onClick={handleNext}
+          disabled={!hasAnsweredCurrent}
+        >
+          {currentQIndex === quiz.questions.length - 1
+            ? "Submit Assessment"
+            : "Next Question"}
+          <IoChevronForwardOutline />
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default QuizTaker;
+</file>
+
+<file path="components/VideoPlayer.jsx">
+import {
+  IoPlayBack,
+  IoPlayForward,
+  IoPauseCircle,
+  IoSettingsSharp,
+  IoExpandOutline,
+  IoVolumeHighOutline,
+} from "react-icons/io5";
+import styles from "./CoursePlayer.module.css";
+
+const VideoPlayer = ({ lessonTitle }) => {
+  return (
+    <div className={styles.videoContainer}>
+      <div className={styles.videoScreen}>
+        {/* التدرج اللوني العلوي للعنوان */}
+        <div className={styles.videoTopOverlay}>
+          <h2 className={styles.videoLessonTitle}>{lessonTitle}</h2>
+        </div>
+
+        {/* أزرار التشغيل في المنتصف (تظهر عند التوقف) */}
+        <div className={styles.videoCenterControls}>
+          <button className={styles.seekBtn}>
+            <IoPlayBack />
+          </button>
+          <button className={styles.mainPlayBtn}>
+            <IoPauseCircle />
+          </button>
+          <button className={styles.seekBtn}>
+            <IoPlayForward />
+          </button>
+        </div>
+
+        {/* شريط التحكم السفلي */}
+        <div className={styles.videoBottomOverlay}>
+          <div className={styles.videoTimeline}>
+            <div
+              className={styles.timelinePlayed}
+              style={{ width: "45%" }}
+            ></div>
+            <div className={styles.timelineThumb} style={{ left: "45%" }}></div>
+          </div>
+
+          <div className={styles.videoToolbar}>
+            <div className={styles.toolbarLeft}>
+              <button className={styles.toolBtn}>
+                <IoVolumeHighOutline />
+              </button>
+              <span className={styles.timeDisplay}>06:45 / 15:20</span>
+            </div>
+            <div className={styles.toolbarRight}>
+              <button className={styles.toolBtn}>
+                <IoSettingsSharp />
+              </button>
+              <button className={styles.toolBtn}>
+                <IoExpandOutline />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default VideoPlayer;
+</file>
+
+</files>

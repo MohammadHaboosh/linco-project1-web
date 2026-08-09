@@ -1,0 +1,138 @@
+.aiWrapper {
+  position: fixed;
+  bottom: 32px;
+  left: 32px; /* وضعناه على اليسار لأن الاتجاه RTL */
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.floatingBtn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0056d2 0%, #1e40af 100%);
+  border: none;
+  color: white;
+  box-shadow: 0 8px 24px rgba(0, 86, 210, 0.3);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.floatingBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 28px rgba(0, 86, 210, 0.4);
+}
+
+.btnIcon {
+  font-size: 1.8rem;
+}
+
+.aiMenu {
+  background: white;
+  width: 320px;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.menuHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: #f8fafc;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.headerTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  color: #1f2432;
+}
+
+.sparkleIcon {
+  color: #0056d2;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: #6b7280;
+  cursor: pointer;
+}
+
+.menuOptions {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.optionBtn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: right;
+  transition: all 0.2s;
+}
+
+.optionBtn:hover {
+  background: #f9fafb;
+  border-color: #e5e7eb;
+}
+
+.optionIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.optionText {
+  display: flex;
+  flex-direction: column;
+}
+
+.optionText strong {
+  font-size: 0.9rem;
+  color: #1f2432;
+}
+
+.optionText span {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 2px;
+}

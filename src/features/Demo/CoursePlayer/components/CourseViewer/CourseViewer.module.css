@@ -1,0 +1,80 @@
+.viewerContainer {
+  background-color: #f5f7f8;
+  min-height: 100vh;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+  direction: rtl;
+}
+
+.topHeader {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 12px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.backBtn {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: #1f2432;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.backBtn:hover {
+  background: #f3f4f6;
+}
+
+.courseInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.courseLabel {
+  font-size: 0.75rem;
+  color: #0056d2;
+  font-weight: 700;
+}
+
+.courseTitle {
+  font-size: 1.1rem;
+  color: #1f2432;
+  margin: 0;
+  font-weight: 700;
+}
+
+.mainGrid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 24px;
+  padding: 24px;
+  max-width: 1600px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .mainGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.contentArea {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
