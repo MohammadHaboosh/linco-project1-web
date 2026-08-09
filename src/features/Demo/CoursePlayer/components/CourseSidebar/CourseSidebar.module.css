@@ -1,17 +1,21 @@
 .sidebarWrapper {
-  /* Increased the width significantly to take more space from the video */
-  --sidebar-width: clamp(480px, 42vw, 650px);
-  --rail-width: 86px;
+  --sidebar-width: clamp(480px, 40vw, 650px);
+  --rail-width: 68px; /* تم تصغير الشريط الجانبي بشكل كبير */
   display: flex;
   height: 100%;
   position: relative;
   z-index: 40;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  border-radius: 28px;
-  box-shadow: -12px 0 45px rgba(15, 23, 42, 0.05);
+
+  /* التصاق كامل باليمين والأسفل بدون حواف دائرية تضيع المساحة */
+  border-radius: 24px 0 0 0;
+  border: 1px solid #e2e8f0;
+  border-right: none;
+  border-bottom: none;
+
+  box-shadow: -8px 0 35px rgba(15, 23, 42, 0.05);
   overflow: hidden;
   transition:
     width 0.4s cubic-bezier(0.16, 1, 0.3, 1),
@@ -25,7 +29,7 @@
 .closed {
   width: var(--rail-width);
   background: #ffffff;
-  box-shadow: -4px 0 20px rgba(15, 23, 42, 0.04);
+  box-shadow: -4px 0 20px rgba(15, 23, 42, 0.03);
 }
 
 /* Sidebar Content (Left side now) */
@@ -34,7 +38,7 @@
   display: flex;
   flex-direction: column;
   opacity: 0;
-  transform: translateX(30px);
+  transform: translateX(20px);
   transition:
     opacity 0.3s ease,
     transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -50,7 +54,7 @@
 }
 
 .contentHeader {
-  padding: 24px 30px;
+  padding: 20px 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -75,21 +79,21 @@
 .contentHeader h2 {
   margin: 0;
   color: #0f172a;
-  font-size: 1.45rem;
+  font-size: 1.35rem;
   font-weight: 800;
 }
 
 .closeBtn {
-  width: 40px;
-  height: 40px;
-  border-radius: 14px;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
   background: #ffffff;
   border: 1px solid #e2e8f0;
   color: #64748b;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   cursor: pointer;
   transition: all 0.2s;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
@@ -104,7 +108,7 @@
 .scrollableArea {
   flex: 1;
   overflow-y: auto;
-  padding: 30px;
+  padding: 24px; /* مساحات مدروسة أكثر لاستغلال العرض */
   scrollbar-width: thin;
   scrollbar-color: #cbd5e1 transparent;
 }
@@ -123,25 +127,25 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 24px 12px;
-  gap: 20px;
+  padding: 20px 8px; /* تصغير المساحات العلوية والسفلية */
+  gap: 16px; /* تصغير المسافة بين الأزرار */
   background: #ffffff;
   z-index: 2;
 }
 
 .expandBtn {
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
   background: #f1f5f9;
   border: 1px solid #e2e8f0;
   color: #0f172a;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   cursor: pointer;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   transition: all 0.2s;
 }
 .expandBtn:hover {
@@ -153,38 +157,38 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px; /* تقليل المسافة بين الأيقونة والنص */
   border: none;
   background: transparent;
   cursor: pointer;
 }
 
 .navIconBox {
-  width: 54px;
-  height: 54px;
-  border-radius: 18px;
+  width: 40px; /* تصغير المربع بشكل كبير */
+  height: 40px;
+  border-radius: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
   background: #f8fafc;
   color: #64748b;
-  font-size: 1.5rem;
+  font-size: 1.25rem; /* تصغير الأيقونة */
   border: 1px solid #e2e8f0;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.01);
 }
 
 .navText {
-  font-size: 0.75rem;
+  font-size: 0.65rem; /* تصغير النص */
   font-weight: 800;
   color: #64748b;
   transition: color 0.3s;
 }
 
 .navBtn:hover .navIconBox {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   border-color: #cbd5e1;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.04);
   color: #0f172a;
 }
 .navBtn:hover .navText {
@@ -195,7 +199,7 @@
   background: linear-gradient(135deg, #0a2a54 0%, #1a56db 100%);
   color: #ffffff;
   border: none;
-  box-shadow: 0 10px 25px rgba(26, 86, 219, 0.3);
+  box-shadow: 0 8px 20px rgba(26, 86, 219, 0.25);
   transform: scale(1.05);
 }
 .activeNavBtn .navText {
@@ -208,7 +212,7 @@
 .activeAiBtn .navIconBox {
   background: linear-gradient(135deg, #7c3aed 0%, #c084fc 100%);
   color: #ffffff;
-  box-shadow: 0 10px 25px rgba(124, 58, 237, 0.3);
+  box-shadow: 0 8px 20px rgba(124, 58, 237, 0.25);
   transform: scale(1.05);
 }
 .activeAiBtn .navText {
@@ -217,6 +221,6 @@
 
 @media (max-width: 1180px) {
   .sidebarWrapper {
-    --sidebar-width: 45vw;
+    --sidebar-width: 50vw;
   }
 }

@@ -36,12 +36,14 @@
   border-bottom: 1px solid var(--border-light);
   z-index: 10;
 }
+
 .headerLeft {
   display: flex;
   align-items: center;
   gap: 16px;
   min-width: 0;
 }
+
 .backBtn {
   background: transparent;
   border: none;
@@ -53,20 +55,24 @@
   font-size: 13px;
   cursor: pointer;
 }
+
 .backBtn:hover {
   color: var(--primary-navy);
 }
+
 .divider {
   width: 1px;
   height: 20px;
   background-color: var(--border-light);
 }
+
 .courseIdentity {
   display: flex;
   flex-direction: column;
   gap: 2px;
   min-width: 0;
 }
+
 .courseIdentity span {
   color: #7b8aa4;
   font-size: 11px;
@@ -74,6 +80,7 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
+
 .courseIdentity h1 {
   margin: 0;
   font-size: 16px;
@@ -83,9 +90,11 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .headerRight {
   flex: 0 0 auto;
 }
+
 .progressBlock {
   display: flex;
   align-items: center;
@@ -95,6 +104,7 @@
   border-radius: 12px;
   border: 1px solid #e3ebf8;
 }
+
 .progressIcon {
   width: 34px;
   height: 34px;
@@ -105,21 +115,25 @@
   color: #9a4f00;
   font-size: 18px;
 }
+
 .progressText {
   display: flex;
   flex-direction: column;
 }
+
 .progressLabel {
   font-size: 9px;
   font-weight: 800;
   color: var(--text-muted);
   letter-spacing: 0.5px;
 }
+
 .progressText strong {
   font-size: 13px;
   font-weight: 800;
   color: var(--primary-navy);
 }
+
 .progressTrack {
   width: 96px;
   height: 6px;
@@ -127,23 +141,25 @@
   border-radius: 999px;
   overflow: hidden;
 }
+
 .progressTrack span {
   display: block;
   height: 100%;
   border-radius: inherit;
   background: linear-gradient(90deg, #2563eb, #74a5ff);
 }
+
 .progressCheck {
   color: #13a879;
   font-size: 18px;
 }
 
+/* التعديل الجوهري هنا لإزالة الفراغات الميتة */
 .mainLayout {
   display: flex;
-  gap: 18px;
-  padding: 18px 24px 22px;
-  max-width: 1760px;
-  margin: 0 auto;
+  gap: 20px;
+  padding: 20px 0 0 24px; /* أزلنا الـ padding من اليمين والأسفل */
+  max-width: 100%;
   width: 100%;
   flex: 1;
   min-height: 0;
@@ -157,7 +173,8 @@
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-right: 3px;
+  padding-right: 4px;
+  padding-bottom: 24px; /* أضفنا مساحة سفلية فقط لمحتوى الفيديو والتابز */
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -165,9 +182,11 @@
   scrollbar-color: #cbd5e1 transparent;
   overscroll-behavior: contain;
 }
+
 .contentColumn::-webkit-scrollbar {
   width: 6px;
 }
+
 .contentColumn::-webkit-scrollbar-thumb {
   background: #cbd5e1;
   border-radius: 10px;
@@ -186,6 +205,7 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+/* ... (باقي خصائص الفيديو كما هي بدون تغيير) ... */
 .videoStage {
   width: 100%;
   height: 100%;
@@ -385,69 +405,6 @@
   color: rgba(255, 255, 255, 0.5);
 }
 
-.lessonMeta {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 16px;
-  padding-top: 16px;
-  margin-top: 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.lessonMetaMain {
-  max-width: 720px;
-  color: #f2f6ff;
-}
-
-.lessonPill {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 8px;
-  margin-bottom: 8px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.12);
-  color: #b8cdfd;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-}
-
-.lessonMetaMain h2 {
-  margin: 0;
-  font-size: 20px;
-  color: #fff;
-}
-
-.lessonMetaMain p {
-  margin: 8px 0 0;
-  font-size: 12px;
-  line-height: 1.7;
-  color: #c4d2ec;
-}
-
-.lessonStats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.lessonStats span {
-  padding: 8px 10px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.09);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #e8f0ff;
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.lessonStats b {
-  color: #fff;
-}
-
 .tabsWrapper {
   flex-shrink: 0;
   margin-bottom: 20px;
@@ -455,79 +412,17 @@
 
 @media (max-width: 1180px) {
   .mainLayout {
-    padding-inline: 18px;
-    gap: 14px;
-  }
-  .courseIdentity h1 {
-    max-width: 360px;
+    padding: 16px 0 0 18px;
   }
 }
 
 @media (max-width: 900px) {
-  .viewerContainer {
-    height: calc(100vh - 96px);
-  }
-  .topHeader {
-    min-height: 62px;
-    padding-inline: 16px;
-  }
-  .progressBlock {
-    padding: 6px 9px;
-  }
-  .progressTrack {
-    width: 70px;
-  }
   .mainLayout {
-    position: relative;
     padding: 12px;
     display: block;
     overflow: hidden;
   }
   .contentColumn {
-    height: 100%;
-    padding-right: 0;
-  }
-  .videoWrapper {
-    min-height: 280px;
-    max-height: none;
-    border-radius: 15px;
-  }
-}
-
-@media (max-width: 560px) {
-  .topHeader {
-    min-height: 58px;
-    padding-inline: 11px;
-  }
-  .headerLeft {
-    gap: 9px;
-  }
-  .backBtn {
-    font-size: 11px;
-  }
-  .divider {
-    display: none;
-  }
-  .courseIdentity h1 {
-    display: none;
-  }
-  .progressText {
-    display: none;
-  }
-  .progressBlock {
-    padding: 6px 8px;
-  }
-  .progressTrack {
-    width: 70px;
-  }
-  .mainLayout {
-    padding: 8px;
-  }
-  .contentColumn {
-    gap: 10px;
-  }
-  .videoWrapper {
-    min-height: 220px;
-    border-radius: 12px;
+    padding-bottom: 0;
   }
 }
