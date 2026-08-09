@@ -11,6 +11,7 @@ import styles from "./CourseCard.module.css";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useDemo } from "../../../hooks/useDemo";
+import { PATHS } from "../../../routes/paths";
 
 const CourseCard = ({ course, isOwner, onEdit, onDelete }) => {
   const { t } = useTranslation();
@@ -131,7 +132,7 @@ const CourseCard = ({ course, isOwner, onEdit, onDelete }) => {
             </div>
             <button
               className={styles.primaryCta}
-              onClick={() => navigate(`/course-player`)}
+              onClick={() => navigate(`../course-player/${id}`)}
             >
               {progress > 0 ? t("continue-learning") : t("start-learning")}
             </button>

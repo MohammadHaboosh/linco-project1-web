@@ -1,9 +1,9 @@
-import CoursePlayerContent from "../features/Demo/CoursePlayer/components/CoursePlayerContent";
+import CourseViewer from "../features/Demo/CoursePlayer/components/CourseViewer/CourseViewer";
 
 const CoursePlayerPage = () => {
   return (
     <>
-      <CoursePlayerContent />
+      <CourseViewer />
     </>
   );
 };
