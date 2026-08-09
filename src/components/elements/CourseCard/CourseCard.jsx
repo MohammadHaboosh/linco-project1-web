@@ -139,7 +139,7 @@ const CourseCard = ({ course, isOwner, onEdit, onDelete }) => {
               className={styles.primaryCta}
               onClick={(e) => {
                 e.stopPropagation();
-                navigate(`../${PATHS.COURSE_PLAYER}/${id}`);
+                navigate(`${PATHS.COURSE_PLAYER.replace(":courseId", id)}`);
               }}
             >
               {progress > 0 ? t("continue-learning") : t("start-learning")}
