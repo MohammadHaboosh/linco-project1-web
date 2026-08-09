@@ -15,26 +15,27 @@ const CurriculumSidebar = ({ activeLesson, setActiveLesson }) => {
   const sections = [
     {
       id: 1,
-      title: "الوحدة الأولى: الأساسيات",
+      title: "الوحدة الأولى: الأساسيات والتقدم",
+      progress: 65,
       items: [
         {
           id: 101,
           type: "video",
-          title: "مقدمة في React",
+          title: "مقدمة في React وعمارة التطبيقات",
           duration: "12:30",
           completed: true,
         },
         {
           id: 102,
           type: "video",
-          title: "فهم الـ Virtual DOM",
+          title: "فهم الـ Virtual DOM ودورة الحياة",
           duration: "18:45",
           completed: false,
         },
         {
           id: 103,
           type: "quiz",
-          title: "اختبار الوحدة الأولى",
+          title: "اختبار تقييمي للوحدة الأولى",
           duration: "10 أسئلة",
         },
       ],
@@ -45,6 +46,20 @@ const CurriculumSidebar = ({ activeLesson, setActiveLesson }) => {
     <div className={styles.sidebarContainer}>
       <div className={styles.sidebarHeader}>
         <h3>محتوى الكورس</h3>
+        {sections.map((sec) => (
+          <div key={sec.id} className={styles.courseProgress}>
+            <div className={styles.progressInfoBar}>
+              <span>التقدم العام للوحدة</span>
+              <span>{sec.progress}%</span>
+            </div>
+            <div className={styles.progressBarTrack}>
+              <div
+                className={styles.progressBarFill}
+                style={{ width: `${sec.progress}%` }}
+              ></div>
+            </div>
+          </div>
+        ))}
       </div>
 
       <div className={styles.sectionsList}>
@@ -60,7 +75,9 @@ const CurriculumSidebar = ({ activeLesson, setActiveLesson }) => {
             >
               <h4>{section.title}</h4>
               <IoChevronDown
-                className={`${styles.chevron} ${expandedSection === section.id ? styles.rotated : ""}`}
+                className={`${styles.chevron} ${
+                  expandedSection === section.id ? styles.rotated : ""
+                }`}
               />
             </div>
 
@@ -69,7 +86,9 @@ const CurriculumSidebar = ({ activeLesson, setActiveLesson }) => {
                 {section.items.map((item) => (
                   <div
                     key={item.id}
-                    className={`${styles.itemRow} ${activeLesson === item.id ? styles.activeItem : ""}`}
+                    className={`${styles.itemRow} ${
+                      activeLesson === item.id ? styles.activeItem : ""
+                    }`}
                     onClick={() => setActiveLesson(item.id)}
                   >
                     <div className={styles.itemIcon}>
@@ -97,7 +116,7 @@ const CurriculumSidebar = ({ activeLesson, setActiveLesson }) => {
         ))}
       </div>
 
-      {/* منطقة النهاية (الاختبار الشامل والشهادة) */}
+      {/* منطقة النهاية والشهادات */}
       <div className={styles.courseEndings}>
         <div className={styles.endingCard}>
           <div
@@ -108,7 +127,7 @@ const CurriculumSidebar = ({ activeLesson, setActiveLesson }) => {
           </div>
           <div className={styles.endingMeta}>
             <strong>الاختبار النهائي للكورس</strong>
-            <span>مطلوب لاجتياز الدورة</span>
+            <span>مطلوب لاجتياز الدورة بنجاح</span>
           </div>
         </div>
 
@@ -120,8 +139,8 @@ const CurriculumSidebar = ({ activeLesson, setActiveLesson }) => {
             <IoRibbonOutline />
           </div>
           <div className={styles.endingMeta}>
-            <strong>شهادة الإتمام</strong>
-            <span>تتاح بعد اجتياز الاختبار</span>
+            <strong>شهادة الإتمام الرسمية</strong>
+            <span>تتاح مباشرة بعد اجتياز الاختبار</span>
           </div>
         </div>
       </div>

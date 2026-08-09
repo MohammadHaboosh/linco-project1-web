@@ -1,19 +1,17 @@
-/* الحاوية الأساسية مع تجاوز إعدادات اليمين لليسار */
 .viewerContainer {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #f4f7f9; /* لون خلفية مريح للعين */
-  color: #1e293b;
+  background-color: #f8fafc;
+  color: #0f172a;
   font-family:
     "Inter",
     system-ui,
     -apple-system,
     sans-serif;
-  text-align: left; /* إجبار النص على المحاذاة لليسار */
+  text-align: left;
 }
 
-/* الهيدر العلوي */
 .topHeader {
   display: flex;
   justify-content: space-between;
@@ -21,7 +19,7 @@
   padding: 16px 32px;
   background-color: #ffffff;
   border-bottom: 1px solid #e2e8f0;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
   position: sticky;
   top: 0;
   z-index: 50;
@@ -36,21 +34,22 @@
 .backBtn {
   background: #f1f5f9;
   border: 1px solid #e2e8f0;
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   color: #475569;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .backBtn:hover {
   background: #e2e8f0;
   color: #0f172a;
   transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .courseInfo {
@@ -62,25 +61,24 @@
 .courseLabel {
   font-size: 0.75rem;
   font-weight: 700;
-  color: #3b82f6; /* لون أزرق احترافي */
+  color: #0066ff;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
 }
 
 .courseTitle {
-  font-size: 1.15rem;
-  font-weight: 600;
+  font-size: 1.2rem;
+  font-weight: 700;
   color: #0f172a;
   margin: 0;
 }
 
-/* التخطيط الشبكي الموحد (Web & Mobile Sync) */
 .mainGrid {
   display: grid;
-  grid-template-columns: 1fr 400px; /* نسبة مساحة الفيديو إلى القائمة الجانبية */
-  gap: 24px;
-  padding: 24px 32px;
-  max-width: 1800px;
+  grid-template-columns: 1fr 420px;
+  gap: 28px;
+  padding: 32px;
+  max-width: 1700px;
   margin: 0 auto;
   width: 100%;
   box-sizing: border-box;
@@ -89,34 +87,33 @@
 .contentArea {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 28px;
 }
 
 .sidebarArea {
   background: #ffffff;
-  border-radius: 16px;
+  border-radius: 20px;
   border: 1px solid #e2e8f0;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04);
   overflow: hidden;
-  height: calc(100vh - 120px);
+  height: calc(100vh - 110px);
   position: sticky;
-  top: 96px;
+  top: 90px;
 }
 
-/* تنسيقات مشغل الفيديو (حاوية VideoContent) */
 .videoWrapper {
   background: #ffffff;
-  border-radius: 16px;
+  border-radius: 20px;
   border: 1px solid #e2e8f0;
   overflow: hidden;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04);
 }
 
 .videoContainer {
   position: relative;
   width: 100%;
-  padding-top: 56.25%; /* نسبة 16:9 الدقيقة */
-  background: #000000;
+  padding-top: 56.25%;
+  background: #090d16;
 }
 
 .videoPlaceholder {
@@ -128,60 +125,58 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background: radial-gradient(circle at center, #1e293b 0%, #090d16 100%);
 }
 
 .playButtonOverlay {
   display: flex;
   align-items: center;
   gap: 12px;
-  font-weight: 500;
-  font-size: 1.1rem;
+  font-weight: 600;
+  font-size: 1.05rem;
   color: white;
-  background: rgba(255, 255, 255, 0.15);
-  padding: 14px 28px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 14px 30px;
   border-radius: 999px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .playButtonOverlay:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(0, 102, 255, 0.3);
+  border-color: rgba(0, 102, 255, 0.5);
+  transform: scale(1.03);
+  box-shadow: 0 0 25px rgba(0, 102, 255, 0.4);
 }
 
 .lessonDetails {
-  padding: 24px;
+  padding: 28px;
 }
 
 .lessonDetails h2 {
   margin: 0 0 12px 0;
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: 800;
   color: #0f172a;
+  letter-spacing: -0.02em;
 }
 
 .lessonDetails p {
   margin: 0;
   color: #64748b;
-  font-size: 1rem;
-  line-height: 1.6;
+  font-size: 1.02rem;
+  line-height: 1.7;
 }
 
-/* استجابة الشاشات الصغيرة (تطبيق نفس تصميم الويب على الموبايل) */
 @media (max-width: 1024px) {
   .mainGrid {
     grid-template-columns: 1fr;
     padding: 16px;
   }
-
-  .topHeader {
-    padding: 16px;
-  }
-
   .sidebarArea {
     position: static;
     height: auto;
-    min-height: 400px;
   }
 }
