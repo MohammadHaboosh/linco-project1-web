@@ -1,90 +1,26 @@
 .aiRail {
-  --ai-primary: #6d5dfc;
-  --ai-primary-dark: #5143d7;
+  --ai-primary: #2563eb;
+  --ai-primary-dark: #1d4ed8;
   --ai-ink: #111827;
   --ai-muted: #667085;
   --ai-line: #e8eaf2;
   --ai-surface: #ffffff;
   height: 100%;
-  min-width: 54px;
+  width: 100%;
+  min-width: 0;
   direction: rtl;
-}
-
-.railTrigger,
-.panel {
-  box-shadow: 0 18px 45px rgba(32, 38, 70, 0.1);
-}
-
-.closed {
-  width: 54px;
-}
-
-.open {
-  width: 360px;
-}
-
-.railTrigger {
-  width: 54px;
-  min-height: 190px;
-  padding: 12px 8px;
-  border: 1px solid rgba(132, 118, 255, 0.16);
-  border-radius: 18px;
-  background: linear-gradient(180deg, #ffffff 0%, #f8f6ff 100%);
-  color: var(--ai-ink);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  cursor: pointer;
-  box-shadow: 0 18px 45px rgba(32, 38, 70, 0.1);
-  transition: 0.25s ease;
-}
-
-.railTrigger:hover {
-  transform: translateX(-3px);
-  border-color: #d8d4ff;
-  box-shadow: 0 22px 55px rgba(109, 93, 252, 0.16);
-}
-
-.triggerIcon {
-  width: 38px;
-  height: 38px;
-  border-radius: 12px;
-  display: grid;
-  place-items: center;
-  color: white;
-  background: linear-gradient(145deg, #8578ff, #5c4ee8);
-  font-size: 20px;
-  box-shadow: 0 8px 20px rgba(109, 93, 252, 0.3);
-}
-
-.triggerLabel {
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-}
-
-.pulseDot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #2ecf8f;
-  box-shadow: 0 0 0 5px #e8fff5;
 }
 
 .panel {
   height: 100%;
-  min-height: 580px;
+  min-height: 560px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(145deg, #ffffff 0%, #f8f7ff 100%);
-  border: 1px solid rgba(132, 118, 255, 0.2);
+  background: linear-gradient(145deg, #ffffff 0%, #f7faff 100%);
+  border: 1px solid rgba(37, 99, 235, 0.16);
   border-radius: 22px;
-  box-shadow: 0 24px 70px rgba(25, 31, 56, 0.12);
+  box-shadow: 0 22px 60px rgba(15, 23, 42, 0.08);
   animation: panelIn 0.24s ease;
 }
 
@@ -105,7 +41,7 @@
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--ai-line);
-  background: linear-gradient(180deg, #fbfbff, #fff);
+  background: linear-gradient(180deg, #f8fbff, #ffffff);
 }
 
 .brand {
@@ -120,8 +56,8 @@
   place-items: center;
   flex: 0 0 auto;
   color: white;
-  background: linear-gradient(145deg, #8578ff, #5c4ee8);
-  box-shadow: 0 8px 18px rgba(109, 93, 252, 0.2);
+  background: linear-gradient(145deg, #2563eb, #60a5fa);
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.2);
 }
 
 .brandIcon {
@@ -177,9 +113,9 @@
   position: relative;
   overflow: hidden;
   padding: 22px;
-  border: 1px solid #e7e4ff;
+  border: 1px solid #dce9ff;
   border-radius: 18px;
-  background: linear-gradient(145deg, #f8f7ff, #ffffff 75%);
+  background: linear-gradient(145deg, #f8fbff, #ffffff 75%);
 }
 
 .heroGlow {
@@ -189,9 +125,9 @@
   left: -55px;
   top: -55px;
   border-radius: 50%;
-  background: #ddd8ff;
+  background: rgba(96, 165, 250, 0.24);
   filter: blur(25px);
-  opacity: 0.65;
+  opacity: 0.75;
 }
 
 .hero > svg {
@@ -227,7 +163,7 @@
   gap: 11px;
   width: 100%;
   padding: 12px;
-  border: 1px solid #e9ebf2;
+  border: 1px solid #e9eef8;
   border-radius: 15px;
   background: #fff;
   text-align: right;
@@ -236,8 +172,8 @@
 }
 
 .actionCard:hover {
-  border-color: #d8d3ff;
-  background: #fbfaff;
+  border-color: #c8dbff;
+  background: #f7fbff;
   transform: translateY(-1px);
 }
 
@@ -247,7 +183,7 @@
   border-radius: 12px;
   display: grid;
   place-items: center;
-  background: #f0eeff;
+  background: #eaf3ff;
   color: var(--ai-primary);
   font-size: 19px;
 }
@@ -284,8 +220,8 @@
   border-radius: 13px;
   padding: 12px;
   color: white;
-  background: linear-gradient(135deg, #7162ff, #5848df);
-  box-shadow: 0 12px 25px rgba(109, 93, 252, 0.22);
+  background: linear-gradient(135deg, #2563eb, #60a5fa);
+  box-shadow: 0 12px 25px rgba(37, 99, 235, 0.18);
   font-weight: 800;
   cursor: pointer;
   display: flex;
@@ -375,9 +311,9 @@
 
 .generatedCard {
   padding: 12px;
-  border: 1px solid #dcd7ff;
+  border: 1px solid #dce9ff;
   border-radius: 14px;
-  background: #faf9ff;
+  background: #f7fbff;
   margin-bottom: 10px;
 }
 
@@ -405,7 +341,7 @@
   border: 0;
   border-radius: 9px;
   padding: 7px 10px;
-  background: #6556ed;
+  background: #2563eb;
   color: white;
   font-size: 10px;
   font-weight: 800;
@@ -433,15 +369,15 @@
 }
 
 .composer input:focus {
-  border-color: #c9c3ff;
-  box-shadow: 0 0 0 3px #efedff;
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 3px #dbeafe;
 }
 
 .composer button {
   width: 38px;
   border: 0;
   border-radius: 11px;
-  background: #6556ed;
+  background: #2563eb;
   color: white;
   display: grid;
   place-items: center;

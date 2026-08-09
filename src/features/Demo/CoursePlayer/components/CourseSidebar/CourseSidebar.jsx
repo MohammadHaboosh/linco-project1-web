@@ -26,19 +26,21 @@ const CourseSidebar = ({ isOpen, setIsOpen, activeTab, setActiveTab }) => {
           onClick={() => handleTabClick("curriculum")}
           title="Course Content"
           aria-label="Course Content"
+          type="button"
         >
           <IoListOutline />
-          {isOpen && <span>Content</span>}
+          {isOpen && <span>Sections</span>}
         </button>
 
         <button
           className={`${styles.navBtn} ${styles.aiBtn} ${activeTab === "ai" && isOpen ? styles.activeAiBtn : ""}`}
           onClick={() => handleTabClick("ai")}
-          title="AI Assistant"
-          aria-label="AI Assistant"
+          title="Smart Assistant"
+          aria-label="Smart Assistant"
+          type="button"
         >
           <IoSparklesOutline />
-          {isOpen && <span>AI</span>}
+          {isOpen && <span>Smart</span>}
         </button>
       </div>
 
@@ -51,7 +53,7 @@ const CourseSidebar = ({ isOpen, setIsOpen, activeTab, setActiveTab }) => {
             <h2>
               {activeTab === "curriculum"
                 ? "Course Content"
-                : "AI Study Assistant"}
+                : "Smart Assistant"}
             </h2>
           </div>
           <button

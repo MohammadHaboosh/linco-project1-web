@@ -287,17 +287,6 @@
 .lessonMeta svg {
   font-size: 10px;
 }
-.nowBadge {
-  flex: 0 0 auto;
-  padding: 4px 6px;
-  border-radius: 6px;
-  background: #e8f0ff;
-  color: #2f6ff3;
-  font-size: 7px;
-  font-weight: 900;
-  letter-spacing: 0.06em;
-}
-
 .assessmentBox,
 .finalAssessment,
 .certificate {

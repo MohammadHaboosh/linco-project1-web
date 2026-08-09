@@ -5,6 +5,7 @@ import { PATHS } from "../../../../routes/paths";
 import DepartmentSwitcher from "./DepartmentSwitcher";
 // import RoleSwitcher from "./RoleSwitcher";
 import styles from "./Header.module.css";
+import { useDemo } from "../../../../hooks/useDemo";
 
 const Header = ({
   role,
@@ -14,12 +15,15 @@ const Header = ({
   demoPath,
 }) => {
   const { t } = useTranslation();
+  const { demoData } = useDemo();
 
   return (
     <header className={styles.topHeader}>
       <div className={styles.logoArea}>
         <span className={styles.brand}>LinCo</span>
-        <span className={styles.company}>.TechCorp</span>
+        <Link to={PATHS.DEMO}>
+          <span className={styles.company}>.{demoData.title}</span>
+        </Link>
       </div>
 
       <div className={styles.centerArea}>
@@ -27,7 +31,7 @@ const Header = ({
           <IoChevronBack /> Go to my dashboard
         </Link>
 
-        {demoPath && (
+        {/* {demoPath && (
           <Link
             to={demoPath}
             className={`${styles.backLink} ${styles.demoBackLink}`}
@@ -36,13 +40,13 @@ const Header = ({
           >
             <IoBusinessOutline /> {t("back-to-demo")}
           </Link>
-        )}
+        )} */}
 
         <div className={styles.divider}></div>
 
-        {role === "member" && (
-          <DepartmentSwitcher currentDept={currentDepartment} />
-        )}
+        {/* {role === "member" && ( */}
+        <DepartmentSwitcher currentDept={currentDepartment} />
+        {/* )} */}
 
         {role === "admin" && (
           <div className={styles.staticBadge}>{currentDepartment}</div>

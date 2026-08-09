@@ -32,7 +32,6 @@ const quickActions = [
 ];
 
 const AIFloatingAssistant = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const [mode, setMode] = useState("home");
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([
@@ -70,175 +69,147 @@ const AIFloatingAssistant = () => {
   };
 
   return (
-    <aside
-      className={`${styles.aiRail} ${isOpen ? styles.open : styles.closed}`}
-      aria-live="polite"
-    >
-      {!isOpen && (
-        <button
-          type="button"
-          className={styles.railTrigger}
-          onClick={() => setIsOpen(true)}
-          aria-label="فتح مساعد الذكاء الاصطناعي"
-        >
-          <span className={styles.triggerIcon}>
-            <IoSparklesOutline />
-          </span>
-          <span className={styles.triggerLabel}>AI Assistant</span>
-          <span className={styles.pulseDot} />
-        </button>
-      )}
+    <aside className={styles.aiRail} aria-live="polite">
+      <div className={styles.panel}>
+        <div className={styles.panelHeader}>
+          <div className={styles.brand}>
+            <div className={styles.brandIcon}>
+              <IoSparklesOutline />
+            </div>
+            <div>
+              <strong>Smart Assistant</strong>
+              <span>
+                <i /> جاهز لمساعدتك في هذا الدرس
+              </span>
+            </div>
+          </div>
+        </div>
 
-      {isOpen && (
-        <div className={styles.panel}>
-          <div className={styles.panelHeader}>
-            <div className={styles.brand}>
-              <div className={styles.brandIcon}>
-                <IoSparklesOutline />
+        {mode === "home" && (
+          <div className={styles.home}>
+            <div className={styles.hero}>
+              <div className={styles.heroGlow} />
+              <IoSparklesOutline />
+              <h3>ماذا تريد أن تفعل؟</h3>
+              <p>اختر أداة سريعة أو ابدأ محادثة مع المساعد.</p>
+            </div>
+
+            <div className={styles.actionList}>
+              {quickActions.map(({ id, icon: Icon, title, description }) => (
+                <button
+                  type="button"
+                  className={styles.actionCard}
+                  key={id}
+                  onClick={() => openMode(id)}
+                >
+                  <span className={styles.actionIcon}>
+                    <Icon />
+                  </span>
+                  <span className={styles.actionCopy}>
+                    <strong>{title}</strong>
+                    <small>{description}</small>
+                  </span>
+                  <span className={styles.actionArrow}>←</span>
+                </button>
+              ))}
+            </div>
+
+            <button
+              type="button"
+              className={styles.startChat}
+              onClick={() => setMode("chat")}
+            >
+              <IoChatbubbleEllipsesOutline />
+              ابدأ محادثة
+            </button>
+          </div>
+        )}
+
+        {(mode === "chat" || mode === "quiz" || mode === "qa") && (
+          <div className={styles.chatView}>
+            <button
+              type="button"
+              className={styles.backButton}
+              onClick={() => setMode("home")}
+            >
+              ← العودة للأدوات
+            </button>
+
+            <div className={styles.modeHeading}>
+              <div className={styles.modeIcon}>
+                {mode === "quiz" ? (
+                  <IoBulbOutline />
+                ) : mode === "qa" ? (
+                  <IoCreateOutline />
+                ) : (
+                  <IoChatbubbleEllipsesOutline />
+                )}
               </div>
               <div>
-                <strong>AI Study Assistant</strong>
+                <strong>
+                  {mode === "quiz"
+                    ? "كويز تجريبي"
+                    : mode === "qa"
+                      ? "أسئلة وأجوبة"
+                      : "محادثة مع AI"}
+                </strong>
                 <span>
-                  <i /> متصل بالدرس الحالي
+                  {mode === "quiz"
+                    ? "5 أسئلة • مستوى متوسط"
+                    : "مبني على محتوى الدرس"}
                 </span>
               </div>
             </div>
-            <button
-              type="button"
-              className={styles.iconButton}
-              onClick={() => setIsOpen(false)}
-              aria-label="إغلاق المساعد"
-            >
-              <IoCloseOutline />
-            </button>
-          </div>
 
-          {mode === "home" && (
-            <div className={styles.home}>
-              <div className={styles.hero}>
-                <div className={styles.heroGlow} />
-                <IoSparklesOutline />
-                <h3>ماذا تريد أن تفعل؟</h3>
-                <p>اختر أداة سريعة أو ابدأ محادثة مع المساعد.</p>
-              </div>
-
-              <div className={styles.actionList}>
-                {quickActions.map(({ id, icon: Icon, title, description }) => (
-                  <button
-                    type="button"
-                    className={styles.actionCard}
-                    key={id}
-                    onClick={() => openMode(id)}
-                  >
-                    <span className={styles.actionIcon}>
-                      <Icon />
-                    </span>
-                    <span className={styles.actionCopy}>
-                      <strong>{title}</strong>
-                      <small>{description}</small>
-                    </span>
-                    <span className={styles.actionArrow}>←</span>
-                  </button>
-                ))}
-              </div>
-
-              <button
-                type="button"
-                className={styles.startChat}
-                onClick={() => setMode("chat")}
-              >
-                <IoChatbubbleEllipsesOutline />
-                ابدأ محادثة
-              </button>
-            </div>
-          )}
-
-          {(mode === "chat" || mode === "quiz" || mode === "qa") && (
-            <div className={styles.chatView}>
-              <button
-                type="button"
-                className={styles.backButton}
-                onClick={() => setMode("home")}
-              >
-                ← العودة للأدوات
-              </button>
-
-              <div className={styles.modeHeading}>
-                <div className={styles.modeIcon}>
-                  {mode === "quiz" ? (
-                    <IoBulbOutline />
-                  ) : mode === "qa" ? (
-                    <IoCreateOutline />
-                  ) : (
-                    <IoChatbubbleEllipsesOutline />
-                  )}
+            <div className={styles.messages}>
+              {messages.map((item, index) => (
+                <div
+                  key={`${item.role}-${index}`}
+                  className={`${styles.message} ${item.role === "user" ? styles.userMessage : styles.aiMessage}`}
+                >
+                  {item.role === "assistant" && <IoSparklesOutline />}
+                  <p>{item.text}</p>
                 </div>
+              ))}
+            </div>
+
+            {mode === "quiz" && (
+              <div className={styles.generatedCard}>
                 <div>
-                  <strong>
-                    {mode === "quiz"
-                      ? "كويز تجريبي"
-                      : mode === "qa"
-                        ? "أسئلة وأجوبة"
-                        : "محادثة مع AI"}
-                  </strong>
-                  <span>
-                    {mode === "quiz"
-                      ? "5 أسئلة • مستوى متوسط"
-                      : "مبني على محتوى الدرس"}
-                  </span>
+                  <IoCheckmarkCircleOutline /> Quiz جاهز
                 </div>
+                <span>5 أسئلة • اختيار من متعدد • مع شرح للإجابة</span>
+                <button type="button">ابدأ الكويز</button>
               </div>
+            )}
 
-              <div className={styles.messages}>
-                {messages.map((item, index) => (
-                  <div
-                    key={`${item.role}-${index}`}
-                    className={`${styles.message} ${item.role === "user" ? styles.userMessage : styles.aiMessage}`}
-                  >
-                    {item.role === "assistant" && <IoSparklesOutline />}
-                    <p>{item.text}</p>
-                  </div>
-                ))}
-              </div>
-
-              {mode === "quiz" && (
-                <div className={styles.generatedCard}>
-                  <div>
-                    <IoCheckmarkCircleOutline /> Quiz جاهز
-                  </div>
-                  <span>5 أسئلة • اختيار من متعدد • مع شرح للإجابة</span>
-                  <button type="button">ابدأ الكويز</button>
+            {mode === "qa" && (
+              <div className={styles.generatedCard}>
+                <div>
+                  <IoCheckmarkCircleOutline /> تم تجهيز المجموعة
                 </div>
-              )}
-
-              {mode === "qa" && (
-                <div className={styles.generatedCard}>
-                  <div>
-                    <IoCheckmarkCircleOutline /> تم تجهيز المجموعة
-                  </div>
-                  <span>10 أسئلة وأجوبة مع الحل والتفسير</span>
-                  <button type="button">عرض الأسئلة</button>
-                </div>
-              )}
-
-              <div className={styles.composer}>
-                <input
-                  value={message}
-                  onChange={(event) => setMessage(event.target.value)}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter") sendMessage();
-                  }}
-                  placeholder="اسأل عن هذا الدرس..."
-                  aria-label="اكتب رسالتك"
-                />
-                <button type="button" onClick={sendMessage} aria-label="إرسال">
-                  <IoPaperPlaneOutline />
-                </button>
+                <span>10 أسئلة وأجوبة مع الحل والتفسير</span>
+                <button type="button">عرض الأسئلة</button>
               </div>
+            )}
+
+            <div className={styles.composer}>
+              <input
+                value={message}
+                onChange={(event) => setMessage(event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") sendMessage();
+                }}
+                placeholder="اسأل عن هذا الدرس..."
+                aria-label="اكتب رسالتك"
+              />
+              <button type="button" onClick={sendMessage} aria-label="إرسال">
+                <IoPaperPlaneOutline />
+              </button>
             </div>
-          )}
-        </div>
-      )}
+          </div>
+        )}
+      </div>
     </aside>
   );
 };

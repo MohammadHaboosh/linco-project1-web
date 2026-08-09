@@ -13,6 +13,7 @@ const LayoutContent = () => {
     useDemo();
   const location = useLocation();
   const isChatPage = location.pathname.includes("/chats");
+  const isCoursePlayerPage = location.pathname.includes("/course-player");
   const demoPath = demoId
     ? PATHS.DEMO.replace(":demoId", encodeURIComponent(demoId))
     : null;
@@ -38,7 +39,7 @@ const LayoutContent = () => {
           demoPath={demoPath}
         />
 
-        <SubHeader navLinks={navLinks} />
+        {!isCoursePlayerPage && <SubHeader navLinks={navLinks} />}
 
         <main
           className={`${styles.pageContent} ${
@@ -47,7 +48,7 @@ const LayoutContent = () => {
         >
           <Outlet />
         </main>
-        {!isChatPage && <Footer />}
+        {!isCoursePlayerPage && !isChatPage && <Footer />}
       </div>
     </div>
   );

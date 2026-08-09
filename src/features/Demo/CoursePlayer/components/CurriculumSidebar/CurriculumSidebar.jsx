@@ -176,9 +176,6 @@ const CurriculumSidebar = () => {
                             )}
                           </span>
                         </span>
-                        {isActive && (
-                          <span className={styles.nowBadge}>NOW</span>
-                        )}
                       </button>
                     );
                   })}

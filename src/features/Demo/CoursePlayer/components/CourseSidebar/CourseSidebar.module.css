@@ -39,8 +39,8 @@
   width: 56px;
   min-height: 56px;
   padding: 7px 4px;
-  border: 0;
-  border-radius: 14px;
+  border: 1px solid transparent;
+  border-radius: 16px;
   background: transparent;
   color: #71809a;
   display: flex;
@@ -54,7 +54,8 @@
     transform 0.2s ease,
     background 0.2s ease,
     color 0.2s ease,
-    box-shadow 0.2s ease;
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .navBtn span {
@@ -67,17 +68,19 @@
 .navBtn:hover {
   background: #eaf1ff;
   color: #2563eb;
+  border-color: #dce8ff;
   transform: translateY(-1px);
 }
 
 .activeNavBtn {
-  background: #111c2e;
+  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
   color: #fff;
-  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.16);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.18);
 }
 
 .activeNavBtn:hover {
-  background: #111c2e;
+  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
   color: #fff;
 }
 
@@ -123,8 +126,19 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+  background: linear-gradient(180deg, #ffffff 0%, #f7faff 100%);
   border-bottom: 1px solid #e7edf5;
+}
+
+.contentHeader::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #2563eb, #60a5fa);
+  opacity: 0.8;
 }
 
 .headerEyebrow {
