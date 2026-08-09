@@ -4,31 +4,60 @@ import {
   IoChevronUpOutline,
   IoChevronDownOutline,
   IoPlayCircle,
-  IoTrashOutline,
-  IoAddCircleOutline,
+  IoCheckmarkCircle,
+  IoLockClosed,
 } from "react-icons/io5";
-import { BsGripVertical } from "react-icons/bs";
 
 const sections = [
   {
     id: 1,
-    title: "Section 1",
+    title: "مقدمة في React",
+    progress: 100,
     lessons: [
-      { id: 101, title: "1. fewq fe", duration: "4 mins", attachments: 0 },
-      { id: 102, title: "2. efwqf", duration: "4 mins", attachments: 0 },
+      {
+        id: 101,
+        title: "ما هو React ولماذا نستخدمه؟",
+        duration: "05:20",
+        status: "completed",
+      },
+      {
+        id: 102,
+        title: "إعداد بيئة العمل",
+        duration: "08:15",
+        status: "completed",
+      },
       {
         id: 103,
-        title: "3. dsqgfewqg eqgg",
-        duration: "4 mins",
-        attachments: 0,
+        title: "أول تطبيق لك",
+        duration: "12:00",
+        status: "completed",
       },
     ],
   },
-  { id: 2, title: "Section 2", lessons: [] },
+  {
+    id: 2,
+    title: "مكونات React (Components)",
+    progress: 33,
+    lessons: [
+      {
+        id: 201,
+        title: "دورة حياة المكون (Lifecycle)",
+        duration: "14:40",
+        status: "active",
+      },
+      {
+        id: 202,
+        title: "الخصائص (Props)",
+        duration: "10:15",
+        status: "locked",
+      },
+      { id: 203, title: "الحالة (State)", duration: "18:20", status: "locked" },
+    ],
+  },
 ];
 
 const CurriculumSidebar = () => {
-  const [expanded, setExpanded] = useState([1]);
+  const [expanded, setExpanded] = useState([1, 2]);
 
   const toggleSection = (id) => {
     setExpanded((curr) =>
@@ -37,13 +66,16 @@ const CurriculumSidebar = () => {
   };
 
   return (
-    <div className={styles.curriculumBuilder}>
-      <div className={styles.headerInfo}>
-        <h2>Curriculum Builder</h2>
-        <p>
-          Organize your course into structured sections, lessons, and
-          assessments.
-        </p>
+    <div className={styles.curriculumViewer}>
+      <div className={styles.courseProgressCard}>
+        <div className={styles.progressHeader}>
+          <h3>تقدمك في الكورس</h3>
+          <span>38%</span>
+        </div>
+        <div className={styles.progressBar}>
+          <div className={styles.progressFill} style={{ width: "38%" }}></div>
+        </div>
+        <p>لقد أنهيت 4 من أصل 12 درساً. استمر!</p>
       </div>
 
       <div className={styles.sectionsList}>
@@ -55,7 +87,20 @@ const CurriculumSidebar = () => {
                 className={styles.sectionHeader}
                 onClick={() => toggleSection(section.id)}
               >
-                <div className={styles.headerLeft}>
+                <div className={styles.sectionHeaderInfo}>
+                  <h4>
+                    القسم {index + 1}: {section.title}
+                  </h4>
+                  <span className={styles.sectionMeta}>
+                    {section.lessons.length} دروس
+                  </span>
+                </div>
+                <div className={styles.headerRight}>
+                  {section.progress === 100 && (
+                    <IoCheckmarkCircle
+                      className={styles.sectionCompletedIcon}
+                    />
+                  )}
                   <span className={styles.toggleIcon}>
                     {isExpanded ? (
                       <IoChevronUpOutline />
@@ -63,72 +108,42 @@ const CurriculumSidebar = () => {
                       <IoChevronDownOutline />
                     )}
                   </span>
-                  <span className={styles.sectionPill}>
-                    Section {index + 1}
-                  </span>
-                  <span className={styles.sectionTitle}>{section.title}</span>
                 </div>
-                <button className={styles.deleteBtn}>
-                  <IoTrashOutline />
-                </button>
               </div>
 
               {isExpanded && (
-                <div className={styles.sectionBody}>
-                  <div className={styles.lessonsListHeader}>
-                    <strong>Lessons List</strong>
-                    <button className={styles.addLessonBtn}>
-                      + Add Lesson
-                    </button>
-                  </div>
-
-                  <div className={styles.lessonsList}>
-                    {section.lessons.map((lesson) => (
-                      <div className={styles.lessonRow} key={lesson.id}>
-                        <div className={styles.lessonLeft}>
-                          <BsGripVertical className={styles.dragIcon} />
-                          <IoChevronDownOutline
-                            className={styles.collapseIcon}
-                          />
-                          <IoPlayCircle className={styles.playIcon} />
-                          <div className={styles.lessonInfo}>
-                            <span className={styles.lessonName}>
-                              {lesson.title}
-                            </span>
-                            <span className={styles.lessonTime}>
-                              🕐 {lesson.duration}
-                            </span>
-                          </div>
-                        </div>
-                        <div className={styles.lessonRight}>
-                          <span className={styles.attachmentPill}>
-                            📎 {lesson.attachments} Attachments
-                          </span>
-                          <button className={styles.deleteBtn}>
-                            <IoTrashOutline />
-                          </button>
-                        </div>
+                <div className={styles.lessonsList}>
+                  {section.lessons.map((lesson, idx) => (
+                    <div
+                      key={lesson.id}
+                      className={`${styles.lessonRow} ${styles[lesson.status]}`}
+                    >
+                      <div className={styles.lessonIcon}>
+                        {lesson.status === "completed" && (
+                          <IoCheckmarkCircle className={styles.iconSuccess} />
+                        )}
+                        {lesson.status === "active" && (
+                          <IoPlayCircle className={styles.iconActive} />
+                        )}
+                        {lesson.status === "locked" && (
+                          <IoLockClosed className={styles.iconLocked} />
+                        )}
                       </div>
-                    ))}
-                  </div>
-
-                  <div className={styles.assessmentTools}>
-                    <button className={styles.btnQuestionBank}>
-                      <IoAddCircleOutline /> Add Question
-                    </button>
-                    <button className={styles.btnSectionQuiz}>
-                      <IoAddCircleOutline /> Add Section Quiz
-                    </button>
-                  </div>
+                      <div className={styles.lessonDetails}>
+                        <span className={styles.lessonTitle}>
+                          {idx + 1}. {lesson.title}
+                        </span>
+                        <span className={styles.lessonDuration}>
+                          {lesson.duration}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
           );
         })}
-
-        <button className={styles.addNewSectionBtn}>
-          <IoAddCircleOutline /> Add New Section
-        </button>
       </div>
     </div>
   );

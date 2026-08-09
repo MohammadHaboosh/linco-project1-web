@@ -1,38 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
 import CurriculumSidebar from "../CurriculumSidebar/CurriculumSidebar";
 import VideoContent from "./VideoContent";
 import LessonTabs from "../LessonTabs/LessonTabs";
 import AIFloatingAssistant from "../AIFloatingAssistant/AIFloatingAssistant";
 import styles from "./CourseViewer.module.css";
-import { IoMenuOutline } from "react-icons/io5";
 
 const CourseViewer = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
   return (
     <div className={styles.viewerContainer} dir="rtl">
-      <div className={styles.subHeader}>
-        <button
-          className={styles.menuBtn}
-          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        >
-          <IoMenuOutline /> {isSidebarOpen ? "إخفاء المنهج" : "إظهار المنهج"}
-        </button>
-        <div className={styles.pageTitle}>
-          <span className={styles.editingMode}>LESSON 04</span>
-          <h1>Component Lifecycle & Hooks</h1>
+      {/* شريط علوي أنيق يعرض اسم الدرس بدلاً من أزرار التعديل */}
+      <div className={styles.lessonHeader}>
+        <div className={styles.titleArea}>
+          <span className={styles.lessonBadge}>الدرس 4</span>
+          <h1>دورة حياة المكونات و Hooks</h1>
         </div>
       </div>
 
       <div className={styles.mainLayout}>
-        <aside
-          className={`${styles.sidebar} ${isSidebarOpen ? styles.sidebarOpen : styles.sidebarClosed}`}
-        >
-          <div className={styles.sidebarInner}>
-            <CurriculumSidebar />
-          </div>
-        </aside>
-
+        {/* منطقة المحتوى: الفيديو والتبويبات (يمين الشاشة لأننا RTL) */}
         <main className={styles.contentArea}>
           <div className={styles.videoStage}>
             <VideoContent />
@@ -41,6 +26,11 @@ const CourseViewer = () => {
             <LessonTabs />
           </div>
         </main>
+
+        {/* القائمة الجانبية: تعرض تقدم الطالب (يسار الشاشة) */}
+        <aside className={styles.sidebar}>
+          <CurriculumSidebar />
+        </aside>
       </div>
 
       <AIFloatingAssistant />

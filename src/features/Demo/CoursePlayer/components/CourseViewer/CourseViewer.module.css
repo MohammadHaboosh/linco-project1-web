@@ -3,16 +3,12 @@
 }
 
 .viewerContainer {
-  --primary-blue: #153060;
-  --secondary-blue: #2563eb;
-  --bg-color: #f8f9fa;
+  --bg-color: #f4f7f9; /* لون خلفية خرافي مريح للعين */
   --card-bg: #ffffff;
-  --border-color: #e5e7eb;
-  --text-main: #1f2937;
-  --text-muted: #6b7280;
+  --text-main: #0f172a;
 
   width: 100%;
-  min-height: calc(100vh - 70px);
+  min-height: calc(100vh - 64px);
   background-color: var(--bg-color);
   font-family: "Inter", system-ui, sans-serif;
   color: var(--text-main);
@@ -20,99 +16,97 @@
   flex-direction: column;
 }
 
-.subHeader {
+/* شريط عنوان الدرس */
+.lessonHeader {
   background: var(--card-bg);
-  border-bottom: 1px solid var(--border-color);
-  padding: 12px 24px;
+  padding: 20px 32px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 20px;
+  border-bottom: 1px solid #e2e8f0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+  z-index: 10;
 }
 
-.menuBtn {
-  background: #f3f4f6;
-  border: 1px solid var(--border-color);
-  padding: 8px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 600;
-  color: var(--text-main);
-}
-
-.pageTitle {
+.titleArea {
   display: flex;
   flex-direction: column;
+  gap: 6px;
 }
-
-.editingMode {
-  color: var(--secondary-blue);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-}
-
-.pageTitle h1 {
+.titleArea h1 {
   margin: 0;
-  font-size: 16px;
+  font-size: 24px;
+  font-weight: 800;
+  color: #1e293b;
+}
+.lessonBadge {
+  background: #dbeafe;
+  color: #1e40af;
+  font-size: 12px;
   font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+  width: fit-content;
 }
 
+/* تخطيط المشغل والقائمة */
 .mainLayout {
-  display: flex;
-  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 380px; /* القائمة الجانبية عرضها ثابت 380، والفيديو يأخذ الباقي */
+  gap: 24px;
+  padding: 24px 32px;
+  max-width: 1800px;
+  margin: 0 auto;
   width: 100%;
-}
-
-.sidebar {
-  background: var(--card-bg);
-  border-left: 1px solid var(--border-color);
-  transition:
-    width 0.3s ease,
-    min-width 0.3s ease;
-  overflow: hidden;
-}
-
-.sidebarInner {
-  width: 380px;
-  height: 100%;
-  overflow-y: auto;
-}
-
-.sidebarOpen {
-  width: 380px;
-  min-width: 380px;
-}
-.sidebarClosed {
-  width: 0;
-  min-width: 0;
-  border: none;
+  align-items: start;
 }
 
 .contentArea {
-  flex: 1;
-  padding: 24px;
   display: flex;
   flex-direction: column;
   gap: 24px;
-  overflow-y: auto;
   min-width: 0;
 }
 
 .videoStage {
   width: 100%;
   background: #000;
-  border-radius: 16px;
+  border-radius: 20px;
   overflow: hidden;
   aspect-ratio: 16/9;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15); /* ظل عميق لإبراز الفيديو */
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .tabsStage {
   background: var(--card-bg);
   border-radius: 16px;
-  border: 1px solid var(--border-color);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e2e8f0;
+}
+
+.sidebar {
+  background: var(--card-bg);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e2e8f0;
+  height: calc(100vh - 160px);
+  position: sticky;
+  top: 24px;
+  overflow: hidden; /* لمنع خروج المحتوى عن الزوايا الدائرية */
+}
+
+/* Scrollbar خرافي للمتصفح */
+.sidebar :global(::-webkit-scrollbar) {
+  width: 6px;
+}
+.sidebar :global(::-webkit-scrollbar-track) {
+  background: transparent;
+}
+.sidebar :global(::-webkit-scrollbar-thumb) {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+.sidebar :global(::-webkit-scrollbar-thumb:hover) {
+  background: #94a3b8;
 }
