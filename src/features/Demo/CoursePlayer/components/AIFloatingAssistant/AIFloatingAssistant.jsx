@@ -72,6 +72,7 @@ const AIFloatingAssistant = () => {
   return (
     <aside
       className={`${styles.aiRail} ${isOpen ? styles.open : styles.closed}`}
+      aria-live="polite"
     >
       {!isOpen && (
         <button

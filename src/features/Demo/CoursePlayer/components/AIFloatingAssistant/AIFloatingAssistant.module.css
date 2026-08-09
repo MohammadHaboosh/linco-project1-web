@@ -27,9 +27,9 @@
   width: 54px;
   min-height: 190px;
   padding: 12px 8px;
-  border: 1px solid #e4e6ef;
+  border: 1px solid rgba(132, 118, 255, 0.16);
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.96);
+  background: linear-gradient(180deg, #ffffff 0%, #f8f6ff 100%);
   color: var(--ai-ink);
   display: flex;
   flex-direction: column;
@@ -81,8 +81,8 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(180deg, #ffffff 0%, #fbfaff 100%);
-  border: 1px solid var(--ai-line);
+  background: linear-gradient(145deg, #ffffff 0%, #f8f7ff 100%);
+  border: 1px solid rgba(132, 118, 255, 0.2);
   border-radius: 22px;
   box-shadow: 0 24px 70px rgba(25, 31, 56, 0.12);
   animation: panelIn 0.24s ease;

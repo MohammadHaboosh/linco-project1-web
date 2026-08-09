@@ -68,20 +68,6 @@ const VideoContent = () => {
         </div>
       </div>
 
-      <div className={styles.lessonMeta}>
-        <div className={styles.lessonMetaMain}>
-          <span className={styles.lessonPill}>LESSON 01</span>
-          <h2>Understanding the DOM</h2>
-          <p>
-            Learn how browsers represent HTML as a tree, how React works with the DOM,
-            and how to reason about updates without unnecessary re-renders.
-          </p>
-        </div>
-        <div className={styles.lessonStats}>
-          <span><b>15:20</b> Duration</span>
-          <span><b>Intermediate</b> Level</span>
-        </div>
-      </div>
     </div>
   );
 };

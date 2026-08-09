@@ -148,6 +148,7 @@
   flex: 1;
   min-height: 0;
   overflow: hidden;
+  overscroll-behavior: contain;
 }
 
 .contentColumn {
@@ -162,6 +163,7 @@
   gap: 16px;
   scrollbar-width: thin;
   scrollbar-color: #cbd5e1 transparent;
+  overscroll-behavior: contain;
 }
 .contentColumn::-webkit-scrollbar {
   width: 6px;

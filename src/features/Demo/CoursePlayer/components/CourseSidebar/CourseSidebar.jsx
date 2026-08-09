@@ -18,6 +18,7 @@ const CourseSidebar = ({ isOpen, setIsOpen, activeTab, setActiveTab }) => {
     <aside
       className={`${styles.sidebarWrapper} ${isOpen ? styles.open : styles.closed}`}
       aria-label="Course learning sidebar"
+      data-open={isOpen}
     >
       <div className={styles.verticalNav}>
         <button
