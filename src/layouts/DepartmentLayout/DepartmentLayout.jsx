@@ -23,8 +23,7 @@ const LayoutContent = () => {
     return <div className={styles.loader}>Loading Department...</div>;
 
   const navLinks =
-    DEPARTMENT_NAV[currentRoleView]?.navLinks ||
-    DEPARTMENT_NAV.trainee.navLinks;
+    DEPARTMENT_NAV[role]?.navLinks || DEPARTMENT_NAV.member.navLinks;
   const footerLinks = FOOTER_CONFIG[`department_${role.toLowerCase()}`] || [];
 
   return (

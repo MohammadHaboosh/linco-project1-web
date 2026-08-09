@@ -80,28 +80,26 @@
 .chapterCard {
   overflow: hidden;
   border: 1px solid rgba(135, 160, 200, 0.22);
-  border-radius: 16px;
+  border-radius: 18px;
   background: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0.98) 0%,
     rgba(247, 250, 255, 0.96) 100%
   );
   box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.2s ease;
+  transition: all 0.25s ease;
 }
+
 .chapterCard.expanded {
-  border-color: rgba(95, 131, 219, 0.36);
-  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
-  transform: translateY(-1px);
+  border-color: rgba(95, 131, 219, 0.4);
+  box-shadow: 0 16px 32px rgba(37, 99, 235, 0.08);
+  transform: translateY(-2px);
 }
 
 .chapterHeader {
   width: 100%;
-  min-height: 70px;
-  padding: 12px 12px 10px;
+  min-height: 74px;
+  padding: 14px 16px;
   border: 0;
   background: transparent;
   display: grid;
@@ -182,10 +180,10 @@
 .lessonItem {
   position: relative;
   width: 100%;
-  min-height: 62px;
-  padding: 10px 10px 10px 13px;
+  min-height: 66px;
+  padding: 12px 12px 12px 16px;
+  border-radius: 14px;
   border: 1px solid transparent;
-  border-radius: 13px;
   background: rgba(255, 255, 255, 0.7);
   display: flex;
   align-items: center;
@@ -202,9 +200,9 @@
   margin-top: 6px;
 }
 .lessonItem:hover:not(:disabled) {
-  background: rgba(242, 246, 252, 0.95);
-  border-color: rgba(191, 212, 255, 0.85);
-  transform: translateX(1px);
+  background: #f0f5ff;
+  border-color: rgba(191, 212, 255, 0.9);
+  transform: translateX(3px);
 }
 .lessonItem.selected {
   background: linear-gradient(
@@ -261,7 +259,8 @@
 .lessonTitle {
   overflow: hidden;
   color: #33445f;
-  font-size: 11px;
+  font-size: 12px;
+  line-height: 1.45;
   line-height: 1.35;
   font-weight: 750;
   text-overflow: ellipsis;

@@ -30,7 +30,7 @@ export const DASHBOARD_NAV = {
 };
 
 export const DEMO_NAV = {
-  trainee: {
+  member: {
     navLinks: [
       { name: "Departments", icon: <IoBusinessOutline />, path: "" },
       {
@@ -81,26 +81,10 @@ export const DEMO_NAV = {
       },
     ],
   },
-  sectionManager: {
-    navLinks: [
-      { name: "Departments", icon: <IoBusinessOutline />, path: "" },
-      {
-        name: "Certificates",
-        icon: <IoDocumentTextOutline />,
-        path: PATHS.CERTIFICATES,
-      },
-      { name: "Lives", icon: <IoVideocamOutline />, path: PATHS.LIVES },
-      {
-        name: "Inquiries",
-        icon: <IoHelpCircleOutline />,
-        path: PATHS.INQUIRIES,
-      },
-    ],
-  },
 };
 
 export const DEPARTMENT_NAV = {
-  trainee: {
+  member: {
     navLinks: [
       { name: "Home", icon: <IoHomeOutline />, path: "" },
       {
@@ -127,7 +111,7 @@ export const DEPARTMENT_NAV = {
       },
     ],
   },
-  sectionManager: {
+  admin: {
     navLinks: [
       { name: "Home", icon: <IoHomeOutline />, path: "" },
       { name: "Members", icon: <IoPeopleOutline />, path: PATHS.MEMBERS },

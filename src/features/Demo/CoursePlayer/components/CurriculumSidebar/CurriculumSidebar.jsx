@@ -90,25 +90,6 @@ const CurriculumSidebar = () => {
 
   return (
     <div className={styles.curriculum}>
-      <section className={styles.progressCard}>
-        <div className={styles.progressTop}>
-          <div>
-            <span className={styles.eyebrow}>YOUR LEARNING PATH</span>
-            <strong>Course progress</strong>
-          </div>
-          <strong className={styles.progressValue}>35%</strong>
-        </div>
-        <div className={styles.progressTrack}>
-          <span style={{ width: "35%" }} />
-        </div>
-        <div className={styles.progressMeta}>
-          <span>
-            {completedLessons} of {totalLessons} lessons
-          </span>
-          <span>~ 2h 10m left</span>
-        </div>
-      </section>
-
       <div className={styles.chapterList}>
         {chapters.map((chapter) => {
           const isExpanded = expanded.includes(chapter.id);
@@ -127,17 +108,9 @@ const CurriculumSidebar = () => {
                 </span>
                 <span className={styles.chapterInfo}>
                   <strong>{chapter.title}</strong>
-                  <small>{chapter.subtitle}</small>
-                </span>
-                <span className={styles.chapterProgress}>
-                  {chapter.progress}%
                 </span>
                 <IoChevronDown className={styles.chevron} />
               </button>
-
-              <div className={styles.chapterProgressTrack}>
-                <span style={{ width: `${chapter.progress}%` }} />
-              </div>
 
               {isExpanded && chapter.lessons.length > 0 && (
                 <div className={styles.lessonList}>

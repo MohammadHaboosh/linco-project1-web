@@ -1,5 +1,5 @@
 .sidebarWrapper {
-  --sidebar-width: clamp(390px, 28vw, 455px);
+  --sidebar-width: clamp(420px, 32vw, 500px);
   --rail-width: 72px;
   display: flex;
   flex: 0 0 auto;
@@ -201,7 +201,7 @@
 
 @media (max-width: 1180px) {
   .sidebarWrapper {
-    --sidebar-width: 400px;
+    --sidebar-width: 440px;
   }
 }
 
