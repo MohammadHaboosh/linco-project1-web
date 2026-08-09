@@ -1,176 +1,311 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import styles from "./CurriculumSidebar.module.css";
 import {
-  IoPlayCircle,
+  IoAddOutline,
+  IoChevronDownOutline,
   IoCheckmarkCircle,
-  IoHelpCircle,
-  IoChevronDown,
-  IoTrophyOutline,
-  IoRibbonOutline,
+  IoPlayCircleOutline,
   IoTimeOutline,
-  IoDocumentTextOutline,
   IoAttachOutline,
+  IoDocumentTextOutline,
+  IoTrashOutline,
+  IoLibraryOutline,
+  IoShieldCheckmarkOutline,
+  IoLockClosedOutline,
+  IoArrowBackOutline,
 } from "react-icons/io5";
 
-const CurriculumSidebar = ({ activeLesson, setActiveLesson }) => {
-  const [expandedSection, setExpandedSection] = useState(1);
+const sections = [
+  {
+    id: 1,
+    title: "React Fundamentals",
+    lessons: 6,
+    duration: "1h 24m",
+    progress: 100,
+    items: [
+      {
+        id: 101,
+        title: "Introduction to React & Architecture",
+        duration: "12:30",
+        attachments: 2,
+        completed: true,
+      },
+      {
+        id: 102,
+        title: "Understanding Virtual DOM & Lifecycle",
+        duration: "18:45",
+        attachments: 0,
+        completed: true,
+      },
+      {
+        id: 103,
+        title: "Components, Props & Composition",
+        duration: "16:20",
+        attachments: 1,
+        completed: true,
+      },
+      {
+        id: 104,
+        title: "State & Event Handling",
+        duration: "14:10",
+        attachments: 0,
+        completed: true,
+      },
+    ],
+  },
+  {
+    id: 2,
+    title: "Hooks & Application Architecture",
+    lessons: 8,
+    duration: "2h 08m",
+    progress: 48,
+    items: [
+      {
+        id: 201,
+        title: "Component Lifecycle & Hooks",
+        duration: "12:40",
+        attachments: 3,
+        completed: false,
+      },
+      {
+        id: 202,
+        title: "useEffect Patterns & Cleanup",
+        duration: "19:15",
+        attachments: 1,
+        completed: false,
+      },
+      {
+        id: 203,
+        title: "Custom Hooks in Production",
+        duration: "17:40",
+        attachments: 0,
+        completed: false,
+      },
+      {
+        id: 204,
+        title: "State Management Strategy",
+        duration: "22:05",
+        attachments: 0,
+        completed: false,
+      },
+    ],
+  },
+  {
+    id: 3,
+    title: "Next.js Production Patterns",
+    lessons: 7,
+    duration: "2h 32m",
+    progress: 0,
+    items: [
+      {
+        id: 301,
+        title: "App Router Architecture",
+        duration: "21:10",
+        attachments: 2,
+        completed: false,
+      },
+      {
+        id: 302,
+        title: "Server & Client Components",
+        duration: "18:30",
+        attachments: 1,
+        completed: false,
+      },
+    ],
+  },
+];
 
-  const sections = [
-    {
-      id: 1,
-      title: "Fundamentals and Workflow",
-      progress: 65,
-      items: [
-        {
-          id: 101,
-          type: "video",
-          title: "Introduction to React & Architecture",
-          duration: "12:30 mins",
-          attachments: 2,
-          completed: true,
-        },
-        {
-          id: 102,
-          type: "video",
-          title: "Understanding Virtual DOM & Lifecycle",
-          duration: "18:45 mins",
-          attachments: 0,
-          completed: false,
-        },
-        {
-          id: 103,
-          type: "quiz",
-          title: "Section 1 Assessment",
-          duration: "10 Questions",
-          attachments: 0,
-        },
-      ],
-    },
-  ];
+const CurriculumSidebar = ({ activeLesson, setActiveLesson }) => {
+  const [expanded, setExpanded] = useState([1, 2]);
+  const [activeTab, setActiveTab] = useState("curriculum");
+
+  const totalLessons = useMemo(
+    () => sections.reduce((sum, section) => sum + section.lessons, 0),
+    [],
+  );
+
+  const toggleSection = (id) => {
+    setExpanded((current) =>
+      current.includes(id)
+        ? current.filter((item) => item !== id)
+        : [...current, id],
+    );
+  };
 
   return (
-    <div className={styles.sidebarContainer}>
-      <div className={styles.sidebarHeader}>
-        <h3>Course Content</h3>
-        {sections.map((sec) => (
-          <div key={sec.id} className={styles.courseProgress}>
-            <div className={styles.progressInfoBar}>
-              <span>Overall Progress</span>
-              <span className={styles.progressPercentage}>{sec.progress}%</span>
-            </div>
-            <div className={styles.progressBarTrack}>
-              <div
-                className={styles.progressBarFill}
-                style={{ width: `${sec.progress}%` }}
-              ></div>
-            </div>
+    <div className={styles.curriculum}>
+      <div className={styles.topSummary}>
+        <div className={styles.summaryStat}>
+          <strong>68%</strong>
+          <span>منجز</span>
+        </div>
+        <div className={styles.summaryProgress}>
+          <div className={styles.progressLabels}>
+            <span>تقدم الكورس</span>
+            <strong>12 / {totalLessons}</strong>
           </div>
-        ))}
-      </div>
-
-      <div className={styles.sectionsList}>
-        {sections.map((section) => (
-          <div key={section.id} className={styles.sectionWrapper}>
-            <div
-              className={styles.sectionTitleHeader}
-              onClick={() =>
-                setExpandedSection(
-                  expandedSection === section.id ? null : section.id,
-                )
-              }
-            >
-              <div className={styles.titleGroup}>
-                <div className={styles.toggleBtn}>
-                  <IoChevronDown
-                    className={`${styles.chevron} ${
-                      expandedSection === section.id ? styles.rotated : ""
-                    }`}
-                  />
-                </div>
-                <div className={styles.sectionBadge}>Section {section.id}</div>
-                <h4>{section.title}</h4>
-              </div>
-            </div>
-
-            {expandedSection === section.id && (
-              <div className={styles.sectionItems}>
-                {section.items.map((item, index) => (
-                  <div
-                    key={item.id}
-                    className={`${styles.itemRow} ${
-                      activeLesson === item.id ? styles.activeItem : ""
-                    }`}
-                    onClick={() => setActiveLesson(item.id)}
-                  >
-                    <div className={styles.itemIcon}>
-                      {item.type === "video" && item.completed ? (
-                        <IoCheckmarkCircle className={styles.iconSuccess} />
-                      ) : null}
-                      {item.type === "video" && !item.completed ? (
-                        <IoPlayCircle className={styles.iconVideo} />
-                      ) : null}
-                      {item.type === "quiz" ? (
-                        <IoHelpCircle className={styles.iconQuiz} />
-                      ) : null}
-                    </div>
-
-                    <div className={styles.itemMeta}>
-                      <span className={styles.itemTitle}>
-                        {index + 1}. {item.title}
-                      </span>
-                      <span className={styles.itemDuration}>
-                        {item.type === "quiz" ? (
-                          <IoDocumentTextOutline className={styles.timeIcon} />
-                        ) : (
-                          <IoTimeOutline className={styles.timeIcon} />
-                        )}
-                        {item.duration}
-                      </span>
-                    </div>
-
-                    {item.attachments > 0 ? (
-                      <div className={styles.attachmentBadge}>
-                        <IoAttachOutline style={{ marginRight: "4px" }} />
-                        {item.attachments} Attachments
-                      </div>
-                    ) : (
-                      <div
-                        className={`${styles.attachmentBadge} ${styles.emptyAttachment}`}
-                      >
-                        <IoAttachOutline style={{ marginRight: "4px" }} />0
-                        Attachments
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-
-      <div className={styles.courseEndings}>
-        <div className={`${styles.endingCard} ${styles.assessmentCard}`}>
-          <div className={styles.endingIconWrapper}>
-            <IoTrophyOutline />
-          </div>
-          <div className={styles.endingMeta}>
-            <strong>Final Course Assessment</strong>
-            <span>Required to pass the course</span>
+          <div className={styles.progressTrack}>
+            <i style={{ width: "68%" }} />
           </div>
         </div>
+        <div className={styles.summaryBadge}>On track</div>
+      </div>
 
-        <div
-          className={`${styles.endingCard} ${styles.certificateCard} ${styles.locked}`}
+      <div className={styles.curriculumTabs}>
+        <button
+          type="button"
+          className={activeTab === "curriculum" ? styles.activeTab : ""}
+          onClick={() => setActiveTab("curriculum")}
         >
-          <div className={styles.endingIconWrapper}>
-            <IoRibbonOutline />
-          </div>
-          <div className={styles.endingMeta}>
-            <strong>Official Certificate</strong>
-            <span>Available upon passing the exam</span>
-          </div>
+          المنهج
+        </button>
+        <button
+          type="button"
+          className={activeTab === "resources" ? styles.activeTab : ""}
+          onClick={() => setActiveTab("resources")}
+        >
+          مواردي
+        </button>
+      </div>
+
+      {activeTab === "curriculum" ? (
+        <div className={styles.sectionList}>
+          {sections.map((section, sectionIndex) => {
+            const isExpanded = expanded.includes(section.id);
+            return (
+              <article className={styles.sectionCard} key={section.id}>
+                <button
+                  type="button"
+                  className={styles.sectionHeader}
+                  onClick={() => toggleSection(section.id)}
+                >
+                  <div className={styles.sectionNumber}>
+                    {String(sectionIndex + 1).padStart(2, "0")}
+                  </div>
+                  <div className={styles.sectionHeading}>
+                    <div className={styles.sectionTitleLine}>
+                      <h3>{section.title}</h3>
+                      {section.progress === 100 && (
+                        <span className={styles.completedPill}>
+                          <IoCheckmarkCircle /> مكتمل
+                        </span>
+                      )}
+                    </div>
+                    <div className={styles.sectionMeta}>
+                      <span>{section.lessons} دروس</span>
+                      <span>•</span>
+                      <span>{section.duration}</span>
+                      <span>•</span>
+                      <span>{section.progress}%</span>
+                    </div>
+                    <div className={styles.miniTrack}>
+                      <i style={{ width: `${section.progress}%` }} />
+                    </div>
+                  </div>
+                  <span
+                    className={`${styles.chevron} ${isExpanded ? styles.rotated : ""}`}
+                  >
+                    <IoChevronDownOutline />
+                  </span>
+                </button>
+
+                {isExpanded && (
+                  <div className={styles.lessonList}>
+                    {section.items.map((item, index) => {
+                      const active = activeLesson === item.id;
+                      return (
+                        <button
+                          type="button"
+                          key={item.id}
+                          className={`${styles.lessonRow} ${active ? styles.activeLesson : ""}`}
+                          onClick={() => setActiveLesson(item.id)}
+                        >
+                          <span className={styles.lessonIndex}>
+                            {String(index + 1).padStart(2, "0")}
+                          </span>
+                          <span className={styles.lessonState}>
+                            {item.completed ? (
+                              <IoCheckmarkCircle />
+                            ) : (
+                              <IoPlayCircleOutline />
+                            )}
+                          </span>
+                          <span className={styles.lessonInfo}>
+                            <strong>{item.title}</strong>
+                            <small>
+                              <IoTimeOutline /> {item.duration}
+                            </small>
+                          </span>
+                          <span className={styles.attachmentPill}>
+                            <IoAttachOutline />
+                            {item.attachments}
+                          </span>
+                          {active && (
+                            <span className={styles.activeArrow}>
+                              <IoArrowBackOutline />
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
+
+                    <div className={styles.sectionTools}>
+                      <button type="button">
+                        <IoLibraryOutline />
+                        Question Bank
+                        <span>12</span>
+                      </button>
+                      <button type="button">
+                        <IoShieldCheckmarkOutline />
+                        Section Assessment
+                        <span>10 Q</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </article>
+            );
+          })}
         </div>
+      ) : (
+        <div className={styles.resourceState}>
+          <div className={styles.resourceIcon}>
+            <IoDocumentTextOutline />
+          </div>
+          <h3>مواردك المحفوظة</h3>
+          <p>
+            الملفات، الملاحظات، والموارد التي أضفتها أثناء التعلم ستظهر هنا.
+          </p>
+          <button type="button">
+            <IoAddOutline /> إضافة مورد
+          </button>
+        </div>
+      )}
+
+      <div className={styles.footerCards}>
+        <button type="button" className={styles.assessmentCard}>
+          <span className={styles.footerIcon}>
+            <IoShieldCheckmarkOutline />
+          </span>
+          <span>
+            <strong>Final Course Assessment</strong>
+            <small>40 سؤال • مطلوب للحصول على الشهادة</small>
+          </span>
+          <IoArrowBackOutline />
+        </button>
+        <button
+          type="button"
+          className={`${styles.assessmentCard} ${styles.lockedCard}`}
+        >
+          <span className={styles.footerIcon}>
+            <IoLockClosedOutline />
+          </span>
+          <span>
+            <strong>Official Certificate</strong>
+            <small>يفتح بعد اجتياز التقييم النهائي</small>
+          </span>
+          <IoLockClosedOutline />
+        </button>
       </div>
     </div>
   );

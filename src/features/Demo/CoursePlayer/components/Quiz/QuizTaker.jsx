@@ -1,106 +1,118 @@
-import { useState, useEffect } from "react";
-import { IoTimeOutline, IoChevronForwardOutline } from "react-icons/io5";
+import { useEffect, useMemo, useState } from "react";
+import {
+  IoArrowBackOutline,
+  IoCheckmarkCircleOutline,
+  IoTimeOutline,
+} from "react-icons/io5";
 import styles from "./Quiz.module.css";
 
 const QuizTaker = ({ quiz, onSubmit }) => {
   const [currentQIndex, setCurrentQIndex] = useState(0);
   const [answers, setAnswers] = useState({});
-  const [timeLeft, setTimeLeft] = useState(quiz.timeLimit * 60); // تحويل الدقائق لثواني
+  const [timeLeft, setTimeLeft] = useState(quiz.timeLimit * 60);
+  const currentQuestion = quiz.questions[currentQIndex];
 
-  // مؤقت تنازلي
   useEffect(() => {
     if (timeLeft <= 0) {
-      onSubmit(answers); // تسليم تلقائي عند انتهاء الوقت
-      return;
+      onSubmit(answers);
+      return undefined;
     }
-    const timerId = setInterval(() => setTimeLeft((prev) => prev - 1), 1000);
-    return () => clearInterval(timerId);
+
+    const timer = setInterval(() => {
+      setTimeLeft((value) => value - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
   }, [timeLeft, answers, onSubmit]);
 
-  // تنسيق الوقت (MM:SS)
-  const formatTime = (seconds) => {
-    const m = Math.floor(seconds / 60)
+  const answeredCount = useMemo(() => Object.keys(answers).length, [answers]);
+  const progress = ((currentQIndex + 1) / quiz.questions.length) * 100;
+
+  const formatTime = (seconds) =>
+    `${Math.floor(seconds / 60)
       .toString()
-      .padStart(2, "0");
-    const s = (seconds % 60).toString().padStart(2, "0");
-    return `${m}:${s}`;
+      .padStart(2, "0")}:${(seconds % 60).toString().padStart(2, "0")}`;
+
+  const selectOption = (index) => {
+    setAnswers((current) => ({ ...current, [currentQIndex]: index }));
   };
 
-  const handleSelectOption = (optIndex) => {
-    setAnswers({ ...answers, [currentQIndex]: optIndex });
-  };
-
-  const handleNext = () => {
+  const next = () => {
     if (currentQIndex < quiz.questions.length - 1) {
-      setCurrentQIndex(currentQIndex + 1);
+      setCurrentQIndex((value) => value + 1);
     } else {
       onSubmit(answers);
     }
   };
 
-  const currentQuestion = quiz.questions[currentQIndex];
-  const progressPercent = ((currentQIndex + 1) / quiz.questions.length) * 100;
-  const hasAnsweredCurrent = answers[currentQIndex] !== undefined;
-
   return (
     <div className={styles.takerContainer}>
-      {/* الترويسة: المؤقت والتقدم */}
       <div className={styles.takerHeader}>
-        <div className={styles.progressInfo}>
-          <span>
-            Question {currentQIndex + 1} of {quiz.questions.length}
-          </span>
-          <div className={styles.progressBar}>
-            <div
-              className={styles.progressFill}
-              style={{ width: `${progressPercent}%` }}
-            ></div>
-          </div>
+        <div>
+          <span className={styles.quizEyebrow}>ASSESSMENT • {quiz.title}</span>
+          <h2>اختبر فهمك</h2>
         </div>
-
         <div
           className={`${styles.timerBox} ${timeLeft < 60 ? styles.timerWarning : ""}`}
         >
-          <IoTimeOutline className={styles.timerIcon} />
-          <span>{formatTime(timeLeft)}</span>
+          <IoTimeOutline />
+          {formatTime(timeLeft)}
         </div>
       </div>
 
-      {/* منطقة السؤال */}
+      <div className={styles.questionProgress}>
+        <div>
+          <span>
+            السؤال {currentQIndex + 1} من {quiz.questions.length}
+          </span>
+          <strong>{answeredCount} مجاب</strong>
+        </div>
+        <div className={styles.progressBar}>
+          <i style={{ width: `${progress}%` }} />
+        </div>
+      </div>
+
       <div className={styles.questionArea}>
-        <h3 className={styles.questionText}>{currentQuestion.text}</h3>
+        <span className={styles.questionNumber}>
+          QUESTION {String(currentQIndex + 1).padStart(2, "0")}
+        </span>
+        <h3>{currentQuestion.text}</h3>
 
         <div className={styles.optionsList}>
-          {currentQuestion.options.map((opt, idx) => (
-            <label
-              key={idx}
-              className={`${styles.optionCard} ${answers[currentQIndex] === idx ? styles.optionSelected : ""}`}
-            >
-              <input
-                type="radio"
-                name={`question_${currentQIndex}`}
-                checked={answers[currentQIndex] === idx}
-                onChange={() => handleSelectOption(idx)}
-                className={styles.hiddenRadio}
-              />
-              <div className={styles.radioCustom}></div>
-              <span className={styles.optionText}>{opt}</span>
-            </label>
-          ))}
+          {currentQuestion.options.map((option, index) => {
+            const selected = answers[currentQIndex] === index;
+            return (
+              <button
+                type="button"
+                key={option}
+                className={`${styles.optionCard} ${selected ? styles.optionSelected : ""}`}
+                onClick={() => selectOption(index)}
+              >
+                <span className={styles.optionLetter}>
+                  {String.fromCharCode(65 + index)}
+                </span>
+                <span className={styles.optionText}>{option}</span>
+                {selected && (
+                  <IoCheckmarkCircleOutline className={styles.selectedIcon} />
+                )}
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      {/* أزرار التحكم */}
       <div className={styles.takerFooter}>
+        <span>اختر إجابة واحدة للمتابعة</span>
         <button
+          type="button"
           className={styles.nextBtn}
-          onClick={handleNext}
-          disabled={!hasAnsweredCurrent}
+          onClick={next}
+          disabled={answers[currentQIndex] === undefined}
         >
           {currentQIndex === quiz.questions.length - 1
-            ? "Submit Assessment"
-            : "Next Question"}
-          <IoChevronForwardOutline />
+            ? "إنهاء التقييم"
+            : "السؤال التالي"}
+          <IoArrowBackOutline />
         </button>
       </div>
     </div>

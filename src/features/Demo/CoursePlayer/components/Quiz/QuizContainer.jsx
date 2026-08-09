@@ -3,90 +3,104 @@ import QuizTaker from "./QuizTaker";
 import QuizResult from "./QuizResult";
 import styles from "./Quiz.module.css";
 
-// بيانات وهمية للاختبار (تأتي من الباك-إند لاحقاً)
 const MOCK_QUIZ = {
-  title: "Section 1 Final Assessment",
-  timeLimit: 15, // بالدقائق
-  passingScore: 80, // نسبة النجاح
+  title: "Section 2 • Hooks & Architecture",
+  description: "اختبر فهمك لأهم مفاهيم Hooks ودورة حياة المكونات.",
+  timeLimit: 15,
+  passingScore: 80,
   questions: [
     {
       id: 1,
-      text: "What is the primary purpose of the Virtual DOM in React?",
+      text: "ما الاستخدام الأساسي لـ useEffect داخل المكونات الوظيفية؟",
       options: [
-        "To directly manipulate HTML elements faster.",
-        "To create a lightweight copy of the UI to optimize rendering performance.",
-        "To manage global application state.",
-        "To route between different pages securely.",
+        "إنشاء Route جديد",
+        "التعامل مع الآثار الجانبية",
+        "تغيير CSS مباشرة",
+        "تعريف Props جديدة",
       ],
-      correctAnswer: 1, // الإجابة الصحيحة هي الثانية (Index 1)
+      correctAnswer: 1,
     },
     {
       id: 2,
-      text: "Which hook is used to handle side effects in functional components?",
-      options: ["useState", "useContext", "useEffect", "useReducer"],
-      correctAnswer: 2,
+      text: "ما أفضل وصف للـ Virtual DOM؟",
+      options: [
+        "نسخة خفيفة من واجهة المستخدم تساعد React على تحديث الـ UI بكفاءة",
+        "قاعدة بيانات داخل المتصفح",
+        "نظام لإدارة المستخدمين",
+        "خادم لتشغيل Next.js",
+      ],
+      correctAnswer: 0,
     },
     {
       id: 3,
-      text: "What does 'SSR' stand for in Next.js?",
+      text: "متى يكون Custom Hook مفيداً؟",
       options: [
-        "Server-Side Rendering",
-        "Static Site Routing",
-        "Single State React",
-        "System Server Request",
+        "عندما نريد مشاركة منطق React بين أكثر من مكون",
+        "عندما نحتاج إلى تغيير اسم التطبيق",
+        "فقط عند استخدام TypeScript",
+        "فقط داخل ملفات CSS",
       ],
       correctAnswer: 0,
     },
   ],
 };
 
-const QuizContainer = ({ onCompleteSection }) => {
-  const [quizState, setQuizState] = useState("start"); // "start" | "taking" | "result"
-  const [userAnswers, setUserAnswers] = useState({});
+const QuizContainer = ({ onCompleteSection = () => {} }) => {
+  const [quizState, setQuizState] = useState("start");
   const [scoreInfo, setScoreInfo] = useState(null);
 
-  // بدء الامتحان
-  const startQuiz = () => setQuizState("taking");
-
-  // إنهاء الامتحان وحساب النتيجة
   const finishQuiz = (answers) => {
-    let correctCount = 0;
-    MOCK_QUIZ.questions.forEach((q, index) => {
-      if (answers[index] === q.correctAnswer) correctCount++;
-    });
+    const correctCount = MOCK_QUIZ.questions.reduce(
+      (total, question, index) =>
+        total + (answers[index] === question.correctAnswer ? 1 : 0),
+      0,
+    );
 
     const percentage = Math.round(
       (correctCount / MOCK_QUIZ.questions.length) * 100,
     );
-    const isPassed = percentage >= MOCK_QUIZ.passingScore;
 
     setScoreInfo({
       percentage,
-      isPassed,
+      isPassed: percentage >= MOCK_QUIZ.passingScore,
       correctCount,
       total: MOCK_QUIZ.questions.length,
     });
     setQuizState("result");
   };
 
-  // إعادة الامتحان
-  const retryQuiz = () => {
-    setUserAnswers({});
-    setScoreInfo(null);
-    setQuizState("taking");
-  };
+  const retryQuiz = () => setQuizState("taking");
 
   return (
-    <div className={styles.quizWrapper}>
+    <div className={styles.quizWrapper} dir="rtl">
       {quizState === "start" && (
         <div className={styles.startScreen}>
+          <div className={styles.quizBadge}>AI READY • ASSESSMENT</div>
+          <div className={styles.startIcon}>✦</div>
           <h2>{MOCK_QUIZ.title}</h2>
-          <p>
-            This assessment contains {MOCK_QUIZ.questions.length} questions. You
-            need {MOCK_QUIZ.passingScore}% to pass.
-          </p>
-          <button className={styles.startBtn} onClick={startQuiz}>
-            Start Assessment
+          <p>{MOCK_QUIZ.description}</p>
+
+          <div className={styles.quizStats}>
+            <div>
+              <strong>{MOCK_QUIZ.questions.length}</strong>
+              <span>أسئلة</span>
+            </div>
+            <div>
+              <strong>{MOCK_QUIZ.timeLimit}</strong>
+              <span>دقائق</span>
+            </div>
+            <div>
+              <strong>{MOCK_QUIZ.passingScore}%</strong>
+              <span>حد النجاح</span>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            className={styles.startBtn}
+            onClick={() => setQuizState("taking")}
+          >
+            ابدأ التقييم
           </button>
         </div>
       )}
