@@ -2,14 +2,8 @@ import { Link } from "react-router-dom";
 import styles from "./Footer.module.css";
 import { FOOTER_CONFIG } from "./footerConfig";
 import { useTranslation } from "react-i18next";
-import { useDemo } from "../../../hooks/useDemo";
 
-const Footer = ({ location }) => {
-  const { role } = useDemo();
-  const footerLinks =
-    location === "dashboard"
-      ? FOOTER_CONFIG.dashboard
-      : FOOTER_CONFIG[`${location}_${role}`] || FOOTER_CONFIG.dashboard;
+const Footer = ({ footerLinks }) => {
   const { t } = useTranslation();
 
   return (

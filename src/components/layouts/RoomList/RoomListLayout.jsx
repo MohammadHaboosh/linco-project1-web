@@ -6,6 +6,7 @@ import Footer from "../Footer/Footer.jsx";
 import RoomCard from "../../elements/RoomCard/RoomCard.jsx";
 import styles from "./RoomListLayout.module.css";
 import { t } from "i18next";
+import { FOOTER_CONFIG } from "../Footer/footerConfig.jsx";
 
 const RoomsListLayout = ({
   title,
@@ -99,7 +100,7 @@ const RoomsListLayout = ({
         </div>
 
         <div className={styles["footer-wrapper"]}>
-          <Footer location="dashboard" />
+          <Footer footerLinks={FOOTER_CONFIG.dashboard} />
         </div>
       </div>
     </div>

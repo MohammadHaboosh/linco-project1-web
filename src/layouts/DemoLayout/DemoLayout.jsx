@@ -15,7 +15,7 @@ const LayoutContent = () => {
     return <div className={styles.loader}>Loading Workspace...</div>;
 
   const navLinks = DEMO_NAV[role.toLowerCase()]?.navLinks || [];
-  // const footerLinks = FOOTER_CONFIG[`demo_${role.toLowerCase()}`] || [];
+  const footerLinks = FOOTER_CONFIG[`demo_${role.toLowerCase()}`] || [];
 
   return (
     <div className={styles.appContainer}>
@@ -33,7 +33,7 @@ const LayoutContent = () => {
         <main className={styles.pageContent}>
           <Outlet />
         </main>
-        <Footer location="demo" />
+        <Footer footerLinks={footerLinks} />
       </div>
     </div>
   );

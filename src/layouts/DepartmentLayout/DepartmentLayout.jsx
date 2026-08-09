@@ -7,6 +7,7 @@ import { DEPARTMENT_NAV } from "../../config/layoutConfig";
 import { PATHS } from "../../routes/paths";
 import styles from "../MainLayout/MainLayout.module.css";
 import Footer from "../../components/layouts/Footer/Footer";
+import { FOOTER_CONFIG } from "../../components/layouts/Footer/footerConfig";
 
 const LayoutContent = () => {
   const { demoId, role, currentRoleView, setRoleView, isLoading, demoData } =
@@ -24,7 +25,7 @@ const LayoutContent = () => {
   const navLinks =
     DEPARTMENT_NAV[currentRoleView]?.navLinks ||
     DEPARTMENT_NAV.trainee.navLinks;
-  console.log("department navLinks :", navLinks);
+  const footerLinks = FOOTER_CONFIG[`department_${role.toLowerCase()}`] || [];
 
   return (
     <div className={styles.appContainer}>
@@ -48,7 +49,9 @@ const LayoutContent = () => {
         >
           <Outlet />
         </main>
-        {!isCoursePlayerPage && !isChatPage && <Footer location="department" />}
+        {!isCoursePlayerPage && !isChatPage && (
+          <Footer footerLinks={footerLinks} />
+        )}
       </div>
     </div>
   );
