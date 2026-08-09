@@ -3,565 +3,236 @@
 }
 
 .viewerContainer {
-  --bg: #f5f7fb;
-  --surface: #ffffff;
-  --surface-soft: #f8fafc;
-  --ink: #111827;
-  --muted: #667085;
-  --line: #e7eaf0;
-  --blue: #2563eb;
-  --blue-dark: #1d4ed8;
-  --violet: #6d5dfc;
+  --bg-color: #f5f7fb;
+  --card-bg: #ffffff;
+  --primary-navy: #0f172a;
+  --primary-blue: #3b82f6;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border-light: #e2e8f0;
   width: 100%;
-  min-height: calc(100vh - 120px);
-  background:
-    radial-gradient(
-      circle at 78% 5%,
-      rgba(109, 93, 252, 0.045),
-      transparent 24%
-    ),
-    var(--bg);
-  color: var(--ink);
-  font-family: Inter, "Segoe UI", system-ui, sans-serif;
+  height: calc(100vh - 120px);
+  min-height: 0;
+  background: var(--bg-color);
+  font-family: "Inter", system-ui, sans-serif;
+  color: var(--text-main);
+  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
 
 .topHeader {
-  min-height: 68px;
-  padding: 0 clamp(16px, 2.4vw, 34px);
+  background: var(--card-bg);
+  min-height: 64px;
+  padding: 0 24px;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: 24px;
-  background: rgba(255, 255, 255, 0.94);
-  border-bottom: 1px solid var(--line);
-  backdrop-filter: blur(18px);
-  position: relative;
+  align-items: center;
+  border-bottom: 1px solid var(--border-light);
   z-index: 10;
 }
-.headerLeft,
-.headerRight {
+.headerLeft {
   display: flex;
   align-items: center;
+  gap: 16px;
   min-width: 0;
 }
-.headerLeft {
-  gap: 15px;
-}
 .backBtn {
-  height: 38px;
-  border: 1px solid var(--line);
-  border-radius: 11px;
-  padding: 0 12px;
+  background: transparent;
+  border: none;
   display: flex;
   align-items: center;
-  gap: 7px;
-  background: #fff;
-  color: #475467;
-  font-size: 12px;
-  font-weight: 700;
+  gap: 8px;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 13px;
   cursor: pointer;
-  transition: 0.2s ease;
-  white-space: nowrap;
 }
 .backBtn:hover {
-  color: var(--ink);
-  border-color: #d5d9e2;
-  transform: translateY(-1px);
-  box-shadow: 0 7px 18px rgba(16, 24, 40, 0.06);
+  color: var(--primary-navy);
 }
 .divider {
   width: 1px;
-  height: 26px;
-  background: var(--line);
+  height: 20px;
+  background-color: var(--border-light);
 }
-.courseIdentity {
-  min-width: 0;
-}
-.courseIdentity > span {
-  display: block;
-  color: #7a8496;
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  margin-bottom: 2px;
-}
-.courseIdentity h1 {
+.courseTitle {
   margin: 0;
-  font-size: 15px;
-  line-height: 1.25;
-  font-weight: 800;
-  letter-spacing: -0.015em;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--primary-navy);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
+.headerRight {
+  flex: 0 0 auto;
+}
 .progressBlock {
   display: flex;
   align-items: center;
-  gap: 10px;
-  min-width: 260px;
-  padding: 7px 10px;
-  border: 1px solid var(--line);
-  border-radius: 13px;
-  background: #fff;
-  box-shadow: 0 7px 20px rgba(16, 24, 40, 0.035);
+  gap: 12px;
+  background: #f1f5f9;
+  padding: 6px 12px;
+  border-radius: 10px;
 }
-.progressIcon {
-  width: 30px;
-  height: 30px;
-  border-radius: 9px;
-  display: grid;
-  place-items: center;
-  background: #fff7df;
-  color: #d97706;
-  font-size: 15px;
+.trophyIcon {
+  color: #f59e0b;
+  font-size: 20px;
 }
 .progressText {
   display: flex;
   flex-direction: column;
-  line-height: 1;
-  min-width: 58px;
 }
 .progressLabel {
-  color: #98a2b3;
-  font-size: 8px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
 }
-.progressText strong {
-  margin-top: 4px;
+.progressValue {
   font-size: 12px;
+  font-weight: 800;
+  color: var(--primary-navy);
 }
-.progressTrack {
-  width: 90px;
+.progressBar {
+  width: 100px;
   height: 5px;
-  background: #edf0f5;
-  border-radius: 99px;
+  background: #e2e8f0;
+  border-radius: 999px;
   overflow: hidden;
 }
-.progressTrack span {
-  display: block;
+.progressFill {
   height: 100%;
-  border-radius: inherit;
-  background: linear-gradient(90deg, var(--blue), #5d7cff);
-}
-.progressCheck {
-  color: #12b76a;
-  font-size: 17px;
+  background: linear-gradient(90deg, #2563eb, #638bff);
 }
 
 .mainLayout {
-  width: 100%;
-  max-width: 1720px;
-  margin: 0 auto;
-  padding: 18px clamp(12px, 2vw, 28px) 24px;
-  flex: 1;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(300px, 350px);
+  display: flex;
   gap: 18px;
+  padding: 16px 24px 20px;
+  max-width: 1760px;
+  margin: 0 auto;
+  width: 100%;
+  flex: 1;
   min-height: 0;
+  overflow: hidden;
 }
+
 .contentColumn {
+  flex: 1 1 auto;
   min-width: 0;
-  min-height: 0;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 3px;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  overflow: auto;
-  padding-right: 2px;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
 }
 .contentColumn::-webkit-scrollbar {
-  width: 5px;
+  width: 6px;
 }
 .contentColumn::-webkit-scrollbar-thumb {
-  background: #d7dce5;
-  border-radius: 99px;
+  background: #cbd5e1;
+  border-radius: 10px;
 }
+
 .videoWrapper {
-  flex: 0 0 auto;
   width: 100%;
-  min-width: 0;
-}
-.tabsWrapper {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  box-shadow: 0 10px 30px rgba(16, 24, 40, 0.045);
+  background: #07101e;
+  border-radius: 16px;
   overflow: hidden;
-}
-
-.videoStage {
-  width: 100%;
-}
-.videoBackdrop {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16/8.9;
+  aspect-ratio: 16 / 9;
+  max-height: min(560px, 62vh);
   min-height: 360px;
-  max-height: 660px;
-  overflow: hidden;
-  border-radius: 18px;
-  background: #08111f;
-  color: #fff;
-  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.16);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-}
-.videoAmbient {
-  position: absolute;
-  inset: -25%;
-  background:
-    radial-gradient(
-      circle at 50% 45%,
-      rgba(37, 99, 235, 0.24),
-      transparent 28%
-    ),
-    radial-gradient(
-      circle at 20% 20%,
-      rgba(109, 93, 252, 0.17),
-      transparent 24%
-    );
-  filter: blur(3px);
-}
-.videoGrid {
-  position: absolute;
-  inset: 0;
-  opacity: 0.16;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 38px 38px;
-  mask-image: linear-gradient(to bottom, black, transparent 78%);
-}
-.videoTopbar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  padding: 20px 22px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  background: linear-gradient(180deg, rgba(2, 6, 23, 0.72), transparent);
-  z-index: 2;
-}
-.videoEyebrow {
-  display: block;
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  color: rgba(255, 255, 255, 0.6);
-}
-.videoTopbar h2 {
-  margin: 5px 0 0;
-  font-size: 18px;
-  font-weight: 750;
-  letter-spacing: -0.02em;
-}
-.videoStatus {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 7px 9px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 9px;
-  font-weight: 700;
-  backdrop-filter: blur(10px);
-}
-.videoStatus svg {
-  color: #5ee9a5;
-}
-.centerControls {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 28px;
-  z-index: 2;
-}
-.skipButton {
-  width: 42px;
-  height: 42px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.07);
-  color: rgba(255, 255, 255, 0.82);
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-  backdrop-filter: blur(8px);
-  transition: 0.2s;
-}
-.skipButton:hover {
-  transform: scale(1.05);
-  background: rgba(255, 255, 255, 0.12);
-}
-.playButton {
-  width: 66px;
-  height: 66px;
-  border: 0;
-  border-radius: 50%;
-  background: #fff;
-  color: #0b1730;
-  display: grid;
-  place-items: center;
-  padding-left: 3px;
-  font-size: 25px;
-  cursor: pointer;
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
-  transition: 0.22s;
-}
-.playButton:hover {
-  transform: scale(1.06);
-  box-shadow: 0 22px 46px rgba(37, 99, 235, 0.28);
-}
-.videoBottom {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 18px 20px 16px;
-  background: linear-gradient(transparent, rgba(2, 6, 23, 0.86));
-  z-index: 2;
-}
-.videoProgress {
-  position: relative;
-  height: 5px;
-  border-radius: 99px;
-  background: rgba(255, 255, 255, 0.2);
-  cursor: pointer;
-}
-.videoProgress span {
-  display: block;
-  height: 100%;
-  border-radius: inherit;
-  background: linear-gradient(90deg, #3b82f6, #7c83ff);
-}
-.videoProgress i {
-  position: absolute;
-  top: 50%;
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  background: #fff;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
-}
-.controlRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 11px;
-}
-.controlGroup {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.controlButton {
-  width: 28px;
-  height: 28px;
-  border: 0;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.8);
-  display: grid;
-  place-items: center;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 8px;
-}
-.controlButton:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.09);
-}
-.timeLabel {
-  color: rgba(255, 255, 255, 0.8);
-  font:
-    600 10px/1 ui-monospace,
-    SFMono-Regular,
-    Menlo,
-    monospace;
-}
-.timeLabel b {
-  color: rgba(255, 255, 255, 0.35);
-  margin: 0 3px;
-}
-.lessonMeta {
-  display: flex;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 18px 2px 2px;
-}
-.lessonMetaMain {
-  min-width: 0;
-}
-.lessonPill {
-  display: inline-flex;
-  padding: 5px 7px;
-  border-radius: 7px;
-  background: #eef4ff;
-  color: #2563eb;
-  font-size: 8px;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-}
-.lessonMeta h2 {
-  margin: 7px 0 5px;
-  font-size: 20px;
-  line-height: 1.25;
-  letter-spacing: -0.03em;
-}
-.lessonMeta p {
-  margin: 0;
-  max-width: 780px;
-  color: #697386;
-  font-size: 12px;
-  line-height: 1.75;
-}
-.lessonStats {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
   flex-shrink: 0;
-}
-.lessonStats span {
-  min-width: 86px;
-  padding: 9px 10px;
-  border: 1px solid var(--line);
-  border-radius: 11px;
-  background: #fff;
-  color: #98a2b3;
-  font-size: 8px;
-  text-align: center;
-}
-.lessonStats b {
-  display: block;
-  color: #344054;
-  font-size: 10px;
-  margin-bottom: 3px;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-@media (max-width: 1120px) {
+.tabsWrapper {
+  flex-shrink: 0;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 1180px) {
   .mainLayout {
-    grid-template-columns: minmax(0, 1fr) 310px;
+    padding-inline: 18px;
     gap: 14px;
   }
-  .progressBlock {
-    min-width: 220px;
-  }
-  .progressTrack {
-    width: 70px;
+  .courseTitle {
+    max-width: 360px;
   }
 }
+
 @media (max-width: 900px) {
   .viewerContainer {
-    min-height: 100vh;
+    height: calc(100vh - 96px);
   }
   .topHeader {
-    padding: 10px 14px;
-    min-height: 60px;
-  }
-  .courseIdentity h1 {
-    max-width: 260px;
+    min-height: 58px;
+    padding-inline: 16px;
   }
   .progressBlock {
-    min-width: auto;
+    padding: 5px 9px;
   }
-  .progressText,
-  .progressTrack {
-    display: none;
+  .progressBar {
+    width: 70px;
   }
   .mainLayout {
-    display: block;
+    position: relative;
     padding: 12px;
+    display: block;
+    overflow: hidden;
   }
   .contentColumn {
-    overflow: visible;
+    height: 100%;
+    padding-right: 0;
   }
-  .videoBackdrop {
-    min-height: 300px;
-    border-radius: 15px;
-  }
-  .lessonMeta {
-    padding-top: 15px;
-  }
-  .sidebarWrapper {
-    margin-top: 14px;
-    min-height: 430px;
+  .videoWrapper {
+    min-height: 280px;
+    max-height: none;
+    border-radius: 13px;
   }
 }
-@media (max-width: 620px) {
-  .backBtn span,
-  .divider,
-  .courseIdentity > span {
-    display: none;
+
+@media (max-width: 560px) {
+  .topHeader {
+    min-height: 54px;
+    padding-inline: 11px;
+  }
+  .headerLeft {
+    gap: 9px;
   }
   .backBtn {
-    width: 36px;
-    padding: 0;
-    justify-content: center;
+    font-size: 11px;
   }
-  .courseIdentity h1 {
-    max-width: 190px;
-    font-size: 13px;
-  }
-  .progressIcon {
-    width: 28px;
-    height: 28px;
-  }
-  .progressCheck {
+  .divider {
     display: none;
+  }
+  .courseTitle {
+    display: none;
+  }
+  .progressText {
+    display: none;
+  }
+  .progressBlock {
+    padding: 6px 8px;
+  }
+  .progressBar {
+    width: 70px;
   }
   .mainLayout {
     padding: 8px;
   }
-  .videoBackdrop {
-    min-height: 245px;
-    aspect-ratio: 16/10;
-    border-radius: 13px;
+  .contentColumn {
+    gap: 10px;
   }
-  .videoTopbar {
-    padding: 13px;
-  }
-  .videoTopbar h2 {
-    font-size: 14px;
-  }
-  .videoStatus {
-    display: none;
-  }
-  .centerControls {
-    gap: 14px;
-  }
-  .playButton {
-    width: 54px;
-    height: 54px;
-    font-size: 20px;
-  }
-  .skipButton {
-    width: 34px;
-    height: 34px;
-  }
-  .videoBottom {
-    padding: 13px 12px 11px;
-  }
-  .lessonMeta {
-    display: block;
-    padding: 13px 1px 0;
-  }
-  .lessonMeta h2 {
-    font-size: 17px;
-  }
-  .lessonMeta p {
-    font-size: 11px;
-  }
-  .lessonStats {
-    margin-top: 10px;
+  .videoWrapper {
+    min-height: 220px;
+    border-radius: 11px;
   }
 }

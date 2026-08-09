@@ -4,196 +4,154 @@ import {
   IoInformationCircleOutline,
   IoChatbubblesOutline,
   IoDocumentTextOutline,
-  IoHelpCircleOutline,
-  IoDownloadOutline,
   IoAttachOutline,
-  IoSearchOutline,
+  IoHelpCircleOutline,
   IoChevronDown,
-  IoCheckmarkCircleOutline,
 } from "react-icons/io5";
+
+const tabs = [
+  { id: "Overview", icon: <IoInformationCircleOutline /> },
+  { id: "Resources", icon: <IoAttachOutline /> },
+  { id: "Q&A", icon: <IoChatbubblesOutline /> },
+  { id: "FAQs", icon: <IoHelpCircleOutline /> },
+  { id: "My Notes", icon: <IoDocumentTextOutline /> },
+];
 
 const LessonTabs = () => {
   const [activeTab, setActiveTab] = useState("Overview");
   const [openFaq, setOpenFaq] = useState(0);
-  const tabs = [
-    ["Overview", <IoInformationCircleOutline />],
-    ["Resources", <IoAttachOutline />],
-    ["Q&A", <IoChatbubblesOutline />],
-    ["FAQs", <IoHelpCircleOutline />],
-    ["My Notes", <IoDocumentTextOutline />],
+
+  const faqs = [
+    "Do I need to know vanilla JavaScript first?",
+    "Can I use the techniques in Next.js?",
+    "Will this lesson affect my course progress?",
   ];
 
   return (
     <div className={styles.tabsContainer}>
-      <div className={styles.tabHeaders} role="tablist">
-        {tabs.map(([id, icon]) => (
+      <div
+        className={styles.tabHeaders}
+        role="tablist"
+        aria-label="Lesson information"
+      >
+        {tabs.map((tab) => (
           <button
-            key={id}
-            type="button"
+            key={tab.id}
             role="tab"
-            aria-selected={activeTab === id}
-            className={`${styles.tabBtn} ${activeTab === id ? styles.activeTab : ""}`}
-            onClick={() => setActiveTab(id)}
+            aria-selected={activeTab === tab.id}
+            className={`${styles.tabBtn} ${activeTab === tab.id ? styles.activeTab : ""}`}
+            onClick={() => setActiveTab(tab.id)}
           >
-            {icon}
-            <span>{id}</span>
+            {tab.icon}
+            <span>{tab.id}</span>
+            {tab.id === "Q&A" && <b className={styles.countBadge}>12</b>}
           </button>
         ))}
       </div>
 
       <div className={styles.tabContent}>
         {activeTab === "Overview" && (
-          <div className={styles.overviewPanel}>
-            <div className={styles.sectionHeading}>
-              <div>
-                <span>ABOUT THIS LESSON</span>
-                <h3>Build a stronger mental model of the DOM</h3>
+          <div className={styles.overviewGrid}>
+            <section className={styles.panel}>
+              <span className={styles.kicker}>ABOUT THIS LESSON</span>
+              <h3>Understanding the DOM</h3>
+              <p>
+                In this lesson, we dive deep into the Document Object Model
+                (DOM), how browsers build the DOM tree, and how React updates it
+                efficiently.
+              </p>
+            </section>
+            <section className={styles.objectivesCard}>
+              <span className={styles.kicker}>WHAT YOU'LL LEARN</span>
+              <div className={styles.objectiveList}>
+                <span>Understand how the DOM is structured</span>
+                <span>Trace efficient DOM updates</span>
+                <span>Identify unnecessary re-renders</span>
               </div>
-              <IoCheckmarkCircleOutline />
-            </div>
-            <p>
-              In this lesson, we dive into the Document Object Model, how
-              browsers represent HTML as a tree, and how React coordinates UI
-              updates. The goal is to help you understand what actually happens
-              between your component and the screen.
-            </p>
-            <div className={styles.objectives}>
-              <div>
-                <b>01</b>
-                <span>Understand DOM nodes and tree traversal</span>
-              </div>
-              <div>
-                <b>02</b>
-                <span>Recognize expensive rendering patterns</span>
-              </div>
-              <div>
-                <b>03</b>
-                <span>Connect React updates to browser rendering</span>
-              </div>
-            </div>
+            </section>
           </div>
         )}
 
         {activeTab === "Resources" && (
           <div className={styles.resourcePanel}>
-            <div className={styles.sectionHeading}>
+            <div className={styles.panelHeading}>
               <div>
-                <span>LESSON MATERIALS</span>
+                <span className={styles.kicker}>LESSON MATERIALS</span>
                 <h3>Resources & attachments</h3>
               </div>
-              <button type="button" className={styles.downloadAll}>
-                <IoDownloadOutline /> Download all
-              </button>
+              <button className={styles.secondaryAction}>Download all</button>
             </div>
-            <div className={styles.resourceGrid}>
-              {[
-                "DOM Cheat Sheet.pdf",
-                "Lesson source code.zip",
-                "Architecture notes.pdf",
-              ].map((name, index) => (
+            <div className={styles.resourceList}>
+              <div className={styles.resourceRow}>
+                <IoAttachOutline />
+                <span>
+                  <strong>DOM cheat sheet.pdf</strong>
+                  <small>PDF · 1.2 MB</small>
+                </span>
+                <button>Download</button>
+              </div>
+              <div className={styles.resourceRow}>
+                <IoAttachOutline />
+                <span>
+                  <strong>Lesson examples.zip</strong>
+                  <small>ZIP · 4.8 MB</small>
+                </span>
+                <button>Download</button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "Q&A" && (
+          <div className={styles.emptyPanel}>
+            <span className={styles.emptyIcon}>
+              <IoChatbubblesOutline />
+            </span>
+            <h3>Ask a question about this lesson</h3>
+            <p>Join the discussion with your instructor and other learners.</p>
+            <button className={styles.primaryAction}>Ask a question</button>
+          </div>
+        )}
+
+        {activeTab === "FAQs" && (
+          <div className={styles.faqPanel}>
+            <div className={styles.panelHeading}>
+              <div>
+                <span className={styles.kicker}>QUICK ANSWERS</span>
+                <h3>Frequently asked questions</h3>
+              </div>
+              <span className={styles.helpBadge}>?</span>
+            </div>
+            <div className={styles.faqList}>
+              {faqs.map((faq, index) => (
                 <button
-                  type="button"
-                  className={styles.resourceCard}
-                  key={name}
+                  key={faq}
+                  className={`${styles.faqItem} ${openFaq === index ? styles.faqOpen : ""}`}
+                  onClick={() => setOpenFaq(openFaq === index ? -1 : index)}
                 >
-                  <span className={styles.fileIcon}>
-                    <IoDocumentTextOutline />
-                  </span>
-                  <span>
-                    <strong>{name}</strong>
+                  <span>{faq}</span>
+                  <IoChevronDown />
+                  {openFaq === index && (
                     <small>
-                      {index === 1 ? "ZIP · 1.2 MB" : "PDF · 640 KB"}
+                      {index === 0
+                        ? "Basic JavaScript knowledge is recommended, but the lesson focuses on DOM concepts."
+                        : index === 1
+                          ? "Yes. The concepts apply to React and modern frameworks such as Next.js."
+                          : "Completing the lesson updates your progress automatically."}
                     </small>
-                  </span>
-                  <IoDownloadOutline />
+                  )}
                 </button>
               ))}
             </div>
           </div>
         )}
 
-        {activeTab === "Q&A" && (
-          <div className={styles.qaPanel}>
-            <div className={styles.sectionHeading}>
-              <div>
-                <span>COMMUNITY</span>
-                <h3>Questions about this lesson</h3>
-              </div>
-              <button type="button" className={styles.primarySmall}>
-                Ask a question
-              </button>
-            </div>
-            <div className={styles.questionCard}>
-              <div className={styles.avatar}>AA</div>
-              <div>
-                <strong>Why does React need a virtual DOM?</strong>
-                <p>Asked 12 min ago · 4 replies</p>
-              </div>
-              <span className={styles.replyCount}>4</span>
-            </div>
-            <div className={styles.questionCard}>
-              <div className={styles.avatar}>MK</div>
-              <div>
-                <strong>When should I avoid direct DOM manipulation?</strong>
-                <p>Asked yesterday · 7 replies</p>
-              </div>
-              <span className={styles.replyCount}>7</span>
-            </div>
-          </div>
-        )}
-
-        {activeTab === "FAQs" && (
-          <div className={styles.faqPanel}>
-            <div className={styles.sectionHeading}>
-              <div>
-                <span>QUICK ANSWERS</span>
-                <h3>Frequently asked questions</h3>
-              </div>
-              <IoHelpCircleOutline />
-            </div>
-            {[
-              "Do I need to know vanilla JavaScript first?",
-              "Can I use the techniques in Next.js?",
-              "Will this lesson affect my course progress?",
-            ].map((question, index) => (
-              <div
-                className={`${styles.faqItem} ${openFaq === index ? styles.faqOpen : ""}`}
-                key={question}
-              >
-                <button
-                  type="button"
-                  onClick={() => setOpenFaq(openFaq === index ? -1 : index)}
-                >
-                  <span>{question}</span>
-                  <IoChevronDown />
-                </button>
-                {openFaq === index && (
-                  <p>
-                    {index === 0
-                      ? "Basic JavaScript and React fundamentals are enough. The lesson introduces the browser concepts as we go."
-                      : index === 1
-                        ? "Yes. The concepts are framework-agnostic and become especially useful when building React and Next.js applications."
-                        : "Yes. Completing the lesson and its assessment contributes to your overall course progress."}
-                  </p>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-
         {activeTab === "My Notes" && (
-          <div className={styles.notesPanel}>
-            <div className={styles.sectionHeading}>
-              <div>
-                <span>PERSONAL SPACE</span>
-                <h3>Your notes</h3>
-              </div>
-              <IoDocumentTextOutline />
-            </div>
-            <textarea placeholder="Write a note for this lesson…" />
-            <div className={styles.noteHint}>
-              Notes are saved locally in this demo.
-            </div>
+          <div className={styles.notePanel}>
+            <span className={styles.kicker}>PRIVATE NOTES</span>
+            <h3>Your lesson notes</h3>
+            <textarea placeholder="Write a note about this lesson..." />
+            <button className={styles.primaryAction}>Save note</button>
           </div>
         )}
       </div>
