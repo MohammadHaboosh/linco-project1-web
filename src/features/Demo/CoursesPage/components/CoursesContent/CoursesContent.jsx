@@ -3,10 +3,11 @@ import PageHeaderSection from "../sections/PageHeaderSection/PageHeaderSection";
 import CoursesGridSection from "../sections/CoursesGridSection/CoursesGridSection";
 import CourseBuilder from "../CourseBuilder/CourseBuilder";
 import styles from "./CoursesContent.module.css";
+import { useDemo } from "../../../../../hooks/useDemo";
 
 const CoursesContent = () => {
-  const isOwner = "trainee";
-  const [isBuilding, setIsBuilding] = useState(false);
+  const { role, isLoading } = useDemo();
+  const isOwner = role === "owner";
 
   const mockCourses = Array.from({ length: 8 }, (_, i) => ({
     id: i + 1,
@@ -20,21 +21,13 @@ const CoursesContent = () => {
 
   return (
     <div className={styles["content-area"]}>
-      {!isBuilding ? (
-        <>
-          <PageHeaderSection
-            departmentName="Back-End Department"
-            title="All Courses"
-          />
-          <CoursesGridSection
-            courses={mockCourses}
-            isOwner={isOwner}
-            onUploadClick={() => setIsBuilding(true)} // عند الضغط نفتح أداة بناء الكورسات
-          />
-        </>
-      ) : (
-        <CourseBuilder onBack={() => setIsBuilding(false)} />
-      )}
+      <>
+        <PageHeaderSection
+          departmentName="Back-End Department"
+          title="All Courses"
+        />
+        <CoursesGridSection courses={mockCourses} isOwner={isOwner} />
+      </>
     </div>
   );
 };

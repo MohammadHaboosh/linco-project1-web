@@ -10,6 +10,7 @@ import {
 import styles from "./CourseCard.module.css";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { useDemo } from "../../../hooks/useDemo";
 
 const CourseCard = ({ course, isOwner, onEdit, onDelete }) => {
   const { t } = useTranslation();
@@ -28,8 +29,6 @@ const CourseCard = ({ course, isOwner, onEdit, onDelete }) => {
     status = "published",
     lastUpdated = "Recently",
   } = course || {};
-  // temp edit
-  isOwner = false;
 
   return (
     <div className={styles.card}>
