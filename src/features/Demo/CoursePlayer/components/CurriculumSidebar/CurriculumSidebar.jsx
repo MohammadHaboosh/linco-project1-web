@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import styles from "./CurriculumSidebar.module.css";
 import {
-  IoPlayCircleOutline,
+  IoPlayCircle,
   IoCheckmarkCircle,
-  IoHelpCircleOutline,
+  IoHelpCircle,
   IoChevronDown,
   IoTrophyOutline,
   IoRibbonOutline,
+  IoTimeOutline,
+  IoDocumentTextOutline,
+  IoAttachOutline,
 } from "react-icons/io5";
 
 const CurriculumSidebar = ({ activeLesson, setActiveLesson }) => {
@@ -15,28 +18,31 @@ const CurriculumSidebar = ({ activeLesson, setActiveLesson }) => {
   const sections = [
     {
       id: 1,
-      title: "الوحدة الأولى: الأساسيات والتقدم",
+      title: "Fundamentals and Workflow",
       progress: 65,
       items: [
         {
           id: 101,
           type: "video",
-          title: "مقدمة في React وعمارة التطبيقات",
-          duration: "12:30",
+          title: "Introduction to React & Architecture",
+          duration: "12:30 mins",
+          attachments: 2,
           completed: true,
         },
         {
           id: 102,
           type: "video",
-          title: "فهم الـ Virtual DOM ودورة الحياة",
-          duration: "18:45",
+          title: "Understanding Virtual DOM & Lifecycle",
+          duration: "18:45 mins",
+          attachments: 0,
           completed: false,
         },
         {
           id: 103,
           type: "quiz",
-          title: "اختبار تقييمي للوحدة الأولى",
-          duration: "10 أسئلة",
+          title: "Section 1 Assessment",
+          duration: "10 Questions",
+          attachments: 0,
         },
       ],
     },
@@ -45,12 +51,12 @@ const CurriculumSidebar = ({ activeLesson, setActiveLesson }) => {
   return (
     <div className={styles.sidebarContainer}>
       <div className={styles.sidebarHeader}>
-        <h3>محتوى الكورس</h3>
+        <h3>Course Content</h3>
         {sections.map((sec) => (
           <div key={sec.id} className={styles.courseProgress}>
             <div className={styles.progressInfoBar}>
-              <span>التقدم العام للوحدة</span>
-              <span>{sec.progress}%</span>
+              <span>Overall Progress</span>
+              <span className={styles.progressPercentage}>{sec.progress}%</span>
             </div>
             <div className={styles.progressBarTrack}>
               <div
@@ -66,24 +72,29 @@ const CurriculumSidebar = ({ activeLesson, setActiveLesson }) => {
         {sections.map((section) => (
           <div key={section.id} className={styles.sectionWrapper}>
             <div
-              className={styles.sectionTitle}
+              className={styles.sectionTitleHeader}
               onClick={() =>
                 setExpandedSection(
                   expandedSection === section.id ? null : section.id,
                 )
               }
             >
-              <h4>{section.title}</h4>
-              <IoChevronDown
-                className={`${styles.chevron} ${
-                  expandedSection === section.id ? styles.rotated : ""
-                }`}
-              />
+              <div className={styles.titleGroup}>
+                <div className={styles.toggleBtn}>
+                  <IoChevronDown
+                    className={`${styles.chevron} ${
+                      expandedSection === section.id ? styles.rotated : ""
+                    }`}
+                  />
+                </div>
+                <div className={styles.sectionBadge}>Section {section.id}</div>
+                <h4>{section.title}</h4>
+              </div>
             </div>
 
             {expandedSection === section.id && (
               <div className={styles.sectionItems}>
-                {section.items.map((item) => (
+                {section.items.map((item, index) => (
                   <div
                     key={item.id}
                     className={`${styles.itemRow} ${
@@ -96,18 +107,40 @@ const CurriculumSidebar = ({ activeLesson, setActiveLesson }) => {
                         <IoCheckmarkCircle className={styles.iconSuccess} />
                       ) : null}
                       {item.type === "video" && !item.completed ? (
-                        <IoPlayCircleOutline />
+                        <IoPlayCircle className={styles.iconVideo} />
                       ) : null}
                       {item.type === "quiz" ? (
-                        <IoHelpCircleOutline className={styles.iconQuiz} />
+                        <IoHelpCircle className={styles.iconQuiz} />
                       ) : null}
                     </div>
+
                     <div className={styles.itemMeta}>
-                      <span className={styles.itemTitle}>{item.title}</span>
+                      <span className={styles.itemTitle}>
+                        {index + 1}. {item.title}
+                      </span>
                       <span className={styles.itemDuration}>
+                        {item.type === "quiz" ? (
+                          <IoDocumentTextOutline className={styles.timeIcon} />
+                        ) : (
+                          <IoTimeOutline className={styles.timeIcon} />
+                        )}
                         {item.duration}
                       </span>
                     </div>
+
+                    {item.attachments > 0 ? (
+                      <div className={styles.attachmentBadge}>
+                        <IoAttachOutline style={{ marginRight: "4px" }} />
+                        {item.attachments} Attachments
+                      </div>
+                    ) : (
+                      <div
+                        className={`${styles.attachmentBadge} ${styles.emptyAttachment}`}
+                      >
+                        <IoAttachOutline style={{ marginRight: "4px" }} />0
+                        Attachments
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
@@ -116,31 +149,26 @@ const CurriculumSidebar = ({ activeLesson, setActiveLesson }) => {
         ))}
       </div>
 
-      {/* منطقة النهاية والشهادات */}
       <div className={styles.courseEndings}>
-        <div className={styles.endingCard}>
-          <div
-            className={styles.endingIconWrapper}
-            style={{ background: "#fef3c7", color: "#d97706" }}
-          >
+        <div className={`${styles.endingCard} ${styles.assessmentCard}`}>
+          <div className={styles.endingIconWrapper}>
             <IoTrophyOutline />
           </div>
           <div className={styles.endingMeta}>
-            <strong>الاختبار النهائي للكورس</strong>
-            <span>مطلوب لاجتياز الدورة بنجاح</span>
+            <strong>Final Course Assessment</strong>
+            <span>Required to pass the course</span>
           </div>
         </div>
 
-        <div className={`${styles.endingCard} ${styles.locked}`}>
-          <div
-            className={styles.endingIconWrapper}
-            style={{ background: "#e0e7ff", color: "#4338ca" }}
-          >
+        <div
+          className={`${styles.endingCard} ${styles.certificateCard} ${styles.locked}`}
+        >
+          <div className={styles.endingIconWrapper}>
             <IoRibbonOutline />
           </div>
           <div className={styles.endingMeta}>
-            <strong>شهادة الإتمام الرسمية</strong>
-            <span>تتاح مباشرة بعد اجتياز الاختبار</span>
+            <strong>Official Certificate</strong>
+            <span>Available upon passing the exam</span>
           </div>
         </div>
       </div>
