@@ -78,3 +78,50 @@
   gap: 24px;
   min-width: 0;
 }
+.videoWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+}
+
+.videoContainer {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* نسبة أبعاد 16:9 */
+  background: #000000;
+}
+
+.videoPlaceholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.lessonDetails {
+  padding: 20px;
+}
+
+.lessonDetails h2 {
+  margin: 0 0 8px 0;
+  font-size: 1.25rem;
+  color: #1f2432;
+}
+
+.lessonDetails p {
+  margin: 0;
+  color: #4b5563;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}

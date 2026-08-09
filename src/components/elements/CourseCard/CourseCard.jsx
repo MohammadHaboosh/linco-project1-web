@@ -132,7 +132,7 @@ const CourseCard = ({ course, isOwner, onEdit, onDelete }) => {
             </div>
             <button
               className={styles.primaryCta}
-              onClick={() => navigate(`../course-player/${id}`)}
+              onClick={() => navigate(`../${PATHS.COURSE_PLAYER}`)}
             >
               {progress > 0 ? t("continue-learning") : t("start-learning")}
             </button>

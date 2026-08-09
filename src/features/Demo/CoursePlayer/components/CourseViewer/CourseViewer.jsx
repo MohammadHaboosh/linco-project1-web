@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import VideoContent from "./VideoContent";
-import CurriculumSidebar from "./CurriculumSidebar";
-import LessonTabs from "./LessonTabs";
-import AIFloatingAssistant from "./AIFloatingAssistant";
+import CurriculumSidebar from "../CurriculumSidebar/CurriculumSidebar";
+import LessonTabs from "../LessonTabs/LessonTabs";
+import AIFloatingAssistant from "../AIFloatingAssistant/AIFloatingAssistant";
 import styles from "./CourseViewer.module.css";
 import { IoArrowBackOutline } from "react-icons/io5";
+import VideoContent from "./VideoContent";
 
 const CourseViewer = () => {
   const [activeLesson, setActiveLesson] = useState(1);
