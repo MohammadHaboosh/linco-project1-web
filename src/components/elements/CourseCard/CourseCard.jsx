@@ -9,13 +9,14 @@ import {
 } from "react-icons/io5";
 import styles from "./CourseCard.module.css";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDemo } from "../../../hooks/useDemo";
 import { PATHS } from "../../../routes/paths";
 
 const CourseCard = ({ course, isOwner, onEdit, onDelete }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { demoId, departmentId } = useParams();
 
   const {
     id,
@@ -88,7 +89,9 @@ const CourseCard = ({ course, isOwner, onEdit, onDelete }) => {
               className={styles.watchBtnOwner}
               onClick={(e) => {
                 e.stopPropagation();
-                navigate(`../${PATHS.COURSE_PLAYER}/${id}`);
+                navigate(
+                  `/demos/${demoId}/departments/${departmentId}/course-player/${id}`,
+                );
               }}
               title={t("watch-course")}
             >
@@ -139,7 +142,9 @@ const CourseCard = ({ course, isOwner, onEdit, onDelete }) => {
               className={styles.primaryCta}
               onClick={(e) => {
                 e.stopPropagation();
-                navigate(`${PATHS.COURSE_PLAYER.replace(":courseId", id)}`);
+                navigate(
+                  `/demos/${demoId}/departments/${departmentId}/course-player/${id}`,
+                );
               }}
             >
               {progress > 0 ? t("continue-learning") : t("start-learning")}
