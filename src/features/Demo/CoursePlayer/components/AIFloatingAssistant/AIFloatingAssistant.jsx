@@ -13,20 +13,20 @@ const quickActions = [
   {
     id: "chat",
     icon: IoChatbubblesOutline,
-    title: "تحدث مع المساعد",
-    description: "اسأل عن أي نقطة غير مفهومة في الدرس",
+    title: "Chat with Assistant",
+    description: "Ask questions about the current lesson",
   },
   {
     id: "quiz",
     icon: IoBulbOutline,
-    title: "كويز تفاعلي سريع",
-    description: "أسئلة ذكية لاختبار استيعابك للمعلومات",
+    title: "Interactive Quiz",
+    description: "Test your understanding with smart questions",
   },
   {
     id: "qa",
     icon: IoCreateOutline,
-    title: "توليد أسئلة وأجوبة",
-    description: "مراجعة شاملة للدرس مع التفسير",
+    title: "Generate Q&A",
+    description: "Comprehensive review with detailed explanations",
   },
 ];
 
@@ -36,7 +36,7 @@ const AIFloatingAssistant = () => {
   const [messages, setMessages] = useState([
     {
       role: "assistant",
-      text: "مرحباً بك! أنا مساعدك الذكي 🤖. كيف يمكنني مساعدتك في هذا الكورس اليوم؟",
+      text: "Hello! I am your AI Assistant 🤖. How can I help you with this course today?",
     },
   ]);
 
@@ -47,7 +47,7 @@ const AIFloatingAssistant = () => {
         ...current,
         {
           role: "assistant",
-          text: "ممتاز! أقوم الآن بتجهيز 5 أسئلة ذكية بناءً على محتوى الدرس الحالي. هل أنت مستعد؟",
+          text: "Excellent! I am generating 5 interactive questions based on the current lesson. Are you ready?",
         },
       ]);
     }
@@ -61,7 +61,7 @@ const AIFloatingAssistant = () => {
       { role: "user", text: trimmed },
       {
         role: "assistant",
-        text: "سؤال رائع! (هذا رد تجريبي - سيتم ربطه بالذكاء الاصطناعي لاحقاً).",
+        text: "Great question! (This is a placeholder response - will be connected to the AI backend later).",
       },
     ]);
     setMessage("");
@@ -76,8 +76,8 @@ const AIFloatingAssistant = () => {
             <div className={styles.iconCircle}>
               <IoSparkles />
             </div>
-            <h3>كيف أساعدك اليوم؟</h3>
-            <p>اختر إجراءً سريعاً أو ابدأ الدردشة معي مباشرة.</p>
+            <h3>How can I help you?</h3>
+            <p>Select a quick action or start chatting directly.</p>
           </div>
 
           <div className={styles.actionsGrid}>
@@ -102,16 +102,16 @@ const AIFloatingAssistant = () => {
         <div className={styles.chatView}>
           <div className={styles.chatHeader}>
             <button className={styles.backBtn} onClick={() => setMode("home")}>
-              العودة
+              ← Back
             </button>
             <div className={styles.chatModeInfo}>
               <IoSparkles className={styles.chatModeIcon} />
               <span>
                 {mode === "quiz"
-                  ? "كويز تفاعلي"
+                  ? "Interactive Quiz"
                   : mode === "qa"
-                    ? "سؤال وجواب"
-                    : "الدردشة الذكية"}
+                    ? "Q&A"
+                    : "Smart Chat"}
               </span>
             </div>
           </div>
@@ -137,10 +137,10 @@ const AIFloatingAssistant = () => {
               <div className={styles.generatedCard}>
                 <div className={styles.cardHeader}>
                   <IoCheckmarkCircle className={styles.successIcon} />
-                  <strong>الكويز جاهز!</strong>
+                  <strong>Quiz Ready!</strong>
                 </div>
-                <p>5 أسئلة • اختيار من متعدد • مع التفسير العلمي</p>
-                <button className={styles.primaryBtn}>ابدأ الكويز الآن</button>
+                <p>5 questions • Multiple choice • With explanations</p>
+                <button className={styles.primaryBtn}>Start Quiz Now</button>
               </div>
             )}
           </div>
@@ -151,7 +151,7 @@ const AIFloatingAssistant = () => {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-              placeholder="اكتب سؤالك هنا..."
+              placeholder="Type your question here..."
               className={styles.chatInput}
             />
             <button className={styles.sendBtn} onClick={sendMessage}>

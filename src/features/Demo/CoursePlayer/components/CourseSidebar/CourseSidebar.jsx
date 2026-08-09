@@ -4,6 +4,7 @@ import {
   IoListOutline,
   IoSparklesOutline,
   IoChevronForwardOutline,
+  IoChevronBackOutline,
 } from "react-icons/io5";
 import CurriculumSidebar from "../CurriculumSidebar/CurriculumSidebar";
 import AIFloatingAssistant from "../AIFloatingAssistant/AIFloatingAssistant";
@@ -20,7 +21,45 @@ const CourseSidebar = ({ isOpen, setIsOpen, activeTab, setActiveTab }) => {
       aria-label="Course learning sidebar"
       data-open={isOpen}
     >
+      {/* Content Area (Left side of the sidebar) */}
+      <div className={styles.sidebarContent}>
+        <div className={styles.contentHeader}>
+          <div className={styles.headerTitles}>
+            <span className={styles.headerEyebrow}>
+              {activeTab === "curriculum" ? "LEARNING PATH" : "SMART STUDY"}
+            </span>
+            <h2>
+              {activeTab === "curriculum"
+                ? "Course Curriculum"
+                : "AI Assistant"}
+            </h2>
+          </div>
+          <button
+            className={styles.closeBtn}
+            onClick={() => setIsOpen(false)}
+            aria-label="Close sidebar"
+          >
+            <IoChevronForwardOutline />
+          </button>
+        </div>
+
+        <div className={styles.scrollableArea}>
+          {activeTab === "curriculum" ? (
+            <CurriculumSidebar />
+          ) : (
+            <AIFloatingAssistant />
+          )}
+        </div>
+      </div>
+
+      {/* Navigation Rail (Right side of the sidebar) */}
       <div className={styles.verticalNav}>
+        {!isOpen && (
+          <button className={styles.expandBtn} onClick={() => setIsOpen(true)}>
+            <IoChevronBackOutline />
+          </button>
+        )}
+
         <button
           className={`${styles.navBtn} ${activeTab === "curriculum" && isOpen ? styles.activeNavBtn : ""}`}
           onClick={() => handleTabClick("curriculum")}
@@ -30,7 +69,7 @@ const CourseSidebar = ({ isOpen, setIsOpen, activeTab, setActiveTab }) => {
           <div className={styles.navIconBox}>
             <IoListOutline />
           </div>
-          <span className={styles.navText}>Course Content</span>
+          {isOpen && <span className={styles.navText}>Path</span>}
         </button>
 
         <button
@@ -42,36 +81,8 @@ const CourseSidebar = ({ isOpen, setIsOpen, activeTab, setActiveTab }) => {
           <div className={styles.navIconBox}>
             <IoSparklesOutline />
           </div>
-          <span className={styles.navText}>AI Assistant</span>
+          {isOpen && <span className={styles.navText}>Smart</span>}
         </button>
-      </div>
-
-      <div className={styles.sidebarContent}>
-        <div className={styles.contentHeader}>
-          <button
-            className={styles.closeBtn}
-            onClick={() => setIsOpen(false)}
-            aria-label="Close sidebar"
-          >
-            <IoChevronForwardOutline />
-          </button>
-          <div className={styles.headerTitles}>
-            <span className={styles.headerEyebrow}>
-              {activeTab === "curriculum" ? "LEARNING PATH" : "SMART STUDY"}
-            </span>
-            <h2>
-              {activeTab === "curriculum" ? "Course Content" : "AI Assistant"}
-            </h2>
-          </div>
-        </div>
-
-        <div className={styles.scrollableArea}>
-          {activeTab === "curriculum" ? (
-            <CurriculumSidebar />
-          ) : (
-            <AIFloatingAssistant />
-          )}
-        </div>
       </div>
     </aside>
   );
