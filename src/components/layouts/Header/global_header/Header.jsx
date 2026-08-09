@@ -46,7 +46,7 @@ const Header = ({
         <div className={styles.divider}></div>
 
         {/* {role === "member" && ( */}
-        <DepartmentSwitcher currentDept={currentDepartment} />
+        <DepartmentSwitcher currentDepartment={currentDepartment} />
         {/* )} */}
 
         {role === "admin" && (
