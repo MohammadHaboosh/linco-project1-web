@@ -125,16 +125,16 @@ export const router = createBrowserRouter([
         path: PATHS.LIVES,
         element: <LivesPage />,
       },
-      // {
-      //   path: PATHS.COURSE_PLAYER,
-      //   element: <CoursePlayerPage />,
-      //   children: [
-      //     { index: true, element: <CoursePlayerPage /> },
-      //     { path: PATHS.LESSON, element: <VideoPlayer /> },
-      //     { path: PATHS.QUIZ, element: <QuizContainer /> },
-      //   ],
-      // },
-      { path: PATHS.COURSE_PLAYER, element: <CoursePlayerPage /> },
+      {
+        path: PATHS.COURSE_PLAYER,
+        element: <CoursePlayerPage />,
+        children: [
+          { index: true, element: <CoursePlayerPage /> },
+          // { path: PATHS.LESSON, element: <VideoPlayer /> },
+          // { path: PATHS.QUIZ, element: <QuizContainer /> },
+        ],
+      },
+      // { path: PATHS.COURSE_PLAYER, element: <CoursePlayerPage /> },
       { path: PATHS.COURSES, element: <CoursesPage /> },
       { path: PATHS.LEADERBOARD, element: <LeaderboardPage /> },
       { path: PATHS.ROADMAPS, element: <RoadmapsPage /> },

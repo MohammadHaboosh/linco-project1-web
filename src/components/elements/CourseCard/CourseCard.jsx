@@ -5,7 +5,7 @@ import {
   IoBookOutline,
   IoTimeOutline,
   IoPeopleOutline,
-  IoPlayOutline, // استيراد أيقونة التشغيل للزر الجديد
+  IoPlayOutline,
 } from "react-icons/io5";
 import styles from "./CourseCard.module.css";
 import { useTranslation } from "react-i18next";
@@ -88,7 +88,7 @@ const CourseCard = ({ course, isOwner, onEdit, onDelete }) => {
               className={styles.watchBtnOwner}
               onClick={(e) => {
                 e.stopPropagation();
-                navigate(`../${PATHS.COURSE_PLAYER}`);
+                navigate(`../${PATHS.COURSE_PLAYER}/${id}`);
               }}
               title={t("watch-course")}
             >
@@ -137,7 +137,10 @@ const CourseCard = ({ course, isOwner, onEdit, onDelete }) => {
             </div>
             <button
               className={styles.primaryCta}
-              onClick={() => navigate(`../${PATHS.COURSE_PLAYER}`)}
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`../${PATHS.COURSE_PLAYER}/${id}`);
+              }}
             >
               {progress > 0 ? t("continue-learning") : t("start-learning")}
             </button>

@@ -1,7 +1,8 @@
 .sidebarWrapper {
   --sidebar-width: clamp(480px, 40vw, 650px);
-  --rail-width: 68px; /* تم تصغير الشريط الجانبي بشكل كبير */
+  --rail-width: 68px;
   display: flex;
+  flex-shrink: 0;
   height: 100%;
   position: relative;
   z-index: 40;
@@ -9,7 +10,6 @@
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
 
-  /* التصاق كامل باليمين والأسفل بدون حواف دائرية تضيع المساحة */
   border-radius: 24px 0 0 0;
   border: 1px solid #e2e8f0;
   border-right: none;
@@ -157,14 +157,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px; /* تقليل المسافة بين الأيقونة والنص */
+  gap: 6px;
   border: none;
   background: transparent;
   cursor: pointer;
 }
 
 .navIconBox {
-  width: 40px; /* تصغير المربع بشكل كبير */
+  width: 40px;
   height: 40px;
   border-radius: 12px;
   display: flex;
@@ -172,14 +172,14 @@
   align-items: center;
   background: #f8fafc;
   color: #64748b;
-  font-size: 1.25rem; /* تصغير الأيقونة */
+  font-size: 1.25rem;
   border: 1px solid #e2e8f0;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.01);
 }
 
 .navText {
-  font-size: 0.65rem; /* تصغير النص */
+  font-size: 0.65rem;
   font-weight: 800;
   color: #64748b;
   transition: color 0.3s;

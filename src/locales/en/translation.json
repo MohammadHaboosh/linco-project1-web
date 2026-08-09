@@ -702,5 +702,8 @@
   "payment-secured-by-stripe": "Payment securely processed by Stripe",
   "linco-brand": "LinCo",
   "no-faqs-available-for-this-course": "No FAQs available for this course.",
-  "no-courses-available-in-this-department": "No courses available in this department."
+  "no-courses-available-in-this-department": "No courses available in this department.",
+  "watch-course": "Watch Course",
+  "watch": "Watch",
+  "no-sections-available-yet": "No sections available yet."
 }

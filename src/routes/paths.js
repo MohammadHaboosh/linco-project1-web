@@ -7,7 +7,7 @@ export const PATHS = {
   OWN_ROOMS: "/my-own-rooms",
   LEARNING_PATH: "learning-path",
   COURSES: "courses",
-  COURSE_PLAYER: "course-player",
+  COURSE_PLAYER: "course-player/:courseId",
   LESSON: "lesson/:lessonId",
   QUIZ: "quiz/:sectionId",
   CHAT_GROUPS: "chats",
