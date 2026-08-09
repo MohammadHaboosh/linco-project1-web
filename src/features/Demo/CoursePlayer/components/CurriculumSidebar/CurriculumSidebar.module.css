@@ -1,46 +1,24 @@
-.sidebarContainer {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow-y: auto;
-  padding-right: 8px; /* For scrollbar */
-}
-
-/* Custom Scrollbar for Sidebar */
-.sidebarContainer::-webkit-scrollbar {
-  width: 6px;
-}
-.sidebarContainer::-webkit-scrollbar-track {
-  background: transparent;
-}
-.sidebarContainer::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 4px;
-}
-
-.sidebarTitle {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--primary-navy);
-  margin: 0 0 20px 0;
-}
-
 .chaptersList {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
 }
 
 .chapterCard {
   background: var(--card-bg);
   border: 1px solid var(--border-light);
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chapterExpanded {
+  border-color: #94a3b8;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
 }
 
 .chapterHeader {
-  padding: 16px 20px;
+  padding: 18px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -53,86 +31,104 @@
 }
 
 .headerInfo h3 {
-  margin: 0 0 4px 0;
+  margin: 0 0 6px 0;
   font-size: 14px;
   font-weight: 700;
-  color: var(--text-main);
+  color: var(--primary-navy);
 }
 .headerInfo span {
   font-size: 12px;
   color: var(--text-muted);
+  font-weight: 500;
 }
 
 .chevron {
   color: #94a3b8;
   font-size: 18px;
+  transition: transform 0.3s ease;
+}
+.chevronOpen {
+  transform: rotate(180deg);
+  color: var(--primary-navy);
 }
 
 .lessonsContainer {
   display: flex;
   flex-direction: column;
+  background: #f8fafc;
   border-top: 1px solid var(--border-light);
 }
 
 .lessonItem {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 16px;
   padding: 16px 20px;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid #e2e8f0;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
 }
 .lessonItem:last-child {
   border-bottom: none;
 }
 .lessonItem:hover:not(.locked) {
-  background: #f8fafc;
+  background: #f1f5f9;
 }
 
-/* Status Styles */
+/* Ultra Modern Active State */
 .lessonItem.active {
-  background: #f0f5ff;
-  border-left: 3px solid var(--primary-blue);
+  background: #ffffff;
+  border-left: 4px solid var(--primary-blue);
+  box-shadow: inset 4px 0 0 0 rgba(59, 130, 246, 0.1); /* Glow effect */
 }
 .lessonItem.locked {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
-.lessonDetails h4 {
-  margin: 0 0 4px 0;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-main);
-}
-.active .lessonDetails h4 {
-  color: var(--primary-blue);
-  font-weight: 700;
-}
-.lessonDuration {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
 .lessonIcon {
-  font-size: 20px;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .active .lessonIcon {
   color: var(--primary-blue);
 }
 .locked .lessonIcon {
   color: #94a3b8;
-  font-size: 16px;
+  font-size: 18px;
 }
 .completed .lessonIcon {
   color: #10b981;
 }
 
+.lessonDetails {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.lessonDetails h4 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+.active .lessonDetails h4 {
+  color: var(--primary-navy);
+  font-weight: 800;
+}
+.lessonDuration {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
 .assessmentBox {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   padding: 16px 20px;
   background: #ffffff;
   border-top: 1px solid var(--border-light);
@@ -142,19 +138,21 @@
   background: #f8fafc;
 }
 .assessmentIcon {
-  font-size: 18px;
+  font-size: 20px;
   color: var(--text-muted);
 }
 .assessmentText {
   display: flex;
   flex-direction: column;
+  gap: 4px;
 }
 .assessmentText strong {
   font-size: 13px;
-  color: var(--text-main);
+  color: var(--primary-navy);
+  font-weight: 700;
 }
 .assessmentText span {
   font-size: 11px;
   color: var(--text-muted);
-  margin-top: 2px;
+  font-weight: 500;
 }

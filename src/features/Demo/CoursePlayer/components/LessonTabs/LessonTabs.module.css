@@ -5,40 +5,42 @@
 
 .tabHeaders {
   display: flex;
-  gap: 32px;
-  padding: 0 32px;
+  gap: 12px;
+  padding: 24px 32px;
   border-bottom: 1px solid var(--border-light);
+  background: #ffffff;
 }
 
 .tabBtn {
-  background: transparent;
-  border: none;
-  padding: 24px 0 16px 0;
-  font-size: 15px;
+  background: #f1f5f9;
+  border: 1px solid transparent;
+  padding: 10px 20px;
+  border-radius: 999px; /* Pill shape */
+  font-size: 14px;
   font-weight: 600;
   color: var(--text-muted);
   cursor: pointer;
-  position: relative;
-  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tabBtn svg {
+  font-size: 18px;
 }
 
 .tabBtn:hover {
-  color: var(--text-main);
+  background: #e2e8f0;
+  color: var(--primary-navy);
 }
 
+/* The Glowy Active Tab Effect */
 .activeTab {
+  background: #eff6ff !important;
+  border-color: #bfdbfe;
   color: var(--primary-blue) !important;
-}
-
-.activeTab::after {
-  content: "";
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background-color: var(--primary-blue);
-  border-radius: 3px 3px 0 0;
+  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.1);
 }
 
 .tabContent {
@@ -48,35 +50,12 @@
 .panel h3 {
   margin: 0 0 16px 0;
   font-size: 18px;
+  font-weight: 700;
   color: var(--primary-navy);
 }
 .panel p {
   margin: 0;
   color: var(--text-muted);
-  line-height: 1.6;
-  font-size: 14px;
-}
-
-.placeholderText {
-  text-align: center;
-  font-style: italic;
-  margin-top: 20px !important;
-}
-
-.notesInput {
-  width: 100%;
-  min-height: 120px;
-  padding: 16px;
-  border: 1px solid var(--border-light);
-  border-radius: 8px;
-  font-family: inherit;
-  font-size: 14px;
-  resize: vertical;
-  background: #f8fafc;
-  outline: none;
-  transition: border-color 0.2s;
-}
-.notesInput:focus {
-  border-color: var(--primary-blue);
-  background: #ffffff;
+  line-height: 1.8;
+  font-size: 15px;
 }

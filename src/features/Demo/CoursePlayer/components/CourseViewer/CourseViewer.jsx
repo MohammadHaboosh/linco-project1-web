@@ -1,18 +1,21 @@
-import React from "react";
-import CurriculumSidebar from "../CurriculumSidebar/CurriculumSidebar";
+import React, { useState } from "react";
 import VideoContent from "./VideoContent";
 import LessonTabs from "../LessonTabs/LessonTabs";
+import CourseSidebar from "../CourseSidebar/CourseSidebar";
 import styles from "./CourseViewer.module.css";
 import { IoChevronBackOutline, IoTrophyOutline } from "react-icons/io5";
 
 const CourseViewer = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [activeSidebarTab, setActiveSidebarTab] = useState("curriculum"); // 'curriculum' or 'ai'
+
   return (
     <div className={styles.viewerContainer}>
-      {/* Top Header */}
+      {/* Glassmorphism Header */}
       <header className={styles.topHeader}>
         <div className={styles.headerLeft}>
           <button className={styles.backBtn}>
-            <IoChevronBackOutline /> Back
+            <IoChevronBackOutline /> Back to Dashboard
           </button>
           <div className={styles.divider}></div>
           <h1 className={styles.courseTitle}>
@@ -37,9 +40,8 @@ const CourseViewer = () => {
         </div>
       </header>
 
-      {/* Main Layout Grid */}
+      {/* Dynamic Main Layout */}
       <main className={styles.mainLayout}>
-        {/* Left Column: Video & Tabs */}
         <div className={styles.contentColumn}>
           <div className={styles.videoWrapper}>
             <VideoContent />
@@ -49,10 +51,13 @@ const CourseViewer = () => {
           </div>
         </div>
 
-        {/* Right Column: Sidebar */}
-        <aside className={styles.sidebarColumn}>
-          <CurriculumSidebar />
-        </aside>
+        {/* The New Smart Sidebar */}
+        <CourseSidebar
+          isOpen={isSidebarOpen}
+          setIsOpen={setIsSidebarOpen}
+          activeTab={activeSidebarTab}
+          setActiveTab={setActiveSidebarTab}
+        />
       </main>
     </div>
   );
