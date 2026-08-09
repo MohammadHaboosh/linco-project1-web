@@ -3,55 +3,58 @@ import VideoContent from "./VideoContent";
 import LessonTabs from "../LessonTabs/LessonTabs";
 import CourseSidebar from "../CourseSidebar/CourseSidebar";
 import styles from "./CourseViewer.module.css";
-import { IoChevronBackOutline, IoTrophyOutline } from "react-icons/io5";
+import {
+  IoChevronBackOutline,
+  IoTrophyOutline,
+  IoCheckmarkCircle,
+} from "react-icons/io5";
 
 const CourseViewer = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [activeSidebarTab, setActiveSidebarTab] = useState("curriculum"); // 'curriculum' or 'ai'
+  const [activeSidebarTab, setActiveSidebarTab] = useState("curriculum");
 
   return (
-    <div className={styles.viewerContainer}>
-      {/* Glassmorphism Header */}
+    <div className={styles.viewerContainer} dir="ltr">
       <header className={styles.topHeader}>
         <div className={styles.headerLeft}>
-          <button className={styles.backBtn}>
-            <IoChevronBackOutline /> Back to Dashboard
+          <button className={styles.backBtn} type="button">
+            <IoChevronBackOutline />
+            <span>Back to Dashboard</span>
           </button>
-          <div className={styles.divider}></div>
-          <h1 className={styles.courseTitle}>
-            Advanced Front-End Architecture
-          </h1>
+          <div className={styles.divider} />
+          <div className={styles.courseIdentity}>
+            <span>Frontend Masterclass</span>
+            <h1>Advanced Front-End Architecture</h1>
+          </div>
         </div>
 
         <div className={styles.headerRight}>
           <div className={styles.progressBlock}>
-            <IoTrophyOutline className={styles.trophyIcon} />
+            <div className={styles.progressIcon}>
+              <IoTrophyOutline />
+            </div>
             <div className={styles.progressText}>
-              <span className={styles.progressLabel}>YOUR PROGRESS</span>
-              <span className={styles.progressValue}>35%</span>
+              <span className={styles.progressLabel}>COURSE PROGRESS</span>
+              <strong>35%</strong>
             </div>
-            <div className={styles.progressBar}>
-              <div
-                className={styles.progressFill}
-                style={{ width: "35%" }}
-              ></div>
+            <div className={styles.progressTrack} aria-label="Course progress">
+              <span style={{ width: "35%" }} />
             </div>
+            <IoCheckmarkCircle className={styles.progressCheck} />
           </div>
         </div>
       </header>
 
-      {/* Dynamic Main Layout */}
       <main className={styles.mainLayout}>
-        <div className={styles.contentColumn}>
+        <section className={styles.contentColumn}>
           <div className={styles.videoWrapper}>
             <VideoContent />
           </div>
           <div className={styles.tabsWrapper}>
             <LessonTabs />
           </div>
-        </div>
+        </section>
 
-        {/* The New Smart Sidebar */}
         <CourseSidebar
           isOpen={isSidebarOpen}
           setIsOpen={setIsSidebarOpen}

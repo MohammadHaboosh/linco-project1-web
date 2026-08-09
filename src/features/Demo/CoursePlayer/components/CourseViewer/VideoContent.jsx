@@ -1,60 +1,90 @@
 import React, { useState } from "react";
-import { IoPlay, IoPause, IoPlaySkipBack, IoPlaySkipForward, IoVolumeHigh, IoSettingsSharp, IoExpand } from "react-icons/io5";
+import {
+  IoPlay,
+  IoPause,
+  IoPlaySkipBack,
+  IoPlaySkipForward,
+  IoVolumeHigh,
+  IoSettingsOutline,
+  IoExpandOutline,
+  IoSpeedometerOutline,
+  IoClosedCaptioningOutline,
+  IoCheckmarkCircle,
+} from "react-icons/io5";
+import styles from "./CourseViewer.module.css";
 
 const VideoContent = () => {
   const [playing, setPlaying] = useState(false);
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', backgroundColor: '#07101E' }}>
-      
-      {/* Video Title Overlay */}
-      <div style={{ position: 'absolute', top: '24px', left: '24px', color: 'white', zIndex: 10 }}>
-        <h2 style={{ margin: 0, fontSize: '22px', fontWeight: '600', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
-          Understanding the DOM
-        </h2>
-      </div>
+    <div className={styles.videoStage}>
+      <div className={styles.videoBackdrop}>
+        <div className={styles.videoAmbient} />
+        <div className={styles.videoGrid} />
 
-      {/* Center Controls */}
-      <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '32px' }}>
-        <button style={skipBtnStyle}><IoPlaySkipBack /></button>
-        <button 
-          onClick={() => setPlaying(!playing)}
-          style={{
-            background: 'white', color: '#07101E', border: 'none',
-            width: '80px', height: '80px', borderRadius: '50%', fontSize: '32px',
-            display: 'grid', placeItems: 'center', cursor: 'pointer',
-            boxShadow: '0 4px 15px rgba(0,0,0,0.3)', transition: 'transform 0.2s'
-          }}
-        >
-          {playing ? <IoPause /> : <IoPlay style={{ marginLeft: '4px' }} />}
-        </button>
-        <button style={skipBtnStyle}><IoPlaySkipForward /></button>
-      </div>
-
-      {/* Bottom Control Bar */}
-      <div style={{ padding: '20px 24px', background: 'linear-gradient(transparent, rgba(0,0,0,0.7))' }}>
-        <div style={{ height: '4px', background: 'rgba(255,255,255,0.2)', borderRadius: '2px', marginBottom: '16px', position: 'relative', cursor: 'pointer' }}>
-           <div style={{ height: '100%', width: '45%', background: '#2563EB', borderRadius: '2px' }}></div>
-           <div style={{ width: '12px', height: '12px', background: 'white', borderRadius: '50%', position: 'absolute', top: '-4px', left: '45%', boxShadow: '0 0 5px rgba(0,0,0,0.5)' }}></div>
+        <div className={styles.videoTopbar}>
+          <div>
+            <span className={styles.videoEyebrow}>CHAPTER 02 · LESSON 01</span>
+            <h2>Understanding the DOM</h2>
+          </div>
+          <span className={styles.videoStatus}>
+            <IoCheckmarkCircle /> In progress
+          </span>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', color: 'white', alignItems: 'center' }}>
-           <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-             <IoVolumeHigh style={{ fontSize: '22px', cursor: 'pointer' }} />
-             <span style={{ fontSize: '13px', fontWeight: '500', fontFamily: 'monospace' }}>06:45 / 15:20</span>
-           </div>
-           <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-             <IoSettingsSharp style={{ fontSize: '20px', cursor: 'pointer' }} />
-             <IoExpand style={{ fontSize: '20px', cursor: 'pointer' }} />
-           </div>
+
+        <div className={styles.centerControls}>
+          <button type="button" className={styles.skipButton} aria-label="Previous">
+            <IoPlaySkipBack />
+          </button>
+          <button
+            type="button"
+            className={styles.playButton}
+            onClick={() => setPlaying((value) => !value)}
+            aria-label={playing ? "Pause lesson" : "Play lesson"}
+          >
+            {playing ? <IoPause /> : <IoPlay />}
+          </button>
+          <button type="button" className={styles.skipButton} aria-label="Next">
+            <IoPlaySkipForward />
+          </button>
+        </div>
+
+        <div className={styles.videoBottom}>
+          <div className={styles.videoProgress}>
+            <span style={{ width: "45%" }} />
+            <i style={{ left: "45%" }} />
+          </div>
+          <div className={styles.controlRow}>
+            <div className={styles.controlGroup}>
+              <button type="button" className={styles.controlButton} aria-label="Volume"><IoVolumeHigh /></button>
+              <span className={styles.timeLabel}>06:45 <b>/</b> 15:20</span>
+            </div>
+            <div className={styles.controlGroup}>
+              <button type="button" className={styles.controlButton} aria-label="Playback speed"><IoSpeedometerOutline /></button>
+              <button type="button" className={styles.controlButton} aria-label="Captions"><IoClosedCaptioningOutline /></button>
+              <button type="button" className={styles.controlButton} aria-label="Settings"><IoSettingsOutline /></button>
+              <button type="button" className={styles.controlButton} aria-label="Fullscreen"><IoExpandOutline /></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className={styles.lessonMeta}>
+        <div className={styles.lessonMetaMain}>
+          <span className={styles.lessonPill}>LESSON 01</span>
+          <h2>Understanding the DOM</h2>
+          <p>
+            Learn how browsers represent HTML as a tree, how React works with the DOM,
+            and how to reason about updates without unnecessary re-renders.
+          </p>
+        </div>
+        <div className={styles.lessonStats}>
+          <span><b>15:20</b> Duration</span>
+          <span><b>Intermediate</b> Level</span>
         </div>
       </div>
     </div>
   );
-};
-
-const skipBtnStyle = {
-  background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.7)',
-  fontSize: '36px', cursor: 'pointer', display: 'flex', alignItems: 'center'
 };
 
 export default VideoContent;

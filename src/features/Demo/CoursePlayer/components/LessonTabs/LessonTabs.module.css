@@ -1,61 +1,323 @@
 .tabsContainer {
-  display: flex;
-  flex-direction: column;
+  background: #fff;
 }
-
 .tabHeaders {
   display: flex;
-  gap: 12px;
-  padding: 24px 32px;
-  border-bottom: 1px solid var(--border-light);
-  background: #ffffff;
+  align-items: center;
+  gap: 2px;
+  padding: 0 10px;
+  border-bottom: 1px solid #e8ebf1;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
-
+.tabHeaders::-webkit-scrollbar {
+  display: none;
+}
 .tabBtn {
-  background: #f1f5f9;
-  border: 1px solid transparent;
-  padding: 10px 20px;
-  border-radius: 999px; /* Pill shape */
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-muted);
+  position: relative;
+  flex: 0 0 auto;
+  min-height: 48px;
+  border: 0;
+  background: transparent;
+  padding: 0 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: #8a93a3;
+  font-size: 10px;
+  font-weight: 750;
   cursor: pointer;
+  white-space: nowrap;
+}
+.tabBtn svg {
+  font-size: 15px;
+}
+.tabBtn:hover {
+  color: #344054;
+}
+.activeTab {
+  color: #1d4ed8;
+}
+.activeTab:after {
+  content: "";
+  position: absolute;
+  left: 11px;
+  right: 11px;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 2px 2px 0 0;
+  background: #3b82f6;
+}
+.tabContent {
+  padding: 18px;
+}
+.overviewPanel,
+.resourcePanel,
+.qaPanel,
+.faqPanel,
+.notesPanel {
+  min-height: 170px;
+}
+.sectionHeading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+.sectionHeading > div {
+  min-width: 0;
+}
+.sectionHeading span {
+  display: block;
+  color: #9aa3b2;
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+.sectionHeading h3 {
+  margin: 5px 0 0;
+  color: #1b2434;
+  font-size: 15px;
+  letter-spacing: -0.02em;
+}
+.sectionHeading > svg {
+  color: #2fb77e;
+  font-size: 21px;
+}
+.overviewPanel > p {
+  max-width: 850px;
+  margin: 11px 0 15px;
+  color: #687386;
+  font-size: 10px;
+  line-height: 1.8;
+}
+.objectives {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.objectives div {
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 9px;
+  border: 1px solid #e9ecf2;
+  border-radius: 10px;
+  background: #fafbfc;
 }
-
-.tabBtn svg {
-  font-size: 18px;
+.objectives b {
+  color: #2f6cf6;
+  font-size: 8px;
 }
-
-.tabBtn:hover {
-  background: #e2e8f0;
-  color: var(--primary-navy);
+.objectives span {
+  color: #667085;
+  font-size: 8px;
+  line-height: 1.4;
 }
-
-/* The Glowy Active Tab Effect */
-.activeTab {
-  background: #eff6ff !important;
-  border-color: #bfdbfe;
-  color: var(--primary-blue) !important;
-  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.1);
+.resourceGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 14px;
 }
-
-.tabContent {
-  padding: 32px;
+.resourceCard {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid #e8ebf1;
+  border-radius: 11px;
+  background: #fff;
+  text-align: left;
+  cursor: pointer;
 }
-
-.panel h3 {
-  margin: 0 0 16px 0;
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--primary-navy);
+.resourceCard:hover {
+  border-color: #d8e0f0;
+  background: #fbfcfe;
 }
-.panel p {
+.fileIcon {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: #eef4ff;
+  color: #3971df;
+  font-size: 14px;
+}
+.resourceCard > span:nth-child(2) {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.resourceCard strong {
+  color: #344054;
+  font-size: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.resourceCard small {
+  color: #98a2b3;
+  font-size: 7px;
+}
+.resourceCard > svg {
+  color: #98a2b3;
+  font-size: 13px;
+}
+.downloadAll,
+.primarySmall {
+  border: 1px solid #dfe4ed;
+  border-radius: 8px;
+  padding: 7px 9px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #fff;
+  color: #475467;
+  font-size: 8px;
+  font-weight: 750;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.primarySmall {
+  color: #fff;
+  border-color: #2563eb;
+  background: #2563eb;
+}
+.questionCard {
+  margin-top: 8px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid #e9ecf2;
+  border-radius: 10px;
+}
+.avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #eef2ff;
+  color: #5262d4;
+  font-size: 7px;
+  font-weight: 900;
+}
+.questionCard > div:nth-child(2) {
+  min-width: 0;
+  flex: 1;
+}
+.questionCard strong {
+  display: block;
+  color: #344054;
+  font-size: 9px;
+}
+.questionCard p {
+  margin: 3px 0 0;
+  color: #98a2b3;
+  font-size: 7px;
+}
+.replyCount {
+  min-width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  display: grid;
+  place-items: center;
+  background: #f5f6f8;
+  color: #667085;
+  font-size: 8px;
+  font-weight: 800;
+}
+.faqPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.faqItem {
+  border: 1px solid #e8ebf1;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.faqItem button {
+  width: 100%;
+  border: 0;
+  background: #fff;
+  padding: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  text-align: left;
+  color: #475467;
+  font-size: 9px;
+  font-weight: 750;
+  cursor: pointer;
+}
+.faqItem button svg {
+  flex: 0 0 auto;
+  color: #98a2b3;
+  transition: 0.2s;
+}
+.faqOpen button svg {
+  transform: rotate(180deg);
+}
+.faqItem p {
   margin: 0;
-  color: var(--text-muted);
-  line-height: 1.8;
-  font-size: 15px;
+  padding: 0 11px 11px;
+  color: #7a8495;
+  font-size: 8px;
+  line-height: 1.65;
+}
+.notesPanel textarea {
+  width: 100%;
+  min-height: 130px;
+  margin-top: 14px;
+  resize: vertical;
+  border: 1px solid #e6e9ef;
+  border-radius: 11px;
+  padding: 11px;
+  outline: none;
+  font: 10px/1.7 inherit;
+  color: #344054;
+}
+.notesPanel textarea:focus {
+  border-color: #b9c9f2;
+  box-shadow: 0 0 0 3px #eff4ff;
+}
+.noteHint {
+  margin-top: 5px;
+  color: #98a2b3;
+  font-size: 7px;
+}
+@media (max-width: 760px) {
+  .tabContent {
+    padding: 13px;
+  }
+  .objectives,
+  .resourceGrid {
+    grid-template-columns: 1fr;
+  }
+  .sectionHeading h3 {
+    font-size: 13px;
+  }
+}
+@media (max-width: 480px) {
+  .tabBtn {
+    min-height: 44px;
+    padding: 0 10px;
+    font-size: 9px;
+  }
+  .tabContent {
+    padding: 11px;
+  }
+  .downloadAll {
+    display: none;
+  }
 }
