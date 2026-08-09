@@ -7,39 +7,37 @@
   --card-bg: #ffffff;
   --primary-navy: #0f172a;
   --primary-blue: #3b82f6;
-  --primary-blue-hover: #2563eb;
   --text-main: #1e293b;
   --text-muted: #64748b;
   --border-light: #e2e8f0;
-  --glass-bg: rgba(255, 255, 255, 0.9);
 
   width: 100%;
-  min-height: 100vh;
+  /* تقليل الحد الأدنى للارتفاع ليتناسب مع الأشرطة الموجودة مسبقاً في منصتك */
+  height: calc(100vh - 120px);
   background-color: var(--bg-color);
   font-family: "Inter", system-ui, sans-serif;
   color: var(--text-main);
-  overflow-x: hidden;
+  overflow: hidden; /* نمنع التمرير للصفحة بالكامل */
+  display: flex;
+  flex-direction: column;
 }
 
+/* شريط عنوان الدرس - تقليل المسافات (Padding) لرفعه للأعلى */
 .topHeader {
-  background: var(--glass-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  height: 76px;
-  padding: 0 32px;
+  background: var(--card-bg);
+  min-height: 64px; /* ارتفاع أقل وأكثر أناقة */
+  padding: 0 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid var(--border-light);
-  position: sticky;
-  top: 0;
-  z-index: 40;
+  z-index: 10;
 }
 
 .headerLeft {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 16px;
 }
 
 .backBtn {
@@ -50,9 +48,9 @@
   gap: 8px;
   color: var(--text-muted);
   font-weight: 600;
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: color 0.2s ease;
 }
 .backBtn:hover {
   color: var(--primary-navy);
@@ -60,47 +58,47 @@
 
 .divider {
   width: 1px;
-  height: 28px;
+  height: 20px;
   background-color: var(--border-light);
 }
 .courseTitle {
   margin: 0;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--primary-navy);
-  letter-spacing: -0.5px;
 }
 
+/* شريط التقدم */
 .progressBlock {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   background: #f1f5f9;
-  padding: 8px 16px;
-  border-radius: 12px;
+  padding: 6px 12px;
+  border-radius: 10px;
 }
 .trophyIcon {
   color: #f59e0b;
-  font-size: 24px;
+  font-size: 20px;
 }
 .progressText {
   display: flex;
   flex-direction: column;
 }
 .progressLabel {
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
   color: var(--text-muted);
   letter-spacing: 0.5px;
 }
 .progressValue {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 800;
   color: var(--primary-navy);
 }
 .progressBar {
-  width: 140px;
-  height: 6px;
+  width: 100px;
+  height: 5px;
   background-color: #e2e8f0;
   border-radius: 999px;
   overflow: hidden;
@@ -109,41 +107,59 @@
 .progressFill {
   height: 100%;
   background: linear-gradient(90deg, #10b981, #34d399);
-  border-radius: 999px;
 }
 
+/* التخطيط الرئيسي - تم تقليل الفراغات العلوية */
 .mainLayout {
-  display: flex; /* Changed to flex for smooth sidebar transition */
-  gap: 24px;
-  padding: 24px 32px;
-  max-width: 1800px;
+  display: flex;
+  gap: 20px;
+  padding: 16px 24px; /* تقليل المسافة العلوية لرفع المحتوى */
+  max-width: 1600px;
   margin: 0 auto;
-  align-items: flex-start;
+  width: 100%;
+  flex: 1;
+  overflow: hidden; /* لمنع تجاوز العناصر */
 }
 
+/* عمود الفيديو والتبويبات - يمتلك شريط تمرير خاص به */
 .contentColumn {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px; /* تقليل المسافة بين الفيديو والتبويبات */
   min-width: 0;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  height: 100%;
+  overflow-y: auto; /* التمرير للأسفل لرؤية التبويبات بدون تحريك القائمة الجانبية */
+  padding-right: 8px;
+}
+.contentColumn::-webkit-scrollbar {
+  width: 6px;
+}
+.contentColumn::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
 }
 
+/* حاوية الفيديو - السر هنا! */
 .videoWrapper {
   width: 100%;
-  background: #000;
-  border-radius: 20px;
+  background: #07101e; /* لون سينمائي غامق */
+  border-radius: 12px;
   overflow: hidden;
   aspect-ratio: 16/9;
-  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.1);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  max-height: 520px; /* 👈 هذا ما سيمنع الفيديو من التمدد بشكل مزعج للأسفل */
+  flex-shrink: 0; /* يمنع الفيديو من الانضغاط */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .tabsWrapper {
   background: var(--card-bg);
-  border-radius: 20px;
+  border-radius: 12px;
   border: 1px solid var(--border-light);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
-  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+  margin-bottom: 24px;
 }

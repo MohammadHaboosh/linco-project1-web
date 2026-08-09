@@ -1,67 +1,65 @@
 .sidebarWrapper {
   display: flex;
   background: var(--card-bg);
-  border-radius: 20px;
+  border-radius: 12px; /* زوايا أنعم قليلاً لتناسب التصميم الاحترافي */
   border: 1px solid var(--border-light);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
-  height: calc(100vh - 120px);
-  position: sticky;
-  top: 100px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  height: 100%; /* يأخذ الارتفاع المتاح بالكامل بدلاً من الحسابات المعقدة */
   overflow: hidden;
-  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* عرض القائمة عند الفتح والإغلاق */
 .open {
-  width: 440px;
-}
+  width: 380px;
+} /* حجم مثالي للقائمة */
 .closed {
-  width: 80px;
-}
+  width: 64px;
+} /* شريط نحيف وأنيق عند الإغلاق */
 
 /* Vertical Navigation */
 .verticalNav {
-  width: 80px;
-  min-width: 80px;
+  width: 64px;
+  min-width: 64px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 24px 0;
-  gap: 16px;
+  padding: 20px 0;
+  gap: 12px;
   border-right: 1px solid var(--border-light);
   background: #f8fafc;
   z-index: 10;
 }
 
 .navBtn {
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
   border: none;
   background: transparent;
   color: var(--text-muted);
-  font-size: 24px;
+  font-size: 22px;
   display: grid;
   place-items: center;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .navBtn:hover {
   background: #e2e8f0;
-  color: var(--primary-navy);
+  color: #0f172a;
 }
 
 .activeNavBtn {
-  background: var(--primary-navy);
+  background: #0f172a;
   color: white;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.15);
 }
 .activeNavBtn:hover {
-  background: var(--primary-navy);
+  background: #0f172a;
   color: white;
 }
 
-/* Special styling for AI Button */
 .aiBtn {
   color: #8b5cf6;
 }
@@ -72,7 +70,7 @@
 .activeAiBtn {
   background: linear-gradient(135deg, #8b5cf6, #6d28d9);
   color: white;
-  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25);
 }
 .activeAiBtn:hover {
   background: linear-gradient(135deg, #8b5cf6, #6d28d9);
@@ -81,11 +79,11 @@
 
 /* Content Area */
 .sidebarContent {
-  width: 360px; /* Fixed width, hidden when collapsed by the parent's overflow: hidden */
+  width: 316px; /* 380 - 64 */
   display: flex;
   flex-direction: column;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.2s ease;
   transition-delay: 0.1s;
 }
 
@@ -97,23 +95,23 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px;
+  padding: 16px 20px;
   border-bottom: 1px solid var(--border-light);
 }
 
 .contentHeader h2 {
   margin: 0;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
-  color: var(--primary-navy);
+  color: #0f172a;
 }
 
 .closeBtn {
-  background: #f1f5f9;
+  background: transparent;
   border: none;
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
   display: grid;
   place-items: center;
   color: var(--text-muted);
@@ -122,14 +120,14 @@
   transition: all 0.2s;
 }
 .closeBtn:hover {
-  background: #e2e8f0;
-  color: var(--text-main);
+  background: #f1f5f9;
+  color: #0f172a;
 }
 
 .scrollableArea {
   flex: 1;
   overflow-y: auto;
-  padding: 20px;
+  padding: 0; /* تمت إزالة الـ padding لكي تلتصق الأقسام بالحواف بشكل نظيف */
 }
 
 .scrollableArea::-webkit-scrollbar {
