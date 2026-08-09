@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import VideoContent from "./VideoContent";
 import LessonTabs from "../LessonTabs/LessonTabs";
 import CourseSidebar from "../CourseSidebar/CourseSidebar";
@@ -9,20 +9,29 @@ import {
   IoTrophyOutline,
   IoCheckmarkCircle,
 } from "react-icons/io5";
-import { PATHS } from "../../../../../routes/paths";
 
 const CourseViewer = () => {
+  const navigate = useNavigate();
+  const { demoId, departmentId } = useParams();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [activeSidebarTab, setActiveSidebarTab] = useState("curriculum");
+
+  const handleBackToCourses = () => {
+    navigate(`/demos/${demoId}/departments/${departmentId}/courses`);
+  };
 
   return (
     <div className={styles.viewerContainer} dir="ltr">
       <header className={styles.topHeader}>
         <div className={styles.headerLeft}>
-          <Link to={PATHS.COURSES} className={styles.backBtn} type="button">
+          <button
+            type="button"
+            className={styles.backBtn}
+            onClick={handleBackToCourses}
+          >
             <IoChevronBackOutline />
             <span>Back to Courses</span>
-          </Link>
+          </button>
           <div className={styles.divider} />
           <div className={styles.courseIdentity}>
             <span>Frontend Masterclass</span>

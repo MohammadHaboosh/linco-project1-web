@@ -15,14 +15,15 @@ const Header = ({
   demoPath,
 }) => {
   const { t } = useTranslation();
-  const { demoData } = useDemo();
+  const { demoData, demoId } = useDemo();
+  const demoHomePath = demoId ? `/demos/${demoId}` : PATHS.DEMO;
 
   return (
     <header className={styles.topHeader}>
       <div className={styles.logoArea}>
         <span className={styles.brand}>LinCo</span>
-        <Link to={PATHS.DEMO}>
-          <span className={styles.company}>.{demoData.title}</span>
+        <Link to={demoHomePath}>
+          <span className={styles.company}>.{demoData?.name || "Demo"}</span>
         </Link>
       </div>
 
