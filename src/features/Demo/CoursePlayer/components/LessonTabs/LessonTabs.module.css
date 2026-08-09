@@ -1,19 +1,19 @@
 .tabsContainer {
   overflow: hidden;
-  background: #fff;
-  border: 1px solid #dfe6ef;
-  border-radius: 18px;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.045);
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+  border: 1px solid #e4ebf5;
+  border-radius: 22px;
+  box-shadow: 0 18px 44px rgba(15, 23, 42, 0.06);
 }
 
 .tabHeaders {
-  min-height: 68px;
+  min-height: 72px;
   display: flex;
   align-items: stretch;
-  gap: 2px;
-  padding: 0 18px;
-  border-bottom: 1px solid #e6ebf2;
-  background: #fff;
+  gap: 6px;
+  padding: 10px 16px 0;
+  border-bottom: 1px solid #e7edf6;
+  background: linear-gradient(180deg, #fcfdff 0%, #f8fbff 100%);
   overflow-x: auto;
   scrollbar-width: none;
 }
@@ -24,9 +24,10 @@
 .tabBtn {
   position: relative;
   flex: 0 0 auto;
-  min-width: 105px;
-  padding: 0 13px;
+  min-width: 112px;
+  padding: 0 14px;
   border: 0;
+  border-radius: 14px 14px 8px 8px;
   background: transparent;
   color: #7b899e;
   display: inline-flex;
@@ -37,18 +38,16 @@
   font-size: 13px;
   font-weight: 750;
   cursor: pointer;
-  transition:
-    color 0.2s ease,
-    background 0.2s ease;
+  transition: all 0.2s ease;
 }
 .tabBtn::after {
   content: "";
   position: absolute;
-  left: 13px;
-  right: 13px;
-  bottom: -1px;
+  left: 12px;
+  right: 12px;
+  bottom: 6px;
   height: 3px;
-  border-radius: 3px 3px 0 0;
+  border-radius: 999px;
   background: transparent;
 }
 .tabBtn svg {
@@ -56,29 +55,32 @@
 }
 .tabBtn:hover {
   color: #23344d;
-  background: #fbfcff;
+  background: #f4f8ff;
 }
 .activeTab {
   color: #2167e8;
+  background: #f4f8ff;
 }
 .activeTab::after {
-  background: #2f6ff3;
+  background: linear-gradient(90deg, #2f6ff3, #73a4ff);
 }
 .countBadge {
   min-width: 20px;
   height: 18px;
   padding: 0 5px;
-  border-radius: 9px;
+  border-radius: 999px;
   display: grid;
   place-items: center;
   background: #edf3ff;
   color: #3973df;
   font-size: 9px;
+  font-weight: 800;
 }
 
 .tabContent {
-  padding: 24px 26px 28px;
-  min-height: 210px;
+  padding: 24px 24px 28px;
+  min-height: 240px;
+  background: linear-gradient(180deg, #fcfdff 0%, #f9fbff 100%);
 }
 .kicker {
   display: block;
@@ -86,7 +88,24 @@
   color: #91a0b4;
   font-size: 8px;
   font-weight: 900;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
+}
+.panel,
+.resourcePanel,
+.faqPanel,
+.notePanel,
+.emptyPanel,
+.objectivesCard {
+  border: 1px solid #e7edf6;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.04);
+}
+.panel,
+.resourcePanel,
+.faqPanel,
+.notePanel {
+  padding: 18px;
 }
 .panel h3,
 .panelHeading h3,
@@ -108,13 +127,11 @@
 .overviewGrid {
   display: grid;
   grid-template-columns: minmax(0, 1.35fr) minmax(250px, 0.85fr);
-  gap: 22px;
+  gap: 18px;
 }
 .objectivesCard {
-  padding: 17px;
-  border: 1px solid #e3eaf3;
-  border-radius: 14px;
-  background: #f8fbff;
+  padding: 18px;
+  background: linear-gradient(135deg, #f8fbff 0%, #f4f8ff 100%);
 }
 .objectiveList {
   display: flex;
@@ -126,7 +143,7 @@
   padding-left: 18px;
   color: #52637b;
   font-size: 12px;
-  line-height: 1.4;
+  line-height: 1.5;
 }
 .objectiveList span::before {
   content: "✓";
@@ -142,15 +159,22 @@
   justify-content: space-between;
   align-items: center;
   gap: 16px;
-  margin-bottom: 17px;
+  margin-bottom: 16px;
 }
 .secondaryAction,
 .primaryAction {
-  border-radius: 9px;
+  border-radius: 10px;
   padding: 9px 13px;
   font-size: 11px;
   font-weight: 800;
   cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.secondaryAction:hover,
+.primaryAction:hover {
+  transform: translateY(-1px);
 }
 .secondaryAction {
   border: 1px solid #dbe4f0;
@@ -159,9 +183,9 @@
 }
 .primaryAction {
   border: 0;
-  background: #2563eb;
+  background: linear-gradient(135deg, #2563eb, #4f80f9);
   color: #fff;
-  box-shadow: 0 6px 15px rgba(37, 99, 235, 0.18);
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.2);
 }
 .resourceList {
   display: flex;
@@ -170,12 +194,13 @@
 }
 .resourceRow {
   min-height: 58px;
-  padding: 9px 11px;
+  padding: 10px 12px;
   border: 1px solid #e3e9f1;
-  border-radius: 11px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   gap: 11px;
+  background: #fcfdff;
 }
 .resourceRow > svg {
   color: #3974e7;
@@ -209,25 +234,26 @@
 }
 
 .emptyPanel {
-  min-height: 165px;
+  min-height: 182px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
+  padding: 24px;
 }
 .emptyIcon {
-  width: 42px;
-  height: 42px;
+  width: 46px;
+  height: 46px;
   display: grid;
   place-items: center;
-  border-radius: 12px;
+  border-radius: 14px;
   background: #edf4ff;
   color: #3974e7;
   font-size: 22px;
 }
 .emptyPanel h3 {
-  margin: 11px 0 5px;
+  margin: 12px 0 5px;
   color: #1b2a40;
   font-size: 15px;
 }
@@ -237,9 +263,75 @@
   font-size: 11px;
 }
 
+.faqList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.faqItem {
+  width: 100%;
+  border: 1px solid #e4eaf3;
+  border-radius: 12px;
+  background: #fbfdff;
+  padding: 11px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-align: left;
+  color: #33445f;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.faqItem:hover {
+  border-color: #d5e4ff;
+  background: #f6faff;
+}
+.faqItem span {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 700;
+}
+.faqItem svg {
+  color: #7e8da1;
+  transition: transform 0.2s ease;
+}
+.faqOpen {
+  border-color: #d3e4ff;
+  background: #f4f8ff;
+}
+.faqOpen svg {
+  transform: rotate(180deg);
+  color: #2563eb;
+}
+.faqItem small {
+  display: block;
+  margin-top: 8px;
+  color: #6f7f95;
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.notePanel textarea {
+  width: 100%;
+  min-height: 112px;
+  margin: 12px 0 12px;
+  padding: 12px 13px;
+  border: 1px solid #e4eaf4;
+  border-radius: 13px;
+  resize: vertical;
+  font: inherit;
+  color: #33445f;
+  background: #fbfdff;
+}
+.notePanel textarea:focus {
+  outline: none;
+  border-color: #c6d8ff;
+  box-shadow: 0 0 0 3px #eef5ff;
+}
+
 .helpBadge {
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   border: 1px solid #22b37f;
   border-radius: 50%;
   display: grid;
@@ -247,6 +339,36 @@
   color: #13a879;
   font-size: 13px;
   font-weight: 800;
+}
+
+@media (max-width: 900px) {
+  .tabContent {
+    padding: 18px 16px 20px;
+  }
+  .overviewGrid {
+    grid-template-columns: 1fr;
+  }
+  .panelHeading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 560px) {
+  .tabHeaders {
+    padding: 8px 10px 0;
+  }
+  .tabBtn {
+    min-width: 96px;
+    font-size: 12px;
+    padding-inline: 10px;
+  }
+  .resourceRow {
+    flex-wrap: wrap;
+  }
+  .resourceRow button {
+    margin-left: auto;
+  }
 }
 .faqList {
   display: flex;

@@ -13,7 +13,11 @@
   width: 100%;
   height: calc(100vh - 120px);
   min-height: 0;
-  background: var(--bg-color);
+  background: radial-gradient(
+    circle at top left,
+    #f9fbff 0%,
+    var(--bg-color) 60%
+  );
   font-family: "Inter", system-ui, sans-serif;
   color: var(--text-main);
   overflow: hidden;
@@ -22,8 +26,9 @@
 }
 
 .topHeader {
-  background: var(--card-bg);
-  min-height: 64px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  min-height: 72px;
   padding: 0 24px;
   display: flex;
   justify-content: space-between;
@@ -44,7 +49,7 @@
   align-items: center;
   gap: 8px;
   color: var(--text-muted);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 13px;
   cursor: pointer;
 }
@@ -56,10 +61,23 @@
   height: 20px;
   background-color: var(--border-light);
 }
-.courseTitle {
+.courseIdentity {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.courseIdentity span {
+  color: #7b8aa4;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.courseIdentity h1 {
   margin: 0;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--primary-navy);
   white-space: nowrap;
   overflow: hidden;
@@ -72,13 +90,20 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  background: #f1f5f9;
-  padding: 6px 12px;
-  border-radius: 10px;
+  background: linear-gradient(135deg, #f7faff 0%, #eef5ff 100%);
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid #e3ebf8;
 }
-.trophyIcon {
-  color: #f59e0b;
-  font-size: 20px;
+.progressIcon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #fef3c7, #f59e0b);
+  color: #9a4f00;
+  font-size: 18px;
 }
 .progressText {
   display: flex;
@@ -86,31 +111,37 @@
 }
 .progressLabel {
   font-size: 9px;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text-muted);
   letter-spacing: 0.5px;
 }
-.progressValue {
-  font-size: 12px;
+.progressText strong {
+  font-size: 13px;
   font-weight: 800;
   color: var(--primary-navy);
 }
-.progressBar {
-  width: 100px;
-  height: 5px;
+.progressTrack {
+  width: 96px;
+  height: 6px;
   background: #e2e8f0;
   border-radius: 999px;
   overflow: hidden;
 }
-.progressFill {
+.progressTrack span {
+  display: block;
   height: 100%;
-  background: linear-gradient(90deg, #2563eb, #638bff);
+  border-radius: inherit;
+  background: linear-gradient(90deg, #2563eb, #74a5ff);
+}
+.progressCheck {
+  color: #13a879;
+  font-size: 18px;
 }
 
 .mainLayout {
   display: flex;
   gap: 18px;
-  padding: 16px 24px 20px;
+  padding: 18px 24px 22px;
   max-width: 1760px;
   margin: 0 auto;
   width: 100%;
@@ -142,15 +173,277 @@
 
 .videoWrapper {
   width: 100%;
-  background: #07101e;
-  border-radius: 16px;
+  background: linear-gradient(135deg, #07101e 0%, #10223d 100%);
+  border-radius: 20px;
   overflow: hidden;
   aspect-ratio: 16 / 9;
   max-height: min(560px, 62vh);
   min-height: 360px;
   flex-shrink: 0;
-  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.1);
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 20px 44px rgba(15, 23, 42, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.videoStage {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  background: radial-gradient(
+    circle at top left,
+    rgba(51, 102, 255, 0.28),
+    transparent 38%
+  );
+}
+
+.videoBackdrop {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    135deg,
+    rgba(6, 15, 30, 0.95) 0%,
+    rgba(13, 25, 45, 0.88) 100%
+  );
+  overflow: hidden;
+}
+
+.videoAmbient {
+  position: absolute;
+  width: 290px;
+  height: 290px;
+  right: -70px;
+  bottom: -100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(77, 118, 255, 0.4), transparent 70%);
+  filter: blur(22px);
+}
+
+.videoGrid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 38px 38px;
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.videoTopbar,
+.videoBottom {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.videoTopbar h2 {
+  margin: 4px 0 0;
+  color: #fff;
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.videoEyebrow {
+  color: #8ba0cb;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.videoStatus {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #e7f0ff;
+  font-size: 11px;
+  font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.centerControls {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin: auto 0;
+}
+
+.skipButton,
+.playButton,
+.controlButton {
+  border: 0;
+  cursor: pointer;
+}
+
+.skipButton {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.playButton {
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 28px;
+  color: #fff;
+  background: linear-gradient(135deg, #2563eb, #4f80f9);
+  box-shadow: 0 12px 26px rgba(37, 99, 235, 0.35);
+}
+
+.videoBottom {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+}
+
+.videoProgress {
+  position: relative;
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.videoProgress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #60a5fa, #2563eb);
+}
+
+.videoProgress i {
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.2);
+}
+
+.controlRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.controlGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.controlButton {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  font-size: 16px;
+  color: #f3f7ff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.timeLabel {
+  color: #dbe8ff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.timeLabel b {
+  margin: 0 4px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.lessonMeta {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  padding-top: 16px;
+  margin-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.lessonMetaMain {
+  max-width: 720px;
+  color: #f2f6ff;
+}
+
+.lessonPill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 8px;
+  margin-bottom: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #b8cdfd;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.lessonMetaMain h2 {
+  margin: 0;
+  font-size: 20px;
+  color: #fff;
+}
+
+.lessonMetaMain p {
+  margin: 8px 0 0;
+  font-size: 12px;
+  line-height: 1.7;
+  color: #c4d2ec;
+}
+
+.lessonStats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.lessonStats span {
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #e8f0ff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.lessonStats b {
+  color: #fff;
 }
 
 .tabsWrapper {
@@ -163,7 +456,7 @@
     padding-inline: 18px;
     gap: 14px;
   }
-  .courseTitle {
+  .courseIdentity h1 {
     max-width: 360px;
   }
 }
@@ -173,13 +466,13 @@
     height: calc(100vh - 96px);
   }
   .topHeader {
-    min-height: 58px;
+    min-height: 62px;
     padding-inline: 16px;
   }
   .progressBlock {
-    padding: 5px 9px;
+    padding: 6px 9px;
   }
-  .progressBar {
+  .progressTrack {
     width: 70px;
   }
   .mainLayout {
@@ -195,13 +488,13 @@
   .videoWrapper {
     min-height: 280px;
     max-height: none;
-    border-radius: 13px;
+    border-radius: 15px;
   }
 }
 
 @media (max-width: 560px) {
   .topHeader {
-    min-height: 54px;
+    min-height: 58px;
     padding-inline: 11px;
   }
   .headerLeft {
@@ -213,7 +506,7 @@
   .divider {
     display: none;
   }
-  .courseTitle {
+  .courseIdentity h1 {
     display: none;
   }
   .progressText {
@@ -222,7 +515,7 @@
   .progressBlock {
     padding: 6px 8px;
   }
-  .progressBar {
+  .progressTrack {
     width: 70px;
   }
   .mainLayout {
@@ -233,6 +526,6 @@
   }
   .videoWrapper {
     min-height: 220px;
-    border-radius: 11px;
+    border-radius: 12px;
   }
 }

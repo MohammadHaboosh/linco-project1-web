@@ -7,8 +7,8 @@
   min-height: 0;
   background: #fff;
   border: 1px solid #dfe6f0;
-  border-radius: 18px;
-  box-shadow: 0 12px 34px rgba(15, 23, 42, 0.08);
+  border-radius: 22px;
+  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.07);
   overflow: hidden;
   transition:
     width 0.28s cubic-bezier(0.4, 0, 0.2, 1),
@@ -39,7 +39,7 @@
   min-height: 56px;
   padding: 7px 4px;
   border: 0;
-  border-radius: 13px;
+  border-radius: 14px;
   background: transparent;
   color: #71809a;
   display: flex;
@@ -117,7 +117,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  background: #fff;
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
   border-bottom: 1px solid #e7edf5;
 }
 
