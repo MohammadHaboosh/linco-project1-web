@@ -3,7 +3,7 @@ import styles from "./CourseSidebar.module.css";
 import {
   IoListOutline,
   IoSparklesOutline,
-  IoCloseOutline,
+  IoChevronForwardOutline,
 } from "react-icons/io5";
 import CurriculumSidebar from "../CurriculumSidebar/CurriculumSidebar";
 import AIFloatingAssistant from "../AIFloatingAssistant/AIFloatingAssistant";
@@ -25,44 +25,44 @@ const CourseSidebar = ({ isOpen, setIsOpen, activeTab, setActiveTab }) => {
           className={`${styles.navBtn} ${activeTab === "curriculum" && isOpen ? styles.activeNavBtn : ""}`}
           onClick={() => handleTabClick("curriculum")}
           title="Course Content"
-          aria-label="Course Content"
           type="button"
         >
-          <IoListOutline />
-          {isOpen && <span>Sections</span>}
+          <div className={styles.navIconBox}>
+            <IoListOutline />
+          </div>
+          <span className={styles.navText}>Course Content</span>
         </button>
 
         <button
           className={`${styles.navBtn} ${styles.aiBtn} ${activeTab === "ai" && isOpen ? styles.activeAiBtn : ""}`}
           onClick={() => handleTabClick("ai")}
           title="Smart Assistant"
-          aria-label="Smart Assistant"
           type="button"
         >
-          <IoSparklesOutline />
-          {isOpen && <span>Smart</span>}
+          <div className={styles.navIconBox}>
+            <IoSparklesOutline />
+          </div>
+          <span className={styles.navText}>AI Assistant</span>
         </button>
       </div>
 
       <div className={styles.sidebarContent}>
         <div className={styles.contentHeader}>
-          <div>
-            <span className={styles.headerEyebrow}>
-              {activeTab === "curriculum" ? "LEARNING PATH" : "SMART STUDY"}
-            </span>
-            <h2>
-              {activeTab === "curriculum"
-                ? "Course Content"
-                : "Smart Assistant"}
-            </h2>
-          </div>
           <button
             className={styles.closeBtn}
             onClick={() => setIsOpen(false)}
             aria-label="Close sidebar"
           >
-            <IoCloseOutline />
+            <IoChevronForwardOutline />
           </button>
+          <div className={styles.headerTitles}>
+            <span className={styles.headerEyebrow}>
+              {activeTab === "curriculum" ? "LEARNING PATH" : "SMART STUDY"}
+            </span>
+            <h2>
+              {activeTab === "curriculum" ? "Course Content" : "AI Assistant"}
+            </h2>
+          </div>
         </div>
 
         <div className={styles.scrollableArea}>
