@@ -1,31 +1,30 @@
 import React, { useState } from "react";
+import VideoContent from "./VideoContent";
 import CurriculumSidebar from "../CurriculumSidebar/CurriculumSidebar";
 import LessonTabs from "../LessonTabs/LessonTabs";
 import AIFloatingAssistant from "../AIFloatingAssistant/AIFloatingAssistant";
 import styles from "./CourseViewer.module.css";
 import { IoArrowBackOutline } from "react-icons/io5";
-import VideoContent from "./VideoContent";
 
 const CourseViewer = () => {
   const [activeLesson, setActiveLesson] = useState(1);
 
   return (
-    <div className={styles.viewerContainer}>
+    <div className={styles.viewerContainer} dir="ltr" lang="en">
       <header className={styles.topHeader}>
         <div className={styles.headerLeft}>
-          <button className={styles.backBtn}>
-            <IoArrowBackOutline />
+          <button className={styles.backBtn} aria-label="Go back">
+            <IoArrowBackOutline size={22} />
           </button>
           <div className={styles.courseInfo}>
-            <span className={styles.courseLabel}>Course Name</span>
+            <span className={styles.courseLabel}>Frontend Masterclass</span>
             <h1 className={styles.courseTitle}>
-              Course Description | lesson name
+              Advanced React & Next.js Architecture
             </h1>
           </div>
         </div>
       </header>
 
-      {/* منطقة المحتوى الرئيسية */}
       <div className={styles.mainGrid}>
         <div className={styles.contentArea}>
           <VideoContent />
@@ -40,7 +39,6 @@ const CourseViewer = () => {
         </aside>
       </div>
 
-      {/* المساعد الذكي */}
       <AIFloatingAssistant />
     </div>
   );
