@@ -8,7 +8,6 @@ import {
   IoSettingsOutline,
   IoExpandOutline,
   IoSpeedometerOutline,
-  IoClosedCaptioningOutline,
   IoCheckmarkCircle,
 } from "react-icons/io5";
 import styles from "./CourseViewer.module.css";
@@ -61,7 +60,7 @@ const VideoContent = () => {
             </div>
             <div className={styles.controlGroup}>
               <button type="button" className={styles.controlButton} aria-label="Playback speed"><IoSpeedometerOutline /></button>
-              <button type="button" className={styles.controlButton} aria-label="Captions"><IoClosedCaptioningOutline /></button>
+              <button type="button" className={styles.controlButton} aria-label="Captions"><IoSettingsOutline /></button>
               <button type="button" className={styles.controlButton} aria-label="Settings"><IoSettingsOutline /></button>
               <button type="button" className={styles.controlButton} aria-label="Fullscreen"><IoExpandOutline /></button>
             </div>
