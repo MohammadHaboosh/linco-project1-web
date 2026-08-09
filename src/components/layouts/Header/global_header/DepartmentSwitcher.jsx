@@ -1,18 +1,19 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { IoChevronDown, IoCheckmarkCircle } from "react-icons/io5";
-import { departmentApi } from "../../../../features/Demo/HomeDemoPage/api/departmentApi";
 import { useDemo } from "../../../../hooks/useDemo";
+import { useDepartmentNavigation } from "../../../../hooks/useDepartmentNavigation";
 import styles from "./Header.module.css";
 
 const DepartmentSwitcher = ({ currentDepartment }) => {
   const [isDeptOpen, setIsDeptOpen] = useState(false);
-  const [departments, setDepartments] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const deptRef = useRef(null);
   const navigate = useNavigate();
   const { demoId } = useDemo();
   const { departmentId } = useParams();
+  const { departments, isLoading } = useDepartmentNavigation(
+    currentDepartment || "Departments",
+  );
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -24,29 +25,6 @@ const DepartmentSwitcher = ({ currentDepartment }) => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
-  useEffect(() => {
-    const loadDepartments = async () => {
-      if (!demoId) {
-        setDepartments([]);
-        setIsLoading(false);
-        return;
-      }
-
-      try {
-        setIsLoading(true);
-        const data = await departmentApi.getDepartments(demoId);
-        setDepartments(data || []);
-      } catch (error) {
-        console.error("Failed to load departments for switcher:", error);
-        setDepartments([]);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadDepartments();
-  }, [demoId]);
 
   const handleSelectDepartment = (dept) => {
     setIsDeptOpen(false);

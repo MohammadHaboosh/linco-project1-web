@@ -35,7 +35,7 @@ const LayoutContent = () => {
           currentRoleView={currentRoleView}
           onRoleChange={setRoleView}
           demoName={demoData?.name}
-          currentDepartment="Current Dept Name"
+          currentDepartment="Demo Departments"
           demoPath={demoPath}
         />
 

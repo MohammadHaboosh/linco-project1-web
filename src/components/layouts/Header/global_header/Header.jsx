@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { IoBusinessOutline, IoChevronBack } from "react-icons/io5";
+import { IoChevronBack } from "react-icons/io5";
 import { PATHS } from "../../../../routes/paths";
 import DepartmentSwitcher from "./DepartmentSwitcher";
-// import RoleSwitcher from "./RoleSwitcher";
 import styles from "./Header.module.css";
 import { useDemo } from "../../../../hooks/useDemo";
+import { useDepartmentNavigation } from "../../../../hooks/useDepartmentNavigation";
 
 const Header = ({
   role,
@@ -14,9 +13,11 @@ const Header = ({
   onRoleChange,
   demoPath,
 }) => {
-  const { t } = useTranslation();
   const { demoData, demoId } = useDemo();
   const demoHomePath = demoId ? `/demos/${demoId}` : PATHS.DEMO;
+  const { selectedDepartmentName } = useDepartmentNavigation(
+    currentDepartment || "Departments",
+  );
 
   return (
     <header className={styles.topHeader}>
@@ -46,17 +47,17 @@ const Header = ({
         <div className={styles.divider}></div>
 
         {/* {role === "member" && ( */}
-        <DepartmentSwitcher currentDepartment={currentDepartment} />
+        <DepartmentSwitcher currentDepartment={selectedDepartmentName} />
         {/* )} */}
 
-        {role === "admin" && (
-          <div className={styles.staticBadge}>{currentDepartment}</div>
+        {/* {role === "admin" && (
+          <div className={styles.staticBadge}>{selectedDepartmentName}</div>
         )}
 
         {role === "owner" && (
           <div></div>
           // <RoleSwitcher currentRole={currentRoleView} onChange={onRoleChange} />
-        )}
+        )} */}
       </div>
 
       <div className={styles.rightArea}>
