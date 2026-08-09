@@ -15,7 +15,6 @@ const tabs = [
   { id: "Resources", icon: <IoAttachOutline /> },
   { id: "Q&A", icon: <IoChatbubblesOutline /> },
   { id: "FAQs", icon: <IoHelpCircleOutline /> },
-  { id: "My Notes", icon: <IoDocumentTextOutline /> },
 ];
 
 const LessonTabs = () => {
@@ -65,21 +64,7 @@ const LessonTabs = () => {
                 (DOM), how browsers build the DOM tree, and how modern
                 frameworks like React update it efficiently behind the scenes.
               </p>
-              <p>
-                By the end of this video, you will have a solid mental model of
-                the browser's rendering critical path and how to optimize your
-                UI updates.
-              </p>
             </section>
-
-            <aside className={styles.objectivesCard}>
-              <span className={styles.kicker}>WHAT YOU'LL LEARN</span>
-              <ul className={styles.objectiveList}>
-                <li>Understand how the DOM is structured</li>
-                <li>Trace efficient DOM updates</li>
-                <li>Identify unnecessary re-renders</li>
-              </ul>
-            </aside>
           </div>
         )}
 
@@ -174,24 +159,6 @@ const LessonTabs = () => {
                   </div>
                 </div>
               ))}
-            </div>
-          </div>
-        )}
-
-        {/* MY NOTES TAB */}
-        {activeTab === "My Notes" && (
-          <div className={styles.notePanel}>
-            <div className={styles.panelHeading}>
-              <div>
-                <span className={styles.kicker}>PRIVATE NOTES</span>
-                <h3>Your Lesson Notes</h3>
-              </div>
-            </div>
-            <div className={styles.noteEditor}>
-              <textarea placeholder="Write your personal notes here... They are only visible to you." />
-              <div className={styles.noteFooter}>
-                <button className={styles.primaryAction}>Save Note</button>
-              </div>
             </div>
           </div>
         )}

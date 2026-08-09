@@ -1,11 +1,11 @@
 import {
   IoPlayCircle,
-  IoPencilOutline,
   IoTrashOutline,
   IoEyeOutline,
   IoBookOutline,
   IoTimeOutline,
   IoPeopleOutline,
+  IoPlayOutline, // استيراد أيقونة التشغيل للزر الجديد
 } from "react-icons/io5";
 import styles from "./CourseCard.module.css";
 import { useTranslation } from "react-i18next";
@@ -56,16 +56,6 @@ const CourseCard = ({ course, isOwner, onEdit, onDelete }) => {
           {isOwner && (
             <div className={styles.adminActions}>
               <button
-                className={styles.editBtn}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onEdit(course);
-                }}
-                title={t("edit-course")}
-              >
-                <IoPencilOutline />
-              </button>
-              <button
                 className={styles.deleteBtn}
                 onClick={(e) => {
                   e.stopPropagation();
@@ -83,13 +73,28 @@ const CourseCard = ({ course, isOwner, onEdit, onDelete }) => {
           {description}
         </p>
 
-        <div className={styles.metaTags}>
-          <span className={styles.tag}>
-            <IoBookOutline /> {lessonsCount} {t("lessons")}
-          </span>
-          <span className={styles.tag}>
-            <IoTimeOutline /> {duration}
-          </span>
+        <div className={styles.metaContainer}>
+          <div className={styles.metaTags}>
+            <span className={styles.tag}>
+              <IoBookOutline /> {lessonsCount} {t("lessons")}
+            </span>
+            <span className={styles.tag}>
+              <IoTimeOutline /> {duration}
+            </span>
+          </div>
+
+          {isOwner && (
+            <button
+              className={styles.watchBtnOwner}
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`../${PATHS.COURSE_PLAYER}`);
+              }}
+              title={t("watch-course")}
+            >
+              <IoPlayOutline /> {t("watch")}
+            </button>
+          )}
         </div>
 
         <div className={styles.spacer}></div>
