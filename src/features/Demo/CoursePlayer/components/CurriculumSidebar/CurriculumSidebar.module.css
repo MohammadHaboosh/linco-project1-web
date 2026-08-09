@@ -1,181 +1,160 @@
-.curriculumViewer {
-  padding: 24px;
-  background: #ffffff;
-  height: 100%;
+.sidebarContainer {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  height: 100%;
+  overflow-y: auto;
+  padding-right: 8px; /* For scrollbar */
 }
 
-/* بطاقة التقدم الخرافية */
-.courseProgressCard {
-  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
-  border-radius: 16px;
-  padding: 20px;
-  color: white;
-  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+/* Custom Scrollbar for Sidebar */
+.sidebarContainer::-webkit-scrollbar {
+  width: 6px;
+}
+.sidebarContainer::-webkit-scrollbar-track {
+  background: transparent;
+}
+.sidebarContainer::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
 }
 
-.progressHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.progressHeader h3 {
-  margin: 0;
-  font-size: 14px;
-  font-weight: 700;
-  opacity: 0.9;
-}
-.progressHeader span {
+.sidebarTitle {
   font-size: 18px;
-  font-weight: 800;
+  font-weight: 700;
+  color: var(--primary-navy);
+  margin: 0 0 20px 0;
 }
 
-.progressBar {
-  height: 6px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-  overflow: hidden;
-  margin-bottom: 12px;
-}
-
-.progressFill {
-  height: 100%;
-  background: #10b981;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
-}
-
-.courseProgressCard p {
-  margin: 0;
-  font-size: 11px;
-  opacity: 0.8;
-}
-
-/* قائمة الأقسام */
-.sectionsList {
+.chaptersList {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
-.sectionCard {
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
-  background: #fff;
+.chapterCard {
+  background: var(--card-bg);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
   overflow: hidden;
-  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
 }
 
-.sectionCard:hover {
-  border-color: #cbd5e1;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-}
-
-.sectionHeader {
+.chapterHeader {
+  padding: 16px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px;
-  background: #f8fafc;
   cursor: pointer;
-  transition: background 0.3s ease;
+  background: #ffffff;
+  transition: background 0.2s;
 }
-.sectionHeader:hover {
-  background: #f1f5f9;
+.chapterHeader:hover {
+  background: #f8fafc;
 }
 
-.sectionHeaderInfo h4 {
+.headerInfo h3 {
   margin: 0 0 4px 0;
   font-size: 14px;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--text-main);
 }
-.sectionMeta {
-  font-size: 11px;
-  color: #64748b;
-  font-weight: 500;
+.headerInfo span {
+  font-size: 12px;
+  color: var(--text-muted);
 }
 
-.headerRight {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.sectionCompletedIcon {
-  color: #10b981;
+.chevron {
+  color: #94a3b8;
   font-size: 18px;
 }
-.toggleIcon {
-  color: #94a3b8;
-  display: grid;
-  place-items: center;
-}
 
-/* الدروس */
-.lessonsList {
+.lessonsContainer {
   display: flex;
   flex-direction: column;
+  border-top: 1px solid var(--border-light);
 }
 
-.lessonRow {
+.lessonItem {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 16px;
-  padding: 16px;
-  border-top: 1px solid #f1f5f9;
-  transition: all 0.2s ease;
+  padding: 16px 20px;
+  border-bottom: 1px solid #f1f5f9;
   cursor: pointer;
+  transition: all 0.2s;
 }
-
-.lessonRow:hover:not(.locked) {
+.lessonItem:last-child {
+  border-bottom: none;
+}
+.lessonItem:hover:not(.locked) {
   background: #f8fafc;
 }
 
-/* حالات الدروس */
-.lessonRow.active {
-  background: #eff6ff;
-  border-right: 4px solid #3b82f6; /* لمسة جمالية للدرس النشط (يمين لأننا RTL) */
+/* Status Styles */
+.lessonItem.active {
+  background: #f0f5ff;
+  border-left: 3px solid var(--primary-blue);
 }
-.lessonRow.locked {
+.lessonItem.locked {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
-.lessonIcon {
-  font-size: 22px;
-  display: grid;
-  place-items: center;
-}
-.iconSuccess {
-  color: #10b981;
-}
-.iconActive {
-  color: #3b82f6;
-}
-.iconLocked {
-  color: #94a3b8;
-  font-size: 18px;
-}
-
-.lessonDetails {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.lessonTitle {
+.lessonDetails h4 {
+  margin: 0 0 4px 0;
   font-size: 13px;
   font-weight: 600;
-  color: #334155;
+  color: var(--text-main);
 }
-.active .lessonTitle {
-  color: #1d4ed8;
+.active .lessonDetails h4 {
+  color: var(--primary-blue);
   font-weight: 700;
 }
 .lessonDuration {
   font-size: 11px;
+  color: var(--text-muted);
+}
+
+.lessonIcon {
+  font-size: 20px;
+}
+.active .lessonIcon {
+  color: var(--primary-blue);
+}
+.locked .lessonIcon {
   color: #94a3b8;
+  font-size: 16px;
+}
+.completed .lessonIcon {
+  color: #10b981;
+}
+
+.assessmentBox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: #ffffff;
+  border-top: 1px solid var(--border-light);
+  cursor: pointer;
+}
+.assessmentBox:hover {
+  background: #f8fafc;
+}
+.assessmentIcon {
+  font-size: 18px;
+  color: var(--text-muted);
+}
+.assessmentText {
+  display: flex;
+  flex-direction: column;
+}
+.assessmentText strong {
+  font-size: 13px;
+  color: var(--text-main);
+}
+.assessmentText span {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
 }

@@ -1,144 +1,112 @@
 import React, { useState } from "react";
 import styles from "./CurriculumSidebar.module.css";
 import {
-  IoChevronUpOutline,
-  IoChevronDownOutline,
+  IoChevronUp,
+  IoChevronDown,
   IoPlayCircle,
-  IoCheckmarkCircle,
   IoLockClosed,
+  IoCheckmarkCircle,
 } from "react-icons/io5";
 
-const sections = [
+const chapters = [
   {
     id: 1,
-    title: "مقدمة في React",
-    progress: 100,
-    lessons: [
-      {
-        id: 101,
-        title: "ما هو React ولماذا نستخدمه؟",
-        duration: "05:20",
-        status: "completed",
-      },
-      {
-        id: 102,
-        title: "إعداد بيئة العمل",
-        duration: "08:15",
-        status: "completed",
-      },
-      {
-        id: 103,
-        title: "أول تطبيق لك",
-        duration: "12:00",
-        status: "completed",
-      },
-    ],
+    title: "Chapter 1 - Introduction",
+    lessonsCount: 2,
+    lessons: [],
   },
   {
     id: 2,
-    title: "مكونات React (Components)",
-    progress: 33,
+    title: "Chapter 2 - Core Concepts",
+    lessonsCount: 2,
     lessons: [
       {
         id: 201,
-        title: "دورة حياة المكون (Lifecycle)",
-        duration: "14:40",
+        title: "Understanding the DOM",
+        duration: "15:20",
         status: "active",
       },
       {
         id: 202,
-        title: "الخصائص (Props)",
-        duration: "10:15",
+        title: "State Management Basics",
+        duration: "20:00",
         status: "locked",
       },
-      { id: 203, title: "الحالة (State)", duration: "18:20", status: "locked" },
     ],
+    hasAssessment: true,
+  },
+  { id: 3, title: "Chapter 3 - Advanced Topics", lessonsCount: 2, lessons: [] },
+  {
+    id: 4,
+    title: "Chapter 4 - Performance Optimization",
+    lessonsCount: 2,
+    lessons: [],
   },
 ];
 
 const CurriculumSidebar = () => {
-  const [expanded, setExpanded] = useState([1, 2]);
+  const [expanded, setExpanded] = useState([2]);
 
-  const toggleSection = (id) => {
+  const toggleChapter = (id) => {
     setExpanded((curr) =>
       curr.includes(id) ? curr.filter((x) => x !== id) : [...curr, id],
     );
   };
 
   return (
-    <div className={styles.curriculumViewer}>
-      <div className={styles.courseProgressCard}>
-        <div className={styles.progressHeader}>
-          <h3>تقدمك في الكورس</h3>
-          <span>38%</span>
-        </div>
-        <div className={styles.progressBar}>
-          <div className={styles.progressFill} style={{ width: "38%" }}></div>
-        </div>
-        <p>لقد أنهيت 4 من أصل 12 درساً. استمر!</p>
-      </div>
+    <div className={styles.sidebarContainer}>
+      <h2 className={styles.sidebarTitle}>Course Content</h2>
 
-      <div className={styles.sectionsList}>
-        {sections.map((section, index) => {
-          const isExpanded = expanded.includes(section.id);
+      <div className={styles.chaptersList}>
+        {chapters.map((chapter) => {
+          const isExpanded = expanded.includes(chapter.id);
           return (
-            <div className={styles.sectionCard} key={section.id}>
+            <div className={styles.chapterCard} key={chapter.id}>
+              {/* Chapter Header */}
               <div
-                className={styles.sectionHeader}
-                onClick={() => toggleSection(section.id)}
+                className={styles.chapterHeader}
+                onClick={() => toggleChapter(chapter.id)}
               >
-                <div className={styles.sectionHeaderInfo}>
-                  <h4>
-                    القسم {index + 1}: {section.title}
-                  </h4>
-                  <span className={styles.sectionMeta}>
-                    {section.lessons.length} دروس
-                  </span>
+                <div className={styles.headerInfo}>
+                  <h3>{chapter.title}</h3>
+                  <span>{chapter.lessonsCount} lessons</span>
                 </div>
-                <div className={styles.headerRight}>
-                  {section.progress === 100 && (
-                    <IoCheckmarkCircle
-                      className={styles.sectionCompletedIcon}
-                    />
-                  )}
-                  <span className={styles.toggleIcon}>
-                    {isExpanded ? (
-                      <IoChevronUpOutline />
-                    ) : (
-                      <IoChevronDownOutline />
-                    )}
-                  </span>
+                <div className={styles.chevron}>
+                  {isExpanded ? <IoChevronUp /> : <IoChevronDown />}
                 </div>
               </div>
 
-              {isExpanded && (
-                <div className={styles.lessonsList}>
-                  {section.lessons.map((lesson, idx) => (
+              {/* Chapter Lessons */}
+              {isExpanded && chapter.lessons.length > 0 && (
+                <div className={styles.lessonsContainer}>
+                  {chapter.lessons.map((lesson) => (
                     <div
                       key={lesson.id}
-                      className={`${styles.lessonRow} ${styles[lesson.status]}`}
+                      className={`${styles.lessonItem} ${styles[lesson.status]}`}
                     >
-                      <div className={styles.lessonIcon}>
-                        {lesson.status === "completed" && (
-                          <IoCheckmarkCircle className={styles.iconSuccess} />
-                        )}
-                        {lesson.status === "active" && (
-                          <IoPlayCircle className={styles.iconActive} />
-                        )}
-                        {lesson.status === "locked" && (
-                          <IoLockClosed className={styles.iconLocked} />
-                        )}
-                      </div>
                       <div className={styles.lessonDetails}>
-                        <span className={styles.lessonTitle}>
-                          {idx + 1}. {lesson.title}
-                        </span>
+                        <h4 className={styles.lessonTitle}>{lesson.title}</h4>
                         <span className={styles.lessonDuration}>
                           {lesson.duration}
                         </span>
                       </div>
+                      <div className={styles.lessonIcon}>
+                        {lesson.status === "active" && <IoPlayCircle />}
+                        {lesson.status === "locked" && <IoLockClosed />}
+                        {lesson.status === "completed" && <IoCheckmarkCircle />}
+                      </div>
                     </div>
                   ))}
+
+                  {chapter.hasAssessment && (
+                    <div className={styles.assessmentBox}>
+                      <IoCheckmarkCircle className={styles.assessmentIcon} />
+                      <div className={styles.assessmentText}>
+                        <strong>Final Assessment</strong>
+                        <span>Requires 80% to pass</span>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

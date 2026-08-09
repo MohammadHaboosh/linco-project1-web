@@ -3,110 +3,149 @@
 }
 
 .viewerContainer {
-  --bg-color: #f4f7f9; /* لون خلفية خرافي مريح للعين */
+  --bg-color: #f4f7f9;
   --card-bg: #ffffff;
+  --primary-navy: #0a192f;
+  --primary-blue: #2563eb;
   --text-main: #0f172a;
+  --text-muted: #64748b;
+  --border-light: #e2e8f0;
 
   width: 100%;
-  min-height: calc(100vh - 64px);
+  min-height: 100vh;
   background-color: var(--bg-color);
   font-family: "Inter", system-ui, sans-serif;
   color: var(--text-main);
-  display: flex;
-  flex-direction: column;
 }
 
-/* شريط عنوان الدرس */
-.lessonHeader {
+.topHeader {
   background: var(--card-bg);
-  padding: 20px 32px;
+  height: 72px;
+  padding: 0 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--border-light);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
-  z-index: 10;
+  position: sticky;
+  top: 0;
+  z-index: 40;
 }
 
-.titleArea {
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.backBtn {
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.backBtn:hover {
+  color: var(--primary-blue);
+}
+
+.divider {
+  width: 1px;
+  height: 24px;
+  background-color: var(--border-light);
+}
+
+.courseTitle {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary-navy);
+}
+
+.progressBlock {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.trophyIcon {
+  color: #f59e0b;
+  font-size: 24px;
+}
+
+.progressText {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-}
-.titleArea h1 {
-  margin: 0;
-  font-size: 24px;
-  font-weight: 800;
-  color: #1e293b;
-}
-.lessonBadge {
-  background: #dbeafe;
-  color: #1e40af;
-  font-size: 12px;
-  font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 6px;
-  width: fit-content;
 }
 
-/* تخطيط المشغل والقائمة */
+.progressLabel {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+.progressValue {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--primary-navy);
+}
+
+.progressBar {
+  width: 120px;
+  height: 6px;
+  background-color: #e2e8f0;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-left: 8px;
+}
+
+.progressFill {
+  height: 100%;
+  background-color: #10b981;
+  border-radius: 4px;
+}
+
 .mainLayout {
   display: grid;
-  grid-template-columns: 1fr 380px; /* القائمة الجانبية عرضها ثابت 380، والفيديو يأخذ الباقي */
+  grid-template-columns: 1fr 400px;
   gap: 24px;
   padding: 24px 32px;
-  max-width: 1800px;
+  max-width: 1600px;
   margin: 0 auto;
-  width: 100%;
   align-items: start;
 }
 
-.contentArea {
+.contentColumn {
   display: flex;
   flex-direction: column;
   gap: 24px;
   min-width: 0;
 }
 
-.videoStage {
+.videoWrapper {
   width: 100%;
-  background: #000;
-  border-radius: 20px;
+  background: var(--primary-navy);
+  border-radius: 16px;
   overflow: hidden;
   aspect-ratio: 16/9;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15); /* ظل عميق لإبراز الفيديو */
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(10, 25, 47, 0.15);
 }
 
-.tabsStage {
+.tabsWrapper {
   background: var(--card-bg);
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border-light);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
 }
 
-.sidebar {
-  background: var(--card-bg);
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-  border: 1px solid #e2e8f0;
-  height: calc(100vh - 160px);
+.sidebarColumn {
   position: sticky;
-  top: 24px;
-  overflow: hidden; /* لمنع خروج المحتوى عن الزوايا الدائرية */
-}
-
-/* Scrollbar خرافي للمتصفح */
-.sidebar :global(::-webkit-scrollbar) {
-  width: 6px;
-}
-.sidebar :global(::-webkit-scrollbar-track) {
-  background: transparent;
-}
-.sidebar :global(::-webkit-scrollbar-thumb) {
-  background: #cbd5e1;
-  border-radius: 10px;
-}
-.sidebar :global(::-webkit-scrollbar-thumb:hover) {
-  background: #94a3b8;
+  top: 96px; /* Header height + padding */
+  height: calc(100vh - 120px);
 }

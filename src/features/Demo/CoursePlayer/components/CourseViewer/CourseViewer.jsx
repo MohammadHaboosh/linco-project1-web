@@ -2,38 +2,58 @@ import React from "react";
 import CurriculumSidebar from "../CurriculumSidebar/CurriculumSidebar";
 import VideoContent from "./VideoContent";
 import LessonTabs from "../LessonTabs/LessonTabs";
-import AIFloatingAssistant from "../AIFloatingAssistant/AIFloatingAssistant";
 import styles from "./CourseViewer.module.css";
+import { IoChevronBackOutline, IoTrophyOutline } from "react-icons/io5";
 
 const CourseViewer = () => {
   return (
-    <div className={styles.viewerContainer} dir="rtl">
-      {/* شريط علوي أنيق يعرض اسم الدرس بدلاً من أزرار التعديل */}
-      <div className={styles.lessonHeader}>
-        <div className={styles.titleArea}>
-          <span className={styles.lessonBadge}>الدرس 4</span>
-          <h1>دورة حياة المكونات و Hooks</h1>
+    <div className={styles.viewerContainer}>
+      {/* Top Header */}
+      <header className={styles.topHeader}>
+        <div className={styles.headerLeft}>
+          <button className={styles.backBtn}>
+            <IoChevronBackOutline /> Back
+          </button>
+          <div className={styles.divider}></div>
+          <h1 className={styles.courseTitle}>
+            Advanced Front-End Architecture
+          </h1>
         </div>
-      </div>
 
-      <div className={styles.mainLayout}>
-        {/* منطقة المحتوى: الفيديو والتبويبات (يمين الشاشة لأننا RTL) */}
-        <main className={styles.contentArea}>
-          <div className={styles.videoStage}>
+        <div className={styles.headerRight}>
+          <div className={styles.progressBlock}>
+            <IoTrophyOutline className={styles.trophyIcon} />
+            <div className={styles.progressText}>
+              <span className={styles.progressLabel}>YOUR PROGRESS</span>
+              <span className={styles.progressValue}>35%</span>
+            </div>
+            <div className={styles.progressBar}>
+              <div
+                className={styles.progressFill}
+                style={{ width: "35%" }}
+              ></div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Layout Grid */}
+      <main className={styles.mainLayout}>
+        {/* Left Column: Video & Tabs */}
+        <div className={styles.contentColumn}>
+          <div className={styles.videoWrapper}>
             <VideoContent />
           </div>
-          <div className={styles.tabsStage}>
+          <div className={styles.tabsWrapper}>
             <LessonTabs />
           </div>
-        </main>
+        </div>
 
-        {/* القائمة الجانبية: تعرض تقدم الطالب (يسار الشاشة) */}
-        <aside className={styles.sidebar}>
+        {/* Right Column: Sidebar */}
+        <aside className={styles.sidebarColumn}>
           <CurriculumSidebar />
         </aside>
-      </div>
-
-      <AIFloatingAssistant />
+      </main>
     </div>
   );
 };
