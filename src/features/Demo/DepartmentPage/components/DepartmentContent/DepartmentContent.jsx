@@ -4,8 +4,16 @@ import LeaderboardSection from "../sections/LeaderboardSection/LeaderboardSectio
 import StatsSection from "../sections/StatsSection/StatsSection";
 import CoursesSection from "../sections/CourseSection/CoursesSection";
 import LivesSection from "../sections/LivesSection/LivesSection";
+import { useParams } from "react-router-dom";
+import { useLiveStreams } from "../../../Lives/hooks/useLiveStreams";
 
 const DepartmentContent = () => {
+  const { demoId, departmentId } = useParams();
+  const {
+    streams: liveStreams,
+    isLoading: areLivesLoading,
+    error: livesError,
+  } = useLiveStreams({ demoId, departmentId });
   const departmentData = { departmentName: "Front-End", userName: "Abrar" };
 
   const leaderboardData = [
@@ -53,22 +61,9 @@ const DepartmentContent = () => {
     },
   ];
 
-  const livesData = [
-    {
-      id: 1,
-      title: "System Design Basics",
-      instructor: "Ahmad Ahmad",
-      date: "Apr 04, 2026",
-      duration: "48 min",
-    },
-    {
-      id: 2,
-      title: "Frontend Architecture",
-      instructor: "Sara Omar",
-      date: "Apr 05, 2026",
-      duration: "60 min",
-    },
-  ];
+  const livesData = liveStreams
+    .filter((stream) => ["LIVE", "SCHEDULED"].includes(stream.status))
+    .slice(0, 2);
 
   return (
     <div className={styles.contentArea}>
@@ -88,7 +83,11 @@ const DepartmentContent = () => {
 
         <hr className={styles["section-divider"]} />
 
-        <LivesSection lives={livesData} />
+        <LivesSection
+          lives={livesData}
+          isLoading={areLivesLoading}
+          error={livesError}
+        />
       </div>
     </div>
   );

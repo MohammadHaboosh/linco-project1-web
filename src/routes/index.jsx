@@ -95,10 +95,6 @@ export const router = createBrowserRouter([
         element: <DemoAssetsPage />,
       },
       {
-        path: PATHS.LIVES,
-        element: <LivesPage />,
-      },
-      {
         path: PATHS.OWNER_COURSES,
         element: <OwnerCoursesPage />,
       },

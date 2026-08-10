@@ -2,7 +2,6 @@ import {
   IoHomeOutline,
   IoMapOutline,
   IoBookOutline,
-  IoListOutline,
   IoPersonOutline,
   IoChatbubblesOutline,
   IoHardwareChipOutline,
@@ -38,7 +37,6 @@ export const DEMO_NAV = {
         icon: <IoDocumentTextOutline />,
         path: PATHS.CERTIFICATES,
       },
-      { name: "Lives", icon: <IoVideocamOutline />, path: PATHS.LIVES },
       {
         name: "Inquiries",
         icon: <IoHelpCircleOutline />,
@@ -73,7 +71,6 @@ export const DEMO_NAV = {
         icon: <IoHelpCircleOutline />,
         path: PATHS.INQUIRIES,
       },
-      { name: "Lives", icon: <IoVideocamOutline />, path: PATHS.LIVES },
       {
         name: "Public Library",
         icon: <IoLibraryOutline />,
@@ -89,7 +86,6 @@ export const DEMO_NAV = {
         icon: <IoDocumentTextOutline />,
         path: PATHS.CERTIFICATES,
       },
-      { name: "Lives", icon: <IoVideocamOutline />, path: PATHS.LIVES },
       {
         name: "Inquiries",
         icon: <IoHelpCircleOutline />,
@@ -120,6 +116,7 @@ export const DEPARTMENT_NAV = {
         icon: <IoChatbubblesOutline />,
         path: PATHS.CHAT_GROUPS,
       },
+      { name: "Lives", icon: <IoVideocamOutline />, path: PATHS.LIVES },
       {
         name: "Workspace Tools",
         icon: <IoHardwareChipOutline />,

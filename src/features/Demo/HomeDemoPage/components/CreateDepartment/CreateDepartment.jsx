@@ -73,7 +73,7 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
           </div>
 
           <div className={styles.formGroup}>
-            <label>{t("Assign Manager / Member")}</label>
+            <label>{t("Assign Manager")}</label>
 
             {selectedUser ? (
               <div className={styles.selectedUserCard}>
@@ -120,25 +120,25 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
                 {!searchError &&
                   searchQuery.trim() !== "" &&
                   searchResults.length > 0 && (
-                  <ul className={styles.resultsList}>
-                    {searchResults.map((user) => (
-                      <li
-                        key={user.id}
-                        className={styles.resultItem}
-                        onClick={() => selectUser(user)}
-                      >
-                        <IoPersonOutline className={styles.userIcon} />
-                        <div>
-                          <p className={styles.resultName}>
-                            {user.user.firstName} {user.user.lastName}
-                          </p>
-                          <p className={styles.resultEmail}>
-                            {user.user.email}
-                          </p>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
+                    <ul className={styles.resultsList}>
+                      {searchResults.map((user) => (
+                        <li
+                          key={user.id}
+                          className={styles.resultItem}
+                          onClick={() => selectUser(user)}
+                        >
+                          <IoPersonOutline className={styles.userIcon} />
+                          <div>
+                            <p className={styles.resultName}>
+                              {user.user.firstName} {user.user.lastName}
+                            </p>
+                            <p className={styles.resultEmail}>
+                              {user.user.email}
+                            </p>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
                   )}
 
                 {!searchError &&

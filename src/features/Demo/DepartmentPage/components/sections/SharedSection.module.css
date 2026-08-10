@@ -18,3 +18,26 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 30px;
 }
+
+.section-state {
+  padding: 28px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 14px;
+  background: #ffffff;
+  color: #64748b;
+  font-size: 0.9rem;
+  font-weight: 650;
+  text-align: center;
+}
+
+.error-state {
+  border-color: #fecaca;
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+@media (max-width: 900px) {
+  .cards-grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
