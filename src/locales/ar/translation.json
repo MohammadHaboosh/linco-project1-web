@@ -742,5 +742,19 @@
   "no-courses-available-in-this-department": "لا توجد دورات متاحة في هذا القسم.",
   "watch-course": "مشاهدة الدورة",
   "watch": "مشاهدة",
-  "no-sections-available-yet": "لا توجد أقسام متاحة بعد."
+  "no-sections-available-yet": "لا توجد أقسام متاحة بعد.",
+  "select-a-lesson-to-start-watching": "اختر الدرس لبدء المشاهدة",
+  "choose-a-lesson-from-the-curriculum-sidebar": "اختر درسًا من الشريط الجانبي للمنهج الدراسي.",
+  "current-lesson": "الدرس الحالي",
+  "prev-lesson": "الدرس السابق",
+  "next-lesson": "الدرس القادم",
+  "please-select-a-lesson-from-the-curriculum-sidebar-to-see-its-details-once-selected-the-description-and-materials-will-appear-here": "يرجى تحديد الدرس من الشريط الجانبي للمنهج لمعرفة تفاصيله. \nبمجرد التحديد، سيظهر الوصف والمواد هنا.",
+  "resources-and-attachments": "موارد",
+  "download-all": "تحميل الكل",
+  "lesson-materials": "مواد الدرس",
+  "join-the-discussion": "انضم إلى المناقشة",
+  "have-a-question-about-this-lesson-ask-your-instructor-or-discuss-with-other-learners": "هل لديك سؤال حول هذا الدرس؟ \nاسأل معلمك أو ناقشه مع المتعلمين الآخرين.",
+  "ask-a-question": "اطرح سؤالاً",
+  "quick-answers": "إجابات سريعة",
+  "this-is-a-placeholder-answer-for-the-frequently-asked-question": "هذه إجابة نائبة للسؤال المتكرر."
 }

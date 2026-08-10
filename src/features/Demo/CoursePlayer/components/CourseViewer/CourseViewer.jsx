@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom"; // 👈 إضافة useLocation
 import VideoContent from "./VideoContent";
 import LessonTabs from "../LessonTabs/LessonTabs";
 import CourseSidebar from "../CourseSidebar/CourseSidebar";
@@ -9,17 +9,56 @@ import {
   IoTrophyOutline,
   IoCheckmarkCircle,
 } from "react-icons/io5";
+import { PATHS } from "../../../../../routes/paths";
+import { useTranslation } from "react-i18next";
 
 const CourseViewer = () => {
   const navigate = useNavigate();
-  const { demoId, departmentId } = useParams();
+  const { t } = useTranslation();
+  const { demoId, departmentId, courseId } = useParams();
+
+  const location = useLocation();
+  const passedCourseData = location.state?.courseData || null;
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [activeSidebarTab, setActiveSidebarTab] = useState("curriculum");
 
   const [activeLesson, setActiveLesson] = useState(null);
+  const [currentPlaylist, setCurrentPlaylist] = useState([]);
+
+  const courseTitle = passedCourseData?.title || "Loading Course...";
 
   const handleBackToCourses = () => {
-    navigate(`/demos/${demoId}/departments/${departmentId}/courses`);
+    navigate(`/demos/${demoId}/departments/${departmentId}/${PATHS.COURSES}`);
+  };
+
+  const handleSelectLesson = (lesson, playlist) => {
+    setActiveLesson(lesson);
+    if (playlist) setCurrentPlaylist(playlist);
+  };
+
+  const handleNextLesson = () => {
+    if (!activeLesson || currentPlaylist.length === 0) return;
+    const currentIndex = currentPlaylist.findIndex(
+      (l) => l.id === activeLesson.id,
+    );
+
+    if (currentIndex < currentPlaylist.length - 1) {
+      setActiveLesson(currentPlaylist[currentIndex + 1]);
+    } else {
+      alert("لقد وصلت لنهاية هذا القسم!");
+    }
+  };
+
+  const handlePrevLesson = () => {
+    if (!activeLesson || currentPlaylist.length === 0) return;
+    const currentIndex = currentPlaylist.findIndex(
+      (l) => l.id === activeLesson.id,
+    );
+
+    if (currentIndex > 0) {
+      setActiveLesson(currentPlaylist[currentIndex - 1]);
+    }
   };
 
   return (
@@ -32,12 +71,16 @@ const CourseViewer = () => {
             onClick={handleBackToCourses}
           >
             <IoChevronBackOutline />
-            <span>Back to Courses</span>
+            <span>{t("back-to-courses")}</span>
           </button>
           <div className={styles.divider} />
           <div className={styles.courseIdentity}>
-            <span>Frontend Masterclass</span>
-            <h1>Advanced Front-End Architecture</h1>
+            <span>{courseTitle}</span>
+            <h1>
+              {activeLesson
+                ? activeLesson.title
+                : "Select a lesson from the curriculum"}
+            </h1>
           </div>
         </div>
 
@@ -48,10 +91,10 @@ const CourseViewer = () => {
             </div>
             <div className={styles.progressText}>
               <span className={styles.progressLabel}>COURSE PROGRESS</span>
-              <strong>35%</strong>
+              <strong>{passedCourseData?.progress || 0}%</strong>
             </div>
             <div className={styles.progressTrack} aria-label="Course progress">
-              <span style={{ width: "35%" }} />
+              <span style={{ width: `${passedCourseData?.progress || 0}%` }} />
             </div>
             <IoCheckmarkCircle className={styles.progressCheck} />
           </div>
@@ -61,10 +104,14 @@ const CourseViewer = () => {
       <main className={styles.mainLayout}>
         <section className={styles.contentColumn}>
           <div className={styles.videoWrapper}>
-            <VideoContent activeLesson={activeLesson} />
+            <VideoContent
+              activeLesson={activeLesson}
+              onNext={handleNextLesson}
+              onPrev={handlePrevLesson}
+            />
           </div>
           <div className={styles.tabsWrapper}>
-            <LessonTabs />
+            <LessonTabs activeLesson={activeLesson} />
           </div>
         </section>
 
@@ -74,7 +121,7 @@ const CourseViewer = () => {
           activeTab={activeSidebarTab}
           setActiveTab={setActiveSidebarTab}
           activeLesson={activeLesson}
-          onSelectLesson={setActiveLesson}
+          onSelectLesson={handleSelectLesson}
         />
       </main>
     </div>

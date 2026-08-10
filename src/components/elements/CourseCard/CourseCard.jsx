@@ -91,6 +91,9 @@ const CourseCard = ({ course, isOwner, onEdit, onDelete }) => {
                 e.stopPropagation();
                 navigate(
                   `/demos/${demoId}/departments/${departmentId}/course-player/${id}`,
+                  {
+                    state: { courseData: course },
+                  },
                 );
               }}
               title={t("watch-course")}
@@ -144,6 +147,9 @@ const CourseCard = ({ course, isOwner, onEdit, onDelete }) => {
                 e.stopPropagation();
                 navigate(
                   `/demos/${demoId}/departments/${departmentId}/course-player/${id}`,
+                  {
+                    state: { courseData: course },
+                  },
                 );
               }}
             >

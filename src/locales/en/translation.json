@@ -744,5 +744,22 @@
   "no-courses-available-in-this-department": "No courses available in this department.",
   "watch-course": "Watch Course",
   "watch": "Watch",
-  "no-sections-available-yet": "No sections available yet."
+  "no-sections-available-yet": "No sections available yet.",
+  "select-a-lesson-to-start-watching": "Select a lesson to start watching",
+  "choose-a-lesson-from-the-curriculum-sidebar": "Choose a lesson from the curriculum sidebar.",
+  "current-lesson": "CURRENT LESSON",
+  "prev-lesson": "Prev Lesson",
+  "next-lesson": "Next Lesson",
+  "no-lessons-available": "No lessons available.",
+  "please-select-a-lesson-from-the-curriculum-sidebar-to-see-its-details-once-selected-the-description-and-materials-will-appear-here": "Please select a lesson from the curriculum sidebar to see its details. Once selected, the description and materials will appear here.",
+  "select-a-lesson": "Select a Lesson",
+  "about-this-lesson": "ABOUT THIS LESSON",
+  "resources-and-attachments": "Resources & Attachments",
+  "download-all": "Download All",
+  "lesson-materials": "LESSON MATERIALS",
+  "join-the-discussion": "Join the Discussion",
+  "have-a-question-about-this-lesson-ask-your-instructor-or-discuss-with-other-learners": "Have a question about this lesson? Ask your instructor or discuss with other learners.",
+  "ask-a-question": "Ask a Question",
+  "quick-answers": "QUICK ANSWERS",
+  "this-is-a-placeholder-answer-for-the-frequently-asked-question": "This is a placeholder answer for the frequently asked question."
 }
