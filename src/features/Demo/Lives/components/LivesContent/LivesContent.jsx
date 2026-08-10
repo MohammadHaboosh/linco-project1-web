@@ -13,6 +13,7 @@ import {
   canManageLiveStreams,
 } from "../../utils/liveStreamUtils";
 import LiveCard from "../LiveCard/LiveCard";
+import LiveStageAgenda from "../LiveStageAgenda/LiveStageAgenda";
 import LiveStreamBoard from "../LiveStreamBoard/LiveStreamBoard";
 import ScheduleLiveModal from "../ScheduleLiveModal/ScheduleLiveModal";
 import styles from "./LivesContent.module.css";
@@ -38,7 +39,9 @@ const LivesContent = () => {
   } = useLiveStreams({ demoId, departmentId });
 
   const canManage = canManageLiveStreams(role, currentRoleView);
-  const useLegacyCards = searchParams.get("view") === "cards";
+  const selectedView = searchParams.get("view");
+  const useLegacyCards = selectedView === "cards";
+  const useBroadcastBoard = selectedView === "board";
 
   const filteredStreams = useMemo(
     () =>
@@ -172,8 +175,16 @@ const LivesContent = () => {
                   />
                 ))}
               </div>
-            ) : (
+            ) : useBroadcastBoard ? (
               <LiveStreamBoard
+                streams={filteredStreams}
+                mode={activeTab}
+                canManage={canManage}
+                demoId={demoId}
+                departmentId={departmentId}
+              />
+            ) : (
+              <LiveStageAgenda
                 streams={filteredStreams}
                 mode={activeTab}
                 canManage={canManage}

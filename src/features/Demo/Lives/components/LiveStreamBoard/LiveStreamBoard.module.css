@@ -301,27 +301,6 @@
   color: #bfdbfe;
 }
 
-.sessionMeta {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: #64748b;
-  font-size: 0.68rem;
-  font-weight: 700;
-}
-
-.sessionMeta svg {
-  color: var(--session-accent);
-}
-
-.liveRow .sessionMeta {
-  color: #fca5a5;
-}
-
-.liveRow .sessionMeta svg {
-  color: #ef4444;
-}
-
 .actionCell {
   position: relative;
   z-index: 2;

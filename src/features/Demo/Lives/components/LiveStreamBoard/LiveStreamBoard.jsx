@@ -5,7 +5,6 @@ import {
   IoCheckmarkCircleOutline,
   IoPlayOutline,
   IoRadioOutline,
-  IoTimeOutline,
   IoVideocamOutline,
 } from "react-icons/io5";
 import { buildLiveRoomPath } from "../../utils/liveStreamUtils";
@@ -181,10 +180,6 @@ const LiveStreamBoard = ({
                 <p title={stream.description || t("no-live-description")}>
                   {stream.description || t("no-live-description")}
                 </p>
-                <span className={styles.sessionMeta}>
-                  {isLive ? <IoRadioOutline /> : <IoTimeOutline />}
-                  {timeLabel}
-                </span>
               </div>
 
               <div className={styles.actionCell}>
