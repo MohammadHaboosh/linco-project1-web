@@ -212,13 +212,8 @@ const CourseStudio = () => {
                 lesson.videoFile.name,
               );
 
-              const uploadUrl = uploadData.uploadUrl || uploadData.url;
-              finalVideoUrl =
-                uploadData.cdnUrl ||
-                uploadData.videoUrl ||
-                uploadData.fileUrl ||
-                uploadData.publicUrl ||
-                finalVideoUrl;
+              const uploadUrl = uploadData.uploadUrl;
+              finalVideoUrl = uploadData.cdnUrl;
 
               if (uploadUrl) {
                 await lessonApi.uploadVideoToStorage(
