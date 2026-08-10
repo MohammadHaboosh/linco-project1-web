@@ -11,6 +11,7 @@ import styles from "./LiveRoom.module.css";
 const LiveRoom = ({
   stream,
   credentials,
+  userInfo,
   canManage,
   isEnding,
   error,
@@ -162,6 +163,7 @@ const LiveRoom = ({
               appId={credentials.appId}
               roomName={credentials.roomName}
               jwt={credentials.token}
+              userInfo={userInfo}
               configOverwrite={meetingConfig}
               onApiReady={handleApiReady}
               onReadyToClose={handleReadyToClose}

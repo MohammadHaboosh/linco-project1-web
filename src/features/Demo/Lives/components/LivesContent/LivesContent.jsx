@@ -7,6 +7,7 @@ import {
   IoVideocamOutline,
 } from "react-icons/io5";
 import { useDemo } from "../../../../../hooks/useDemo";
+import { useUser } from "../../../../../hooks/useUser";
 import { useLiveStreams } from "../../hooks/useLiveStreams";
 import LiveCard from "../LiveCard/LiveCard";
 import LiveRoom from "../LiveRoom/LiveRoom";
@@ -24,6 +25,7 @@ const LivesContent = () => {
   const { t } = useTranslation();
   const { demoId, departmentId } = useParams();
   const { role, currentRoleView } = useDemo();
+  const { profile } = useUser();
   const [activeTab, setActiveTab] = useState("ACTIVE");
   const [showScheduleModal, setShowScheduleModal] = useState(false);
   const [pendingAction, setPendingAction] = useState(null);
@@ -49,6 +51,18 @@ const LivesContent = () => {
   const canManage = [role, currentRoleView]
     .map(normalizeRole)
     .some((candidateRole) => MANAGER_ROLES.has(candidateRole));
+
+  const meetingUserInfo = useMemo(() => {
+    const displayName = [profile?.firstName, profile?.lastName]
+      .filter(Boolean)
+      .join(" ")
+      .trim();
+
+    return {
+      displayName: displayName || profile?.email || "Participant",
+      email: profile?.email || "",
+    };
+  }, [profile?.email, profile?.firstName, profile?.lastName]);
 
   const filteredStreams = useMemo(
     () =>
@@ -262,6 +276,7 @@ const LivesContent = () => {
         <LiveRoom
           stream={roomSession.stream}
           credentials={roomSession.credentials}
+          userInfo={meetingUserInfo}
           canManage={canManage}
           isEnding={
             pendingAction?.streamId === roomSession.stream.id &&
