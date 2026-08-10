@@ -9,7 +9,14 @@ import {
 import CurriculumSidebar from "../CurriculumSidebar/CurriculumSidebar";
 import AIFloatingAssistant from "../AIFloatingAssistant/AIFloatingAssistant";
 
-const CourseSidebar = ({ isOpen, setIsOpen, activeTab, setActiveTab }) => {
+const CourseSidebar = ({
+  isOpen,
+  setIsOpen,
+  activeTab,
+  setActiveTab,
+  activeLesson,
+  onSelectLesson,
+}) => {
   const handleTabClick = (tab) => {
     setActiveTab(tab);
     if (!isOpen) setIsOpen(true);
@@ -45,7 +52,10 @@ const CourseSidebar = ({ isOpen, setIsOpen, activeTab, setActiveTab }) => {
 
         <div className={styles.scrollableArea}>
           {activeTab === "curriculum" ? (
-            <CurriculumSidebar />
+            <CurriculumSidebar
+              activeLesson={activeLesson}
+              onSelectLesson={onSelectLesson}
+            />
           ) : (
             <AIFloatingAssistant />
           )}

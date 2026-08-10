@@ -5,23 +5,92 @@ import {
   IoChevronDown,
   IoTrophyOutline,
   IoRibbonOutline,
+  IoPlay,
+  IoTimeOutline,
+  IoAlertCircleOutline,
 } from "react-icons/io5";
-import { useCourseSections } from "../../hooks/useCourseSections"; // استدعاء الـ Hook الجديد
-import { useTranslation } from "react-i18next";
+import { useCourseSections } from "../../hooks/useCourseSections";
+import { useSectionLessons } from "../../hooks/useSectionLessons";
 
-const CurriculumSidebar = () => {
-  const { t } = useTranslation();
+const CurriculumSidebar = ({ activeLesson, onSelectLesson }) => {
   const { courseId } = useParams();
   const { sections, isLoading, error } = useCourseSections(courseId);
+  const SectionItem = ({ section, index, activeLesson, onSelectLesson }) => {
+    const [isExpanded, setIsExpanded] = useState(false);
 
-  const [expanded, setExpanded] = useState([]);
+    const { lessons, isLoading, error } = useSectionLessons(
+      section.id,
+      isExpanded,
+    );
 
-  const toggleChapter = (id) => {
-    setExpanded((curr) =>
-      curr.includes(id) ? curr.filter((x) => x !== id) : [...curr, id],
+    return (
+      <section
+        className={`${styles.chapterCard} ${isExpanded ? styles.expanded : ""}`}
+      >
+        <button
+          className={styles.chapterHeader}
+          onClick={() => setIsExpanded(!isExpanded)}
+          aria-expanded={isExpanded}
+        >
+          <span className={styles.chapterNumber}>
+            {String(index + 1).padStart(2, "0")}
+          </span>
+          <span className={styles.chapterInfo}>
+            <strong>{section.title}</strong>
+          </span>
+          <IoChevronDown className={styles.chevron} />
+        </button>
+
+        {isExpanded && (
+          <div className={styles.lessonList}>
+            {isLoading ? (
+              <div className={styles.statusContainer}>
+                <div className={styles.loader}></div>
+                <p>Loading lessons...</p>
+              </div>
+            ) : error ? (
+              <div className={styles.statusContainer}>
+                <IoAlertCircleOutline
+                  style={{ fontSize: "1.5rem", color: "#ef4444" }}
+                />
+                <p className={styles.errorText}>{error}</p>
+              </div>
+            ) : lessons.length === 0 ? (
+              <div className={styles.statusContainer}>
+                <p>No lessons available.</p>
+              </div>
+            ) : (
+              lessons.map((lesson, lIndex) => {
+                const isActive = activeLesson?.id === lesson.id;
+
+                return (
+                  <button
+                    key={lesson.id}
+                    className={`${styles.lessonItem} ${isActive ? styles.selected : ""}`}
+                    onClick={() => onSelectLesson(lesson)}
+                  >
+                    <span className={styles.lessonStatus}>
+                      <IoPlay />
+                    </span>
+                    <span className={styles.lessonBody}>
+                      <span className={styles.lessonTitle}>
+                        {lIndex + 1}. {lesson.title}
+                      </span>
+                      <span className={styles.lessonMeta}>
+                        <span>
+                          <IoTimeOutline /> {lesson.duration || 0} min
+                        </span>
+                      </span>
+                    </span>
+                  </button>
+                );
+              })
+            )}
+          </div>
+        )}
+      </section>
     );
   };
-
   if (isLoading) {
     return (
       <div className={styles.statusContainer}>
@@ -44,41 +113,18 @@ const CurriculumSidebar = () => {
       <div className={styles.chapterList}>
         {sections.length === 0 ? (
           <div className={styles.statusContainer}>
-            <p>{t("no-sections-available-yet")}</p>
+            <p>No sections available yet.</p>
           </div>
         ) : (
-          sections.map((section, index) => {
-            const isExpanded = expanded.includes(section.id);
-
-            return (
-              <section
-                key={section.id}
-                className={`${styles.chapterCard} ${isExpanded ? styles.expanded : ""}`}
-              >
-                <button
-                  className={styles.chapterHeader}
-                  onClick={() => toggleChapter(section.id)}
-                  aria-expanded={isExpanded}
-                >
-                  <span className={styles.chapterNumber}>
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <span className={styles.chapterInfo}>
-                    <strong>{section.title}</strong>
-                  </span>
-                  <IoChevronDown className={styles.chevron} />
-                </button>
-
-                {isExpanded && (
-                  <div className={styles.lessonList}>
-                    <div className={styles.lessonsPlaceholder}>
-                      Loading lessons...{" "}
-                    </div>
-                  </div>
-                )}
-              </section>
-            );
-          })
+          sections.map((section, index) => (
+            <SectionItem
+              key={section.id}
+              section={section}
+              index={index}
+              activeLesson={activeLesson}
+              onSelectLesson={onSelectLesson}
+            />
+          ))
         )}
       </div>
 

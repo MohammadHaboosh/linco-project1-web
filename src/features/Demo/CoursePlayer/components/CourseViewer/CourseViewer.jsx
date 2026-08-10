@@ -16,6 +16,8 @@ const CourseViewer = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [activeSidebarTab, setActiveSidebarTab] = useState("curriculum");
 
+  const [activeLesson, setActiveLesson] = useState(null);
+
   const handleBackToCourses = () => {
     navigate(`/demos/${demoId}/departments/${departmentId}/courses`);
   };
@@ -59,7 +61,7 @@ const CourseViewer = () => {
       <main className={styles.mainLayout}>
         <section className={styles.contentColumn}>
           <div className={styles.videoWrapper}>
-            <VideoContent />
+            <VideoContent activeLesson={activeLesson} />
           </div>
           <div className={styles.tabsWrapper}>
             <LessonTabs />
@@ -71,6 +73,8 @@ const CourseViewer = () => {
           setIsOpen={setIsSidebarOpen}
           activeTab={activeSidebarTab}
           setActiveTab={setActiveSidebarTab}
+          activeLesson={activeLesson}
+          onSelectLesson={setActiveLesson}
         />
       </main>
     </div>
