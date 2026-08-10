@@ -79,7 +79,7 @@ const CourseViewer = () => {
             <h1>
               {activeLesson
                 ? activeLesson.title
-                : "Select a lesson from the curriculum"}
+                : t("select-a-lesson-from-the-curriculum")}
             </h1>
           </div>
         </div>

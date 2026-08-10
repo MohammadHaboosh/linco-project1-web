@@ -56,19 +56,16 @@ const VideoContent = ({ activeLesson, onNext, onPrev }) => {
   return (
     <div className={styles.videoStage}>
       <div className={styles.videoBackdrop}>
-        <div className={styles.videoTopbar}>
-          <div>
+        <div
+          className={styles.videoPlayerContainer}
+          key={activeLesson.id || activeLesson.videoUrl}
+        >
+          <Plyr source={videoSrc} options={plyrOptions} />
+
+          <div className={styles.videoTopbarOverlay}>
             <span className={styles.videoEyebrow}>{t("current-lesson")}</span>
             <h2>{activeLesson.title}</h2>
           </div>
-        </div>
-
-        <div className={styles.videoPlayerContainer}>
-          <Plyr
-            source={videoSrc}
-            options={plyrOptions}
-            key={activeLesson.videoUrl}
-          />
         </div>
 
         <div className={styles.customVideoControls}>
