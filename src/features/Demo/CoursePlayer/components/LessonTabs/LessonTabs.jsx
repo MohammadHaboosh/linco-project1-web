@@ -10,6 +10,7 @@ import {
   IoCloudDownloadOutline,
 } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
+import { useLessonAttachments } from "../../hooks/useLessonAttachments";
 
 const tabs = [
   { id: "Overview", icon: <IoInformationCircleOutline /> },
@@ -22,13 +23,19 @@ const LessonTabs = ({ activeLesson }) => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("Overview");
   const [openFaq, setOpenFaq] = useState(0);
-
+  const { attachments, isLoading, error } = useLessonAttachments(
+    activeLesson?.id,
+  );
   const faqs = [
     "Do I need to know vanilla JavaScript first?",
     "Can I use these techniques in Next.js?",
     "Will this lesson affect my course progress?",
   ];
-
+  const handleDownload = (path) => {
+    if (path) {
+      window.open(path, "_blank");
+    }
+  };
   return (
     <div className={styles.tabsContainer}>
       <div className={styles.tabHeadersWrapper}>
@@ -47,7 +54,10 @@ const LessonTabs = ({ activeLesson }) => {
             >
               <span className={styles.tabIcon}>{tab.icon}</span>
               <span className={styles.tabText}>{tab.id}</span>
-              {tab.id === "Q&A" && <b className={styles.countBadge}>12</b>}
+
+              {tab.id === "Resources" && attachments.length > 0 && (
+                <b className={styles.countBadge}>{attachments.length}</b>
+              )}
             </button>
           ))}
         </div>
@@ -76,31 +86,48 @@ const LessonTabs = ({ activeLesson }) => {
           </div>
         )}
 
-        {activeTab === "Attachments" && (
+        {activeTab === "Resources" && (
           <div className={styles.resourcePanel}>
             <div className={styles.panelHeading}>
               <div>
-                <span className={styles.kicker}>{t("lesson-materials")}</span>
-                <h3>{t("resources-and-attachments")}</h3>
+                <span className={styles.kicker}>LESSON MATERIALS</span>
+                <h3>Resources & Attachments</h3>
               </div>
-              <button className={styles.secondaryAction}>
-                {t("download-all")}
-              </button>
             </div>
 
             <div className={styles.resourceGrid}>
-              <div className={styles.resourceCard}>
-                <div className={styles.resourceIconBox}>
-                  <IoAttachOutline />
+              {isLoading && (
+                <p className={styles.loadingText}>Loading attachments...</p>
+              )}
+
+              {error && <p className={styles.errorText}>{error}</p>}
+
+              {!isLoading && !error && attachments.length === 0 && (
+                <div className={styles.emptyStateContainer}>
+                  <p>{t("no-attachments-available-for-this-lesson")}</p>
                 </div>
-                <div className={styles.resourceDetails}>
-                  <strong>DOM_Cheat_Sheet.pdf</strong>
-                  <small>PDF Document • 1.2 MB</small>
-                </div>
-                <button className={styles.downloadBtn} title="Download">
-                  <IoCloudDownloadOutline />
-                </button>
-              </div>
+              )}
+
+              {!isLoading &&
+                !error &&
+                attachments.map((att) => (
+                  <div key={att.id} className={styles.resourceCard}>
+                    <div className={styles.resourceIconBox}>
+                      <IoAttachOutline />
+                    </div>
+                    <div className={styles.resourceDetails}>
+                      <strong>{att.name || "Untitled Attachment"}</strong>
+                      <small>{t("lesson-material")}</small>
+                    </div>
+                    <button
+                      className={styles.downloadBtn}
+                      title={t("download-view-file")}
+                      onClick={() => handleDownload(att.path)}
+                    >
+                      <IoCloudDownloadOutline />
+                    </button>
+                  </div>
+                ))}
             </div>
           </div>
         )}

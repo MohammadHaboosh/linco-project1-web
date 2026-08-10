@@ -762,5 +762,8 @@
   "ask-a-question": "Ask a Question",
   "quick-answers": "QUICK ANSWERS",
   "this-is-a-placeholder-answer-for-the-frequently-asked-question": "This is a placeholder answer for the frequently asked question.",
-  "select-a-lesson-from-the-curriculum": "Select a lesson from the curriculum"
+  "select-a-lesson-from-the-curriculum": "Select a lesson from the curriculum",
+  "no-attachments-available-for-this-lesson": "No attachments available for this lesson.",
+  "lesson-material": "Lesson Material",
+  "download-view-file": "Download/View File"
 }
