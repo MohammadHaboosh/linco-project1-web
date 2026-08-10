@@ -34,6 +34,7 @@ import DemoMembersPage from "../pages/DemoMembersPage.jsx";
 import PublicLibraryPage from "../pages/PublicLibraryPage.jsx";
 import DemoAssetsPage from "../pages/DemoAssetsPage.jsx";
 import LivesPage from "../pages/LivesPage.jsx";
+import LiveRoomPage from "../pages/LiveRoomPage.jsx";
 import OwnerHomePage from "../pages/OwnerHomePage.jsx";
 import DemoRedirector from "../components/common/DemoRedirector.jsx";
 import OwnerCoursesPage from "../pages/OwnerCoursesPage.jsx";
@@ -137,6 +138,10 @@ export const router = createBrowserRouter([
       { path: PATHS.TOOLS, element: <WorkspaceToolsPage /> },
       { path: PATHS.CHAT_GROUPS, element: <ChatsPage /> },
     ],
+  },
+  {
+    path: PATHS.LIVE_ROOM,
+    element: <LiveRoomPage />,
   },
   {
     path: "*",

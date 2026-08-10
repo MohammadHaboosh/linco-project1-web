@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import {
@@ -7,31 +7,22 @@ import {
   IoVideocamOutline,
 } from "react-icons/io5";
 import { useDemo } from "../../../../../hooks/useDemo";
-import { useUser } from "../../../../../hooks/useUser";
 import { useLiveStreams } from "../../hooks/useLiveStreams";
+import {
+  buildLiveRoomPath,
+  canManageLiveStreams,
+} from "../../utils/liveStreamUtils";
 import LiveCard from "../LiveCard/LiveCard";
-import LiveRoom from "../LiveRoom/LiveRoom";
 import ScheduleLiveModal from "../ScheduleLiveModal/ScheduleLiveModal";
 import styles from "./LivesContent.module.css";
-
-const MANAGER_ROLES = new Set(["owner", "admin", "sectionmanager"]);
-
-const normalizeRole = (role) =>
-  String(role || "")
-    .replace(/[-_\s]/g, "")
-    .toLowerCase();
 
 const LivesContent = () => {
   const { t } = useTranslation();
   const { demoId, departmentId } = useParams();
   const { role, currentRoleView } = useDemo();
-  const { profile } = useUser();
   const [activeTab, setActiveTab] = useState("ACTIVE");
   const [showScheduleModal, setShowScheduleModal] = useState(false);
-  const [pendingAction, setPendingAction] = useState(null);
-  const [actionError, setActionError] = useState(null);
   const [feedback, setFeedback] = useState(null);
-  const [roomSession, setRoomSession] = useState(null);
 
   const {
     streams,
@@ -42,27 +33,9 @@ const LivesContent = () => {
     refetch,
     loadMore,
     createLiveStream,
-    startLiveStream,
-    endLiveStream,
-    getLiveStream,
-    generateLiveStreamToken,
   } = useLiveStreams({ demoId, departmentId });
 
-  const canManage = [role, currentRoleView]
-    .map(normalizeRole)
-    .some((candidateRole) => MANAGER_ROLES.has(candidateRole));
-
-  const meetingUserInfo = useMemo(() => {
-    const displayName = [profile?.firstName, profile?.lastName]
-      .filter(Boolean)
-      .join(" ")
-      .trim();
-
-    return {
-      displayName: displayName || profile?.email || "Participant",
-      email: profile?.email || "",
-    };
-  }, [profile?.email, profile?.firstName, profile?.lastName]);
+  const canManage = canManageLiveStreams(role, currentRoleView);
 
   const filteredStreams = useMemo(
     () =>
@@ -84,66 +57,21 @@ const LivesContent = () => {
     [createLiveStream, t],
   );
 
-  const handlePrimaryAction = useCallback(
-    async (stream) => {
-      const status = String(stream.status || "").toUpperCase();
-      const action = status === "SCHEDULED" ? "starting" : "joining";
-
-      setPendingAction({ streamId: stream.id, action });
-      setActionError(null);
-      setFeedback(null);
-
-      try {
-        let currentStream = stream;
-
-        if (status === "SCHEDULED") {
-          currentStream = await startLiveStream(stream.id);
-        } else {
-          currentStream = await getLiveStream(stream.id);
-        }
-
-        if (String(currentStream.status).toUpperCase() !== "LIVE") {
-          throw new Error(t("stream-is-not-live"));
-        }
-
-        setPendingAction({ streamId: stream.id, action: "joining" });
-        const credentials = await generateLiveStreamToken(stream.id);
-        setRoomSession({ stream: currentStream, credentials });
-      } catch (requestError) {
-        setActionError(requestError.message || t("live-join-failed"));
-      } finally {
-        setPendingAction(null);
+  useEffect(() => {
+    const refreshVisibleStreams = () => {
+      if (document.visibilityState === "visible") {
+        refetch({ silent: true }).catch(() => {
+          // The hook exposes the request error in its own error state.
+        });
       }
-    },
-    [generateLiveStreamToken, getLiveStream, startLiveStream, t],
-  );
+    };
 
-  const handleEndLiveStream = useCallback(
-    async (streamId) => {
-      setPendingAction({ streamId, action: "ending" });
-      setActionError(null);
-
-      try {
-        await endLiveStream(streamId);
-        setFeedback(t("live-ended-successfully"));
-        setActiveTab("ENDED");
-        return true;
-      } catch (requestError) {
-        setActionError(requestError.message || t("live-end-failed"));
-        return false;
-      } finally {
-        setPendingAction(null);
-      }
-    },
-    [endLiveStream, t],
-  );
-
-  const closeRoom = useCallback(() => {
-    setRoomSession(null);
-  }, []);
+    document.addEventListener("visibilitychange", refreshVisibleStreams);
+    return () =>
+      document.removeEventListener("visibilitychange", refreshVisibleStreams);
+  }, [refetch]);
 
   const retryLoad = async () => {
-    setActionError(null);
     try {
       await refetch();
     } catch {
@@ -182,14 +110,12 @@ const LivesContent = () => {
         )}
       </div>
 
-      {(actionError || error) && (
+      {error && (
         <div className={styles.errorBanner} role="alert">
-          <span>{actionError || error}</span>
-          {error && (
-            <button type="button" onClick={retryLoad} disabled={isLoading}>
-              <IoRefreshOutline /> {t("try-again")}
-            </button>
-          )}
+          <span>{error}</span>
+          <button type="button" onClick={retryLoad} disabled={isLoading}>
+            <IoRefreshOutline /> {t("try-again")}
+          </button>
         </div>
       )}
 
@@ -234,12 +160,11 @@ const LivesContent = () => {
                   key={stream.id}
                   live={stream}
                   canManage={canManage}
-                  onPrimaryAction={handlePrimaryAction}
-                  pendingAction={
-                    pendingAction?.streamId === stream.id
-                      ? pendingAction.action
-                      : null
-                  }
+                  roomPath={buildLiveRoomPath({
+                    demoId,
+                    departmentId,
+                    streamId: stream.id,
+                  })}
                 />
               ))
             ) : (
@@ -269,22 +194,6 @@ const LivesContent = () => {
         <ScheduleLiveModal
           onClose={() => setShowScheduleModal(false)}
           onCreate={handleCreate}
-        />
-      )}
-
-      {roomSession && (
-        <LiveRoom
-          stream={roomSession.stream}
-          credentials={roomSession.credentials}
-          userInfo={meetingUserInfo}
-          canManage={canManage}
-          isEnding={
-            pendingAction?.streamId === roomSession.stream.id &&
-            pendingAction.action === "ending"
-          }
-          error={actionError}
-          onClose={closeRoom}
-          onEnd={handleEndLiveStream}
         />
       )}
     </div>

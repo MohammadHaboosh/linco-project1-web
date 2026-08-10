@@ -351,6 +351,7 @@
 }
 
 .mainBtn {
+  box-sizing: border-box;
   display: flex;
   min-height: 44px;
   align-items: center;
@@ -365,6 +366,7 @@
   font: inherit;
   font-size: 0.82rem;
   font-weight: 750;
+  text-decoration: none;
   cursor: pointer;
   transition:
     transform 0.2s ease,
@@ -431,21 +433,6 @@
   box-shadow: 0 8px 18px rgba(239, 68, 68, 0.28);
 }
 
-.buttonSpinner {
-  width: 14px;
-  height: 14px;
-  border: 2px solid currentColor;
-  border-top-color: transparent;
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 @media (max-width: 380px) {
   .metaPanel {
     grid-template-columns: 1fr;
@@ -465,8 +452,7 @@
   }
 
   .pulse,
-  .liveCard .signalBars i,
-  .buttonSpinner {
+  .liveCard .signalBars i {
     animation: none;
   }
 }

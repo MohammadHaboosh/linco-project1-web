@@ -23,13 +23,12 @@ const getDurationInMinutes = (startedAt, endedAt) => {
   return Math.max(1, Math.round((end - start) / 60000));
 };
 
-const LiveCard = ({ live, canManage, onPrimaryAction, pendingAction }) => {
+const LiveCard = ({ live, canManage, roomPath }) => {
   const { t, i18n } = useTranslation();
   const normalizedStatus = String(live.status || "").toUpperCase();
   const scheduleDate = new Date(live.scheduledAt);
   const hasValidSchedule = !Number.isNaN(scheduleDate.getTime());
   const duration = getDurationInMinutes(live.startedAt, live.endedAt);
-  const isPending = Boolean(pendingAction);
   const statusClass =
     normalizedStatus === "LIVE"
       ? styles.liveCard
@@ -80,8 +79,6 @@ const LiveCard = ({ live, canManage, onPrimaryAction, pendingAction }) => {
   };
 
   const getActionLabel = () => {
-    if (pendingAction === "starting") return t("starting-live");
-    if (pendingAction === "joining") return t("joining-live");
     if (normalizedStatus === "LIVE") return t("join-stream");
     if (normalizedStatus === "SCHEDULED" && canManage) {
       return t("start-live-stream");
@@ -93,6 +90,27 @@ const LiveCard = ({ live, canManage, onPrimaryAction, pendingAction }) => {
   const canUsePrimaryAction =
     normalizedStatus === "LIVE" ||
     (normalizedStatus === "SCHEDULED" && canManage);
+
+  const actionContent = (
+    <>
+      <span className={styles.buttonContent}>
+        {normalizedStatus === "LIVE" ? (
+          <IoVideocamOutline />
+        ) : normalizedStatus === "SCHEDULED" && canManage ? (
+          <IoPlayOutline />
+        ) : (
+          <IoCheckmarkCircleOutline />
+        )}
+        {getActionLabel()}
+      </span>
+      {canUsePrimaryAction && (
+        <IoArrowForwardOutline
+          className={styles.actionArrow}
+          aria-hidden="true"
+        />
+      )}
+    </>
+  );
 
   return (
     <article className={`${styles.card} ${statusClass}`}>
@@ -156,33 +174,22 @@ const LiveCard = ({ live, canManage, onPrimaryAction, pendingAction }) => {
           </span>
         </div>
 
-        <button
-          type="button"
-          className={`${styles.mainBtn} ${
-            normalizedStatus === "LIVE" ? styles.joinLiveBtn : ""
-          }`}
-          onClick={() => onPrimaryAction(live)}
-          disabled={!canUsePrimaryAction || isPending}
-        >
-          <span className={styles.buttonContent}>
-            {isPending ? (
-              <span className={styles.buttonSpinner} />
-            ) : normalizedStatus === "LIVE" ? (
-              <IoVideocamOutline />
-            ) : normalizedStatus === "SCHEDULED" && canManage ? (
-              <IoPlayOutline />
-            ) : (
-              <IoCheckmarkCircleOutline />
-            )}
-            {getActionLabel()}
-          </span>
-          {canUsePrimaryAction && !isPending && (
-            <IoArrowForwardOutline
-              className={styles.actionArrow}
-              aria-hidden="true"
-            />
-          )}
-        </button>
+        {canUsePrimaryAction ? (
+          <a
+            className={`${styles.mainBtn} ${
+              normalizedStatus === "LIVE" ? styles.joinLiveBtn : ""
+            }`}
+            href={roomPath}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {actionContent}
+          </a>
+        ) : (
+          <button type="button" className={styles.mainBtn} disabled>
+            {actionContent}
+          </button>
+        )}
       </div>
     </article>
   );

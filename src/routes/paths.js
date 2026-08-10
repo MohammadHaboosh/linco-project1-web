@@ -50,6 +50,8 @@ export const PATHS = {
   // SM_ROADMAPS: "roadmaps",
   SM_TASKS: "weekly-tasks",
   LIVES: "lives",
+  LIVE_ROOM:
+    "/demos/:demoId/departments/:departmentId/lives/:streamId/room",
 
   COURSE_STUDIO: "course-studio",
   MANAGE_COURSE: "manage-course/:assetId",

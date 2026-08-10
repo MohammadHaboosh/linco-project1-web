@@ -61,10 +61,12 @@ export const useLiveStreams = ({ demoId, departmentId }) => {
     return () => controller.abort();
   }, [demoId, departmentId, hasContext]);
 
-  const refetch = useCallback(async () => {
+  const refetch = useCallback(async ({ silent = false } = {}) => {
     if (!hasContext) return;
 
-    setIsLoading(true);
+    if (!silent) {
+      setIsLoading(true);
+    }
     setError(null);
 
     try {
@@ -75,7 +77,9 @@ export const useLiveStreams = ({ demoId, departmentId }) => {
       setError(requestError.message || "Unable to reload live streams.");
       throw requestError;
     } finally {
-      setIsLoading(false);
+      if (!silent) {
+        setIsLoading(false);
+      }
     }
   }, [demoId, departmentId, hasContext]);
 
