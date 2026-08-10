@@ -27,6 +27,12 @@ const LiveRoom = ({
     () => ({
       readOnlyName: true,
       disableProfile: true,
+      hideConferenceSubject: true,
+      disableInviteFunctions: true,
+      hiddenPremeetingButtons: ["invite"],
+      deeplinking: {
+        disabled: true,
+      },
       prejoinConfig: {
         enabled: true,
         hideDisplayName: true,
