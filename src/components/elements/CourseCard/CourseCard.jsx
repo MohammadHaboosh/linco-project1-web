@@ -1,19 +1,22 @@
 import {
   IoPlayCircle,
-  IoPencilOutline,
   IoTrashOutline,
   IoEyeOutline,
   IoBookOutline,
   IoTimeOutline,
   IoPeopleOutline,
+  IoPlayOutline,
 } from "react-icons/io5";
 import styles from "./CourseCard.module.css";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDemo } from "../../../hooks/useDemo";
+import { PATHS } from "../../../routes/paths";
 
 const CourseCard = ({ course, isOwner, onEdit, onDelete }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { demoId, departmentId } = useParams();
 
   const {
     id,
@@ -28,8 +31,6 @@ const CourseCard = ({ course, isOwner, onEdit, onDelete }) => {
     status = "published",
     lastUpdated = "Recently",
   } = course || {};
-  // temp edit
-  isOwner = false;
 
   return (
     <div className={styles.card}>
@@ -56,16 +57,6 @@ const CourseCard = ({ course, isOwner, onEdit, onDelete }) => {
           {isOwner && (
             <div className={styles.adminActions}>
               <button
-                className={styles.editBtn}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onEdit(course);
-                }}
-                title={t("edit-course")}
-              >
-                <IoPencilOutline />
-              </button>
-              <button
                 className={styles.deleteBtn}
                 onClick={(e) => {
                   e.stopPropagation();
@@ -83,13 +74,30 @@ const CourseCard = ({ course, isOwner, onEdit, onDelete }) => {
           {description}
         </p>
 
-        <div className={styles.metaTags}>
-          <span className={styles.tag}>
-            <IoBookOutline /> {lessonsCount} {t("lessons")}
-          </span>
-          <span className={styles.tag}>
-            <IoTimeOutline /> {duration}
-          </span>
+        <div className={styles.metaContainer}>
+          <div className={styles.metaTags}>
+            <span className={styles.tag}>
+              <IoBookOutline /> {lessonsCount} {t("lessons")}
+            </span>
+            <span className={styles.tag}>
+              <IoTimeOutline /> {duration}
+            </span>
+          </div>
+
+          {isOwner && (
+            <button
+              className={styles.watchBtnOwner}
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(
+                  `/demos/${demoId}/departments/${departmentId}/course-player/${id}`,
+                );
+              }}
+              title={t("watch-course")}
+            >
+              <IoPlayOutline /> {t("watch")}
+            </button>
+          )}
         </div>
 
         <div className={styles.spacer}></div>
@@ -132,7 +140,12 @@ const CourseCard = ({ course, isOwner, onEdit, onDelete }) => {
             </div>
             <button
               className={styles.primaryCta}
-              onClick={() => navigate(`/course-player`)}
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(
+                  `/demos/${demoId}/departments/${departmentId}/course-player/${id}`,
+                );
+              }}
             >
               {progress > 0 ? t("continue-learning") : t("start-learning")}
             </button>

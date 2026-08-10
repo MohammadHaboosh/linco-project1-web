@@ -95,6 +95,94 @@
   font-size: 1.05rem;
 }
 
+.dept-selector {
+  position: relative;
+}
+
+.room-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.room-badge:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.dept-arrow {
+  transition: transform 0.2s ease;
+}
+
+.dept-arrow.open {
+  transform: rotate(180deg);
+}
+
+.dept-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 240px;
+  padding: 10px 0;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.16);
+  z-index: 30;
+}
+
+.dept-dropdown-header {
+  padding: 8px 14px 10px;
+  color: #475569;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dept-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 8px 4px;
+}
+
+.dept-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #0f172a;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.dept-item:hover {
+  background: #f8fafc;
+}
+
+.dept-item.active {
+  background: #eaf2ff;
+  color: #2563eb;
+}
+
+.check-icon {
+  color: #2563eb;
+  flex-shrink: 0;
+}
+
 @media (max-width: 768px) {
   .topHeader {
     height: 60px;

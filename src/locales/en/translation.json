@@ -384,7 +384,7 @@
   "for-free": "for free",
   "course-thumbnail": "Course Thumbnail",
   "click-or-drag-image-to-upload": "Click or drag image to upload",
-  "recommended": "recommended",
+  "recommended": "Recommended",
   "access-and-privacy": "Access & Privacy",
   "public-marketplace": "Public Marketplace",
   "visible-and-purchasable-by-other-companies": "Visible and purchasable by other companies.",
@@ -715,7 +715,6 @@
   "starter-plan-description": "A practical next step for small teams beginning structured learning.",
   "pro-plan-description": "More room and capabilities for growing teams and active programs.",
   "enterprise-plan-description": "The highest tier for organizations operating at scale.",
-  "recommended": "Recommended",
   "lower-tier": "Lower tier",
   "preparing-checkout": "Preparing checkout...",
   "payment-verification": "Payment verification",
@@ -741,5 +740,9 @@
   "payment-verification-error-description": "Please try verification again or return to your dashboard.",
   "payment-secured-by-stripe": "Payment securely processed by Stripe",
   "linco-brand": "LinCo",
-  "no-faqs-available-for-this-course": "No FAQs available for this course."
+  "no-faqs-available-for-this-course": "No FAQs available for this course.",
+  "no-courses-available-in-this-department": "No courses available in this department.",
+  "watch-course": "Watch Course",
+  "watch": "Watch",
+  "no-sections-available-yet": "No sections available yet."
 }

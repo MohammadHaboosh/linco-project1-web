@@ -1,0 +1,307 @@
+.aiContainer {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.homeView {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.heroSection {
+  position: relative;
+  background: linear-gradient(135deg, #0a2a54 0%, #312e81 100%);
+  border-radius: 24px;
+  padding: 45px 30px;
+  text-align: center;
+  color: white;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(10, 42, 84, 0.15);
+}
+
+.glowBg {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(139, 92, 246, 0.25) 0%,
+    transparent 50%
+  );
+  z-index: 0;
+}
+
+.iconCircle {
+  position: relative;
+  z-index: 1;
+  width: 75px;
+  height: 75px;
+  margin: 0 auto 20px;
+  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.2rem;
+  box-shadow: 0 0 25px rgba(139, 92, 246, 0.6);
+}
+
+.heroSection h3 {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 10px;
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+
+.heroSection p {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-size: 1.05rem;
+  color: #c7d2fe;
+}
+
+.actionsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.actionCard {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+}
+
+.actionCard:hover {
+  transform: translateY(-4px);
+  border-color: #8b5cf6;
+  box-shadow: 0 12px 30px rgba(139, 92, 246, 0.15);
+  background: #faf5ff;
+}
+
+.actionIcon {
+  width: 55px;
+  height: 55px;
+  border-radius: 14px;
+  background: #f3e8ff;
+  color: #9333ea;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+
+.actionText strong {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 5px;
+}
+
+.actionText span {
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+/* Chat View */
+.chatView {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  flex: 1;
+}
+
+.chatHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 25px;
+}
+
+.backBtn {
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  padding: 10px 20px;
+  border-radius: 12px;
+  color: #475569;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.backBtn:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.chatModeInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f3e8ff;
+  padding: 8px 20px;
+  border-radius: 20px;
+  color: #7e22ce;
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+.messagesArea {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-bottom: 20px;
+}
+
+.messageWrapper {
+  display: flex;
+  gap: 14px;
+  align-items: flex-end;
+}
+
+.userMsg {
+  flex-direction: row-reverse;
+}
+
+.aiAvatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #8b5cf6, #c084fc);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(139, 92, 246, 0.3);
+}
+
+.messageBubble {
+  max-width: 80%;
+  padding: 16px 20px;
+  border-radius: 20px;
+  font-size: 1rem;
+  line-height: 1.6;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+}
+
+.aiMsg .messageBubble {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #1e293b;
+  border-bottom-left-radius: 4px; /* for LTR */
+}
+
+.userMsg .messageBubble {
+  background: linear-gradient(135deg, #0a2a54 0%, #1a56db 100%);
+  color: white;
+  border-bottom-right-radius: 4px; /* for LTR */
+}
+
+.messageBubble p {
+  margin: 0;
+}
+
+.inputArea {
+  display: flex;
+  gap: 14px;
+  margin-top: auto;
+  background: #ffffff;
+  padding: 14px;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
+}
+
+.chatInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  color: #0f172a;
+  padding: 0 10px;
+}
+
+.sendBtn {
+  width: 50px;
+  height: 50px;
+  border-radius: 16px;
+  background: #1a56db;
+  color: white;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.sendBtn:hover {
+  background: #1e3a8a;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(26, 86, 219, 0.3);
+}
+
+.generatedCard {
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  border-radius: 20px;
+  padding: 24px;
+  margin-top: 10px;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #059669;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.generatedCard p {
+  margin: 0 0 20px 0;
+  color: #047857;
+  font-size: 0.95rem;
+}
+
+.primaryBtn {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.primaryBtn:hover {
+  background: #059669;
+  transform: translateY(-2px);
+}

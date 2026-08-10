@@ -738,5 +738,9 @@
   "payment-verification-error-description": "يرجى محاولة التحقق مرة أخرى أو العودة إلى لوحة التحكم.",
   "payment-secured-by-stripe": "يعالج Stripe عملية الدفع بأمان",
   "linco-brand": "LinCo",
-  "no-faqs-available-for-this-course": "لا تتوفر أسئلة شائعة لهذه الدورة."
+  "no-faqs-available-for-this-course": "لا تتوفر أسئلة شائعة لهذه الدورة.",
+  "no-courses-available-in-this-department": "لا توجد دورات متاحة في هذا القسم.",
+  "watch-course": "مشاهدة الدورة",
+  "watch": "مشاهدة",
+  "no-sections-available-yet": "لا توجد أقسام متاحة بعد."
 }

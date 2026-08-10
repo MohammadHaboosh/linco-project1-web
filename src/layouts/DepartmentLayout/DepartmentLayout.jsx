@@ -7,12 +7,14 @@ import { DEPARTMENT_NAV } from "../../config/layoutConfig";
 import { PATHS } from "../../routes/paths";
 import styles from "../MainLayout/MainLayout.module.css";
 import Footer from "../../components/layouts/Footer/Footer";
+import { FOOTER_CONFIG } from "../../components/layouts/Footer/footerConfig";
 
 const LayoutContent = () => {
   const { demoId, role, currentRoleView, setRoleView, isLoading, demoData } =
     useDemo();
   const location = useLocation();
   const isChatPage = location.pathname.includes("/chats");
+  const isCoursePlayerPage = location.pathname.includes("/course-player");
   const demoPath = demoId
     ? PATHS.DEMO.replace(":demoId", encodeURIComponent(demoId))
     : null;
@@ -21,9 +23,8 @@ const LayoutContent = () => {
     return <div className={styles.loader}>Loading Department...</div>;
 
   const navLinks =
-    DEPARTMENT_NAV[currentRoleView]?.navLinks ||
-    DEPARTMENT_NAV.trainee.navLinks;
-  console.log("department navLinks :", navLinks);
+    DEPARTMENT_NAV[role]?.navLinks || DEPARTMENT_NAV.member.navLinks;
+  const footerLinks = FOOTER_CONFIG[`department_${role.toLowerCase()}`] || [];
 
   return (
     <div className={styles.appContainer}>
@@ -34,11 +35,11 @@ const LayoutContent = () => {
           currentRoleView={currentRoleView}
           onRoleChange={setRoleView}
           demoName={demoData?.name}
-          currentDepartment="Current Dept Name"
+          currentDepartment="Demo Departments"
           demoPath={demoPath}
         />
 
-        <SubHeader navLinks={navLinks} />
+        {!isCoursePlayerPage && <SubHeader navLinks={navLinks} />}
 
         <main
           className={`${styles.pageContent} ${
@@ -47,7 +48,9 @@ const LayoutContent = () => {
         >
           <Outlet />
         </main>
-        {!isChatPage && <Footer />}
+        {!isCoursePlayerPage && !isChatPage && (
+          <Footer footerLinks={footerLinks} />
+        )}
       </div>
     </div>
   );

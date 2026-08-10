@@ -71,6 +71,7 @@ const DemoAssetContent = () => {
               key={asset.id}
               course={asset.course}
               accessMethod={asset.accessMethod}
+              assetId={asset.id}
             />
           ))}
         </div>

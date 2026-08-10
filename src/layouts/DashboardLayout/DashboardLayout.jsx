@@ -1,8 +1,9 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from "../../components/layouts/SideBar/Sidebar";
 import GlobalHeader from "../../components/layouts/Header/global_header/GlobalHeader";
-import styles from "../MainLayout/MainLayout.module.css"; // يمكننا استخدام نفس تنسيقات التقسيم
+import styles from "../MainLayout/MainLayout.module.css";
 import Footer from "../../components/layouts/Footer/Footer";
+import { FOOTER_CONFIG } from "../../components/layouts/Footer/footerConfig";
 
 const DashboardLayout = () => {
   return (
@@ -13,7 +14,7 @@ const DashboardLayout = () => {
         <main className={styles.pageContent}>
           <Outlet />
         </main>
-        <Footer />
+        <Footer footerLinks={FOOTER_CONFIG.dashboard} />
       </div>
     </div>
   );

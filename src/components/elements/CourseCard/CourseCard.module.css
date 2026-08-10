@@ -171,7 +171,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 15px;
+  margin-bottom: 0;
 }
 
 .tag {
@@ -288,5 +288,32 @@
 .primaryCta:hover {
   background: #1a56db;
   box-shadow: 0 4px 12px rgba(26, 86, 219, 0.2);
+  transform: translateY(-1px);
+}
+.metaContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+.watchBtnOwner {
+  background: #eff6ff;
+  color: #1a56db;
+  border: 1px solid #bfdbfe;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.watchBtnOwner:hover {
+  background: #1a56db;
+  color: #ffffff;
+  border-color: #1a56db;
   transform: translateY(-1px);
 }

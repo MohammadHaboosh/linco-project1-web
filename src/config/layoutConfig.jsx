@@ -29,7 +29,7 @@ export const DASHBOARD_NAV = {
 };
 
 export const DEMO_NAV = {
-  trainee: {
+  member: {
     navLinks: [
       { name: "Departments", icon: <IoBusinessOutline />, path: "" },
       {
@@ -96,7 +96,7 @@ export const DEMO_NAV = {
 };
 
 export const DEPARTMENT_NAV = {
-  trainee: {
+  member: {
     navLinks: [
       { name: "Home", icon: <IoHomeOutline />, path: "" },
       {
@@ -124,7 +124,7 @@ export const DEPARTMENT_NAV = {
       },
     ],
   },
-  sectionManager: {
+  admin: {
     navLinks: [
       { name: "Home", icon: <IoHomeOutline />, path: "" },
       { name: "Members", icon: <IoPeopleOutline />, path: PATHS.MEMBERS },

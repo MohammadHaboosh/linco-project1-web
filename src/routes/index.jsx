@@ -39,8 +39,6 @@ import DemoRedirector from "../components/common/DemoRedirector.jsx";
 import OwnerCoursesPage from "../pages/OwnerCoursesPage.jsx";
 import InquiriesPage from "../pages/InquiriesPage.jsx";
 import CoursePlayerPage from "../pages/CoursePlayerPage.jsx";
-import QuizContainer from "../features/Demo/CoursePlayer/components/QuizContainer.jsx";
-import VideoPlayer from "../features/Demo/CoursePlayer/components/VideoPlayer.jsx";
 import ChatsPage from "../pages/ChatsPage.jsx";
 import RoadmapsPage from "../pages/RoadmapsPage.jsx";
 import CertificatesPage from "../pages/CertificatesPage.jsx";
@@ -128,14 +126,11 @@ export const router = createBrowserRouter([
         element: <CoursePlayerPage />,
         children: [
           { index: true, element: <CoursePlayerPage /> },
-          { path: PATHS.LESSON, element: <VideoPlayer /> },
-          { path: PATHS.QUIZ, element: <QuizContainer /> },
+          // { path: PATHS.LESSON, element: <VideoPlayer /> },
+          // { path: PATHS.QUIZ, element: <QuizContainer /> },
         ],
       },
-      // {
-      //   path: PATHS.WEEKLY_TASKS,
-      //   element: <WeeklyTasksPage />,
-      // },
+      // { path: PATHS.COURSE_PLAYER, element: <CoursePlayerPage /> },
       { path: PATHS.COURSES, element: <CoursesPage /> },
       { path: PATHS.LEADERBOARD, element: <LeaderboardPage /> },
       { path: PATHS.ROADMAPS, element: <RoadmapsPage /> },

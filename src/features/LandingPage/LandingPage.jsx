@@ -12,6 +12,7 @@ import TestimonialsSection from "./sections/TestimonialsSection/TestimonialsSect
 import FAQSection from "./sections/FAQSection/FAQSection";
 import CTASection from "./sections/CTASection/CTASection";
 import { useTranslation } from "react-i18next";
+import { FOOTER_CONFIG } from "../../components/layouts/Footer/footerConfig";
 
 const LandingPage = () => {
   const { t } = useTranslation();
@@ -165,7 +166,7 @@ const LandingPage = () => {
       <FAQSection />
       <CTASection />
       <div className={styles.footerContainer}>
-        <Footer role="global" />
+        <Footer footerLinks={FOOTER_CONFIG.dashboard} />
       </div>
     </div>
   );

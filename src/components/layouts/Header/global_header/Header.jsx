@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { IoBusinessOutline, IoChevronBack } from "react-icons/io5";
+import { IoChevronBack } from "react-icons/io5";
 import { PATHS } from "../../../../routes/paths";
 import DepartmentSwitcher from "./DepartmentSwitcher";
-// import RoleSwitcher from "./RoleSwitcher";
 import styles from "./Header.module.css";
+import { useDemo } from "../../../../hooks/useDemo";
+import { useDepartmentNavigation } from "../../../../hooks/useDepartmentNavigation";
 
 const Header = ({
   role,
@@ -13,13 +13,19 @@ const Header = ({
   onRoleChange,
   demoPath,
 }) => {
-  const { t } = useTranslation();
+  const { demoData, demoId } = useDemo();
+  const demoHomePath = demoId ? `/demos/${demoId}` : PATHS.DEMO;
+  const { selectedDepartmentName } = useDepartmentNavigation(
+    currentDepartment || "Departments",
+  );
 
   return (
     <header className={styles.topHeader}>
       <div className={styles.logoArea}>
         <span className={styles.brand}>LinCo</span>
-        <span className={styles.company}>.TechCorp</span>
+        <Link to={demoHomePath}>
+          <span className={styles.company}>.{demoData?.name || "Demo"}</span>
+        </Link>
       </div>
 
       <div className={styles.centerArea}>
@@ -27,7 +33,7 @@ const Header = ({
           <IoChevronBack /> Go to my dashboard
         </Link>
 
-        {demoPath && (
+        {/* {demoPath && (
           <Link
             to={demoPath}
             className={`${styles.backLink} ${styles.demoBackLink}`}
@@ -36,22 +42,10 @@ const Header = ({
           >
             <IoBusinessOutline /> {t("back-to-demo")}
           </Link>
-        )}
+        )} */}
 
         <div className={styles.divider}></div>
-
-        {role === "member" && (
-          <DepartmentSwitcher currentDept={currentDepartment} />
-        )}
-
-        {role === "admin" && (
-          <div className={styles.staticBadge}>{currentDepartment}</div>
-        )}
-
-        {role === "owner" && (
-          <div></div>
-          // <RoleSwitcher currentRole={currentRoleView} onChange={onRoleChange} />
-        )}
+        <DepartmentSwitcher currentDepartment={selectedDepartmentName} />
       </div>
 
       <div className={styles.rightArea}>

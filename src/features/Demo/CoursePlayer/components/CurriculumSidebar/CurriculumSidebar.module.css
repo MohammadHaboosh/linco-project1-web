@@ -1,0 +1,326 @@
+.curriculum {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.chapterList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Chapter Card Redesign */
+.chapterCard {
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.02);
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chapterCard.expanded {
+  border-color: #bfdbfe;
+  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.06);
+  transform: translateY(-2px);
+}
+
+.chapterHeader {
+  width: 100%;
+  padding: 14px 16px; /* تقليص البادينج ليصبح الكرت أعرض من الداخل */
+  background: #f8fafc;
+  border: none;
+  border-bottom: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.3s ease;
+}
+
+.chapterCard.expanded .chapterHeader {
+  background: #ffffff;
+  border-bottom-color: #f1f5f9;
+}
+
+.chapterHeader:hover {
+  background: #f1f5f9;
+}
+
+.chapterNumber {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #eff6ff, #dbeafe);
+  color: #2563eb;
+  font-size: 1rem;
+  font-weight: 800;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+}
+
+.chapterInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.chapterInfo strong {
+  color: #0f172a;
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.chevron {
+  color: #94a3b8;
+  font-size: 1.1rem;
+  transition: transform 0.3s ease;
+}
+
+.expanded .chevron {
+  transform: rotate(180deg);
+  color: #1a56db;
+}
+
+/* Lesson Items Redesign */
+.lessonList {
+  padding: 12px 14px; /* تقليص الحواف الداخلية للدروس */
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lessonItem {
+  position: relative;
+  width: 100%;
+  padding: 12px 14px; /* مساحات ذكية توفر العرض */
+  border: 1px solid #f1f5f9;
+  border-radius: 12px;
+  background: #fcfcfd;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.lessonItem:hover:not(:disabled) {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  transform: translateX(4px); /* For LTR direction */
+}
+
+.lessonItem.selected {
+  background: #eff6ff;
+  border-color: #3b82f6;
+  box-shadow:
+    inset 4px 0 0 #3b82f6,
+    0 4px 10px rgba(37, 99, 235, 0.04);
+}
+
+.lessonItem.locked {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f8fafc;
+}
+
+.lessonStatus {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  color: #94a3b8;
+  font-size: 1rem;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.completed .lessonStatus {
+  color: #10b981;
+  background: #ecfdf5;
+  border-color: #34d399;
+}
+
+.active .lessonStatus,
+.selected .lessonStatus {
+  color: #2563eb;
+  background: #eff6ff;
+  border-color: #93c5fd;
+}
+
+.lessonBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lessonTitle {
+  color: #1e293b;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.selected .lessonTitle {
+  color: #1a56db;
+  font-weight: 800;
+}
+
+.lessonMeta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #64748b;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.lessonMeta span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Assessment Boxes */
+.assessmentBox,
+.finalAssessment,
+.certificate {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.assessmentBox {
+  margin-top: 8px;
+  background: #fffbeb;
+  border: 1px dashed #f59e0b;
+}
+
+.assessmentBox:hover {
+  background: #fef3c7;
+}
+
+.assessmentIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #fef3c7;
+  color: #d97706;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.1rem;
+}
+
+.assessmentText strong {
+  display: block;
+  color: #b45309;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.assessmentText small {
+  color: #d97706;
+  font-size: 0.75rem;
+}
+
+.finalAssessment {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+}
+
+.finalAssessment:hover {
+  border-color: #2563eb;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.05);
+}
+
+.finalIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #eff6ff;
+  color: #2563eb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.certificate {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  opacity: 0.8;
+}
+
+.certificateIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #e2e8f0;
+  color: #64748b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+}
+.statusContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  color: #64748b;
+  font-size: 0.95rem;
+  font-weight: 500;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 16px;
+}
+
+.loader {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 12px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.errorText {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+.lessonsPlaceholder {
+  text-align: center;
+  padding: 16px;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  font-weight: 500;
+}

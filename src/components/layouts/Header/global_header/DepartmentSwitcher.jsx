@@ -1,10 +1,19 @@
-import { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { IoChevronDown, IoCheckmarkCircle } from "react-icons/io5";
+import { useDemo } from "../../../../hooks/useDemo";
+import { useDepartmentNavigation } from "../../../../hooks/useDepartmentNavigation";
 import styles from "./Header.module.css";
 
-const DepartmentSwitcher = ({ currentRoom }) => {
+const DepartmentSwitcher = ({ currentDepartment }) => {
   const [isDeptOpen, setIsDeptOpen] = useState(false);
   const deptRef = useRef(null);
+  const navigate = useNavigate();
+  const { demoId } = useDemo();
+  const { departmentId } = useParams();
+  const { departments, isLoading } = useDepartmentNavigation(
+    currentDepartment || "Departments",
+  );
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -12,27 +21,34 @@ const DepartmentSwitcher = ({ currentRoom }) => {
         setIsDeptOpen(false);
       }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const availableDepartments = [
-    { id: 1, name: "Front-End Dept", active: true },
-    { id: 2, name: "Back-End Dept", active: false },
-    { id: 3, name: "UI/UX Design", active: false },
-  ];
+  const handleSelectDepartment = (dept) => {
+    setIsDeptOpen(false);
+
+    if (!demoId || !dept?.id) return;
+
+    navigate(`/demos/${demoId}/departments/${dept.id}`);
+  };
 
   return (
     <div className={styles["dept-selector"]} ref={deptRef}>
-      <div
+      <button
+        type="button"
         className={styles["room-badge"]}
-        onClick={() => setIsDeptOpen(!isDeptOpen)}
+        onClick={() => setIsDeptOpen((prev) => !prev)}
       >
-        {currentRoom}
+        <span>
+          {currentDepartment ||
+            (isLoading ? "Loading departments..." : "Departments")}
+        </span>
         <IoChevronDown
           className={`${styles["dept-arrow"]} ${isDeptOpen ? styles["open"] : ""}`}
         />
-      </div>
+      </button>
 
       {isDeptOpen && (
         <div className={styles["dept-dropdown"]}>
@@ -40,18 +56,31 @@ const DepartmentSwitcher = ({ currentRoom }) => {
             Switch Department
           </div>
           <div className={styles["dept-list"]}>
-            {availableDepartments.map((dept) => (
-              <div
-                key={dept.id}
-                className={`${styles["dept-item"]} ${dept.active ? styles["active"] : ""}`}
-                onClick={() => setIsDeptOpen(false)}
-              >
-                <span>{dept.name}</span>
-                {dept.active && (
-                  <IoCheckmarkCircle className={styles["check-icon"]} />
-                )}
+            {isLoading ? (
+              <div className={styles["dept-item"]}>Loading departments...</div>
+            ) : departments.length === 0 ? (
+              <div className={styles["dept-item"]}>
+                No departments available
               </div>
-            ))}
+            ) : (
+              departments.map((dept) => {
+                const isActive = dept.id === departmentId;
+
+                return (
+                  <button
+                    key={dept.id}
+                    type="button"
+                    className={`${styles["dept-item"]} ${isActive ? styles["active"] : ""}`}
+                    onClick={() => handleSelectDepartment(dept)}
+                  >
+                    <span>{dept.title || dept.name}</span>
+                    {isActive && (
+                      <IoCheckmarkCircle className={styles["check-icon"]} />
+                    )}
+                  </button>
+                );
+              })
+            )}
           </div>
         </div>
       )}
