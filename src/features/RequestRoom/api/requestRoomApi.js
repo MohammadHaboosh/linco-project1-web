@@ -46,13 +46,13 @@ export const uploadFileToCloud = async (uploadUrl, file) => {
 export const createRoom = async ({
   name,
   imagePath,
-  signaturePath,
+  signatureImagePath,
   description,
 }) => {
   const payload = {
     name,
     imagePath,
-    signaturePath,
+    signatureImagePath,
     description,
   };
 

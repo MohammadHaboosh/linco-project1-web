@@ -98,7 +98,7 @@ export const useRequestRoom = () => {
       await createRoom({
         name: formData.companyName,
         imagePath: logoData.cdnUrl || logoData.fileKey,
-        signaturePath: sigData.cdnUrl || sigData.fileKey,
+        signatureImagePath: sigData.cdnUrl || sigData.fileKey,
         description: formData.description,
       });
 
