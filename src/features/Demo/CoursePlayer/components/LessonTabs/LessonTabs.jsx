@@ -32,9 +32,12 @@ const LessonTabs = ({ activeLesson }) => {
     "Will this lesson affect my course progress?",
   ];
   const handleDownload = (path) => {
-    if (path) {
-      window.open(path, "_blank");
-    }
+    if (!path) return;
+    const cleanPath = path.replace(/^\//, "");
+    const fullUrl = path.startsWith("http")
+      ? path
+      : `https://lincostorage.blob.core.windows.net/${cleanPath}`;
+    window.open(fullUrl, "_blank");
   };
   return (
     <div className={styles.tabsContainer}>
