@@ -28,6 +28,12 @@
   margin: 0;
 }
 
+.footer-col .quick-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: clamp(12px, 2vw, 28px);
+}
+
 .footer-col ul li {
   margin-bottom: 6px;
   font-size: 0.9rem;

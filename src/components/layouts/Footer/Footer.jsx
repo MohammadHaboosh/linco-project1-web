@@ -11,7 +11,7 @@ const Footer = ({ footerLinks }) => {
       <div className={styles["footer-grid"]}>
         <div className={styles["footer-col"]}>
           <h4>{t("quick-links")}</h4>
-          <ul>
+          <ul className={styles["quick-links"]}>
             {footerLinks.map((link, index) => (
               <li key={index}>
                 <Link
