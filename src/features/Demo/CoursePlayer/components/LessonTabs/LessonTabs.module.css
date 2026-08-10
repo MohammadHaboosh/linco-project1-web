@@ -267,6 +267,34 @@
   background: #eff6ff;
 }
 
+.loadingText {
+  grid-column: 1 / -1;
+  color: #64748b;
+  font-weight: 500;
+  text-align: center;
+  padding: 20px;
+}
+
+.errorText {
+  grid-column: 1 / -1;
+  color: #ef4444;
+  font-weight: 500;
+  text-align: center;
+  padding: 20px;
+  background: #fef2f2;
+  border-radius: 12px;
+}
+
+.emptyStateContainer {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px 20px;
+  background: #f8fafc;
+  border-radius: 12px;
+  color: #64748b;
+  font-style: italic;
+}
+
 /* ================= 6. FAQs Accordion ================= */
 .faqList {
   display: flex;
@@ -389,47 +417,6 @@
   color: #64748b;
   max-width: 400px;
   line-height: 1.6;
-}
-
-/* ================= 8. Notes Editor ================= */
-.notePanel {
-  max-width: 800px;
-}
-
-.noteEditor {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.noteEditor textarea {
-  width: 100%;
-  min-height: 180px;
-  padding: 20px;
-  background: #f8fafc;
-  border: 1px solid #cbd5e1;
-  border-radius: 16px;
-  font-family: inherit;
-  font-size: 1rem;
-  color: #1e293b;
-  resize: vertical;
-  transition: all 0.2s ease;
-}
-
-.noteEditor textarea::placeholder {
-  color: #94a3b8;
-}
-
-.noteEditor textarea:focus {
-  outline: none;
-  background: #ffffff;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-}
-
-.noteFooter {
-  display: flex;
-  justify-content: flex-end;
 }
 
 /* ================= Media Queries ================= */

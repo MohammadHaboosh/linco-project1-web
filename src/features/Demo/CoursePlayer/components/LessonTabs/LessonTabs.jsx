@@ -55,7 +55,7 @@ const LessonTabs = ({ activeLesson }) => {
               <span className={styles.tabIcon}>{tab.icon}</span>
               <span className={styles.tabText}>{tab.id}</span>
 
-              {tab.id === "Resources" && attachments.length > 0 && (
+              {tab.id === "Attachments" && attachments.length > 0 && (
                 <b className={styles.countBadge}>{attachments.length}</b>
               )}
             </button>
@@ -86,7 +86,7 @@ const LessonTabs = ({ activeLesson }) => {
           </div>
         )}
 
-        {activeTab === "Resources" && (
+        {activeTab === "Attachments" && (
           <div className={styles.resourcePanel}>
             <div className={styles.panelHeading}>
               <div>
