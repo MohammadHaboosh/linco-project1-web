@@ -214,6 +214,7 @@ const CourseStudio = () => {
 
               const uploadUrl = uploadData.uploadUrl || uploadData.url;
               finalVideoUrl =
+                uploadData.cdnUrl ||
                 uploadData.videoUrl ||
                 uploadData.fileUrl ||
                 uploadData.publicUrl ||
