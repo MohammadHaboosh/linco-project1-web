@@ -1,8 +1,11 @@
 import {
+  IoArrowForwardOutline,
   IoCalendarOutline,
-  IoPlayCircleOutline,
+  IoCheckmarkCircleOutline,
+  IoPlayOutline,
   IoRadioOutline,
   IoTimeOutline,
+  IoVideocamOutline,
 } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
 import styles from "./LiveCard.module.css";
@@ -27,28 +30,52 @@ const LiveCard = ({ live, canManage, onPrimaryAction, pendingAction }) => {
   const hasValidSchedule = !Number.isNaN(scheduleDate.getTime());
   const duration = getDurationInMinutes(live.startedAt, live.endedAt);
   const isPending = Boolean(pendingAction);
+  const statusClass =
+    normalizedStatus === "LIVE"
+      ? styles.liveCard
+      : normalizedStatus === "SCHEDULED"
+        ? styles.scheduledCard
+        : styles.endedCard;
+  const dateLabel = hasValidSchedule
+    ? scheduleDate.toLocaleDateString(i18n.resolvedLanguage, {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      })
+    : t("schedule-unavailable");
+  const timeLabel =
+    normalizedStatus === "LIVE"
+      ? t("in-progress")
+      : duration
+        ? t("duration-minutes", { count: duration })
+        : hasValidSchedule
+          ? scheduleDate.toLocaleTimeString(i18n.resolvedLanguage, {
+              hour: "2-digit",
+              minute: "2-digit",
+            })
+          : t("time-unavailable");
 
   const getStatusBadge = () => {
     if (normalizedStatus === "LIVE") {
       return (
-        <div className={`${styles.badge} ${styles.liveBadge}`}>
+        <span className={`${styles.badge} ${styles.liveBadge}`}>
           <span className={styles.pulse} /> {t("live-now")}
-        </div>
+        </span>
       );
     }
 
     if (normalizedStatus === "SCHEDULED") {
       return (
-        <div className={`${styles.badge} ${styles.upcomingBadge}`}>
+        <span className={`${styles.badge} ${styles.upcomingBadge}`}>
           {t("scheduled")}
-        </div>
+        </span>
       );
     }
 
     return (
-      <div className={`${styles.badge} ${styles.endedBadge}`}>
+      <span className={`${styles.badge} ${styles.endedBadge}`}>
         {t("ended")}
-      </div>
+      </span>
     );
   };
 
@@ -68,49 +95,64 @@ const LiveCard = ({ live, canManage, onPrimaryAction, pendingAction }) => {
     (normalizedStatus === "SCHEDULED" && canManage);
 
   return (
-    <article className={styles.card}>
-      <div className={styles.thumbnailWrapper}>
-        <img
-          src="/images/linco-logo.jpg"
-          alt=""
-          className={styles.thumbnail}
-        />
-        <div className={styles.overlay} />
-        {getStatusBadge()}
-        {canUsePrimaryAction && (
-          <IoPlayCircleOutline className={styles.playIconHover} />
-        )}
+    <article className={`${styles.card} ${statusClass}`}>
+      <div className={styles.visual}>
+        <span className={styles.glow} aria-hidden="true" />
+        <span className={styles.gridPattern} aria-hidden="true" />
+
+        <div className={styles.visualHeader}>{getStatusBadge()}</div>
+
+        <div className={styles.broadcastMark} aria-hidden="true">
+          <span className={styles.broadcastRing} />
+          <span className={styles.broadcastIcon}>
+            {normalizedStatus === "LIVE" ? (
+              <IoRadioOutline />
+            ) : normalizedStatus === "SCHEDULED" ? (
+              <IoVideocamOutline />
+            ) : (
+              <IoCheckmarkCircleOutline />
+            )}
+          </span>
+        </div>
+
+        <div className={styles.visualFooter}>
+          <span>{t("interactive-learning")}</span>
+          <span className={styles.signalBars} aria-hidden="true">
+            <i />
+            <i />
+            <i />
+          </span>
+        </div>
       </div>
 
       <div className={styles.cardBody}>
-        <h3 className={styles.title}>{live.title}</h3>
-        <p className={styles.description}>
+        <h3 className={styles.title} title={live.title}>
+          {live.title}
+        </h3>
+        <p
+          className={styles.description}
+          title={live.description || t("no-live-description")}
+        >
           {live.description || t("no-live-description")}
         </p>
 
-        <div className={styles.details}>
-          <span className={styles.infoItem}>
-            <IoCalendarOutline />
-            {hasValidSchedule
-              ? scheduleDate.toLocaleDateString(i18n.resolvedLanguage)
-              : t("schedule-unavailable")}
+        <div className={styles.metaPanel}>
+          <span className={styles.metaItem}>
+            <span className={styles.metaIcon} aria-hidden="true">
+              <IoCalendarOutline />
+            </span>
+            <span>{dateLabel}</span>
           </span>
-          <span className={styles.infoItem}>
-            {normalizedStatus === "LIVE" ? (
-              <IoRadioOutline />
-            ) : (
-              <IoTimeOutline />
-            )}
-            {normalizedStatus === "LIVE"
-              ? t("in-progress")
-              : duration
-                ? t("duration-minutes", { count: duration })
-                : hasValidSchedule
-                  ? scheduleDate.toLocaleTimeString(i18n.resolvedLanguage, {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })
-                  : t("time-unavailable")}
+          <span className={styles.metaDivider} aria-hidden="true" />
+          <span className={styles.metaItem}>
+            <span className={styles.metaIcon} aria-hidden="true">
+              {normalizedStatus === "LIVE" ? (
+                <IoRadioOutline />
+              ) : (
+                <IoTimeOutline />
+              )}
+            </span>
+            <span>{timeLabel}</span>
           </span>
         </div>
 
@@ -122,8 +164,24 @@ const LiveCard = ({ live, canManage, onPrimaryAction, pendingAction }) => {
           onClick={() => onPrimaryAction(live)}
           disabled={!canUsePrimaryAction || isPending}
         >
-          {isPending && <span className={styles.buttonSpinner} />}
-          {getActionLabel()}
+          <span className={styles.buttonContent}>
+            {isPending ? (
+              <span className={styles.buttonSpinner} />
+            ) : normalizedStatus === "LIVE" ? (
+              <IoVideocamOutline />
+            ) : normalizedStatus === "SCHEDULED" && canManage ? (
+              <IoPlayOutline />
+            ) : (
+              <IoCheckmarkCircleOutline />
+            )}
+            {getActionLabel()}
+          </span>
+          {canUsePrimaryAction && !isPending && (
+            <IoArrowForwardOutline
+              className={styles.actionArrow}
+              aria-hidden="true"
+            />
+          )}
         </button>
       </div>
     </article>
