@@ -199,6 +199,9 @@ const CourseStudio = () => {
 
           let realLessonId = lesson.id;
           let finalVideoUrl = lesson.videoUrl || "";
+          if (finalVideoUrl.startsWith("blob:")) {
+            finalVideoUrl = "";
+          }
 
           if (isNewLesson) {
             if (lesson.videoFile) {
@@ -212,8 +215,24 @@ const CourseStudio = () => {
                 lesson.videoFile.name,
               );
 
-              const uploadUrl = uploadData.uploadUrl;
-              finalVideoUrl = uploadData.cdnUrl;
+              console.log("Backend Upload Data:", uploadData);
+
+              const uploadUrl = uploadData.uploadUrl || uploadData.url;
+
+              const cloudUrl =
+                uploadData.cdnUrl ||
+                uploadData.videoUrl ||
+                uploadData.fileKey ||
+                uploadData.fileUrl ||
+                uploadData.publicUrl;
+
+              if (!cloudUrl) {
+                throw new Error(
+                  `الباك إند لم يرسل الرابط النهائي للدرس: ${lesson.title}. افتح الـ Console لمعرفة الرد.`,
+                );
+              }
+
+              finalVideoUrl = cloudUrl;
 
               if (uploadUrl) {
                 await lessonApi.uploadVideoToStorage(
@@ -235,6 +254,7 @@ const CourseStudio = () => {
               }
             }
 
+            // إرسال الدرس لقاعدة البيانات بالرابط الحقيقي فقط
             const lessonPayload = {
               title: lesson.title,
               order: lesson.order || index + 1,
