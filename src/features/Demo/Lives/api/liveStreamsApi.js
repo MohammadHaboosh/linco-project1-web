@@ -1,7 +1,7 @@
 import { apiFetch } from "../../../../api/apiFetch";
 
 const LIVE_STREAMS_PATH = "/liveStreams";
-const LIVE_STREAMS_CURSOR_PATH = `${LIVE_STREAMS_PATH}/curosr`;
+const LIVE_STREAMS_CURSOR_PATH = `${LIVE_STREAMS_PATH}/cursor`;
 
 const requireContext = (demoId, departmentId) => {
   if (!demoId || !departmentId) {
