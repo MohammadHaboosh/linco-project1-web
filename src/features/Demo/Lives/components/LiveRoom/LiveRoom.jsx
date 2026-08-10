@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { JaaSMeeting } from "@jitsi/react-sdk";
 import { useTranslation } from "react-i18next";
 import {
   IoCloseOutline,
@@ -6,53 +7,6 @@ import {
   IoStopCircleOutline,
 } from "react-icons/io5";
 import styles from "./LiveRoom.module.css";
-
-const scriptPromises = new Map();
-
-const loadJaasApi = (appId) => {
-  if (window.JitsiMeetExternalAPI) {
-    return Promise.resolve(window.JitsiMeetExternalAPI);
-  }
-
-  if (scriptPromises.has(appId)) {
-    return scriptPromises.get(appId);
-  }
-
-  const scriptPromise = new Promise((resolve, reject) => {
-    const scriptId = `jaas-external-api-${appId}`;
-    let script = document.getElementById(scriptId);
-
-    const handleLoad = () => {
-      if (window.JitsiMeetExternalAPI) {
-        resolve(window.JitsiMeetExternalAPI);
-      } else {
-        reject(new Error("The video meeting service did not initialize."));
-      }
-    };
-    const handleError = () => {
-      scriptPromises.delete(appId);
-      script.remove();
-      reject(new Error("Unable to load the video meeting service."));
-    };
-
-    if (!script) {
-      script = document.createElement("script");
-      script.id = scriptId;
-      script.src = `https://8x8.vc/${encodeURIComponent(appId)}/external_api.js`;
-      script.async = true;
-    }
-
-    script.addEventListener("load", handleLoad, { once: true });
-    script.addEventListener("error", handleError, { once: true });
-
-    if (!script.isConnected) {
-      document.head.appendChild(script);
-    }
-  });
-
-  scriptPromises.set(appId, scriptPromise);
-  return scriptPromise;
-};
 
 const LiveRoom = ({
   stream,
@@ -64,65 +18,59 @@ const LiveRoom = ({
   onEnd,
 }) => {
   const { t } = useTranslation();
-  const meetingNodeRef = useRef(null);
   const meetingApiRef = useRef(null);
   const onCloseRef = useRef(onClose);
   const [isConnecting, setIsConnecting] = useState(true);
   const [connectionError, setConnectionError] = useState(null);
+  const meetingConfig = useMemo(
+    () => ({
+      readOnlyName: true,
+      disableProfile: true,
+      prejoinConfig: {
+        enabled: true,
+        hideDisplayName: true,
+      },
+    }),
+    [],
+  );
 
   useEffect(() => {
     onCloseRef.current = onClose;
   }, [onClose]);
 
   useEffect(() => {
-    let isActive = true;
-
-    const connectToRoom = async () => {
-      setIsConnecting(true);
-      setConnectionError(null);
-
-      try {
-        const JitsiMeetExternalAPI = await loadJaasApi(credentials.appId);
-
-        if (!isActive || !meetingNodeRef.current) return;
-
-        const meetingApi = new JitsiMeetExternalAPI("8x8.vc", {
-          roomName: `${credentials.appId}/${credentials.roomName}`,
-          jwt: credentials.token,
-          parentNode: meetingNodeRef.current,
-          width: "100%",
-          height: "100%",
-        });
-
-        meetingApiRef.current = meetingApi;
-        meetingApi.addListener?.("videoConferenceJoined", () => {
-          if (isActive) setIsConnecting(false);
-        });
-        meetingApi.addListener?.("readyToClose", () => {
-          if (isActive) onCloseRef.current();
-        });
-
-        window.setTimeout(() => {
-          if (isActive) setIsConnecting(false);
-        }, 4000);
-      } catch (loadError) {
-        if (isActive) {
-          setConnectionError(
-            loadError.message || t("live-room-connection-failed"),
-          );
-          setIsConnecting(false);
-        }
+    const connectionTimeout = window.setTimeout(() => {
+      if (!meetingApiRef.current) {
+        setConnectionError(t("live-room-connection-failed"));
+        setIsConnecting(false);
       }
-    };
+    }, 15000);
 
-    connectToRoom();
+    return () => window.clearTimeout(connectionTimeout);
+  }, [t]);
 
-    return () => {
-      isActive = false;
+  useEffect(
+    () => () => {
       meetingApiRef.current?.dispose?.();
       meetingApiRef.current = null;
-    };
-  }, [credentials, t]);
+    },
+    [],
+  );
+
+  const handleApiReady = useCallback((meetingApi) => {
+    meetingApiRef.current = meetingApi;
+    setConnectionError(null);
+    setIsConnecting(false);
+  }, []);
+
+  const handleReadyToClose = useCallback(() => {
+    onCloseRef.current();
+  }, []);
+
+  const sizeMeetingFrame = useCallback((meetingFrame) => {
+    meetingFrame.style.width = "100%";
+    meetingFrame.style.height = "100%";
+  }, []);
 
   const leaveRoom = () => {
     meetingApiRef.current?.executeCommand?.("hangup");
@@ -207,10 +155,19 @@ const LiveRoom = ({
           )}
 
           <div
-            ref={meetingNodeRef}
             className={styles.meetingNode}
             aria-hidden={Boolean(connectionError)}
-          />
+          >
+            <JaaSMeeting
+              appId={credentials.appId}
+              roomName={credentials.roomName}
+              jwt={credentials.token}
+              configOverwrite={meetingConfig}
+              onApiReady={handleApiReady}
+              onReadyToClose={handleReadyToClose}
+              getIFrameRef={sizeMeetingFrame}
+            />
+          </div>
         </div>
       </section>
     </div>

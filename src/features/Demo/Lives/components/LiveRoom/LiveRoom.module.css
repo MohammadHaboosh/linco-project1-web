@@ -137,7 +137,8 @@
 }
 
 .meetingNode,
-.meetingNode > iframe {
+.meetingNode > div,
+.meetingNode iframe {
   width: 100%;
   height: 100%;
 }
