@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   IoAddOutline,
   IoRefreshOutline,
@@ -13,15 +13,12 @@ import {
   canManageLiveStreams,
 } from "../../utils/liveStreamUtils";
 import LiveCard from "../LiveCard/LiveCard";
-import LiveStageAgenda from "../LiveStageAgenda/LiveStageAgenda";
-import LiveStreamBoard from "../LiveStreamBoard/LiveStreamBoard";
 import ScheduleLiveModal from "../ScheduleLiveModal/ScheduleLiveModal";
 import styles from "./LivesContent.module.css";
 
 const LivesContent = () => {
   const { t } = useTranslation();
   const { demoId, departmentId } = useParams();
-  const [searchParams] = useSearchParams();
   const { role, currentRoleView } = useDemo();
   const [activeTab, setActiveTab] = useState("ACTIVE");
   const [showScheduleModal, setShowScheduleModal] = useState(false);
@@ -39,9 +36,6 @@ const LivesContent = () => {
   } = useLiveStreams({ demoId, departmentId });
 
   const canManage = canManageLiveStreams(role, currentRoleView);
-  const selectedView = searchParams.get("view");
-  const useLegacyCards = selectedView === "cards";
-  const useBroadcastBoard = selectedView === "board";
 
   const filteredStreams = useMemo(
     () =>
@@ -160,38 +154,20 @@ const LivesContent = () => {
       ) : (
         <>
           {filteredStreams.length > 0 ? (
-            useLegacyCards ? (
-              <div className={styles.livesGrid}>
-                {filteredStreams.map((stream) => (
-                  <LiveCard
-                    key={stream.id}
-                    live={stream}
-                    canManage={canManage}
-                    roomPath={buildLiveRoomPath({
-                      demoId,
-                      departmentId,
-                      streamId: stream.id,
-                    })}
-                  />
-                ))}
-              </div>
-            ) : useBroadcastBoard ? (
-              <LiveStreamBoard
-                streams={filteredStreams}
-                mode={activeTab}
-                canManage={canManage}
-                demoId={demoId}
-                departmentId={departmentId}
-              />
-            ) : (
-              <LiveStageAgenda
-                streams={filteredStreams}
-                mode={activeTab}
-                canManage={canManage}
-                demoId={demoId}
-                departmentId={departmentId}
-              />
-            )
+            <div className={styles.livesGrid}>
+              {filteredStreams.map((stream) => (
+                <LiveCard
+                  key={stream.id}
+                  live={stream}
+                  canManage={canManage}
+                  roomPath={buildLiveRoomPath({
+                    demoId,
+                    departmentId,
+                    streamId: stream.id,
+                  })}
+                />
+              ))}
+            </div>
           ) : (
             <div className={styles.emptyState}>
               <IoVideocamOutline />
