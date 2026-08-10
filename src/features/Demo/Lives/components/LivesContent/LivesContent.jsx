@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import {
   IoAddOutline,
   IoRefreshOutline,
@@ -13,12 +13,14 @@ import {
   canManageLiveStreams,
 } from "../../utils/liveStreamUtils";
 import LiveCard from "../LiveCard/LiveCard";
+import LiveStreamBoard from "../LiveStreamBoard/LiveStreamBoard";
 import ScheduleLiveModal from "../ScheduleLiveModal/ScheduleLiveModal";
 import styles from "./LivesContent.module.css";
 
 const LivesContent = () => {
   const { t } = useTranslation();
   const { demoId, departmentId } = useParams();
+  const [searchParams] = useSearchParams();
   const { role, currentRoleView } = useDemo();
   const [activeTab, setActiveTab] = useState("ACTIVE");
   const [showScheduleModal, setShowScheduleModal] = useState(false);
@@ -36,6 +38,7 @@ const LivesContent = () => {
   } = useLiveStreams({ demoId, departmentId });
 
   const canManage = canManageLiveStreams(role, currentRoleView);
+  const useLegacyCards = searchParams.get("view") === "cards";
 
   const filteredStreams = useMemo(
     () =>
@@ -153,27 +156,37 @@ const LivesContent = () => {
         </div>
       ) : (
         <>
-          <div className={styles.livesGrid}>
-            {filteredStreams.length > 0 ? (
-              filteredStreams.map((stream) => (
-                <LiveCard
-                  key={stream.id}
-                  live={stream}
-                  canManage={canManage}
-                  roomPath={buildLiveRoomPath({
-                    demoId,
-                    departmentId,
-                    streamId: stream.id,
-                  })}
-                />
-              ))
-            ) : (
-              <div className={styles.emptyState}>
-                <IoVideocamOutline />
-                <p>{t("no-streams-available-in-this-category")}</p>
+          {filteredStreams.length > 0 ? (
+            useLegacyCards ? (
+              <div className={styles.livesGrid}>
+                {filteredStreams.map((stream) => (
+                  <LiveCard
+                    key={stream.id}
+                    live={stream}
+                    canManage={canManage}
+                    roomPath={buildLiveRoomPath({
+                      demoId,
+                      departmentId,
+                      streamId: stream.id,
+                    })}
+                  />
+                ))}
               </div>
-            )}
-          </div>
+            ) : (
+              <LiveStreamBoard
+                streams={filteredStreams}
+                mode={activeTab}
+                canManage={canManage}
+                demoId={demoId}
+                departmentId={departmentId}
+              />
+            )
+          ) : (
+            <div className={styles.emptyState}>
+              <IoVideocamOutline />
+              <p>{t("no-streams-available-in-this-category")}</p>
+            </div>
+          )}
 
           {hasNextPage && (
             <div className={styles.paginationArea}>
