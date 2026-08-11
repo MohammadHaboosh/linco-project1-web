@@ -1,0 +1,18 @@
+# LinCo
+
+> LinCo is a corporate learning workspace for courses, live sessions, department learning paths, collaboration, certificates, and progress analytics.
+
+## Canonical public pages
+
+- [LinCo in English](https://linco.com/)
+- [LinCo in Arabic](https://linco.com/ar)
+
+## Product facts
+
+- Companies can organize employees into department learning spaces.
+- LinCo supports company courses, shared courses, live sessions, practical tasks, collaboration, certificates, leaderboards, and progress analytics.
+- Account creation is the primary public action; company workspace requests follow account creation.
+
+## Contact
+
+- Email: contact@linco.com

@@ -7,6 +7,7 @@ import { DEMO_NAV } from "../../config/layoutConfig";
 import styles from "../MainLayout/MainLayout.module.css";
 import Footer from "../../components/layouts/Footer/Footer";
 import { FOOTER_CONFIG } from "../../components/layouts/Footer/footerConfig";
+import AuthSessionBoundary from "../../components/common/AuthSessionBoundary";
 
 const LayoutContent = () => {
   const { role, currentRoleView, setRoleView, isLoading, demoData } = useDemo();
@@ -41,9 +42,11 @@ const LayoutContent = () => {
 
 const DemoLayout = () => {
   return (
-    <DemoProvider>
-      <LayoutContent />
-    </DemoProvider>
+    <AuthSessionBoundary>
+      <DemoProvider>
+        <LayoutContent />
+      </DemoProvider>
+    </AuthSessionBoundary>
   );
 };
 

@@ -1,9 +1,9 @@
 import LandingPageContent from "../features/LandingPage/LandingPage";
 
-const LandingPage = () => {
+const LandingPage = ({ locale = "en" }) => {
   return (
     <>
-      <LandingPageContent />
+      <LandingPageContent locale={locale} />
     </>
   );
 };

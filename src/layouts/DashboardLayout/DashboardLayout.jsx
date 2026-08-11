@@ -4,19 +4,22 @@ import GlobalHeader from "../../components/layouts/Header/global_header/GlobalHe
 import styles from "../MainLayout/MainLayout.module.css";
 import Footer from "../../components/layouts/Footer/Footer";
 import { FOOTER_CONFIG } from "../../components/layouts/Footer/footerConfig";
+import AuthSessionBoundary from "../../components/common/AuthSessionBoundary";
 
 const DashboardLayout = () => {
   return (
-    <div className={styles.appContainer}>
-      <Sidebar role="global" />
-      <div className={`${styles.mainWrapper} custom-scrollbar`}>
-        <GlobalHeader />
-        <main className={styles.pageContent}>
-          <Outlet />
-        </main>
-        <Footer footerLinks={FOOTER_CONFIG.dashboard} />
+    <AuthSessionBoundary>
+      <div className={styles.appContainer}>
+        <Sidebar role="global" />
+        <div className={`${styles.mainWrapper} custom-scrollbar`}>
+          <GlobalHeader />
+          <main className={styles.pageContent}>
+            <Outlet />
+          </main>
+          <Footer footerLinks={FOOTER_CONFIG.dashboard} />
+        </div>
       </div>
-    </div>
+    </AuthSessionBoundary>
   );
 };
 

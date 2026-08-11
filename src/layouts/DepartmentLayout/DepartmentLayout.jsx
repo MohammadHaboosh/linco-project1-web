@@ -8,6 +8,7 @@ import { PATHS } from "../../routes/paths";
 import styles from "../MainLayout/MainLayout.module.css";
 import Footer from "../../components/layouts/Footer/Footer";
 import { FOOTER_CONFIG } from "../../components/layouts/Footer/footerConfig";
+import AuthSessionBoundary from "../../components/common/AuthSessionBoundary";
 
 const LayoutContent = () => {
   const { demoId, role, currentRoleView, setRoleView, isLoading, demoData } =
@@ -58,9 +59,11 @@ const LayoutContent = () => {
 
 const DepartmentLayout = () => {
   return (
-    <DemoProvider>
-      <LayoutContent />
-    </DemoProvider>
+    <AuthSessionBoundary>
+      <DemoProvider>
+        <LayoutContent />
+      </DemoProvider>
+    </AuthSessionBoundary>
   );
 };
 
