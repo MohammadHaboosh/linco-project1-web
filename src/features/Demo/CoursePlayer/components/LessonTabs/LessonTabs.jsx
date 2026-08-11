@@ -36,7 +36,7 @@ const LessonTabs = ({ activeLesson }) => {
     const cleanPath = path.replace(/^\//, "");
     const fullUrl = path.startsWith("http")
       ? path
-      : `https://lincostorage.blob.core.windows.net/${cleanPath}`;
+      : `https://lincostorage.blob.core.windows.net/uploads/${cleanPath}`;
     window.open(fullUrl, "_blank");
   };
   return (
