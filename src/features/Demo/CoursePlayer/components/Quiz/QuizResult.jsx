@@ -12,7 +12,7 @@ const QuizResult = ({ scoreInfo, onRetry, onContinue }) => {
     <div className={styles.resultContainer}>
       <div className={styles.resultContent}>
         <img
-          src={isPassed ? "/images/squid-happy.png" : "/images/squid-sad.png"}
+          src={isPassed ? "/images/squid-happy.png" : "/icons/sad.png"}
           alt={isPassed ? "Happy Mascot" : "Sad Mascot"}
           className={styles.mascotImgResult}
         />

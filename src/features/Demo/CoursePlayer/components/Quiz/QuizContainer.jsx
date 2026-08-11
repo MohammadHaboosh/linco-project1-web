@@ -77,7 +77,7 @@ const QuizContainer = ({ onCompleteSection = () => {} }) => {
         <div className={styles.welcomeScreen}>
           <div className={styles.mascotEntrance}>
             <img
-              src="/images/squid-greeting.png"
+              src="/icons/linco-logo.png"
               alt="Mascot Greeting"
               className={styles.mascotImg}
             />

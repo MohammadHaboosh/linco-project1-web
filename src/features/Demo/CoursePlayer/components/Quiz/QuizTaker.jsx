@@ -94,7 +94,7 @@ const QuizTaker = ({ quiz, onSubmit }) => {
         <div className={styles.questionCard}>
           <div className={styles.questionHeader}>
             <img
-              src="/images/squid-thinking.png"
+              src="/icons/linco-logo.png"
               alt="Thinking"
               className={styles.tinyMascot}
             />
