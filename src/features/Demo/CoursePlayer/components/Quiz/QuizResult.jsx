@@ -1,8 +1,7 @@
 import {
-  IoArrowBackOutline,
-  IoCheckmarkCircleOutline,
+  IoArrowForwardOutline,
   IoRefreshOutline,
-  IoTrophyOutline,
+  IoCheckmarkCircleOutline,
 } from "react-icons/io5";
 import styles from "./Quiz.module.css";
 
@@ -11,66 +10,76 @@ const QuizResult = ({ scoreInfo, onRetry, onContinue }) => {
 
   return (
     <div className={styles.resultContainer}>
-      <div
-        className={`${styles.resultIcon} ${isPassed ? styles.successIcon : styles.retryIcon}`}
-      >
-        {isPassed ? <IoTrophyOutline /> : <IoRefreshOutline />}
-      </div>
+      <div className={styles.resultContent}>
+        <img
+          src={isPassed ? "/images/squid-happy.png" : "/icons/sad.png"}
+          alt={isPassed ? "Happy Mascot" : "Sad Mascot"}
+          className={styles.mascotImgResult}
+        />
 
-      <span className={styles.quizBadge}>
-        {isPassed ? "ASSESSMENT COMPLETE" : "KEEP PRACTICING"}
-      </span>
+        <h2 className={isPassed ? styles.successText : styles.failText}>
+          {isPassed ? "Awesome Job! 🌟" : "Keep Practicing! 💪"}
+        </h2>
+        <p className={styles.resultSubtitle}>
+          {isPassed
+            ? "You've proven your skills in this section. Ready for the next challenge!"
+            : "Review the learning materials and try again to improve your score."}
+        </p>
 
-      <h2>
-        {isPassed ? "ممتاز! لقد اجتزت التقييم" : "أنت قريب جداً من النجاح"}
-      </h2>
-      <p>
-        {isPassed
-          ? "أداء رائع. يمكنك الآن الانتقال إلى الدرس التالي."
-          : "راجع الدرس مرة أخرى وحاول من جديد للحصول على نتيجة أفضل."}
-      </p>
+        {/* Horizontal Compact Scoreboard */}
+        <div className={styles.horizontalScoreBoard}>
+          <div
+            className={`${styles.scoreRing} ${isPassed ? styles.ringSuccess : styles.ringFail}`}
+          >
+            <svg viewBox="0 0 36 36" className={styles.circularChart}>
+              <path
+                className={styles.circleBg}
+                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+              />
+              <path
+                className={styles.circle}
+                strokeDasharray={`${percentage}, 100`}
+                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+              />
+            </svg>
+            <div className={styles.scorePercentage}>
+              <strong>{percentage}%</strong>
+              <span>Score</span>
+            </div>
+          </div>
 
-      <div className={styles.resultBoard}>
-        <div
-          className={`${styles.scoreCircle} ${isPassed ? styles.circleSuccess : styles.circleDanger}`}
-        >
-          <strong>{percentage}%</strong>
-          <span>النتيجة</span>
+          <div className={styles.dividerVertical} />
+
+          <div className={styles.statsDetails}>
+            <div className={styles.statRow}>
+              <IoCheckmarkCircleOutline className={styles.correctIcon} />
+              <span>Correct Answers</span>
+              <strong>
+                {correctCount} / {total}
+              </strong>
+            </div>
+            <div className={styles.statRow}>
+              <div className={styles.targetDot} />
+              <span>Passing Score</span>
+              <strong>80%</strong>
+            </div>
+          </div>
         </div>
-        <div className={styles.resultStats}>
-          <div>
-            <IoCheckmarkCircleOutline />
-            <span>إجابات صحيحة</span>
-            <strong>{correctCount}</strong>
-          </div>
-          <div>
-            <span className={styles.wrongDot} />
-            <span>إجابات غير صحيحة</span>
-            <strong>{total - correctCount}</strong>
-          </div>
-          <div>
-            <span className={styles.passDot} />
-            <span>حد النجاح</span>
-            <strong>80%</strong>
-          </div>
-        </div>
-      </div>
 
-      <div className={styles.resultActions}>
-        {!isPassed && (
-          <button type="button" className={styles.retryBtn} onClick={onRetry}>
-            <IoRefreshOutline />
-            إعادة المحاولة
+        <div className={styles.resultActions}>
+          {!isPassed && (
+            <button type="button" className={styles.retryBtn} onClick={onRetry}>
+              <IoRefreshOutline /> Retry Quiz
+            </button>
+          )}
+          <button
+            type="button"
+            className={styles.continueBtn}
+            onClick={onContinue}
+          >
+            Continue Course <IoArrowForwardOutline />
           </button>
-        )}
-        <button
-          type="button"
-          className={styles.continueBtn}
-          onClick={onContinue}
-        >
-          متابعة الكورس
-          <IoArrowBackOutline />
-        </button>
+        </div>
       </div>
     </div>
   );

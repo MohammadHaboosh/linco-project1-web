@@ -11,10 +11,12 @@ import {
 } from "react-icons/io5";
 import { useCourseSections } from "../../hooks/useCourseSections";
 import { useSectionLessons } from "../../hooks/useSectionLessons";
+import { useTranslation } from "react-i18next";
 
 const CurriculumSidebar = ({ activeLesson, onSelectLesson }) => {
   const { courseId } = useParams();
   const { sections, isLoading, error } = useCourseSections(courseId);
+  const { t } = useTranslation();
   const SectionItem = ({ section, index, activeLesson, onSelectLesson }) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
@@ -46,7 +48,7 @@ const CurriculumSidebar = ({ activeLesson, onSelectLesson }) => {
             {isLoading ? (
               <div className={styles.statusContainer}>
                 <div className={styles.loader}></div>
-                <p>Loading lessons...</p>
+                <p>{t("loading-lessons")}</p>
               </div>
             ) : error ? (
               <div className={styles.statusContainer}>
@@ -57,7 +59,7 @@ const CurriculumSidebar = ({ activeLesson, onSelectLesson }) => {
               </div>
             ) : lessons.length === 0 ? (
               <div className={styles.statusContainer}>
-                <p>No lessons available.</p>
+                <p>{t("no-lessons-available")}</p>
               </div>
             ) : (
               lessons.map((lesson, lIndex) => {
@@ -67,18 +69,24 @@ const CurriculumSidebar = ({ activeLesson, onSelectLesson }) => {
                   <button
                     key={lesson.id}
                     className={`${styles.lessonItem} ${isActive ? styles.selected : ""}`}
-                    onClick={() => onSelectLesson(lesson)}
+                    onClick={() => onSelectLesson(lesson, lessons)}
                   >
                     <span className={styles.lessonStatus}>
-                      <IoPlay />
+                      {lesson.isQuiz ? <IoTrophyOutline /> : <IoPlay />}
                     </span>
                     <span className={styles.lessonBody}>
                       <span className={styles.lessonTitle}>
-                        {lIndex + 1}. {lesson.title}
+                        {lesson.isQuiz
+                          ? lesson.title
+                          : `${lIndex + 1}. ${lesson.title}`}
                       </span>
                       <span className={styles.lessonMeta}>
                         <span>
-                          <IoTimeOutline /> {lesson.duration || 0} min
+                          <IoTimeOutline />{" "}
+                          {lesson.isQuiz
+                            ? lesson.durationMinutes
+                            : lesson.duration || 0}{" "}
+                          min
                         </span>
                       </span>
                     </span>

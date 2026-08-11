@@ -4,17 +4,21 @@ import {
   IoHelpCircleOutline,
   IoTimeOutline,
   IoListOutline,
+  IoCheckmarkCircleOutline,
 } from "react-icons/io5";
 import styles from "./Modal.module.css";
 import { useQuiz } from "../../../../../../hooks/useQuiz";
+import { useTranslation } from "react-i18next";
 
 const AddQuizModal = ({ isOpen, onClose, onSubmit, sectionId }) => {
   const [formData, setFormData] = useState({
     title: "",
     numberOfQuestions: 5,
     durationMinutes: 30,
+    passingScore: 60,
   });
   const { createQuiz, isCreating } = useQuiz();
+  const { t } = useTranslation();
 
   if (!isOpen) return null;
 
@@ -35,6 +39,7 @@ const AddQuizModal = ({ isOpen, onClose, onSubmit, sectionId }) => {
       title: formData.title.trim(),
       numberOfQuestions: Number(formData.numberOfQuestions),
       durationMinutes: Number(formData.durationMinutes),
+      passingScore: Number(formData.passingScore),
     };
 
     try {
@@ -57,6 +62,7 @@ const AddQuizModal = ({ isOpen, onClose, onSubmit, sectionId }) => {
         title: "",
         numberOfQuestions: 5,
         durationMinutes: 30,
+        passingScore: 60,
       });
       onClose();
     } catch (err) {
@@ -77,8 +83,8 @@ const AddQuizModal = ({ isOpen, onClose, onSubmit, sectionId }) => {
               <IoHelpCircleOutline />
             </div>
             <div>
-              <h3>Add New Quiz</h3>
-              <p>Configure assessment details and time constraints</p>
+              <h3>{t("add-new-quiz")}</h3>
+              <p>{t("configure-assessment-details-and-time-constraints")}</p>
             </div>
           </div>
           <button
@@ -92,7 +98,7 @@ const AddQuizModal = ({ isOpen, onClose, onSubmit, sectionId }) => {
 
         <form onSubmit={handleSubmit} className={styles.modalBody}>
           <div className={styles.formGroup}>
-            <label className={styles.label}>Quiz Title *</label>
+            <label className={styles.label}>{t("quiz-title")}</label>
             <input
               type="text"
               required
@@ -107,7 +113,7 @@ const AddQuizModal = ({ isOpen, onClose, onSubmit, sectionId }) => {
           <div className={styles.gridTwoCols}>
             <div className={styles.formGroup}>
               <label className={styles.label}>
-                <IoListOutline /> Number of Questions *
+                <IoListOutline /> {t("number-of-questions-0")}
               </label>
               <input
                 type="number"
@@ -125,7 +131,7 @@ const AddQuizModal = ({ isOpen, onClose, onSubmit, sectionId }) => {
 
             <div className={styles.formGroup}>
               <label className={styles.label}>
-                <IoTimeOutline /> Duration (Minutes) *
+                <IoTimeOutline /> {t("duration-seconds")}
               </label>
               <input
                 type="number"
@@ -142,6 +148,23 @@ const AddQuizModal = ({ isOpen, onClose, onSubmit, sectionId }) => {
             </div>
           </div>
 
+          <div className={styles.formGroup}>
+            <label className={styles.label}>
+              <IoCheckmarkCircleOutline /> {t("passing-score")}
+            </label>
+            <input
+              type="number"
+              min="1"
+              max="100"
+              required
+              disabled={isCreating}
+              className={styles.input}
+              placeholder="60"
+              value={formData.passingScore}
+              onChange={(e) => handleChange("passingScore", e.target.value)}
+            />
+          </div>
+
           <div className={styles.modalFooter}>
             <button
               type="button"
@@ -149,14 +172,14 @@ const AddQuizModal = ({ isOpen, onClose, onSubmit, sectionId }) => {
               onClick={onClose}
               disabled={isCreating}
             >
-              Cancel
+              {t("cancel")}
             </button>
             <button
               type="submit"
               disabled={isCreating}
               className={`${styles.submitBtn} ${styles.purpleBtn}`}
             >
-              {isCreating ? "Saving..." : "Save Quiz"}
+              {isCreating ? t("saving") : t("save-quiz")}
             </button>
           </div>
         </form>

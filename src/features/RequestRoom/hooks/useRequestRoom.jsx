@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   getUploadUrl,
+  getSignatureUploadUrl,
   uploadFileToCloud,
   createRoom,
 } from "../api/requestRoomApi";
@@ -16,7 +17,20 @@ export const useRequestRoom = () => {
     companyName: "",
     description: "",
     logo: null,
+    signature: null,
   });
+
+  const [previews, setPreviews] = useState({
+    logo: null,
+    signature: null,
+  });
+
+  useEffect(() => {
+    return () => {
+      if (previews.logo) URL.revokeObjectURL(previews.logo);
+      if (previews.signature) URL.revokeObjectURL(previews.signature);
+    };
+  }, [previews]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -30,13 +44,29 @@ export const useRequestRoom = () => {
   };
 
   const handleFileChange = (e) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      logo: e.target.files[0],
-    }));
-    if (errors.logo) {
-      setErrors((prev) => ({ ...prev, logo: null }));
+    const { name, files } = e.target;
+    if (files && files[0]) {
+      const file = files[0];
+
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: file,
+      }));
+
+      setPreviews((prev) => ({
+        ...prev,
+        [name]: URL.createObjectURL(file),
+      }));
+
+      if (errors[name]) {
+        setErrors((prev) => ({ ...prev, [name]: null }));
+      }
     }
+  };
+
+  const clearFile = (name) => {
+    setFormData((prev) => ({ ...prev, [name]: null }));
+    setPreviews((prev) => ({ ...prev, [name]: null }));
   };
 
   const validateRequest = () => {
@@ -46,6 +76,8 @@ export const useRequestRoom = () => {
     if (!formData.description)
       newErrors.description = "Description is required";
     if (!formData.logo) newErrors.logo = "Company logo is required";
+    if (!formData.signature)
+      newErrors.signature = "Signature image is required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -55,14 +87,18 @@ export const useRequestRoom = () => {
 
     setIsSubmitting(true);
     try {
-      const { data } = await getUploadUrl(formData.logo.name);
-      const { uploadUrl, cdnUrl } = data;
-      
-      await uploadFileToCloud(uploadUrl, formData.logo);
-      
+      const { data: logoData } = await getUploadUrl(formData.logo.name);
+      await uploadFileToCloud(logoData.uploadUrl, formData.logo);
+
+      const { data: sigData } = await getSignatureUploadUrl(
+        formData.signature.name,
+      );
+      await uploadFileToCloud(sigData.uploadUrl, formData.signature);
+
       await createRoom({
         name: formData.companyName,
-        imagePath: cdnUrl,
+        imagePath: logoData.cdnUrl || logoData.fileKey,
+        signatureImagePath: sigData.cdnUrl || sigData.fileKey,
         description: formData.description,
       });
 
@@ -77,10 +113,12 @@ export const useRequestRoom = () => {
 
   return {
     formData,
+    previews,
     errors,
     isSubmitting,
     handleInputChange,
     handleFileChange,
+    clearFile,
     handleSubmit,
   };
 };

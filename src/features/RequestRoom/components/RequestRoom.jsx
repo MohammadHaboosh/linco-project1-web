@@ -9,14 +9,16 @@ import mascotImg from "../../../../public/images/linco-logo.jpg";
 import { useTranslation } from "react-i18next";
 
 const RequestRoom = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const {
     formData,
+    previews, // 💡 استلام المعاينة
     errors,
     isSubmitting,
     handleInputChange,
     handleFileChange,
+    clearFile, // 💡 استلام دالة الحذف
     handleSubmit,
   } = useRequestRoom();
 
@@ -35,7 +37,9 @@ const RequestRoom = () => {
               <strong>LinCo..</strong> Link Company,
             </h2>
             <p>
-              {t('transform-the-way-your-company-learns-build-a-centralized-hub-for-onboarding-training-and-team-collaboration')}
+              {t(
+                "transform-the-way-your-company-learns-build-a-centralized-hub-for-onboarding-training-and-team-collaboration",
+              )}
             </p>
           </div>
         </div>
@@ -51,9 +55,9 @@ const RequestRoom = () => {
               <IoChevronBackOutline />
             </button>
             <div>
-              <h1 className={styles.title}>{t('request-room')}</h1>
+              <h1 className={styles.title}>{t("request-room")}</h1>
               <p className={styles.subtitle}>
-                {t('set-up-your-companys-learning-environment')}
+                {t("set-up-your-companys-learning-environment")}
               </p>
             </div>
           </div>
@@ -66,8 +70,10 @@ const RequestRoom = () => {
             )}
             <RequestRoomStep1
               formData={formData}
+              previews={previews} // 💡
               onChange={handleInputChange}
               onFileChange={handleFileChange}
+              onClearFile={clearFile} // 💡
               errors={errors}
             />
           </div>

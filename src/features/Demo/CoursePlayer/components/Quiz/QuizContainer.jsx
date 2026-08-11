@@ -2,106 +2,114 @@ import { useState } from "react";
 import QuizTaker from "./QuizTaker";
 import QuizResult from "./QuizResult";
 import styles from "./Quiz.module.css";
+import {
+  IoPlayOutline,
+  IoTimeOutline,
+  IoListOutline,
+  IoCheckmarkCircleOutline,
+} from "react-icons/io5";
 
 const MOCK_QUIZ = {
-  title: "Section 2 • Hooks & Architecture",
-  description: "اختبر فهمك لأهم مفاهيم Hooks ودورة حياة المكونات.",
+  title: "Section 2 • React Hooks",
+  description:
+    "Test your understanding of core React concepts. This quiz supports multiple correct choices.",
   timeLimit: 15,
   passingScore: 80,
   questions: [
     {
       id: 1,
-      text: "ما الاستخدام الأساسي لـ useEffect داخل المكونات الوظيفية؟",
+      text: "Which of the following are valid use cases for useEffect? (Select all that apply)",
       options: [
-        "إنشاء Route جديد",
-        "التعامل مع الآثار الجانبية",
-        "تغيير CSS مباشرة",
-        "تعريف Props جديدة",
+        "Fetching data from an API",
+        "Defining standard local variables",
+        "Subscribing to browser events",
+        "Changing CSS colors directly",
       ],
-      correctAnswer: 1,
+      correctAnswers: [0, 2],
     },
     {
       id: 2,
-      text: "ما أفضل وصف للـ Virtual DOM؟",
+      text: "What is the best description of the Virtual DOM?",
       options: [
-        "نسخة خفيفة من واجهة المستخدم تساعد React على تحديث الـ UI بكفاءة",
-        "قاعدة بيانات داخل المتصفح",
-        "نظام لإدارة المستخدمين",
-        "خادم لتشغيل Next.js",
+        "A lightweight copy of the UI to optimize rendering",
+        "A database inside the browser",
+        "A user management system",
+        "A server to run Next.js apps",
       ],
-      correctAnswer: 0,
+      correctAnswers: [0],
     },
     {
       id: 3,
-      text: "متى يكون Custom Hook مفيداً؟",
+      text: "When is creating a Custom Hook useful?",
       options: [
-        "عندما نريد مشاركة منطق React بين أكثر من مكون",
-        "عندما نحتاج إلى تغيير اسم التطبيق",
-        "فقط عند استخدام TypeScript",
-        "فقط داخل ملفات CSS",
+        "To share stateful logic between components",
+        "Only when using TypeScript",
+        "To easily reuse repetitive logic",
+        "Only inside CSS modules",
       ],
-      correctAnswer: 0,
+      correctAnswers: [0, 2],
     },
   ],
 };
 
 const QuizContainer = ({ onCompleteSection = () => {} }) => {
-  const [quizState, setQuizState] = useState("start");
+  const [quizState, setQuizState] = useState("welcome");
   const [scoreInfo, setScoreInfo] = useState(null);
 
-  const finishQuiz = (answers) => {
-    const correctCount = MOCK_QUIZ.questions.reduce(
-      (total, question, index) =>
-        total + (answers[index] === question.correctAnswer ? 1 : 0),
-      0,
-    );
-
+  const finishQuiz = (earnedScore) => {
     const percentage = Math.round(
-      (correctCount / MOCK_QUIZ.questions.length) * 100,
+      (earnedScore / MOCK_QUIZ.questions.length) * 100,
     );
-
     setScoreInfo({
       percentage,
       isPassed: percentage >= MOCK_QUIZ.passingScore,
-      correctCount,
+      correctCount: earnedScore,
       total: MOCK_QUIZ.questions.length,
     });
     setQuizState("result");
   };
 
-  const retryQuiz = () => setQuizState("taking");
+  const retryQuiz = () => setQuizState("welcome");
 
   return (
-    <div className={styles.quizWrapper} dir="rtl">
-      {quizState === "start" && (
-        <div className={styles.startScreen}>
-          <div className={styles.quizBadge}>AI READY • ASSESSMENT</div>
-          <div className={styles.startIcon}>✦</div>
-          <h2>{MOCK_QUIZ.title}</h2>
-          <p>{MOCK_QUIZ.description}</p>
-
-          <div className={styles.quizStats}>
-            <div>
-              <strong>{MOCK_QUIZ.questions.length}</strong>
-              <span>أسئلة</span>
-            </div>
-            <div>
-              <strong>{MOCK_QUIZ.timeLimit}</strong>
-              <span>دقائق</span>
-            </div>
-            <div>
-              <strong>{MOCK_QUIZ.passingScore}%</strong>
-              <span>حد النجاح</span>
-            </div>
+    <div className={styles.quizWrapper} dir="ltr">
+      {quizState === "welcome" && (
+        <div className={styles.welcomeScreen}>
+          <div className={styles.mascotEntrance}>
+            <img
+              src="/icons/linco-logo.png"
+              alt="Mascot Greeting"
+              className={styles.mascotImg}
+            />
           </div>
 
-          <button
-            type="button"
-            className={styles.startBtn}
-            onClick={() => setQuizState("taking")}
-          >
-            ابدأ التقييم
-          </button>
+          <div className={styles.welcomeContent}>
+            <div className={styles.quizBadge}>INTELLIGENCE CHALLENGE</div>
+            <h2>{MOCK_QUIZ.title}</h2>
+            <p>{MOCK_QUIZ.description}</p>
+
+            <div className={styles.quizStatsOverview}>
+              <div className={styles.statPill}>
+                <IoListOutline /> <strong>{MOCK_QUIZ.questions.length}</strong>{" "}
+                Questions
+              </div>
+              <div className={styles.statPill}>
+                <IoTimeOutline /> <strong>{MOCK_QUIZ.timeLimit}</strong> Minutes
+              </div>
+              <div className={styles.statPill}>
+                <IoCheckmarkCircleOutline />{" "}
+                <strong>{MOCK_QUIZ.passingScore}%</strong> Passing Score
+              </div>
+            </div>
+
+            <button
+              type="button"
+              className={styles.startBtn}
+              onClick={() => setQuizState("taking")}
+            >
+              <IoPlayOutline /> Start Quiz Now
+            </button>
+          </div>
         </div>
       )}
 

@@ -6,6 +6,7 @@ export const quizApi = {
       title: quizData.title,
       numberOfQuestions: Number(quizData.numberOfQuestions),
       durationMinutes: Number(quizData.durationMinutes),
+      passingScore: Number(quizData.passingScore),
     };
 
     const response = await apiFetch(`/sections/${sectionId}/exams`, {

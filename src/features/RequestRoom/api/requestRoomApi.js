@@ -14,6 +14,20 @@ export const getUploadUrl = async (fileName) => {
   return response.json();
 };
 
+export const getSignatureUploadUrl = async (fileName) => {
+  const response = await apiFetch("/courses/signature-upload-url", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-client-type": "web",
+    },
+    body: JSON.stringify({ fileName }),
+  });
+
+  if (!response.ok) throw new Error("Failed to generate signature upload URL");
+  return response.json();
+};
+
 export const uploadFileToCloud = async (uploadUrl, file) => {
   const response = await fetch(uploadUrl, {
     method: "PUT",
@@ -29,10 +43,16 @@ export const uploadFileToCloud = async (uploadUrl, file) => {
   }
 };
 
-export const createRoom = async ({ name, imagePath, description }) => {
+export const createRoom = async ({
+  name,
+  imagePath,
+  signatureImagePath,
+  description,
+}) => {
   const payload = {
     name,
     imagePath,
+    signatureImagePath,
     description,
   };
 
@@ -41,7 +61,7 @@ export const createRoom = async ({ name, imagePath, description }) => {
   );
 
   if (hasMissingField) {
-    throw new Error("Name, image path, and description are required");
+    throw new Error("Name, logo, signature, and description are required");
   }
 
   const response = await apiFetch("/demos", {
