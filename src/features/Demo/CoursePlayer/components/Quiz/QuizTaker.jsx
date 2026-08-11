@@ -40,7 +40,6 @@ const QuizTaker = ({ quiz, onSubmit }) => {
 
   const handleCheckAnswer = () => {
     setIsChecking(true);
-
     const isCorrect =
       selectedOptions.length === currentQuestion.correctAnswers.length &&
       selectedOptions.every((val) =>
@@ -66,38 +65,40 @@ const QuizTaker = ({ quiz, onSubmit }) => {
 
   return (
     <div className={styles.takerContainer}>
-      <div className={styles.topBar}>
+      {/* ================= HEADER (الثابت) ================= */}
+      <div className={styles.stickyHeader}>
         <div className={styles.topBarStats}>
+          <div className={styles.scoreBox}>
+            <IoStarOutline /> {earnedPoints} / {quiz.questions.length}
+          </div>
           <div
             className={`${styles.timerBox} ${timeLeft < 60 ? styles.timerWarning : ""}`}
           >
-            <IoTimeOutline /> {formatTime(timeLeft)}
-          </div>
-          <div className={styles.scoreBox}>
-            <IoStarOutline /> {earnedPoints} / {quiz.questions.length}
+            {formatTime(timeLeft)} <IoTimeOutline />
           </div>
         </div>
 
         <div className={styles.progressWrapper}>
+          <span className={styles.progressText}>
+            سؤال {currentQIndex + 1} من {quiz.questions.length}
+          </span>
           <div className={styles.progressBar}>
             <div
               className={styles.progressFill}
               style={{ width: `${progress}%` }}
             />
           </div>
-          <span className={styles.progressText}>
-            سؤال {currentQIndex + 1} من {quiz.questions.length}
-          </span>
         </div>
       </div>
 
-      <div className={styles.questionArea}>
-        {/* src="/images/squid-thinking.png" */}
+      {/* ================= QUESTION AREA (القابلة للتمرير الداخلي) ================= */}
+      <div className={styles.scrollableQuestionArea}>
         <img
-          src="/icons/linco-logo.png"
-          alt="Thinking"
+          src="/images/squid-thinking.png"
+          alt="Thinking Mascot"
           className={styles.smallMascot}
         />
+
         <div className={styles.questionCard}>
           <h3>{currentQuestion.text}</h3>
 
@@ -143,7 +144,8 @@ const QuizTaker = ({ quiz, onSubmit }) => {
         </div>
       </div>
 
-      <div className={styles.takerFooter}>
+      {/* ================= FOOTER (الثابت) ================= */}
+      <div className={styles.stickyFooter}>
         <span className={styles.hintText}>
           {currentQuestion.correctAnswers.length > 1
             ? "💡 يمكنك اختيار أكثر من إجابة"
