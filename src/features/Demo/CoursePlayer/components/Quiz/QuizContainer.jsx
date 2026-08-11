@@ -2,64 +2,58 @@ import { useState } from "react";
 import QuizTaker from "./QuizTaker";
 import QuizResult from "./QuizResult";
 import styles from "./Quiz.module.css";
+import { IoPlayOutline } from "react-icons/io5";
 
 const MOCK_QUIZ = {
-  title: "Section 2 • Hooks & Architecture",
-  description: "اختبر فهمك لأهم مفاهيم Hooks ودورة حياة المكونات.",
+  title: "Section 2 • React Hooks",
+  description: "اختبر فهمك لأهم مفاهيم React. هذا الاختبار يدعم خيارات متعددة.",
   timeLimit: 15,
   passingScore: 80,
   questions: [
     {
       id: 1,
-      text: "ما الاستخدام الأساسي لـ useEffect داخل المكونات الوظيفية؟",
+      text: "أي من الحالات التالية نستخدم فيها useEffect؟ (اختر كل ما ينطبق)",
       options: [
-        "إنشاء Route جديد",
-        "التعامل مع الآثار الجانبية",
-        "تغيير CSS مباشرة",
-        "تعريف Props جديدة",
+        "جلب البيانات من خادم (API)",
+        "تعريف متغيرات عادية داخل المكون",
+        "الاشتراك في أحداث المتصفح (Event Listeners)",
+        "تغيير لون زر مباشرة عبر CSS",
       ],
-      correctAnswer: 1,
+      correctAnswers: [0, 2],
     },
     {
       id: 2,
-      text: "ما أفضل وصف للـ Virtual DOM؟",
+      text: "ما هو أفضل وصف للـ Virtual DOM؟",
       options: [
         "نسخة خفيفة من واجهة المستخدم تساعد React على تحديث الـ UI بكفاءة",
         "قاعدة بيانات داخل المتصفح",
         "نظام لإدارة المستخدمين",
-        "خادم لتشغيل Next.js",
+        "خادم لتشغيل التطبيقات",
       ],
-      correctAnswer: 0,
+      correctAnswers: [0],
     },
     {
       id: 3,
-      text: "متى يكون Custom Hook مفيداً؟",
+      text: "متى يكون إنشاء Custom Hook مفيداً؟",
       options: [
-        "عندما نريد مشاركة منطق React بين أكثر من مكون",
-        "عندما نحتاج إلى تغيير اسم التطبيق",
+        "عندما نريد مشاركة منطق (Logic) بين أكثر من مكون",
         "فقط عند استخدام TypeScript",
+        "لتسهيل كتابة الكود المتكرر الخاص بالحالة (State)",
         "فقط داخل ملفات CSS",
       ],
-      correctAnswer: 0,
+      correctAnswers: [0, 2],
     },
   ],
 };
 
 const QuizContainer = ({ onCompleteSection = () => {} }) => {
-  const [quizState, setQuizState] = useState("start");
+  const [quizState, setQuizState] = useState("welcome");
   const [scoreInfo, setScoreInfo] = useState(null);
 
-  const finishQuiz = (answers) => {
-    const correctCount = MOCK_QUIZ.questions.reduce(
-      (total, question, index) =>
-        total + (answers[index] === question.correctAnswer ? 1 : 0),
-      0,
-    );
-
+  const finishQuiz = (earnedScore, correctCount) => {
     const percentage = Math.round(
-      (correctCount / MOCK_QUIZ.questions.length) * 100,
+      (earnedScore / MOCK_QUIZ.questions.length) * 100,
     );
-
     setScoreInfo({
       percentage,
       isPassed: percentage >= MOCK_QUIZ.passingScore,
@@ -69,39 +63,44 @@ const QuizContainer = ({ onCompleteSection = () => {} }) => {
     setQuizState("result");
   };
 
-  const retryQuiz = () => setQuizState("taking");
+  const retryQuiz = () => setQuizState("welcome");
 
   return (
     <div className={styles.quizWrapper} dir="rtl">
-      {quizState === "start" && (
-        <div className={styles.startScreen}>
-          <div className={styles.quizBadge}>AI READY • ASSESSMENT</div>
-          <div className={styles.startIcon}>✦</div>
-          <h2>{MOCK_QUIZ.title}</h2>
-          <p>{MOCK_QUIZ.description}</p>
-
-          <div className={styles.quizStats}>
-            <div>
-              <strong>{MOCK_QUIZ.questions.length}</strong>
-              <span>أسئلة</span>
-            </div>
-            <div>
-              <strong>{MOCK_QUIZ.timeLimit}</strong>
-              <span>دقائق</span>
-            </div>
-            <div>
-              <strong>{MOCK_QUIZ.passingScore}%</strong>
-              <span>حد النجاح</span>
-            </div>
+      {quizState === "welcome" && (
+        <div className={styles.welcomeScreen}>
+          <div className={styles.mascotEntrance}>
+            <img
+              src="/icons/linco-logo.png"
+              alt="Mascot Greeting"
+              className={styles.mascotImg}
+            />
           </div>
+          <div className={styles.welcomeContent}>
+            <div className={styles.quizBadge}>تحدي الذكاء</div>
+            <h2>{MOCK_QUIZ.title}</h2>
+            <p>{MOCK_QUIZ.description}</p>
 
-          <button
-            type="button"
-            className={styles.startBtn}
-            onClick={() => setQuizState("taking")}
-          >
-            ابدأ التقييم
-          </button>
+            <div className={styles.quizStatsOverview}>
+              <div className={styles.statPill}>
+                <strong>{MOCK_QUIZ.questions.length}</strong> أسئلة
+              </div>
+              <div className={styles.statPill}>
+                <strong>{MOCK_QUIZ.timeLimit}</strong> دقيقة
+              </div>
+              <div className={styles.statPill}>
+                نجاح <strong>{MOCK_QUIZ.passingScore}%</strong>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              className={styles.startBtn}
+              onClick={() => setQuizState("taking")}
+            >
+              <IoPlayOutline /> ابدأ الاختبار الآن
+            </button>
+          </div>
         </div>
       )}
 
