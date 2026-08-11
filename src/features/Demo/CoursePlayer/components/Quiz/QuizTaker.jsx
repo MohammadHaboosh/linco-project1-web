@@ -3,8 +3,9 @@ import {
   IoTimeOutline,
   IoCheckmarkCircleOutline,
   IoCloseCircleOutline,
-  IoArrowBackOutline,
+  IoArrowForwardOutline,
   IoStarOutline,
+  IoBulbOutline,
 } from "react-icons/io5";
 import styles from "./Quiz.module.css";
 
@@ -16,10 +17,11 @@ const QuizTaker = ({ quiz, onSubmit }) => {
   const [timeLeft, setTimeLeft] = useState(quiz.timeLimit * 60);
 
   const currentQuestion = quiz.questions[currentQIndex];
+  const progress = ((currentQIndex + 1) / quiz.questions.length) * 100;
 
   useEffect(() => {
     if (timeLeft <= 0 && !isChecking) {
-      onSubmit(earnedPoints, earnedPoints);
+      onSubmit(earnedPoints);
       return;
     }
     const timer = setInterval(() => setTimeLeft((v) => v - 1), 1000);
@@ -46,9 +48,7 @@ const QuizTaker = ({ quiz, onSubmit }) => {
         currentQuestion.correctAnswers.includes(val),
       );
 
-    if (isCorrect) {
-      setEarnedPoints((prev) => prev + 1);
-    }
+    if (isCorrect) setEarnedPoints((prev) => prev + 1);
   };
 
   const nextQuestion = () => {
@@ -57,52 +57,51 @@ const QuizTaker = ({ quiz, onSubmit }) => {
       setSelectedOptions([]);
       setIsChecking(false);
     } else {
-      onSubmit(earnedPoints, earnedPoints);
+      onSubmit(earnedPoints);
     }
   };
 
-  const progress = ((currentQIndex + 1) / quiz.questions.length) * 100;
-
   return (
     <div className={styles.takerContainer}>
-      {/* ================= HEADER (الثابت) ================= */}
-      <div className={styles.stickyHeader}>
-        <div className={styles.topBarStats}>
+      {/* ================= COMPACT HEADER ================= */}
+      <div className={styles.compactHeader}>
+        <div className={styles.headerLeft}>
           <div className={styles.scoreBox}>
             <IoStarOutline /> {earnedPoints} / {quiz.questions.length}
           </div>
           <div
             className={`${styles.timerBox} ${timeLeft < 60 ? styles.timerWarning : ""}`}
           >
-            {formatTime(timeLeft)} <IoTimeOutline />
+            <IoTimeOutline /> {formatTime(timeLeft)}
           </div>
         </div>
 
         <div className={styles.progressWrapper}>
-          <span className={styles.progressText}>
-            سؤال {currentQIndex + 1} من {quiz.questions.length}
-          </span>
           <div className={styles.progressBar}>
             <div
               className={styles.progressFill}
               style={{ width: `${progress}%` }}
             />
           </div>
+          <span className={styles.progressText}>
+            Q {currentQIndex + 1} of {quiz.questions.length}
+          </span>
         </div>
       </div>
 
-      {/* ================= QUESTION AREA (القابلة للتمرير الداخلي) ================= */}
-      <div className={styles.scrollableQuestionArea}>
-        <img
-          src="/images/squid-thinking.png"
-          alt="Thinking Mascot"
-          className={styles.smallMascot}
-        />
-
+      {/* ================= QUESTION AREA ================= */}
+      <div className={styles.questionArea}>
         <div className={styles.questionCard}>
-          <h3>{currentQuestion.text}</h3>
+          <div className={styles.questionHeader}>
+            <img
+              src="/images/squid-thinking.png"
+              alt="Thinking"
+              className={styles.tinyMascot}
+            />
+            <h3>{currentQuestion.text}</h3>
+          </div>
 
-          <div className={styles.optionsList}>
+          <div className={styles.optionsGrid}>
             {currentQuestion.options.map((option, index) => {
               const isSelected = selectedOptions.includes(index);
               const isCorrectAnswer =
@@ -144,12 +143,13 @@ const QuizTaker = ({ quiz, onSubmit }) => {
         </div>
       </div>
 
-      {/* ================= FOOTER (الثابت) ================= */}
-      <div className={styles.stickyFooter}>
+      {/* ================= COMPACT FOOTER ================= */}
+      <div className={styles.compactFooter}>
         <span className={styles.hintText}>
+          <IoBulbOutline />{" "}
           {currentQuestion.correctAnswers.length > 1
-            ? "💡 يمكنك اختيار أكثر من إجابة"
-            : "💡 اختر إجابة واحدة صحيحة"}
+            ? "Select all correct answers"
+            : "Select one correct answer"}
         </span>
 
         {!isChecking ? (
@@ -159,7 +159,7 @@ const QuizTaker = ({ quiz, onSubmit }) => {
             onClick={handleCheckAnswer}
             disabled={selectedOptions.length === 0}
           >
-            التحقق من الإجابة
+            Check Answer
           </button>
         ) : (
           <button
@@ -168,9 +168,9 @@ const QuizTaker = ({ quiz, onSubmit }) => {
             onClick={nextQuestion}
           >
             {currentQIndex === quiz.questions.length - 1
-              ? "إنهاء وإرسال"
-              : "السؤال التالي"}
-            <IoArrowBackOutline />
+              ? "Submit Quiz"
+              : "Next Question"}
+            <IoArrowForwardOutline />
           </button>
         )}
       </div>
