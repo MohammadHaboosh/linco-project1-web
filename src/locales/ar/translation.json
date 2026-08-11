@@ -760,5 +760,12 @@
   "select-a-lesson-from-the-curriculum": "اختر درسًا من المنهج",
   "no-attachments-available-for-this-lesson": "لا توجد مرفقات متاحة لهذا الدرس.",
   "lesson-material": "مادة الدرس",
-  "download-view-file": "تنزيل/عرض الملف"
+  "download-view-file": "تنزيل/عرض الملف",
+  "configure-assessment-details-and-time-constraints": "تكوين تفاصيل الاختبار والقيود الزمنية",
+  "add-new-quiz": "إضافة اختبار جديدة",
+  "quiz-title": "عنوان الاختبار *",
+  "number-of-questions-0": "عدد الأسئلة *",
+  "duration-seconds": "المدة (ثواني) *",
+  "passing-score": "درجة النجاح (%) *",
+  "save-quiz": "حفظ الاختبار"
 }

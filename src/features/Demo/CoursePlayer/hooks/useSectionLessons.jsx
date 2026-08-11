@@ -1,47 +1,45 @@
 import { useState, useEffect } from "react";
-import { apiFetch } from "../../../../api/apiFetch";
+import { lessonApi } from "../../OwnerCourses/api/lessonApi";
+import { quizApi } from "../../OwnerCourses/api/quizApi";
 
 export const useSectionLessons = (sectionId, isExpanded) => {
   const [lessons, setLessons] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [hasFetched, setHasFetched] = useState(false); // 💡 لمنع الجلب المتكرر لنفس القسم
+  const [hasFetched, setHasFetched] = useState(false);
 
   useEffect(() => {
     if (!sectionId || !isExpanded || hasFetched) return;
 
     let isMounted = true;
 
-    const fetchLessons = async () => {
+    const fetchContent = async () => {
       try {
         await Promise.resolve();
-
         if (isMounted) setIsLoading(true);
 
-        const response = await apiFetch(
-          `/sections/${sectionId}/lessons/cursor`,
-          {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-          },
-        );
+        const lessonsData = await lessonApi.getLessons(sectionId);
 
-        const data = await response.json();
-
-        if (!response.ok || !data.success) {
-          throw new Error(data.message || "Failed to fetch lessons");
-        }
+        const quizData = await quizApi.getQuizBySectionId(sectionId);
 
         if (isMounted) {
-          const sortedLessons = (data.data || []).sort(
+          const combinedList = (lessonsData || []).sort(
             (a, b) => a.order - b.order,
           );
-          setLessons(sortedLessons);
+
+          if (quizData) {
+            combinedList.push({
+              ...quizData,
+              isQuiz: true,
+            });
+          }
+
+          setLessons(combinedList);
           setHasFetched(true);
         }
       } catch (err) {
         if (isMounted) {
-          setError(err.message || "Failed to load lessons.");
+          setError(err.message || "Failed to load section content.");
         }
       } finally {
         if (isMounted) {
@@ -50,7 +48,7 @@ export const useSectionLessons = (sectionId, isExpanded) => {
       }
     };
 
-    fetchLessons();
+    fetchContent();
 
     return () => {
       isMounted = false;

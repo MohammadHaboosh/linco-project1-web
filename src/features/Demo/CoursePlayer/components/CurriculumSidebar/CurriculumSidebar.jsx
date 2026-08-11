@@ -72,15 +72,21 @@ const CurriculumSidebar = ({ activeLesson, onSelectLesson }) => {
                     onClick={() => onSelectLesson(lesson, lessons)}
                   >
                     <span className={styles.lessonStatus}>
-                      <IoPlay />
+                      {lesson.isQuiz ? <IoTrophyOutline /> : <IoPlay />}
                     </span>
                     <span className={styles.lessonBody}>
                       <span className={styles.lessonTitle}>
-                        {lIndex + 1}. {lesson.title}
+                        {lesson.isQuiz
+                          ? lesson.title
+                          : `${lIndex + 1}. ${lesson.title}`}
                       </span>
                       <span className={styles.lessonMeta}>
                         <span>
-                          <IoTimeOutline /> {lesson.duration || 0} min
+                          <IoTimeOutline />{" "}
+                          {lesson.isQuiz
+                            ? lesson.durationMinutes
+                            : lesson.duration || 0}{" "}
+                          min
                         </span>
                       </span>
                     </span>

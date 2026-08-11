@@ -765,5 +765,12 @@
   "select-a-lesson-from-the-curriculum": "Select a lesson from the curriculum",
   "no-attachments-available-for-this-lesson": "No attachments available for this lesson.",
   "lesson-material": "Lesson Material",
-  "download-view-file": "Download/View File"
+  "download-view-file": "Download/View File",
+  "add-new-quiz": "Add New Quiz",
+  "configure-assessment-details-and-time-constraints": "Configure assessment details and time constraints",
+  "quiz-title": "Quiz Title *",
+  "number-of-questions-0": "Number of Questions *",
+  "duration-seconds": "Duration (Seconds) *",
+  "passing-score": "Passing Score (%) *",
+  "save-quiz": "Save Quiz"
 }

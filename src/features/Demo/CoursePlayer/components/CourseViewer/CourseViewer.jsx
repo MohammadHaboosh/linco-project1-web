@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { useNavigate, useParams, useLocation } from "react-router-dom"; // 👈 إضافة useLocation
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import VideoContent from "./VideoContent";
 import LessonTabs from "../LessonTabs/LessonTabs";
 import CourseSidebar from "../CourseSidebar/CourseSidebar";
+import QuizContainer from "../Quiz/QuizContainer";
 import styles from "./CourseViewer.module.css";
 import {
   IoChevronBackOutline,
@@ -61,6 +62,10 @@ const CourseViewer = () => {
     }
   };
 
+  const handleCompleteQuiz = () => {
+    alert("Quiz completed! You can now move to the next section.");
+  };
+
   return (
     <div className={styles.viewerContainer} dir="ltr">
       <header className={styles.topHeader}>
@@ -103,16 +108,27 @@ const CourseViewer = () => {
 
       <main className={styles.mainLayout}>
         <section className={styles.contentColumn}>
-          <div className={styles.videoWrapper}>
-            <VideoContent
-              activeLesson={activeLesson}
-              onNext={handleNextLesson}
-              onPrev={handlePrevLesson}
-            />
-          </div>
-          <div className={styles.tabsWrapper}>
-            <LessonTabs activeLesson={activeLesson} />
-          </div>
+          {activeLesson?.isQuiz ? (
+            <div
+              className={styles.videoWrapper}
+              style={{ background: "#f8fafc", overflowY: "auto" }}
+            >
+              <QuizContainer onCompleteSection={handleCompleteQuiz} />
+            </div>
+          ) : (
+            <>
+              <div className={styles.videoWrapper}>
+                <VideoContent
+                  activeLesson={activeLesson}
+                  onNext={handleNextLesson}
+                  onPrev={handlePrevLesson}
+                />
+              </div>
+              <div className={styles.tabsWrapper}>
+                <LessonTabs activeLesson={activeLesson} />
+              </div>
+            </>
+          )}
         </section>
 
         <CourseSidebar
