@@ -555,3 +555,11 @@
   font-weight: 700;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
+.quizFullScreenLayout {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  padding: 24px;
+  width: 100%;
+  overflow: hidden;
+}

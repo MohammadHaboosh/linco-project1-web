@@ -106,40 +106,35 @@ const CourseViewer = () => {
         </div>
       </header>
 
-      <main className={styles.mainLayout}>
-        <section className={styles.contentColumn}>
-          {activeLesson?.isQuiz ? (
-            <div
-              className={styles.videoWrapper}
-              style={{ background: "#f8fafc", overflowY: "auto" }}
-            >
-              <QuizContainer onCompleteSection={handleCompleteQuiz} />
+      {activeLesson?.isQuiz ? (
+        <main className={styles.quizFullScreenLayout}>
+          <QuizContainer onCompleteSection={handleCompleteQuiz} />
+        </main>
+      ) : (
+        <main className={styles.mainLayout}>
+          <section className={styles.contentColumn}>
+            <div className={styles.videoWrapper}>
+              <VideoContent
+                activeLesson={activeLesson}
+                onNext={handleNextLesson}
+                onPrev={handlePrevLesson}
+              />
             </div>
-          ) : (
-            <>
-              <div className={styles.videoWrapper}>
-                <VideoContent
-                  activeLesson={activeLesson}
-                  onNext={handleNextLesson}
-                  onPrev={handlePrevLesson}
-                />
-              </div>
-              <div className={styles.tabsWrapper}>
-                <LessonTabs activeLesson={activeLesson} />
-              </div>
-            </>
-          )}
-        </section>
+            <div className={styles.tabsWrapper}>
+              <LessonTabs activeLesson={activeLesson} />
+            </div>
+          </section>
 
-        <CourseSidebar
-          isOpen={isSidebarOpen}
-          setIsOpen={setIsSidebarOpen}
-          activeTab={activeSidebarTab}
-          setActiveTab={setActiveSidebarTab}
-          activeLesson={activeLesson}
-          onSelectLesson={handleSelectLesson}
-        />
-      </main>
+          <CourseSidebar
+            isOpen={isSidebarOpen}
+            setIsOpen={setIsSidebarOpen}
+            activeTab={activeSidebarTab}
+            setActiveTab={setActiveSidebarTab}
+            activeLesson={activeLesson}
+            onSelectLesson={handleSelectLesson}
+          />
+        </main>
+      )}
     </div>
   );
 };
