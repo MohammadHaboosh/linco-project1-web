@@ -286,10 +286,12 @@
 .form-wrapper {
   width: min(100%, 590px);
   padding: clamp(30px, 4vw, 48px);
-  border: 2px solid var(--auth-navy-900);
+  border: 2px solid rgba(33, 107, 227, 0.58);
   border-radius: 24px;
   background: #ffffff;
-  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.1);
+  box-shadow:
+    0 0 22px rgba(33, 107, 227, 0.1),
+    0 24px 70px rgba(15, 23, 42, 0.1);
 }
 
 .header {
@@ -720,7 +722,9 @@
     margin-block-start: 0;
     padding: 25px 18px;
     border-radius: 18px;
-    box-shadow: 0 18px 48px rgba(15, 23, 42, 0.12);
+    box-shadow:
+      0 0 18px rgba(33, 107, 227, 0.09),
+      0 18px 48px rgba(15, 23, 42, 0.12);
   }
 
   .header {
