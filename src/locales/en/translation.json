@@ -785,5 +785,12 @@
   "save-question": "Save Question",
   "question-bank": "Question Bank",
   "add-question": "Add question",
-  "organize-your-course-into-structured-sections-lessons-and-assessments": "Organize your course into structured sections, lessons, and assessments."
+  "organize-your-course-into-structured-sections-lessons-and-assessments": "Organize your course into structured sections, lessons, and assessments.",
+  "add-new-lesson": "Add New Lesson",
+  "upload-video-lecture-and-lesson-details": "Upload video lecture and lesson details",
+  "lesson-title-0": "Lesson Title *",
+  "lecture-video-file": "Lecture Video File *",
+  "click-or-drag-video-to-upload": "Click or drag video to upload",
+  "describe-what-trainees-will-learn-in-this-lesson": "Describe what trainees will learn in this lesson...",
+  "create-lesson": "Create Lesson"
 }

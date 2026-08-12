@@ -779,5 +779,10 @@
   "add-choice-option": "إضافة خيار الاختيار",
   "save-question": "حفظ السؤال",
   "add-question": "أضف سؤالا",
-  "organize-your-course-into-structured-sections-lessons-and-assessments": "قم بتنظيم الدورة التدريبية الخاصة بك في أقسام ودروس وتقييمات منظمة."
+  "organize-your-course-into-structured-sections-lessons-and-assessments": "قم بتنظيم الدورة التدريبية الخاصة بك في أقسام ودروس وتقييمات منظمة.",
+  "upload-video-lecture-and-lesson-details": "تحميل محاضرة فيديو وتفاصيل الدرس",
+  "add-new-lesson": "إضافة درس جديد",
+  "lecture-video-file": "ملف فيديو المحاضرة *",
+  "describe-what-trainees-will-learn-in-this-lesson": "صف ما سيتعلمه المتدربون في هذا الدرس...",
+  "create-lesson": "إنشاء الدرس"
 }

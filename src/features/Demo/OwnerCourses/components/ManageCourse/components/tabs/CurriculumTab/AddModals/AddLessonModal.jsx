@@ -4,11 +4,12 @@ import {
   IoVideocamOutline,
   IoCloudUploadOutline,
   IoDocumentTextOutline,
-  IoTimeOutline,
 } from "react-icons/io5";
 import styles from "./Modal.module.css";
+import { useTranslation } from "react-i18next";
 
 const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -27,14 +28,27 @@ const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
   };
 
   const handleVideoSelect = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setFormData((prev) => ({ ...prev, videoFile: file }));
+
+    const videoUrl = URL.createObjectURL(file);
+    const videoElement = document.createElement("video");
+
+    videoElement.addEventListener("loadedmetadata", () => {
+      const durationInSeconds = videoElement.duration;
+      const durationInMinutes = Math.ceil(durationInSeconds / 60);
+
       setFormData((prev) => ({
         ...prev,
-        videoFile: file,
-        videoUrl: URL.createObjectURL(file),
+        duration: durationInMinutes,
       }));
-    }
+
+      URL.revokeObjectURL(videoUrl);
+    });
+
+    videoElement.src = videoUrl;
   };
 
   const resetForm = () => {
@@ -85,8 +99,8 @@ const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
               <IoVideocamOutline />
             </div>
             <div>
-              <h3>Add New Lesson</h3>
-              <p>Upload video lecture and lesson details</p>
+              <h3>{t("add-new-lesson")}</h3>
+              <p>{t("upload-video-lecture-and-lesson-details")}</p>
             </div>
           </div>
           <button className={styles.closeBtn} onClick={handleClose}>
@@ -95,37 +109,20 @@ const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
         </div>
 
         <form onSubmit={handleSubmit} className={styles.modalBody}>
-          <div className={styles.gridTwoCols}>
-            <div className={styles.formGroup}>
-              <label className={styles.label}>Lesson Title *</label>
-              <input
-                type="text"
-                required
-                className={styles.input}
-                placeholder="e.g. Introduction to Authentication"
-                value={formData.title}
-                onChange={(e) => handleChange("title", e.target.value)}
-              />
-            </div>
-
-            <div className={styles.formGroup}>
-              <label className={styles.label}>
-                <IoTimeOutline /> Duration (Minutes / Seconds) *
-              </label>
-              <input
-                type="number"
-                min="1"
-                required
-                className={styles.input}
-                placeholder="e.g. 45"
-                value={formData.duration || ""}
-                onChange={(e) => handleChange("duration", e.target.value)}
-              />
-            </div>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>{t("lesson-title-0")}</label>
+            <input
+              type="text"
+              required
+              className={styles.input}
+              placeholder="e.g. Introduction to Authentication"
+              value={formData.title}
+              onChange={(e) => handleChange("title", e.target.value)}
+            />
           </div>
 
           <div className={styles.formGroup}>
-            <label className={styles.label}>Lecture Video File *</label>
+            <label className={styles.label}>{t("lecture-video-file")}</label>
             <div
               className={styles.dropzone}
               onClick={() => videoInputRef.current?.click()}
@@ -136,12 +133,13 @@ const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
                   <strong>{formData.videoFile.name}</strong>
                   <span>
                     {(formData.videoFile.size / (1024 * 1024)).toFixed(2)} MB
+                    {formData.duration > 0 && ` • ~${formData.duration} Min`}
                   </span>
                 </div>
               ) : (
                 <>
                   <p className={styles.dropzoneTitle}>
-                    Click or drag video to upload
+                    {t("click-or-drag-video-to-upload")}
                   </p>
                   <span className={styles.dropzoneSub}>
                     MP4, WebM or MOV (Max 500MB)
@@ -153,6 +151,7 @@ const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
                 type="file"
                 accept="video/*"
                 hidden
+                required
                 onChange={handleVideoSelect}
               />
             </div>
@@ -160,12 +159,14 @@ const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
 
           <div className={styles.formGroup}>
             <label className={styles.label}>
-              <IoDocumentTextOutline /> Lesson Description
+              <IoDocumentTextOutline /> {t("lesson-desc")}
             </label>
             <textarea
               className={styles.textarea}
               rows="3"
-              placeholder="Describe what trainees will learn in this lesson..."
+              placeholder={t(
+                "describe-what-trainees-will-learn-in-this-lesson",
+              )}
               value={formData.description}
               onChange={(e) => handleChange("description", e.target.value)}
             />
@@ -177,13 +178,13 @@ const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
               className={styles.cancelBtn}
               onClick={handleClose}
             >
-              Cancel
+              {t("cancel")}
             </button>
             <button
               type="submit"
               className={`${styles.submitBtn} ${styles.blueBtn}`}
             >
-              Create Lesson
+              {t("create-lesson")}
             </button>
           </div>
         </form>
