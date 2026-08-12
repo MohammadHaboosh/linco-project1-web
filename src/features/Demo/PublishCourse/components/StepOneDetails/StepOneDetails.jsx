@@ -2,6 +2,7 @@ import React from "react";
 import GeneralInfoTab from "../../../OwnerCourses/components/ManageCourse/components/tabs/GeneralInfoTab/GeneralInfoTab";
 import styles from "./StepOneDetails.module.css";
 import { IoArrowForwardOutline } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
 
 const StepOneDetails = ({
   courseData,
@@ -12,6 +13,7 @@ const StepOneDetails = ({
   const handleDataChange = (fieldOrObject, value) => {
     updateCourseData(fieldOrObject, value);
   };
+  const { t } = useTranslation();
 
   return (
     <div className={styles.stepOneWrapper}>
@@ -25,10 +27,10 @@ const StepOneDetails = ({
           disabled={isCreating}
         >
           {isCreating ? (
-            "Creating Course..."
+            t("creating-course")
           ) : (
             <>
-              Proceed to Curriculum <IoArrowForwardOutline />
+              {t("proceed-to-curriculum")} <IoArrowForwardOutline />
             </>
           )}
         </button>

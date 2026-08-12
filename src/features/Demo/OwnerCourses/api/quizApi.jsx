@@ -50,4 +50,27 @@ export const quizApi = {
     }
     return data.data;
   },
+
+  updateQuiz: async (sectionId, examId, quizData) => {
+    const payload = {
+      title: quizData.title,
+      numberOfQuestions: Number(quizData.numberOfQuestions),
+      durationMinutes: Number(quizData.durationMinutes),
+      passingScore: Number(quizData.passingScore),
+    };
+
+    const response = await apiFetch(`/sections/${sectionId}/exams/${examId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await response.json();
+    if (!response.ok || !data.success) {
+      throw new Error(data.message || "Failed to update quiz");
+    }
+
+    console.log("Updated Quiz:", data.data);
+    return data.data;
+  },
 };

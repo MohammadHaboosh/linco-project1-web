@@ -4,7 +4,7 @@ import { faqsApi } from "../api/faqsApi";
 export const useFAQs = (courseId) => {
   const [faqs, setFaqs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [errorf, setError] = useState(null);
 
   const fetchFaqs = useCallback(async () => {
     if (!courseId) return;
@@ -34,7 +34,7 @@ export const useFAQs = (courseId) => {
         return { success: true };
       }
     } catch (err) {
-      return { success: false, error: err.message };
+      return { success: false, errorf: err.message };
     }
   };
 
@@ -46,14 +46,14 @@ export const useFAQs = (courseId) => {
         return { success: true };
       }
     } catch (err) {
-      return { success: false, error: err.message };
+      return { success: false, errorf: err.message };
     }
   };
 
   return {
     faqs,
     loading,
-    error,
+    errorf,
     addFaq,
     removeFaq,
     refetch: fetchFaqs,

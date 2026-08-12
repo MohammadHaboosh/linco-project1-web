@@ -8,15 +8,19 @@ import {
   IoAddOutline,
 } from "react-icons/io5";
 import styles from "./Modal.module.css";
+import { useTranslation } from "react-i18next";
 
 const AddQuestionModal = ({ isOpen, onClose, onSubmit }) => {
   const [question, setQuestion] = useState("");
+  const [note, setNote] = useState("");
   const [choices, setChoices] = useState([
     { text: "", isCorrect: true },
     { text: "", isCorrect: false },
     { text: "", isCorrect: false },
     { text: "", isCorrect: false },
   ]);
+
+  const { t } = useTranslation();
 
   if (!isOpen) return null;
 
@@ -43,7 +47,6 @@ const AddQuestionModal = ({ isOpen, onClose, onSubmit }) => {
   const handleRemoveChoice = (index) => {
     if (choices.length > 2) {
       const updated = choices.filter((_, i) => i !== index);
-      // تأكيد وجود خيار صحيح واحد على الأقل
       if (!updated.some((c) => c.isCorrect)) {
         updated[0].isCorrect = true;
       }
@@ -53,14 +56,32 @@ const AddQuestionModal = ({ isOpen, onClose, onSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // إرجاع البنية المطابقة تماماً لتوقع الباك إند
-    onSubmit({
+
+    const payload = {
       question: question.trim(),
+      note: note.trim(),
       choices: choices.map((c) => ({
         text: c.text.trim(),
         isCorrect: c.isCorrect,
       })),
-    });
+    };
+
+    if (onSubmit) {
+      onSubmit({
+        id: `temp_q_${Date.now()}`,
+        ...payload,
+        isNew: true,
+      });
+    }
+
+    setQuestion("");
+    setNote("");
+    setChoices([
+      { text: "", isCorrect: true },
+      { text: "", isCorrect: false },
+      { text: "", isCorrect: false },
+      { text: "", isCorrect: false },
+    ]);
     onClose();
   };
 
@@ -70,15 +91,14 @@ const AddQuestionModal = ({ isOpen, onClose, onSubmit }) => {
         className={`${styles.modalContainer} ${styles.largeModal}`}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* رأس النافذة */}
         <div className={styles.modalHeader}>
           <div className={styles.headerTitleGroup}>
             <div className={`${styles.iconBadge} ${styles.emeraldBadge}`}>
               <IoAddCircleOutline />
             </div>
             <div>
-              <h3>Add Question to Bank</h3>
-              <p>Create question text and set single correct answer</p>
+              <h3>{t("add-question-to-bank")}</h3>
+              <p>{t("create-question-text-note-and-set-a-correct-answer")}</p>
             </div>
           </div>
           <button className={styles.closeBtn} onClick={onClose}>
@@ -86,11 +106,9 @@ const AddQuestionModal = ({ isOpen, onClose, onSubmit }) => {
           </button>
         </div>
 
-        {/* جسم النموذج */}
         <form onSubmit={handleSubmit} className={styles.modalBody}>
-          {/* نص السؤال */}
           <div className={styles.formGroup}>
-            <label className={styles.label}>Question Text *</label>
+            <label className={styles.label}>{t("question-text")}</label>
             <textarea
               required
               rows="3"
@@ -101,26 +119,35 @@ const AddQuestionModal = ({ isOpen, onClose, onSubmit }) => {
             />
           </div>
 
-          {/* قائمة الخيارات */}
+          <div className={styles.formGroup}>
+            <label className={styles.label}>
+              {t("question-note-optional")}
+            </label>
+            <textarea
+              rows="2"
+              className={styles.textarea}
+              placeholder="e.g. Hint or extra information..."
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+            />
+          </div>
+
           <div className={styles.formGroup}>
             <div className={styles.labelRow}>
-              <label className={styles.label}>Answer Choices *</label>
+              <label className={styles.label}>{t("answer-choices")}</label>
               <span className={styles.hintLabel}>
-                Select the checkmark for the correct answer
+                {t("select-the-checkmark-for-the-correct-answer")}
               </span>
             </div>
 
             <div className={styles.choicesList}>
               {choices.map((choice, index) => (
                 <div key={index} className={styles.choiceRow}>
-                  {/* زر اختيار الإجابة الصحيحة */}
                   <button
                     type="button"
-                    className={`${styles.correctRadioBtn} ${
-                      choice.isCorrect ? styles.activeChoice : ""
-                    }`}
+                    className={`${styles.correctRadioBtn} ${choice.isCorrect ? styles.activeChoice : ""}`}
                     onClick={() => handleSetCorrectChoice(index)}
-                    title="Mark as correct answer"
+                    title={t("mark-as-correct-answer")}
                   >
                     {choice.isCorrect ? (
                       <IoCheckmarkCircle />
@@ -129,7 +156,6 @@ const AddQuestionModal = ({ isOpen, onClose, onSubmit }) => {
                     )}
                   </button>
 
-                  {/* نص الخيار */}
                   <input
                     type="text"
                     required
@@ -141,7 +167,6 @@ const AddQuestionModal = ({ isOpen, onClose, onSubmit }) => {
                     }
                   />
 
-                  {/* زر حذف الخيار */}
                   {choices.length > 2 && (
                     <button
                       type="button"
@@ -161,25 +186,24 @@ const AddQuestionModal = ({ isOpen, onClose, onSubmit }) => {
                 className={styles.addChoiceBtn}
                 onClick={handleAddChoice}
               >
-                <IoAddOutline /> Add Choice Option
+                <IoAddOutline /> {t("add-choice-option")}
               </button>
             )}
           </div>
 
-          {/* أزرار الإجراءات */}
           <div className={styles.modalFooter}>
             <button
               type="button"
               className={styles.cancelBtn}
               onClick={onClose}
             >
-              Cancel
+              {t("cancel")}
             </button>
             <button
               type="submit"
               className={`${styles.submitBtn} ${styles.emeraldBtn}`}
             >
-              Save Question
+              {t("save-question")}
             </button>
           </div>
         </form>
