@@ -777,5 +777,6 @@
   "select-the-checkmark-for-the-correct-answer": "حدد علامة الاختيار للإجابة الصحيحة",
   "mark-as-correct-answer": "وضع علامة كإجابة صحيحة",
   "add-choice-option": "إضافة خيار الاختيار",
-  "save-question": "حفظ السؤال"
+  "save-question": "حفظ السؤال",
+  "add-question": "أضف سؤالا"
 }

@@ -782,5 +782,7 @@
   "select-the-checkmark-for-the-correct-answer": "Select the checkmark for the correct answer",
   "mark-as-correct-answer": "Mark as correct answer",
   "add-choice-option": "Add Choice Option",
-  "save-question": "Save Question"
+  "save-question": "Save Question",
+  "question-bank": "Question Bank",
+  "add-question": "Add question"
 }

@@ -7,17 +7,20 @@ import {
   IoTrashOutline,
 } from "react-icons/io5";
 import styles from "./QuestionBankSection.module.css";
+import { useTranslation } from "react-i18next";
 
 const QuestionBankSection = ({
   questions = [],
   onAddQuestion,
   onDeleteQuestion,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className={styles.questionBankBox}>
       <div className={styles.header}>
         <h5 className={styles.title}>
-          <IoLibraryOutline className={styles.titleIcon} /> Question Bank
+          <IoLibraryOutline className={styles.titleIcon} /> {t("question-bank")}
         </h5>
       </div>
 
@@ -28,7 +31,7 @@ const QuestionBankSection = ({
               <div className={styles.questionInfo}>
                 <IoReorderTwoOutline className={styles.dragHandle} />
                 <span className={styles.qNumber}>Q{qIdx + 1}:</span>
-                <span className={styles.qText}>{q.text}</span>
+                <span className={styles.qText}>{q.question}</span>
               </div>
               <div className={styles.actions}>
                 <button type="button" className={styles.iconBtn}>
@@ -52,7 +55,7 @@ const QuestionBankSection = ({
         className={styles.addQuestionBtn}
         onClick={onAddQuestion}
       >
-        <IoAddCircleOutline /> Add Question
+        <IoAddCircleOutline /> {t("add-question")}
       </button>
     </div>
   );
