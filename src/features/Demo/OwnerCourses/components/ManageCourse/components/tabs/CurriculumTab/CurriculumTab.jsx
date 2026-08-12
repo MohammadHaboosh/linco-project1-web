@@ -18,6 +18,7 @@ import AddQuizModal from "./AddModals/AddQuizModal";
 import AddQuestionModal from "./AddModals/AddQuestionModal";
 import { attachmentApi } from "../../../../../api/attachmentApi";
 import { quizApi } from "../../../../../api/quizApi";
+import { questionBankApi } from "../../../../../api/questionBankApi";
 
 const CurriculumTab = ({
   courseId,
@@ -47,8 +48,13 @@ const CurriculumTab = ({
       setExpandedSections([...expandedSections, id]);
 
       const targetSec = sections.find((s) => s.id === id);
-      if (targetSec && !isTempId(id) && targetSec.quiz === undefined) {
-        handleFetchQuizForSection(id);
+      if (targetSec && !isTempId(id)) {
+        if (targetSec.quiz === undefined) {
+          handleFetchQuizForSection(id);
+        }
+        if (!targetSec.questions || targetSec.questions.length === 0) {
+          handleFetchQuestionsForSection(id);
+        }
       }
     } else {
       setExpandedSections(expandedSections.filter((secId) => secId !== id));
@@ -169,14 +175,7 @@ const CurriculumTab = ({
         s.id === activeSectionId
           ? {
               ...s,
-              questions: [
-                ...(s.questions || []),
-                {
-                  id: `temp_q_${Date.now()}`,
-                  ...questionData,
-                  isNew: true,
-                },
-              ],
+              questions: [...(s.questions || []), questionData],
             }
           : s,
       ),
@@ -225,6 +224,30 @@ const CurriculumTab = ({
       console.error(`Failed to fetch quiz for section ${sectionId}:`, error);
     }
   };
+
+  const handleFetchQuestionsForSection = async (sectionId) => {
+    if (isTempId(sectionId)) return;
+
+    try {
+      const fetchedQuestions =
+        await questionBankApi.getQuestionsBySectionId(sectionId);
+      if (fetchedQuestions) {
+        setSections((prev) =>
+          prev.map((sec) =>
+            sec.id === sectionId
+              ? { ...sec, questions: fetchedQuestions }
+              : sec,
+          ),
+        );
+      }
+    } catch (error) {
+      console.error(
+        `Failed to fetch questions for section ${sectionId}:`,
+        error,
+      );
+    }
+  };
+
   useEffect(() => {
     if (sections.length > 0) {
       const firstSection = sections[0];
@@ -397,8 +420,9 @@ const CurriculumTab = ({
             {t("curriculum-builder", "Curriculum Builder")}
           </h3>
           <p className={styles.tabSubtitle}>
-            Organize your course into structured sections, lessons, and
-            assessments.
+            {t(
+              "organize-your-course-into-structured-sections-lessons-and-assessments",
+            )}
           </p>
         </div>
       </div>
@@ -525,6 +549,7 @@ const CurriculumTab = ({
 
       <AddQuestionModal
         isOpen={activeModal === "question"}
+        sectionId={activeSectionId}
         onClose={handleCloseModal}
         onSubmit={handleSaveQuestion}
       />
