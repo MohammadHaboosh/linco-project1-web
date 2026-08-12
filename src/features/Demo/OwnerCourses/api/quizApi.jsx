@@ -30,8 +30,15 @@ export const quizApi = {
     const data = await response.json();
     if (!response.ok || !data.success) throw new Error(data.message);
 
-    const quiz =
-      Array.isArray(data.data) && data.data.length > 0 ? data.data[0] : null;
+    let quiz = null;
+    const payload = data.data;
+    if (Array.isArray(payload)) {
+      quiz = payload.length > 0 ? payload[0] : null;
+    } else if (payload && Array.isArray(payload.exams)) {
+      quiz = payload.exams.length > 0 ? payload.exams[0] : null;
+    } else if (payload && typeof payload === "object") {
+      quiz = payload;
+    }
 
     console.log("Fetched Quiz for section", sectionId, ":", quiz);
     return quiz;

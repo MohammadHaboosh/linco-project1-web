@@ -49,13 +49,11 @@ export const useCurriculumLogic = (
       if (isTempId(sectionId)) return;
       try {
         const fetchedQuiz = await quizApi.getQuizBySectionId(sectionId);
-        if (fetchedQuiz) {
-          setSections((prev) =>
-            prev.map((sec) =>
-              sec.id === sectionId ? { ...sec, quiz: fetchedQuiz } : sec,
-            ),
-          );
-        }
+        setSections((prev) =>
+          prev.map((sec) =>
+            sec.id === sectionId ? { ...sec, quiz: fetchedQuiz } : sec,
+          ),
+        );
       } catch (error) {
         console.error("Error fetching quiz:", error);
       }
