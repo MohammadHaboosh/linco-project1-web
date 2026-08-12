@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { quizApi } from "../api/quizApi";
 import { questionBankApi } from "../api/questionBankApi";
 import { attachmentApi } from "../api/attachmentApi";
@@ -16,43 +16,52 @@ export const useCurriculumLogic = (
   const [activeModal, setActiveModal] = useState(null);
   const [activeSectionId, setActiveSectionId] = useState(null);
 
-  const isTempId = (id) =>
-    !id || String(id).startsWith("temp-") || String(id).startsWith("temp_");
+  const isTempId = useCallback(
+    (id) =>
+      !id || String(id).startsWith("temp-") || String(id).startsWith("temp_"),
+    [],
+  );
 
-  const handleFetchQuestionsForSection = async (sectionId) => {
-    if (isTempId(sectionId)) return;
-    try {
-      const fetchedQuestions =
-        await questionBankApi.getQuestionsBySectionId(sectionId);
-      if (fetchedQuestions) {
-        setSections((prev) =>
-          prev.map((sec) =>
-            sec.id === sectionId
-              ? { ...sec, questions: fetchedQuestions }
-              : sec,
-          ),
-        );
+  const handleFetchQuestionsForSection = useCallback(
+    async (sectionId) => {
+      if (isTempId(sectionId)) return;
+      try {
+        const fetchedQuestions =
+          await questionBankApi.getQuestionsBySectionId(sectionId);
+        if (fetchedQuestions) {
+          setSections((prev) =>
+            prev.map((sec) =>
+              sec.id === sectionId
+                ? { ...sec, questions: fetchedQuestions }
+                : sec,
+            ),
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching questions:", error);
       }
-    } catch (error) {
-      console.error("Error fetching questions:", error);
-    }
-  };
+    },
+    [isTempId, setSections],
+  );
 
-  const handleFetchQuizForSection = async (sectionId) => {
-    if (isTempId(sectionId)) return;
-    try {
-      const fetchedQuiz = await quizApi.getQuizBySectionId(sectionId);
-      if (fetchedQuiz) {
-        setSections((prev) =>
-          prev.map((sec) =>
-            sec.id === sectionId ? { ...sec, quiz: fetchedQuiz } : sec,
-          ),
-        );
+  const handleFetchQuizForSection = useCallback(
+    async (sectionId) => {
+      if (isTempId(sectionId)) return;
+      try {
+        const fetchedQuiz = await quizApi.getQuizBySectionId(sectionId);
+        if (fetchedQuiz) {
+          setSections((prev) =>
+            prev.map((sec) =>
+              sec.id === sectionId ? { ...sec, quiz: fetchedQuiz } : sec,
+            ),
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching quiz:", error);
       }
-    } catch (error) {
-      console.error("Error fetching quiz:", error);
-    }
-  };
+    },
+    [isTempId, setSections],
+  );
 
   const toggleSection = (id) => {
     if (!expandedSections.includes(id)) {
@@ -75,7 +84,12 @@ export const useCurriculumLogic = (
       if (!sections[0].questions || sections[0].questions.length === 0)
         handleFetchQuestionsForSection(sections[0].id);
     }
-  }, [sections.length]);
+  }, [
+    sections,
+    handleFetchQuestionsForSection,
+    handleFetchQuizForSection,
+    isTempId,
+  ]);
 
   const handleAddSection = () => {
     const newSection = {
@@ -135,12 +149,15 @@ export const useCurriculumLogic = (
     setSections((prev) =>
       prev.map((s) => {
         if (s.id === activeSectionId) {
-          const isExisting = s.quiz && !isTempId(s.quiz.id) && !quizData.isNew;
+          const alreadyHasRealQuiz = s.quiz && !isTempId(s.quiz.id);
+
           return {
             ...s,
             quiz: {
               ...quizData,
-              isModified: isExisting ? true : quizData.isModified,
+              id: alreadyHasRealQuiz ? s.quiz.id : quizData.id,
+              isNew: !alreadyHasRealQuiz,
+              isModified: alreadyHasRealQuiz ? true : quizData.isModified,
             },
           };
         }
