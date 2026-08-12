@@ -31,7 +31,6 @@ export const useCourseSaver = ({
       if (setIsSaving) setIsSaving(true);
       const activeCourseId = courseId || assetId || demoId;
 
-      if (saveGeneralInfo) await saveGeneralInfo();
       if (saveGeneralInfo) {
         await saveGeneralInfo();
       }
