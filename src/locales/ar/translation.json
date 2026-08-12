@@ -768,5 +768,14 @@
   "duration-seconds": "المدة (ثواني) *",
   "passing-score": "درجة النجاح (%) *",
   "save-quiz": "حفظ الاختبار",
-  "no-faqs-available-in-this-course": "لا توجد أسئلة وأجوبة متوفرة في هذه الدورة"
+  "no-faqs-available-in-this-course": "لا توجد أسئلة وأجوبة متوفرة في هذه الدورة",
+  "create-question-text-note-and-set-a-correct-answer": "إنشاء نص السؤال، وملاحظة، وتعيين الإجابة الصحيحة",
+  "add-question-to-bank": "إضافة سؤال إلى البنك",
+  "question-text": "نص السؤال *",
+  "question-note-optional": "ملاحظة السؤال (اختياري)",
+  "answer-choices": "اختيارات الإجابة *",
+  "select-the-checkmark-for-the-correct-answer": "حدد علامة الاختيار للإجابة الصحيحة",
+  "mark-as-correct-answer": "وضع علامة كإجابة صحيحة",
+  "add-choice-option": "إضافة خيار الاختيار",
+  "save-question": "حفظ السؤال"
 }

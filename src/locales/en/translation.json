@@ -773,5 +773,14 @@
   "duration-seconds": "Duration (Seconds) *",
   "passing-score": "Passing Score (%) *",
   "save-quiz": "Save Quiz",
-  "no-faqs-available-in-this-course": "No FAQs Available in this course"
+  "no-faqs-available-in-this-course": "No FAQs Available in this course",
+  "add-question-to-bank": "Add Question to Bank",
+  "create-question-text-note-and-set-a-correct-answer": "Create question text, note, and set a correct answer",
+  "question-text": "Question Text *",
+  "question-note-optional": "Question Note (Optional)",
+  "answer-choices": "Answer Choices *",
+  "select-the-checkmark-for-the-correct-answer": "Select the checkmark for the correct answer",
+  "mark-as-correct-answer": "Mark as correct answer",
+  "add-choice-option": "Add Choice Option",
+  "save-question": "Save Question"
 }

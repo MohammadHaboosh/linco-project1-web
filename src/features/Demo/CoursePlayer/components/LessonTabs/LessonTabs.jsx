@@ -177,21 +177,22 @@ const LessonTabs = ({ activeLesson }) => {
                 !errorf &&
                 faqs.map((faq, index) => (
                   <div
-                    key={faq}
+                    key={faq.id}
                     className={`${styles.faqItem} ${openFaq === index ? styles.faqOpen : ""}`}
                   >
                     <button
                       className={styles.faqTrigger}
                       onClick={() => setOpenFaq(openFaq === index ? -1 : index)}
                     >
-                      <span>{faq}</span>
+                      <span>{faq.question}</span>
                       <IoChevronDown className={styles.faqChevron} />
                     </button>
                     <div className={styles.faqAnswer}>
                       <p>
-                        {t(
-                          "this-is-a-placeholder-answer-for-the-frequently-asked-question",
-                        )}
+                        {faq.answer ||
+                          t(
+                            "this-is-a-placeholder-answer-for-the-frequently-asked-question",
+                          )}
                       </p>
                     </div>
                   </div>
