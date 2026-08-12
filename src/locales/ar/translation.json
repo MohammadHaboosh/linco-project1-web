@@ -785,5 +785,14 @@
   "lecture-video-file": "ملف فيديو المحاضرة *",
   "describe-what-trainees-will-learn-in-this-lesson": "صف ما سيتعلمه المتدربون في هذا الدرس...",
   "create-lesson": "إنشاء الدرس",
-  "creating-course": "جارٍ إنشاء الدورة..."
+  "creating-course": "جارٍ إنشاء الدورة...",
+  "intelligence-challenge": "تحدي الذكاء",
+  "test-your-understanding-of-this-sections-concepts-make-sure-to-select-all-correct-options-for-each-question": "اختبر مدى فهمك لمفاهيم هذا القسم. \nتأكد من تحديد جميع الخيارات الصحيحة لكل سؤال.",
+  "questions": "أسئلة",
+  "seconds": "ثواني",
+  "start-exam-now": "ابدأ الامتحان الآن",
+  "loading-your-assessment": "جارٍ تحميل تقييمك...",
+  "previous": "سابق",
+  "submitting": "تقديم...",
+  "submit-exam": "تقديم الامتحان"
 }
