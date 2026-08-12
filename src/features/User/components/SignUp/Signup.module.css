@@ -286,7 +286,7 @@
 .form-wrapper {
   width: min(100%, 590px);
   padding: clamp(30px, 4vw, 48px);
-  border: 1px solid var(--auth-slate-200);
+  border: 2px solid var(--auth-navy-900);
   border-radius: 24px;
   background: #ffffff;
   box-shadow: 0 24px 70px rgba(15, 23, 42, 0.1);
