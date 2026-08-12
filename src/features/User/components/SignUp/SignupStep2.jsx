@@ -13,6 +13,7 @@ const SignupStep2 = ({ formData, onChange, onBack, errors }) => {
           placeholder="First Name"
           value={formData.firstName}
           onChange={onChange}
+          autoComplete="given-name"
         />
       </div>
       {errors.firstName && (
@@ -27,6 +28,7 @@ const SignupStep2 = ({ formData, onChange, onBack, errors }) => {
           placeholder="Last Name"
           value={formData.lastName}
           onChange={onChange}
+          autoComplete="family-name"
         />
       </div>
       {errors.lastName && (

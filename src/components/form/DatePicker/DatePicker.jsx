@@ -74,9 +74,12 @@ const DatePicker = ({ name, value, onChange, placeholder }) => {
 
   return (
     <div className={styles["date-picker-wrapper"]} ref={panelRef}>
-      <div
+      <button
+        type="button"
         className={`${styles["trigger-input"]} ${isOpen ? styles.active : ""}`}
         onClick={() => setIsOpen(!isOpen)}
+        aria-haspopup="dialog"
+        aria-expanded={isOpen}
       >
         <span
           className={value ? styles["value-text"] : styles["placeholder-text"]}
@@ -84,10 +87,14 @@ const DatePicker = ({ name, value, onChange, placeholder }) => {
           {value || placeholder}
         </span>
         <IoCalendarOutline className={styles["icon-right"]} />
-      </div>
+      </button>
 
       {isOpen && (
-        <div className={styles["calendar-panel"]}>
+        <div
+          className={styles["calendar-panel"]}
+          role="dialog"
+          aria-label="Choose a date"
+        >
           {/* Header Controls */}
           <div className={styles["calendar-header"]}>
             <button

@@ -43,6 +43,7 @@ const SignupStep1 = ({ formData, onChange, errors }) => {
           placeholder="example@gmail.com"
           value={formData.email}
           onChange={onChange}
+          autoComplete="email"
         />
       </div>
       {errors.email && (
@@ -57,11 +58,13 @@ const SignupStep1 = ({ formData, onChange, errors }) => {
           placeholder="password"
           value={formData.password}
           onChange={onChange}
+          autoComplete="new-password"
         />
         <button
           type="button"
           onClick={togglePassword}
           className={styles["icon-btn"]}
+          aria-label={showPassword ? "Hide password" : "Show password"}
         >
           {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
         </button>
@@ -91,11 +94,17 @@ const SignupStep1 = ({ formData, onChange, errors }) => {
           placeholder="Confirm password"
           value={formData.confirmPassword}
           onChange={onChange}
+          autoComplete="new-password"
         />
         <button
           type="button"
           onClick={toggleConfirmPassword}
           className={styles["icon-btn"]}
+          aria-label={
+            showConfirmPassword
+              ? "Hide confirmed password"
+              : "Show confirmed password"
+          }
         >
           {showConfirmPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
         </button>
