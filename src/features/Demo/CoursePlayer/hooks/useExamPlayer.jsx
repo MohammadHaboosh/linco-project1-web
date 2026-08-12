@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { examAttemptApi } from "../api/examAttemptApi";
+import { useParams } from "react-router-dom";
 
-export const useExamPlayer = (examId) => {
+export const useExamPlayer = (passedExamId) => {
+  const { demoId } = useParams();
+
   const [examData, setExamData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -11,9 +14,17 @@ export const useExamPlayer = (examId) => {
   const [examResult, setExamResult] = useState(null);
 
   useEffect(() => {
-    if (!examId) return;
-
     let isMounted = true;
+
+    if (!passedExamId) {
+      queueMicrotask(() => {
+        if (isMounted) {
+          setIsLoading(false);
+          setError("Exam ID is missing. Cannot load the assessment.");
+        }
+      });
+      return;
+    }
 
     queueMicrotask(() => {
       if (isMounted) {
@@ -24,15 +35,17 @@ export const useExamPlayer = (examId) => {
 
     const loadExam = async () => {
       try {
-        const data = await examAttemptApi.generateExam(examId);
+        const data = await examAttemptApi.generateExam(passedExamId);
 
         if (!isMounted) return;
 
-        setExamData(data);
+        const actualData = data.data || data;
+
+        setExamData(actualData);
 
         const initialAnswers = {};
-        if (data && data.questions) {
-          data.questions.forEach((q) => {
+        if (actualData && actualData.questions) {
+          actualData.questions.forEach((q) => {
             initialAnswers[q.id] = [];
           });
         }
@@ -49,7 +62,7 @@ export const useExamPlayer = (examId) => {
     return () => {
       isMounted = false;
     };
-  }, [examId]);
+  }, [passedExamId]);
 
   const toggleChoice = (questionId, choiceId) => {
     setAnswers((prev) => {
@@ -83,11 +96,11 @@ export const useExamPlayer = (examId) => {
       );
 
       const payload = {
-        examId: examId,
+        examId: passedExamId,
         answers: formattedAnswers,
       };
 
-      const result = await examAttemptApi.submitAttempt(payload);
+      const result = await examAttemptApi.submitAttempt(payload, demoId);
       setExamResult(result);
       return result;
     } catch (err) {
