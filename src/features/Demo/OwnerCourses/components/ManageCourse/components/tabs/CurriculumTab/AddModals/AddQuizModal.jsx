@@ -9,14 +9,32 @@ import {
 import styles from "./Modal.module.css";
 import { useTranslation } from "react-i18next";
 
-const AddQuizModal = ({ isOpen, onClose, onSubmit }) => {
+const AddQuizModal = ({ isOpen, onClose, onSubmit, initialData }) => {
   const { t } = useTranslation();
+
   const [formData, setFormData] = useState({
     title: "",
     numberOfQuestions: 5,
     durationMinutes: 30,
     passingScore: 60,
   });
+
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
+  const [prevInitialData, setPrevInitialData] = useState(initialData);
+
+  if (isOpen !== prevIsOpen || initialData !== prevInitialData) {
+    setPrevIsOpen(isOpen);
+    setPrevInitialData(initialData);
+
+    if (isOpen) {
+      setFormData({
+        title: initialData?.title || "",
+        numberOfQuestions: initialData?.numberOfQuestions || 5,
+        durationMinutes: initialData?.durationMinutes || 30,
+        passingScore: initialData?.passingScore || 60,
+      });
+    }
+  }
 
   if (!isOpen) return null;
 
@@ -36,18 +54,12 @@ const AddQuizModal = ({ isOpen, onClose, onSubmit }) => {
 
     if (onSubmit) {
       onSubmit({
-        id: `temp_quiz_${Date.now()}`,
+        id: initialData?.id || `temp_quiz_${Date.now()}`,
         ...quizPayload,
-        isNew: true,
+        isNew: !initialData?.id,
+        isModified: !!initialData?.id,
       });
     }
-
-    setFormData({
-      title: "",
-      numberOfQuestions: 5,
-      durationMinutes: 30,
-      passingScore: 60,
-    });
     onClose();
   };
 

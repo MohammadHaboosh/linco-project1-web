@@ -28,17 +28,24 @@ export const useCurriculumLogic = (
       try {
         const fetchedQuestions =
           await questionBankApi.getQuestionsBySectionId(sectionId);
-        if (fetchedQuestions) {
-          setSections((prev) =>
-            prev.map((sec) =>
-              sec.id === sectionId
-                ? { ...sec, questions: fetchedQuestions }
-                : sec,
-            ),
-          );
-        }
+        setSections((prev) =>
+          prev.map((sec) =>
+            sec.id === sectionId
+              ? {
+                  ...sec,
+                  questions: fetchedQuestions || [],
+                  isQuestionsFetched: true,
+                }
+              : sec,
+          ),
+        );
       } catch (error) {
         console.error("Error fetching questions:", error);
+        setSections((prev) =>
+          prev.map((sec) =>
+            sec.id === sectionId ? { ...sec, isQuestionsFetched: true } : sec,
+          ),
+        );
       }
     },
     [isTempId, setSections],
@@ -51,11 +58,18 @@ export const useCurriculumLogic = (
         const fetchedQuiz = await quizApi.getQuizBySectionId(sectionId);
         setSections((prev) =>
           prev.map((sec) =>
-            sec.id === sectionId ? { ...sec, quiz: fetchedQuiz } : sec,
+            sec.id === sectionId
+              ? { ...sec, quiz: fetchedQuiz, isQuizFetched: true }
+              : sec,
           ),
         );
       } catch (error) {
         console.error("Error fetching quiz:", error);
+        setSections((prev) =>
+          prev.map((sec) =>
+            sec.id === sectionId ? { ...sec, isQuizFetched: true } : sec,
+          ),
+        );
       }
     },
     [isTempId, setSections],
@@ -66,9 +80,8 @@ export const useCurriculumLogic = (
       setExpandedSections([...expandedSections, id]);
       const targetSec = sections.find((s) => s.id === id);
       if (targetSec && !isTempId(id)) {
-        if (targetSec.quiz === undefined) handleFetchQuizForSection(id);
-        if (!targetSec.questions || targetSec.questions.length === 0)
-          handleFetchQuestionsForSection(id);
+        if (!targetSec.isQuizFetched) handleFetchQuizForSection(id);
+        if (!targetSec.isQuestionsFetched) handleFetchQuestionsForSection(id);
       }
     } else {
       setExpandedSections(expandedSections.filter((secId) => secId !== id));
@@ -77,15 +90,14 @@ export const useCurriculumLogic = (
 
   useEffect(() => {
     if (sections.length > 0 && !isTempId(sections[0].id)) {
-      if (sections[0].quiz === undefined)
-        handleFetchQuizForSection(sections[0].id);
-      if (!sections[0].questions || sections[0].questions.length === 0)
+      if (!sections[0].isQuizFetched) handleFetchQuizForSection(sections[0].id);
+      if (!sections[0].isQuestionsFetched)
         handleFetchQuestionsForSection(sections[0].id);
     }
   }, [
     sections,
-    handleFetchQuestionsForSection,
     handleFetchQuizForSection,
+    handleFetchQuestionsForSection,
     isTempId,
   ]);
 

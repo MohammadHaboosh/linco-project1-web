@@ -28,7 +28,11 @@ const SectionQuizSection = ({ quiz, onAddQuiz, onDeleteQuiz }) => {
             <span className={styles.duration}>
               <IoTimeOutline /> {quiz.duration} Mins
             </span>
-            <button type="button" className={styles.iconBtn}>
+            <button
+              type="button"
+              className={styles.iconBtn}
+              onClick={onAddQuiz}
+            >
               <IoPencilOutline />
             </button>
             <button

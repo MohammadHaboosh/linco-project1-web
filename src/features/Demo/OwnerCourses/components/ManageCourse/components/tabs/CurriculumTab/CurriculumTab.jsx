@@ -66,6 +66,11 @@ const CurriculumTab = ({
         isOpen={logic.activeModal === "quiz"}
         onClose={logic.closeModal}
         onSubmit={logic.handleSaveQuiz}
+        initialData={
+          logic.activeModal === "quiz" && logic.activeSectionId
+            ? sections.find((s) => s.id === logic.activeSectionId)?.quiz
+            : null
+        }
       />
       <AddQuestionModal
         isOpen={logic.activeModal === "question"}
