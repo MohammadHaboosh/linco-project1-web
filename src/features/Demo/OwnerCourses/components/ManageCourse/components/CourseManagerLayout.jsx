@@ -9,11 +9,11 @@ import {
   IoChevronForwardOutline,
 } from "react-icons/io5";
 import { useCourseManager } from "../../../hooks/useCourseManager";
-import { useCourseSaver } from "./hooks/useCourseSaver";
+import { useCourseSaver } from "../../../hooks/useCourseSaver";
 import GeneralInfoTab from "./tabs/GeneralInfoTab/GeneralInfoTab";
 import CurriculumTab from "./tabs/CurriculumTab/CurriculumTab";
 import FAQsTab from "./tabs/FAQsTab/FAQsTab";
-import UploadProgressOverlay from "./components/UploadProgressOverlay";
+import UploadProgressOverlay from "./UploadProgressOverlay/UploadProgressOverlay";
 import styles from "./CourseManager.module.css";
 import { useTranslation } from "react-i18next";
 

@@ -54,7 +54,7 @@ const CurriculumTab = ({
         onClick={logic.handleAddSection}
       >
         <IoAddCircleOutline className={styles.rootAddIcon} />
-        <span>{t('add-new-section')}</span>
+        <span>{t("add-new-section")}</span>
       </button>
 
       <AddLessonModal

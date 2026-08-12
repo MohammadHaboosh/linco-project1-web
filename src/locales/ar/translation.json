@@ -784,5 +784,6 @@
   "add-new-lesson": "إضافة درس جديد",
   "lecture-video-file": "ملف فيديو المحاضرة *",
   "describe-what-trainees-will-learn-in-this-lesson": "صف ما سيتعلمه المتدربون في هذا الدرس...",
-  "create-lesson": "إنشاء الدرس"
+  "create-lesson": "إنشاء الدرس",
+  "creating-course": "جارٍ إنشاء الدورة..."
 }
