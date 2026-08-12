@@ -757,12 +757,12 @@
   .right-panel {
     align-items: flex-start;
     min-height: auto;
-    padding: 0 28px 44px;
+    padding: 28px 28px 44px;
   }
 
   .form-wrapper {
     width: min(100%, 700px);
-    margin-block-start: -34px;
+    margin-block-start: 0;
   }
 }
 
@@ -793,11 +793,11 @@
   }
 
   .right-panel {
-    padding: 0 12px 24px;
+    padding: 18px 12px 24px;
   }
 
   .form-wrapper {
-    margin-block-start: -30px;
+    margin-block-start: 0;
     padding: 25px 18px;
     border-radius: 18px;
     box-shadow: 0 18px 48px rgba(15, 23, 42, 0.12);
@@ -876,25 +876,56 @@
   }
 }
 
-@media (min-width: 901px) and (max-height: 820px) {
+@media (min-width: 901px) and (max-height: 1000px) {
+  .left-panel,
+  .right-panel {
+    padding-block: clamp(24px, 3vh, 34px);
+  }
+
   .left-content {
-    gap: 24px;
+    gap: clamp(18px, 3vh, 30px);
   }
 
   .brand-text h2 {
-    font-size: clamp(2rem, 3vw, 2.8rem);
+    font-size: clamp(2rem, 3vw, 3rem);
+  }
+
+  .eyebrow {
+    margin-block-end: 10px;
   }
 
   .brand-text > p:not(.eyebrow) {
-    margin-block-start: 16px;
+    margin-block-start: 12px;
+    font-size: 0.92rem;
+    line-height: 1.55;
   }
 
   .benefit-list {
-    margin-block-start: 18px;
+    margin-block-start: 14px;
+    gap: 7px;
+  }
+
+  .benefit-list li {
+    font-size: 0.84rem;
   }
 
   .workspace-preview {
-    display: none;
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .preview-header {
+    padding-block-end: 3px;
+  }
+
+  .preview-row {
+    grid-template-columns: 38px minmax(0, 1fr) minmax(60px, 82px);
+    padding: 8px;
+  }
+
+  .preview-icon {
+    width: 38px;
+    height: 38px;
   }
 
   .right-panel {
@@ -902,7 +933,44 @@
   }
 
   .form-wrapper {
-    padding-block: 30px;
+    padding-block: 28px;
+  }
+
+  .header {
+    margin-block-end: 20px;
+  }
+
+  .title {
+    font-size: clamp(2rem, 3.5vw, 2.7rem);
+  }
+
+  .subtitle {
+    margin-block-start: 8px;
+  }
+
+  .progress-track {
+    margin-block-start: 14px;
+  }
+
+  .form-card {
+    margin-block-end: 18px;
+    gap: 12px;
+  }
+
+  .input-group input {
+    min-height: 50px;
+  }
+
+  .btn-login,
+  .btn-continue,
+  .btn-google {
+    min-height: 48px;
+  }
+}
+
+@media (min-width: 901px) and (max-height: 660px) {
+  .workspace-preview {
+    display: none;
   }
 }
 
