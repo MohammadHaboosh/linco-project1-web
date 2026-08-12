@@ -8,10 +8,9 @@ import {
   IoAddOutline,
 } from "react-icons/io5";
 import styles from "./Modal.module.css";
-import { useQuestionBank } from "../../../../../../hooks/useQuestionBank"; // 💡 تأكد من مسار الـ hook
 import { useTranslation } from "react-i18next";
 
-const AddQuestionModal = ({ isOpen, onClose, onSubmit, sectionId }) => {
+const AddQuestionModal = ({ isOpen, onClose, onSubmit }) => {
   const [question, setQuestion] = useState("");
   const [note, setNote] = useState("");
   const [choices, setChoices] = useState([
@@ -21,7 +20,6 @@ const AddQuestionModal = ({ isOpen, onClose, onSubmit, sectionId }) => {
     { text: "", isCorrect: false },
   ]);
 
-  const { addQuestion, isCreating } = useQuestionBank();
   const { t } = useTranslation();
 
   if (!isOpen) return null;
@@ -56,7 +54,7 @@ const AddQuestionModal = ({ isOpen, onClose, onSubmit, sectionId }) => {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     const payload = {
@@ -68,27 +66,23 @@ const AddQuestionModal = ({ isOpen, onClose, onSubmit, sectionId }) => {
       })),
     };
 
-    try {
-      if (sectionId && !String(sectionId).startsWith("temp_")) {
-        const createdQuestion = await addQuestion(sectionId, payload);
-        if (onSubmit) onSubmit(createdQuestion);
-      } else {
-        if (onSubmit) onSubmit({ id: `temp_q_${Date.now()}`, ...payload });
-      }
-
-      setQuestion("");
-      setNote("");
-      setChoices([
-        { text: "", isCorrect: true },
-        { text: "", isCorrect: false },
-        { text: "", isCorrect: false },
-        { text: "", isCorrect: false },
-      ]);
-      onClose();
-    } catch (err) {
-      console.error("Error creating question:", err);
-      alert(err.message || "Failed to add question");
+    if (onSubmit) {
+      onSubmit({
+        id: `temp_q_${Date.now()}`,
+        ...payload,
+        isNew: true,
+      });
     }
+
+    setQuestion("");
+    setNote("");
+    setChoices([
+      { text: "", isCorrect: true },
+      { text: "", isCorrect: false },
+      { text: "", isCorrect: false },
+      { text: "", isCorrect: false },
+    ]);
+    onClose();
   };
 
   return (
@@ -107,11 +101,7 @@ const AddQuestionModal = ({ isOpen, onClose, onSubmit, sectionId }) => {
               <p>{t("create-question-text-note-and-set-a-correct-answer")}</p>
             </div>
           </div>
-          <button
-            className={styles.closeBtn}
-            onClick={onClose}
-            disabled={isCreating}
-          >
+          <button className={styles.closeBtn} onClick={onClose}>
             <IoCloseOutline />
           </button>
         </div>
@@ -121,7 +111,6 @@ const AddQuestionModal = ({ isOpen, onClose, onSubmit, sectionId }) => {
             <label className={styles.label}>{t("question-text")}</label>
             <textarea
               required
-              disabled={isCreating}
               rows="3"
               className={styles.textarea}
               placeholder="e.g. What is Authentication?"
@@ -135,7 +124,6 @@ const AddQuestionModal = ({ isOpen, onClose, onSubmit, sectionId }) => {
               {t("question-note-optional")}
             </label>
             <textarea
-              disabled={isCreating}
               rows="2"
               className={styles.textarea}
               placeholder="e.g. Hint or extra information..."
@@ -157,10 +145,7 @@ const AddQuestionModal = ({ isOpen, onClose, onSubmit, sectionId }) => {
                 <div key={index} className={styles.choiceRow}>
                   <button
                     type="button"
-                    disabled={isCreating}
-                    className={`${styles.correctRadioBtn} ${
-                      choice.isCorrect ? styles.activeChoice : ""
-                    }`}
+                    className={`${styles.correctRadioBtn} ${choice.isCorrect ? styles.activeChoice : ""}`}
                     onClick={() => handleSetCorrectChoice(index)}
                     title={t("mark-as-correct-answer")}
                   >
@@ -174,7 +159,6 @@ const AddQuestionModal = ({ isOpen, onClose, onSubmit, sectionId }) => {
                   <input
                     type="text"
                     required
-                    disabled={isCreating}
                     className={styles.input}
                     placeholder={`Choice ${String.fromCharCode(65 + index)}`}
                     value={choice.text}
@@ -186,7 +170,6 @@ const AddQuestionModal = ({ isOpen, onClose, onSubmit, sectionId }) => {
                   {choices.length > 2 && (
                     <button
                       type="button"
-                      disabled={isCreating}
                       className={styles.removeChoiceBtn}
                       onClick={() => handleRemoveChoice(index)}
                     >
@@ -200,7 +183,6 @@ const AddQuestionModal = ({ isOpen, onClose, onSubmit, sectionId }) => {
             {choices.length < 6 && (
               <button
                 type="button"
-                disabled={isCreating}
                 className={styles.addChoiceBtn}
                 onClick={handleAddChoice}
               >
@@ -214,16 +196,14 @@ const AddQuestionModal = ({ isOpen, onClose, onSubmit, sectionId }) => {
               type="button"
               className={styles.cancelBtn}
               onClick={onClose}
-              disabled={isCreating}
             >
               {t("cancel")}
             </button>
             <button
               type="submit"
-              disabled={isCreating}
               className={`${styles.submitBtn} ${styles.emeraldBtn}`}
             >
-              {isCreating ? t("saving") : t("save-question")}
+              {t("save-question")}
             </button>
           </div>
         </form>

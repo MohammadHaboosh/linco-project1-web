@@ -7,18 +7,16 @@ import {
   IoCheckmarkCircleOutline,
 } from "react-icons/io5";
 import styles from "./Modal.module.css";
-import { useQuiz } from "../../../../../../hooks/useQuiz";
 import { useTranslation } from "react-i18next";
 
-const AddQuizModal = ({ isOpen, onClose, onSubmit, sectionId }) => {
+const AddQuizModal = ({ isOpen, onClose, onSubmit }) => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     title: "",
     numberOfQuestions: 5,
     durationMinutes: 30,
     passingScore: 60,
   });
-  const { createQuiz, isCreating } = useQuiz();
-  const { t } = useTranslation();
 
   if (!isOpen) return null;
 
@@ -26,13 +24,7 @@ const AddQuizModal = ({ isOpen, onClose, onSubmit, sectionId }) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const isTempId = (id) => {
-    if (!id) return true;
-    const strId = String(id);
-    return strId.startsWith("temp-") || strId.startsWith("temp_");
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     const quizPayload = {
@@ -42,33 +34,21 @@ const AddQuizModal = ({ isOpen, onClose, onSubmit, sectionId }) => {
       passingScore: Number(formData.passingScore),
     };
 
-    try {
-      if (sectionId && !isTempId(sectionId)) {
-        const createdQuiz = await createQuiz(sectionId, quizPayload);
-        if (onSubmit) {
-          onSubmit(createdQuiz);
-        }
-      } else {
-        if (onSubmit) {
-          onSubmit({
-            id: `temp_quiz_${Date.now()}`,
-            ...quizPayload,
-            isNew: true,
-          });
-        }
-      }
-
-      setFormData({
-        title: "",
-        numberOfQuestions: 5,
-        durationMinutes: 30,
-        passingScore: 60,
+    if (onSubmit) {
+      onSubmit({
+        id: `temp_quiz_${Date.now()}`,
+        ...quizPayload,
+        isNew: true,
       });
-      onClose();
-    } catch (err) {
-      console.error("Error creating quiz:", err);
-      alert(err.message || "Failed to create quiz");
     }
+
+    setFormData({
+      title: "",
+      numberOfQuestions: 5,
+      durationMinutes: 30,
+      passingScore: 60,
+    });
+    onClose();
   };
 
   return (
@@ -87,11 +67,7 @@ const AddQuizModal = ({ isOpen, onClose, onSubmit, sectionId }) => {
               <p>{t("configure-assessment-details-and-time-constraints")}</p>
             </div>
           </div>
-          <button
-            className={styles.closeBtn}
-            onClick={onClose}
-            disabled={isCreating}
-          >
+          <button className={styles.closeBtn} onClick={onClose}>
             <IoCloseOutline />
           </button>
         </div>
@@ -102,7 +78,6 @@ const AddQuizModal = ({ isOpen, onClose, onSubmit, sectionId }) => {
             <input
               type="text"
               required
-              disabled={isCreating}
               className={styles.input}
               placeholder="e.g. Section 1 Exam: Auth"
               value={formData.title}
@@ -119,7 +94,6 @@ const AddQuizModal = ({ isOpen, onClose, onSubmit, sectionId }) => {
                 type="number"
                 min="1"
                 required
-                disabled={isCreating}
                 className={styles.input}
                 placeholder="5"
                 value={formData.numberOfQuestions}
@@ -137,7 +111,6 @@ const AddQuizModal = ({ isOpen, onClose, onSubmit, sectionId }) => {
                 type="number"
                 min="1"
                 required
-                disabled={isCreating}
                 className={styles.input}
                 placeholder="30"
                 value={formData.durationMinutes}
@@ -157,7 +130,6 @@ const AddQuizModal = ({ isOpen, onClose, onSubmit, sectionId }) => {
               min="1"
               max="100"
               required
-              disabled={isCreating}
               className={styles.input}
               placeholder="60"
               value={formData.passingScore}
@@ -170,16 +142,14 @@ const AddQuizModal = ({ isOpen, onClose, onSubmit, sectionId }) => {
               type="button"
               className={styles.cancelBtn}
               onClick={onClose}
-              disabled={isCreating}
             >
               {t("cancel")}
             </button>
             <button
               type="submit"
-              disabled={isCreating}
               className={`${styles.submitBtn} ${styles.purpleBtn}`}
             >
-              {isCreating ? t("saving") : t("save-quiz")}
+              {t("save-quiz")}
             </button>
           </div>
         </form>

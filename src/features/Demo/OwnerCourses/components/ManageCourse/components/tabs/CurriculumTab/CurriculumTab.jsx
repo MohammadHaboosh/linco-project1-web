@@ -25,6 +25,8 @@ const CurriculumTab = ({
   sections,
   setSections,
   onDeleteSection,
+  onDeleteQuiz,
+  onDeleteQuestion,
 }) => {
   const { t } = useTranslation();
   const [expandedSections, setExpandedSections] = useState(
@@ -41,193 +43,8 @@ const CurriculumTab = ({
     return strId.startsWith("temp-") || strId.startsWith("temp_");
   };
 
-  const toggleSection = (id) => {
-    const isExpanding = !expandedSections.includes(id);
-
-    if (isExpanding) {
-      setExpandedSections([...expandedSections, id]);
-
-      const targetSec = sections.find((s) => s.id === id);
-      if (targetSec && !isTempId(id)) {
-        if (targetSec.quiz === undefined) {
-          handleFetchQuizForSection(id);
-        }
-        if (!targetSec.questions || targetSec.questions.length === 0) {
-          handleFetchQuestionsForSection(id);
-        }
-      }
-    } else {
-      setExpandedSections(expandedSections.filter((secId) => secId !== id));
-    }
-  };
-
-  const handleAddSection = (titleInput) => {
-    const sectionTitle =
-      typeof titleInput === "string" && titleInput.trim()
-        ? titleInput
-        : `Section ${sections.length + 1}`;
-
-    const nextOrder = sections.length + 1;
-
-    const newSection = {
-      id: `temp_section_${Date.now()}`,
-      title: sectionTitle,
-      order: nextOrder,
-      lessons: [],
-      questions: [],
-      quiz: null,
-      isNew: true,
-    };
-
-    setSections((prev) => [...prev, newSection]);
-    setExpandedSections((prev) => [...prev, newSection.id]);
-  };
-
-  const deleteSection = (e, id) => {
-    e.stopPropagation();
-    if (window.confirm("Are you sure you want to delete this section?")) {
-      if (onDeleteSection) {
-        onDeleteSection(id);
-      } else {
-        setSections(sections.filter((s) => s.id !== id));
-      }
-    }
-  };
-
-  const updateSectionTitle = (id, title) => {
-    setSections(sections.map((s) => (s.id === id ? { ...s, title } : s)));
-  };
-
-  const openLessonModal = (secId) => {
-    setActiveSectionId(secId);
-    setActiveModal("lesson");
-  };
-
-  const openQuizModal = (secId) => {
-    setActiveSectionId(secId);
-    setActiveModal("quiz");
-  };
-
-  const openQuestionModal = (secId) => {
-    setActiveSectionId(secId);
-    setActiveModal("question");
-  };
-
-  const handleCloseModal = () => {
-    setActiveModal(null);
-    setActiveSectionId(null);
-  };
-
-  const handleSaveLesson = (lessonData) => {
-    if (!activeSectionId) return;
-
-    setSections((prevSections) =>
-      prevSections.map((s) => {
-        if (s.id === activeSectionId) {
-          const currentLessons = s.lessons || [];
-          const newLesson = {
-            ...lessonData,
-            id: `temp_lesson_${Date.now()}`,
-            order: currentLessons.length + 1,
-            isNew: true,
-          };
-          return {
-            ...s,
-            lessons: [...currentLessons, newLesson],
-          };
-        }
-        return s;
-      }),
-    );
-  };
-
-  const handleReorderLessons = (secId, reorderedLessons) => {
-    const updatedLessonsWithOrder = reorderedLessons.map((lesson, index) => ({
-      ...lesson,
-      order: index + 1,
-    }));
-
-    setSections((prev) =>
-      prev.map((s) =>
-        s.id === secId ? { ...s, lessons: updatedLessonsWithOrder } : s,
-      ),
-    );
-  };
-
-  const handleSaveQuiz = (quizData) => {
-    if (!activeSectionId) return;
-    setSections((prev) =>
-      prev.map((s) =>
-        s.id === activeSectionId
-          ? {
-              ...s,
-              quiz: quizData,
-            }
-          : s,
-      ),
-    );
-  };
-
-  const handleSaveQuestion = (questionData) => {
-    if (!activeSectionId) return;
-    setSections((prev) =>
-      prev.map((s) =>
-        s.id === activeSectionId
-          ? {
-              ...s,
-              questions: [...(s.questions || []), questionData],
-            }
-          : s,
-      ),
-    );
-  };
-
-  const deleteLesson = (secId, lessonId) => {
-    setSections((prev) =>
-      prev.map((s) => {
-        if (s.id === secId) {
-          const filtered = (s.lessons || []).filter((l) => l.id !== lessonId);
-          const reordered = filtered.map((item, idx) => ({
-            ...item,
-            order: idx + 1,
-          }));
-          return { ...s, lessons: reordered };
-        }
-        return s;
-      }),
-    );
-  };
-
-  const deleteQuestion = (secId, qId) => {
-    setSections((prev) =>
-      prev.map((s) =>
-        s.id === secId
-          ? { ...s, questions: (s.questions || []).filter((q) => q.id !== qId) }
-          : s,
-      ),
-    );
-  };
-
-  const handleFetchQuizForSection = async (sectionId) => {
-    if (isTempId(sectionId)) return;
-
-    try {
-      const fetchedQuiz = await quizApi.getQuizBySectionId(sectionId);
-      if (fetchedQuiz) {
-        setSections((prev) =>
-          prev.map((sec) =>
-            sec.id === sectionId ? { ...sec, quiz: fetchedQuiz } : sec,
-          ),
-        );
-      }
-    } catch (error) {
-      console.error(`Failed to fetch quiz for section ${sectionId}:`, error);
-    }
-  };
-
   const handleFetchQuestionsForSection = async (sectionId) => {
     if (isTempId(sectionId)) return;
-
     try {
       const fetchedQuestions =
         await questionBankApi.getQuestionsBySectionId(sectionId);
@@ -248,50 +65,220 @@ const CurriculumTab = ({
     }
   };
 
+  const handleFetchQuizForSection = async (sectionId) => {
+    if (isTempId(sectionId)) return;
+    try {
+      const fetchedQuiz = await quizApi.getQuizBySectionId(sectionId);
+      if (fetchedQuiz) {
+        setSections((prev) =>
+          prev.map((sec) =>
+            sec.id === sectionId ? { ...sec, quiz: fetchedQuiz } : sec,
+          ),
+        );
+      }
+    } catch (error) {
+      console.error(`Failed to fetch quiz for section ${sectionId}:`, error);
+    }
+  };
+
+  const toggleSection = (id) => {
+    const isExpanding = !expandedSections.includes(id);
+
+    if (isExpanding) {
+      setExpandedSections([...expandedSections, id]);
+
+      const targetSec = sections.find((s) => s.id === id);
+      if (targetSec && !isTempId(id)) {
+        if (targetSec.quiz === undefined) handleFetchQuizForSection(id);
+        if (!targetSec.questions || targetSec.questions.length === 0)
+          handleFetchQuestionsForSection(id);
+      }
+    } else {
+      setExpandedSections(expandedSections.filter((secId) => secId !== id));
+    }
+  };
+
   useEffect(() => {
     if (sections.length > 0) {
       const firstSection = sections[0];
-      if (!isTempId(firstSection.id) && firstSection.quiz === null) {
-        handleFetchQuizForSection(firstSection.id);
+      if (!isTempId(firstSection.id)) {
+        if (firstSection.quiz === null || firstSection.quiz === undefined) {
+          handleFetchQuizForSection(firstSection.id);
+        }
+        if (!firstSection.questions || firstSection.questions.length === 0) {
+          handleFetchQuestionsForSection(firstSection.id);
+        }
       }
     }
   }, [sections.length]);
 
-  const deleteQuiz = async (secId) => {
+  const handleAddSection = (titleInput) => {
+    const sectionTitle =
+      typeof titleInput === "string" && titleInput.trim()
+        ? titleInput
+        : `Section ${sections.length + 1}`;
+
+    const newSection = {
+      id: `temp_section_${Date.now()}`,
+      title: sectionTitle,
+      order: sections.length + 1,
+      lessons: [],
+      questions: [],
+      quiz: null,
+      isNew: true,
+    };
+
+    setSections((prev) => [...prev, newSection]);
+    setExpandedSections((prev) => [...prev, newSection.id]);
+  };
+
+  const deleteSection = (e, id) => {
+    e.stopPropagation();
+    if (window.confirm("Are you sure you want to delete this section?")) {
+      if (onDeleteSection) onDeleteSection(id);
+    }
+  };
+
+  const updateSectionTitle = (id, title) => {
+    setSections(sections.map((s) => (s.id === id ? { ...s, title } : s)));
+  };
+
+  const openLessonModal = (secId) => {
+    setActiveSectionId(secId);
+    setActiveModal("lesson");
+  };
+  const openQuizModal = (secId) => {
+    setActiveSectionId(secId);
+    setActiveModal("quiz");
+  };
+  const openQuestionModal = (secId) => {
+    setActiveSectionId(secId);
+    setActiveModal("question");
+  };
+  const handleCloseModal = () => {
+    setActiveModal(null);
+    setActiveSectionId(null);
+  };
+
+  const handleSaveLesson = (lessonData) => {
+    if (!activeSectionId) return;
+    setSections((prev) =>
+      prev.map((s) => {
+        if (s.id === activeSectionId) {
+          const currentLessons = s.lessons || [];
+          return {
+            ...s,
+            lessons: [
+              ...currentLessons,
+              {
+                ...lessonData,
+                id: `temp_lesson_${Date.now()}`,
+                order: currentLessons.length + 1,
+                isNew: true,
+              },
+            ],
+          };
+        }
+        return s;
+      }),
+    );
+  };
+
+  const handleReorderLessons = (secId, reorderedLessons) => {
+    const updatedLessonsWithOrder = reorderedLessons.map((lesson, index) => ({
+      ...lesson,
+      order: index + 1,
+    }));
+    setSections((prev) =>
+      prev.map((s) =>
+        s.id === secId ? { ...s, lessons: updatedLessonsWithOrder } : s,
+      ),
+    );
+  };
+
+  const handleSaveQuiz = (quizData) => {
+    if (!activeSectionId) return;
+    setSections((prev) =>
+      prev.map((s) => {
+        if (s.id === activeSectionId) {
+          const isExisting = s.quiz && !isTempId(s.quiz.id) && !quizData.isNew;
+          return {
+            ...s,
+            quiz: {
+              ...quizData,
+              isModified: isExisting ? true : quizData.isModified,
+            },
+          };
+        }
+        return s;
+      }),
+    );
+  };
+
+  const handleSaveQuestion = (questionData) => {
+    if (!activeSectionId) return;
+    setSections((prev) =>
+      prev.map((s) =>
+        s.id === activeSectionId
+          ? { ...s, questions: [...(s.questions || []), questionData] }
+          : s,
+      ),
+    );
+  };
+
+  const deleteLesson = (secId, lessonId) => {
+    setSections((prev) =>
+      prev.map((s) => {
+        if (s.id === secId) {
+          const filtered = (s.lessons || []).filter((l) => l.id !== lessonId);
+          return {
+            ...s,
+            lessons: filtered.map((item, idx) => ({ ...item, order: idx + 1 })),
+          };
+        }
+        return s;
+      }),
+    );
+  };
+
+  // 💡 تحويل حذف الكويز للمكون الأب
+  const deleteQuiz = (secId) => {
     const targetSection = sections.find((s) => s.id === secId);
     const quizId = targetSection?.quiz?.id;
-
-    if (!quizId) {
-      setSections((prev) =>
-        prev.map((s) => (s.id === secId ? { ...s, quiz: null } : s)),
-      );
-      return;
-    }
+    if (!quizId) return;
 
     if (window.confirm("Are you sure you want to delete this exam?")) {
-      try {
-        if (isTempId(secId) || String(quizId).startsWith("temp_")) {
-          setSections((prev) =>
-            prev.map((s) => (s.id === secId ? { ...s, quiz: null } : s)),
-          );
-          return;
-        }
-
-        await quizApi.deleteQuiz(secId, quizId);
-
+      if (onDeleteQuiz) {
+        onDeleteQuiz(secId, quizId);
+      } else {
         setSections((prev) =>
           prev.map((s) => (s.id === secId ? { ...s, quiz: null } : s)),
         );
-      } catch (error) {
-        console.error("Failed to delete quiz:", error);
-        alert("Failed to delete the exam. Please try again.");
+      }
+    }
+  };
+
+  const deleteQuestion = (secId, qId) => {
+    if (window.confirm("Are you sure you want to delete this question?")) {
+      if (onDeleteQuestion) {
+        onDeleteQuestion(secId, qId);
+      } else {
+        setSections((prev) =>
+          prev.map((s) =>
+            s.id === secId
+              ? {
+                  ...s,
+                  questions: (s.questions || []).filter((q) => q.id !== qId),
+                }
+              : s,
+          ),
+        );
       }
     }
   };
 
   const handleFetchAttachments = async (lessonId) => {
-    if (!lessonId || String(lessonId).startsWith("temp_")) return;
-
+    if (!lessonId || isTempId(lessonId)) return;
     try {
       const fetchedAtts = await attachmentApi.getAttachments(lessonId);
 
@@ -303,9 +290,8 @@ const CurriculumTab = ({
         isExisting: true,
         isNew: false,
       }));
-
-      setSections((prevSections) =>
-        prevSections.map((sec) => ({
+      setSections((prev) =>
+        prev.map((sec) => ({
           ...sec,
           lessons: (sec.lessons || []).map((l) => {
             if (l.id === lessonId) {
@@ -322,40 +308,23 @@ const CurriculumTab = ({
         })),
       );
     } catch (error) {
-      console.error("Error fetching attachments for lesson:", lessonId, error);
+      console.error("Error fetching attachments:", error);
     }
   };
 
-  const handleAddAttachment = (arg1, arg2, arg3) => {
-    let targetSecId = null;
-    let targetLessonId = arg1;
-    let attachmentData = arg2;
-
-    if (typeof arg2 === "string" || typeof arg3 === "object") {
-      targetSecId = arg1;
-      targetLessonId = arg2;
-      attachmentData = arg3;
-    }
-
-    console.log("Adding attachment to lesson:", targetLessonId, attachmentData);
-
-    if (!targetLessonId || !attachmentData) return;
-
+  const handleAddAttachment = (secId, lessonId, attachmentData) => {
+    if (!lessonId || !attachmentData) return;
     setSections((prev) =>
       prev.map((s) => {
-        if (targetSecId && String(s.id) !== String(targetSecId)) {
-          return s;
-        }
-
+        if (secId && String(s.id) !== String(secId)) return s;
         return {
           ...s,
           lessons: (s.lessons || []).map((l) => {
-            if (String(l.id) === String(targetLessonId)) {
+            if (String(l.id) === String(lessonId)) {
               const rawFile =
                 attachmentData.file ||
                 attachmentData.selectedFile ||
                 (attachmentData instanceof File ? attachmentData : null);
-
               const newAttachment = {
                 id: attachmentData.id || `temp_att_${Date.now()}`,
                 title:
@@ -372,7 +341,6 @@ const CurriculumTab = ({
                 isNew: true,
                 isExisting: false,
               };
-
               return {
                 ...l,
                 attachments: [...(l.attachments || []), newAttachment],
@@ -385,24 +353,16 @@ const CurriculumTab = ({
     );
   };
 
-  const handleDeleteAttachment = (arg1, arg2, arg3) => {
-    let targetLessonId = arg1;
-    let targetAttId = arg2;
-
-    if (arg3 !== undefined) {
-      targetLessonId = arg2;
-      targetAttId = arg3;
-    }
-
+  const handleDeleteAttachment = (secId, lessonId, attId) => {
     setSections((prev) =>
       prev.map((s) => ({
         ...s,
         lessons: (s.lessons || []).map((l) => {
-          if (String(l.id) === String(targetLessonId)) {
+          if (String(l.id) === String(lessonId)) {
             return {
               ...l,
               attachments: (l.attachments || []).filter(
-                (att) => String(att.id) !== String(targetAttId),
+                (att) => String(att.id) !== String(attId),
               ),
             };
           }
@@ -430,7 +390,6 @@ const CurriculumTab = ({
       <div className={styles.curriculumList}>
         {sections.map((section, idx) => {
           const isExpanded = expandedSections.includes(section.id);
-
           return (
             <div key={section.id} className={styles.sectionCard}>
               <div
@@ -539,17 +498,13 @@ const CurriculumTab = ({
         onClose={handleCloseModal}
         onSubmit={handleSaveLesson}
       />
-
       <AddQuizModal
         isOpen={activeModal === "quiz"}
-        sectionId={activeSectionId}
         onClose={handleCloseModal}
         onSubmit={handleSaveQuiz}
       />
-
       <AddQuestionModal
         isOpen={activeModal === "question"}
-        sectionId={activeSectionId}
         onClose={handleCloseModal}
         onSubmit={handleSaveQuestion}
       />

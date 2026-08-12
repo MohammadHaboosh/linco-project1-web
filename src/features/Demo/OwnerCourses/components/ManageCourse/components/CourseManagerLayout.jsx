@@ -18,6 +18,8 @@ import { useTranslation } from "react-i18next";
 import { lessonApi } from "../../../api/lessonApi";
 import { sectionApi } from "../../../api/sectionApi";
 import { attachmentApi } from "../../../api/attachmentApi";
+import { quizApi } from "../../../api/quizApi";
+import { questionBankApi } from "../../../api/questionBankApi";
 
 const isTempId = (id) => {
   if (!id) return true;
@@ -51,11 +53,39 @@ const CourseManagerLayout = () => {
   const [activeTab, setActiveTab] = useState("curriculum");
   const [uploadProgress, setUploadProgress] = useState(null);
 
+  const [deletedQuizIds, setDeletedQuizIds] = useState([]);
+  const [deletedQuestionIds, setDeletedQuestionIds] = useState([]);
+
   const handleDeleteSection = (sectionId) => {
     if (sectionId && !isTempId(sectionId)) {
       setDeletedSectionIds((prev) => [...(prev || []), sectionId]);
     }
     setSections((prev) => prev.filter((s) => s.id !== sectionId));
+  };
+
+  const handleDeleteQuiz = (secId, quizId) => {
+    if (quizId && !isTempId(quizId)) {
+      setDeletedQuizIds((prev) => [...prev, { secId, quizId }]);
+    }
+    setSections((prev) =>
+      prev.map((s) => (s.id === secId ? { ...s, quiz: null } : s)),
+    );
+  };
+
+  const handleDeleteQuestion = (secId, questionId) => {
+    if (questionId && !isTempId(questionId)) {
+      setDeletedQuestionIds((prev) => [...prev, { secId, questionId }]);
+    }
+    setSections((prev) =>
+      prev.map((s) =>
+        s.id === secId
+          ? {
+              ...s,
+              questions: (s.questions || []).filter((q) => q.id !== questionId),
+            }
+          : s,
+      ),
+    );
   };
 
   const handleSaveAll = async () => {
@@ -75,6 +105,24 @@ const CourseManagerLayout = () => {
           ),
         );
         if (setDeletedSectionIds) setDeletedSectionIds([]);
+      }
+
+      if (deletedQuizIds.length > 0) {
+        await Promise.all(
+          deletedQuizIds.map((q) => quizApi.deleteQuiz(q.secId, q.quizId)),
+        );
+        setDeletedQuizIds([]);
+      }
+
+      if (deletedQuestionIds.length > 0) {
+        if (questionBankApi.deleteQuestion) {
+          await Promise.all(
+            deletedQuestionIds.map((q) =>
+              questionBankApi.deleteQuestion(q.secId, q.questionId),
+            ),
+          );
+        }
+        setDeletedQuestionIds([]);
       }
 
       const updatedSectionsList = [];
@@ -115,6 +163,7 @@ const CourseManagerLayout = () => {
 
           let realLessonId = lesson.id;
           let finalVideoUrl = lesson.videoUrl || "";
+
           if (isNewLesson) {
             if (lesson.videoFile) {
               setUploadProgress({
@@ -253,11 +302,69 @@ const CourseManagerLayout = () => {
           setUploadProgress(null);
         }
 
+        let updatedQuiz = sec.quiz;
+        if (sec.quiz) {
+          if (sec.quiz.isNew || isTempId(sec.quiz.id)) {
+            try {
+              const createdQuiz = await quizApi.createQuiz(
+                realSectionId,
+                sec.quiz,
+              );
+              updatedQuiz = {
+                ...(createdQuiz?.data || createdQuiz),
+                isNew: false,
+                isModified: false,
+              };
+            } catch (err) {
+              console.error("Failed to create quiz", err);
+            }
+          } else if (sec.quiz.isModified) {
+            try {
+              const editedQuiz = await quizApi.updateQuiz(
+                realSectionId,
+                sec.quiz.id,
+                sec.quiz,
+              );
+              updatedQuiz = {
+                ...(editedQuiz?.data || editedQuiz),
+                isNew: false,
+                isModified: false,
+              };
+            } catch (err) {
+              console.error("Failed to update quiz", err);
+            }
+          }
+        }
+
+        const currentQuestions = sec.questions || [];
+        const updatedQuestionsList = [];
+        for (let q of currentQuestions) {
+          if (q.isNew || isTempId(q.id)) {
+            try {
+              const createdQ = await questionBankApi.addQuestion(
+                realSectionId,
+                q,
+              );
+              updatedQuestionsList.push({
+                ...(createdQ?.data || createdQ),
+                isNew: false,
+              });
+            } catch (err) {
+              console.error("Failed to save question", err);
+              updatedQuestionsList.push(q);
+            }
+          } else {
+            updatedQuestionsList.push(q);
+          }
+        }
+
         updatedSectionsList.push({
           ...sec,
           id: realSectionId,
           isNew: false,
           lessons: updatedLessonsList,
+          quiz: updatedQuiz,
+          questions: updatedQuestionsList,
         });
       }
 
@@ -411,6 +518,8 @@ const CourseManagerLayout = () => {
                 sections={sections}
                 setSections={setSections}
                 onDeleteSection={handleDeleteSection}
+                onDeleteQuiz={handleDeleteQuiz}
+                onDeleteQuestion={handleDeleteQuestion}
               />
             )}
             {activeTab === "faqs" && <FAQsTab courseId={courseId} />}

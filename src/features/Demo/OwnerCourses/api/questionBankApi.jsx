@@ -38,4 +38,22 @@ export const questionBankApi = {
     console.log("get Question:", data.data);
     return data.data || [];
   },
+
+  deleteQuestion: async (sectionId, questionId) => {
+    const response = await apiFetch(
+      `/sections/${sectionId}/questionsBank/${questionId}`,
+      {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+      },
+    );
+
+    const data = await response.json();
+    if (!response.ok || !data.success) {
+      throw new Error(data.message || "Failed to delete question");
+    }
+
+    console.log("Deleted Question:", data);
+    return data;
+  },
 };

@@ -22,6 +22,25 @@ const StepTwoCurriculum = ({
     }
   };
 
+  const handleDeleteQuiz = (secId) => {
+    handleSetSections((prev) =>
+      prev.map((s) => (s.id === secId ? { ...s, quiz: null } : s)),
+    );
+  };
+
+  const handleDeleteQuestion = (secId, qId) => {
+    handleSetSections((prev) =>
+      prev.map((s) =>
+        s.id === secId
+          ? {
+              ...s,
+              questions: (s.questions || []).filter((q) => q.id !== qId),
+            }
+          : s,
+      ),
+    );
+  };
+
   const canPublish =
     courseData.sections?.length > 0 &&
     courseData.sections.some(
@@ -38,6 +57,8 @@ const StepTwoCurriculum = ({
         sections={courseData.sections || []}
         setSections={handleSetSections}
         onDeleteSection={onDeleteSection}
+        onDeleteQuiz={handleDeleteQuiz}
+        onDeleteQuestion={handleDeleteQuestion}
       />
 
       <CurriculumFooter

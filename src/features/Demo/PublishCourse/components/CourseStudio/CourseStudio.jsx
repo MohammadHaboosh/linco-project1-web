@@ -16,6 +16,7 @@ import { courseManagerApi } from "../../../OwnerCourses/api/courseManagerApi";
 import { lessonApi } from "../../../OwnerCourses/api/lessonApi";
 import { attachmentApi } from "../../../OwnerCourses/api/attachmentApi";
 import { quizApi } from "../../../OwnerCourses/api/quizApi";
+import { questionBankApi } from "../../../OwnerCourses/api/questionBankApi";
 
 const CourseStudio = () => {
   const { t } = useTranslation();
@@ -183,6 +184,7 @@ const CourseStudio = () => {
               title: section.quiz.title,
               numberOfQuestions: section.quiz.numberOfQuestions,
               durationMinutes: section.quiz.durationMinutes,
+              passingScore: section.quiz.passingScore,
             });
           } catch (quizError) {
             console.error(
@@ -191,6 +193,21 @@ const CourseStudio = () => {
             );
           }
         }
+
+        const questions = section.questions || [];
+        for (const q of questions) {
+          if (q.isNew || isTempId(q.id)) {
+            try {
+              await questionBankApi.addQuestion(section.realId, q);
+            } catch (qError) {
+              console.error(
+                `Failed to create question for section ${section.realId}:`,
+                qError,
+              );
+            }
+          }
+        }
+
         const lessons = section.lessons || [];
 
         for (let index = 0; index < lessons.length; index++) {
@@ -254,7 +271,6 @@ const CourseStudio = () => {
               }
             }
 
-            // إرسال الدرس لقاعدة البيانات بالرابط الحقيقي فقط
             const lessonPayload = {
               title: lesson.title,
               order: lesson.order || index + 1,
@@ -329,7 +345,7 @@ const CourseStudio = () => {
 
       setDeletedSectionIds([]);
       alert(
-        "Course, sections, lessons, attachments, and quizze saved successfully!",
+        "Course, sections, lessons, attachments, and quizzes saved successfully!",
       );
       navigate(-1);
     } catch (error) {
