@@ -767,5 +767,6 @@
   "number-of-questions-0": "عدد الأسئلة *",
   "duration-seconds": "المدة (ثواني) *",
   "passing-score": "درجة النجاح (%) *",
-  "save-quiz": "حفظ الاختبار"
+  "save-quiz": "حفظ الاختبار",
+  "no-faqs-available-in-this-course": "لا توجد أسئلة وأجوبة متوفرة في هذه الدورة"
 }

@@ -11,6 +11,8 @@ import {
 } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
 import { useLessonAttachments } from "../../hooks/useLessonAttachments";
+import { useFAQs } from "../../../OwnerCourses/hooks/useFAQs";
+import { useParams } from "react-router-dom";
 
 const tabs = [
   { id: "Overview", icon: <IoInformationCircleOutline /> },
@@ -26,11 +28,9 @@ const LessonTabs = ({ activeLesson }) => {
   const { attachments, isLoading, error } = useLessonAttachments(
     activeLesson?.id,
   );
-  const faqs = [
-    "Do I need to know vanilla JavaScript first?",
-    "Can I use these techniques in Next.js?",
-    "Will this lesson affect my course progress?",
-  ];
+  const { courseId } = useParams();
+  const { faqs, loading, errorf } = useFAQs(courseId);
+
   const handleDownload = (path) => {
     if (!path) return;
     const cleanPath = path.replace(/^\//, "");
@@ -163,27 +163,39 @@ const LessonTabs = ({ activeLesson }) => {
               </div>
             </div>
             <div className={styles.faqList}>
-              {faqs.map((faq, index) => (
-                <div
-                  key={faq}
-                  className={`${styles.faqItem} ${openFaq === index ? styles.faqOpen : ""}`}
-                >
-                  <button
-                    className={styles.faqTrigger}
-                    onClick={() => setOpenFaq(openFaq === index ? -1 : index)}
-                  >
-                    <span>{faq}</span>
-                    <IoChevronDown className={styles.faqChevron} />
-                  </button>
-                  <div className={styles.faqAnswer}>
-                    <p>
-                      {t(
-                        "this-is-a-placeholder-answer-for-the-frequently-asked-question",
-                      )}
-                    </p>
-                  </div>
+              {loading && <p className={styles.loadingText}>Loading FAQs...</p>}
+
+              {errorf && <p className={styles.errorText}>{errorf}</p>}
+
+              {!loading && !errorf && faqs.length === 0 && (
+                <div className={styles.emptyStateContainer}>
+                  <p>{t("no-faqs-available-in-this-course")}</p>
                 </div>
-              ))}
+              )}
+
+              {!loading &&
+                !errorf &&
+                faqs.map((faq, index) => (
+                  <div
+                    key={faq}
+                    className={`${styles.faqItem} ${openFaq === index ? styles.faqOpen : ""}`}
+                  >
+                    <button
+                      className={styles.faqTrigger}
+                      onClick={() => setOpenFaq(openFaq === index ? -1 : index)}
+                    >
+                      <span>{faq}</span>
+                      <IoChevronDown className={styles.faqChevron} />
+                    </button>
+                    <div className={styles.faqAnswer}>
+                      <p>
+                        {t(
+                          "this-is-a-placeholder-answer-for-the-frequently-asked-question",
+                        )}
+                      </p>
+                    </div>
+                  </div>
+                ))}
             </div>
           </div>
         )}

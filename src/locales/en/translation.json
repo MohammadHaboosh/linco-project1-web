@@ -772,5 +772,6 @@
   "number-of-questions-0": "Number of Questions *",
   "duration-seconds": "Duration (Seconds) *",
   "passing-score": "Passing Score (%) *",
-  "save-quiz": "Save Quiz"
+  "save-quiz": "Save Quiz",
+  "no-faqs-available-in-this-course": "No FAQs Available in this course"
 }
