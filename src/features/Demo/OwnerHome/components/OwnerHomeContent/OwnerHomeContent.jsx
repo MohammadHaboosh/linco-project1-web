@@ -6,10 +6,36 @@ import {
   IoBookOutline,
   IoPulseOutline,
   IoTimeOutline,
+  IoWarningOutline,
 } from "react-icons/io5";
 import { useDemo } from "../../../../../hooks/useDemo";
 import PlanUpgradeCard from "../../../Subscription/components/PlanUpgradeCard/PlanUpgradeCard";
 import styles from "./OwnerHomeContent.module.css";
+
+const FREE_PLAN_DURATION_DAYS = 14;
+const MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
+
+const getFreePlanTimeline = (createdAt) => {
+  const createdAtTimestamp = Date.parse(createdAt);
+
+  if (Number.isNaN(createdAtTimestamp)) return null;
+
+  const now = Date.now();
+  const expiresAtTimestamp =
+    createdAtTimestamp + FREE_PLAN_DURATION_DAYS * MILLISECONDS_PER_DAY;
+
+  return {
+    daysElapsed: Math.min(
+      FREE_PLAN_DURATION_DAYS,
+      Math.max(0, Math.floor((now - createdAtTimestamp) / MILLISECONDS_PER_DAY)),
+    ),
+    daysRemaining: Math.max(
+      0,
+      Math.ceil((expiresAtTimestamp - now) / MILLISECONDS_PER_DAY),
+    ),
+    isExpired: now >= expiresAtTimestamp,
+  };
+};
 
 const StatCard = ({ title, value, icon, trend, trendText, isPositive }) => (
   <div className={styles.statCard}>
@@ -42,6 +68,8 @@ const OwnerHomeContent = () => {
     demoData?.subscriptionPlan ||
     demoData?.tier ||
     "FREE";
+  const isFreePlan = String(currentPlan).trim().toUpperCase() === "FREE";
+  const freePlanTimeline = getFreePlanTimeline(demoData?.createdAt);
 
   const chartData = [
     { day: "Mon", value: 40 },
@@ -102,6 +130,48 @@ const OwnerHomeContent = () => {
           <IoPulseOutline className={styles.bgIcon} />
         </div>
       </div>
+
+      {isFreePlan && (
+        <section
+          className={`${styles.freePlanWarning} ${
+            freePlanTimeline?.isExpired ? styles.freePlanExpired : ""
+          }`}
+          role={freePlanTimeline?.isExpired ? "alert" : "status"}
+        >
+          <div className={styles.warningIcon} aria-hidden="true">
+            <IoWarningOutline />
+          </div>
+          <div className={styles.warningContent}>
+            <h2>
+              {freePlanTimeline?.isExpired
+                ? t("free-plan-expired-title")
+                : t("free-plan-warning-title")}
+            </h2>
+            <p>
+              {freePlanTimeline?.isExpired
+                ? t("free-plan-expired-description")
+                : freePlanTimeline
+                  ? t("free-plan-warning-description", {
+                      daysElapsed: freePlanTimeline.daysElapsed,
+                    })
+                  : t("free-plan-warning-generic-description")}
+            </p>
+          </div>
+          {freePlanTimeline && (
+            <span className={styles.warningBadge}>
+              {freePlanTimeline.isExpired
+                ? t("free-plan-expired-badge")
+                : freePlanTimeline.daysRemaining === 1
+                  ? t("free-plan-day-remaining", {
+                      count: freePlanTimeline.daysRemaining,
+                    })
+                  : t("free-plan-days-remaining", {
+                      count: freePlanTimeline.daysRemaining,
+                    })}
+            </span>
+          )}
+        </section>
+      )}
 
       <PlanUpgradeCard demoId={demoId} currentPlan={currentPlan} />
 
