@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next";
 import { useLessonAttachments } from "../../hooks/useLessonAttachments";
 import { useFAQs } from "../../../OwnerCourses/hooks/useFAQs";
 import { useParams } from "react-router-dom";
+import QASection from "./QASection";
 
 const tabs = [
   { id: "Overview", icon: <IoInformationCircleOutline /> },
@@ -135,24 +136,7 @@ const LessonTabs = ({ activeLesson }) => {
           </div>
         )}
 
-        {activeTab === "Q&A" && (
-          <div className={styles.emptyPanel}>
-            <div className={styles.emptyIconGlow}>
-              <div className={styles.emptyIcon}>
-                <IoChatbubblesOutline />
-              </div>
-            </div>
-            <h3>{t("join-the-discussion")}</h3>
-            <p>
-              {t(
-                "have-a-question-about-this-lesson-ask-your-instructor-or-discuss-with-other-learners",
-              )}
-            </p>
-            <button className={styles.primaryAction}>
-              {t("ask-a-question")}
-            </button>
-          </div>
-        )}
+        {activeTab === "Q&A" && <QASection activeLesson={activeLesson} />}
 
         {activeTab === "FAQs" && (
           <div className={styles.faqPanel}>

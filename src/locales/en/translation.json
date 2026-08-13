@@ -811,5 +811,12 @@
   "previous": "Previous",
   "submit-exam": "Submit Exam",
   "submitting": "Submitting...",
-  "next-question": "Next Question"
+  "next-question": "Next Question",
+  "ask-the-instructor-or-discuss-with-other-students": "Ask the instructor or discuss with other students.",
+  "q-and-a-for": "Q&A for:",
+  "post-question": "Post Question",
+  "no-questions-yet-be-the-first-to-ask": "No questions yet. Be the first to ask!",
+  "write-your-question-here-be-specific-to-get-better-answers": "Write your question here... Be specific to get better answers.",
+  "reply": "Reply",
+  "write-a-reply": "Write a reply..."
 }

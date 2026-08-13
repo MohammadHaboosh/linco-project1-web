@@ -802,5 +802,11 @@
   "loading-your-assessment": "جارٍ تحميل تقييمك...",
   "previous": "سابق",
   "submitting": "تقديم...",
-  "submit-exam": "تقديم الامتحان"
+  "submit-exam": "تقديم الامتحان",
+  "ask-the-instructor-or-discuss-with-other-students": "اسأل المعلم أو ناقش مع الطلاب الآخرين.",
+  "q-and-a-for": "س",
+  "post-question": "انشر السؤال",
+  "no-questions-yet-be-the-first-to-ask": "لا توجد أسئلة بعد. \nكن أول من يسأل!",
+  "reply": "رد",
+  "write-a-reply": "أكتب الرد..."
 }
