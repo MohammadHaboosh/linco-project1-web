@@ -108,7 +108,10 @@ const CourseViewer = () => {
 
       {activeLesson?.isQuiz ? (
         <main className={styles.quizFullScreenLayout}>
-          <QuizContainer onCompleteSection={handleCompleteQuiz} />
+          <QuizContainer
+            examId={activeLesson.id}
+            onCompleteSection={handleCompleteQuiz}
+          />
         </main>
       ) : (
         <main className={styles.mainLayout}>

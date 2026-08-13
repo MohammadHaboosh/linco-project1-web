@@ -801,5 +801,15 @@
   "click-or-drag-video-to-upload": "Click or drag video to upload",
   "describe-what-trainees-will-learn-in-this-lesson": "Describe what trainees will learn in this lesson...",
   "create-lesson": "Create Lesson",
-  "creating-course": "Creating Course..."
+  "creating-course": "Creating Course...",
+  "intelligence-challenge": "INTELLIGENCE CHALLENGE",
+  "test-your-understanding-of-this-sections-concepts-make-sure-to-select-all-correct-options-for-each-question": "Test your understanding of this section's concepts. Make sure to select all correct options for each question.",
+  "questions": "Questions",
+  "seconds": "Seconds",
+  "start-exam-now": "Start Exam Now",
+  "loading-your-assessment": "Loading your assessment...",
+  "previous": "Previous",
+  "submit-exam": "Submit Exam",
+  "submitting": "Submitting...",
+  "next-question": "Next Question"
 }

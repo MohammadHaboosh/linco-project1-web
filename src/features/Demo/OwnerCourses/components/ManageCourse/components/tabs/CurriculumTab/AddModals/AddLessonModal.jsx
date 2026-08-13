@@ -142,7 +142,7 @@ const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
                     {t("click-or-drag-video-to-upload")}
                   </p>
                   <span className={styles.dropzoneSub}>
-                    MP4, WebM or MOV (Max 500MB)
+                    {t("mp4-webm-mov-max-500mb")}
                   </span>
                 </>
               )}

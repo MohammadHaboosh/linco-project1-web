@@ -5,8 +5,9 @@ import {
 } from "react-icons/io5";
 import styles from "./Quiz.module.css";
 
-const QuizResult = ({ scoreInfo, onRetry, onContinue }) => {
-  const { percentage, isPassed, correctCount, total } = scoreInfo;
+const QuizResult = ({ scoreInfo, passingScore, onRetry, onContinue }) => {
+  const percentage = scoreInfo.score || 0;
+  const isPassed = percentage >= passingScore;
 
   return (
     <div className={styles.resultContainer}>
@@ -26,7 +27,6 @@ const QuizResult = ({ scoreInfo, onRetry, onContinue }) => {
             : "Review the learning materials and try again to improve your score."}
         </p>
 
-        {/* Horizontal Compact Scoreboard */}
         <div className={styles.horizontalScoreBoard}>
           <div
             className={`${styles.scoreRing} ${isPassed ? styles.ringSuccess : styles.ringFail}`}
@@ -53,15 +53,15 @@ const QuizResult = ({ scoreInfo, onRetry, onContinue }) => {
           <div className={styles.statsDetails}>
             <div className={styles.statRow}>
               <IoCheckmarkCircleOutline className={styles.correctIcon} />
-              <span>Correct Answers</span>
-              <strong>
-                {correctCount} / {total}
+              <span>Result Status</span>
+              <strong style={{ color: isPassed ? "#10b981" : "#ef4444" }}>
+                {isPassed ? "PASSED" : "FAILED"}
               </strong>
             </div>
             <div className={styles.statRow}>
               <div className={styles.targetDot} />
-              <span>Passing Score</span>
-              <strong>80%</strong>
+              <span>Passing Score Required</span>
+              <strong>{passingScore}%</strong>
             </div>
           </div>
         </div>
@@ -69,7 +69,7 @@ const QuizResult = ({ scoreInfo, onRetry, onContinue }) => {
         <div className={styles.resultActions}>
           {!isPassed && (
             <button type="button" className={styles.retryBtn} onClick={onRetry}>
-              <IoRefreshOutline /> Retry Quiz
+              <IoRefreshOutline /> Retry Exam
             </button>
           )}
           <button

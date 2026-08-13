@@ -2,74 +2,67 @@ import { useState } from "react";
 import QuizTaker from "./QuizTaker";
 import QuizResult from "./QuizResult";
 import styles from "./Quiz.module.css";
+import { useExamPlayer } from "../../hooks/useExamPlayer";
 import {
   IoPlayOutline,
   IoTimeOutline,
   IoListOutline,
   IoCheckmarkCircleOutline,
 } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
 
-const MOCK_QUIZ = {
-  title: "Section 2 • React Hooks",
-  description:
-    "Test your understanding of core React concepts. This quiz supports multiple correct choices.",
-  timeLimit: 15,
-  passingScore: 80,
-  questions: [
-    {
-      id: 1,
-      text: "Which of the following are valid use cases for useEffect? (Select all that apply)",
-      options: [
-        "Fetching data from an API",
-        "Defining standard local variables",
-        "Subscribing to browser events",
-        "Changing CSS colors directly",
-      ],
-      correctAnswers: [0, 2],
-    },
-    {
-      id: 2,
-      text: "What is the best description of the Virtual DOM?",
-      options: [
-        "A lightweight copy of the UI to optimize rendering",
-        "A database inside the browser",
-        "A user management system",
-        "A server to run Next.js apps",
-      ],
-      correctAnswers: [0],
-    },
-    {
-      id: 3,
-      text: "When is creating a Custom Hook useful?",
-      options: [
-        "To share stateful logic between components",
-        "Only when using TypeScript",
-        "To easily reuse repetitive logic",
-        "Only inside CSS modules",
-      ],
-      correctAnswers: [0, 2],
-    },
-  ],
-};
-
-const QuizContainer = ({ onCompleteSection = () => {} }) => {
+const QuizContainer = ({ examId, onCompleteSection }) => {
+  const { t } = useTranslation();
   const [quizState, setQuizState] = useState("welcome");
-  const [scoreInfo, setScoreInfo] = useState(null);
 
-  const finishQuiz = (earnedScore) => {
-    const percentage = Math.round(
-      (earnedScore / MOCK_QUIZ.questions.length) * 100,
-    );
-    setScoreInfo({
-      percentage,
-      isPassed: percentage >= MOCK_QUIZ.passingScore,
-      correctCount: earnedScore,
-      total: MOCK_QUIZ.questions.length,
-    });
-    setQuizState("result");
+  const {
+    examData,
+    isLoading,
+    isSubmitting,
+    error,
+    answers,
+    toggleChoice,
+    submitExam,
+    examResult,
+  } = useExamPlayer(examId);
+
+  const handleStart = () => {
+    setQuizState("taking");
   };
 
-  const retryQuiz = () => setQuizState("welcome");
+  const handleRetry = () => {
+    window.location.reload();
+  };
+
+  if (isLoading) {
+    return (
+      <div className={styles.loadingScreen}>
+        <div className={styles.spinner}></div>
+        <p>{t("loading-your-assessment")}</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={styles.errorScreen}>
+        <p>Error: {error}</p>
+      </div>
+    );
+  }
+
+  if (!examData) return null;
+
+  if (examResult) {
+    return (
+      <QuizResult
+        scoreInfo={examResult.data || examResult}
+        passingScore={examData.passingScore}
+        onRetry={handleRetry}
+        onContinue={onCompleteSection}
+      />
+    );
+  }
 
   return (
     <div className={styles.quizWrapper} dir="ltr">
@@ -84,44 +77,52 @@ const QuizContainer = ({ onCompleteSection = () => {} }) => {
           </div>
 
           <div className={styles.welcomeContent}>
-            <div className={styles.quizBadge}>INTELLIGENCE CHALLENGE</div>
-            <h2>{MOCK_QUIZ.title}</h2>
-            <p>{MOCK_QUIZ.description}</p>
+            <div className={styles.quizBadge}>
+              {t("intelligence-challenge")}
+            </div>
+            <h2>{examData.title}</h2>
+            <p>
+              {t(
+                "test-your-understanding-of-this-sections-concepts-make-sure-to-select-all-correct-options-for-each-question",
+              )}
+            </p>
 
             <div className={styles.quizStatsOverview}>
               <div className={styles.statPill}>
-                <IoListOutline /> <strong>{MOCK_QUIZ.questions.length}</strong>{" "}
-                Questions
+                <IoListOutline />{" "}
+                <strong>
+                  {examData.numberOfQuestions || examData.questions?.length}
+                </strong>{" "}
+                {t("questions")}
               </div>
               <div className={styles.statPill}>
-                <IoTimeOutline /> <strong>{MOCK_QUIZ.timeLimit}</strong> Minutes
+                <IoTimeOutline /> <strong>{examData.durationMinutes}</strong>{" "}
+                {t("seconds")}
               </div>
               <div className={styles.statPill}>
                 <IoCheckmarkCircleOutline />{" "}
-                <strong>{MOCK_QUIZ.passingScore}%</strong> Passing Score
+                <strong>{examData.passingScore}%</strong> {t("passing-score")}
               </div>
             </div>
 
             <button
               type="button"
               className={styles.startBtn}
-              onClick={() => setQuizState("taking")}
+              onClick={handleStart}
             >
-              <IoPlayOutline /> Start Quiz Now
+              <IoPlayOutline /> {t("start-exam-now")}
             </button>
           </div>
         </div>
       )}
 
       {quizState === "taking" && (
-        <QuizTaker quiz={MOCK_QUIZ} onSubmit={finishQuiz} />
-      )}
-
-      {quizState === "result" && (
-        <QuizResult
-          scoreInfo={scoreInfo}
-          onRetry={retryQuiz}
-          onContinue={onCompleteSection}
+        <QuizTaker
+          examData={examData}
+          answers={answers}
+          toggleChoice={toggleChoice}
+          onSubmit={submitExam}
+          isSubmitting={isSubmitting}
         />
       )}
     </div>

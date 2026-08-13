@@ -2,72 +2,62 @@ import { useEffect, useState } from "react";
 import {
   IoTimeOutline,
   IoCheckmarkCircleOutline,
-  IoCloseCircleOutline,
   IoArrowForwardOutline,
-  IoStarOutline,
+  IoArrowBackOutline,
   IoBulbOutline,
 } from "react-icons/io5";
 import styles from "./Quiz.module.css";
+import { useTranslation } from "react-i18next";
 
-const QuizTaker = ({ quiz, onSubmit }) => {
+const QuizTaker = ({
+  examData,
+  answers,
+  toggleChoice,
+  onSubmit,
+  isSubmitting,
+}) => {
+  const { t } = useTranslation();
   const [currentQIndex, setCurrentQIndex] = useState(0);
-  const [selectedOptions, setSelectedOptions] = useState([]);
-  const [isChecking, setIsChecking] = useState(false);
-  const [earnedPoints, setEarnedPoints] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(quiz.timeLimit * 60);
+  const [timeLeft, setTimeLeft] = useState(examData.durationMinutes * 60);
 
-  const currentQuestion = quiz.questions[currentQIndex];
-  const progress = ((currentQIndex + 1) / quiz.questions.length) * 100;
+  const questions = examData.questions || [];
+  const currentQuestion = questions[currentQIndex];
+  const progress = ((currentQIndex + 1) / questions.length) * 100;
 
   useEffect(() => {
-    if (timeLeft <= 0 && !isChecking) {
-      onSubmit(earnedPoints);
+    if (timeLeft <= 0) {
+      if (!isSubmitting) onSubmit();
       return;
     }
     const timer = setInterval(() => setTimeLeft((v) => v - 1), 1000);
     return () => clearInterval(timer);
-  }, [timeLeft, isChecking, earnedPoints, onSubmit]);
+  }, [timeLeft, isSubmitting, onSubmit]);
 
   const formatTime = (sec) =>
     `${Math.floor(sec / 60)
       .toString()
       .padStart(2, "0")}:${(sec % 60).toString().padStart(2, "0")}`;
 
-  const toggleOption = (index) => {
-    if (isChecking) return;
-    setSelectedOptions((prev) =>
-      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index],
-    );
-  };
-
-  const handleCheckAnswer = () => {
-    setIsChecking(true);
-    const isCorrect =
-      selectedOptions.length === currentQuestion.correctAnswers.length &&
-      selectedOptions.every((val) =>
-        currentQuestion.correctAnswers.includes(val),
-      );
-
-    if (isCorrect) setEarnedPoints((prev) => prev + 1);
-  };
-
-  const nextQuestion = () => {
-    if (currentQIndex < quiz.questions.length - 1) {
+  const handleNext = () => {
+    if (currentQIndex < questions.length - 1) {
       setCurrentQIndex((v) => v + 1);
-      setSelectedOptions([]);
-      setIsChecking(false);
-    } else {
-      onSubmit(earnedPoints);
     }
   };
 
+  const handlePrev = () => {
+    if (currentQIndex > 0) {
+      setCurrentQIndex((v) => v - 1);
+    }
+  };
+
+  if (!currentQuestion) return null;
+
   return (
     <div className={styles.takerContainer}>
-      {/* ================= COMPACT HEADER ================= */}
       <div className={styles.compactHeader}>
         <div className={styles.headerLeft}>
           <div className={styles.scoreBox}>
-            <IoStarOutline /> {earnedPoints} / {quiz.questions.length}
+            Q {currentQIndex + 1} / {questions.length}
           </div>
           <div
             className={`${styles.timerBox} ${timeLeft < 60 ? styles.timerWarning : ""}`}
@@ -83,13 +73,9 @@ const QuizTaker = ({ quiz, onSubmit }) => {
               style={{ width: `${progress}%` }}
             />
           </div>
-          <span className={styles.progressText}>
-            Q {currentQIndex + 1} of {quiz.questions.length}
-          </span>
         </div>
       </div>
 
-      {/* ================= QUESTION AREA ================= */}
       <div className={styles.questionArea}>
         <div className={styles.questionCard}>
           <div className={styles.questionHeader}>
@@ -98,79 +84,72 @@ const QuizTaker = ({ quiz, onSubmit }) => {
               alt="Thinking"
               className={styles.tinyMascot}
             />
-            <h3>{currentQuestion.text}</h3>
+            <div className={styles.questionTextWrapper}>
+              <h3>{currentQuestion.question}</h3>
+              {currentQuestion.note && (
+                <p className={styles.questionNote}>
+                  <IoBulbOutline /> {currentQuestion.note}
+                </p>
+              )}
+            </div>
           </div>
 
           <div className={styles.optionsGrid}>
-            {currentQuestion.options.map((option, index) => {
-              const isSelected = selectedOptions.includes(index);
-              const isCorrectAnswer =
-                currentQuestion.correctAnswers.includes(index);
-
-              let optionClass = styles.optionCard;
-              if (isChecking) {
-                if (isCorrectAnswer) optionClass += ` ${styles.correctOption}`;
-                else if (isSelected) optionClass += ` ${styles.wrongOption}`;
-                else optionClass += ` ${styles.dimmedOption}`;
-              } else if (isSelected) {
-                optionClass += ` ${styles.selectedOption}`;
-              }
+            {currentQuestion.choices?.map((choice) => {
+              const isSelected = answers[currentQuestion.id]?.includes(
+                choice.id,
+              );
 
               return (
-                <button
-                  type="button"
-                  key={index}
-                  className={optionClass}
-                  onClick={() => toggleOption(index)}
-                  disabled={isChecking}
+                <label
+                  key={choice.id}
+                  className={`${styles.optionCard} ${isSelected ? styles.selectedOption : ""}`}
                 >
                   <div className={styles.checkbox}>
-                    {isSelected && !isChecking && (
-                      <div className={styles.checkboxFill} />
-                    )}
-                    {isChecking && isCorrectAnswer && (
-                      <IoCheckmarkCircleOutline className={styles.resultIcon} />
-                    )}
-                    {isChecking && isSelected && !isCorrectAnswer && (
-                      <IoCloseCircleOutline className={styles.resultIcon} />
-                    )}
+                    {isSelected && <div className={styles.checkboxFill} />}
                   </div>
-                  <span className={styles.optionText}>{option}</span>
-                </button>
+                  <input
+                    type="checkbox"
+                    hidden
+                    checked={isSelected || false}
+                    onChange={() => toggleChoice(currentQuestion.id, choice.id)}
+                  />
+                  <span className={styles.optionText}>{choice.choice}</span>
+                </label>
               );
             })}
           </div>
         </div>
       </div>
 
-      {/* ================= COMPACT FOOTER ================= */}
       <div className={styles.compactFooter}>
-        <span className={styles.hintText}>
-          <IoBulbOutline />{" "}
-          {currentQuestion.correctAnswers.length > 1
-            ? "Select all correct answers"
-            : "Select one correct answer"}
-        </span>
+        <button
+          type="button"
+          className={styles.actionBtnSecondary}
+          onClick={handlePrev}
+          disabled={currentQIndex === 0 || isSubmitting}
+        >
+          <IoArrowBackOutline /> {t("previous")}
+        </button>
 
-        {!isChecking ? (
+        {currentQIndex === questions.length - 1 ? (
           <button
             type="button"
-            className={styles.actionBtn}
-            onClick={handleCheckAnswer}
-            disabled={selectedOptions.length === 0}
+            className={`${styles.actionBtn} ${styles.submitFinalBtn}`}
+            onClick={onSubmit}
+            disabled={isSubmitting}
           >
-            Check Answer
+            {isSubmitting ? t("submitting") : t("submit-exam")}{" "}
+            <IoCheckmarkCircleOutline />
           </button>
         ) : (
           <button
             type="button"
             className={`${styles.actionBtn} ${styles.nextBtn}`}
-            onClick={nextQuestion}
+            onClick={handleNext}
+            disabled={isSubmitting}
           >
-            {currentQIndex === quiz.questions.length - 1
-              ? "Submit Quiz"
-              : "Next Question"}
-            <IoArrowForwardOutline />
+            {t("next-question")} <IoArrowForwardOutline />
           </button>
         )}
       </div>

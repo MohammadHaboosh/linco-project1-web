@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { quizApi } from "../api/quizApi";
 import { questionBankApi } from "../api/questionBankApi";
 import { attachmentApi } from "../api/attachmentApi";
@@ -16,52 +16,72 @@ export const useCurriculumLogic = (
   const [activeModal, setActiveModal] = useState(null);
   const [activeSectionId, setActiveSectionId] = useState(null);
 
-  const isTempId = (id) =>
-    !id || String(id).startsWith("temp-") || String(id).startsWith("temp_");
+  const isTempId = useCallback(
+    (id) =>
+      !id || String(id).startsWith("temp-") || String(id).startsWith("temp_"),
+    [],
+  );
 
-  const handleFetchQuestionsForSection = async (sectionId) => {
-    if (isTempId(sectionId)) return;
-    try {
-      const fetchedQuestions =
-        await questionBankApi.getQuestionsBySectionId(sectionId);
-      if (fetchedQuestions) {
+  const handleFetchQuestionsForSection = useCallback(
+    async (sectionId) => {
+      if (isTempId(sectionId)) return;
+      try {
+        const fetchedQuestions =
+          await questionBankApi.getQuestionsBySectionId(sectionId);
         setSections((prev) =>
           prev.map((sec) =>
             sec.id === sectionId
-              ? { ...sec, questions: fetchedQuestions }
+              ? {
+                  ...sec,
+                  questions: fetchedQuestions || [],
+                  isQuestionsFetched: true,
+                }
               : sec,
           ),
         );
-      }
-    } catch (error) {
-      console.error("Error fetching questions:", error);
-    }
-  };
-
-  const handleFetchQuizForSection = async (sectionId) => {
-    if (isTempId(sectionId)) return;
-    try {
-      const fetchedQuiz = await quizApi.getQuizBySectionId(sectionId);
-      if (fetchedQuiz) {
+      } catch (error) {
+        console.error("Error fetching questions:", error);
         setSections((prev) =>
           prev.map((sec) =>
-            sec.id === sectionId ? { ...sec, quiz: fetchedQuiz } : sec,
+            sec.id === sectionId ? { ...sec, isQuestionsFetched: true } : sec,
           ),
         );
       }
-    } catch (error) {
-      console.error("Error fetching quiz:", error);
-    }
-  };
+    },
+    [isTempId, setSections],
+  );
+
+  const handleFetchQuizForSection = useCallback(
+    async (sectionId) => {
+      if (isTempId(sectionId)) return;
+      try {
+        const fetchedQuiz = await quizApi.getQuizBySectionId(sectionId);
+        setSections((prev) =>
+          prev.map((sec) =>
+            sec.id === sectionId
+              ? { ...sec, quiz: fetchedQuiz, isQuizFetched: true }
+              : sec,
+          ),
+        );
+      } catch (error) {
+        console.error("Error fetching quiz:", error);
+        setSections((prev) =>
+          prev.map((sec) =>
+            sec.id === sectionId ? { ...sec, isQuizFetched: true } : sec,
+          ),
+        );
+      }
+    },
+    [isTempId, setSections],
+  );
 
   const toggleSection = (id) => {
     if (!expandedSections.includes(id)) {
       setExpandedSections([...expandedSections, id]);
       const targetSec = sections.find((s) => s.id === id);
       if (targetSec && !isTempId(id)) {
-        if (targetSec.quiz === undefined) handleFetchQuizForSection(id);
-        if (!targetSec.questions || targetSec.questions.length === 0)
-          handleFetchQuestionsForSection(id);
+        if (!targetSec.isQuizFetched) handleFetchQuizForSection(id);
+        if (!targetSec.isQuestionsFetched) handleFetchQuestionsForSection(id);
       }
     } else {
       setExpandedSections(expandedSections.filter((secId) => secId !== id));
@@ -70,12 +90,16 @@ export const useCurriculumLogic = (
 
   useEffect(() => {
     if (sections.length > 0 && !isTempId(sections[0].id)) {
-      if (sections[0].quiz === undefined)
-        handleFetchQuizForSection(sections[0].id);
-      if (!sections[0].questions || sections[0].questions.length === 0)
+      if (!sections[0].isQuizFetched) handleFetchQuizForSection(sections[0].id);
+      if (!sections[0].isQuestionsFetched)
         handleFetchQuestionsForSection(sections[0].id);
     }
-  }, [sections.length]);
+  }, [
+    sections,
+    handleFetchQuizForSection,
+    handleFetchQuestionsForSection,
+    isTempId,
+  ]);
 
   const handleAddSection = () => {
     const newSection = {
@@ -135,12 +159,15 @@ export const useCurriculumLogic = (
     setSections((prev) =>
       prev.map((s) => {
         if (s.id === activeSectionId) {
-          const isExisting = s.quiz && !isTempId(s.quiz.id) && !quizData.isNew;
+          const alreadyHasRealQuiz = s.quiz && !isTempId(s.quiz.id);
+
           return {
             ...s,
             quiz: {
               ...quizData,
-              isModified: isExisting ? true : quizData.isModified,
+              id: alreadyHasRealQuiz ? s.quiz.id : quizData.id,
+              isNew: !alreadyHasRealQuiz,
+              isModified: alreadyHasRealQuiz ? true : quizData.isModified,
             },
           };
         }

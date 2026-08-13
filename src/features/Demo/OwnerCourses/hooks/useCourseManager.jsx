@@ -89,6 +89,8 @@ export const useCourseManager = (demoId, assetId) => {
                 questions: sec.questions || [],
                 quiz: sec.quiz || null,
                 isNew: false,
+                isQuizFetched: false,
+                isQuestionsFetched: false,
               };
             }),
           );
