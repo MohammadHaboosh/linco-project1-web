@@ -31,12 +31,17 @@ export const DemoProvider = ({ children }) => {
         }
 
         const data = await response.json();
-        console.log("Fetched demo data :", data);
+        const demos = Array.isArray(data.data) ? data.data : [data.data];
+        const activeDemo = demos.find(
+          (demo) => String(demo?.id) === String(demoId),
+        );
 
-        setDemoData(data.data);
-        console.log("data.data.isOwner :", data.data.isOwner);
-        const role = data.data.isOwner ? "owner" : "member";
-        console.log("Determined role :", role);
+        if (!activeDemo) {
+          throw new Error("The requested Demo was not found in the response.");
+        }
+
+        setDemoData(activeDemo);
+        const role = activeDemo.isOwner ? "owner" : "member";
 
         setActualRole(role);
         setCurrentRoleView(role);
