@@ -1,12 +1,35 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "./QASection.module.css";
-import { IoChatbubblesOutline, IoTimeOutline } from "react-icons/io5";
-import { useTranslation } from "react-i18next";
+import {
+  IoChatbubblesOutline,
+  IoTimeOutline,
+  IoPencilOutline,
+  IoTrashOutline,
+  IoCheckmarkOutline,
+  IoCloseOutline,
+} from "react-icons/io5";
 
-const QuestionItem = ({ question, onAddReply }) => {
-  const { t } = useTranslation();
+const QuestionItem = ({ question, onAddReply, onEdit, onDelete, lessonId }) => {
   const [showReplies, setShowReplies] = useState(false);
   const [replyText, setReplyText] = useState("");
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedContent, setEditedContent] = useState(question.content);
+
+  const user = question.demoMember?.user || {};
+  const authorName =
+    `${user.firstName || "Unknown"} ${user.lastName || ""}`.trim();
+  const avatarUrl = user.imagePath;
+
+  const formattedDate = new Date(question.createdAt).toLocaleDateString(
+    "en-US",
+    {
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    },
+  );
 
   const handleReplySubmit = () => {
     if (!replyText.trim()) return;
@@ -14,24 +37,88 @@ const QuestionItem = ({ question, onAddReply }) => {
     setReplyText("");
   };
 
+  const handleSaveEdit = async () => {
+    if (!editedContent.trim()) return;
+    const success = await onEdit(question.id, editedContent.trim());
+    if (success) {
+      setIsEditing(false);
+    }
+  };
+
   const getInitials = (name) => (name ? name.charAt(0).toUpperCase() : "?");
 
   return (
     <div className={styles.questionCard}>
       <div className={styles.userInfo}>
-        <div className={styles.avatar}>{getInitials(question.author)}</div>
+        {avatarUrl && avatarUrl !== "default" ? (
+          <img
+            src={avatarUrl}
+            alt={authorName}
+            className={styles.avatar}
+            style={{ objectFit: "cover" }}
+          />
+        ) : (
+          <div className={styles.avatar}>{getInitials(authorName)}</div>
+        )}
+
         <div>
-          <h4 className={styles.userName}>{question.author}</h4>
+          <h4 className={styles.userName}>{authorName}</h4>
           <span className={styles.date}>
             <IoTimeOutline
               style={{ verticalAlign: "middle", marginRight: 4 }}
             />
-            {question.date}
+            {formattedDate}
           </span>
         </div>
+
+        {!isEditing && (
+          <div
+            className={styles.ownerActions}
+            style={{ marginLeft: "auto", display: "flex", gap: "8px" }}
+          >
+            <button
+              className={styles.iconActionBtn}
+              onClick={() => setIsEditing(true)}
+              title="Edit Question"
+            >
+              <IoPencilOutline size={16} />
+            </button>
+            <button
+              className={styles.iconActionBtnDanger}
+              onClick={() => onDelete(question.id)}
+              title="Delete Question"
+            >
+              <IoTrashOutline size={16} />
+            </button>
+          </div>
+        )}
       </div>
 
-      <p className={styles.questionText}>{question.text}</p>
+      {isEditing ? (
+        <div className={styles.editBox}>
+          <textarea
+            value={editedContent}
+            onChange={(e) => setEditedContent(e.target.value)}
+            className={styles.editTextarea}
+          />
+          <div className={styles.editActions}>
+            <button className={styles.saveEditBtn} onClick={handleSaveEdit}>
+              <IoCheckmarkOutline /> Save
+            </button>
+            <button
+              className={styles.cancelEditBtn}
+              onClick={() => {
+                setIsEditing(false);
+                setEditedContent(question.content);
+              }}
+            >
+              <IoCloseOutline /> Cancel
+            </button>
+          </div>
+        </div>
+      ) : (
+        <p className={styles.questionText}>{question.content}</p>
+      )}
 
       <div className={styles.cardActions}>
         <button
@@ -39,32 +126,49 @@ const QuestionItem = ({ question, onAddReply }) => {
           onClick={() => setShowReplies(!showReplies)}
         >
           <IoChatbubblesOutline />
-          {question.replies.length}{" "}
-          {question.replies.length === 1 ? "Reply" : "Replies"}
+          {question.answers?.length || 0}{" "}
+          {question.answers?.length === 1 ? "Reply" : "Replies"}
         </button>
       </div>
 
       {showReplies && (
         <div className={styles.repliesSection}>
-          {question.replies.map((reply) => (
-            <div key={reply.id} className={styles.replyItem}>
-              <div className={styles.replyAvatar}>
-                {getInitials(reply.author)}
-              </div>
-              <div className={styles.replyContent}>
-                <div className={styles.replyHeader}>
-                  <span className={styles.replyName}>{reply.author}</span>
-                  <span className={styles.date}>{reply.date}</span>
+          {question.answers?.map((reply) => {
+            const replyUser = reply.demoMember?.user || {};
+            const replyAuthor =
+              `${replyUser.firstName || "User"} ${replyUser.lastName || ""}`.trim();
+            const replyDate = new Date(reply.createdAt).toLocaleDateString();
+
+            return (
+              <div key={reply.id} className={styles.replyItem}>
+                {replyUser.imagePath ? (
+                  <img
+                    src={replyUser.imagePath}
+                    alt={replyAuthor}
+                    className={styles.replyAvatar}
+                    style={{ objectFit: "cover" }}
+                  />
+                ) : (
+                  <div className={styles.replyAvatar}>
+                    {getInitials(replyAuthor)}
+                  </div>
+                )}
+
+                <div className={styles.replyContent}>
+                  <div className={styles.replyHeader}>
+                    <span className={styles.replyName}>{replyAuthor}</span>
+                    <span className={styles.date}>{replyDate}</span>
+                  </div>
+                  <p className={styles.replyText}>{reply.content}</p>
                 </div>
-                <p className={styles.replyText}>{reply.text}</p>
               </div>
-            </div>
-          ))}
+            );
+          })}
 
           <div className={styles.replyInputWrapper}>
             <input
               type="text"
-              placeholder={t("write-a-reply")}
+              placeholder="Write a reply..."
               value={replyText}
               onChange={(e) => setReplyText(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleReplySubmit()}
@@ -74,7 +178,7 @@ const QuestionItem = ({ question, onAddReply }) => {
               disabled={!replyText.trim()}
               onClick={handleReplySubmit}
             >
-              {t("reply")}
+              Reply
             </button>
           </div>
         </div>

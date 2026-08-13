@@ -1,80 +1,72 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "./QASection.module.css";
 import { IoAddOutline } from "react-icons/io5";
 import QuestionItem from "./QuestionItem";
 import { useTranslation } from "react-i18next";
-
-const MOCK_QUESTIONS = [
-  {
-    id: 1,
-    author: "Ahmad Ali",
-    text: "Can you explain the main difference between useMemo and useCallback? I'm a bit confused.",
-    date: "2 hours ago",
-    replies: [
-      {
-        id: 101,
-        author: "Instructor",
-        text: "Sure! useMemo returns a memoized value, while useCallback returns a memoized function.",
-        date: "1 hour ago",
-      },
-    ],
-  },
-  {
-    id: 2,
-    author: "Sarah M.",
-    text: "At minute 4:30 in the video, where did you import the Axios library from?",
-    date: "1 day ago",
-    replies: [],
-  },
-];
+import { useQA } from "../../hooks/useQA";
 
 const QASection = ({ activeLesson }) => {
   const { t } = useTranslation();
 
-  const [questions, setQuestions] = useState(MOCK_QUESTIONS);
+  const {
+    questions,
+    isLoading,
+    error,
+    isPosting,
+    addQuestion,
+    editQuestion,
+    removeQuestion,
+  } = useQA(activeLesson?.id);
 
   const [isAsking, setIsAsking] = useState(false);
   const [newQuestionText, setNewQuestionText] = useState("");
 
-  const handleAskSubmit = () => {
+  const handleAskSubmit = async () => {
     if (!newQuestionText.trim()) return;
+    const result = await addQuestion(newQuestionText.trim());
+    if (result.success) {
+      setNewQuestionText("");
+      setIsAsking(false);
+    } else {
+      alert("Failed to post question: " + result.error);
+    }
+  };
 
-    const newQuestion = {
-      id: Date.now(),
-      author: "Current User",
-      text: newQuestionText,
-      date: "Just now",
-      replies: [],
-    };
+  const handleEdit = async (questionId, newContent) => {
+    const result = await editQuestion(questionId, newContent);
+    if (!result.success) {
+      alert("Failed to update question: " + result.error);
+      return false;
+    }
+    return true;
+  };
 
-    setQuestions([newQuestion, ...questions]);
-    setNewQuestionText("");
-    setIsAsking(false);
+  const handleDelete = async (questionId) => {
+    if (window.confirm("Are you sure you want to delete this question?")) {
+      const result = await removeQuestion(questionId);
+      if (!result.success) {
+        alert("Failed to delete question: " + result.error);
+      }
+    }
   };
 
   const handleAddReply = (questionId, replyText) => {
-    const newReply = {
-      id: Date.now(),
-      author: "Current User",
-      text: replyText,
-      date: "Just now",
-    };
-
-    setQuestions(
-      questions.map((q) => {
-        if (q.id === questionId) {
-          return { ...q, replies: [...q.replies, newReply] };
-        }
-        return q;
-      }),
-    );
+    console.log("Submit reply:", replyText, "to question:", questionId);
   };
+
+  if (!activeLesson) {
+    return (
+      <div className={styles.qaContainer}>
+        <p>{t("please-select-a-lesson-first")}</p>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.qaContainer}>
       <div className={styles.qaHeader}>
         <div>
-          <h3>Q&A for: {activeLesson?.title || "This Lesson"}</h3>
+          <h3>Q&A for: {activeLesson.title}</h3>
           <p>{t("ask-the-instructor-or-discuss-with-other-students")}</p>
         </div>
         {!isAsking && (
@@ -93,36 +85,55 @@ const QASection = ({ activeLesson }) => {
             value={newQuestionText}
             onChange={(e) => setNewQuestionText(e.target.value)}
             autoFocus
+            disabled={isPosting}
           />
           <div className={styles.formActions}>
             <button
               className={styles.cancelBtn}
               onClick={() => setIsAsking(false)}
+              disabled={isPosting}
             >
               {t("cancel")}
             </button>
-            <button className={styles.submitBtn} onClick={handleAskSubmit}>
-              {t("post-question")}
+            <button
+              className={styles.submitBtn}
+              onClick={handleAskSubmit}
+              disabled={isPosting}
+            >
+              {isPosting ? t("posting") : t("post-question")}
             </button>
           </div>
         </div>
       ) : (
         <div className={styles.questionsList}>
-          {questions.length === 0 ? (
+          {isLoading && (
+            <p style={{ textAlign: "center", padding: "20px" }}>
+              Loading discussions...
+            </p>
+          )}
+          {error && (
+            <p style={{ color: "red", textAlign: "center" }}>{error}</p>
+          )}
+
+          {!isLoading && !error && questions.length === 0 && (
             <p
               style={{ textAlign: "center", color: "#64748b", padding: "20px" }}
             >
               {t("no-questions-yet-be-the-first-to-ask")}
             </p>
-          ) : (
+          )}
+
+          {!isLoading &&
             questions.map((q) => (
               <QuestionItem
                 key={q.id}
                 question={q}
+                lessonId={activeLesson.id}
                 onAddReply={handleAddReply}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
               />
-            ))
-          )}
+            ))}
         </div>
       )}
     </div>

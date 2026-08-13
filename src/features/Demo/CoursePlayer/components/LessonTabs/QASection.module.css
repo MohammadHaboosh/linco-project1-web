@@ -279,3 +279,85 @@
     transform: translateY(0);
   }
 }
+.iconActionBtn,
+.iconActionBtnDanger {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.iconActionBtn {
+  color: #64748b;
+}
+.iconActionBtn:hover {
+  background: #f1f5f9;
+  color: #2563eb;
+}
+
+.iconActionBtnDanger {
+  color: #94a3b8;
+}
+.iconActionBtnDanger:hover {
+  background: #fef2f2;
+  color: #ef4444;
+}
+
+.editBox {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 8px 0;
+}
+
+.editTextarea {
+  width: 100%;
+  border: 1px solid #3b82f6;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 0.95rem;
+  outline: none;
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+}
+
+.editActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.saveEditBtn,
+.cancelEditBtn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.saveEditBtn {
+  background: #10b981;
+  color: white;
+}
+.saveEditBtn:hover {
+  background: #059669;
+}
+
+.cancelEditBtn {
+  background: #f1f5f9;
+  color: #475569;
+}
+.cancelEditBtn:hover {
+  background: #e2e8f0;
+}

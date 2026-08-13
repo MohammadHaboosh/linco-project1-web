@@ -818,5 +818,7 @@
   "no-questions-yet-be-the-first-to-ask": "No questions yet. Be the first to ask!",
   "write-your-question-here-be-specific-to-get-better-answers": "Write your question here... Be specific to get better answers.",
   "reply": "Reply",
-  "write-a-reply": "Write a reply..."
+  "write-a-reply": "Write a reply...",
+  "please-select-a-lesson-first": "Please select a lesson first.",
+  "posting": "Posting..."
 }

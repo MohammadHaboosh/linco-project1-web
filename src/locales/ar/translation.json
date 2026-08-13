@@ -808,5 +808,7 @@
   "post-question": "انشر السؤال",
   "no-questions-yet-be-the-first-to-ask": "لا توجد أسئلة بعد. \nكن أول من يسأل!",
   "reply": "رد",
-  "write-a-reply": "أكتب الرد..."
+  "write-a-reply": "أكتب الرد...",
+  "please-select-a-lesson-first": "الرجاء تحديد الدرس أولا.",
+  "posting": "إرسال..."
 }
