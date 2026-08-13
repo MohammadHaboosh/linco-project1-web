@@ -1,4 +1,4 @@
-import { apiFetch } from "../apiFetch";
+import { apiFetch } from "../../../../api/apiFetch";
 
 export const qAndAApi = {
   getQuestionsByLesson: async (lessonId) => {
