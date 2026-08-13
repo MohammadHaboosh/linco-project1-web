@@ -45,7 +45,7 @@ const VideoContent = ({ activeLesson, onNext, onPrev }) => {
           const availableQualities = hls.levels.map((l) => l.height);
           availableQualities.unshift(0);
 
-          plyr.options.quality = {
+          plyr.config.quality = {
             default: 0,
             options: availableQualities,
             forced: true,
