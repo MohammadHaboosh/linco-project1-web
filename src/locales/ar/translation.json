@@ -810,5 +810,8 @@
   "reply": "رد",
   "write-a-reply": "أكتب الرد...",
   "please-select-a-lesson-first": "الرجاء تحديد الدرس أولا.",
-  "posting": "إرسال..."
+  "posting": "إرسال...",
+  "delete-reply": "حذف الرد",
+  "save": "يحفظ",
+  "edit-reply": "تحرير الرد"
 }

@@ -820,5 +820,9 @@
   "reply": "Reply",
   "write-a-reply": "Write a reply...",
   "please-select-a-lesson-first": "Please select a lesson first.",
-  "posting": "Posting..."
+  "posting": "Posting...",
+  "save": "Save",
+  "edit-reply": "Edit Reply",
+  "delete-reply": "Delete Reply",
+  "replies": "Replies"
 }

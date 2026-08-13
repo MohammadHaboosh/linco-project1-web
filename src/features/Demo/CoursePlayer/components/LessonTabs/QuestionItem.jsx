@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import styles from "./QASection.module.css";
 import {
   IoChatbubblesOutline,
@@ -8,13 +9,28 @@ import {
   IoCheckmarkOutline,
   IoCloseOutline,
 } from "react-icons/io5";
+import ReplyItem from "./ReplyItem";
+import { useAnswers } from "../../hooks/useAnswers";
+import { useTranslation } from "react-i18next";
 
-const QuestionItem = ({ question, onAddReply, onEdit, onDelete, lessonId }) => {
+const QuestionItem = ({ question, onEdit, onDelete, lessonId }) => {
+  const { t } = useTranslation();
+  const { demoId } = useParams();
   const [showReplies, setShowReplies] = useState(false);
   const [replyText, setReplyText] = useState("");
 
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(question.content);
+
+  const {
+    answers,
+    isLoading,
+    isSubmitting,
+    fetchAnswers,
+    addAnswer,
+    editAnswer,
+    removeAnswer,
+  } = useAnswers(demoId, question.id, question.answers || []);
 
   const user = question.demoMember?.user || {};
   const authorName =
@@ -23,18 +39,22 @@ const QuestionItem = ({ question, onAddReply, onEdit, onDelete, lessonId }) => {
 
   const formattedDate = new Date(question.createdAt).toLocaleDateString(
     "en-US",
-    {
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    },
+    { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" },
   );
 
-  const handleReplySubmit = () => {
-    if (!replyText.trim()) return;
-    onAddReply(question.id, replyText);
-    setReplyText("");
+  const handleToggleReplies = () => {
+    if (!showReplies) fetchAnswers();
+    setShowReplies(!showReplies);
+  };
+
+  const handleReplySubmit = async () => {
+    if (!replyText.trim() || isSubmitting) return;
+    const result = await addAnswer(replyText.trim());
+    if (result.success) {
+      setReplyText("");
+    } else {
+      alert("Failed to post reply: " + result.error);
+    }
   };
 
   const handleSaveEdit = async () => {
@@ -103,7 +123,7 @@ const QuestionItem = ({ question, onAddReply, onEdit, onDelete, lessonId }) => {
           />
           <div className={styles.editActions}>
             <button className={styles.saveEditBtn} onClick={handleSaveEdit}>
-              <IoCheckmarkOutline /> Save
+              <IoCheckmarkOutline /> {t("save")}
             </button>
             <button
               className={styles.cancelEditBtn}
@@ -112,7 +132,7 @@ const QuestionItem = ({ question, onAddReply, onEdit, onDelete, lessonId }) => {
                 setEditedContent(question.content);
               }}
             >
-              <IoCloseOutline /> Cancel
+              <IoCloseOutline /> {t("cancel")}
             </button>
           </div>
         </div>
@@ -121,64 +141,50 @@ const QuestionItem = ({ question, onAddReply, onEdit, onDelete, lessonId }) => {
       )}
 
       <div className={styles.cardActions}>
-        <button
-          className={styles.actionBtn}
-          onClick={() => setShowReplies(!showReplies)}
-        >
+        <button className={styles.actionBtn} onClick={handleToggleReplies}>
           <IoChatbubblesOutline />
-          {question.answers?.length || 0}{" "}
-          {question.answers?.length === 1 ? "Reply" : "Replies"}
+          {answers.length} {answers.length === 1 ? t("reply") : t("replies")}
         </button>
       </div>
 
       {showReplies && (
         <div className={styles.repliesSection}>
-          {question.answers?.map((reply) => {
-            const replyUser = reply.demoMember?.user || {};
-            const replyAuthor =
-              `${replyUser.firstName || "User"} ${replyUser.lastName || ""}`.trim();
-            const replyDate = new Date(reply.createdAt).toLocaleDateString();
-
-            return (
-              <div key={reply.id} className={styles.replyItem}>
-                {replyUser.imagePath ? (
-                  <img
-                    src={replyUser.imagePath}
-                    alt={replyAuthor}
-                    className={styles.replyAvatar}
-                    style={{ objectFit: "cover" }}
-                  />
-                ) : (
-                  <div className={styles.replyAvatar}>
-                    {getInitials(replyAuthor)}
-                  </div>
-                )}
-
-                <div className={styles.replyContent}>
-                  <div className={styles.replyHeader}>
-                    <span className={styles.replyName}>{replyAuthor}</span>
-                    <span className={styles.date}>{replyDate}</span>
-                  </div>
-                  <p className={styles.replyText}>{reply.content}</p>
-                </div>
-              </div>
-            );
-          })}
+          {isLoading ? (
+            <p
+              style={{
+                textAlign: "center",
+                fontSize: "0.85rem",
+                color: "#64748b",
+              }}
+            >
+              Loading replies...
+            </p>
+          ) : (
+            answers.map((reply) => (
+              <ReplyItem
+                key={reply.id}
+                reply={reply}
+                onEdit={editAnswer}
+                onDelete={removeAnswer}
+              />
+            ))
+          )}
 
           <div className={styles.replyInputWrapper}>
             <input
               type="text"
               placeholder="Write a reply..."
               value={replyText}
+              disabled={isSubmitting}
               onChange={(e) => setReplyText(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleReplySubmit()}
             />
             <button
               className={styles.sendReplyBtn}
-              disabled={!replyText.trim()}
+              disabled={!replyText.trim() || isSubmitting}
               onClick={handleReplySubmit}
             >
-              Reply
+              {isSubmitting ? "..." : t("reply")}
             </button>
           </div>
         </div>

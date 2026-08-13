@@ -52,10 +52,6 @@ const QASection = ({ activeLesson }) => {
     }
   };
 
-  const handleAddReply = (questionId, replyText) => {
-    console.log("Submit reply:", replyText, "to question:", questionId);
-  };
-
   if (!activeLesson) {
     return (
       <div className={styles.qaContainer}>
@@ -131,7 +127,6 @@ const QASection = ({ activeLesson }) => {
                 key={q.id}
                 question={q}
                 lessonId={activeLesson.id}
-                onAddReply={handleAddReply}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
               />
