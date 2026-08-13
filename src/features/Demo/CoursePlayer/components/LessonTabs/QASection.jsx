@@ -4,9 +4,11 @@ import { IoAddOutline } from "react-icons/io5";
 import QuestionItem from "./QuestionItem";
 import { useTranslation } from "react-i18next";
 import { useQA } from "../../hooks/useQA";
+import { useParams } from "react-router-dom";
 
 const QASection = ({ activeLesson }) => {
   const { t } = useTranslation();
+  const { demoId } = useParams();
 
   const {
     questions,
@@ -16,7 +18,7 @@ const QASection = ({ activeLesson }) => {
     addQuestion,
     editQuestion,
     removeQuestion,
-  } = useQA(activeLesson?.id);
+  } = useQA(demoId, activeLesson?.id);
 
   const [isAsking, setIsAsking] = useState(false);
   const [newQuestionText, setNewQuestionText] = useState("");
