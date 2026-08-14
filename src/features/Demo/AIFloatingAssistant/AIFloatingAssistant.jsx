@@ -19,13 +19,13 @@ const quickActions = [
   {
     id: "quiz",
     icon: IoBulbOutline,
-    title: "Interactive Quiz",
+    title: "Topic Specific Quiz",
     description: "Test your understanding with smart questions",
   },
   {
     id: "qa",
     icon: IoCreateOutline,
-    title: "Generate Q&A",
+    title: "Random Course Quiz",
     description: "Comprehensive review with detailed explanations",
   },
 ];
