@@ -10,7 +10,7 @@
 
 .contentWrapper {
   width: 100%;
-  max-width: 1600px; /* 💡 تم توسيع الحاوية لتستوعب 4 شهادات براحة تامة */
+  max-width: 1600px;
   animation: fadeIn 0.4s ease;
 }
 
@@ -138,14 +138,13 @@
 /* ================= 💡 Certificates Grid ================= */
 .certsGrid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 👈 4 شهادات في السطر الواحد */
-  gap: 24px; /* تم تقليل المسافة قليلاً لتناسب 4 كروت بشكل ممتاز */
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
 }
 
-/* التجاوب مع الشاشات المتنوعة */
 @media (max-width: 1440px) {
   .certsGrid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 @media (max-width: 1024px) {
@@ -167,7 +166,6 @@
   gap: 15px;
 }
 
-/* الحاوية الأساسية للشهادة */
 .certificateLayout {
   position: relative;
   width: 100%;
@@ -178,7 +176,6 @@
     transform 0.4s ease,
     box-shadow 0.4s ease;
   background-color: #ffffff;
-  /* تفعيل الـ Container Queries لضبط حجم الخطوط بشكل ديناميكي */
   container-type: inline-size;
 }
 
@@ -187,7 +184,6 @@
   box-shadow: 0 20px 40px rgba(10, 42, 84, 0.15);
 }
 
-/* صورة القالب الأساسية */
 .templateBg {
   display: block;
   width: 100%;
@@ -196,9 +192,6 @@
   pointer-events: none;
 }
 
-/* ================= 📌 العناصر الديناميكية (Dynamic Overlays) ================= */
-
-/* جميع النصوص تشترك في هذا التنسيق الأساسي */
 .dynamicStudentName,
 .dynamicCourseName,
 .dynamicProviderName,
@@ -211,7 +204,6 @@
   transform: translateX(-50%);
 }
 
-/* 1. شعار المزود (في المربع الفارغ أعلى اليمين) */
 .dynamicProviderLogo {
   position: absolute;
   top: 15.6%;
@@ -229,7 +221,6 @@
   object-fit: contain;
 }
 
-/* 2. اسم الطالب */
 .dynamicStudentName {
   top: 36.5%;
   left: 50%;
@@ -239,7 +230,6 @@
   width: 80%;
 }
 
-/* 3. اسم الدورة */
 .dynamicCourseName {
   top: 56.5%;
   left: 50%;
@@ -248,7 +238,6 @@
   width: 80%;
 }
 
-/* 4. اسم المزود (أكاديمية / شركة) */
 .dynamicProviderName {
   top: 71%;
   left: 50%;
@@ -257,7 +246,6 @@
   width: 80%;
 }
 
-/* 5. تاريخ الإصدار (فوق خط التاريخ يساراً) */
 .dynamicDate {
   bottom: 14.5%;
   left: 17.5%;
@@ -266,7 +254,6 @@
   width: 25%;
 }
 
-/* 6. صورة التوقيع (فوق خط التوقيع يميناً) */
 .dynamicSignature {
   position: absolute;
   bottom: 14.5%;
@@ -287,7 +274,7 @@
 /* ================= Actions Bar ================= */
 .actionsBar {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   margin-top: 5px;
 }
 
@@ -297,11 +284,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 6px;
-  padding: 10px;
-  border-radius: 10px;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 12px;
   font-weight: 700;
-  font-size: 0.8rem; /* 💡 تم تصغير الخط قليلاً ليتناسب بشكل ممتاز مع 4 شهادات في السطر */
+  font-size: 0.95rem;
   cursor: pointer;
   transition: all 0.3s;
 }

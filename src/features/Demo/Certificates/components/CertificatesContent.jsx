@@ -7,43 +7,18 @@ import {
 import CertificateCard from "./CertificateCard";
 import styles from "./Certificates.module.css";
 import { useTranslation } from "react-i18next";
-
-const MOCK_CERTIFICATES = [
-  {
-    id: "cert-1",
-    courseName: "Advanced React & Next.js Architecture",
-    studentName: "Firstname Fathername Lastname",
-    issueDate: "July 7, 2026",
-    credentialId: "LNC-2026-8891A",
-    instructor: "Eng. Ahmed Nabil",
-    logo: "/images/linco-logo.jpg",
-  },
-  {
-    id: "cert-2",
-    courseName: "Flutter Cross-Platform Development",
-    studentName: "Abrar Mohammed Abo Auad",
-    issueDate: "May 14, 2026",
-    credentialId: "LNC-2026-3324F",
-    instructor: "Dr. Sara Majed",
-    logo: "/images/linco-logo.jpg",
-  },
-  {
-    id: "cert-2",
-    courseName: "Flutter Cross-Platform Development",
-    studentName: "Abrar Mohammed Abo Auad",
-    issueDate: "May 14, 2026",
-    credentialId: "LNC-2026-3324F",
-    instructor: "Dr. Sara Majed",
-    logo: "/images/linco-logo.jpg",
-  },
-];
+import { useCertificates } from "../../hooks/useCertificates"; // تأكد من المسار الصحيح للـ Hook
 
 const CertificatesContent = () => {
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredCerts = MOCK_CERTIFICATES.filter((cert) =>
-    cert.courseName.toLowerCase().includes(searchQuery.toLowerCase()),
+  // استخدام الـ Hook الحقيقي
+  const { certificates, isLoading, error } = useCertificates();
+
+  // فلترة الشهادات بناءً على اسم الدورة
+  const filteredCerts = certificates.filter((cert) =>
+    cert.courseName?.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
@@ -80,14 +55,31 @@ const CertificatesContent = () => {
         </div>
 
         <div className={styles.gridSection}>
-          {filteredCerts.length === 0 ? (
+          {isLoading ? (
+            <div className={styles.emptyState}>
+              <div
+                className="spinner"
+                style={{ margin: "0 auto 15px auto" }}
+              ></div>
+              <p>{t("loading-certificates", "Loading your certificates...")}</p>
+            </div>
+          ) : error ? (
+            <div className={styles.emptyState}>
+              <p style={{ color: "#ef4444" }}>{error}</p>
+            </div>
+          ) : filteredCerts.length === 0 ? (
             <div className={styles.emptyState}>
               <IoSchoolOutline className={styles.emptyIcon} />
               <h3>{t("no-certificates-found")}</h3>
               <p>
-                {t(
-                  "complete-courses-to-earn-your-certificates-and-showcase-your-skills",
-                )}
+                {searchQuery
+                  ? t(
+                      "no-results-match-your-search",
+                      "No results match your search.",
+                    )
+                  : t(
+                      "complete-courses-to-earn-your-certificates-and-showcase-your-skills",
+                    )}
               </p>
             </div>
           ) : (
