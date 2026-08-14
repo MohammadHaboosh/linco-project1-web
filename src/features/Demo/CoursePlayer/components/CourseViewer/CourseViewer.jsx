@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import VideoContent from "./VideoContent";
 import LessonTabs from "../LessonTabs/LessonTabs";
@@ -31,6 +31,7 @@ const CourseViewer = () => {
 
   const [activeLesson, setActiveLesson] = useState(null);
   const [currentPlaylist, setCurrentPlaylist] = useState([]);
+  const contentScrollRef = useRef(null);
 
   useEffect(() => {
     if (passedCourseData || !demoId || !departmentId || !courseId) return;
@@ -77,6 +78,24 @@ const CourseViewer = () => {
     loadedCourse?.courseId === String(courseId) ? loadedCourse.data : null;
   const courseData = passedCourseData || fetchedCourseData;
   const courseTitle = courseData?.title || t("loading-course");
+  const rawProgress = Number(courseData?.progress);
+  const courseProgress = Number.isFinite(rawProgress)
+    ? Math.min(100, Math.max(0, rawProgress))
+    : 0;
+  const activeLessonId = activeLesson?.id;
+
+  useEffect(() => {
+    if (!activeLessonId || !contentScrollRef.current) return;
+
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    contentScrollRef.current.scrollTo({
+      top: 0,
+      behavior: reduceMotion ? "auto" : "smooth",
+    });
+  }, [activeLessonId]);
 
   const handleBackToCourses = () => {
     navigate(`/demos/${demoId}/departments/${departmentId}/${PATHS.COURSES}`);
@@ -132,7 +151,7 @@ const CourseViewer = () => {
             <span>{t("back-to-courses")}</span>
           </button>
           <div className={styles.divider} />
-          <div className={styles.courseIdentity}>
+          <div className={styles.courseIdentity} aria-live="polite">
             <span>{courseTitle}</span>
             <h1>
               {activeLesson
@@ -149,10 +168,17 @@ const CourseViewer = () => {
             </div>
             <div className={styles.progressText}>
               <span className={styles.progressLabel}>COURSE PROGRESS</span>
-              <strong>{courseData?.progress || 0}%</strong>
+              <strong>{Math.round(courseProgress)}%</strong>
             </div>
-            <div className={styles.progressTrack} aria-label="Course progress">
-              <span style={{ width: `${courseData?.progress || 0}%` }} />
+            <div
+              className={styles.progressTrack}
+              role="progressbar"
+              aria-label="Course progress"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow={Math.round(courseProgress)}
+            >
+              <span style={{ width: `${courseProgress}%` }} />
             </div>
             <IoCheckmarkCircle className={styles.progressCheck} />
           </div>
@@ -168,7 +194,7 @@ const CourseViewer = () => {
             />
           </section>
         ) : (
-          <section className={styles.contentColumn}>
+          <section className={styles.contentColumn} ref={contentScrollRef}>
             <div className={styles.videoWrapper}>
               <VideoContent
                 activeLesson={activeLesson}

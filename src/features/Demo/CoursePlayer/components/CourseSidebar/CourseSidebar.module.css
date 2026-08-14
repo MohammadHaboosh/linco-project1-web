@@ -1,5 +1,9 @@
+.sidebarBackdrop {
+  display: none;
+}
+
 .sidebarWrapper {
-  --sidebar-width: clamp(480px, 40vw, 650px);
+  --sidebar-width: clamp(420px, 36vw, 560px);
   --rail-width: 68px;
   display: flex;
   flex-shrink: 0;
@@ -16,11 +20,14 @@
   border-inline-end: none;
   border-bottom: none;
 
-  box-shadow: -8px 0 35px rgba(15, 23, 42, 0.05);
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
   overflow: hidden;
+  contain: paint;
+  will-change: width;
   transition:
-    width 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    background-color 0.4s ease;
+    width 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .open {
@@ -30,32 +37,39 @@
 .closed {
   width: var(--rail-width);
   background: #ffffff;
-  box-shadow: -4px 0 20px rgba(15, 23, 42, 0.03);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
 }
 
 /* Sidebar Content (Left side now) */
 .sidebarContent {
-  flex: 1;
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: calc(var(--sidebar-width) - var(--rail-width));
   display: flex;
   flex-direction: column;
   opacity: 0;
-  transform: translateX(20px);
+  transform: translateX(12px);
   transition:
-    opacity 0.3s ease,
-    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity 0.2s ease,
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 0.32s;
   pointer-events: none;
+  visibility: hidden;
   min-width: 0;
   border-inline-end: 1px solid #e2e8f0;
 }
 
 .sidebarContent:dir(rtl) {
-  transform: translateX(-20px);
+  transform: translateX(-12px);
 }
 
 .open .sidebarContent {
   opacity: 1;
   transform: translateX(0);
   pointer-events: auto;
+  visibility: visible;
+  transition-delay: 0s;
 }
 
 .contentHeader {
@@ -113,20 +127,27 @@
 .scrollableArea {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 24px; /* مساحات مدروسة أكثر لاستغلال العرض */
   scrollbar-width: thin;
-  scrollbar-color: #cbd5e1 transparent;
+  scrollbar-color: #b9c6d8 transparent;
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
 }
 .scrollableArea::-webkit-scrollbar {
   width: 6px;
 }
 .scrollableArea::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #b9c6d8;
   border-radius: 10px;
 }
 
 /* Vertical Nav Rail (Right side now) */
 .verticalNav {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
   width: var(--rail-width);
   min-width: var(--rail-width);
   display: flex;
@@ -134,7 +155,8 @@
   align-items: center;
   padding: 20px 8px; /* تصغير المساحات العلوية والسفلية */
   gap: 16px; /* تصغير المسافة بين الأزرار */
-  background: #ffffff;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  border-inline-start: 1px solid rgba(226, 232, 240, 0.75);
   z-index: 2;
 }
 
@@ -166,6 +188,9 @@
   border: none;
   background: transparent;
   cursor: pointer;
+  position: relative;
+  border-radius: 14px;
+  padding: 4px 0;
 }
 
 .navIconBox {
@@ -211,6 +236,19 @@
   color: #1a56db;
 }
 
+.activeNavBtn::after,
+.activeAiBtn::after {
+  content: "";
+  position: absolute;
+  inset-inline-end: -8px;
+  top: 50%;
+  width: 3px;
+  height: 26px;
+  border-radius: 999px;
+  background: #2563eb;
+  transform: translateY(-50%);
+}
+
 .aiBtn .navIconBox {
   color: #8b5cf6;
 }
@@ -224,8 +262,100 @@
   color: #8b5cf6;
 }
 
+.activeAiBtn::after {
+  background: #8b5cf6;
+}
+
+.closeBtn:focus-visible,
+.expandBtn:focus-visible,
+.navBtn:focus-visible {
+  outline: 3px solid rgba(59, 130, 246, 0.26);
+  outline-offset: 2px;
+}
+
 @media (max-width: 1180px) {
   .sidebarWrapper {
-    --sidebar-width: 50vw;
+    --sidebar-width: clamp(390px, 48vw, 520px);
+  }
+}
+
+@media (max-width: 900px) {
+  .sidebarBackdrop {
+    position: fixed;
+    inset: var(--course-header-height, 68px) 0 0;
+    z-index: 55;
+    display: block;
+    width: 100%;
+    border: 0;
+    background: rgba(15, 23, 42, 0.34);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    cursor: default;
+    animation: backdropIn 0.2s ease both;
+  }
+
+  .sidebarWrapper {
+    position: fixed;
+    inset-block-start: var(--course-header-height, 68px);
+    inset-block-end: 0;
+    inset-inline-end: 0;
+    height: auto;
+    z-index: 60;
+    border-start-start-radius: 20px;
+    border-end-start-radius: 20px;
+    border-bottom: 1px solid #e2e8f0;
+    box-shadow: 0 20px 65px rgba(15, 23, 42, 0.2);
+  }
+
+  .closed {
+    box-shadow: 0 12px 36px rgba(15, 23, 42, 0.1);
+  }
+}
+
+@media (max-width: 680px) {
+  .sidebarWrapper {
+    --sidebar-width: calc(100vw - 12px);
+    --rail-width: 60px;
+  }
+
+  .contentHeader {
+    padding: 16px 18px;
+  }
+
+  .contentHeader h2 {
+    font-size: 1.15rem;
+  }
+
+  .scrollableArea {
+    padding: 16px;
+  }
+
+  .verticalNav {
+    padding: 16px 6px;
+  }
+
+  .activeNavBtn::after,
+  .activeAiBtn::after {
+    inset-inline-end: -6px;
+  }
+}
+
+@keyframes backdropIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebarWrapper,
+  .sidebarContent,
+  .navIconBox,
+  .sidebarBackdrop {
+    animation-duration: 0.01ms;
+    transition-duration: 0.01ms;
   }
 }

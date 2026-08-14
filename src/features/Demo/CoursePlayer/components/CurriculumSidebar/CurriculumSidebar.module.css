@@ -17,13 +17,14 @@
   background: #ffffff;
   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.02);
   overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .chapterCard.expanded {
   border-color: #bfdbfe;
-  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.06);
-  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.08);
 }
 
 .chapterHeader {
@@ -108,17 +109,17 @@
   gap: 12px;
   text-align: start;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .lessonItem:hover:not(:disabled) {
   background: #eff6ff;
   border-color: #bfdbfe;
-  transform: translateX(4px); /* For LTR direction */
-}
-
-.lessonItem:dir(rtl):hover:not(:disabled) {
-  transform: translateX(-4px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.08);
 }
 
 .lessonItem.selected {
@@ -278,6 +279,7 @@
   background: #f8fafc;
   border: 1px solid #e2e8f0;
   opacity: 0.8;
+  cursor: default;
 }
 
 .certificateIcon {
@@ -333,4 +335,46 @@
   color: #94a3b8;
   font-size: 0.85rem;
   font-weight: 500;
+}
+
+.chapterHeader:focus-visible,
+.lessonItem:focus-visible {
+  position: relative;
+  z-index: 1;
+  outline: 3px solid rgba(59, 130, 246, 0.24);
+  outline-offset: 2px;
+}
+
+@media (max-width: 680px) {
+  .chapterList {
+    gap: 10px;
+  }
+
+  .chapterHeader {
+    padding: 12px;
+  }
+
+  .chapterNumber {
+    width: 34px;
+    height: 34px;
+    font-size: 0.85rem;
+  }
+
+  .chapterInfo strong {
+    font-size: 0.95rem;
+  }
+
+  .lessonList {
+    padding: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chapterCard,
+  .chapterHeader,
+  .chevron,
+  .lessonItem,
+  .lessonStatus {
+    transition-duration: 0.01ms;
+  }
 }

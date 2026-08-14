@@ -19,7 +19,9 @@
   text-align: center;
   color: white;
   overflow: hidden;
-  box-shadow: 0 15px 35px rgba(10, 42, 84, 0.15);
+  box-shadow:
+    0 20px 45px rgba(10, 42, 84, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .glowBg {
@@ -95,7 +97,11 @@
   gap: 18px;
   text-align: start;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition:
+    background-color 0.24s ease,
+    border-color 0.24s ease,
+    box-shadow 0.24s ease,
+    transform 0.24s ease;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
 }
 
@@ -180,6 +186,10 @@
   font-size: 0.9rem;
 }
 
+.backBtn span {
+  display: none;
+}
+
 .chatModeIcon {
   flex-shrink: 0;
   font-size: 1.15rem;
@@ -211,7 +221,20 @@
   padding-bottom: 20px;
   min-height: 0;
   scrollbar-width: thin;
-  scrollbar-color: #cbd5e1 transparent;
+  scrollbar-color: #b9c6d8 transparent;
+  scrollbar-gutter: stable;
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+  scroll-padding-block: 16px;
+}
+
+.messagesArea::-webkit-scrollbar {
+  width: 6px;
+}
+
+.messagesArea::-webkit-scrollbar-thumb {
+  background: #b9c6d8;
+  border-radius: 999px;
 }
 
 .messageWrapper {
@@ -454,6 +477,15 @@
   box-shadow: none;
 }
 
+.actionCard:focus-visible,
+.backBtn:focus-visible,
+.suggestions button:focus-visible,
+.sendBtn:focus-visible,
+.dismissErrorBtn:focus-visible {
+  outline: 3px solid rgba(139, 92, 246, 0.25);
+  outline-offset: 2px;
+}
+
 .composerHint {
   margin: 7px 4px 0;
   color: #94a3b8;
@@ -501,5 +533,20 @@
 
   .suggestions {
     margin-inline-start: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .actionCard,
+  .backBtn,
+  .suggestions button,
+  .sendBtn,
+  .thinkingBubble > span:not(.srOnly) {
+    animation-duration: 0.01ms;
+    transition-duration: 0.01ms;
+  }
+
+  .messagesArea {
+    scroll-behavior: auto;
   }
 }

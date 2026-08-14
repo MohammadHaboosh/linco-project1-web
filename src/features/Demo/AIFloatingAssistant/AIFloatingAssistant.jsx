@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import {
   IoAlertCircleOutline,
+  IoArrowBackOutline,
+  IoArrowForwardOutline,
   IoBulbOutline,
   IoChatbubblesOutline,
   IoCloseOutline,
@@ -47,6 +49,8 @@ const AIFloatingAssistant = ({ courseId }) => {
   const [question, setQuestion] = useState("");
   const messagesEndRef = useRef(null);
   const isQuizMode = mode === "quiz" || mode === "randomQuiz";
+  const BackIcon =
+    i18n.dir() === "rtl" ? IoArrowForwardOutline : IoArrowBackOutline;
   const {
     messages,
     isAsking,
@@ -210,7 +214,8 @@ const AIFloatingAssistant = ({ courseId }) => {
             >
               <span aria-hidden="true">
                 {i18n.dir() === "rtl" ? "→" : "←"}
-              </span>{" "}
+              </span>
+              <BackIcon aria-hidden="true" />
               {t("back")}
             </button>
             <div className={styles.chatModeInfo}>

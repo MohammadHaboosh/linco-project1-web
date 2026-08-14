@@ -33,78 +33,96 @@ const CourseSidebar = ({
   };
 
   return (
-    <aside
-      className={`${styles.sidebarWrapper} ${isOpen ? styles.open : styles.closed}`}
-      aria-label="Course learning sidebar"
-      data-open={isOpen}
-    >
-      {/* Content Area (Left side of the sidebar) */}
-      <div className={styles.sidebarContent}>
-        <div className={styles.contentHeader}>
-          <div className={styles.headerTitles}>
-            <span className={styles.headerEyebrow}>
-              {activeTab === "curriculum" ? "LEARNING PATH" : "SMART STUDY"}
-            </span>
-            <h2>
-              {activeTab === "curriculum"
-                ? "Course Curriculum"
-                : "AI Assistant"}
-            </h2>
+    <>
+      {isOpen && (
+        <button
+          type="button"
+          className={styles.sidebarBackdrop}
+          onClick={() => setIsOpen(false)}
+          aria-label="Close course sidebar"
+        />
+      )}
+      <aside
+        className={`${styles.sidebarWrapper} ${isOpen ? styles.open : styles.closed}`}
+        aria-label="Course learning sidebar"
+        data-open={isOpen}
+      >
+        {/* Content Area (Left side of the sidebar) */}
+        <div className={styles.sidebarContent} aria-hidden={!isOpen}>
+          <div className={styles.contentHeader}>
+            <div className={styles.headerTitles}>
+              <span className={styles.headerEyebrow}>
+                {activeTab === "curriculum" ? "LEARNING PATH" : "SMART STUDY"}
+              </span>
+              <h2>
+                {activeTab === "curriculum"
+                  ? "Course Curriculum"
+                  : "AI Assistant"}
+              </h2>
+            </div>
+            <button
+              type="button"
+              className={styles.closeBtn}
+              onClick={() => setIsOpen(false)}
+              aria-label="Close sidebar"
+            >
+              <CollapseIcon />
+            </button>
           </div>
-          <button
-            className={styles.closeBtn}
-            onClick={() => setIsOpen(false)}
-            aria-label="Close sidebar"
-          >
-            <CollapseIcon />
-          </button>
+
+          <div className={styles.scrollableArea}>
+            {activeTab === "curriculum" ? (
+              <CurriculumSidebar
+                activeLesson={activeLesson}
+                onSelectLesson={onSelectLesson}
+              />
+            ) : (
+              <AIFloatingAssistant key={courseId} courseId={courseId} />
+            )}
+          </div>
         </div>
 
-        <div className={styles.scrollableArea}>
-          {activeTab === "curriculum" ? (
-            <CurriculumSidebar
-              activeLesson={activeLesson}
-              onSelectLesson={onSelectLesson}
-            />
-          ) : (
-            <AIFloatingAssistant key={courseId} courseId={courseId} />
+        {/* Navigation Rail (Right side of the sidebar) */}
+        <div className={styles.verticalNav}>
+          {!isOpen && (
+            <button
+              type="button"
+              className={styles.expandBtn}
+              onClick={() => setIsOpen(true)}
+              aria-label="Open course sidebar"
+            >
+              <ExpandIcon />
+            </button>
           )}
-        </div>
-      </div>
 
-      {/* Navigation Rail (Right side of the sidebar) */}
-      <div className={styles.verticalNav}>
-        {!isOpen && (
-          <button className={styles.expandBtn} onClick={() => setIsOpen(true)}>
-            <ExpandIcon />
+          <button
+            className={`${styles.navBtn} ${activeTab === "curriculum" && isOpen ? styles.activeNavBtn : ""}`}
+            onClick={() => handleTabClick("curriculum")}
+            title="Course Content"
+            type="button"
+            aria-pressed={activeTab === "curriculum"}
+          >
+            <div className={styles.navIconBox}>
+              <IoListOutline />
+            </div>
+            {isOpen && <span className={styles.navText}>Path</span>}
           </button>
-        )}
 
-        <button
-          className={`${styles.navBtn} ${activeTab === "curriculum" && isOpen ? styles.activeNavBtn : ""}`}
-          onClick={() => handleTabClick("curriculum")}
-          title="Course Content"
-          type="button"
-        >
-          <div className={styles.navIconBox}>
-            <IoListOutline />
-          </div>
-          {isOpen && <span className={styles.navText}>Path</span>}
-        </button>
-
-        <button
-          className={`${styles.navBtn} ${styles.aiBtn} ${activeTab === "ai" && isOpen ? styles.activeAiBtn : ""}`}
-          onClick={() => handleTabClick("ai")}
-          title="Smart Assistant"
-          type="button"
-        >
-          <div className={styles.navIconBox}>
-            <IoSparklesOutline />
-          </div>
-          {isOpen && <span className={styles.navText}>Smart</span>}
-        </button>
-      </div>
-    </aside>
+          <button
+            className={`${styles.navBtn} ${styles.aiBtn} ${activeTab === "ai" && isOpen ? styles.activeAiBtn : ""}`}
+            onClick={() => handleTabClick("ai")}
+            title="Smart Assistant"
+            type="button"
+            aria-pressed={activeTab === "ai"}
+          >
+            <div className={styles.navIconBox}>
+              <IoSparklesOutline />
+            </div>
+            {isOpen && <span className={styles.navText}>Smart</span>}
+          </button>
+        </div>
+      </aside>
+    </>
   );
 };
 
