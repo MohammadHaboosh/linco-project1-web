@@ -8,9 +8,15 @@ import {
 } from "react-icons/io5";
 import styles from "./MarketplaceCard.module.css";
 import { useTranslation } from "react-i18next";
+import { useDemo } from "../../context/DemoContext"; // 💡 تأكد من صحة مسار الاستيراد بناءً على هيكل مجلداتك
 
 const MarketplaceCard = ({ course, onViewDetails }) => {
   const { t } = useTranslation();
+  const { demoId } = useDemo();
+
+  const isOwnDemoCourse =
+    String(course.demo?.id) === String(demoId) ||
+    String(course.demoId) === String(demoId);
 
   const tagColorClasses = [
     styles.tagBlue,
@@ -79,16 +85,18 @@ const MarketplaceCard = ({ course, onViewDetails }) => {
           </div>
 
           <div className={styles.actionArea}>
-            <button
-              className={styles.buyBtn}
-              onClick={(e) => {
-                e.stopPropagation();
-                onViewDetails();
-              }}
-              title={course.price === 0 ? "Enroll Free" : "Purchase Course"}
-            >
-              {course.price === 0 ? <IoDownloadOutline /> : <IoCartOutline />}
-            </button>
+            {!isOwnDemoCourse && (
+              <button
+                className={styles.buyBtn}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onViewDetails();
+                }}
+                title={course.price === 0 ? "Enroll Free" : "Purchase Course"}
+              >
+                {course.price === 0 ? <IoDownloadOutline /> : <IoCartOutline />}
+              </button>
+            )}
           </div>
         </div>
       </div>
