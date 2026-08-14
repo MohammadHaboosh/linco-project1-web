@@ -2,7 +2,7 @@ import { useState } from "react";
 import QuizTaker from "./QuizTaker";
 import QuizResult from "./QuizResult";
 import styles from "./Quiz.module.css";
-import { useExamPlayer } from "../../hooks/useExamPlayer";
+import { useExamPlayer } from "../hooks/useExamPlayer";
 import {
   IoPlayOutline,
   IoTimeOutline,

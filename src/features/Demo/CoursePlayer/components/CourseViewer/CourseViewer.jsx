@@ -3,7 +3,7 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 import VideoContent from "./VideoContent";
 import LessonTabs from "../LessonTabs/LessonTabs";
 import CourseSidebar from "../CourseSidebar/CourseSidebar";
-import QuizContainer from "../Quiz/QuizContainer";
+import QuizContainer from "../../../Quiz/components/QuizContainer";
 import styles from "./CourseViewer.module.css";
 import {
   IoChevronBackOutline,

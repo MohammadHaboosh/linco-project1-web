@@ -7,7 +7,7 @@ import {
   IoChevronBackOutline,
 } from "react-icons/io5";
 import CurriculumSidebar from "../CurriculumSidebar/CurriculumSidebar";
-import AIFloatingAssistant from "../AIFloatingAssistant/AIFloatingAssistant";
+import AIFloatingAssistant from "../../../AIFloatingAssistant/AIFloatingAssistant";
 
 const CourseSidebar = ({
   isOpen,
