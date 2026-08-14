@@ -5,6 +5,7 @@ export const PATHS = {
   JOINED_ROOMS: "/joined-rooms",
   PROFILE: "/profile",
   OWN_ROOMS: "/my-own-rooms",
+  CERTIFICATES: "/certificates",
   LEARNING_PATH: "learning-path",
   COURSES: "courses",
   COURSE_PLAYER: "course-player/:courseId",
@@ -15,7 +16,6 @@ export const PATHS = {
   LEADERBOARD: "leaderboard",
   GROUP_WORKSPACE: "group-workspace",
   DEPARTMENTS: "departments",
-  CERTIFICATES: "certificates",
 
   SIGNIN: "/signin",
 
@@ -50,8 +50,7 @@ export const PATHS = {
   // SM_ROADMAPS: "roadmaps",
   SM_TASKS: "weekly-tasks",
   LIVES: "lives",
-  LIVE_ROOM:
-    "/demos/:demoId/departments/:departmentId/lives/:streamId/room",
+  LIVE_ROOM: "/demos/:demoId/departments/:departmentId/lives/:streamId/room",
 
   COURSE_STUDIO: "course-studio",
   MANAGE_COURSE: "manage-course/:assetId",

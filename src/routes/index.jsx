@@ -70,6 +70,10 @@ export const router = createBrowserRouter([
           () => import("../pages/PendingInvitationsPage.jsx"),
         ),
       },
+      {
+        path: PATHS.CERTIFICATES,
+        lazy: lazyComponent(() => import("../pages/CertificatesPage.jsx")),
+      },
     ],
   },
   {
@@ -102,18 +106,14 @@ export const router = createBrowserRouter([
         path: PATHS.COURSE_STUDIO,
         lazy: lazyComponent(
           () =>
-            import(
-              "../features/Demo/PublishCourse/components/CourseStudio/CourseStudio.jsx"
-            ),
+            import("../features/Demo/PublishCourse/components/CourseStudio/CourseStudio.jsx"),
         ),
       },
       {
         path: PATHS.MANAGE_COURSE,
         lazy: lazyComponent(
           () =>
-            import(
-              "../features/Demo/OwnerCourses/components/ManageCourse/components/CourseManagerLayout.jsx"
-            ),
+            import("../features/Demo/OwnerCourses/components/ManageCourse/components/CourseManagerLayout.jsx"),
         ),
       },
       {
@@ -127,10 +127,6 @@ export const router = createBrowserRouter([
       {
         path: PATHS.INQUIRIES,
         lazy: lazyComponent(() => import("../pages/InquiriesPage.jsx")),
-      },
-      {
-        path: PATHS.CERTIFICATES,
-        lazy: lazyComponent(() => import("../pages/CertificatesPage.jsx")),
       },
     ],
   },
@@ -146,9 +142,7 @@ export const router = createBrowserRouter([
       },
       {
         path: PATHS.MEMBERS,
-        lazy: lazyComponent(
-          () => import("../pages/DepartmentMembersPage.jsx"),
-        ),
+        lazy: lazyComponent(() => import("../pages/DepartmentMembersPage.jsx")),
       },
       {
         path: PATHS.LEARNING_PATH,
