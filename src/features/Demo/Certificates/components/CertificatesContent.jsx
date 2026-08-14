@@ -13,10 +13,8 @@ const CertificatesContent = () => {
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
 
-  // استخدام الـ Hook الحقيقي
   const { certificates, isLoading, error } = useCertificates();
 
-  // فلترة الشهادات بناءً على اسم الدورة
   const filteredCerts = certificates.filter((cert) =>
     cert.courseName?.toLowerCase().includes(searchQuery.toLowerCase()),
   );
