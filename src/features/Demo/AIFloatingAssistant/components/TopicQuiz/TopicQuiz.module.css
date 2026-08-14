@@ -288,7 +288,7 @@
   border-radius: 12px;
   color: #334155;
   font: inherit;
-  text-align: left;
+  text-align: start;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -297,6 +297,10 @@
   background: #f5f3ff;
   border-color: #a78bfa;
   transform: translateX(2px);
+}
+
+.optionButton:dir(rtl):hover:not(:disabled) {
+  transform: translateX(-2px);
 }
 
 .optionButton:disabled {

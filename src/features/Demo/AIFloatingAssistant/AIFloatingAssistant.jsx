@@ -42,7 +42,7 @@ const suggestedQuestionKeys = [
 ];
 
 const AIFloatingAssistant = ({ courseId }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [mode, setMode] = useState("home");
   const [question, setQuestion] = useState("");
   const messagesEndRef = useRef(null);
@@ -208,7 +208,10 @@ const AIFloatingAssistant = ({ courseId }) => {
               className={styles.backBtn}
               onClick={() => setMode("home")}
             >
-              <span aria-hidden="true">←</span> {t("back")}
+              <span aria-hidden="true">
+                {i18n.dir() === "rtl" ? "→" : "←"}
+              </span>{" "}
+              {t("back")}
             </button>
             <div className={styles.chatModeInfo}>
               <IoSparkles className={styles.chatModeIcon} />

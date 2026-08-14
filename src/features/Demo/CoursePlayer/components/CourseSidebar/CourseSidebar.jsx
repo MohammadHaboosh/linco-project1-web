@@ -7,6 +7,7 @@ import {
 } from "react-icons/io5";
 import CurriculumSidebar from "../CurriculumSidebar/CurriculumSidebar";
 import AIFloatingAssistant from "../../../AIFloatingAssistant/AIFloatingAssistant";
+import { useTranslation } from "react-i18next";
 
 const CourseSidebar = ({
   courseId,
@@ -17,6 +18,15 @@ const CourseSidebar = ({
   activeLesson,
   onSelectLesson,
 }) => {
+  const { i18n } = useTranslation();
+  const isRtl = i18n.dir() === "rtl";
+  const CollapseIcon = isRtl
+    ? IoChevronBackOutline
+    : IoChevronForwardOutline;
+  const ExpandIcon = isRtl
+    ? IoChevronForwardOutline
+    : IoChevronBackOutline;
+
   const handleTabClick = (tab) => {
     setActiveTab(tab);
     if (!isOpen) setIsOpen(true);
@@ -46,7 +56,7 @@ const CourseSidebar = ({
             onClick={() => setIsOpen(false)}
             aria-label="Close sidebar"
           >
-            <IoChevronForwardOutline />
+            <CollapseIcon />
           </button>
         </div>
 
@@ -66,7 +76,7 @@ const CourseSidebar = ({
       <div className={styles.verticalNav}>
         {!isOpen && (
           <button className={styles.expandBtn} onClick={() => setIsOpen(true)}>
-            <IoChevronBackOutline />
+            <ExpandIcon />
           </button>
         )}
 

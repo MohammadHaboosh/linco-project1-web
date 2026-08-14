@@ -10,9 +10,10 @@
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
 
-  border-radius: 24px 0 0 0;
+  border-radius: 0;
+  border-start-start-radius: 24px;
   border: 1px solid #e2e8f0;
-  border-right: none;
+  border-inline-end: none;
   border-bottom: none;
 
   box-shadow: -8px 0 35px rgba(15, 23, 42, 0.05);
@@ -44,7 +45,11 @@
     transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: none;
   min-width: 0;
-  border-right: 1px solid #e2e8f0;
+  border-inline-end: 1px solid #e2e8f0;
+}
+
+.sidebarContent:dir(rtl) {
+  transform: translateX(-20px);
 }
 
 .open .sidebarContent {

@@ -11,7 +11,14 @@ import { useTranslation } from "react-i18next";
 import Hls from "hls.js";
 
 const VideoContent = ({ activeLesson, onNext, onPrev }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isRtl = i18n.dir() === "rtl";
+  const PreviousIcon = isRtl
+    ? IoPlaySkipForwardOutline
+    : IoPlaySkipBackOutline;
+  const NextIcon = isRtl
+    ? IoPlaySkipBackOutline
+    : IoPlaySkipForwardOutline;
   const plyrRef = useRef(null);
   const hlsRef = useRef(null);
 
@@ -169,11 +176,11 @@ const VideoContent = ({ activeLesson, onNext, onPrev }) => {
 
         <div className={styles.customVideoControls}>
           <button className={styles.navVideoBtn} onClick={onPrev}>
-            <IoPlaySkipBackOutline /> {t("prev-lesson")}
+            <PreviousIcon /> {t("prev-lesson")}
           </button>
 
           <button className={styles.navVideoBtn} onClick={onNext}>
-            {t("next-lesson")} <IoPlaySkipForwardOutline />
+            {t("next-lesson")} <NextIcon />
           </button>
         </div>
       </div>

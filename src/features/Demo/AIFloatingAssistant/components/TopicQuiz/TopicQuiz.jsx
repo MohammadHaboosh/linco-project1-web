@@ -22,8 +22,13 @@ const getOptionText = (option) =>
     .trim();
 
 const TopicQuiz = ({ courseId, quizType = "topic" }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const isRandomQuiz = quizType === "random";
+  const isRtl = i18n.dir() === "rtl";
+  const PreviousIcon = isRtl
+    ? IoArrowForwardOutline
+    : IoArrowBackOutline;
+  const NextIcon = isRtl ? IoArrowBackOutline : IoArrowForwardOutline;
   const [topic, setTopic] = useState("");
   const [questionCount, setQuestionCount] = useState("5");
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -324,7 +329,7 @@ const TopicQuiz = ({ courseId, quizType = "topic" }) => {
           onClick={handlePrevious}
           disabled={currentQuestionIndex === 0}
         >
-          <IoArrowBackOutline /> {t("previous")}
+          <PreviousIcon /> {t("previous")}
         </button>
         <button
           type="button"
@@ -335,7 +340,7 @@ const TopicQuiz = ({ courseId, quizType = "topic" }) => {
           {currentQuestionIndex === questions.length - 1
             ? t("view-results")
             : t("next-question")}
-          <IoArrowForwardOutline />
+          <NextIcon />
         </button>
       </div>
     </div>

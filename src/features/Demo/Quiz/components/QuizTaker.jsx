@@ -16,7 +16,12 @@ const QuizTaker = ({
   onSubmit,
   isSubmitting,
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isRtl = i18n.dir() === "rtl";
+  const PreviousIcon = isRtl
+    ? IoArrowForwardOutline
+    : IoArrowBackOutline;
+  const NextIcon = isRtl ? IoArrowBackOutline : IoArrowForwardOutline;
   const [currentQIndex, setCurrentQIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(examData.durationMinutes * 60);
 
@@ -129,7 +134,7 @@ const QuizTaker = ({
           onClick={handlePrev}
           disabled={currentQIndex === 0 || isSubmitting}
         >
-          <IoArrowBackOutline /> {t("previous")}
+          <PreviousIcon /> {t("previous")}
         </button>
 
         {currentQIndex === questions.length - 1 ? (
@@ -149,7 +154,7 @@ const QuizTaker = ({
             onClick={handleNext}
             disabled={isSubmitting}
           >
-            {t("next-question")} <IoArrowForwardOutline />
+            {t("next-question")} <NextIcon />
           </button>
         )}
       </div>

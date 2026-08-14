@@ -158,7 +158,8 @@
 .mainLayout {
   display: flex;
   gap: 20px;
-  padding: 20px 0 0 24px; /* أزلنا الـ padding من اليمين والأسفل */
+  padding-block-start: 20px;
+  padding-inline-start: 24px;
   max-width: 100%;
   width: 100%;
   flex: 1;
@@ -173,7 +174,7 @@
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-right: 4px;
+  padding-inline-end: 4px;
   padding-bottom: 40px;
   display: flex;
   flex-direction: column;
@@ -415,7 +416,8 @@
 
 @media (max-width: 1180px) {
   .mainLayout {
-    padding: 16px 0 0 18px;
+    padding-block-start: 16px;
+    padding-inline-start: 18px;
   }
 }
 
@@ -555,11 +557,13 @@
   font-weight: 700;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
-.quizFullScreenLayout {
+.quizColumn {
   flex: 1;
   display: flex;
   min-height: 0;
-  padding: 24px;
+  min-width: 0;
+  padding-block-end: 20px;
+  padding-inline-end: 4px;
   width: 100%;
   overflow: hidden;
 }

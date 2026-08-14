@@ -195,9 +195,9 @@
 
 /* الخط الجانبي الذي يربط الردود بالسؤال */
 .repliesThread {
-  border-left: 2px solid #e2e8f0;
-  margin-left: 22px;
-  padding-left: 24px;
+  border-inline-start: 2px solid #e2e8f0;
+  margin-inline-start: 22px;
+  padding-inline-start: 24px;
   display: flex;
   flex-direction: column;
   gap: 16px;

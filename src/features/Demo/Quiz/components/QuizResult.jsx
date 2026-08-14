@@ -1,4 +1,5 @@
 import {
+  IoArrowBackOutline,
   IoArrowForwardOutline,
   IoRefreshOutline,
   IoCheckmarkCircleOutline,
@@ -6,6 +7,7 @@ import {
   IoBulbOutline,
 } from "react-icons/io5";
 import styles from "./Quiz.module.css";
+import { useTranslation } from "react-i18next";
 
 const QuizResult = ({
   scoreInfo,
@@ -14,6 +16,9 @@ const QuizResult = ({
   onRetry,
   onContinue,
 }) => {
+  const { i18n } = useTranslation();
+  const ContinueIcon =
+    i18n.dir() === "rtl" ? IoArrowBackOutline : IoArrowForwardOutline;
   const attemptData = scoreInfo.examAttempt || {};
   const percentage = attemptData.score ?? (scoreInfo.score || 0);
   const isPassed = percentage >= passingScore;
@@ -92,7 +97,7 @@ const QuizResult = ({
               className={styles.continueBtn}
               onClick={onContinue}
             >
-              Continue Course <IoArrowForwardOutline />
+              Continue Course <ContinueIcon />
             </button>
           </div>
         </div>

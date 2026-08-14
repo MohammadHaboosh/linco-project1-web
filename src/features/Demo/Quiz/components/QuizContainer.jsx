@@ -12,7 +12,7 @@ import {
 import { useTranslation } from "react-i18next";
 
 const QuizContainer = ({ examId, onCompleteSection }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [quizState, setQuizState] = useState("welcome");
 
   const {
@@ -66,7 +66,7 @@ const QuizContainer = ({ examId, onCompleteSection }) => {
   }
 
   return (
-    <div className={styles.quizWrapper} dir="ltr">
+    <div className={styles.quizWrapper} dir={i18n.dir()}>
       {quizState === "welcome" && (
         <div className={styles.welcomeScreen}>
           <div className={styles.mascotEntrance}>

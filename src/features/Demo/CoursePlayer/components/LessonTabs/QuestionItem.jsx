@@ -173,7 +173,7 @@ const QuestionItem = ({ question, onEdit, onDelete, lessonId }) => {
             <div className={styles.replyInputWrapper}>
               <input
                 type="text"
-                placeholder={t("write-a-reply-dot-dot-dot")}
+                placeholder={t("write-a-reply")}
                 value={replyText}
                 disabled={isSubmitting}
                 onChange={(e) => setReplyText(e.target.value)}

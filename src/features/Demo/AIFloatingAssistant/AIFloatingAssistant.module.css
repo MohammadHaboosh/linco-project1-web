@@ -93,7 +93,7 @@
   display: flex;
   align-items: center;
   gap: 18px;
-  text-align: left;
+  text-align: start;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
@@ -251,13 +251,13 @@
   background: #ffffff;
   border: 1px solid #e2e8f0;
   color: #1e293b;
-  border-bottom-left-radius: 4px; /* for LTR */
+  border-end-start-radius: 4px;
 }
 
 .userMsg .messageBubble {
   background: linear-gradient(135deg, #0a2a54 0%, #1a56db 100%);
   color: white;
-  border-bottom-right-radius: 4px; /* for LTR */
+  border-end-end-radius: 4px;
 }
 
 .messageBubble p {
@@ -271,7 +271,7 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 8px;
-  margin-left: 56px;
+  margin-inline-start: 56px;
 }
 
 .suggestions > span {
@@ -291,7 +291,7 @@
   font: inherit;
   font-size: 0.82rem;
   font-weight: 650;
-  text-align: left;
+  text-align: start;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -300,6 +300,10 @@
   background: #faf5ff;
   border-color: #a78bfa;
   transform: translateX(2px);
+}
+
+.suggestions button:dir(rtl):hover:not(:disabled) {
+  transform: translateX(-2px);
 }
 
 .thinkingBubble {
@@ -496,6 +500,6 @@
   }
 
   .suggestions {
-    margin-left: 0;
+    margin-inline-start: 0;
   }
 }
