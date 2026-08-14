@@ -804,7 +804,7 @@
   "submitting": "تقديم...",
   "submit-exam": "تقديم الامتحان",
   "ask-the-instructor-or-discuss-with-other-students": "اسأل المعلم أو ناقش مع الطلاب الآخرين.",
-  "q-and-a-for": "س",
+  "q-and-a-for": "اسئلة وأجوبة عن :",
   "post-question": "انشر السؤال",
   "no-questions-yet-be-the-first-to-ask": "لا توجد أسئلة بعد. \nكن أول من يسأل!",
   "reply": "رد",
@@ -813,5 +813,6 @@
   "posting": "إرسال...",
   "delete-reply": "حذف الرد",
   "save": "يحفظ",
-  "edit-reply": "تحرير الرد"
+  "edit-reply": "تحرير الرد",
+  "discussion-board": "غرفة المناقشة"
 }

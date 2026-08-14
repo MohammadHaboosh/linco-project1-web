@@ -66,14 +66,14 @@ const ReplyItem = ({ reply, onEdit, onDelete }) => {
                 onClick={() => setIsEditing(true)}
                 title={t("edit-reply")}
               >
-                <IoPencilOutline size={14} />
+                <IoPencilOutline size={16} />
               </button>
               <button
                 className={styles.iconActionBtnDanger}
                 onClick={handleDelete}
                 title={t("delete-reply")}
               >
-                <IoTrashOutline size={14} />
+                <IoTrashOutline size={16} />
               </button>
             </div>
           )}
@@ -85,7 +85,7 @@ const ReplyItem = ({ reply, onEdit, onDelete }) => {
               value={editedContent}
               onChange={(e) => setEditedContent(e.target.value)}
               className={styles.editTextarea}
-              style={{ minHeight: "60px" }}
+              style={{ minHeight: "60px", padding: "12px" }}
             />
             <div className={styles.editActions}>
               <button className={styles.saveEditBtn} onClick={handleSaveEdit}>

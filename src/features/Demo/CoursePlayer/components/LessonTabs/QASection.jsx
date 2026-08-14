@@ -55,21 +55,26 @@ const QASection = ({ activeLesson }) => {
   if (!activeLesson) {
     return (
       <div className={styles.qaContainer}>
-        <p>{t("please-select-a-lesson-first")}</p>
+        <div className={styles.emptyStateContainer}>
+          <p>{t("please-select-a-lesson-first")}</p>
+        </div>
       </div>
     );
   }
 
   return (
     <div className={styles.qaContainer}>
-      <div className={styles.qaHeader}>
+      <div className={styles.panelHeadingQA}>
         <div>
-          <h3>Q&A for: {activeLesson.title}</h3>
-          <p>{t("ask-the-instructor-or-discuss-with-other-students")}</p>
+          <span className={styles.kicker}>{t("discussion-board")}</span>
+          <h3>
+            {t("q-and-a-for")} {activeLesson.title}
+          </h3>
         </div>
+
         {!isAsking && (
           <button className={styles.askBtn} onClick={() => setIsAsking(true)}>
-            <IoAddOutline size={18} /> {t("ask-a-question")}
+            <IoAddOutline size={20} /> {t("ask-a-question")}
           </button>
         )}
       </div>
@@ -105,20 +110,20 @@ const QASection = ({ activeLesson }) => {
       ) : (
         <div className={styles.questionsList}>
           {isLoading && (
-            <p style={{ textAlign: "center", padding: "20px" }}>
+            <p
+              style={{ textAlign: "center", padding: "20px", color: "#64748b" }}
+            >
               Loading discussions...
             </p>
           )}
           {error && (
-            <p style={{ color: "red", textAlign: "center" }}>{error}</p>
+            <p style={{ color: "#ef4444", textAlign: "center" }}>{error}</p>
           )}
 
           {!isLoading && !error && questions.length === 0 && (
-            <p
-              style={{ textAlign: "center", color: "#64748b", padding: "20px" }}
-            >
-              {t("no-questions-yet-be-the-first-to-ask")}
-            </p>
+            <div className={styles.emptyStateContainer}>
+              <p>{t("no-questions-yet-be-the-first-to-ask")}</p>
+            </div>
           )}
 
           {!isLoading &&

@@ -94,21 +94,21 @@ const QuestionItem = ({ question, onEdit, onDelete, lessonId }) => {
         {!isEditing && (
           <div
             className={styles.ownerActions}
-            style={{ marginLeft: "auto", display: "flex", gap: "8px" }}
+            style={{ marginLeft: "auto", display: "flex", gap: "4px" }}
           >
             <button
               className={styles.iconActionBtn}
               onClick={() => setIsEditing(true)}
               title="Edit Question"
             >
-              <IoPencilOutline size={16} />
+              <IoPencilOutline size={18} />
             </button>
             <button
               className={styles.iconActionBtnDanger}
               onClick={() => onDelete(question.id)}
               title="Delete Question"
             >
-              <IoTrashOutline size={16} />
+              <IoTrashOutline size={18} />
             </button>
           </div>
         )}
@@ -142,50 +142,51 @@ const QuestionItem = ({ question, onEdit, onDelete, lessonId }) => {
 
       <div className={styles.cardActions}>
         <button className={styles.actionBtn} onClick={handleToggleReplies}>
-          <IoChatbubblesOutline />
+          <IoChatbubblesOutline size={18} />
           {answers.length} {answers.length === 1 ? t("reply") : t("replies")}
         </button>
       </div>
 
       {showReplies && (
         <div className={styles.repliesSection}>
-          {isLoading ? (
-            <p
-              style={{
-                textAlign: "center",
-                fontSize: "0.85rem",
-                color: "#64748b",
-              }}
-            >
-              Loading replies...
-            </p>
-          ) : (
-            answers.map((reply) => (
-              <ReplyItem
-                key={reply.id}
-                reply={reply}
-                onEdit={editAnswer}
-                onDelete={removeAnswer}
-              />
-            ))
-          )}
+          <div className={styles.repliesThread}>
+            {isLoading ? (
+              <p
+                style={{
+                  fontSize: "0.85rem",
+                  color: "#64748b",
+                }}
+              >
+                Loading replies...
+              </p>
+            ) : (
+              answers.map((reply) => (
+                <ReplyItem
+                  key={reply.id}
+                  reply={reply}
+                  onEdit={editAnswer}
+                  onDelete={removeAnswer}
+                />
+              ))
+            )}
 
-          <div className={styles.replyInputWrapper}>
-            <input
-              type="text"
-              placeholder="Write a reply..."
-              value={replyText}
-              disabled={isSubmitting}
-              onChange={(e) => setReplyText(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleReplySubmit()}
-            />
-            <button
-              className={styles.sendReplyBtn}
-              disabled={!replyText.trim() || isSubmitting}
-              onClick={handleReplySubmit}
-            >
-              {isSubmitting ? "..." : t("reply")}
-            </button>
+            <div className={styles.replyInputWrapper}>
+              <input
+                type="text"
+                placeholder={t("write-a-reply-dot-dot-dot")}
+                value={replyText}
+                disabled={isSubmitting}
+                onChange={(e) => setReplyText(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleReplySubmit()}
+              />
+              <button
+                className={styles.sendReplyBtn}
+                disabled={!replyText.trim() || isSubmitting}
+                onClick={handleReplySubmit}
+              >
+                {isSubmitting ? "..." : t("reply")}
+              </button>
+            </div>
           </div>
         </div>
       )}
