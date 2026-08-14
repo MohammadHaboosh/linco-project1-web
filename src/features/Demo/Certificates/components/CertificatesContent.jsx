@@ -7,16 +7,14 @@ import {
 import CertificateCard from "./CertificateCard";
 import styles from "./Certificates.module.css";
 import { useTranslation } from "react-i18next";
-import { useCertificates } from "../../hooks/useCertificates"; // تأكد من المسار الصحيح للـ Hook
+import { useCertificates } from "../hooks/useCertificates"; // تأكد من المسار الصحيح للـ Hook
 
 const CertificatesContent = () => {
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
 
-  // استخدام الـ Hook الحقيقي
   const { certificates, isLoading, error } = useCertificates();
 
-  // فلترة الشهادات بناءً على اسم الدورة
   const filteredCerts = certificates.filter((cert) =>
     cert.courseName?.toLowerCase().includes(searchQuery.toLowerCase()),
   );
