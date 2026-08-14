@@ -9,6 +9,7 @@ import { usePublishCourse } from "../../hooks/usePublishCourse";
 import PublishConfirmationModal from "./PublishConfirmationModal";
 import ErrorModal from "./ErrorModal";
 import CourseSettingsModal from "./CourseSettingsModal";
+import { courseManagerApi } from "../../api/courseManagerApi";
 
 const OwnerCoursesContent = () => {
   const { t } = useTranslation();
@@ -58,12 +59,13 @@ const OwnerCoursesContent = () => {
   const handleSaveSettings = async (courseId, newSettings) => {
     setIsSavingSettings(true);
     try {
-      // await courseManagerApi.updateCourseGeneralInfo(courseId, newSettings);
+      await courseManagerApi.updateCourseGeneralInfo(courseId, newSettings);
 
       setSelectedCourseForSettings(null);
       if (refetch) refetch();
     } catch (error) {
-      setErrorMessage("Failed to save settings.");
+      console.error("Error saving settings:", error);
+      setErrorMessage("Failed to save settings. " + error.message);
     } finally {
       setIsSavingSettings(false);
     }

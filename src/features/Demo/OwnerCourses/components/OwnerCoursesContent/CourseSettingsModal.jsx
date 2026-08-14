@@ -43,71 +43,92 @@ const CourseSettingsModal = ({ course, isOpen, onClose, onSave, isSaving }) => {
             onClick={onClose}
             disabled={isSaving}
           >
-            <IoCloseOutline size={20} />
+            <IoCloseOutline size={22} />
           </button>
         </div>
 
-        <h3 className={styles.modalTitle}>
-          {t("course-settings", "Course Settings")}
-        </h3>
-        <p className={styles.modalDesc}>
-          {t("update-price-visibility", "Update the price and visibility for")}{" "}
-          <strong>{course.title}</strong>
-        </p>
+        <div className={styles.modalBody}>
+          <h3 className={styles.modalTitle}>
+            {t("course-settings", "Course Settings")}
+          </h3>
+          <p className={styles.modalDesc}>
+            {t(
+              "update-price-visibility",
+              "Update the price and visibility for",
+            )}{" "}
+            <strong className={styles.highlightText}>{course.title}</strong>
+          </p>
 
-        <form onSubmit={handleSubmit} className={styles.settingsForm}>
-          <div className={styles.formGroup}>
-            <label className={styles.formLabel}>
-              <IoGlobeOutline /> {t("visibility", "Visibility")}
-            </label>
-            <select
-              className={styles.formInput}
-              value={visibility}
-              onChange={(e) => setVisibility(e.target.value)}
-              disabled={isSaving}
-            >
-              <option value="PUBLIC">
-                {t("public", "Public (Demo & Global Library)")}
-              </option>
-              <option value="PRIVATE">
-                {t("private", "Private (Demo Library Only)")}
-              </option>
-            </select>
-          </div>
+          <form onSubmit={handleSubmit} className={styles.settingsForm}>
+            <div className={styles.formGroup}>
+              <label className={styles.formLabel}>
+                <div className={styles.labelIconWrapper}>
+                  <IoGlobeOutline />
+                </div>
+                {t("visibility", "Visibility")}
+              </label>
+              <div className={styles.selectWrapper}>
+                <select
+                  className={styles.formInput}
+                  value={visibility}
+                  onChange={(e) => setVisibility(e.target.value)}
+                  disabled={isSaving}
+                >
+                  <option value="PUBLIC">
+                    {t("public", "Public (Demo & Global Library)")}
+                  </option>
+                  <option value="PRIVATE">
+                    {t("private", "Private (Demo Library Only)")}
+                  </option>
+                </select>
+              </div>
+            </div>
 
-          <div className={styles.formGroup}>
-            <label className={styles.formLabel}>
-              <IoCashOutline /> {t("price", "Course Price ($)")}
-            </label>
-            <input
-              type="number"
-              min="0"
-              step="0.01"
-              className={styles.formInput}
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              disabled={isSaving}
-            />
-          </div>
+            <div className={styles.formGroup}>
+              <label className={styles.formLabel}>
+                <div className={styles.labelIconWrapper}>
+                  <IoCashOutline />
+                </div>
+                {t("price", "Course Price")}
+              </label>
+              <div className={styles.priceInputWrapper}>
+                <span className={styles.currencySymbol}>$</span>
+                <input
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  className={`${styles.formInput} ${styles.priceInput}`}
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  disabled={isSaving}
+                  placeholder="0.00"
+                />
+              </div>
+            </div>
 
-          <div className={styles.modalFooter}>
-            <button
-              type="button"
-              className={styles.cancelBtn}
-              onClick={onClose}
-              disabled={isSaving}
-            >
-              {t("cancel")}
-            </button>
-            <button
-              type="submit"
-              className={styles.confirmSaveBtn}
-              disabled={isSaving}
-            >
-              {isSaving ? t("saving") : t("save-changes")}
-            </button>
-          </div>
-        </form>
+            <div className={styles.modalFooter}>
+              <button
+                type="button"
+                className={styles.cancelBtn}
+                onClick={onClose}
+                disabled={isSaving}
+              >
+                {t("cancel")}
+              </button>
+              <button
+                type="submit"
+                className={styles.confirmSaveBtn}
+                disabled={isSaving}
+              >
+                {isSaving ? (
+                  <span className={styles.loadingSpinner}></span>
+                ) : (
+                  t("save-changes")
+                )}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
