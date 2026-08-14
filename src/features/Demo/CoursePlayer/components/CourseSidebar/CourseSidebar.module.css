@@ -48,6 +48,9 @@
   width: calc(var(--sidebar-width) - var(--rail-width));
   display: flex;
   flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
   opacity: 0;
   transform: translateX(12px);
   transition:
@@ -73,6 +76,7 @@
 }
 
 .contentHeader {
+  flex: 0 0 auto;
   padding: 20px 24px;
   display: flex;
   justify-content: space-between;
@@ -125,7 +129,9 @@
 }
 
 .scrollableArea {
-  flex: 1;
+  flex: 1 1 0;
+  min-height: 0;
+  height: 0;
   overflow-y: auto;
   overflow-x: hidden;
   padding: 24px; /* مساحات مدروسة أكثر لاستغلال العرض */
@@ -134,6 +140,8 @@
   scrollbar-gutter: stable;
   overscroll-behavior: contain;
   scroll-behavior: smooth;
+  scroll-padding-block: 20px 36px;
+  padding-block-end: max(36px, env(safe-area-inset-bottom));
 }
 .scrollableArea::-webkit-scrollbar {
   width: 6px;
@@ -328,6 +336,7 @@
 
   .scrollableArea {
     padding: 16px;
+    padding-block-end: max(28px, env(safe-area-inset-bottom));
   }
 
   .verticalNav {
