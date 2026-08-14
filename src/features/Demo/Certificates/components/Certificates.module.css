@@ -10,7 +10,7 @@
 
 .contentWrapper {
   width: 100%;
-  max-width: 1500px;
+  max-width: 1600px; /* 💡 تم توسيع الحاوية لتستوعب 4 شهادات براحة تامة */
   animation: fadeIn 0.4s ease;
 }
 
@@ -31,11 +31,13 @@
   align-items: flex-end;
   margin-bottom: 40px;
 }
+
 .headerInfo {
   display: flex;
   align-items: center;
   gap: 20px;
 }
+
 .iconBox {
   width: 70px;
   height: 70px;
@@ -48,6 +50,7 @@
   font-size: 2.2rem;
   color: #ffffff;
 }
+
 .subHeading {
   font-size: 0.85rem;
   font-weight: 800;
@@ -57,12 +60,14 @@
   display: block;
   margin-bottom: 6px;
 }
+
 .title {
   color: #0a2a54;
   font-size: 2.2rem;
   font-weight: 800;
   margin: 0 0 8px 0;
 }
+
 .description {
   color: #64748b;
   font-size: 1.05rem;
@@ -77,6 +82,7 @@
   width: 100%;
   max-width: 450px;
 }
+
 .searchIcon {
   position: absolute;
   left: 18px;
@@ -85,6 +91,7 @@
   color: #94a3b8;
   font-size: 1.3rem;
 }
+
 .searchInput {
   width: 100%;
   padding: 14px 20px 14px 50px;
@@ -96,31 +103,63 @@
   transition: all 0.2s ease;
   font-weight: 500;
 }
+
 .searchInput:focus {
   outline: none;
   border-color: #1a56db;
   box-shadow: 0 0 0 4px rgba(26, 86, 219, 0.08);
 }
 
-.certsGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 40px;
+.emptyState {
+  text-align: center;
+  padding: 60px;
+  background: #ffffff;
+  border: 2px dashed #cbd5e1;
+  border-radius: 20px;
 }
 
-@media (max-width: 1200px) {
+.emptyIcon {
+  font-size: 4rem;
+  color: #cbd5e1;
+  margin-bottom: 15px;
+}
+
+.emptyState h3 {
+  color: #0a2a54;
+  font-size: 1.3rem;
+  margin: 0 0 10px 0;
+}
+
+.emptyState p {
+  color: #64748b;
+  margin: 0;
+}
+
+/* ================= 💡 Certificates Grid ================= */
+.certsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 👈 4 شهادات في السطر الواحد */
+  gap: 24px; /* تم تقليل المسافة قليلاً لتناسب 4 كروت بشكل ممتاز */
+}
+
+/* التجاوب مع الشاشات المتنوعة */
+@media (max-width: 1440px) {
+  .certsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 1024px) {
+  .certsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 768px) {
   .certsGrid {
     grid-template-columns: 1fr;
   }
 }
 
-/* ================= 🎓 EXACT CERTIFICATE DESIGN ================= */
-:root {
-  --cert-navy: #0f2c59;
-  --cert-gold: #cca658;
-  --cert-text: #1e293b;
-  --cert-bg: #ffffff;
-}
+/* ================= 🎓 CERTIFICATE TEMPLATE OVERLAY DESIGN ================= */
 
 .cardWrapper {
   display: flex;
@@ -128,424 +167,128 @@
   gap: 15px;
 }
 
+/* الحاوية الأساسية للشهادة */
 .certificateLayout {
-  background-color: var(--cert-bg);
-  /* الإطار المزدوج: إطار خارجي رفيع وإطار داخلي بخدعة الظل */
-  box-shadow:
-    inset 0 0 0 1px var(--cert-gold),
-    inset 0 0 0 7px var(--cert-bg),
-    inset 0 0 0 8px var(--cert-gold),
-    0 15px 35px rgba(15, 44, 89, 0.1);
-  aspect-ratio: 1.414 / 1; /* النسبة الذهبية لورقة A4 */
   position: relative;
-  overflow: hidden; /* لمنع خروج الزوايا */
-  display: flex;
-  flex-direction: column;
-  padding: 8px; /* البعد عن الإطار */
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(10, 42, 84, 0.08);
   transition:
     transform 0.4s ease,
     box-shadow 0.4s ease;
+  background-color: #ffffff;
+  /* تفعيل الـ Container Queries لضبط حجم الخطوط بشكل ديناميكي */
+  container-type: inline-size;
 }
 
 .certificateLayout:hover {
-  transform: translateY(-5px);
-  box-shadow:
-    inset 0 0 0 1px var(--cert-gold),
-    inset 0 0 0 7px var(--cert-bg),
-    inset 0 0 0 8px var(--cert-gold),
-    0 25px 45px rgba(15, 44, 89, 0.15);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(10, 42, 84, 0.15);
 }
 
-/* 1. الزاوية الزرقاء العلوية اليسرى */
-.cornerTopLeft {
-  position: absolute;
-  top: -80px;
-  left: -80px;
-  width: 220px;
-  height: 220px;
-  background: var(--cert-navy);
-  transform: rotate(-45deg);
-  border-bottom: 4px solid var(--cert-gold);
-  z-index: 2;
-}
-
-/* 2. الزاوية الزرقاء السفلية اليمنى (المنحنية) */
-.cornerBottomRight {
-  position: absolute;
-  bottom: -100px;
-  right: -80px;
-  width: 320px;
-  height: 320px;
-  background: var(--cert-navy);
-  border-radius: 50%;
-  border: 4px solid var(--cert-gold);
-  z-index: 2;
-}
-
-/* 3. الشريطة العلوية (Ribbon) */
-.ribbonWrapper {
-  position: absolute;
-  top: -6px;
-  left: 60px;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.15));
-}
-
-.ribbonFold {
-  position: absolute;
-  top: 0;
-  left: -8px;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 0 8px 10px 0;
-  border-color: transparent #0a1f40 transparent transparent;
-  z-index: 9;
-}
-
-.ribbonBody {
-  width: 80px;
-  height: 120px;
-  background: var(--cert-navy);
-  padding: 4px;
-  z-index: 10;
-}
-
-.ribbonInnerBorder {
+/* صورة القالب الأساسية */
+.templateBg {
+  display: block;
   width: 100%;
-  height: 100%;
-  border: 1.5px solid var(--cert-gold);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.ribbonLogo {
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-  border-radius: 50%;
-}
-
-.ribbonText {
-  color: #ffffff;
-  font-weight: 800;
-  font-size: 1.05rem;
-  letter-spacing: 0.5px;
-}
-
-.ribbonTail {
-  width: 80px;
-  height: 25px;
-  background: var(--cert-navy);
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 30%, 0 100%);
-  margin-top: -1px;
-  z-index: 10;
-  position: relative;
-}
-
-/* لإضافة الحواف الذهبية للذيل */
-.ribbonTail::before,
-.ribbonTail::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  width: 4px;
-  height: 100%;
-  background: var(--cert-bg); /* لإخفاء اللون الأزرق خلف الإطار */
-  border-left: 1.5px solid var(--cert-gold);
-  border-right: 1.5px solid var(--cert-gold);
-}
-.ribbonTail::before {
-  left: 4px;
-}
-.ribbonTail::after {
-  right: 4px;
-}
-
-/* 4. شعار المزود (Provider Logo Box) */
-.providerBoxContainer {
-  position: absolute;
-  top: 35px;
-  right: 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  z-index: 10;
-}
-
-.providerLabel {
-  font-size: 0.6rem;
-  font-weight: 700;
-  color: var(--cert-navy);
-  letter-spacing: 1px;
-}
-
-.providerBox {
-  width: 120px;
-  height: 60px;
-  border: 1px solid var(--cert-gold);
-  border-radius: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #ffffff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
-}
-
-.providerLogo {
-  max-width: 45px;
-  max-height: 45px;
-  object-fit: contain;
-}
-
-/* 5. العلامة المائية */
-.watermarkBg {
-  position: absolute;
-  right: 80px;
-  top: 50%;
-  transform: translateY(-50%);
-  height: 65%;
-  opacity: 0.03; /* شفافية عالية جداً لكي لا تزعج النص */
+  height: auto;
+  user-select: none;
   pointer-events: none;
-  z-index: 1;
 }
 
-/* ================= 6. المحتوى الداخلي والنصوص ================= */
-.certContent {
-  position: relative;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  padding: 40px 60px 80px 60px;
-  text-align: center;
-}
+/* ================= 📌 العناصر الديناميكية (Dynamic Overlays) ================= */
 
-/* الزخارف الذهبية */
-.goldDiamondTiny {
-  color: var(--cert-gold);
-  font-size: 0.7rem;
-}
-.goldDiamondSmall {
-  color: var(--cert-gold);
-  font-size: 1rem;
-}
-.goldDiamondLarge {
-  color: var(--cert-gold);
-  font-size: 1.4rem;
-}
-.goldDot {
-  color: var(--cert-gold);
-  font-size: 1.2rem;
-}
-
-/* العناوين */
-.headerSection {
-  margin-bottom: 25px;
-}
-
-.titleRow {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 2px;
-}
-
-.mainTitle {
-  font-family: "Georgia", serif;
-  color: var(--cert-navy);
-  font-size: 3.4rem;
-  font-weight: 700;
-  letter-spacing: 5px;
-  margin: 0;
-}
-
-.subTitleRow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
-.subTitle {
-  color: var(--cert-gold);
-  font-size: 1.15rem;
-  letter-spacing: 4px;
-  margin: 0;
-  font-weight: 600;
-}
-
-/* قسم التقديم والاسم */
-.studentSection {
-  margin-bottom: 15px;
-}
-
-.presentedRow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-.presentedRow p {
-  color: var(--cert-navy);
-  font-size: 0.75rem;
-  letter-spacing: 1.5px;
-  margin: 0;
-  font-weight: 600;
-}
-
-.studentName {
-  font-family: "Georgia", serif;
-  color: var(--cert-text);
-  font-size: 2.8rem;
-  font-weight: 400;
-  margin: 0;
-}
-
-/* الفواصل */
-.dividerRow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 60%;
-  margin: 15px auto;
-  gap: 10px;
-}
-
-.dividerLine {
-  flex: 1;
-  height: 1px;
-  background-color: var(--cert-gold);
-}
-
-/* معلومات الدورة */
-.kickerText {
-  color: var(--cert-navy);
-  font-size: 0.75rem;
-  letter-spacing: 1.5px;
-  font-weight: 600;
-  margin: 0 0 10px 0;
-  text-transform: uppercase;
-}
-
-.courseName {
-  font-family: "Georgia", serif;
-  color: var(--cert-text);
-  font-size: 1.8rem;
-  font-weight: 400;
-  margin: 0;
-}
-
-.providerName {
-  font-family: "Georgia", serif;
-  color: var(--cert-text);
-  font-size: 1.4rem;
-  font-weight: 400;
-  margin: 0;
-}
-
-/* ================= 7. التذييل (الختم والتوقيع) ================= */
-.certFooter {
+/* جميع النصوص تشترك في هذا التنسيق الأساسي */
+.dynamicStudentName,
+.dynamicCourseName,
+.dynamicProviderName,
+.dynamicDate {
   position: absolute;
-  bottom: 40px;
-  left: 60px;
-  right: 60px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  z-index: 10;
+  color: #1e293b;
+  font-family: "Georgia", "Times New Roman", serif;
+  text-align: center;
+  white-space: nowrap;
+  transform: translateX(-50%);
 }
 
-.footerColumn {
+/* 1. شعار المزود (في المربع الفارغ أعلى اليمين) */
+.dynamicProviderLogo {
+  position: absolute;
+  top: 15.6%;
+  left: 85.8%;
+  transform: translate(-50%, -50%);
+  width: 12%;
+  height: 8%;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  width: 160px;
 }
-
-.footerValue {
-  font-family: "Georgia", serif;
-  color: var(--cert-text);
-  font-size: 1.3rem;
-  margin-bottom: 8px;
-}
-
-.signatureImg {
-  height: 40px;
+.dynamicProviderLogo img {
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
-  margin-bottom: 4px;
 }
 
-.footerLine {
-  width: 100%;
-  height: 1px;
-  background-color: var(--cert-navy);
-  margin-bottom: 8px;
-  opacity: 0.8;
+/* 2. اسم الطالب */
+.dynamicStudentName {
+  top: 36.5%;
+  left: 50%;
+  font-size: 3.8cqw;
+  font-style: italic;
+  font-weight: 500;
+  width: 80%;
 }
 
-.footerLabel {
-  color: var(--cert-navy);
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 1px;
+/* 3. اسم الدورة */
+.dynamicCourseName {
+  top: 56.5%;
+  left: 50%;
+  font-size: 2.2cqw;
+  font-weight: 600;
+  width: 80%;
 }
 
-/* الختم الذهبي المطابق للصورة */
-.sealWrapper {
+/* 4. اسم المزود (أكاديمية / شركة) */
+.dynamicProviderName {
+  top: 71%;
+  left: 50%;
+  font-size: 1.8cqw;
+  font-weight: 500;
+  width: 80%;
+}
+
+/* 5. تاريخ الإصدار (فوق خط التاريخ يساراً) */
+.dynamicDate {
+  bottom: 14.5%;
+  left: 17.5%;
+  font-size: 1.4cqw;
+  font-weight: 600;
+  width: 25%;
+}
+
+/* 6. صورة التوقيع (فوق خط التوقيع يميناً) */
+.dynamicSignature {
+  position: absolute;
+  bottom: 14.5%;
+  left: 82.5%;
+  transform: translateX(-50%);
+  width: 15%;
+  height: 6%;
   display: flex;
-  align-items: center;
-  gap: 15px;
-  transform: translateY(15px); /* لدفع الختم للأسفل قليلاً */
-}
-
-.sealOuter {
-  width: 75px;
-  height: 75px;
-  background: var(--cert-navy);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  /* محاكاة إطار الختم المدرج الذهبي-الأزرق */
-  box-shadow:
-    0 0 0 2px var(--cert-bg),
-    0 0 0 6px var(--cert-gold),
-    0 0 0 8px var(--cert-navy),
-    0 5px 15px rgba(0, 0, 0, 0.2);
+  align-items: flex-end;
 }
-
-.sealInner {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  border: 1px dashed var(--cert-gold);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.sealStar {
-  color: var(--cert-gold);
-  font-size: 1.6rem;
+.dynamicSignature img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 
 /* ================= Actions Bar ================= */
 .actionsBar {
   display: flex;
-  gap: 12px;
-  margin-top: 10px;
+  gap: 10px;
+  margin-top: 5px;
 }
 
 .actionBtn,
@@ -554,18 +297,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 8px;
-  padding: 12px;
-  border-radius: 12px;
+  gap: 6px;
+  padding: 10px;
+  border-radius: 10px;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 0.8rem; /* 💡 تم تصغير الخط قليلاً ليتناسب بشكل ممتاز مع 4 شهادات في السطر */
   cursor: pointer;
   transition: all 0.3s;
 }
 
 .actionBtn {
   background: #ffffff;
-  color: var(--cert-navy);
+  color: #0a2a54;
   border: 2px solid #e2e8f0;
 }
 .actionBtn:hover {
