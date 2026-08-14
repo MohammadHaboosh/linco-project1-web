@@ -6,6 +6,7 @@ import {
   IoVideocamOutline,
   IoHelpCircleOutline,
   IoCheckmarkCircleOutline,
+  IoSettingsOutline,
 } from "react-icons/io5";
 import styles from "./CourseManagementCard.module.css";
 import { useTranslation } from "react-i18next";
@@ -34,6 +35,7 @@ const CourseManagementCard = ({
   onEdit,
   onPublish,
   onAddNew,
+  onEditSettings,
 }) => {
   const { t } = useTranslation();
 
@@ -114,9 +116,19 @@ const CourseManagementCard = ({
       </div>
 
       <div className={styles.cardFooter}>
-        <button className={styles.editBtn} onClick={onEdit}>
-          <IoCreateOutline /> {t("edit")}
-        </button>
+        {course.isPublished ? (
+          <button
+            className={styles.settingsBtn}
+            onClick={() => onEditSettings(course)}
+          >
+            <IoSettingsOutline /> {t("settings", "Settings")}
+          </button>
+        ) : (
+          <button className={styles.editBtn} onClick={onEdit}>
+            <IoCreateOutline /> {t("edit")}
+          </button>
+        )}
+
         <button
           className={`${styles.publishBtn} ${course.isPublished ? styles.publishedBtn : ""}`}
           onClick={onPublish}

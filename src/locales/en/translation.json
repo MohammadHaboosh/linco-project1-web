@@ -538,7 +538,7 @@
   "search-department-members": "Search department members",
   "search-members-placeholder": "Search name, email, role, or job title",
   "members-load-failed": "Members could not be loaded",
-  "try-again": "Try Again",
+  "try-again": "Try again",
   "loading-department-members": "Loading department members...",
   "no-matching-members": "No matching members",
   "no-department-members": "No department members yet",
@@ -846,7 +846,6 @@
   "what-should-i-review-before-moving-on": "What should I review before moving on?",
   "finding-an-answer": "Finding an answer",
   "we-couldnt-get-an-answer": "We couldn't get an answer",
-  "try-again": "Try again",
   "dismiss-error": "Dismiss error",
   "ask-anything-about-this-course-placeholder": "Ask anything about this course...",
   "question-for-the-course-assistant": "Question for the course assistant",
@@ -878,5 +877,11 @@
   "generate-random-quiz": "Generate random quiz",
   "quiz-scope": "Quiz scope",
   "entire-course": "Entire course",
-  "quiz-generated-from-course-content": "Generated from course content"
+  "quiz-generated-from-course-content": "Generated from course content",
+  "publish-private-desc": "This course is PRIVATE. It will be published ONLY to your Demo Library.",
+  "publish-public-desc": "This course is PUBLIC. It will be published to your Demo Library and the Global Public Library.",
+  "publish-warning": "Warning: Once published, you cannot edit the course curriculum or lessons. You can only update the price and visibility.",
+  "course-settings": "Course Settings",
+  "update-price-visibility": "Update the price and visibility for",
+  "visibility": "Visibility"
 }
