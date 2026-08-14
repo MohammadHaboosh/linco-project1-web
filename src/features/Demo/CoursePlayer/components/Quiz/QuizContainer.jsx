@@ -58,6 +58,7 @@ const QuizContainer = ({ examId, onCompleteSection }) => {
       <QuizResult
         scoreInfo={examResult.data || examResult}
         passingScore={examData.passingScore}
+        userAnswers={answers}
         onRetry={handleRetry}
         onContinue={onCompleteSection}
       />
@@ -97,7 +98,7 @@ const QuizContainer = ({ examId, onCompleteSection }) => {
               </div>
               <div className={styles.statPill}>
                 <IoTimeOutline /> <strong>{examData.durationMinutes}</strong>{" "}
-                {t("seconds")}
+                {t("minutes")}
               </div>
               <div className={styles.statPill}>
                 <IoCheckmarkCircleOutline />{" "}

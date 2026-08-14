@@ -690,3 +690,210 @@
     transform: rotate(360deg);
   }
 }
+/* ================= TWO COLUMN RESULT LAYOUT ================= */
+.resultTwoColumnContainer {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 450px 1fr;
+  height: 100%;
+  background: #f8fafc;
+  overflow: hidden;
+}
+
+.resultSummaryCol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  background: #ffffff;
+  border-right: 1px solid #e2e8f0;
+  overflow-y: auto;
+}
+
+.resultReviewCol {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #f8fafc;
+  overflow: hidden;
+}
+
+.reviewHeader {
+  padding: 24px 32px;
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  z-index: 10;
+}
+
+.reviewHeader h3 {
+  margin: 0 0 4px 0;
+  font-size: 1.3rem;
+  color: #0f172a;
+}
+
+.reviewHeader p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.reviewScrollArea {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ================= REVIEW CARDS ================= */
+.reviewQuestionCard {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.02);
+}
+
+.reviewQuestionText {
+  margin: 0 0 16px 0;
+  font-size: 1.05rem;
+  color: #1e293b;
+  line-height: 1.5;
+}
+
+.questionNumber {
+  color: #3b82f6;
+  font-weight: 800;
+}
+
+.reviewNote {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: #fffbeb;
+  color: #d97706;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  border: 1px dashed #fcd34d;
+}
+
+.reviewNote svg {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.reviewChoicesList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.reviewChoiceItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.reviewChoiceContent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.reviewCheckboxMock {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #cbd5e1;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.reviewCheckboxFill {
+  width: 10px;
+  height: 10px;
+  background: #64748b;
+  border-radius: 2px;
+}
+
+.reviewChoiceNormal {
+  background: #f8fafc;
+  color: #475569;
+}
+
+.reviewChoiceCorrect {
+  background: #ecfdf5;
+  border-color: #10b981;
+  color: #047857;
+}
+
+.reviewChoiceCorrect .reviewCheckboxMock {
+  border-color: #10b981;
+}
+
+.reviewChoiceCorrect .reviewCheckboxFill {
+  background: #10b981;
+}
+
+.reviewChoiceWrong {
+  background: #fef2f2;
+  border-color: #ef4444;
+  color: #b91c1c;
+}
+
+.reviewChoiceWrong .reviewCheckboxMock {
+  border-color: #ef4444;
+}
+
+.reviewChoiceWrong .reviewCheckboxFill {
+  background: #ef4444;
+}
+
+.reviewChoiceMissed {
+  background: #f0fdf4;
+  border: 1px dashed #22c55e;
+  color: #15803d;
+}
+
+.reviewChoiceResultIcon {
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+}
+
+.iconCorrect {
+  color: #10b981;
+}
+.iconWrong {
+  color: #ef4444;
+}
+.iconMissed {
+  color: #22c55e;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .resultTwoColumnContainer {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+  }
+  .resultSummaryCol {
+    border-right: none;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .reviewScrollArea {
+    overflow-y: visible;
+  }
+}
