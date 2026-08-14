@@ -1,163 +1,279 @@
-import React, { useState } from "react";
-import styles from "./AIFloatingAssistant.module.css";
+import { useEffect, useRef, useState } from "react";
 import {
-  IoSparkles,
-  IoChatbubblesOutline,
+  IoAlertCircleOutline,
   IoBulbOutline,
-  IoSend,
+  IoChatbubblesOutline,
+  IoCloseOutline,
   IoCreateOutline,
-  IoCheckmarkCircle,
+  IoRefreshOutline,
+  IoSend,
+  IoSparkles,
 } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
+import TopicQuiz from "./components/TopicQuiz/TopicQuiz";
+import { useCourseAssistant } from "./hooks/useCourseAssistant";
+import styles from "./AIFloatingAssistant.module.css";
 
 const quickActions = [
   {
     id: "chat",
     icon: IoChatbubblesOutline,
-    title: "Chat with Assistant",
-    description: "Ask questions about the current lesson",
+    titleKey: "ask-about-this-course",
+    descriptionKey: "get-answers-grounded-in-the-course-content",
   },
   {
     id: "quiz",
     icon: IoBulbOutline,
-    title: "Topic Specific Quiz",
-    description: "Test your understanding with smart questions",
+    titleKey: "topic-specific-quiz",
+    descriptionKey: "test-your-understanding-with-smart-questions",
   },
   {
-    id: "qa",
+    id: "randomQuiz",
     icon: IoCreateOutline,
-    title: "Random Course Quiz",
-    description: "Comprehensive review with detailed explanations",
+    titleKey: "random-course-quiz",
+    descriptionKey: "comprehensive-review-with-detailed-explanations",
   },
 ];
 
-const AIFloatingAssistant = () => {
-  const [mode, setMode] = useState("home");
-  const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([
-    {
-      role: "assistant",
-      text: "Hello! I am your AI Assistant 🤖. How can I help you with this course today?",
-    },
-  ]);
+const suggestedQuestionKeys = [
+  "what-are-the-main-ideas-in-this-course",
+  "summarize-the-most-important-concepts",
+  "what-should-i-review-before-moving-on",
+];
 
-  const openMode = (nextMode) => {
-    setMode(nextMode);
-    if (nextMode === "quiz") {
-      setMessages((current) => [
-        ...current,
-        {
-          role: "assistant",
-          text: "Excellent! I am generating 5 interactive questions based on the current lesson. Are you ready?",
-        },
-      ]);
+const AIFloatingAssistant = ({ courseId }) => {
+  const { t } = useTranslation();
+  const [mode, setMode] = useState("home");
+  const [question, setQuestion] = useState("");
+  const messagesEndRef = useRef(null);
+  const isQuizMode = mode === "quiz" || mode === "randomQuiz";
+  const {
+    messages,
+    isAsking,
+    error,
+    askQuestion,
+    retryLastQuestion,
+    dismissError,
+  } = useCourseAssistant(courseId);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, isAsking, error]);
+
+  const sendQuestion = async (questionToSend = question) => {
+    const normalizedQuestion = questionToSend.trim();
+    if (!normalizedQuestion || isAsking) return;
+
+    setQuestion("");
+    await askQuestion(normalizedQuestion);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      sendQuestion();
     }
   };
 
-  const sendMessage = () => {
-    const trimmed = message.trim();
-    if (!trimmed) return;
-    setMessages((current) => [
-      ...current,
-      { role: "user", text: trimmed },
-      {
-        role: "assistant",
-        text: "Great question! (This is a placeholder response - will be connected to the AI backend later).",
-      },
-    ]);
-    setMessage("");
-  };
+  const renderConversation = () => (
+    <>
+      <div className={`${styles.messageWrapper} ${styles.aiMsg}`}>
+        <div className={styles.aiAvatar} aria-hidden="true">
+          <IoSparkles />
+        </div>
+        <div className={styles.messageBubble}>
+          <p>{t("ask-me-anything-about-this-course")}</p>
+        </div>
+      </div>
+
+      {messages.map((message) => (
+        <div
+          key={message.id}
+          className={`${styles.messageWrapper} ${
+            message.role === "user" ? styles.userMsg : styles.aiMsg
+          }`}
+        >
+          {message.role === "assistant" && (
+            <div className={styles.aiAvatar} aria-hidden="true">
+              <IoSparkles />
+            </div>
+          )}
+          <div className={styles.messageBubble}>
+            <p>{message.text}</p>
+          </div>
+        </div>
+      ))}
+
+      {mode === "chat" && messages.length === 0 && (
+        <div className={styles.suggestions}>
+          <span>{t("try-asking")}</span>
+          {suggestedQuestionKeys.map((suggestionKey) => (
+            <button
+              type="button"
+              key={suggestionKey}
+              onClick={() => sendQuestion(t(suggestionKey))}
+              disabled={isAsking}
+            >
+              {t(suggestionKey)}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {isAsking && (
+        <div className={`${styles.messageWrapper} ${styles.aiMsg}`}>
+          <div className={styles.aiAvatar} aria-hidden="true">
+            <IoSparkles />
+          </div>
+          <div className={`${styles.messageBubble} ${styles.thinkingBubble}`}>
+            <span />
+            <span />
+            <span />
+            <span className={styles.srOnly}>{t("finding-an-answer")}</span>
+          </div>
+        </div>
+      )}
+
+      {error && (
+        <div className={styles.errorNotice} role="alert">
+          <IoAlertCircleOutline aria-hidden="true" />
+          <div>
+            <strong>{t("we-couldnt-get-an-answer")}</strong>
+            <span>{error}</span>
+            <button
+              type="button"
+              onClick={retryLastQuestion}
+              disabled={isAsking}
+            >
+              <IoRefreshOutline /> {t("try-again")}
+            </button>
+          </div>
+          <button
+            type="button"
+            className={styles.dismissErrorBtn}
+            onClick={dismissError}
+            aria-label={t("dismiss-error")}
+          >
+            <IoCloseOutline />
+          </button>
+        </div>
+      )}
+
+      <div ref={messagesEndRef} />
+    </>
+  );
 
   return (
     <div className={styles.aiContainer}>
       {mode === "home" ? (
         <div className={styles.homeView}>
           <div className={styles.heroSection}>
-            <div className={styles.glowBg}></div>
+            <div className={styles.glowBg} />
             <div className={styles.iconCircle}>
               <IoSparkles />
             </div>
-            <h3>How can I help you?</h3>
-            <p>Select a quick action or start chatting directly.</p>
+            <span className={styles.heroEyebrow}>
+              {t("course-aware-assistant")}
+            </span>
+            <h3>{t("how-can-i-help-you")}</h3>
+            <p>{t("ask-a-question-and-get-an-answer-based-on-this-course")}</p>
           </div>
 
           <div className={styles.actionsGrid}>
-            {quickActions.map(({ id, icon: Icon, title, description }) => (
-              <button
-                key={id}
-                className={styles.actionCard}
-                onClick={() => openMode(id)}
-              >
-                <div className={styles.actionIcon}>
-                  <Icon />
-                </div>
-                <div className={styles.actionText}>
-                  <strong>{title}</strong>
-                  <span>{description}</span>
-                </div>
-              </button>
-            ))}
+            {quickActions.map(
+              ({ id, icon: Icon, titleKey, descriptionKey }) => (
+                <button
+                  type="button"
+                  key={id}
+                  className={styles.actionCard}
+                  onClick={() => setMode(id)}
+                >
+                  <div className={styles.actionIcon}>
+                    <Icon />
+                  </div>
+                  <div className={styles.actionText}>
+                    <strong>{t(titleKey)}</strong>
+                    <span>{t(descriptionKey)}</span>
+                  </div>
+                </button>
+              ),
+            )}
           </div>
         </div>
       ) : (
         <div className={styles.chatView}>
           <div className={styles.chatHeader}>
-            <button className={styles.backBtn} onClick={() => setMode("home")}>
-              ← Back
+            <button
+              type="button"
+              className={styles.backBtn}
+              onClick={() => setMode("home")}
+            >
+              <span aria-hidden="true">←</span> {t("back")}
             </button>
             <div className={styles.chatModeInfo}>
               <IoSparkles className={styles.chatModeIcon} />
-              <span>
-                {mode === "quiz"
-                  ? "Interactive Quiz"
-                  : mode === "qa"
-                    ? "Q&A"
-                    : "Smart Chat"}
-              </span>
+              <div>
+                <strong>
+                  {mode === "quiz"
+                    ? t("interactive-quiz")
+                    : mode === "randomQuiz"
+                      ? t("random-course-quiz")
+                      : t("course-assistant")}
+                </strong>
+                <span>
+                  {isQuizMode
+                    ? t("quiz-generated-from-course-content")
+                    : t("answers-from-course-content")}
+                </span>
+              </div>
             </div>
           </div>
 
-          <div className={styles.messagesArea}>
-            {messages.map((msg, idx) => (
-              <div
-                key={idx}
-                className={`${styles.messageWrapper} ${msg.role === "user" ? styles.userMsg : styles.aiMsg}`}
-              >
-                {msg.role === "assistant" && (
-                  <div className={styles.aiAvatar}>
-                    <IoSparkles />
-                  </div>
-                )}
-                <div className={styles.messageBubble}>
-                  <p>{msg.text}</p>
-                </div>
-              </div>
-            ))}
-
-            {mode === "quiz" && (
-              <div className={styles.generatedCard}>
-                <div className={styles.cardHeader}>
-                  <IoCheckmarkCircle className={styles.successIcon} />
-                  <strong>Quiz Ready!</strong>
-                </div>
-                <p>5 questions • Multiple choice • With explanations</p>
-                <button className={styles.primaryBtn}>Start Quiz Now</button>
-              </div>
+          <div
+            className={styles.messagesArea}
+            aria-live="polite"
+            aria-busy={!isQuizMode && isAsking}
+          >
+            {isQuizMode ? (
+              <TopicQuiz
+                key={mode}
+                courseId={courseId}
+                quizType={mode === "randomQuiz" ? "random" : "topic"}
+              />
+            ) : (
+              renderConversation()
             )}
           </div>
 
-          <div className={styles.inputArea}>
-            <input
-              type="text"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-              placeholder="Type your question here..."
-              className={styles.chatInput}
-            />
-            <button className={styles.sendBtn} onClick={sendMessage}>
-              <IoSend />
-            </button>
-          </div>
+          {!isQuizMode && (
+            <>
+              <div className={styles.inputArea}>
+                <textarea
+                  rows="1"
+                  maxLength="1000"
+                  value={question}
+                  onChange={(event) => setQuestion(event.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder={t("ask-anything-about-this-course-placeholder")}
+                  className={styles.chatInput}
+                  disabled={isAsking || !courseId}
+                  aria-label={t("question-for-the-course-assistant")}
+                />
+                <button
+                  type="button"
+                  className={styles.sendBtn}
+                  onClick={() => sendQuestion()}
+                  disabled={!question.trim() || isAsking || !courseId}
+                  aria-label={t("send-question")}
+                >
+                  <IoSend />
+                </button>
+              </div>
+              <p className={styles.composerHint}>
+                {t("press-enter-to-send-shift-enter-for-a-new-line")}
+              </p>
+            </>
+          )}
         </div>
       )}
     </div>

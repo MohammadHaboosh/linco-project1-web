@@ -129,6 +129,7 @@ const CourseViewer = () => {
           </section>
 
           <CourseSidebar
+            courseId={courseId}
             isOpen={isSidebarOpen}
             setIsOpen={setIsSidebarOpen}
             activeTab={activeSidebarTab}

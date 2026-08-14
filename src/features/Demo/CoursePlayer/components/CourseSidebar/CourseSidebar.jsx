@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./CourseSidebar.module.css";
 import {
   IoListOutline,
@@ -10,6 +9,7 @@ import CurriculumSidebar from "../CurriculumSidebar/CurriculumSidebar";
 import AIFloatingAssistant from "../../../AIFloatingAssistant/AIFloatingAssistant";
 
 const CourseSidebar = ({
+  courseId,
   isOpen,
   setIsOpen,
   activeTab,
@@ -57,7 +57,7 @@ const CourseSidebar = ({
               onSelectLesson={onSelectLesson}
             />
           ) : (
-            <AIFloatingAssistant />
+            <AIFloatingAssistant key={courseId} courseId={courseId} />
           )}
         </div>
       </div>
