@@ -114,7 +114,12 @@ export const useCourseSaver = ({
               );
 
               const uploadUrl = uploadData.uploadUrl || uploadData.url;
+
               finalVideoUrl =
+                uploadData.cdnUrl ||
+                uploadData.fileKey ||
+                uploadData.path ||
+                uploadData.key ||
                 uploadData.videoUrl ||
                 uploadData.fileUrl ||
                 uploadData.publicUrl ||

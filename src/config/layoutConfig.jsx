@@ -100,11 +100,6 @@ export const DEPARTMENT_NAV = {
   member: {
     navLinks: [
       { name: "Home", icon: <IoHomeOutline />, path: "" },
-      {
-        name: "Learning Path",
-        icon: <IoMapOutline />,
-        path: PATHS.LEARNING_PATH,
-      },
       { name: "Courses", icon: <IoBookOutline />, path: PATHS.COURSES },
       { name: "Road Maps", icon: <IoMapOutline />, path: PATHS.ROADMAPS },
       {
@@ -140,11 +135,6 @@ export const DEPARTMENT_NAV = {
         name: "Tools Settings",
         icon: <IoSettingsOutline />,
         path: PATHS.SM_TOOLS,
-      },
-      {
-        name: "Learning Path",
-        icon: <IoMapOutline />,
-        path: PATHS.SM_LEARNING_PATH,
       },
       {
         name: "Leaderboard",
@@ -184,11 +174,6 @@ export const DEPARTMENT_NAV = {
         name: "Chat",
         icon: <IoChatbubblesOutline />,
         path: PATHS.CHAT_GROUPS,
-      },
-      {
-        name: "Learning Path",
-        icon: <IoMapOutline />,
-        path: PATHS.SM_LEARNING_PATH,
       },
       { name: "Road Maps", icon: <IoMapOutline />, path: PATHS.ROADMAPS },
     ],

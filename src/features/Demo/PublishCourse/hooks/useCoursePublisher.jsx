@@ -35,15 +35,15 @@ export const useCoursePublisher = ({
           imagePreview: null,
         }));
       } else {
-        if (courseData.imageFile) {
-          const basePayload = {
-            title: courseData.title,
-            description: courseData.description,
-            imagePath: courseData.imagePath,
-            visibility: courseData.visibility || "PUBLIC",
-            price: Number(courseData.price) || 0,
-          };
+        const basePayload = {
+          title: courseData.title,
+          description: courseData.description,
+          imagePath: courseData.imagePath,
+          visibility: courseData.visibility || "PUBLIC",
+          price: Number(courseData.price) || 0,
+        };
 
+        if (courseData.imageFile) {
           const updateResult = await courseManagerApi.uploadAndSaveCourseImage(
             courseData.id,
             courseData.imageFile,
@@ -56,6 +56,12 @@ export const useCoursePublisher = ({
             imageFile: null,
             imagePreview: null,
           }));
+        } else {
+          // 💡 إصلاح: تحديث الكورس في حال لم يقم المستخدم برفع صورة جديدة
+          await courseManagerApi.updateCourseGeneralInfo(
+            courseData.id,
+            basePayload,
+          );
         }
       }
 
@@ -87,31 +93,44 @@ export const useCoursePublisher = ({
         );
       }
 
-      const processedSections = await Promise.all(
-        sections.map(async (sec, index) => {
-          const payload = { title: sec.title, order: sec.order || index + 1 };
-          const isNewSection = !sec.id || sec.isNew || isTempId(sec.id);
+      const processedSections = [];
 
-          let savedSection;
-          if (isNewSection) {
-            savedSection = await sectionApi.createSection(
-              activeCourseId,
-              payload,
-            );
-          } else {
-            savedSection = await sectionApi.updateSection(
-              activeCourseId,
-              sec.id,
-              payload,
-            );
-          }
+      for (let index = 0; index < sections.length; index++) {
+        const sec = sections[index];
+        const payload = { title: sec.title, order: sec.order || index + 1 };
+        const isNewSection = !sec.id || sec.isNew || isTempId(sec.id);
 
-          return {
-            ...sec,
-            realId: savedSection?.id || savedSection?.data?.id || sec.id,
-          };
-        }),
-      );
+        let savedSection;
+        if (isNewSection) {
+          savedSection = await sectionApi.createSection(
+            activeCourseId,
+            payload,
+          );
+        } else {
+          savedSection = await sectionApi.updateSection(
+            activeCourseId,
+            sec.id,
+            payload,
+          );
+        }
+
+        const finalSecId =
+          savedSection?.id ||
+          savedSection?.data?.id ||
+          savedSection?.section?.id ||
+          sec.id;
+
+        if (isTempId(finalSecId)) {
+          console.warn(
+            "Warning: Still using a temp ID for section. The backend didn't return a proper ID.",
+          );
+        }
+
+        processedSections.push({
+          ...sec,
+          realId: finalSecId,
+        });
+      }
 
       for (const section of processedSections) {
         if (section.quiz && (section.quiz.isNew || isTempId(section.quiz.id))) {
@@ -169,7 +188,9 @@ export const useCoursePublisher = ({
                 uploadData.videoUrl ||
                 uploadData.fileKey ||
                 uploadData.fileUrl ||
-                uploadData.publicUrl;
+                uploadData.publicUrl ||
+                uploadData.path ||
+                uploadData.key;
 
               if (!cloudUrl)
                 throw new Error(
@@ -206,7 +227,10 @@ export const useCoursePublisher = ({
             });
 
             realLessonId =
-              createdLesson?.id || createdLesson?.data?.id || lesson.id;
+              createdLesson?.id ||
+              createdLesson?.data?.id ||
+              createdLesson?.lesson?.id ||
+              lesson.id;
           }
 
           const currentAttachments = lesson.attachments || [];

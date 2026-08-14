@@ -74,18 +74,10 @@ export const FOOTER_CONFIG = {
       name: "Chat",
       path: PATHS.CHAT_GROUPS,
     },
-    {
-      name: "Learning Path",
-      path: PATHS.SM_LEARNING_PATH,
-    },
     { name: "Road Maps", path: PATHS.ROADMAPS },
   ],
   department_member: [
     { name: "Home", path: "" },
-    {
-      name: "Learning Path",
-      path: PATHS.LEARNING_PATH,
-    },
     { name: "Courses", path: PATHS.COURSES },
     { name: "Road Maps", path: PATHS.ROADMAPS },
     {
@@ -113,10 +105,6 @@ export const FOOTER_CONFIG = {
     {
       name: "Tools Settings",
       path: PATHS.SM_TOOLS,
-    },
-    {
-      name: "Learning Path",
-      path: PATHS.SM_LEARNING_PATH,
     },
     {
       name: "Leaderboard",
