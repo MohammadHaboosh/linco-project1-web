@@ -8,7 +8,7 @@ import {
 } from "react-icons/io5";
 import styles from "./MarketplaceCard.module.css";
 import { useTranslation } from "react-i18next";
-import { useDemo } from "../../context/DemoContext"; // 💡 تأكد من صحة مسار الاستيراد بناءً على هيكل مجلداتك
+import { useDemo } from "../../../../../hooks/useDemo";
 
 const MarketplaceCard = ({ course, onViewDetails }) => {
   const { t } = useTranslation();
