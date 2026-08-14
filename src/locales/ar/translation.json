@@ -537,7 +537,7 @@
   "search-department-members": "البحث في أعضاء القسم",
   "search-members-placeholder": "ابحث بالاسم أو البريد أو الدور أو المسمى الوظيفي",
   "members-load-failed": "تعذر تحميل الأعضاء",
-  "try-again": "حاول مجددًا",
+  "try-again": "حاول مجدداً",
   "loading-department-members": "جارٍ تحميل أعضاء القسم...",
   "no-matching-members": "لا يوجد أعضاء مطابقون",
   "no-department-members": "لا يوجد أعضاء في القسم بعد",
@@ -840,7 +840,6 @@
   "what-should-i-review-before-moving-on": "ما الذي ينبغي أن أراجعه قبل المتابعة؟",
   "finding-an-answer": "جارٍ البحث عن إجابة",
   "we-couldnt-get-an-answer": "تعذّر الحصول على إجابة",
-  "try-again": "حاول مجدداً",
   "dismiss-error": "إغلاق الخطأ",
   "ask-anything-about-this-course-placeholder": "اسأل أي شيء عن هذه الدورة...",
   "question-for-the-course-assistant": "سؤال لمساعد الدورة",
@@ -873,5 +872,11 @@
   "generate-random-quiz": "إنشاء اختبار عشوائي",
   "quiz-scope": "نطاق الاختبار",
   "entire-course": "الدورة كاملة",
-  "quiz-generated-from-course-content": "مُنشأ من محتوى الدورة"
+  "quiz-generated-from-course-content": "مُنشأ من محتوى الدورة",
+  "publish-private-desc": "هذه الدورة خاصة. \nسيتم نشره فقط في مكتبتك التجريبية.",
+  "publish-public-desc": "هذه الدورة عامة. \nسيتم نشره في مكتبتك التجريبية والمكتبة العامة العالمية.",
+  "publish-warning": "تحذير: بمجرد النشر، لا يمكنك تعديل منهج الدورة أو دروسها. \nيمكنك فقط تحديث السعر والرؤية.",
+  "course-settings": "إعدادات الدورة",
+  "update-price-visibility": "قم بتحديث السعر والرؤية لـ",
+  "visibility": "الرؤية"
 }

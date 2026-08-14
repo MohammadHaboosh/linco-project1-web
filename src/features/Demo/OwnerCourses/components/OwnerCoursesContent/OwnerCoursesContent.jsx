@@ -8,6 +8,7 @@ import { useOwnerCourses } from "../../hooks/useOwnerCourses";
 import { usePublishCourse } from "../../hooks/usePublishCourse";
 import PublishConfirmationModal from "./PublishConfirmationModal";
 import ErrorModal from "./ErrorModal";
+import CourseSettingsModal from "./CourseSettingsModal";
 
 const OwnerCoursesContent = () => {
   const { t } = useTranslation();
@@ -19,6 +20,13 @@ const OwnerCoursesContent = () => {
   const [selectedCourseForPublish, setSelectedCourseForPublish] =
     useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [selectedCourseForSettings, setSelectedCourseForSettings] =
+    useState(null);
+  const [isSavingSettings, setIsSavingSettings] = useState(false);
+
+  const handleOpenSettingsModal = (course) => {
+    setSelectedCourseForSettings(course);
+  };
 
   const handleAddNewCourse = () => {
     navigate(`/demos/${demoId}/course-studio`);
@@ -44,6 +52,20 @@ const OwnerCoursesContent = () => {
     } else {
       setSelectedCourseForPublish(null);
       setErrorMessage(t("an-error-occurred-please-try-again-later"));
+    }
+  };
+
+  const handleSaveSettings = async (courseId, newSettings) => {
+    setIsSavingSettings(true);
+    try {
+      // await courseManagerApi.updateCourseGeneralInfo(courseId, newSettings);
+
+      setSelectedCourseForSettings(null);
+      if (refetch) refetch();
+    } catch (error) {
+      setErrorMessage("Failed to save settings.");
+    } finally {
+      setIsSavingSettings(false);
     }
   };
 
@@ -81,6 +103,7 @@ const OwnerCoursesContent = () => {
                 course={course}
                 onEdit={() => handleEditCourse(course.assetId || course.id)}
                 onPublish={() => handleOpenPublishModal(course)}
+                onEditSettings={() => handleOpenSettingsModal(course)}
               />
             ))}
         </div>
@@ -91,6 +114,14 @@ const OwnerCoursesContent = () => {
         isPublishing={isPublishing}
         onClose={() => setSelectedCourseForPublish(null)}
         onConfirm={handleConfirmPublish}
+      />
+
+      <CourseSettingsModal
+        course={selectedCourseForSettings}
+        isOpen={!!selectedCourseForSettings}
+        onClose={() => setSelectedCourseForSettings(null)}
+        onSave={handleSaveSettings}
+        isSaving={isSavingSettings}
       />
 
       <ErrorModal
