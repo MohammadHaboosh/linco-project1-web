@@ -1,8 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { ownerCoursesApi } from "../api/ownerCoursesApi";
 
-const STORAGE_CDN_URL = "https://lincostorage.blob.core.windows.net/uploads";
-
 const mapAssetToCourse = (asset) => {
   const c = asset.course;
 
@@ -17,6 +15,8 @@ const mapAssetToCourse = (asset) => {
     lessonCount: c.lessonCount || 0,
     quizzes: 0,
     imagePath: c.imagePath,
+    price: c.price || 0,
+    visibility: c.visibility || "PUBLIC",
   };
 };
 

@@ -60,12 +60,7 @@ const PublicLibraryContent = () => {
   });
 
   const handleEnrollOrBuy = (course) => {
-    if (course.price > 0) {
-      initiatePurchase(demoId, course.id);
-    } else {
-      console.log("Free enrollment");
-      setSelectedCourse(null);
-    }
+    initiatePurchase(demoId, course.id);
   };
 
   return (
