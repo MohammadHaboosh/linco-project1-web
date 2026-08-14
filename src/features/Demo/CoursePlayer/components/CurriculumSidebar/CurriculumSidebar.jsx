@@ -136,23 +136,18 @@ const CurriculumSidebar = ({ activeLesson, onSelectLesson }) => {
         )}
       </div>
 
-      <button className={styles.finalAssessment}>
-        <span className={styles.finalIcon}>
-          <IoTrophyOutline />
-        </span>
-        <span>
-          <strong>Final Assessment</strong>
-          <small>Unlock after completing all lessons</small>
-        </span>
-      </button>
-
       <div className={styles.certificate}>
         <span className={styles.certificateIcon}>
           <IoRibbonOutline />
         </span>
         <span>
           <strong>Certificate</strong>
-          <small>Issued when you pass the final assessment</small>
+          <span>
+            <small>
+              It is issued upon passing all exams at the end of each section of
+              the course.
+            </small>
+          </span>
         </span>
       </div>
     </div>

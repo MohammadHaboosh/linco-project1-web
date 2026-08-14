@@ -1,69 +1,108 @@
 import {
   IoDownloadOutline,
   IoShareSocialOutline,
-  IoRibbon,
+  IoStar,
 } from "react-icons/io5";
 import styles from "./Certificates.module.css";
 
 const CertificateCard = ({ certificate }) => {
+  const studentName = certificate?.studentName || "Ahmad Ali";
+  const courseName = certificate?.courseName || "Flutter Advanced Course";
+  const issueDate = certificate?.issueDate || "10 August 2026";
+  const provider = certificate?.provider || "ABC Academy";
+  const logo = certificate?.logo || "/images/linco-logo.png";
+
   return (
     <div className={styles.cardWrapper}>
       <div className={styles.certificateLayout}>
-        <div className={styles.premiumOuterFrame}>
-          <div className={styles.premiumInnerFrame}>
-            <div className={`${styles.goldCorner} ${styles.tl}`}></div>
-            <div className={`${styles.goldCorner} ${styles.tr}`}></div>
-            <div className={`${styles.goldCorner} ${styles.bl}`}></div>
-            <div className={`${styles.goldCorner} ${styles.br}`}></div>
+        <div className={styles.cornerTopLeft}></div>
+        <div className={styles.cornerBottomRight}></div>
 
-            <div className={styles.watermark}>LinCo</div>
+        <div className={styles.goldBorderOuter}>
+          <div className={styles.goldBorderInner}></div>
+        </div>
 
-            <div className={styles.certSeal}>
-              <IoRibbon className={styles.sealIcon} />
-              <span>Certified</span>
+        <div className={styles.ribbonContainer}>
+          <div className={styles.ribbonBody}>
+            <img src={logo} alt="Mascot" className={styles.ribbonLogo} />
+            <span className={styles.ribbonText}>LinCo</span>
+          </div>
+          <div className={styles.ribbonTail}></div>
+        </div>
+
+        <div className={styles.providerBoxContainer}>
+          <span className={styles.providerLabel}>PROVIDER LOGO</span>
+          <div className={styles.providerBox}>
+            <img src={logo} alt="Provider" className={styles.providerLogo} />
+          </div>
+          <span className={styles.goldOrnament}>⬩</span>
+        </div>
+
+        <img src={logo} alt="" className={styles.watermarkBg} />
+
+        <div className={styles.certContent}>
+          <div className={styles.titleSection}>
+            <div className={styles.mainTitleRow}>
+              <span className={styles.goldOrnament}>⬩</span>
+              <h1 className={styles.certMainTitle}>CERTIFICATE</h1>
+              <span className={styles.goldOrnament}>⬩</span>
             </div>
+            <h3 className={styles.certSubTitle}>• OF COMPLETION •</h3>
+          </div>
 
-            <div className={styles.certHeader}>
-              <img
-                src={certificate.logo}
-                alt="LinCo Logo"
-                className={styles.certLogo}
-              />
-              <h4 className={styles.certTitle}>Certificate of Completion</h4>
+          <div className={styles.recipientSection}>
+            <div className={styles.labelWithOrnaments}>
+              <span className={styles.tinyOrnament}>⬩</span>
+              <p>THIS CERTIFICATE IS PROUDLY PRESENTED TO</p>
+              <span className={styles.tinyOrnament}>⬩</span>
             </div>
+            <h2 className={styles.studentName}>{studentName}</h2>
+          </div>
 
-            <div className={styles.certBody}>
-              <span className={styles.presentedTo}>
-                This is proudly presented to
-              </span>
-              <h2 className={styles.studentName}>{certificate.studentName}</h2>
-              <span className={styles.forCompletion}>
-                for successfully mastering the curriculum of
-              </span>
-              <h3 className={styles.courseName}>{certificate.courseName}</h3>
-            </div>
+          <div className={styles.diamondDivider}>
+            <div className={styles.line}></div>
+            <span className={styles.diamond}>⬩</span>
+            <div className={styles.line}></div>
+          </div>
 
-            <div className={styles.certFooter}>
-              <div className={styles.footerCol}>
-                <span className={styles.colValue}>{certificate.issueDate}</span>
-                <div className={styles.colLine}></div>
-                <span className={styles.colLabel}>Date Issued</span>
+          <div className={styles.courseSection}>
+            <p className={styles.reasonLabel}>
+              FOR SUCCESSFULLY COMPLETING THE COURSE
+            </p>
+            <h3 className={styles.courseName}>{courseName}</h3>
+          </div>
+
+          <div className={styles.diamondDivider}>
+            <div className={styles.line}></div>
+          </div>
+
+          <div className={styles.providerSection}>
+            <p className={styles.reasonLabel}>PROUDLY OFFERED BY</p>
+            <h4 className={styles.providerName}>{provider}</h4>
+          </div>
+        </div>
+
+        <div className={styles.certFooter}>
+          <div className={styles.footerCol}>
+            <span className={styles.footerValue}>{issueDate}</span>
+            <div className={styles.footerLine}></div>
+            <span className={styles.footerLabel}>DATE OF COMPLETION</span>
+          </div>
+
+          <div className={styles.footerColCenter}>
+            <span className={styles.centerOrnament}>⬩</span>
+            <div className={styles.goldSeal}>
+              <div className={styles.goldSealInner}>
+                <IoStar className={styles.sealStar} />
               </div>
-
-              <div className={styles.footerCol}>
-                <span className={styles.certId}>
-                  ID: {certificate.credentialId}
-                </span>
-              </div>
-
-              <div className={styles.footerCol}>
-                <span className={styles.signatureFont}>
-                  {certificate.instructor}
-                </span>
-                <div className={styles.colLine}></div>
-                <span className={styles.colLabel}>Lead Instructor</span>
-              </div>
             </div>
+            <span className={styles.centerOrnament}>⬩</span>
+          </div>
+
+          <div className={styles.footerCol}>
+            <img src={logo} alt="Signature" className={styles.signatureImg} />
+            <div className={styles.footerLine}></div>
+            <span className={styles.footerLabel}>SIGNATURE</span>
           </div>
         </div>
       </div>

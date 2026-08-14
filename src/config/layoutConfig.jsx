@@ -21,9 +21,10 @@ export const DASHBOARD_NAV = {
   global: {
     navLinks: [
       { name: "Home", path: PATHS.HOME },
-      { name: "Pending Invitations", path: PATHS.PENDING_INVITATIONS },
+      { name: "Inbox", path: PATHS.PENDING_INVITATIONS },
       { name: "Joined Rooms", path: PATHS.JOINED_ROOMS },
-      { name: "My Own Rooms", path: PATHS.OWN_ROOMS },
+      { name: "My Rooms", path: PATHS.OWN_ROOMS },
+      { name: "My Certificates", path: PATHS.CERTIFICATES },
     ],
   },
 };
