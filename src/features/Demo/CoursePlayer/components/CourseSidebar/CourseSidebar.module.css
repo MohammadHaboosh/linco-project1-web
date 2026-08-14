@@ -1,14 +1,12 @@
-.sidebarBackdrop {
-  display: none;
-}
-
 .sidebarWrapper {
   --sidebar-width: clamp(420px, 36vw, 560px);
   --rail-width: 68px;
   display: flex;
   flex-shrink: 0;
-  height: 100%;
+  height: auto;
+  min-height: calc(100dvh - var(--course-header-height, 76px) - 22px);
   position: relative;
+  align-self: flex-start;
   z-index: 40;
   background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(20px);
@@ -40,17 +38,20 @@
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
 }
 
+.closed .sidebarContent {
+  display: none;
+}
+
 /* Sidebar Content (Left side now) */
 .sidebarContent {
-  position: absolute;
-  inset-block: 0;
-  inset-inline-start: 0;
+  position: relative;
   width: calc(var(--sidebar-width) - var(--rail-width));
+  flex: 0 0 calc(var(--sidebar-width) - var(--rail-width));
   display: flex;
   flex-direction: column;
-  height: 100%;
-  min-height: 0;
-  overflow: hidden;
+  height: auto;
+  min-height: inherit;
+  overflow: visible;
   opacity: 0;
   transform: translateX(12px);
   transition:
@@ -129,26 +130,12 @@
 }
 
 .scrollableArea {
-  flex: 1 1 0;
+  flex: 1 1 auto;
   min-height: 0;
-  height: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
+  height: auto;
+  overflow: visible;
   padding: 24px; /* مساحات مدروسة أكثر لاستغلال العرض */
-  scrollbar-width: thin;
-  scrollbar-color: #b9c6d8 transparent;
-  scrollbar-gutter: stable;
-  overscroll-behavior: contain;
-  scroll-behavior: smooth;
-  scroll-padding-block: 20px 36px;
   padding-block-end: max(36px, env(safe-area-inset-bottom));
-}
-.scrollableArea::-webkit-scrollbar {
-  width: 6px;
-}
-.scrollableArea::-webkit-scrollbar-thumb {
-  background: #b9c6d8;
-  border-radius: 10px;
 }
 
 /* Vertical Nav Rail (Right side now) */
@@ -288,41 +275,53 @@
 }
 
 @media (max-width: 900px) {
-  .sidebarBackdrop {
-    position: fixed;
-    inset: var(--course-header-height, 68px) 0 0;
-    z-index: 55;
-    display: block;
-    width: 100%;
-    border: 0;
-    background: rgba(15, 23, 42, 0.34);
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
-    cursor: default;
-    animation: backdropIn 0.2s ease both;
+  .sidebarWrapper {
+    --sidebar-width: 100%;
+    position: relative;
+    inset: auto;
+    height: auto;
+    min-height: 0;
+    align-self: flex-end;
+    order: -1;
+    z-index: 40;
+    border-radius: 20px;
+    border-inline-end: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+    box-shadow: 0 16px 42px rgba(15, 23, 42, 0.09);
   }
 
-  .sidebarWrapper {
-    position: fixed;
-    inset-block-start: var(--course-header-height, 68px);
-    inset-block-end: 0;
-    inset-inline-end: 0;
-    height: auto;
-    z-index: 60;
-    border-start-start-radius: 20px;
-    border-end-start-radius: 20px;
-    border-bottom: 1px solid #e2e8f0;
-    box-shadow: 0 20px 65px rgba(15, 23, 42, 0.2);
+  .open {
+    width: 100%;
+  }
+
+  .open .sidebarContent {
+    min-height: 0;
   }
 
   .closed {
-    box-shadow: 0 12px 36px rgba(15, 23, 42, 0.1);
+    width: var(--rail-width);
+    min-height: var(--rail-width);
+    height: var(--rail-width);
+  }
+
+  .closed .verticalNav {
+    height: var(--rail-width);
+    justify-content: center;
+    padding: 6px;
+  }
+
+  .closed .expandBtn {
+    margin: 0;
+  }
+
+  .closed .navBtn {
+    display: none;
   }
 }
 
 @media (max-width: 680px) {
   .sidebarWrapper {
-    --sidebar-width: calc(100vw - 12px);
+    --sidebar-width: 100%;
     --rail-width: 60px;
   }
 
@@ -349,21 +348,10 @@
   }
 }
 
-@keyframes backdropIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .sidebarWrapper,
   .sidebarContent,
-  .navIconBox,
-  .sidebarBackdrop {
+  .navIconBox {
     animation-duration: 0.01ms;
     transition-duration: 0.01ms;
   }

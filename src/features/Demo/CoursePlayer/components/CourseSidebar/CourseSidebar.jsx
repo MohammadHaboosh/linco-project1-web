@@ -34,14 +34,6 @@ const CourseSidebar = ({
 
   return (
     <>
-      {isOpen && (
-        <button
-          type="button"
-          className={styles.sidebarBackdrop}
-          onClick={() => setIsOpen(false)}
-          aria-label="Close course sidebar"
-        />
-      )}
       <aside
         className={`${styles.sidebarWrapper} ${isOpen ? styles.open : styles.closed}`}
         aria-label="Course learning sidebar"

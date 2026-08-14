@@ -91,9 +91,9 @@ const CourseViewer = () => {
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
-    contentScrollRef.current.scrollTo({
-      top: 0,
+    contentScrollRef.current.scrollIntoView({
       behavior: reduceMotion ? "auto" : "smooth",
+      block: "start",
     });
   }, [activeLessonId]);
 
