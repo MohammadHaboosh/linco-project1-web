@@ -103,6 +103,10 @@ export const router = createBrowserRouter([
         lazy: lazyComponent(() => import("../pages/PublicLibraryPage.jsx")),
       },
       {
+        path: PATHS.GROUP_WORKSPACE,
+        lazy: lazyComponent(() => import("../pages/GroupWorkspacePage.jsx")),
+      },
+      {
         path: PATHS.COURSE_STUDIO,
         lazy: lazyComponent(
           () =>

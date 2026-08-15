@@ -34,9 +34,9 @@ export const DEMO_NAV = {
     navLinks: [
       { name: "Departments", icon: <IoBusinessOutline />, path: "" },
       {
-        name: "Certificates",
-        icon: <IoDocumentTextOutline />,
-        path: PATHS.CERTIFICATES,
+        name: "Groups",
+        icon: <IoHardwareChipOutline />,
+        path: PATHS.GROUP_WORKSPACE,
       },
       {
         name: "Inquiries",
@@ -63,6 +63,11 @@ export const DEMO_NAV = {
         path: PATHS.DEPARTMENTS,
       },
       {
+        name: "Groups",
+        icon: <IoHardwareChipOutline />,
+        path: PATHS.GROUP_WORKSPACE,
+      },
+      {
         name: "Demo Members",
         icon: <IoPeopleOutline />,
         path: PATHS.OWNER_MEMBERS,
@@ -83,9 +88,9 @@ export const DEMO_NAV = {
     navLinks: [
       { name: "Departments", icon: <IoBusinessOutline />, path: "" },
       {
-        name: "Certificates",
-        icon: <IoDocumentTextOutline />,
-        path: PATHS.CERTIFICATES,
+        name: "Groups",
+        icon: <IoHardwareChipOutline />,
+        path: PATHS.GROUP_WORKSPACE,
       },
       {
         name: "Inquiries",
@@ -132,7 +137,7 @@ export const DEPARTMENT_NAV = {
       { name: "Courses", icon: <IoBookOutline />, path: PATHS.COURSES },
       { name: "Lives", icon: <IoVideocamOutline />, path: PATHS.LIVES },
       {
-        name: "Tools Settings",
+        name: "Workspace Tools",
         icon: <IoSettingsOutline />,
         path: PATHS.SM_TOOLS,
       },
@@ -152,16 +157,16 @@ export const DEPARTMENT_NAV = {
   owner: {
     navLinks: [
       { name: "Home", icon: <IoHomeOutline />, path: "" },
-      { name: "Members", icon: <IoPeopleOutline />, path: PATHS.MEMBERS },
-      { name: "Courses", icon: <IoBookOutline />, path: PATHS.COURSES },
-      { name: "Lives", icon: <IoVideocamOutline />, path: PATHS.LIVES }, // 👈 تم التصحيح
       {
         name: "Demo Library",
         icon: <IoLibraryOutline />,
         path: PATHS.SM_ASSETS,
       },
+      { name: "Courses", icon: <IoBookOutline />, path: PATHS.COURSES },
+      { name: "Members", icon: <IoPeopleOutline />, path: PATHS.MEMBERS },
+      { name: "Lives", icon: <IoVideocamOutline />, path: PATHS.LIVES }, // 👈 تم التصحيح
       {
-        name: "Tools Settings",
+        name: "Workspace Tools",
         icon: <IoSettingsOutline />,
         path: PATHS.SM_TOOLS,
       },
