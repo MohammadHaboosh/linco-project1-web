@@ -18,8 +18,29 @@ export const useCoursePublisher = ({
   navigate,
 }) => {
   const handleNextStep = async () => {
-    if (!courseData.title.trim() || !courseData.description.trim()) {
-      alert("Please fill in the course title and description.");
+    const hasTitle = courseData.title?.trim();
+    const hasDescription = courseData.description?.trim();
+    const hasTags = courseData.tags && courseData.tags.length > 0;
+    const hasValidPrice =
+      courseData.price !== "" &&
+      courseData.price !== null &&
+      Number(courseData.price) >= 0;
+    const hasImage =
+      courseData.imageFile ||
+      (courseData.imagePath &&
+        courseData.imagePath !== "default" &&
+        courseData.imagePath !== "qwertyuiop");
+
+    if (
+      !hasTitle ||
+      !hasDescription ||
+      !hasTags ||
+      !hasValidPrice ||
+      !hasImage
+    ) {
+      alert(
+        "Please fill in all required fields: Course Thumbnail, Title, Price, Tags, and Description.",
+      );
       return;
     }
 
@@ -57,7 +78,6 @@ export const useCoursePublisher = ({
             imagePreview: null,
           }));
         } else {
-          // 💡 إصلاح: تحديث الكورس في حال لم يقم المستخدم برفع صورة جديدة
           await courseManagerApi.updateCourseGeneralInfo(
             courseData.id,
             basePayload,

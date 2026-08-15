@@ -110,6 +110,31 @@ export const useCourseManager = (demoId, assetId) => {
   const saveGeneralInfo = useCallback(async () => {
     if (!courseId) return;
 
+    const hasTitle = generalInfo.title?.trim();
+    const hasDescription = generalInfo.description?.trim();
+    const hasTags = generalInfo.tags && generalInfo.tags.length > 0;
+    const hasValidPrice =
+      generalInfo.price !== "" &&
+      generalInfo.price !== null &&
+      Number(generalInfo.price) >= 0;
+    const hasImage =
+      generalInfo.imageFile ||
+      (generalInfo.imagePath &&
+        generalInfo.imagePath !== "default" &&
+        generalInfo.imagePath !== "qwertyuiop");
+
+    if (
+      !hasTitle ||
+      !hasDescription ||
+      !hasTags ||
+      !hasValidPrice ||
+      !hasImage
+    ) {
+      throw new Error(
+        "Please fill in all required fields: Course Thumbnail, Title, Price, Tags, and Description.",
+      );
+    }
+
     let tagIds = [];
     if (generalInfo.tags && generalInfo.tags.length > 0) {
       tagIds = generalInfo.tags.map((tag) => tag.id).filter(Boolean);
