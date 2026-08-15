@@ -2,7 +2,6 @@ import { useTranslation } from "react-i18next";
 import {
   IoCloseOutline,
   IoSearchOutline,
-  IoPersonOutline,
   IoCheckmarkCircle,
 } from "react-icons/io5";
 import { useCreateDepartment } from "../../hooks/useCreateDepartment";
@@ -29,6 +28,16 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
     if (onSuccess) onSuccess();
     onClose();
   });
+
+  const getUserDisplayName = (userData) => {
+    if (!userData?.user) return "Unknown User";
+    const firstName = userData.user.firstName || "";
+    const lastName = userData.user.lastName || "";
+    const fullName = `${firstName} ${lastName}`.trim();
+    return fullName || userData.user.email || "Unknown User";
+  };
+
+  const getInitials = (name) => (name ? name.charAt(0).toUpperCase() : "?");
 
   return (
     <div className={styles.overlay}>
@@ -73,16 +82,32 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
           </div>
 
           <div className={styles.formGroup}>
-            <label>{t("Assign Manager")}</label>
+            <label>{t("assign-manager")}</label>
 
             {selectedUser ? (
               <div className={styles.selectedUserCard}>
                 <div className={styles.userInfo}>
-                  <IoCheckmarkCircle className={styles.successIcon} />
-                  <span>
-                    {selectedUser.user.firstName} {selectedUser.user.lastName}
-                  </span>
-                  <span>{selectedUser.user.email}</span>
+                  {selectedUser.user?.imagePath ? (
+                    <img
+                      src={selectedUser.user.imagePath}
+                      alt={getUserDisplayName(selectedUser)}
+                      className={styles.avatarImage}
+                    />
+                  ) : (
+                    <div className={styles.avatarPlaceholder}>
+                      {getInitials(getUserDisplayName(selectedUser))}
+                    </div>
+                  )}
+
+                  <div className={styles.selectedUserDetails}>
+                    <span className={styles.selectedUserName}>
+                      {getUserDisplayName(selectedUser)}
+                      <IoCheckmarkCircle className={styles.successIconBadge} />
+                    </span>
+                    <span className={styles.selectedUserEmail}>
+                      {selectedUser.user?.email}
+                    </span>
+                  </div>
                 </div>
                 <button
                   type="button"
@@ -107,6 +132,7 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
                       "Search by name or email...",
                     )}
                     autoComplete="off"
+                    disabled={isSubmitting}
                   />
                   {isSearching && <span className={styles.loader}>...</span>}
                 </div>
@@ -127,13 +153,24 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
                           className={styles.resultItem}
                           onClick={() => selectUser(user)}
                         >
-                          <IoPersonOutline className={styles.userIcon} />
-                          <div>
+                          {user.user?.imagePath ? (
+                            <img
+                              src={user.user.imagePath}
+                              alt="Avatar"
+                              className={styles.avatarImage}
+                            />
+                          ) : (
+                            <div className={styles.avatarPlaceholder}>
+                              {getInitials(getUserDisplayName(user))}
+                            </div>
+                          )}
+
+                          <div className={styles.resultTextData}>
                             <p className={styles.resultName}>
-                              {user.user.firstName} {user.user.lastName}
+                              {getUserDisplayName(user)}
                             </p>
                             <p className={styles.resultEmail}>
-                              {user.user.email}
+                              {user.user?.email}
                             </p>
                           </div>
                         </li>
@@ -146,7 +183,10 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
                   searchResults.length === 0 &&
                   !isSearching && (
                     <div className={styles.noResults}>
-                      {t("no-users-found")}
+                      {t(
+                        "no-users-found",
+                        "No users found matching your search.",
+                      )}
                     </div>
                   )}
               </div>
@@ -165,7 +205,7 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
           <button
             className={styles.submitBtn}
             onClick={handleSubmit}
-            disabled={isSubmitting}
+            disabled={isSubmitting || !formData.name.trim()}
           >
             {isSubmitting
               ? t("creating", "Creating...")

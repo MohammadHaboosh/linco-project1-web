@@ -883,5 +883,7 @@
   "publish-warning": "Warning: Once published, you cannot edit the course curriculum or lessons. You can only update the price and visibility.",
   "course-settings": "Course Settings",
   "update-price-visibility": "Update the price and visibility for",
-  "visibility": "Visibility"
+  "visibility": "Visibility",
+  "assign-manager": "Assign Manager",
+  "creating": "Creating..."
 }

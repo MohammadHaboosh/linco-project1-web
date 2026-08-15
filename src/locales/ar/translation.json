@@ -878,5 +878,8 @@
   "publish-warning": "تحذير: بمجرد النشر، لا يمكنك تعديل منهج الدورة أو دروسها. \nيمكنك فقط تحديث السعر والرؤية.",
   "course-settings": "إعدادات الدورة",
   "update-price-visibility": "قم بتحديث السعر والرؤية لـ",
-  "visibility": "الرؤية"
+  "visibility": "الرؤية",
+  "Assign Manager": "تعيين مدير",
+  "assign-manager": "تعيين مدير",
+  "creating": "جارٍ الإنشاء..."
 }
