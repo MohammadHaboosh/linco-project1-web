@@ -18,7 +18,8 @@
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  /* 💡 تم إلغاء overflow: hidden للسماح للقائمة المنسدلة بالظهور والتمرير بحرية دون قصها */
+  position: relative;
   animation: modalIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -40,6 +41,8 @@
   padding: 20px 24px;
   background: #f8fafc;
   border-bottom: 1px solid #e2e8f0;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
 }
 
 .header h3 {
@@ -55,6 +58,9 @@
   font-size: 1.5rem;
   color: #94a3b8;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: color 0.2s;
 }
 
@@ -117,7 +123,7 @@
   resize: vertical;
 }
 
-/* Search Dropdown Styles */
+/* ================= Search & Results Dropdown ================= */
 .searchContainer {
   position: relative;
   width: 100%;
@@ -134,6 +140,7 @@
   left: 12px;
   color: #94a3b8;
   font-size: 1.2rem;
+  pointer-events: none;
 }
 
 .searchInput {
@@ -144,12 +151,14 @@
   background: #f8fafc;
   font-size: 0.95rem;
   transition: all 0.2s;
+  box-sizing: border-box;
 }
 
 .searchInput:focus {
   outline: none;
   border-color: #1a56db;
   background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.1);
 }
 
 .loader {
@@ -159,19 +168,26 @@
   font-weight: bold;
 }
 
+/* 💡 حل التمرير الحصري للقائمة */
 .resultsList {
   list-style: none;
-  margin: 8px 0 0 0;
-  padding: 0;
+  margin: 6px 0 0 0;
+  padding: 4px;
   background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  max-height: 220px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  box-shadow:
+    0 10px 25px -5px rgba(10, 42, 84, 0.18),
+    0 0 0 1px rgba(0, 0, 0, 0.04);
+  max-height: 190px;
   overflow-y: auto;
+  overscroll-behavior: contain; /* 💡 يمنع تمرير الصفحة الخارجية تماماً أثناء السكرول */
+  -webkit-overflow-scrolling: touch;
   position: absolute;
-  width: 100%;
-  z-index: 10;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 100;
 }
 
 .resultsList::-webkit-scrollbar {
@@ -181,6 +197,9 @@
   background-color: #cbd5e1;
   border-radius: 8px;
 }
+.resultsList::-webkit-scrollbar-thumb:hover {
+  background-color: #94a3b8;
+}
 .resultsList::-webkit-scrollbar-track {
   background: transparent;
 }
@@ -189,14 +208,15 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 14px;
+  padding: 8px 12px;
   cursor: pointer;
+  border-radius: 6px;
   border-bottom: 1px solid #f1f5f9;
-  transition: background 0.2s;
+  transition: background 0.15s ease;
 }
 
 .resultItem:hover {
-  background: #f8fafc;
+  background: #eff6ff;
 }
 
 .resultItem:last-child {
@@ -204,8 +224,8 @@
 }
 
 .avatarImage {
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
@@ -213,8 +233,8 @@
 }
 
 .avatarPlaceholder {
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
   color: #1d4ed8;
@@ -222,7 +242,7 @@
   align-items: center;
   justify-content: center;
   font-weight: 800;
-  font-size: 1rem;
+  font-size: 0.95rem;
   flex-shrink: 0;
 }
 
@@ -234,9 +254,9 @@
 
 .resultName {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 700;
-  color: #1e293b;
+  color: #0a2a54;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -251,38 +271,18 @@
   text-overflow: ellipsis;
 }
 
-.userIcon {
-  font-size: 1.5rem;
-  color: #1a56db;
-  background: #eff6ff;
-  padding: 6px;
-  border-radius: 50%;
-}
-
-.resultName {
-  margin: 0;
-  font-weight: 700;
-  color: #0a2a54;
-  font-size: 0.9rem;
-}
-
-.resultEmail {
-  margin: 0;
-  color: #64748b;
-  font-size: 0.8rem;
-}
-
 .noResults {
   padding: 12px;
   color: #64748b;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   text-align: center;
   background: #f8fafc;
+  border: 1px solid #e2e8f0;
   border-radius: 8px;
-  margin-top: 8px;
+  margin-top: 6px;
 }
 
-/* Selected User Card */
+/* ================= Selected User Card ================= */
 .selectedUserCard {
   display: flex;
   align-items: center;
@@ -291,16 +291,13 @@
   background: #f8fafc;
   border: 1px solid #cbd5e1;
   border-radius: 8px;
-  margin-top: 8px;
+  margin-top: 4px;
 }
 
 .userInfo {
   display: flex;
   align-items: center;
-  gap: 10px;
-  color: #1e3a8a;
-  font-weight: 700;
-  font-size: 0.95rem;
+  gap: 12px;
 }
 
 .selectedUserDetails {
@@ -312,7 +309,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   font-weight: 700;
   color: #0f172a;
 }
@@ -323,7 +320,7 @@
 }
 
 .selectedUserEmail {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: #64748b;
 }
 
@@ -344,7 +341,7 @@
   color: #0f172a;
 }
 
-/* Footer */
+/* ================= Footer ================= */
 .footer {
   padding: 16px 24px;
   background: #f8fafc;
@@ -352,6 +349,8 @@
   display: flex;
   justify-content: flex-end;
   gap: 12px;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
 }
 
 .cancelBtn {
