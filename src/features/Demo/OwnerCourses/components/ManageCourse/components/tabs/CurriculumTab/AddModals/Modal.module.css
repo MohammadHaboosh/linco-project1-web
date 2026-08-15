@@ -431,3 +431,49 @@
   font-size: 2.4rem;
   color: #f59e0b;
 }
+
+.modalContainer {
+  max-height: 95vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.modalForm {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex: 1;
+}
+
+.modalBodyScrollable {
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.modalBodyScrollable::-webkit-scrollbar {
+  width: 6px;
+}
+.modalBodyScrollable::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 8px;
+}
+.modalBodyScrollable::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modalFooterFixed {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 28px;
+  background-color: #ffffff;
+  border-top: 1px solid #f1f5f9;
+  flex-shrink: 0;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}

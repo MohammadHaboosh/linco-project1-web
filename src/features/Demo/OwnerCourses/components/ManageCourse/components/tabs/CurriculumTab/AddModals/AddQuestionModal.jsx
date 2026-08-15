@@ -2,10 +2,10 @@ import { useState } from "react";
 import {
   IoCloseOutline,
   IoAddCircleOutline,
-  IoCheckmarkCircle,
-  IoRadioButtonOff,
   IoTrashOutline,
   IoAddOutline,
+  IoCheckbox,
+  IoSquareOutline,
 } from "react-icons/io5";
 import styles from "./Modal.module.css";
 import { useTranslation } from "react-i18next";
@@ -30,11 +30,9 @@ const AddQuestionModal = ({ isOpen, onClose, onSubmit }) => {
     setChoices(newChoices);
   };
 
-  const handleSetCorrectChoice = (selectedIndex) => {
-    const updated = choices.map((choice, i) => ({
-      ...choice,
-      isCorrect: i === selectedIndex,
-    }));
+  const handleToggleCorrectChoice = (index) => {
+    const updated = [...choices];
+    updated[index].isCorrect = !updated[index].isCorrect;
     setChoices(updated);
   };
 
@@ -56,6 +54,16 @@ const AddQuestionModal = ({ isOpen, onClose, onSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!choices.some((c) => c.isCorrect)) {
+      alert(
+        t(
+          "select-at-least-one-correct-answer",
+          "Please select at least one correct answer.",
+        ),
+      );
+      return;
+    }
 
     const payload = {
       question: question.trim(),
@@ -106,92 +114,97 @@ const AddQuestionModal = ({ isOpen, onClose, onSubmit }) => {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className={styles.modalBody}>
-          <div className={styles.formGroup}>
-            <label className={styles.label}>{t("question-text")}</label>
-            <textarea
-              required
-              rows="3"
-              className={styles.textarea}
-              placeholder="e.g. What is Authentication?"
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label className={styles.label}>
-              {t("question-note-optional")}
-            </label>
-            <textarea
-              rows="2"
-              className={styles.textarea}
-              placeholder="e.g. Hint or extra information..."
-              value={note}
-              onChange={(e) => setNote(e.target.value)}
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <div className={styles.labelRow}>
-              <label className={styles.label}>{t("answer-choices")}</label>
-              <span className={styles.hintLabel}>
-                {t("select-the-checkmark-for-the-correct-answer")}
-              </span>
+        <form onSubmit={handleSubmit} className={styles.modalForm}>
+          <div className={styles.modalBodyScrollable}>
+            <div className={styles.formGroup}>
+              <label className={styles.label}>{t("question-text")}</label>
+              <textarea
+                required
+                rows="3"
+                className={styles.textarea}
+                placeholder="e.g. What is Authentication?"
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+              />
             </div>
 
-            <div className={styles.choicesList}>
-              {choices.map((choice, index) => (
-                <div key={index} className={styles.choiceRow}>
-                  <button
-                    type="button"
-                    className={`${styles.correctRadioBtn} ${choice.isCorrect ? styles.activeChoice : ""}`}
-                    onClick={() => handleSetCorrectChoice(index)}
-                    title={t("mark-as-correct-answer")}
-                  >
-                    {choice.isCorrect ? (
-                      <IoCheckmarkCircle />
-                    ) : (
-                      <IoRadioButtonOff />
-                    )}
-                  </button>
+            <div className={styles.formGroup}>
+              <label className={styles.label}>
+                {t("question-note-optional")}
+              </label>
+              <textarea
+                rows="2"
+                className={styles.textarea}
+                placeholder="e.g. Hint or extra information..."
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+              />
+            </div>
 
-                  <input
-                    type="text"
-                    required
-                    className={styles.input}
-                    placeholder={`Choice ${String.fromCharCode(65 + index)}`}
-                    value={choice.text}
-                    onChange={(e) =>
-                      handleChoiceTextChange(index, e.target.value)
-                    }
-                  />
+            <div className={styles.formGroup}>
+              <div className={styles.labelRow}>
+                <label className={styles.label}>{t("answer-choices")}</label>
+                <span className={styles.hintLabel}>
+                  {t(
+                    "select-one-or-more-correct-answers",
+                    "Select one or more correct answers",
+                  )}
+                </span>
+              </div>
 
-                  {choices.length > 2 && (
+              <div className={styles.choicesList}>
+                {choices.map((choice, index) => (
+                  <div key={index} className={styles.choiceRow}>
                     <button
                       type="button"
-                      className={styles.removeChoiceBtn}
-                      onClick={() => handleRemoveChoice(index)}
+                      className={`${styles.correctRadioBtn} ${choice.isCorrect ? styles.activeChoice : ""}`}
+                      onClick={() => handleToggleCorrectChoice(index)}
+                      title={t(
+                        "toggle-correct-answer",
+                        "Toggle correct answer",
+                      )}
                     >
-                      <IoTrashOutline />
+                      {choice.isCorrect ? <IoCheckbox /> : <IoSquareOutline />}
                     </button>
-                  )}
-                </div>
-              ))}
-            </div>
 
-            {choices.length < 6 && (
-              <button
-                type="button"
-                className={styles.addChoiceBtn}
-                onClick={handleAddChoice}
-              >
-                <IoAddOutline /> {t("add-choice-option")}
-              </button>
-            )}
+                    <input
+                      type="text"
+                      required
+                      className={styles.input}
+                      placeholder={`Choice ${String.fromCharCode(65 + index)}`}
+                      value={choice.text}
+                      onChange={(e) =>
+                        handleChoiceTextChange(index, e.target.value)
+                      }
+                    />
+
+                    {choices.length > 2 && (
+                      <button
+                        type="button"
+                        className={styles.removeChoiceBtn}
+                        onClick={() => handleRemoveChoice(index)}
+                        title={t("remove-choice")}
+                      >
+                        <IoTrashOutline />
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              {choices.length < 6 && (
+                <button
+                  type="button"
+                  className={styles.addChoiceBtn}
+                  onClick={handleAddChoice}
+                >
+                  <IoAddOutline /> {t("add-choice-option")}
+                </button>
+              )}
+            </div>
           </div>
 
-          <div className={styles.modalFooter}>
+          <div className={styles.modalFooterFixed}>
             <button
               type="button"
               className={styles.cancelBtn}

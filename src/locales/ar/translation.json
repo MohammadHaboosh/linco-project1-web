@@ -881,5 +881,9 @@
   "visibility": "الرؤية",
   "Assign Manager": "تعيين مدير",
   "assign-manager": "تعيين مدير",
-  "creating": "جارٍ الإنشاء..."
+  "creating": "جارٍ الإنشاء...",
+  "select-at-least-one-correct-answer": "الرجاء اختيار إجابة واحدة صحيحة على الأقل.",
+  "select-one-or-more-correct-answers": "اختر واحدة أو أكثر من الإجابات الصحيحة",
+  "toggle-correct-answer": "تبديل الإجابة الصحيحة",
+  "remove-choice": "إزالة الاختيار"
 }
