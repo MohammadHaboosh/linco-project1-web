@@ -20,26 +20,8 @@ export const useCreateCourse = (demoId) => {
       }
 
       let tagIds = [];
-      if (courseData.tags && courseData.tags?.length > 0) {
-        const tagIdResults = await Promise.all(
-          courseData.tags.map(async (tag) => {
-            if (typeof tag === "object" && tag !== null && tag.id) {
-              return tag.id;
-            }
-
-            const tagName =
-              typeof tag === "string"
-                ? tag
-                : tag?.name || tag?.label || tag?.value || "";
-
-            if (!tagName || !tagName.trim()) return null;
-
-            const res = await publishCourseApi.createTag(tagName.trim());
-            return res.data?.id || res.id;
-          }),
-        );
-
-        tagIds = tagIdResults.filter(Boolean);
+      if (courseData.tags && courseData.tags.length > 0) {
+        tagIds = courseData.tags.map((tag) => tag.id).filter(Boolean);
       }
 
       const basePayload = {

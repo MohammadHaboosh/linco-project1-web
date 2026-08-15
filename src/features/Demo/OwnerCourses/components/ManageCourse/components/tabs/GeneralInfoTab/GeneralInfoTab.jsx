@@ -10,11 +10,13 @@ import {
 } from "react-icons/io5";
 import styles from "./GeneralInfoTab.module.css";
 import { useTranslation } from "react-i18next";
+import { useAvailableTags } from "../../../../../hooks/useAvailableTags";
 
 const GeneralInfoTab = ({ data = {}, onChange }) => {
   const { t } = useTranslation();
   const fileInputRef = useRef(null);
   const tagsList = data.tags || [];
+  const { availableTags, isLoadingTags } = useAvailableTags();
 
   const handleTriggerFileInput = () => {
     if (fileInputRef.current) {
@@ -25,11 +27,6 @@ const GeneralInfoTab = ({ data = {}, onChange }) => {
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
-      console.log("[UI] Image File Selected:", {
-        name: file.name,
-        size: file.size,
-        type: file.type,
-      });
       const previewUrl = URL.createObjectURL(file);
 
       onChange({
@@ -39,31 +36,22 @@ const GeneralInfoTab = ({ data = {}, onChange }) => {
     }
   };
 
-  const handleTagKeyDown = (e) => {
-    if (e.key === "Enter" && e.target.value.trim() !== "") {
-      e.preventDefault();
-      const newTagName = e.target.value.trim();
+  const handleTagSelect = (e) => {
+    const selectedId = e.target.value;
+    if (!selectedId) return;
 
-      const isDuplicate = tagsList.some(
-        (tag) =>
-          (typeof tag === "object" ? tag.name : tag).toLowerCase() ===
-          newTagName.toLowerCase(),
-      );
+    const selectedTagObj = availableTags.find((t) => t.id === selectedId);
+    const isDuplicate = tagsList.some((tag) => tag.id === selectedId);
 
-      if (!isDuplicate) {
-        onChange("tags", [...tagsList, { name: newTagName }]);
-      }
-      e.target.value = "";
+    if (selectedTagObj && !isDuplicate) {
+      onChange("tags", [...tagsList, selectedTagObj]);
     }
+
+    e.target.value = "";
   };
 
-  const removeTag = (tagToRemove) => {
-    const targetName =
-      typeof tagToRemove === "object" ? tagToRemove.name : tagToRemove;
-    const updatedTags = tagsList.filter((tag) => {
-      const currentName = typeof tag === "object" ? tag.name : tag;
-      return currentName !== targetName;
-    });
+  const removeTag = (tagIdToRemove) => {
+    const updatedTags = tagsList.filter((tag) => tag.id !== tagIdToRemove);
     onChange("tags", updatedTags);
   };
 
@@ -206,30 +194,44 @@ const GeneralInfoTab = ({ data = {}, onChange }) => {
             <IoPricetagOutline className={styles.labelIcon} /> Course Tags
           </label>
           <div className={styles.tagsInputContainer}>
-            {tagsList.map((tag, idx) => {
-              const tagName = typeof tag === "object" ? tag.name : tag;
-              return (
-                <span key={tag.id || idx} className={styles.tagPill}>
-                  {tagName}
-                  <IoCloseOutline
-                    className={styles.tagRemoveIcon}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      removeTag(tag);
-                    }}
-                  />
-                </span>
-              );
-            })}
-            <input
-              type="text"
+            {tagsList.map((tag, idx) => (
+              <span key={tag.id || idx} className={styles.tagPill}>
+                {tag.name}
+                <IoCloseOutline
+                  className={styles.tagRemoveIcon}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    removeTag(tag.id);
+                  }}
+                />
+              </span>
+            ))}
+
+            <select
               className={styles.tagInputField}
-              placeholder="Type tag and press Enter..."
-              onKeyDown={handleTagKeyDown}
-            />
+              style={{
+                flex: 1,
+                border: "none",
+                outline: "none",
+                background: "transparent",
+                color: "#64748b",
+              }}
+              onChange={handleTagSelect}
+              defaultValue=""
+              disabled={isLoadingTags}
+            >
+              <option value="" disabled>
+                {isLoadingTags ? "Loading tags..." : "Select a tag to add..."}
+              </option>
+              {availableTags.map((tag) => (
+                <option key={tag.id} value={tag.id}>
+                  {tag.name}
+                </option>
+              ))}
+            </select>
           </div>
           <span className={styles.hintText}>
-            Press Enter after each tag to help trainees filter your course.
+            Select relevant global tags to help trainees find your course.
           </span>
         </div>
 
