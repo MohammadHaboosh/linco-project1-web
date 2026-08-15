@@ -12,6 +12,7 @@ import CourseSectionItem from "../CourseSectionItem/CourseSectionItem";
 import { useTranslation } from "react-i18next";
 import { useCourseFaqs } from "../../hooks/useCourseFaqs";
 import CourseFaqItem from "../CourseFaqItem/CourseFaqItem";
+import { useParams } from "react-router-dom";
 
 const CourseDetailsModal = ({
   course,
@@ -21,7 +22,7 @@ const CourseDetailsModal = ({
   buyError,
 }) => {
   const [activeTab, setActiveTab] = useState("overview");
-
+  const { demoId } = useParams();
   const {
     sections,
     lessonsState,
@@ -213,15 +214,17 @@ const CourseDetailsModal = ({
               {buyError}
             </div>
           )}
-          <button
-            className={styles.enrollBtn}
-            disabled={isBuying}
-            onClick={() => onEnroll(course)}
-          >
-            {course.price === 0
+          {demoId !== course.id && (
+            <button
+              className={styles.enrollBtn}
+              disabled={isBuying}
+              onClick={() => onEnroll(course)}
+            >
+              {course.price === 0
               ? t("enroll-for-free")
               : `${t("buy-course")} ($${course.price})`}
-          </button>
+            </button>
+          )}
         </div>
       </div>
     </div>
