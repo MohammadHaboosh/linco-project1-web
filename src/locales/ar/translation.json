@@ -885,5 +885,8 @@
   "select-at-least-one-correct-answer": "الرجاء اختيار إجابة واحدة صحيحة على الأقل.",
   "select-one-or-more-correct-answers": "اختر واحدة أو أكثر من الإجابات الصحيحة",
   "toggle-correct-answer": "تبديل الإجابة الصحيحة",
-  "remove-choice": "إزالة الاختيار"
+  "remove-choice": "إزالة الاختيار",
+  "fill-all-choices": "يجب أن تحتوي جميع الاختيارات على نص. \nيرجى ملئها أو إزالة الفارغة.",
+  "choices-must-be-unique": "يجب أن تكون جميع الاختيارات فريدة من نوعها. \nلديك إجابات مكررة.",
+  "lesson-description-required": "يرجى تقديم وصف للدرس."
 }

@@ -150,7 +150,8 @@ export const useCourseSaver = ({
               order: lesson.order || index + 1,
               videoUrl: finalVideoUrl,
               courseId: activeCourseId,
-              description: lesson.description || "",
+              description:
+                lesson.description?.trim() || "No description provided.",
               duration: Number(lesson.duration) || 0,
             };
 

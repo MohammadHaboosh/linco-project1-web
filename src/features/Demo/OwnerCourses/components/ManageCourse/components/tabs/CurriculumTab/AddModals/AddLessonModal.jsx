@@ -72,10 +72,21 @@ const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!formData.description.trim()) {
+      alert(
+        t(
+          "lesson-description-required",
+          "Please provide a description for the lesson.",
+        ),
+      );
+      return;
+    }
+
     onSubmit({
       id: `temp_lesson_${Date.now()}`,
       title: formData.title,
-      description: formData.description,
+      description: formData.description.trim(),
       duration: Number(formData.duration) || 0,
       videoFile: formData.videoFile,
       videoUrl: formData.videoUrl,
@@ -157,20 +168,17 @@ const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
             </div>
           </div>
 
-          <div className={styles.formGroup}>
-            <label className={styles.label}>
-              <IoDocumentTextOutline /> {t("lesson-desc")}
-            </label>
-            <textarea
-              className={styles.textarea}
-              rows="3"
-              placeholder={t(
-                "describe-what-trainees-will-learn-in-this-lesson",
-              )}
-              value={formData.description}
-              onChange={(e) => handleChange("description", e.target.value)}
-            />
-          </div>
+          <label className={styles.label}>
+            <IoDocumentTextOutline /> {t("lesson-desc")} *{" "}
+          </label>
+          <textarea
+            required
+            className={styles.textarea}
+            rows="3"
+            placeholder={t("describe-what-trainees-will-learn-in-this-lesson")}
+            value={formData.description}
+            onChange={(e) => handleChange("description", e.target.value)}
+          />
 
           <div className={styles.modalFooter}>
             <button

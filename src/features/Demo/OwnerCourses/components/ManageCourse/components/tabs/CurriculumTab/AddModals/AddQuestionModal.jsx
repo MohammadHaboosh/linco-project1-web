@@ -65,6 +65,29 @@ const AddQuestionModal = ({ isOpen, onClose, onSubmit }) => {
       return;
     }
 
+    const hasEmptyChoices = choices.some((c) => !c.text.trim());
+    if (hasEmptyChoices) {
+      alert(
+        t(
+          "fill-all-choices",
+          "All choices must have text. Please fill them in or remove the empty ones.",
+        ),
+      );
+      return;
+    }
+
+    const choiceTexts = choices.map((c) => c.text.trim().toLowerCase());
+    const uniqueChoices = new Set(choiceTexts);
+    if (uniqueChoices.size !== choices.length) {
+      alert(
+        t(
+          "choices-must-be-unique",
+          "All choices must be unique. You have duplicate answers.",
+        ),
+      );
+      return;
+    }
+
     const payload = {
       question: question.trim(),
       note: note.trim(),

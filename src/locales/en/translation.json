@@ -889,5 +889,8 @@
   "select-at-least-one-correct-answer": "Please select at least one correct answer.",
   "select-one-or-more-correct-answers": "Select one or more correct answers",
   "toggle-correct-answer": "Toggle correct answer",
-  "remove-choice": "remove choice"
+  "remove-choice": "remove choice",
+  "fill-all-choices": "All choices must have text. Please fill them in or remove the empty ones.",
+  "choices-must-be-unique": "All choices must be unique. You have duplicate answers.",
+  "lesson-description-required": "Please provide a description for the lesson."
 }
