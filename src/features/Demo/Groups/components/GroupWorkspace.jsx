@@ -8,7 +8,7 @@ import {
   IoPeopleOutline,
 } from "react-icons/io5";
 import styles from "./GroupWorkspace.module.css";
-import CreateGroupModal from "./CreateGroupModal";
+import CreateGroupModal from "./CreateGroupModal.jsx";
 
 const AVAILABLE_TOOLS = [
   {
