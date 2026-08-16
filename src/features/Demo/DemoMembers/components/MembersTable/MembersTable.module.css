@@ -1,52 +1,86 @@
 .tableWrapper {
   width: 100%;
+  min-width: 0;
   overflow-x: auto;
+  scrollbar-color: var(--app-border-strong) var(--app-surface-soft);
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
-  text-align: left;
+  text-align: start;
 }
 
 .table th {
   padding: 16px 24px;
-  background-color: #f8fafc;
-  color: #64748b;
-  font-weight: 700;
+  border-block-end: 1px solid var(--app-border);
+  background: var(--app-surface-muted);
+  color: var(--app-muted);
   font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-align: start;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border-bottom: 1px solid #e2e8f0;
 }
 
 .table td {
+  min-width: 0;
   padding: 16px 24px;
-  border-bottom: 1px solid #f1f5f9;
+  border-block-end: 1px solid var(--app-divider);
+  color: var(--app-text);
   vertical-align: middle;
 }
 
+.tableRow:last-child td {
+  border-block-end: 0;
+}
+
 .tableRow:hover td {
-  background-color: #f8fafc;
+  background: var(--app-surface-muted);
+}
+
+.emptyState,
+.errorState {
+  padding: 40px 24px !important;
+  font-weight: 600;
+  text-align: center !important;
 }
 
 .emptyState {
-  text-align: center;
-  padding: 40px !important;
-  color: #94a3b8;
-  font-weight: 600;
+  color: var(--app-muted) !important;
+}
+
+.emptyState > span {
+  display: block;
 }
 
 .errorState {
-  text-align: center;
-  padding: 14px 24px !important;
-  color: #b91c1c;
-  background-color: #fef2f2;
-  font-weight: 600;
+  border-color: var(--app-danger-border) !important;
+  background: var(--app-danger-surface);
+  color: var(--app-danger-text) !important;
 }
 
-/* User Info Cell */
+.retryButton {
+  margin-block-start: 14px;
+  padding: 9px 16px;
+  border: 0;
+  border-radius: 9px;
+  background: var(--color-linco-blue);
+  color: #ffffff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.retryButton:focus-visible,
+.actionBtn:focus-visible,
+.roleSelect:focus-visible {
+  outline: 3px solid var(--app-focus-ring);
+  outline-offset: 2px;
+}
+
 .userInfo {
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: 15px;
@@ -55,15 +89,16 @@
 .avatar {
   width: 42px;
   height: 42px;
-  border-radius: 50%;
-  background-color: #e0e7ff;
-  color: #1a56db;
   display: flex;
+  flex: 0 0 auto;
   justify-content: center;
   align-items: center;
-  font-weight: 800;
-  font-size: 1.1rem;
   overflow: hidden;
+  border-radius: 50%;
+  background: var(--app-info-surface);
+  color: var(--app-link);
+  font-size: 1.1rem;
+  font-weight: 800;
 }
 
 .avatar img {
@@ -73,146 +108,215 @@
 }
 
 .userDetails {
+  min-width: 0;
   display: flex;
   flex-direction: column;
 }
 
+.userName,
+.userEmail {
+  overflow-wrap: anywhere;
+}
+
 .userName {
-  color: #0a2a54;
-  font-weight: 700;
+  color: var(--app-heading);
   font-size: 1rem;
+  font-weight: 700;
 }
 
 .userEmail {
-  color: #64748b;
+  color: var(--app-muted);
   font-size: 0.85rem;
 }
 
-/* Badges */
 .badge {
   display: inline-flex;
   align-items: center;
   gap: 4px;
   padding: 6px 12px;
+  border: 1px solid transparent;
   border-radius: 20px;
   font-size: 0.8rem;
   font-weight: 700;
-  text-transform: uppercase;
 }
 
 .badgeOwner {
-  background-color: #fef08a;
-  color: #854d0e;
+  border-color: var(--app-warning-border);
+  background: var(--app-warning-surface);
+  color: var(--app-warning-text);
 }
+
 .badgeManager {
-  background-color: #e0e7ff;
-  color: #3730a3;
+  border-color: var(--app-info-border);
+  background: var(--app-info-surface);
+  color: var(--app-info-text);
 }
+
 .badgeTrainee {
-  background-color: #f1f5f9;
-  color: #475569;
-}
-
-/* Status */
-.statusWrapper {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #475569;
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-.statusDot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-}
-.dotActive {
-  background-color: #10b981;
-  box-shadow: 0 0 0 3px #d1fae5;
-}
-.dotPending {
-  background-color: #f59e0b;
-  box-shadow: 0 0 0 3px #fef3c7;
-}
-.dotOffline {
-  background-color: #cbd5e1;
+  border-color: var(--app-border);
+  background: var(--app-surface-soft);
+  color: var(--app-text);
 }
 
 .dateText {
-  color: #64748b;
+  color: var(--app-muted) !important;
   font-size: 0.9rem;
   font-weight: 500;
 }
 
-/* Actions */
 .actionsCol {
-  text-align: right;
-  width: 120px;
+  width: 132px;
+  text-align: end !important;
+  white-space: nowrap;
 }
 
 .actionBtn {
-  background: transparent;
-  border: none;
-  color: #94a3b8;
-  font-size: 1.3rem;
+  margin-inline-start: 5px;
   padding: 8px;
-  cursor: pointer;
+  border: 0;
   border-radius: 8px;
-  transition: all 0.2s;
-  margin-left: 5px;
+  background: transparent;
+  color: var(--app-muted);
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
 }
 
 .actionBtn:hover {
-  background-color: #f1f5f9;
-  color: #1a56db;
+  background: var(--app-surface-soft);
+  color: var(--app-link);
 }
 
 .roleSelect {
   min-width: 125px;
-  padding: 8px 34px 8px 12px;
-  border: 1px solid #cbd5e1;
+  padding: 8px 12px;
+  border: 1px solid var(--app-border-strong);
   border-radius: 8px;
-  background-color: #ffffff;
-  color: #0a2a54;
+  background: var(--app-surface);
+  color: var(--app-text-strong);
+  font: inherit;
   font-size: 0.85rem;
   font-weight: 700;
   cursor: pointer;
 }
 
-.roleSelect:focus {
-  outline: none;
-  border-color: #1a56db;
-  box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.1);
+.roleSelect option {
+  background: var(--app-surface);
+  color: var(--app-text-strong);
 }
 
-.roleSelect:disabled {
-  opacity: 0.65;
-  cursor: wait;
-}
-
+.roleSelect:disabled,
 .actionBtn:disabled {
-  opacity: 0.45;
   cursor: not-allowed;
+  opacity: 0.5;
 }
 
 .actionBtn:disabled:hover {
   background: transparent;
-  color: #94a3b8;
+  color: var(--app-muted);
 }
 
 .deleteBtn:hover {
-  background-color: #fef2f2;
-  color: #ef4444;
+  background: var(--app-danger-surface);
+  color: var(--app-danger-text);
 }
 
 .saveBtn:hover {
-  background-color: #ecfdf5;
-  color: #059669;
+  background: var(--app-success-surface);
+  color: var(--app-success-text);
 }
 
 .cancelEditBtn:hover {
-  background-color: #f1f5f9;
-  color: #475569;
+  background: var(--app-surface-soft);
+  color: var(--app-text);
+}
+
+@media (max-width: 720px) {
+  .tableWrapper {
+    overflow: visible;
+  }
+
+  .table,
+  .table tbody,
+  .tableRow,
+  .stateRow {
+    display: block;
+    width: 100%;
+  }
+
+  .table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .tableRow {
+    padding: 8px 14px;
+    box-sizing: border-box;
+    border-block-end: 1px solid var(--app-border);
+  }
+
+  .tableRow:last-child {
+    border-block-end: 0;
+  }
+
+  .tableRow td {
+    display: grid;
+    grid-template-columns: minmax(72px, 0.36fr) minmax(0, 1fr);
+    gap: 12px;
+    align-items: center;
+    padding: 12px 0;
+    border-block-end: 1px solid var(--app-divider);
+    text-align: start !important;
+    white-space: normal;
+  }
+
+  .tableRow td:last-child {
+    border-block-end: 0;
+  }
+
+  .tableRow td::before {
+    content: attr(data-label);
+    color: var(--app-muted);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  .actionsCol {
+    width: auto;
+  }
+
+  .actionBtn {
+    margin-inline: 0 5px;
+  }
+
+  .stateRow td {
+    display: block;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 380px) {
+  .tableRow {
+    padding-inline: 12px;
+  }
+
+  .tableRow td {
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
+
+  .userInfo {
+    gap: 10px;
+  }
 }

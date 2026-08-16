@@ -1,7 +1,12 @@
 .contentArea {
-  padding: 40px 60px;
-  background-color: #f8fafc;
+  width: 100%;
+  min-width: 0;
   min-height: calc(100vh - 130px);
+  min-height: calc(100dvh - 130px);
+  padding: clamp(24px, 4vw, 40px) clamp(20px, 5vw, 60px);
+  box-sizing: border-box;
+  background: var(--app-page-bg);
+  color: var(--app-text);
   animation: fadeIn 0.3s ease-out;
 }
 
@@ -18,7 +23,7 @@
 
 .successToast {
   position: fixed;
-  top: 24px;
+  inset-block-start: 24px;
   inset-inline-end: 24px;
   z-index: 1200;
   width: min(420px, calc(100vw - 32px));
@@ -27,11 +32,11 @@
   gap: 12px;
   padding: 16px;
   box-sizing: border-box;
-  border: 1px solid #bbf7d0;
+  border: 1px solid var(--app-success-border);
   border-radius: 14px;
-  background: #f0fdf4;
-  color: #14532d;
-  box-shadow: 0 16px 36px rgba(20, 83, 45, 0.18);
+  background: var(--app-success-surface);
+  color: var(--app-success-text);
+  box-shadow: var(--app-card-hover-shadow);
   animation: toastIn 0.25s ease-out;
 }
 
@@ -48,7 +53,7 @@
 
 .successToastIcon {
   flex: 0 0 auto;
-  color: #16a34a;
+  color: var(--app-success-indicator);
   font-size: 1.8rem;
 }
 
@@ -58,15 +63,19 @@
   flex: 1;
   flex-direction: column;
   gap: 3px;
+  overflow-wrap: anywhere;
+}
+
+.successToastContent strong,
+.successToastContent span {
+  color: var(--app-success-text);
 }
 
 .successToastContent strong {
-  color: #166534;
   font-size: 0.95rem;
 }
 
 .successToastContent span {
-  color: #15803d;
   font-size: 0.85rem;
   line-height: 1.4;
 }
@@ -75,35 +84,31 @@
   display: grid;
   place-items: center;
   flex: 0 0 auto;
-  padding: 5px;
+  padding: 6px;
   border: 0;
   border-radius: 7px;
   background: transparent;
-  color: #4ade80;
+  color: var(--app-success-text);
   font-size: 1.2rem;
   cursor: pointer;
 }
 
-.successToastClose:hover {
-  background: #dcfce7;
-  color: #166534;
-}
-
-@media (max-width: 600px) {
-  .successToast {
-    top: 16px;
-    inset-inline-end: 16px;
-  }
+.successToastClose:hover,
+.successToastClose:focus-visible {
+  outline: none;
+  background: color-mix(in srgb, var(--app-success-border) 34%, transparent);
 }
 
 .headerWrapper {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 40px;
+  gap: 24px;
+  margin-block-end: 40px;
 }
 
 .headerInfo {
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: 20px;
@@ -112,128 +117,245 @@
 .iconContainer {
   width: 60px;
   height: 60px;
-  background: linear-gradient(135deg, #0a2a54 0%, #153c75 100%);
-  border-radius: 14px;
   display: flex;
+  flex: 0 0 auto;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 8px 20px rgba(10, 42, 84, 0.15);
+  border-radius: 14px;
+  background: var(--bg-navy-gradient);
+  box-shadow: var(--app-card-shadow);
 }
 
 .headerIcon {
-  font-size: 1.8rem;
   color: #ffffff;
+  font-size: 1.8rem;
 }
 
 .subHeading {
+  display: block;
+  margin-block-end: 6px;
+  color: var(--app-link);
   font-size: 0.85rem;
   font-weight: 700;
-  color: #1a56db;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 6px;
-  display: block;
 }
+
 .mainHeading {
-  color: #0a2a54;
-  font-size: 2.2rem;
+  margin: 0 0 8px;
+  color: var(--app-heading);
+  font-size: clamp(1.7rem, 4vw, 2.2rem);
   font-weight: 800;
-  margin: 0 0 8px 0;
+  overflow-wrap: anywhere;
 }
+
 .description {
-  color: #64748b;
-  font-size: 1rem;
+  max-width: 64ch;
   margin: 0;
+  color: var(--app-muted);
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
 .inviteBtn {
-  display: flex;
+  min-height: 44px;
+  display: inline-flex;
+  flex: 0 0 auto;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  background-color: #1a56db;
-  color: #ffffff;
-  border: none;
   padding: 12px 24px;
+  border: 0;
   border-radius: 12px;
-  font-weight: 700;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  background: var(--color-linco-blue);
+  color: #ffffff;
   box-shadow: 0 4px 15px rgba(26, 86, 219, 0.2);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .inviteBtn:hover {
-  background-color: #1e40af;
+  background: var(--color-linco-navy-hover);
   transform: translateY(-2px);
 }
+
+.inviteBtn:focus-visible,
+.searchInput:focus-visible,
+.filterControl:focus-within {
+  outline: 3px solid var(--app-focus-ring);
+  outline-offset: 2px;
+}
+
 .btnIcon {
+  flex: 0 0 auto;
   font-size: 1.2rem;
 }
 
-/* Controls Bar */
 .controlsBar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 25px;
-  gap: 20px;
+  gap: 16px;
+  margin-block-end: 25px;
 }
 
 .searchBox {
   position: relative;
-  flex: 1;
-  max-width: 400px;
+  width: min(100%, 440px);
+  min-width: 0;
+  flex: 1 1 280px;
 }
 
 .searchIcon {
   position: absolute;
-  left: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #94a3b8;
+  inset-block-start: 50%;
+  inset-inline-start: 16px;
+  color: var(--app-muted);
   font-size: 1.2rem;
+  pointer-events: none;
+  transform: translateY(-50%);
 }
 
 .searchInput {
   width: 100%;
-  padding: 12px 16px 12px 45px;
-  border: 1px solid #cbd5e1;
+  min-width: 0;
+  padding: 12px 16px;
+  padding-inline-start: 45px;
+  box-sizing: border-box;
+  border: 1px solid var(--app-border-strong);
   border-radius: 12px;
+  background: var(--app-surface);
+  color: var(--app-text-strong);
+  font: inherit;
   font-size: 0.95rem;
-  color: #1e293b;
-  background-color: #ffffff;
-  transition: all 0.2s;
+}
+
+.searchInput::placeholder {
+  color: var(--app-muted);
 }
 
 .searchInput:focus {
-  outline: none;
-  border-color: #1a56db;
-  box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.1);
+  border-color: var(--app-link);
 }
 
-.filterBtn {
-  display: flex;
+.filterControl {
+  min-height: 44px;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-  background-color: #ffffff;
-  border: 1px solid #cbd5e1;
-  color: #475569;
-  padding: 10px 20px;
+  padding-inline: 14px 8px;
+  border: 1px solid var(--app-border-strong);
   border-radius: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
+  background: var(--app-surface);
+  color: var(--app-text);
 }
 
-.filterBtn:hover {
-  background-color: #f1f5f9;
-  color: #0a2a54;
+.filterControl select {
+  max-width: 170px;
+  padding: 8px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--app-text-strong);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.filterControl select option {
+  background: var(--app-surface);
+  color: var(--app-text-strong);
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .tableContainer {
-  background-color: #ffffff;
-  border-radius: 16px;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 4px 20px rgba(10, 42, 84, 0.03);
+  min-width: 0;
   overflow: hidden;
+  border: 1px solid var(--app-border);
+  border-radius: 16px;
+  background: var(--app-surface);
+  box-shadow: var(--app-card-shadow);
+}
+
+@media (max-width: 720px) {
+  .contentArea {
+    padding: 24px 16px;
+  }
+
+  .headerWrapper,
+  .controlsBar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .headerWrapper {
+    margin-block-end: 28px;
+  }
+
+  .inviteBtn,
+  .searchBox,
+  .filterControl {
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
+  }
+
+  .filterControl select {
+    max-width: none;
+    flex: 1;
+  }
+}
+
+@media (max-width: 420px) {
+  .contentArea {
+    padding-inline: 12px;
+  }
+
+  .headerInfo {
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .iconContainer {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+  }
+
+  .headerIcon {
+    font-size: 1.45rem;
+  }
+
+  .successToast {
+    inset-block-start: 12px;
+    inset-inline: 12px;
+    width: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contentArea,
+  .successToast {
+    animation: none;
+  }
+
+  .inviteBtn:hover {
+    transform: none;
+  }
 }

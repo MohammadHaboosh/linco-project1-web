@@ -24,14 +24,15 @@ const TraineeInquiries = ({ demoId }) => {
     refetch,
     createInquiry,
   } = useInquiries({ demoId, scope: "member" });
+  const locale = i18n.resolvedLanguage || i18n.language || "en";
 
   const formatDate = (value) => {
-    if (!value) return "";
+    if (!value) return t("date-not-available");
 
     const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return "";
+    if (Number.isNaN(date.getTime())) return t("date-not-available");
 
-    return new Intl.DateTimeFormat(i18n.language, {
+    return new Intl.DateTimeFormat(locale, {
       dateStyle: "medium",
       timeStyle: "short",
     }).format(date);
@@ -57,6 +58,7 @@ const TraineeInquiries = ({ demoId }) => {
           </div>
         </div>
         <button
+          type="button"
           className={styles.primaryBtn}
           onClick={() => setIsModalOpen(true)}
         >
@@ -65,7 +67,9 @@ const TraineeInquiries = ({ demoId }) => {
       </div>
 
       {isLoading ? (
-        <div className={styles.pageState}>{t("loading-inquiries")}</div>
+        <div className={styles.pageState} role="status" aria-live="polite">
+          {t("loading-inquiries")}
+        </div>
       ) : error && inquiries.length === 0 ? (
         <div className={styles.pageState} role="alert">
           <p>{error}</p>
@@ -74,12 +78,14 @@ const TraineeInquiries = ({ demoId }) => {
           </button>
         </div>
       ) : inquiries.length === 0 ? (
-        <div className={styles.pageState}>{t("no-inquiries-found")}</div>
+        <div className={styles.pageState} role="status">
+          {t("no-inquiries-found")}
+        </div>
       ) : (
         <>
           <div className={styles.ticketsGrid}>
             {inquiries.map((inquiry) => (
-              <div key={inquiry.id} className={styles.ticketCard}>
+              <article key={inquiry.id} className={styles.ticketCard}>
                 <div className={styles.ticketHeader}>
                   <span
                     className={`${styles.statusBadge} ${inquiry.status === "answered" ? styles.answered : styles.pending}`}
@@ -111,7 +117,7 @@ const TraineeInquiries = ({ demoId }) => {
                     <p>{inquiry.response}</p>
                   </div>
                 )}
-              </div>
+              </article>
             ))}
           </div>
 
@@ -122,6 +128,7 @@ const TraineeInquiries = ({ demoId }) => {
                 className={styles.loadMoreButton}
                 onClick={loadMore}
                 disabled={isLoadingMore}
+                aria-busy={isLoadingMore}
               >
                 {isLoadingMore ? t("loading-inquiries") : t("load-more")}
               </button>

@@ -17,6 +17,7 @@ const MembersTable = ({
   deleteError,
   updatingMemberId,
   updateError,
+  onRetry,
   onDelete,
   onUpdateRole,
 }) => {
@@ -48,7 +49,7 @@ const MembersTable = ({
       case "MEMBER":
         return (
           <span className={`${styles.badge} ${styles.badgeTrainee}`}>
-            {t("trainer")}
+            {t("member")}
           </span>
         );
       default:
@@ -61,11 +62,11 @@ const MembersTable = ({
   };
 
   const formatJoinedAt = (joinedAt) => {
-    if (!joinedAt) return "-";
+    if (!joinedAt) return t("date-not-available");
 
     const date = new Date(joinedAt);
 
-    if (Number.isNaN(date.getTime())) return joinedAt;
+    if (Number.isNaN(date.getTime())) return t("date-not-available");
 
     return new Intl.DateTimeFormat(i18n.resolvedLanguage || i18n.language, {
       year: "numeric",
@@ -105,7 +106,11 @@ const MembersTable = ({
   };
 
   return (
-    <div className={styles.tableWrapper}>
+    <div
+      className={styles.tableWrapper}
+      aria-busy={isLoading}
+      aria-live="polite"
+    >
       <table className={styles.table}>
         <thead>
           <tr>
@@ -117,27 +122,38 @@ const MembersTable = ({
         </thead>
         <tbody>
           {(deleteError || updateError) && !isLoading && !error && (
-            <tr>
+            <tr className={styles.stateRow}>
               <td colSpan="4" className={styles.errorState} role="alert">
                 {deleteError || updateError}
               </td>
             </tr>
           )}
           {isLoading ? (
-            <tr>
-              <td colSpan="4" className={styles.emptyState}>
+            <tr className={styles.stateRow}>
+              <td
+                colSpan="4"
+                className={styles.emptyState}
+                role="status"
+              >
                 {t("loading-members")}
               </td>
             </tr>
           ) : error ? (
-            <tr>
-              <td colSpan="4" className={styles.emptyState}>
-                {error}
+            <tr className={styles.stateRow}>
+              <td colSpan="4" className={styles.emptyState} role="alert">
+                <span>{error}</span>
+                <button
+                  type="button"
+                  className={styles.retryButton}
+                  onClick={onRetry}
+                >
+                  {t("try-again")}
+                </button>
               </td>
             </tr>
           ) : members.length === 0 ? (
-            <tr>
-              <td colSpan="4" className={styles.emptyState}>
+            <tr className={styles.stateRow}>
+              <td colSpan="4" className={styles.emptyState} role="status">
                 {t("no-members-found")}
               </td>
             </tr>
@@ -161,11 +177,14 @@ const MembersTable = ({
 
               return (
                 <tr key={member.id} className={styles.tableRow}>
-                  <td>
+                  <td data-label={t("member")}>
                     <div className={styles.userInfo}>
                       <div className={styles.avatar}>
                         {user.imagePath ? (
-                          <img src={user.imagePath} alt={fullName} />
+                          <img
+                            src={user.imagePath}
+                            alt={t("member-avatar-alt", { name: fullName })}
+                          />
                         ) : (
                           <span>{initials}</span>
                         )}
@@ -176,7 +195,7 @@ const MembersTable = ({
                       </div>
                     </div>
                   </td>
-                  <td>
+                  <td data-label={t("role")}>
                     {isEditing ? (
                       <select
                         className={styles.roleSelect}
@@ -195,16 +214,22 @@ const MembersTable = ({
                       getRoleBadge(member.role)
                     )}
                   </td>
-                  <td className={styles.dateText}>
+                  <td className={styles.dateText} data-label={t("joined")}>
                     {formatJoinedAt(member.joinedAt)}
                   </td>
-                  <td className={styles.actionsCol}>
+                  <td
+                    className={styles.actionsCol}
+                    data-label={t("actions")}
+                  >
                     {isEditing ? (
                       <>
                         <button
                           type="button"
                           className={`${styles.actionBtn} ${styles.saveBtn}`}
-                          title={t("save-role", "Save role")}
+                          title={t("save-role")}
+                          aria-label={t("save-member-role", {
+                            name: fullName,
+                          })}
                           onClick={() => saveRole(member.id)}
                           disabled={isUpdating}
                           aria-busy={isUpdating}
@@ -215,6 +240,9 @@ const MembersTable = ({
                           type="button"
                           className={`${styles.actionBtn} ${styles.cancelEditBtn}`}
                           title={t("cancel")}
+                          aria-label={t("cancel-member-role-edit", {
+                            name: fullName,
+                          })}
                           onClick={cancelEditingRole}
                           disabled={isUpdating}
                         >
@@ -226,6 +254,7 @@ const MembersTable = ({
                         type="button"
                         className={styles.actionBtn}
                         title={t("edit-role")}
+                        aria-label={t("edit-member-role", { name: fullName })}
                         onClick={() => startEditingRole(member)}
                         disabled={mutationInProgress}
                       >
@@ -238,8 +267,13 @@ const MembersTable = ({
                         className={`${styles.actionBtn} ${styles.deleteBtn}`}
                         title={
                           isDeleting
-                            ? t("removing-member", "Removing member...")
+                            ? t("removing-member")
                             : t("remove-member")
+                        }
+                        aria-label={
+                          isDeleting
+                            ? t("removing-named-member", { name: fullName })
+                            : t("remove-named-member", { name: fullName })
                         }
                         onClick={() => onDelete?.(member.id)}
                         disabled={mutationInProgress}

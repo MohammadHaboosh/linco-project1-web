@@ -1,29 +1,36 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { sectionApi } from "../../OwnerCourses/api/sectionApi";
 import { lessonApi } from "../../OwnerCourses/api/lessonApi";
 
 export const useCourseCurriculum = (courseId, shouldFetch) => {
+  const { t } = useTranslation();
   const [sections, setSections] = useState([]);
   const [lessonsState, setLessonsState] = useState({});
   const [expandedSections, setExpandedSections] = useState({});
   const [isLoadingSections, setIsLoadingSections] = useState(false);
+  const [sectionsError, setSectionsError] = useState("");
+  const [sectionsRequestVersion, setSectionsRequestVersion] = useState(0);
 
   useEffect(() => {
     if (courseId && shouldFetch) {
       const fetchSections = async () => {
         setIsLoadingSections(true);
+        setSectionsError("");
         try {
           const data = await sectionApi.getSections(courseId);
           setSections(data.sort((a, b) => a.order - b.order));
         } catch (error) {
           console.error("Error fetching sections:", error);
+          setSections([]);
+          setSectionsError(t("course-curriculum-load-failed"));
         } finally {
           setIsLoadingSections(false);
         }
       };
       fetchSections();
     }
-  }, [courseId, shouldFetch]);
+  }, [courseId, sectionsRequestVersion, shouldFetch, t]);
 
   const toggleSection = async (sectionId) => {
     const isCurrentlyExpanded = expandedSections[sectionId];
@@ -33,10 +40,13 @@ export const useCourseCurriculum = (courseId, shouldFetch) => {
       [sectionId]: !isCurrentlyExpanded,
     }));
 
-    if (!isCurrentlyExpanded && !lessonsState[sectionId]) {
+    if (
+      !isCurrentlyExpanded &&
+      (!lessonsState[sectionId] || lessonsState[sectionId].error)
+    ) {
       setLessonsState((prev) => ({
         ...prev,
-        [sectionId]: { data: [], isLoading: true },
+          [sectionId]: { data: [], error: "", isLoading: true },
       }));
 
       try {
@@ -45,6 +55,7 @@ export const useCourseCurriculum = (courseId, shouldFetch) => {
           ...prev,
           [sectionId]: {
             data: data.sort((a, b) => a.order - b.order),
+            error: "",
             isLoading: false,
           },
         }));
@@ -52,7 +63,11 @@ export const useCourseCurriculum = (courseId, shouldFetch) => {
         console.error("Error fetching lessons:", error);
         setLessonsState((prev) => ({
           ...prev,
-          [sectionId]: { data: [], isLoading: false },
+          [sectionId]: {
+            data: [],
+            error: t("course-lessons-load-failed"),
+            isLoading: false,
+          },
         }));
       }
     }
@@ -64,5 +79,7 @@ export const useCourseCurriculum = (courseId, shouldFetch) => {
     expandedSections,
     toggleSection,
     isLoadingSections,
+    sectionsError,
+    retrySections: () => setSectionsRequestVersion((version) => version + 1),
   };
 };

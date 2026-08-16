@@ -17,6 +17,7 @@ import { useMembers } from "../../hooks/useMembers";
 const MembersContent = () => {
   const { demoId } = useParams();
   const [searchQuery, setSearchQuery] = useState("");
+  const [roleFilter, setRoleFilter] = useState("ALL");
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
   const [invitationSuccessMessage, setInvitationSuccessMessage] =
     useState(null);
@@ -25,6 +26,7 @@ const MembersContent = () => {
     members,
     isLoading,
     error,
+    refetch,
     deleteMember,
     deletingMemberId,
     deleteError,
@@ -44,10 +46,8 @@ const MembersContent = () => {
   }, [invitationSuccessMessage]);
 
   const handleInvitationSuccess = useCallback(
-    (responseData) => {
-      setInvitationSuccessMessage(
-        responseData?.message || t("invitation-created-successfully"),
-      );
+    () => {
+      setInvitationSuccessMessage(t("workspace-invitation-created"));
       setIsInviteModalOpen(false);
     },
     [t],
@@ -56,15 +56,22 @@ const MembersContent = () => {
   const filteredMembers = useMemo(() => {
     const normalizedQuery = searchQuery.trim().toLowerCase();
 
-    if (!normalizedQuery) return members;
-
     return members.filter((member) => {
       const { firstName = "", lastName = "", email = "" } = member.user ?? {};
       const searchableText = `${firstName} ${lastName} ${email}`.toLowerCase();
 
-      return searchableText.includes(normalizedQuery);
+      const normalizedRole = String(member.role ?? "").toUpperCase();
+      const matchesRole =
+        roleFilter === "ALL" ||
+        normalizedRole === roleFilter ||
+        (roleFilter === "ADMIN" && normalizedRole === "MANAGER");
+
+      const matchesSearch =
+        !normalizedQuery || searchableText.includes(normalizedQuery);
+
+      return matchesSearch && matchesRole;
     });
-  }, [members, searchQuery]);
+  }, [members, roleFilter, searchQuery]);
 
   const handleDeleteMember = async (memberId) => {
     const shouldDelete = window.confirm(t("remove-member-confirmation"));
@@ -80,14 +87,14 @@ const MembersContent = () => {
         <div className={styles.successToast} role="status" aria-live="polite">
           <IoCheckmarkCircleOutline className={styles.successToastIcon} />
           <div className={styles.successToastContent}>
-            <strong>{t("invitation-sent", "Invitation sent")}</strong>
+            <strong>{t("invitation-sent")}</strong>
             <span>{invitationSuccessMessage}</span>
           </div>
           <button
             type="button"
             className={styles.successToastClose}
             onClick={() => setInvitationSuccessMessage(null)}
-            aria-label={t("close", "Close")}
+            aria-label={t("dismiss-invitation-success")}
           >
             <IoCloseOutline />
           </button>
@@ -113,6 +120,7 @@ const MembersContent = () => {
         </div>
 
         <button
+          type="button"
           className={styles.inviteBtn}
           onClick={() => {
             setInvitationSuccessMessage(null);
@@ -128,17 +136,31 @@ const MembersContent = () => {
         <div className={styles.searchBox}>
           <IoSearchOutline className={styles.searchIcon} />
           <input
-            type="text"
+            type="search"
             placeholder={t("search-by-name-or-email")}
+            aria-label={t("search-workspace-members")}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className={styles.searchInput}
           />
         </div>
 
-        <button className={styles.filterBtn}>
-          <IoFilterOutline /> {t("filter")}
-        </button>
+        <label className={styles.filterControl}>
+          <span className={styles.visuallyHidden}>
+            {t("filter-members-by-role")}
+          </span>
+          <IoFilterOutline aria-hidden="true" />
+          <select
+            value={roleFilter}
+            onChange={(event) => setRoleFilter(event.target.value)}
+            aria-label={t("filter-members-by-role")}
+          >
+            <option value="ALL">{t("all-roles")}</option>
+            <option value="OWNER">{t("owner")}</option>
+            <option value="ADMIN">{t("admin")}</option>
+            <option value="MEMBER">{t("member")}</option>
+          </select>
+        </label>
       </div>
 
       <div className={styles.tableContainer}>
@@ -146,6 +168,7 @@ const MembersContent = () => {
           members={filteredMembers}
           isLoading={isLoading}
           error={error}
+          onRetry={refetch}
           deletingMemberId={deletingMemberId}
           deleteError={deleteError}
           updatingMemberId={updatingMemberId}

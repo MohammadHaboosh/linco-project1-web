@@ -11,8 +11,18 @@ import { useTranslation } from "react-i18next";
 import { useDemo } from "../../../../../hooks/useDemo";
 
 const MarketplaceCard = ({ course, onViewDetails }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { demoId } = useDemo();
+  const locale = i18n.resolvedLanguage || i18n.language || "en";
+  const numericPrice = Number(course.price) || 0;
+  const lessonCount = Number(course.lessonCount) || 0;
+  const duration = Number(course.totalDuration) || 0;
+  const formattedLessonCount = new Intl.NumberFormat(locale).format(lessonCount);
+  const formattedDuration = new Intl.NumberFormat(locale).format(duration);
+  const formattedPrice = new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: "USD",
+  }).format(numericPrice);
 
   const isOwnDemoCourse =
     String(course.demo?.id) === String(demoId) ||
@@ -30,19 +40,25 @@ const MarketplaceCard = ({ course, onViewDetails }) => {
     tagColorClasses[index % tagColorClasses.length];
 
   return (
-    <div className={styles.card} onClick={onViewDetails}>
+    <article className={styles.card}>
+      <button
+        type="button"
+        className={styles.cardDetailsButton}
+        onClick={onViewDetails}
+        aria-label={t("view-course-details", { title: course.title })}
+      />
       <div className={styles.imageWrapper}>
         <img
           src={course.imagePath}
-          alt={course.title}
+          alt={t("course-thumbnail-alt", { courseTitle: course.title })}
           className={styles.coverImage}
         />
         <div className={styles.imageOverlay}></div>
 
         <div
-          className={`${styles.priceBadge} ${course.price === 0 ? styles.freeBadge : styles.paidBadge}`}
+          className={`${styles.priceBadge} ${numericPrice === 0 ? styles.freeBadge : styles.paidBadge}`}
         >
-          {course.price === 0 ? t("free") : `$${course.price}`}
+          {numericPrice === 0 ? t("free") : formattedPrice}
         </div>
 
         <div className={`${styles.privacyBadge} ${styles.public}`}>
@@ -54,7 +70,9 @@ const MarketplaceCard = ({ course, onViewDetails }) => {
         <div className={styles.metaRow}>
           <div className={styles.companyInfo}>
             <IoBusinessOutline className={styles.metaIcon} />
-            <span className={styles.companyText}>{course.demo?.name}</span>
+            <span className={styles.companyText}>
+              {course.demo?.name || t("unknown-workspace")}
+            </span>
           </div>
         </div>
 
@@ -76,31 +94,54 @@ const MarketplaceCard = ({ course, onViewDetails }) => {
 
         <div className={styles.footerRow}>
           <div className={styles.courseStats}>
-            <span title="Lessons">
-              <IoBookOutline /> {course.lessonCount} {t("lessons")}
+            <span title={t("lessons")}>
+              <IoBookOutline />
+              {t("course-lesson-count", {
+                count: lessonCount,
+                formattedCount: formattedLessonCount,
+              })}
             </span>
-            <span title="Duration">
-              <IoTimeOutline /> {course.totalDuration}m
+            <span title={t("course-duration")}>
+              <IoTimeOutline />
+              {t("course-duration-minutes", {
+                count: duration,
+                formattedCount: formattedDuration,
+              })}
             </span>
           </div>
 
           <div className={styles.actionArea}>
             {!isOwnDemoCourse && (
               <button
+                type="button"
                 className={styles.buyBtn}
-                onClick={(e) => {
-                  e.stopPropagation();
+                onClick={() => {
                   onViewDetails();
                 }}
-                title={course.price === 0 ? "Enroll Free" : "Purchase Course"}
+                title={
+                  numericPrice === 0
+                    ? t("enroll-for-free")
+                    : t("purchase-course")
+                }
+                aria-label={
+                  numericPrice === 0
+                    ? t("enroll-in-named-course-for-free", {
+                        title: course.title,
+                      })
+                    : t("purchase-named-course", { title: course.title })
+                }
               >
-                {course.price === 0 ? <IoDownloadOutline /> : <IoCartOutline />}
+                {numericPrice === 0 ? (
+                  <IoDownloadOutline />
+                ) : (
+                  <IoCartOutline />
+                )}
               </button>
             )}
           </div>
         </div>
       </div>
-    </div>
+    </article>
   );
 };
 

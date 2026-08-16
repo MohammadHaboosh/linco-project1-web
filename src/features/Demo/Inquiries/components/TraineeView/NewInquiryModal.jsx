@@ -11,7 +11,8 @@ const NewInquiryModal = ({ onClose, onSend, isSubmitting }) => {
   });
   const [error, setError] = useState("");
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event?.preventDefault();
     if (isSubmitting) return;
 
     if (!formData.subject.trim() || !formData.question.trim()) {
@@ -25,20 +26,29 @@ const NewInquiryModal = ({ onClose, onSend, isSubmitting }) => {
         subject: formData.subject.trim(),
         question: formData.question.trim(),
       });
-    } catch (requestError) {
-      setError(requestError.message || t("failed-to-create-inquiry"));
+    } catch {
+      setError(t("failed-to-create-inquiry"));
     }
   };
 
   return (
-    <div className={styles.modalOverlay}>
-      <div className={styles.modalContainer}>
+    <div className={styles.modalOverlay} role="presentation">
+      <form
+        className={styles.modalContainer}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="new-inquiry-title"
+        aria-busy={isSubmitting}
+        onSubmit={handleSubmit}
+        noValidate
+      >
         <div className={styles.modalHeader}>
-          <h3>{t("submit-new-inquiry")}</h3>
+          <h3 id="new-inquiry-title">{t("submit-new-inquiry")}</h3>
           <button
+            type="button"
             className={styles.closeBtn}
             onClick={onClose}
-            aria-label={t("close")}
+            aria-label={t("close-new-inquiry-dialog")}
             disabled={isSubmitting}
           >
             <IoCloseOutline />
@@ -46,15 +56,21 @@ const NewInquiryModal = ({ onClose, onSend, isSubmitting }) => {
         </div>
 
         <div className={styles.modalBody}>
-          {error && <div className={styles.errorAlert}>{error}</div>}
+          {error && (
+            <div className={styles.errorAlert} role="alert">
+              {error}
+            </div>
+          )}
 
           <div className={styles.inputGroup}>
-            <label>{t("subject")} *</label>
+            <label htmlFor="inquiry-subject">{t("subject")}</label>
             <input
+              id="inquiry-subject"
               type="text"
               placeholder={t("subject-placeholder")}
               value={formData.subject}
               disabled={isSubmitting}
+              required
               onChange={(e) =>
                 setFormData({ ...formData, subject: e.target.value })
               }
@@ -62,12 +78,14 @@ const NewInquiryModal = ({ onClose, onSend, isSubmitting }) => {
           </div>
 
           <div className={styles.inputGroup}>
-            <label>{t("question")} *</label>
+            <label htmlFor="inquiry-question">{t("question")}</label>
             <textarea
+              id="inquiry-question"
               rows="5"
               placeholder={t("question-placeholder")}
               value={formData.question}
               disabled={isSubmitting}
+              required
               onChange={(e) =>
                 setFormData({ ...formData, question: e.target.value })
               }
@@ -77,6 +95,7 @@ const NewInquiryModal = ({ onClose, onSend, isSubmitting }) => {
 
         <div className={styles.modalFooter}>
           <button
+            type="button"
             className={styles.cancelBtn}
             onClick={onClose}
             disabled={isSubmitting}
@@ -84,15 +103,16 @@ const NewInquiryModal = ({ onClose, onSend, isSubmitting }) => {
             {t("cancel")}
           </button>
           <button
+            type="submit"
             className={styles.submitBtn}
-            onClick={handleSubmit}
             disabled={isSubmitting}
+            aria-busy={isSubmitting}
           >
             <IoSendOutline />
             {isSubmitting ? t("creating-inquiry") : t("send-inquiry")}
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 };

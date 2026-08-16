@@ -4,25 +4,33 @@ import { useTranslation } from "react-i18next";
 const LibraryFilters = ({ activeCategory, setActiveCategory }) => {
   const { t } = useTranslation();
   const categories = [
-    "All",
-    "Front-End",
-    "Back-End",
-    "UI/UX",
-    "Soft Skills",
-    "Data Science",
+    { value: "All", label: t("course-category-all") },
+    { value: "Front-End", label: t("course-category-front-end") },
+    { value: "Back-End", label: t("course-category-back-end") },
+    { value: "UI/UX", label: t("course-category-ui-ux") },
+    { value: "Soft Skills", label: t("course-category-soft-skills") },
+    { value: "Data Science", label: t("course-category-data-science") },
+  ];
+  const difficultyLevels = [
+    { value: "Any Level", label: t("course-difficulty-any") },
+    { value: "Beginner", label: t("course-difficulty-beginner") },
+    { value: "Intermediate", label: t("course-difficulty-intermediate") },
+    { value: "Advanced", label: t("course-difficulty-advanced") },
   ];
 
   return (
     <div className={styles.filtersCard}>
       <h3 className={styles.filterTitle}>{t("categories")}</h3>
       <div className={styles.categoriesList}>
-        {categories.map((cat) => (
+        {categories.map((category) => (
           <button
-            key={cat}
-            className={`${styles.filterBtn} ${activeCategory === cat ? styles.active : ""}`}
-            onClick={() => setActiveCategory(cat)}
+            type="button"
+            key={category.value}
+            className={`${styles.filterBtn} ${activeCategory === category.value ? styles.active : ""}`}
+            onClick={() => setActiveCategory(category.value)}
+            aria-pressed={activeCategory === category.value}
           >
-            {cat}
+            {category.label}
           </button>
         ))}
       </div>
@@ -31,15 +39,16 @@ const LibraryFilters = ({ activeCategory, setActiveCategory }) => {
 
       <h3 className={styles.filterTitle}>{t("difficulty")}</h3>
       <div className={styles.radioGroup}>
-        {["Any Level", "Beginner", "Intermediate", "Advanced"].map((level) => (
-          <label key={level} className={styles.radioLabel}>
+        {difficultyLevels.map((level) => (
+          <label key={level.value} className={styles.radioLabel}>
             <input
               type="radio"
               name="difficulty"
-              defaultChecked={level === "Any Level"}
+              value={level.value}
+              defaultChecked={level.value === "Any Level"}
             />
-            <span className={styles.customRadio}></span>
-            {level}
+            <span className={styles.customRadio} aria-hidden="true"></span>
+            {level.label}
           </label>
         ))}
       </div>

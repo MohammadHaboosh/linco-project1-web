@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { inquiriesApi } from "../api/inquiriesApi";
 
 const EMPTY_META = {
@@ -55,6 +56,7 @@ const mergeInquiriesById = (currentInquiries, incomingInquiries) => {
 };
 
 export const useInquiries = ({ demoId, scope }) => {
+  const { t } = useTranslation();
   const [inquiries, setInquiries] = useState([]);
   const [meta, setMeta] = useState(EMPTY_META);
   const [isLoading, setIsLoading] = useState(Boolean(demoId));
@@ -99,7 +101,7 @@ export const useInquiries = ({ demoId, scope }) => {
 
         setInquiries([]);
         setMeta(EMPTY_META);
-        setError(requestError.message || "Failed to fetch inquiries.");
+        setError(t("inquiries-load-failed"));
         return false;
       } finally {
         if (!signal?.aborted) {
@@ -107,7 +109,7 @@ export const useInquiries = ({ demoId, scope }) => {
         }
       }
     },
-    [demoId, fetchPage],
+    [demoId, fetchPage, t],
   );
 
   useEffect(() => {
@@ -135,13 +137,13 @@ export const useInquiries = ({ demoId, scope }) => {
       );
       setMeta(result.meta);
       return true;
-    } catch (requestError) {
-      setError(requestError.message || "Failed to fetch more inquiries.");
+    } catch {
+      setError(t("more-inquiries-load-failed"));
       return false;
     } finally {
       setIsLoadingMore(false);
     }
-  }, [fetchPage, isLoadingMore, meta.endCursor, meta.hasNextPage]);
+  }, [fetchPage, isLoadingMore, meta.endCursor, meta.hasNextPage, t]);
 
   const refetch = useCallback(() => loadInquiries(), [loadInquiries]);
 

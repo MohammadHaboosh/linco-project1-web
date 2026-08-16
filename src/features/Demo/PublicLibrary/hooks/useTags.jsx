@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { libraryApi } from "../api/libraryApi";
 
 export const useTags = () => {
+  const { t } = useTranslation();
   const [tags, setTags] = useState([]);
   const [isLoadingTags, setIsLoadingTags] = useState(true);
   const [tagsError, setTagsError] = useState(null);
@@ -12,12 +14,12 @@ export const useTags = () => {
     try {
       const data = await libraryApi.getAllTags();
       setTags(data || []);
-    } catch (err) {
-      setTagsError(err.message || "Failed to fetch tags");
+    } catch {
+      setTagsError(t("course-tags-load-failed"));
     } finally {
       setIsLoadingTags(false);
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     let isMounted = true;
@@ -30,9 +32,9 @@ export const useTags = () => {
         if (isMounted) {
           setTags(data || []);
         }
-      } catch (err) {
+      } catch {
         if (isMounted) {
-          setTagsError(err.message || "Failed to fetch tags");
+          setTagsError(t("course-tags-load-failed"));
         }
       } finally {
         if (isMounted) {
@@ -46,7 +48,7 @@ export const useTags = () => {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [t]);
 
   return {
     tags,

@@ -26,6 +26,7 @@ const ManagerInbox = ({ demoId }) => {
   const [responseText, setResponseText] = useState("");
   const [responseError, setResponseError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const locale = i18n.resolvedLanguage || i18n.language || "en";
   const activeInquiry =
     inquiries.find((inquiry) => inquiry.id === activeInquiryId) ||
     inquiries[0] ||
@@ -46,15 +47,25 @@ const ManagerInbox = ({ demoId }) => {
   );
 
   const formatDate = (value) => {
-    if (!value) return "";
+    if (!value) return t("date-not-available");
 
     const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return "";
+    if (Number.isNaN(date.getTime())) return t("date-not-available");
 
-    return new Intl.DateTimeFormat(i18n.language, {
+    return new Intl.DateTimeFormat(locale, {
       dateStyle: "medium",
       timeStyle: "short",
     }).format(date);
+  };
+
+  const getTranslatedRole = (role) => {
+    const normalizedRole = String(role ?? "").toUpperCase();
+
+    if (normalizedRole === "OWNER") return t("owner");
+    if (["ADMIN", "MANAGER"].includes(normalizedRole)) return t("admin");
+    if (normalizedRole === "MEMBER") return t("member");
+
+    return t("trainee");
   };
 
   const handleSelectInquiry = (inquiryId) => {
@@ -63,7 +74,8 @@ const ManagerInbox = ({ demoId }) => {
     setResponseError("");
   };
 
-  const handleSendResponse = async () => {
+  const handleSendResponse = async (event) => {
+    event?.preventDefault();
     const response = responseText.trim();
     if (
       !response ||
@@ -78,10 +90,8 @@ const ManagerInbox = ({ demoId }) => {
     try {
       await replyToInquiry(activeInquiry.id, response);
       setResponseText("");
-    } catch (requestError) {
-      setResponseError(
-        requestError.message || t("failed-to-send-response"),
-      );
+    } catch {
+      setResponseError(t("failed-to-send-response"));
     }
   };
 
@@ -106,8 +116,9 @@ const ManagerInbox = ({ demoId }) => {
           <div className={styles.searchContainer}>
             <IoSearchOutline className={styles.searchIcon} />
             <input
-              type="text"
+              type="search"
               placeholder={t("search-tickets")}
+              aria-label={t("search-inquiries")}
               className={styles.inboxSearch}
               value={searchQuery}
               onChange={(event) => setSearchQuery(event.target.value)}
@@ -116,7 +127,13 @@ const ManagerInbox = ({ demoId }) => {
 
           <div className={styles.ticketsList}>
             {isLoading ? (
-              <div className={styles.listState}>{t("loading-inquiries")}</div>
+              <div
+                className={styles.listState}
+                role="status"
+                aria-live="polite"
+              >
+                {t("loading-inquiries")}
+              </div>
             ) : error && inquiries.length === 0 ? (
               <div className={styles.listState} role="alert">
                 <p>{error}</p>
@@ -125,7 +142,9 @@ const ManagerInbox = ({ demoId }) => {
                 </button>
               </div>
             ) : filteredInquiries.length === 0 ? (
-              <div className={styles.listState}>{t("no-inquiries-found")}</div>
+              <div className={styles.listState} role="status">
+                {t("no-inquiries-found")}
+              </div>
             ) : (
               <>
                 {filteredInquiries.map((inquiry) => (
@@ -134,6 +153,10 @@ const ManagerInbox = ({ demoId }) => {
                     key={inquiry.id}
                     className={`${styles.inboxItem} ${activeInquiry?.id === inquiry.id ? styles.inboxItemActive : ""}`}
                     onClick={() => handleSelectInquiry(inquiry.id)}
+                    aria-pressed={activeInquiry?.id === inquiry.id}
+                    aria-label={t("open-inquiry", {
+                      subject: inquiry.subject,
+                    })}
                   >
                     <div className={styles.itemHeader}>
                       <span className={styles.senderName}>
@@ -160,6 +183,7 @@ const ManagerInbox = ({ demoId }) => {
                     className={styles.loadMoreButton}
                     onClick={loadMore}
                     disabled={isLoadingMore}
+                    aria-busy={isLoadingMore}
                   >
                     {isLoadingMore ? t("loading-inquiries") : t("load-more")}
                   </button>
@@ -194,7 +218,7 @@ const ManagerInbox = ({ demoId }) => {
                     <strong>
                       {activeInquiry.creatorName || t("unknown-user")}
                     </strong>
-                    <span>{activeInquiry.creatorRole || t("trainee")}</span>
+                    <span>{getTranslatedRole(activeInquiry.creatorRole)}</span>
                   </div>
                 </div>
               </div>
@@ -213,20 +237,30 @@ const ManagerInbox = ({ demoId }) => {
                     <strong className={styles.panelLabel}>{t("response")}</strong>
                     <p>{activeInquiry.response}</p>
                     <span className={styles.panelMeta}>
-                      {[
-                        activeInquiry.responseSenderName || t("support-team"),
-                        formatDate(activeInquiry.responseCreatedAt),
-                      ]
-                        .filter(Boolean)
-                        .join(" · ")}
+                      {t("inquiry-response-meta", {
+                        name:
+                          activeInquiry.responseSenderName || t("support-team"),
+                        date: formatDate(activeInquiry.responseCreatedAt),
+                      })}
                     </span>
                   </section>
                 )}
               </div>
 
               {!activeInquiry.response && (
-                <div className={styles.responseArea}>
+                <form
+                  className={styles.responseArea}
+                  onSubmit={handleSendResponse}
+                  aria-busy={replyingInquiryId === activeInquiry.id}
+                >
+                  <label
+                    className={styles.visuallyHidden}
+                    htmlFor="inquiry-response"
+                  >
+                    {t("response")}
+                  </label>
                   <textarea
+                    id="inquiry-response"
                     placeholder={t("write-your-response-here")}
                     value={responseText}
                     onChange={(event) => {
@@ -243,12 +277,13 @@ const ManagerInbox = ({ demoId }) => {
                   )}
                   <div className={styles.responseActions}>
                     <button
+                      type="submit"
                       className={styles.sendResponseBtn}
-                      onClick={handleSendResponse}
                       disabled={
                         !responseText.trim() ||
                         replyingInquiryId === activeInquiry.id
                       }
+                      aria-busy={replyingInquiryId === activeInquiry.id}
                     >
                       <IoSendOutline />
                       {replyingInquiryId === activeInquiry.id
@@ -256,7 +291,7 @@ const ManagerInbox = ({ demoId }) => {
                         : t("send-response")}
                     </button>
                   </div>
-                </div>
+                </form>
               )}
             </>
           ) : (

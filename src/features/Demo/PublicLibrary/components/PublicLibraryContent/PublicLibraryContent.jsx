@@ -16,11 +16,11 @@ import { useTags } from "../../hooks/useTags";
 import { useBuyCourse } from "../../hooks/useBuyCourse";
 
 const PublicLibraryContent = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { demoId } = useParams();
 
-  const { courses, isLoading, error } = usePublicCourses(demoId);
-  const { tags, isLoadingTags } = useTags();
+  const { courses, isLoading, error, refetch } = usePublicCourses(demoId);
+  const { tags, isLoadingTags, tagsError, refetchTags } = useTags();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -29,14 +29,22 @@ const PublicLibraryContent = () => {
 
   const { initiatePurchase, isBuying, buyError } = useBuyCourse();
   const filterRef = useRef(null);
+  const locale = i18n.resolvedLanguage || i18n.language || "en";
 
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (filterRef.current && !filterRef.current.contains(e.target))
         setIsFilterOpen(false);
     };
+    const handleEscape = (event) => {
+      if (event.key === "Escape") setIsFilterOpen(false);
+    };
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEscape);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscape);
+    };
   }, []);
 
   const toggleTagSelection = (tagId) => {
@@ -60,8 +68,12 @@ const PublicLibraryContent = () => {
   });
 
   const handleEnrollOrBuy = (course) => {
-    initiatePurchase(demoId, course.id);
+    void initiatePurchase(demoId, course.id);
   };
+
+  const formattedSelectedTagCount = new Intl.NumberFormat(locale).format(
+    selectedTagIds.length,
+  );
 
   return (
     <div className={styles.pageContainer}>
@@ -72,7 +84,7 @@ const PublicLibraryContent = () => {
           </div>
           <div>
             <span className={styles.subHeading}>{t("global-marketplace")}</span>
-            <h1 className={styles.title}>{t("ublic-course-library")}</h1>
+            <h1 className={styles.title}>{t("public-course-library")}</h1>
             <p className={styles.description}>
               {t(
                 "explore-public-courses-published-by-developer-teams-and-start-learning",
@@ -87,8 +99,9 @@ const PublicLibraryContent = () => {
           <div className={styles.searchBox}>
             <IoSearchOutline className={styles.searchIcon} />
             <input
-              type="text"
+              type="search"
               placeholder={t("search-courses")}
+              aria-label={t("search-public-courses")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className={styles.searchInput}
@@ -99,29 +112,37 @@ const PublicLibraryContent = () => {
 
           <div className={styles.filterBox} ref={filterRef}>
             <button
+              type="button"
               className={styles.filterBtn}
               onClick={() => setIsFilterOpen(!isFilterOpen)}
+              aria-expanded={isFilterOpen}
+              aria-controls="course-tag-filter-menu"
             >
               <IoFilterOutline className={styles.filterIcon} />
               {selectedTagIds.length === 0
                 ? t("all-tags")
-                : `${selectedTagIds.length} ${t("tags-selected")}`}
+                : t("selected-tag-count", {
+                    count: selectedTagIds.length,
+                    formattedCount: formattedSelectedTagCount,
+                  })}
               <IoChevronDownOutline />
             </button>
             {isFilterOpen && (
               <div
+                id="course-tag-filter-menu"
                 className={styles.filterDropdown}
-                style={{ minWidth: "200px" }}
+                aria-label={t("filter-courses-by-tag")}
               >
                 {isLoadingTags ? (
-                  <div
-                    style={{
-                      padding: "10px",
-                      textAlign: "center",
-                      fontSize: "0.85rem",
-                    }}
-                  >
+                  <div className={styles.filterState} role="status">
                     {t("loading-tags")}
+                  </div>
+                ) : tagsError ? (
+                  <div className={styles.filterState} role="alert">
+                    <span>{tagsError}</span>
+                    <button type="button" onClick={refetchTags}>
+                      {t("try-again")}
+                    </button>
                   </div>
                 ) : tags.length > 0 ? (
                   tags.map((tag) => {
@@ -132,11 +153,7 @@ const PublicLibraryContent = () => {
                         type="button"
                         className={`${styles.catItem} ${isSelected ? styles.catActive : ""}`}
                         onClick={() => toggleTagSelection(tag.id)}
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}
+                        aria-pressed={isSelected}
                       >
                         <span>{tag.name}</span>
                         {isSelected && <IoCheckmarkOutline size={16} />}
@@ -144,13 +161,7 @@ const PublicLibraryContent = () => {
                     );
                   })
                 ) : (
-                  <div
-                    style={{
-                      padding: "10px",
-                      textAlign: "center",
-                      fontSize: "0.85rem",
-                    }}
-                  >
+                  <div className={styles.filterState} role="status">
                     {t("no-tags-found")}
                   </div>
                 )}
@@ -161,14 +172,20 @@ const PublicLibraryContent = () => {
       </div>
 
       {isLoading && (
-        <p style={{ textAlign: "center", padding: "40px" }}>
-          {t("loading-courses")}
-        </p>
+        <div className={styles.pageState} role="status" aria-live="polite">
+          <span className={styles.loader} aria-hidden="true" />
+          <strong>{t("loading-public-courses")}</strong>
+          <p>{t("loading-public-courses-description")}</p>
+        </div>
       )}
-      {error && (
-        <p style={{ textAlign: "center", padding: "40px", color: "red" }}>
-          {error}
-        </p>
+      {error && !isLoading && (
+        <div className={styles.pageState} role="alert">
+          <strong>{t("public-courses-load-error-title")}</strong>
+          <p>{error}</p>
+          <button type="button" onClick={refetch}>
+            {t("try-again")}
+          </button>
+        </div>
       )}
 
       {!isLoading && !error && (
@@ -182,15 +199,18 @@ const PublicLibraryContent = () => {
               />
             ))
           ) : (
-            <p
-              style={{
-                gridColumn: "1 / -1",
-                textAlign: "center",
-                color: "#64748b",
-              }}
-            >
-              {t("no-courses-found-matching-your-criteria")}
-            </p>
+            <div className={styles.emptyState} role="status">
+              <strong>
+                {courses.length === 0
+                  ? t("public-library-empty-title")
+                  : t("public-library-no-results-title")}
+              </strong>
+              <p>
+                {courses.length === 0
+                  ? t("public-library-empty-description")
+                  : t("no-courses-found-matching-your-criteria")}
+              </p>
+            </div>
           )}
         </div>
       )}

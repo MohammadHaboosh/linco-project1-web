@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { memberApi } from "../api/memberApi";
 
 export const useMembers = (demoId) => {
+  const { t } = useTranslation();
   const [members, setMembers] = useState([]);
   const [meta, setMeta] = useState(null);
   const [isLoading, setIsLoading] = useState(Boolean(demoId));
@@ -13,26 +15,37 @@ export const useMembers = (demoId) => {
 
   const loadMembers = useCallback(
     async ({ signal } = {}) => {
-      if (!demoId) return;
+      if (!demoId) {
+        setMembers([]);
+        setMeta(null);
+        setError(t("workspace-id-missing"));
+        setIsLoading(false);
+        return false;
+      }
+
+      setIsLoading(true);
+      setError(null);
 
       try {
         const responseData = await memberApi.getMembers(demoId, { signal });
 
         setMembers(Array.isArray(responseData.data) ? responseData.data : []);
         setMeta(responseData.meta ?? null);
+        return true;
       } catch (requestError) {
-        if (requestError.name === "AbortError") return;
+        if (requestError.name === "AbortError") return false;
 
         setMembers([]);
         setMeta(null);
-        setError(requestError.message || "Failed to load demo members.");
+        setError(t("workspace-members-load-failed"));
+        return false;
       } finally {
         if (!signal?.aborted) {
           setIsLoading(false);
         }
       }
     },
-    [demoId],
+    [demoId, t],
   );
 
   useEffect(() => {
@@ -65,16 +78,14 @@ export const useMembers = (demoId) => {
           currentMembers.filter((member) => member.id !== memberId),
         );
         return true;
-      } catch (requestError) {
-        setDeleteError(
-          requestError.message || "Failed to remove the demo member.",
-        );
+      } catch {
+        setDeleteError(t("workspace-member-remove-failed"));
         return false;
       } finally {
         setDeletingMemberId(null);
       }
     },
-    [demoId, deletingMemberId],
+    [demoId, deletingMemberId, t],
   );
 
   const updateMemberRole = useCallback(
@@ -111,16 +122,14 @@ export const useMembers = (demoId) => {
         );
 
         return true;
-      } catch (requestError) {
-        setUpdateError(
-          requestError.message || "Failed to update the member role.",
-        );
+      } catch {
+        setUpdateError(t("workspace-member-role-update-failed"));
         return false;
       } finally {
         setUpdatingMemberId(null);
       }
     },
-    [demoId, updatingMemberId],
+    [demoId, t, updatingMemberId],
   );
 
   return {

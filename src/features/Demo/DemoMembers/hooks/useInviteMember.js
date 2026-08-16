@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { memberApi } from "../api/memberApi";
 
 const SEARCH_DEBOUNCE_MS = 300;
 
 export const useInviteMember = (demoId, onSuccess) => {
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -36,7 +38,7 @@ export const useInviteMember = (demoId, onSuccess) => {
 
         if (!controller.signal.aborted) {
           setSearchResults([]);
-          setSearchError(requestError.message || "Failed to search users.");
+          setSearchError(t("user-search-failed"));
         }
       } finally {
         if (!controller.signal.aborted) {
@@ -49,7 +51,7 @@ export const useInviteMember = (demoId, onSuccess) => {
       clearTimeout(debounceTimer);
       controller.abort();
     };
-  }, [searchQuery, selectedUser]);
+  }, [searchQuery, selectedUser, t]);
 
   const updateSearchQuery = useCallback((value) => {
     setSearchQuery(value);
@@ -79,12 +81,12 @@ export const useInviteMember = (demoId, onSuccess) => {
       setSubmitError(null);
 
       if (!selectedUser?.id) {
-        setSubmitError("Please select a user before sending the invitation.");
+        setSubmitError(t("select-user-before-invitation"));
         return false;
       }
 
       if (!demoId) {
-        setSubmitError("Demo ID is missing.");
+        setSubmitError(t("workspace-id-missing"));
         return false;
       }
 
@@ -99,16 +101,14 @@ export const useInviteMember = (demoId, onSuccess) => {
 
         await onSuccess?.(responseData);
         return true;
-      } catch (requestError) {
-        setSubmitError(
-          requestError.message || "Failed to send the invitation.",
-        );
+      } catch {
+        setSubmitError(t("invitation-send-failed"));
         return false;
       } finally {
         setIsSubmitting(false);
       }
     },
-    [demoId, onSuccess, role, selectedUser],
+    [demoId, onSuccess, role, selectedUser, t],
   );
 
   return {

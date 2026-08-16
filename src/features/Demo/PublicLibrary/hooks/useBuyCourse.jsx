@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { libraryApi } from "../api/libraryApi";
 
 export const useBuyCourse = () => {
+  const { t } = useTranslation();
   const [isBuying, setIsBuying] = useState(false);
   const [buyError, setBuyError] = useState(null);
 
@@ -14,12 +16,10 @@ export const useBuyCourse = () => {
       if (response.success && response.data?.url) {
         window.location.href = response.data.url;
       } else {
-        throw new Error("Error initiating purchase. Please try again later.");
+        throw new Error("checkout-url-missing");
       }
     } catch (error) {
-      setBuyError(
-        error.message || "Error initiating purchase. Please try again later.",
-      );
+      setBuyError(t("course-purchase-start-failed"));
       console.error(error);
     } finally {
       setIsBuying(false);

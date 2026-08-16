@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { libraryApi } from "../api/libraryApi";
 
 export const usePublicCourses = (demoId) => {
+  const { t } = useTranslation();
   const [courses, setCourses] = useState([]);
   const [isLoading, setIsLoading] = useState(Boolean(demoId));
   const [error, setError] = useState(null);
@@ -13,12 +15,12 @@ export const usePublicCourses = (demoId) => {
     try {
       const data = await libraryApi.getCourses(demoId);
       setCourses(data || []);
-    } catch (err) {
-      setError(err.message || "Failed to fetch public courses");
+    } catch {
+      setError(t("public-courses-load-failed"));
     } finally {
       setIsLoading(false);
     }
-  }, [demoId]);
+  }, [demoId, t]);
 
   useEffect(() => {
     if (!demoId) return;
@@ -33,9 +35,9 @@ export const usePublicCourses = (demoId) => {
         if (isMounted) {
           setCourses(data || []);
         }
-      } catch (err) {
+      } catch {
         if (isMounted) {
-          setError(err.message || "Failed to fetch public courses");
+          setError(t("public-courses-load-failed"));
         }
       } finally {
         if (isMounted) {
@@ -49,7 +51,7 @@ export const usePublicCourses = (demoId) => {
     return () => {
       isMounted = false;
     };
-  }, [demoId]);
+  }, [demoId, t]);
 
   return {
     courses: demoId ? courses : [],

@@ -56,7 +56,7 @@ const InviteModal = ({ demoId, onClose, onSuccess }) => {
             className={styles.closeBtn}
             onClick={onClose}
             disabled={isSubmitting}
-            aria-label={t('close')}
+            aria-label={t("close-invite-member-dialog")}
           >
             <IoCloseOutline />
           </button>
@@ -79,7 +79,7 @@ const InviteModal = ({ demoId, onClose, onSuccess }) => {
                   <strong>
                     {[selectedUser.firstName, selectedUser.lastName]
                       .filter(Boolean)
-                      .join(" ") || t("member", "Member")}
+                      .join(" ") || t("member")}
                   </strong>
                   <span>{selectedUser.email}</span>
                 </div>
@@ -104,7 +104,6 @@ const InviteModal = ({ demoId, onClose, onSuccess }) => {
                     onChange={(event) => setSearchQuery(event.target.value)}
                     placeholder={t(
                       "search-by-name-or-email",
-                      "Search by name or email...",
                     )}
                     disabled={isSubmitting}
                     autoComplete="off"
@@ -113,7 +112,8 @@ const InviteModal = ({ demoId, onClose, onSuccess }) => {
                   {isSearching && (
                     <span
                       className={styles.searchLoader}
-                      aria-label={t("searching")}
+                      role="status"
+                      aria-label={t("searching-for-users")}
                     />
                   )}
                 </div>
@@ -192,7 +192,7 @@ const InviteModal = ({ demoId, onClose, onSuccess }) => {
               disabled={!selectedUser || isSubmitting}
             >
               {isSubmitting
-                ? t("sending-invitation", "Sending invitation...")
+                ? t("sending-invitation")
                 : t("send-invitation")}
             </button>
           </div>
