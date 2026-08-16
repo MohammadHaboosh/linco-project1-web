@@ -17,8 +17,9 @@ const GroupWorkspace = () => {
   const [layout, setLayout] = useState("chat-only");
   const [activeTool, setActiveTool] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+  const [shareTrigger, setShareTrigger] = useState(0);
 
   const activeGroup = groups.find((g) => g.id === groupId);
 
@@ -34,6 +35,10 @@ const GroupWorkspace = () => {
       setActiveTool("photopea");
     }
     setLayout(newLayout);
+  };
+
+  const handleShareToChat = () => {
+    setShareTrigger((prev) => prev + 1);
   };
 
   return (
@@ -59,9 +64,14 @@ const GroupWorkspace = () => {
               onToolSelect={handleToolSelect}
               layout={layout}
               onLayoutChange={handleLayoutChange}
+              onShareToChat={handleShareToChat}
             />
 
-            <WorkspaceStage layout={layout} activeTool={activeTool} />
+            <WorkspaceStage
+              layout={layout}
+              activeTool={activeTool}
+              triggerShareTool={shareTrigger}
+            />
           </>
         ) : (
           <EmptyWorkspace
