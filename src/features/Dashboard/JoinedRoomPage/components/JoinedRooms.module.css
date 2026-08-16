@@ -1,0 +1,31 @@
+.invitationsButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  max-width: 100%;
+  padding: 11px 20px;
+  border: 2px solid var(--app-link);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--app-link);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.invitationsButton:hover {
+  background-color: var(--app-surface-soft);
+}
+
+@media (max-width: 480px) {
+  .invitationsButton {
+    width: 100%;
+    padding-inline: 14px;
+    font-size: 0.88rem;
+  }
+}

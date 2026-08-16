@@ -8,31 +8,21 @@ import {
 import SharedRoomsLayout from "../../components/SharedRoomsLayout";
 import { PATHS } from "../../../../routes/paths";
 import { useJoinedRooms } from "../hooks/useJoinedRooms.jsx";
+import styles from "./JoinedRooms.module.css";
 
 const JoinedRooms = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { joinedRooms, isLoading } = useJoinedRooms();
+  const { joinedRooms, isLoading, error } = useJoinedRooms();
 
   const CheckInvitationsBtn = (
     <button
+      type="button"
       onClick={() => navigate(PATHS.PENDING_INVITATIONS)}
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: "8px",
-        background: "transparent",
-        color: "#1a56db",
-        border: "2px solid #1a56db",
-        padding: "12px 24px",
-        borderRadius: "12px",
-        fontWeight: "700",
-        cursor: "pointer",
-        fontSize: "0.95rem",
-      }}
+      className={styles.invitationsButton}
     >
       <IoCompassOutline size={20} />
-      {t("view-pending-invitations", "Check Invitations")}
+      {t("view-pending-invitations")}
     </button>
   );
 
@@ -40,18 +30,17 @@ const JoinedRooms = () => {
     <SharedRoomsLayout
       headerIcon={<IoEnterOutline />}
       subHeading={t("collaboration")}
-      title={t("joined-training-rooms")}
+      title={t("joined-workspaces")}
       description={t(
         "access-training-spaces-you-have-been-invited-to-and-collaborate-with-your-teams",
       )}
-      searchPlaceholder={t("search-room-by-name")}
+      searchPlaceholder={t("search-workspaces-by-name")}
       isLoading={isLoading}
+      error={error}
       roomsData={joinedRooms}
       emptyIcon={<IoFolderOpenOutline />}
-      emptyTitle={t("no-joined-rooms-yet")}
-      emptyDesc={t(
-        "you-havent-joined-any-workspace-yet-check-your-pending-invitations",
-      )}
+      emptyTitle={t("no-joined-workspaces-yet")}
+      emptyDesc={t("no-joined-workspaces-description")}
       emptyActionBtn={CheckInvitationsBtn}
     />
   );

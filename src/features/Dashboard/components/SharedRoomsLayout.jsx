@@ -11,7 +11,8 @@ const SharedRoomsLayout = ({
   description,
   searchPlaceholder,
   isLoading,
-  roomsData,
+  error,
+  roomsData = [],
   emptyIcon,
   emptyTitle,
   emptyDesc,
@@ -46,6 +47,7 @@ const SharedRoomsLayout = ({
             <input
               type="text"
               placeholder={searchPlaceholder}
+              aria-label={searchPlaceholder}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className={styles.searchInput}
@@ -57,7 +59,13 @@ const SharedRoomsLayout = ({
           {isLoading ? (
             <div className={styles.loadingState}>
               <span className={styles.loader}></span>
-              <p>{t("loading-your-rooms")}</p>
+              <p>{t("loading-workspaces")}</p>
+            </div>
+          ) : error ? (
+            <div className={styles.emptyState} role="alert">
+              <div className={styles.emptyIconBox}>{emptyIcon}</div>
+              <h3>{t("unable-to-load-workspaces")}</h3>
+              <p>{t("try-again-later")}</p>
             </div>
           ) : filteredRooms.length === 0 ? (
             <div className={styles.emptyState}>

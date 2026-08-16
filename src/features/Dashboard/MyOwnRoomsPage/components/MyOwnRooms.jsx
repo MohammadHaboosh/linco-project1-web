@@ -5,24 +5,23 @@ import SharedRoomsLayout from "../../components/SharedRoomsLayout";
 
 const MyOwnRooms = () => {
   const { t } = useTranslation();
-  const { ownedRooms, isLoading } = useOwnedRooms();
+  const { ownedRooms, isLoading, error } = useOwnedRooms();
 
   return (
     <SharedRoomsLayout
       headerIcon={<IoFolderOpenOutline />}
       subHeading={t("management")}
-      title={t("my-own-rooms")}
+      title={t("owned-workspaces")}
       description={t(
         "create-and-manage-your-owned-workspaces-invite-team-members-and-monitor-overall-progress",
       )}
-      searchPlaceholder={t("search-by-room-name")}
+      searchPlaceholder={t("search-workspaces-by-name")}
       isLoading={isLoading}
+      error={error}
       roomsData={ownedRooms}
       emptyIcon={<IoBusinessOutline />}
-      emptyTitle={t("no-owned-rooms-yet")}
-      emptyDesc={t(
-        "you-havent-created-any-workspaces-yet-start-by-creating-one-to-manage-your-team",
-      )}
+      emptyTitle={t("no-owned-workspaces-yet")}
+      emptyDesc={t("no-owned-workspaces-description")}
     />
   );
 };

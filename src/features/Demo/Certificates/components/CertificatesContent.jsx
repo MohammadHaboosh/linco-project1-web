@@ -45,6 +45,7 @@ const CertificatesContent = () => {
             <input
               type="text"
               placeholder={t("search-certificates-by-course-name")}
+              aria-label={t("search-certificates-by-course-name")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className={styles.searchInput}
@@ -55,15 +56,14 @@ const CertificatesContent = () => {
         <div className={styles.gridSection}>
           {isLoading ? (
             <div className={styles.emptyState}>
-              <div
-                className="spinner"
-                style={{ margin: "0 auto 15px auto" }}
-              ></div>
-              <p>{t("loading-certificates", "Loading your certificates...")}</p>
+              <span className={styles.loader}></span>
+              <p>{t("loading-certificates")}</p>
             </div>
           ) : error ? (
-            <div className={styles.emptyState}>
-              <p style={{ color: "#ef4444" }}>{error}</p>
+            <div className={styles.emptyState} role="alert">
+              <IoSchoolOutline className={styles.emptyIcon} />
+              <h3>{t("unable-to-load-certificates")}</h3>
+              <p className={styles.errorText}>{t("try-again-later")}</p>
             </div>
           ) : filteredCerts.length === 0 ? (
             <div className={styles.emptyState}>
@@ -73,7 +73,6 @@ const CertificatesContent = () => {
                 {searchQuery
                   ? t(
                       "no-results-match-your-search",
-                      "No results match your search.",
                     )
                   : t(
                       "complete-courses-to-earn-your-certificates-and-showcase-your-skills",

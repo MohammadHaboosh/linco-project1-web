@@ -91,11 +91,20 @@ const InvitationCard = ({
     <div className={styles["list-item"]}>
       <div className={styles["company-name"]}>{invitation.company}</div>
       <div className={styles["vertical-divider"]}></div>
-      <div className={styles["text-item"]}>{invitation.caller}</div>
+      <div className={styles["text-item"]}>
+        <span className={styles["field-label"]}>{t("caller")}: </span>
+        {invitation.caller}
+      </div>
       <div className={styles["vertical-divider"]}></div>
-      <div className={styles["text-item"]}>{roleLabel}</div>
+      <div className={styles["text-item"]}>
+        <span className={styles["field-label"]}>{t("role")}: </span>
+        {roleLabel}
+      </div>
       <div className={styles["vertical-divider"]}></div>
-      <div className={styles["text-item"]}>{timeLabel}</div>
+      <div className={styles["text-item"]}>
+        <span className={styles["field-label"]}>{t("time")}: </span>
+        {timeLabel}
+      </div>
 
       <div className={styles["list-actions"]}>
         <button

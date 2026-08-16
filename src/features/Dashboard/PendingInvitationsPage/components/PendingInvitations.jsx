@@ -4,6 +4,7 @@ import {
   IoMailUnreadOutline,
   IoSearchOutline,
   IoCheckmarkDoneOutline,
+  IoAlertCircleOutline,
 } from "react-icons/io5";
 import InvitationCard from "../../../../components/elements/InvitationCard/InvitationCard";
 import { usePendingInvitations } from "../hooks/usePendingInvitations.jsx";
@@ -15,6 +16,7 @@ const PendingInvitationsContent = () => {
   const {
     invitations,
     isLoading,
+    error,
     acceptInvitation,
     rejectInvitation,
     processingInvitationId,
@@ -41,13 +43,10 @@ const PendingInvitationsContent = () => {
           </div>
           <div>
             <h1 className={styles.title}>
-              {t("pending-invitations", "Pending Invitations")}
+              {t("pending-invitations")}
             </h1>
             <p className={styles.description}>
-              {t(
-                "review-and-manage-invitations",
-                "Review and manage your workspace invitations. Accept to join or reject to decline.",
-              )}
+              {t("review-and-manage-invitations")}
             </p>
           </div>
         </div>
@@ -59,10 +58,8 @@ const PendingInvitationsContent = () => {
           <IoSearchOutline className={styles.searchIcon} />
           <input
             type="text"
-            placeholder={t(
-              "search-invitations",
-              "Search by company or sender name...",
-            )}
+            placeholder={t("search-invitations")}
+            aria-label={t("search-invitations")}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className={styles.searchInput}
@@ -75,7 +72,15 @@ const PendingInvitationsContent = () => {
         {isLoading ? (
           <div className={styles.loadingState}>
             <span className={styles.loader}></span>
-            <p>{t("loading-invitations", "Loading invitations...")}</p>
+            <p>{t("loading-invitations")}</p>
+          </div>
+        ) : error ? (
+          <div className={styles.emptyState} role="alert">
+            <div className={styles.emptyIconBox}>
+              <IoAlertCircleOutline />
+            </div>
+            <h3>{t("unable-to-load-invitations")}</h3>
+            <p>{t("try-again-later")}</p>
           </div>
         ) : filteredInvitations.length === 0 ? (
           // حالة عدم وجود دعوات (Empty State)
@@ -83,12 +88,13 @@ const PendingInvitationsContent = () => {
             <div className={styles.emptyIconBox}>
               <IoCheckmarkDoneOutline />
             </div>
-            <h3>{t("all-caught-up", "You're all caught up!")}</h3>
+            <h3>
+              {searchQuery ? t("no-results-found") : t("all-caught-up")}
+            </h3>
             <p>
-              {t(
-                "no-pending-invitations",
-                "You don't have any pending invitations matching your search at the moment.",
-              )}
+              {searchQuery
+                ? t("no-invitations-match-search")
+                : t("no-pending-invitations")}
             </p>
           </div>
         ) : (

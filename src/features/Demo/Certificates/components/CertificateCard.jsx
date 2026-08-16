@@ -3,28 +3,36 @@ import { IoImageOutline, IoDocumentTextOutline } from "react-icons/io5";
 import styles from "./Certificates.module.css";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import { useTranslation } from "react-i18next";
 
 const CertificateCard = ({ certificate }) => {
+  const { t, i18n } = useTranslation();
   const certificateRef = useRef(null);
 
   const [isDownloadingPDF, setIsDownloadingPDF] = useState(false);
   const [isDownloadingImage, setIsDownloadingImage] = useState(false);
 
-  const studentName = certificate?.userName || "Student Name";
-  const courseName = certificate?.courseName || "Course Name";
-  const provider = certificate?.demoName || "Provider Name";
+  const studentName = certificate?.userName || t("certificate-student-name");
+  const courseName = certificate?.courseName || t("certificate-course-name");
+  const provider = certificate?.demoName || t("certificate-provider-name");
 
   const providerLogo = certificate?.logoImagePath || "/images/linco-logo.png";
   const signatureImage = certificate?.signature || "/images/linco-logo.png";
+  const safeCourseName = courseName
+    .replace(/[<>:"/\\|?*]/g, "_")
+    .trim();
+  const certificateFileName = `${t("certificate-file-prefix")}_${
+    safeCourseName || "course"
+  }`;
 
   const rawDate = certificate?.issuedAt;
   const issueDate = rawDate
-    ? new Date(rawDate).toLocaleDateString("en-US", {
+    ? new Date(rawDate).toLocaleDateString(i18n.resolvedLanguage, {
         day: "numeric",
         month: "long",
         year: "numeric",
       })
-    : "Issue Date";
+    : t("certificate-issue-date");
 
   const generateCanvas = async () => {
     return await html2canvas(certificateRef.current, {
@@ -53,11 +61,10 @@ const CertificateCard = ({ certificate }) => {
 
       pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
 
-      const safeCourseName = courseName.replace(/[^a-zA-Z0-9]/g, "_");
-      pdf.save(`Certificate_${safeCourseName}.pdf`);
+      pdf.save(`${certificateFileName}.pdf`);
     } catch (error) {
       console.error("Error generating PDF:", error);
-      alert("Failed to download the certificate. Please try again.");
+      alert(t("certificate-download-failed"));
     } finally {
       setIsDownloadingPDF(false);
     }
@@ -74,15 +81,14 @@ const CertificateCard = ({ certificate }) => {
       const link = document.createElement("a");
       link.href = imgData;
 
-      const safeCourseName = courseName.replace(/[^a-zA-Z0-9]/g, "_");
-      link.download = `Certificate_${safeCourseName}.png`;
+      link.download = `${certificateFileName}.png`;
 
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     } catch (error) {
       console.error("Error generating Image:", error);
-      alert("Failed to download the image. Please try again.");
+      alert(t("certificate-image-download-failed"));
     } finally {
       setIsDownloadingImage(false);
     }
@@ -93,13 +99,17 @@ const CertificateCard = ({ certificate }) => {
       <div className={styles.certificateLayout} ref={certificateRef}>
         <img
           src="/images/certificate-template.png"
-          alt="Certificate Template"
+          alt={t("certificate-template-alt")}
           className={styles.templateBg}
           crossOrigin="anonymous"
         />
 
         <div className={styles.dynamicProviderLogo}>
-          <img src={providerLogo} alt="Provider Logo" crossOrigin="anonymous" />
+          <img
+            src={providerLogo}
+            alt={t("certificate-provider-logo-alt")}
+            crossOrigin="anonymous"
+          />
         </div>
 
         <div className={styles.dynamicStudentName}>{studentName}</div>
@@ -111,35 +121,41 @@ const CertificateCard = ({ certificate }) => {
         <div className={styles.dynamicDate}>{issueDate}</div>
 
         <div className={styles.dynamicSignature}>
-          <img src={signatureImage} alt="Signature" crossOrigin="anonymous" />
+          <img
+            src={signatureImage}
+            alt={t("certificate-signature-alt")}
+            crossOrigin="anonymous"
+          />
         </div>
       </div>
 
       <div className={styles.actionsBar}>
         <button
+          type="button"
           className={styles.actionBtn}
           onClick={handleDownloadImage}
           disabled={isDownloadingImage || isDownloadingPDF}
         >
           {isDownloadingImage ? (
-            "Generating Image..."
+            t("generating-image")
           ) : (
             <>
-              <IoImageOutline size={18} /> Download Image
+              <IoImageOutline size={18} /> {t("download-image")}
             </>
           )}
         </button>
 
         <button
+          type="button"
           className={styles.actionBtnPrimary}
           onClick={handleDownloadPDF}
           disabled={isDownloadingPDF || isDownloadingImage}
         >
           {isDownloadingPDF ? (
-            "Generating PDF..."
+            t("generating-pdf")
           ) : (
             <>
-              <IoDocumentTextOutline size={18} /> Download PDF
+              <IoDocumentTextOutline size={18} /> {t("download-pdf")}
             </>
           )}
         </button>
