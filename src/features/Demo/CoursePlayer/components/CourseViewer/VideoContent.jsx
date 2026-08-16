@@ -23,6 +23,10 @@ const VideoContent = ({ activeLesson, onNext, onPrev }) => {
 
   const [prevVideoUrl, setPrevVideoUrl] = useState(activeLesson?.videoUrl);
   if (activeLesson?.videoUrl !== prevVideoUrl) {
+    console.log(
+      " [Lesson Changed] New Video URL detected:",
+      activeLesson?.videoUrl,
+    );
     setPrevVideoUrl(activeLesson?.videoUrl);
     setQualityOptions([0]);
     setIsPlayerReady(false);
@@ -31,9 +35,16 @@ const VideoContent = ({ activeLesson, onNext, onPrev }) => {
   const formatHlsUrl = (originalUrl) => {
     if (!originalUrl) return "";
     if (originalUrl.includes(".m3u8")) return originalUrl;
-    return originalUrl
+    const formatted = originalUrl
       .replace("/uploads/lessons/", "/uploads/hls/lessons/")
       .replace(".mp4", "/master.m3u8");
+    console.log(
+      " [URL Formatter] Original:",
+      originalUrl,
+      "=> Final:",
+      formatted,
+    );
+    return formatted;
   };
 
   useEffect(() => {
@@ -43,16 +54,25 @@ const VideoContent = ({ activeLesson, onNext, onPrev }) => {
     if (!activeLesson?.videoUrl) return;
 
     if (isHls && Hls.isSupported()) {
+      console.log(
+        " [Phase 1: Discovery] Starting HLS discovery for:",
+        finalVideoUrl,
+      );
       let isMounted = true;
       const tempHls = new Hls();
 
       tempHls.loadSource(finalVideoUrl);
 
-      tempHls.on(Hls.Events.MANIFEST_PARSED, () => {
+      tempHls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
         if (isMounted) {
           const availableQualities = tempHls.levels
             .map((l) => l.height)
             .sort((a, b) => b - a);
+
+          console.log(
+            " [Phase 1: Discovery] Manifest parsed! Qualities found:",
+            availableQualities,
+          );
 
           availableQualities.unshift(0);
           setQualityOptions(availableQualities);
@@ -63,6 +83,10 @@ const VideoContent = ({ activeLesson, onNext, onPrev }) => {
 
       tempHls.on(Hls.Events.ERROR, (event, data) => {
         if (data.fatal && isMounted) {
+          console.error(
+            " [Phase 1: Discovery] Fatal Error parsing manifest:",
+            data,
+          );
           setQualityOptions([0]);
           setIsPlayerReady(true);
           tempHls.destroy();
@@ -74,6 +98,9 @@ const VideoContent = ({ activeLesson, onNext, onPrev }) => {
         tempHls.destroy();
       };
     } else {
+      console.log(
+        " [Phase 1: Discovery] Not HLS or HLS not supported. Falling back to MP4/Native.",
+      );
       Promise.resolve().then(() => {
         setQualityOptions([0]);
         setIsPlayerReady(true);
@@ -89,18 +116,48 @@ const VideoContent = ({ activeLesson, onNext, onPrev }) => {
     const video = plyrRef.current.plyr.media;
 
     if (isHls && Hls.isSupported()) {
-      const hls = new Hls();
+      console.log(" [Phase 2: Playback] Initializing main HLS player...");
+      const hls = new Hls({
+        debug: true,
+      });
       hlsRef.current = hls;
+
       hls.loadSource(finalVideoUrl);
       hls.attachMedia(video);
 
+      hls.on(Hls.Events.MEDIA_ATTACHED, () => {
+        console.log(
+          " [Phase 2: Playback] HLS successfully attached to <video> element!",
+        );
+      });
+
+      hls.on(Hls.Events.ERROR, (event, data) => {
+        if (data.fatal) {
+          console.error(
+            "[Phase 2: Playback] Fatal HLS Playback Error:",
+            data.type,
+            data.details,
+          );
+        } else {
+          console.warn(
+            "[Phase 2: Playback] Non-fatal HLS issue:",
+            data.type,
+            data.details,
+          );
+        }
+      });
+
       return () => {
         if (hlsRef.current) {
+          console.log("[Cleanup] Destroying main HLS instance.");
           hlsRef.current.destroy();
           hlsRef.current = null;
         }
       };
     } else if (isHls && video.canPlayType("application/vnd.apple.mpegurl")) {
+      console.log(
+        "[Phase 2: Playback] Using Native Apple HLS playback (Safari)",
+      );
       video.src = finalVideoUrl;
     }
   }, [activeLesson?.videoUrl, isPlayerReady]);
@@ -128,6 +185,10 @@ const VideoContent = ({ activeLesson, onNext, onPrev }) => {
         forced: true,
         onChange: (newQuality) => {
           if (!hlsRef.current) return;
+          console.log(
+            "[User Action] Changing quality to:",
+            newQuality === 0 ? "Auto" : `${newQuality}p`,
+          );
           if (newQuality === 0) {
             hlsRef.current.currentLevel = -1;
           } else {
