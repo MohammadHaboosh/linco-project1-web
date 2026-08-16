@@ -1,18 +1,11 @@
 import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import {
-  IoAddOutline,
-  IoChatbubblesOutline,
-  IoBrushOutline,
-  IoShareSocialOutline,
-  IoAlbumsOutline,
-  IoSquareOutline,
-  IoArrowBackOutline,
-} from "react-icons/io5";
-import ChatLayout from "../../Chats/components/ChatLayout";
+import { useParams } from "react-router-dom";
 import styles from "./GroupWorkspace.module.css";
-import { PATHS } from "../../../../routes/paths";
+
+import GroupSidebar from "./GroupSidebar";
+import WorkspaceToolbar from "./WorkspaceToolbar";
+import WorkspaceStage from "./WorkspaceStage";
+import EmptyWorkspace from "./EmptyWorkspace";
 
 const MOCK_GROUPS = [
   { id: "g1", name: "React Developers", initials: "RD" },
@@ -21,14 +14,13 @@ const MOCK_GROUPS = [
 ];
 
 const GroupWorkspace = () => {
-  const { t } = useTranslation();
   const { groupId } = useParams();
 
   const [layout, setLayout] = useState("chat-only");
   const [activeTool, setActiveTool] = useState(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  const activeGroup =
-    MOCK_GROUPS.find((g) => g.id === groupId) || MOCK_GROUPS[0];
+  const activeGroup = MOCK_GROUPS.find((g) => g.id === groupId);
 
   const handleToolSelect = (tool) => {
     setActiveTool(tool);
@@ -46,139 +38,34 @@ const GroupWorkspace = () => {
 
   return (
     <div className={styles.appContainer}>
-      <aside className={styles.sidebar}>
-        <div className={styles.sidebarHeader}>
-          <Link to={PATHS.HOME} className={styles.backLink}>
-            <IoArrowBackOutline />
-          </Link>
-          <h2>{t("workspaces", "Workspaces")}</h2>
-        </div>
-
-        <div className={styles.groupsList}>
-          {MOCK_GROUPS.map((group) => (
-            <Link
-              key={group.id}
-              to={`/groups/${group.id}`}
-              className={`${styles.groupItem} ${activeGroup.id === group.id ? styles.activeGroup : ""}`}
-            >
-              <div className={styles.groupAvatar}>{group.initials}</div>
-              <span className={styles.groupName}>{group.name}</span>
-            </Link>
-          ))}
-        </div>
-
-        <div className={styles.sidebarFooter}>
-          <button className={styles.createBtn}>
-            <IoAddOutline />
-            <span>{t("new-group", "New Group")}</span>
-          </button>
-        </div>
-      </aside>
+      <GroupSidebar
+        isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
+        groups={MOCK_GROUPS}
+        activeGroupId={activeGroup?.id}
+      />
 
       <main className={styles.mainWorkspace}>
-        <header className={styles.workspaceToolbar}>
-          <div className={styles.toolbarLeft}>
-            <div className={styles.activeGroupInfo}>
-              <div className={styles.activeGroupAvatar}>
-                {activeGroup.initials}
-              </div>
-              <h3>{activeGroup.name}</h3>
-            </div>
-          </div>
+        {activeGroup ? (
+          <>
+            <WorkspaceToolbar
+              activeGroup={activeGroup}
+              isSidebarOpen={isSidebarOpen}
+              setIsSidebarOpen={setIsSidebarOpen}
+              activeTool={activeTool}
+              onToolSelect={handleToolSelect}
+              layout={layout}
+              onLayoutChange={handleLayoutChange}
+            />
 
-          <div className={styles.toolbarCenter}>
-            <div className={styles.toolSelectors}>
-              <button
-                className={`${styles.toolBtn} ${activeTool === "photopea" ? styles.activeToolBtn : ""}`}
-                onClick={() => handleToolSelect("photopea")}
-              >
-                <IoBrushOutline /> Photopea
-              </button>
-              <button
-                className={`${styles.toolBtn} ${activeTool === "drawio" ? styles.activeToolBtn : ""}`}
-                onClick={() => handleToolSelect("drawio")}
-              >
-                <IoShareSocialOutline /> Draw.io
-              </button>
-            </div>
-          </div>
-
-          <div className={styles.toolbarRight}>
-            <div className={styles.layoutSegmentedControl}>
-              <button
-                className={`${styles.layoutBtn} ${layout === "chat-only" ? styles.activeLayoutBtn : ""}`}
-                onClick={() => handleLayoutChange("chat-only")}
-                title={t("chat-only", "Chat Only")}
-              >
-                <IoChatbubblesOutline />
-              </button>
-              <button
-                className={`${styles.layoutBtn} ${layout === "split" ? styles.activeLayoutBtn : ""}`}
-                onClick={() => handleLayoutChange("split")}
-                title={t("split-view", "Split View")}
-              >
-                <IoAlbumsOutline />
-              </button>
-              <button
-                className={`${styles.layoutBtn} ${layout === "tool-only" ? styles.activeLayoutBtn : ""}`}
-                onClick={() => handleLayoutChange("tool-only")}
-                title={t("tool-only", "Tool Only")}
-              >
-                <IoSquareOutline />
-              </button>
-            </div>
-          </div>
-        </header>
-
-        <div className={styles.workspaceStage}>
-          <div
-            className={`${styles.panel} ${
-              layout === "chat-only"
-                ? styles.panelFull
-                : layout === "split"
-                  ? styles.chatPanelSplit
-                  : styles.panelHidden
-            }`}
-          >
-            <ChatLayout showHeader={false} />
-          </div>
-
-          <div
-            className={`${styles.panel} ${
-              layout === "tool-only"
-                ? styles.panelFull
-                : layout === "split"
-                  ? styles.toolPanelSplit
-                  : styles.panelHidden
-            }`}
-          >
-            {activeTool === "photopea" && (
-              <iframe
-                src="https://www.photopea.com/"
-                className={styles.toolIframe}
-                title="Photopea Workspace"
-              />
-            )}
-            {activeTool === "drawio" && (
-              <iframe
-                src="https://app.diagrams.net/?embed=1&ui=min&spin=1&proto=json"
-                className={styles.toolIframe}
-                title="Draw.io Workspace"
-              />
-            )}
-            {!activeTool && (
-              <div className={styles.noToolSelected}>
-                <IoBrushOutline className={styles.noToolIcon} />
-                <p>
-                  {t(
-                    "select-tool-to-start",
-                    "Select a tool from the toolbar to start collaborating",
-                  )}
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
+            <WorkspaceStage layout={layout} activeTool={activeTool} />
+          </>
+        ) : (
+          <EmptyWorkspace
+            isSidebarOpen={isSidebarOpen}
+            setIsSidebarOpen={setIsSidebarOpen}
+          />
+        )}
       </main>
     </div>
   );

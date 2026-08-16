@@ -1384,5 +1384,17 @@
   "live-stream-status-scheduled": "This live session is scheduled.",
   "join-named-stream": "Join the live session {{title}}",
   "view-named-stream": "View details for the live session {{title}}",
-  "workspace-tools": "Workspace tools"
+  "workspace-tools": "Workspace tools",
+  "welcome-to-workspaces": "Collaborative Workspaces",
+  "select-workspace-desc": "Select a group from the sidebar to start chatting, drawing, and brainstorming with your team.",
+  "enter-group": "Enter",
+  "learning-groups": "Learning Groups",
+  "join-groups-desc": "Join communities, share knowledge, and learn together with your peers.",
+  "create-group": "Create Group",
+  "workspaces": "Workspaces",
+  "new-group": "New Group",
+  "select-tool-to-start": "Select a tool from the toolbar to start collaborating",
+  "chat-only": "Chat Only",
+  "split-view": "Split View",
+  "tool-only": "Tool Only"
 }

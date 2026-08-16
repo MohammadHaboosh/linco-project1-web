@@ -1473,5 +1473,17 @@
   "live-stream-status-scheduled": "هذه الجلسة المباشرة مجدولة.",
   "join-named-stream": "الانضمام إلى الجلسة المباشرة {{title}}",
   "view-named-stream": "عرض تفاصيل الجلسة المباشرة {{title}}",
-  "workspace-tools": "أدوات مساحة العمل"
+  "workspace-tools": "أدوات مساحة العمل",
+  "welcome-to-workspaces": "مساحات العمل التعاونية",
+  "select-workspace-desc": "حدد مجموعة من الشريط الجانبي لبدء الدردشة والرسم والعصف الذهني مع فريقك.",
+  "enter-group": "يدخل",
+  "learning-groups": "مجموعات التعلم",
+  "join-groups-desc": "انضم إلى المجتمعات وشارك المعرفة وتعلم مع زملائك.",
+  "create-group": "إنشاء مجموعة",
+  "workspaces": "مساحات العمل",
+  "new-group": "مجموعة جديدة",
+  "select-tool-to-start": "حدد أداة من شريط الأدوات لبدء التعاون",
+  "chat-only": "الدردشة فقط",
+  "split-view": "عرض سبليت",
+  "tool-only": "الأداة فقط"
 }
