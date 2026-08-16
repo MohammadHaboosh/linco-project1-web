@@ -29,18 +29,40 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className={styles["floating-btn"]} onClick={toggleSidebar}>
-        <IoMenu className={styles["menu-icon"]} />
-      </div>
+      <button
+        type="button"
+        className={styles["floating-btn"]}
+        onClick={toggleSidebar}
+        aria-label={t("open-navigation-menu")}
+        aria-expanded={isOpen}
+        aria-controls="app-sidebar"
+      >
+        <IoMenu className={styles["menu-icon"]} aria-hidden="true" />
+      </button>
 
-      {isOpen && <div className={styles.overlay} onClick={toggleSidebar}></div>}
+      {isOpen && (
+        <div
+          className={styles.overlay}
+          onClick={toggleSidebar}
+          aria-hidden="true"
+        />
+      )}
 
-      <aside className={`${styles.sidebar} ${isOpen ? styles.open : ""}`}>
+      <aside
+        id="app-sidebar"
+        className={`${styles.sidebar} ${isOpen ? styles.open : ""}`}
+        aria-label={t("main-navigation")}
+      >
         <div className={styles["top-section"]}>
-          <span className={styles["brand-logo"]}>LinCo.</span>
-          <div className={styles["close-btn"]} onClick={toggleSidebar}>
-            <IoClose className={styles["close-icon"]} />
-          </div>
+          <span className={styles["brand-logo"]}>{t("linco")}</span>
+          <button
+            type="button"
+            className={styles["close-btn"]}
+            onClick={toggleSidebar}
+            aria-label={t("close-navigation-menu")}
+          >
+            <IoClose className={styles["close-icon"]} aria-hidden="true" />
+          </button>
         </div>
 
         <div className={styles["center-menu"]}>
@@ -57,7 +79,7 @@ const Sidebar = () => {
                     <span className={styles.icon}>{item.icon}</span>
                   </div>
                   <span className={styles.text}>
-                    {t(item.translationKey, item.name)}
+                    {t(item.translationKey)}
                   </span>
                 </Link>
               </div>
@@ -88,7 +110,7 @@ const Sidebar = () => {
             <div className={styles["icon-wrapper"]}>
               <IoLogOutOutline className={styles.icon} />
             </div>
-            <span className={styles.text}>{t("sign-out", "Sign out")}</span>
+            <span className={styles.text}>{t("sign-out")}</span>
           </button>
         </div>
       </aside>

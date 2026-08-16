@@ -1,15 +1,11 @@
-import {
-  IoLockClosedOutline,
-  IoQrCodeOutline,
-  IoHardwareChipOutline,
-} from "react-icons/io5";
+import { IoLockClosedOutline } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
 import { useProfile } from "../hooks/useProfile.jsx";
 import styles from "./ProfileContent.module.css";
-import { t } from "i18next";
 
 const SecurityTab = () => {
+  const { t } = useTranslation();
   const {
-    // Password
     oldPassword,
     setOldPassword,
     newPassword,
@@ -19,25 +15,43 @@ const SecurityTab = () => {
     passwordStatus,
     isUpdatingPassword,
     handleUpdatePassword,
-    // 2FA
     is2FAEnabled,
     isSettingUp2FA,
-    setIsSettingUp2FA,
+    isGenerating2FA,
     qrCodeData,
     verificationCode,
     setVerificationCode,
     twoFactorMessage,
     isVerifying2FA,
     handleGenerate2FA,
+    handleCancel2FASetup,
     handleTurnOn2FA,
   } = useProfile();
 
+  const authenticatorToggleLabel = is2FAEnabled
+    ? t("profile-authenticator-enabled-label")
+    : isSettingUp2FA
+      ? t("profile-cancel-authenticator-setup")
+      : t("profile-enable-authenticator-app");
+
+  const submitPassword = (event) => {
+    event.preventDefault();
+    handleUpdatePassword();
+  };
+
+  const submitVerificationCode = (event) => {
+    event.preventDefault();
+    handleTurnOn2FA();
+  };
+
   return (
-    <div className={styles.cardSection}>
-      {/* Password Change Section (Unchanged) */}
+    <section
+      className={styles.cardSection}
+      aria-labelledby="security-settings-heading"
+    >
       <div className={styles.securityBlock}>
         <div className={styles.sectionHeader}>
-          <h2>{t("change-password")}</h2>
+          <h2 id="security-settings-heading">{t("change-password")}</h2>
           <p>
             {t(
               "ensure-your-account-is-using-a-long-random-password-to-stay-secure",
@@ -45,81 +59,101 @@ const SecurityTab = () => {
           </p>
         </div>
 
-        <div className={styles.passwordForm}>
+        <form className={styles.passwordForm} onSubmit={submitPassword}>
           {passwordStatus.message && (
             <div
-              style={{
-                padding: "10px",
-                borderRadius: "8px",
-                backgroundColor:
-                  passwordStatus.type === "error" ? "#fee2e2" : "#d1fae5",
-                color: passwordStatus.type === "error" ? "#b91c1c" : "#047857",
-                fontSize: "0.9rem",
-                fontWeight: "600",
-              }}
+              className={`${styles.statusMessage} ${
+                passwordStatus.type === "error"
+                  ? styles.errorMessage
+                  : styles.successMessage
+              }`}
+              role={passwordStatus.type === "error" ? "alert" : "status"}
             >
-              {passwordStatus.message}
+              {t(passwordStatus.message)}
             </div>
           )}
 
           <div className={styles.inputGroup}>
-            <label>{t("current-password")}</label>
+            <label htmlFor="profile-current-password">
+              {t("current-password")}
+            </label>
             <div className={styles.inputWrapper}>
-              <IoLockClosedOutline className={styles.inputIcon} />
+              <IoLockClosedOutline
+                className={styles.inputIcon}
+                aria-hidden="true"
+              />
               <input
+                id="profile-current-password"
+                name="currentPassword"
                 type="password"
-                placeholder="••••••••"
+                autoComplete="current-password"
+                placeholder={t("enter-current-password")}
                 className={styles.input}
                 value={oldPassword}
-                onChange={(e) => setOldPassword(e.target.value)}
+                onChange={(event) => setOldPassword(event.target.value)}
+                disabled={isUpdatingPassword}
               />
             </div>
           </div>
           <div className={styles.inputGroup}>
-            <label>{t("new-password")}</label>
+            <label htmlFor="profile-new-password">{t("new-password")}</label>
             <div className={styles.inputWrapper}>
-              <IoLockClosedOutline className={styles.inputIcon} />
+              <IoLockClosedOutline
+                className={styles.inputIcon}
+                aria-hidden="true"
+              />
               <input
+                id="profile-new-password"
+                name="newPassword"
                 type="password"
-                placeholder="••••••••"
+                autoComplete="new-password"
+                placeholder={t("enter-new-password")}
                 className={styles.input}
                 value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
+                onChange={(event) => setNewPassword(event.target.value)}
+                disabled={isUpdatingPassword}
               />
             </div>
           </div>
           <div className={styles.inputGroup}>
-            <label>{t("confirm-new-password")}</label>
+            <label htmlFor="profile-confirm-password">
+              {t("confirm-new-password")}
+            </label>
             <div className={styles.inputWrapper}>
-              <IoLockClosedOutline className={styles.inputIcon} />
+              <IoLockClosedOutline
+                className={styles.inputIcon}
+                aria-hidden="true"
+              />
               <input
+                id="profile-confirm-password"
+                name="confirmPassword"
                 type="password"
-                placeholder="••••••••"
+                autoComplete="new-password"
+                placeholder={t("confirm-your-new-password")}
                 className={styles.input}
                 value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={(event) => setConfirmPassword(event.target.value)}
+                disabled={isUpdatingPassword}
               />
             </div>
           </div>
           <div className={styles.actionRow}>
             <button
+              type="submit"
               className={styles.btnPrimary}
-              onClick={handleUpdatePassword}
               disabled={isUpdatingPassword}
-              style={{
-                opacity: isUpdatingPassword ? 0.7 : 1,
-                cursor: isUpdatingPassword ? "not-allowed" : "pointer",
-              }}
+              aria-busy={isUpdatingPassword}
             >
-              {isUpdatingPassword ? "Updating..." : t("update-password")}
+              {isUpdatingPassword
+                ? t("profile-updating-password")
+                : t("update-password")}
             </button>
           </div>
-        </div>
+        </form>
       </div>
 
       <hr className={styles.divider} />
 
-      {/* 2FA Section */}
       <div className={styles.securityBlock}>
         <div className={styles.sectionHeader}>
           <h2>{t("two-factor-authentication-2fa")}</h2>
@@ -129,63 +163,70 @@ const SecurityTab = () => {
         <div className={styles.twoFactorContainer}>
           <div className={styles.twoFactorStatus}>
             <div className={styles.statusInfo}>
-              <div
+              <span
                 className={`${styles.statusDot} ${
                   is2FAEnabled ? styles.activeDot : ""
                 }`}
-              ></div>
-              <div>
-                <h3>Authenticator App</h3>
-                <p>
+                aria-hidden="true"
+              />
+              <div className={styles.statusCopy}>
+                <h3 id="authenticator-app-heading">
+                  {t("authenticator-app")}
+                </h3>
+                <p id="authenticator-app-description">
                   {is2FAEnabled
-                    ? "Two-factor authentication is currently enabled."
-                    : "Secure your account with TOTP authentication."}
+                    ? t("profile-2fa-currently-enabled")
+                    : t("profile-2fa-totp-description")}
                 </p>
               </div>
             </div>
 
             <label className={styles.switch}>
+              <span className={styles.srOnly}>{authenticatorToggleLabel}</span>
               <input
                 type="checkbox"
                 checked={is2FAEnabled || isSettingUp2FA}
-                disabled={is2FAEnabled} 
+                disabled={is2FAEnabled || isGenerating2FA}
+                aria-describedby="authenticator-app-description"
+                aria-busy={isGenerating2FA}
                 onChange={() => {
                   if (!is2FAEnabled && !isSettingUp2FA) {
                     handleGenerate2FA();
                   } else if (isSettingUp2FA) {
-                    setIsSettingUp2FA(false);
+                    handleCancel2FASetup();
                   }
                 }}
               />
-              <span className={styles.slider}></span>
+              <span className={styles.slider} aria-hidden="true" />
             </label>
           </div>
 
-          {twoFactorMessage.message && (
-            <div
-              style={{
-                padding: "10px",
-                marginTop: "15px",
-                borderRadius: "8px",
-                backgroundColor:
-                  twoFactorMessage.type === "error" ? "#fee2e2" : "#d1fae5",
-                color:
-                  twoFactorMessage.type === "error" ? "#b91c1c" : "#047857",
-                fontSize: "0.9rem",
-                fontWeight: "600",
-              }}
-            >
-              {twoFactorMessage.message}
+          {isGenerating2FA && (
+            <div className={styles.inlineProgress} role="status">
+              <span className={styles.smallSpinner} aria-hidden="true" />
+              {t("profile-generating-authenticator-code")}
             </div>
           )}
 
-          {/* Setup UI */}
+          {twoFactorMessage.message && (
+            <div
+              className={`${styles.statusMessage} ${styles.twoFactorMessage} ${
+                twoFactorMessage.type === "error"
+                  ? styles.errorMessage
+                  : styles.successMessage
+              }`}
+              role={twoFactorMessage.type === "error" ? "alert" : "status"}
+            >
+              {t(twoFactorMessage.message)}
+            </div>
+          )}
+
           {isSettingUp2FA && !is2FAEnabled && qrCodeData && (
             <div className={styles.qrSetupSection}>
               <div className={styles.qrCodeWrapper}>
                 <img
                   src={qrCodeData}
-                  alt="2FA QR Code"
+                  alt={t("profile-2fa-qr-code-alt")}
                   className={styles.qrImage}
                 />
               </div>
@@ -194,33 +235,54 @@ const SecurityTab = () => {
                 <p>
                   {t("scan-the-qr-code-using-google-authenticator-or-authy")}
                 </p>
-                <div className={styles.verifyGroup}>
-                  <input
-                    type="text"
-                    placeholder="000000"
-                    maxLength="6"
-                    className={styles.verifyInput}
-                    value={verificationCode}
-                    onChange={(e) => setVerificationCode(e.target.value)}
-                  />
-                  <button
-                    className={styles.btnPrimary}
-                    onClick={handleTurnOn2FA}
-                    disabled={isVerifying2FA}
-                    style={{
-                      opacity: isVerifying2FA ? 0.7 : 1,
-                      cursor: isVerifying2FA ? "not-allowed" : "pointer",
-                    }}
+                <form
+                  className={styles.verificationForm}
+                  onSubmit={submitVerificationCode}
+                >
+                  <label
+                    className={styles.verificationLabel}
+                    htmlFor="profile-verification-code"
                   >
-                    {isVerifying2FA ? "Verifying..." : "Verify & Enable"}
-                  </button>
-                </div>
+                    {t("verification-code")}
+                  </label>
+                  <div className={styles.verifyGroup}>
+                    <input
+                      id="profile-verification-code"
+                      name="verificationCode"
+                      type="text"
+                      inputMode="numeric"
+                      autoComplete="one-time-code"
+                      pattern="[0-9]*"
+                      placeholder="000000"
+                      maxLength={6}
+                      dir="ltr"
+                      className={styles.verifyInput}
+                      value={verificationCode}
+                      onChange={(event) =>
+                        setVerificationCode(
+                          event.target.value.replace(/\D/g, ""),
+                        )
+                      }
+                      disabled={isVerifying2FA}
+                    />
+                    <button
+                      type="submit"
+                      className={styles.btnPrimary}
+                      disabled={isVerifying2FA}
+                      aria-busy={isVerifying2FA}
+                    >
+                      {isVerifying2FA
+                        ? t("profile-verifying-authenticator-code")
+                        : t("verify-and-enable")}
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
           )}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

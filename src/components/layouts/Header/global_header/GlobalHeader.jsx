@@ -19,9 +19,9 @@ const GlobalHeader = () => {
     <header className={styles.header}>
       <div className={styles["header-left"]}>
         <div className={styles.logo}>
-          <span className={styles["brand-name"]}>{t("linco", "LinCo.")}</span>{" "}
+          <span className={styles["brand-name"]}>{t("linco")}</span>{" "}
           <span className={styles["company-text"]}>
-            {t("link-company-0", "Link Company")}
+            {t("link-company-0")}
           </span>
         </div>
 
@@ -34,14 +34,17 @@ const GlobalHeader = () => {
                 className={styles["user-avatar"]}
               />
             ) : (
-              initials || "U"
+              initials
             )}
           </div>
           <span className={styles["user-name"]}>{fullName}</span>
         </div>
       </div>
 
-      <nav className={styles["nav-links"]}>
+      <nav
+        className={styles["nav-links"]}
+        aria-label={t("dashboard-navigation")}
+      >
         {globalLinks.map((link, index) => (
           <div key={index} className={styles["nav-item-wrapper"]}>
             <Link
@@ -53,7 +56,7 @@ const GlobalHeader = () => {
                   : ""
               }
             >
-              {t(link.translationKey, link.name)}
+              {t(link.translationKey)}
             </Link>
             {index < globalLinks.length - 1 && (
               <div className={styles["nav-divider"]}></div>
@@ -64,11 +67,12 @@ const GlobalHeader = () => {
 
       <div className={styles["header-actions"]}>
         <button
+          type="button"
           className={styles["btn-workspace"]}
           onClick={() => navigate(PATHS.REQUEST_ROOM)}
         >
-          <IoPersonOutline className={styles["btn-icon"]} />{" "}
-          {t("request-a-room", "Request a room")}
+          <IoPersonOutline className={styles["btn-icon"]} aria-hidden="true" />{" "}
+          {t("request-a-room")}
         </button>
         <div className={styles["app-icon"]}>
           <img

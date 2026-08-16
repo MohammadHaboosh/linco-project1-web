@@ -4,6 +4,8 @@
   inset-inline-start: 20px;
   width: 40px;
   height: 40px;
+  padding: 0;
+  border: 0;
   background: var(--bg-navy-gradient);
   color: #ffffff;
   border-radius: 10px;
@@ -94,6 +96,7 @@
   color: #cbd5e1;
   font-size: 1.2rem;
   cursor: pointer;
+  font-family: inherit;
   transition: all 0.2s ease;
 }
 
@@ -128,8 +131,11 @@
   justify-content: center;
   width: 32px;
   height: 32px;
+  padding: 0;
+  border: 0;
   border-radius: 50%;
   background-color: rgba(255, 255, 255, 0.05);
+  font-family: inherit;
   transition: background-color 0.2s;
 }
 
@@ -213,6 +219,14 @@
 .logout-item:hover {
   background-color: rgba(239, 68, 68, 0.1);
   color: #ef4444;
+}
+
+.floating-btn:focus-visible,
+.close-btn:focus-visible,
+.action-btn:focus-visible,
+.menu-item:focus-visible {
+  outline: 3px solid rgba(191, 219, 254, 0.75);
+  outline-offset: 2px;
 }
 
 :global([dir="rtl"]) .menu-item.active {

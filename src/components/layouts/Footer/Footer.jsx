@@ -30,8 +30,8 @@ const Footer = ({ footerLinks }) => {
           <h4>{t("contact-info")}</h4>
           <ul>
             <li>{t("damascus-syria")}</li>
-            <li>contact@linco.com</li>
-            <li>+963-XXX-XXXXXX</li>
+            <li>{t("contact-email")}</li>
+            <li>{t("contact-phone")}</li>
           </ul>
         </div>
 

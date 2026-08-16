@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 import { setUser } from "../../../features/User/store/userSlice.js";
 import {
   fetchCurrentUser,
@@ -15,12 +16,15 @@ import {
 
 export const useProfile = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const { profile, isAuthenticated } = useSelector((state) => state.user);
 
   const [isLoading, setIsLoading] = useState(!profile);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
+  const [loadAttempt, setLoadAttempt] = useState(0);
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
   const [photoUploadError, setPhotoUploadError] = useState("");
+  const [photoUploadStatus, setPhotoUploadStatus] = useState("");
 
   const [is2FAEnabled, setIs2FAEnabled] = useState(
     profile?.isTwoFactorEnabled || false,
@@ -44,6 +48,7 @@ export const useProfile = () => {
 
   // 2FA States
   const [isSettingUp2FA, setIsSettingUp2FA] = useState(false);
+  const [isGenerating2FA, setIsGenerating2FA] = useState(false);
   const [qrCodeData, setQrCodeData] = useState(null);
   const [verificationCode, setVerificationCode] = useState("");
   const [twoFactorMessage, setTwoFactorMessage] = useState({
@@ -53,23 +58,43 @@ export const useProfile = () => {
   const [isVerifying2FA, setIsVerifying2FA] = useState(false);
 
   useEffect(() => {
+    let isCurrent = true;
+
     const loadUserProfile = async () => {
       if (!profile) {
         try {
           setIsLoading(true);
+          setError("");
           const data = await fetchCurrentUser();
-          dispatch(setUser(data));
+          if (isCurrent) {
+            dispatch(setUser(data));
+          }
         } catch (err) {
           console.error("Failed to load user profile:", err);
-          setError(err.message);
+          if (isCurrent) {
+            setError("profile-load-error-description");
+          }
         } finally {
-          setIsLoading(false);
+          if (isCurrent) {
+            setIsLoading(false);
+          }
         }
+      } else {
+        setError("");
+        setIsLoading(false);
       }
     };
 
     loadUserProfile();
-  }, [profile, dispatch]);
+
+    return () => {
+      isCurrent = false;
+    };
+  }, [profile, dispatch, loadAttempt]);
+
+  const retryLoadProfile = useCallback(() => {
+    setLoadAttempt((attempt) => attempt + 1);
+  }, []);
 
   const handleUpdatePassword = async () => {
     setPasswordStatus({ type: "", message: "" });
@@ -77,7 +102,7 @@ export const useProfile = () => {
     if (!oldPassword || !newPassword || !confirmPassword) {
       setPasswordStatus({
         type: "error",
-        message: "Please fill in all password fields.",
+        message: "profile-password-fields-required",
       });
       return;
     }
@@ -85,7 +110,7 @@ export const useProfile = () => {
     if (newPassword !== confirmPassword) {
       setPasswordStatus({
         type: "error",
-        message: "New passwords do not match.",
+        message: "profile-passwords-do-not-match",
       });
       return;
     }
@@ -97,13 +122,17 @@ export const useProfile = () => {
 
       setPasswordStatus({
         type: "success",
-        message: "Password updated successfully!",
+        message: "profile-password-updated-successfully",
       });
       setOldPassword("");
       setNewPassword("");
       setConfirmPassword("");
     } catch (err) {
-      setPasswordStatus({ type: "error", message: err.message });
+      console.error("Failed to update password:", err);
+      setPasswordStatus({
+        type: "error",
+        message: "profile-password-update-error",
+      });
     } finally {
       setIsUpdatingPassword(false);
     }
@@ -113,14 +142,15 @@ export const useProfile = () => {
     if (!file) return;
 
     setPhotoUploadError("");
+    setPhotoUploadStatus("");
 
     if (!file.type.startsWith("image/")) {
-      setPhotoUploadError("Please select a valid image file.");
+      setPhotoUploadError("profile-photo-invalid-file");
       return;
     }
 
     if (!profile?.id) {
-      setPhotoUploadError("Unable to identify the current user.");
+      setPhotoUploadError("profile-photo-user-unavailable");
       return;
     }
 
@@ -131,7 +161,7 @@ export const useProfile = () => {
       const { uploadUrl, cdnUrl } = data || {};
 
       if (!uploadUrl || !cdnUrl) {
-        throw new Error("The image upload URL could not be generated.");
+        throw new Error("PROFILE_PHOTO_UPLOAD_URL_MISSING");
       }
 
       await uploadFileToCloud(uploadUrl, file);
@@ -143,11 +173,10 @@ export const useProfile = () => {
           imagePath: cdnUrl,
         }),
       );
+      setPhotoUploadStatus("profile-photo-updated-successfully");
     } catch (err) {
       console.error("Failed to update profile photo:", err);
-      setPhotoUploadError(
-        err.message || "Failed to update profile photo. Please try again.",
-      );
+      setPhotoUploadError("profile-photo-upload-error");
     } finally {
       setIsUploadingPhoto(false);
     }
@@ -155,23 +184,39 @@ export const useProfile = () => {
 
   const handleGenerate2FA = async () => {
     setTwoFactorMessage({ type: "", message: "" });
-    setIsSettingUp2FA(true);
+    setIsGenerating2FA(true);
     try {
       const response = await generate2FA();
       if (response.success && response.data?.qrCode) {
         setQrCodeData(response.data.qrCode);
+        setIsSettingUp2FA(true);
+      } else {
+        throw new Error("TWO_FACTOR_QR_CODE_MISSING");
       }
     } catch (err) {
-      setTwoFactorMessage({ type: "error", message: err.message });
+      console.error("Failed to generate two-factor QR code:", err);
+      setTwoFactorMessage({
+        type: "error",
+        message: "profile-2fa-generate-error",
+      });
       setIsSettingUp2FA(false);
+    } finally {
+      setIsGenerating2FA(false);
     }
+  };
+
+  const handleCancel2FASetup = () => {
+    setIsSettingUp2FA(false);
+    setQrCodeData(null);
+    setVerificationCode("");
+    setTwoFactorMessage({ type: "", message: "" });
   };
 
   const handleTurnOn2FA = async () => {
     if (!verificationCode || verificationCode.length < 6) {
       setTwoFactorMessage({
         type: "error",
-        message: "Please enter a valid 6-digit code.",
+        message: "profile-2fa-invalid-code",
       });
       return;
     }
@@ -187,33 +232,39 @@ export const useProfile = () => {
       setVerificationCode("");
       setTwoFactorMessage({
         type: "success",
-        message: "Two-factor authentication successfully enabled!",
+        message: "profile-2fa-enabled-successfully",
       });
     } catch (err) {
-      setTwoFactorMessage({ type: "error", message: err.message });
+      console.error("Failed to enable two-factor authentication:", err);
+      setTwoFactorMessage({
+        type: "error",
+        message: "profile-2fa-enable-error",
+      });
     } finally {
       setIsVerifying2FA(false);
     }
   };
 
-  const firstName = profile?.firstName || "Guest";
+  const firstName = profile?.firstName || t("guest");
   const lastName = profile?.lastName || "";
   const fullName = `${firstName} ${lastName}`.trim();
   const initials = profile?.firstName
     ? `${firstName.charAt(0)}${lastName ? lastName.charAt(0) : ""}`.toUpperCase()
-    : "G";
+    : t("guest").charAt(0).toUpperCase();
 
   return {
     profile,
     isAuthenticated,
     isLoading,
     error,
+    retryLoadProfile,
     firstName,
     lastName,
     fullName,
     initials,
     isUploadingPhoto,
     photoUploadError,
+    photoUploadStatus,
     handlePhotoChange,
     // Password
     oldPassword,
@@ -228,13 +279,14 @@ export const useProfile = () => {
     // 2FA
     is2FAEnabled,
     isSettingUp2FA,
-    setIsSettingUp2FA,
+    isGenerating2FA,
     qrCodeData,
     verificationCode,
     setVerificationCode,
     twoFactorMessage,
     isVerifying2FA,
     handleGenerate2FA,
+    handleCancel2FASetup,
     handleTurnOn2FA,
   };
 };
