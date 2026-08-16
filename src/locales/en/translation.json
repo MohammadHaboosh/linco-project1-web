@@ -1558,5 +1558,6 @@
   "group-desc": "Description",
   "group-description-placeholder": "What is this group about?",
   "change-group-manager": "Change manager",
-  "creating-group": "Creating..."
+  "creating-group": "Creating...",
+  "share-work": "Share to Chat"
 }

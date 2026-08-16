@@ -1,10 +1,23 @@
+import { useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { IoBrushOutline } from "react-icons/io5";
 import ChatLayout from "../../Chats/components/ChatLayout";
+import DrawioTool from "./Tools/DrawioTool";
+import PhotopeaTool from "./Tools/PhotopeaTool";
 import styles from "./GroupWorkspace.module.css";
 
-const WorkspaceStage = ({ layout, activeTool }) => {
+const WorkspaceStage = ({ layout, activeTool, triggerShareTool }) => {
   const { t } = useTranslation();
+
+  const photopeaRef = useRef(null);
+  const drawioRef = useRef(null);
+
+  useEffect(() => {
+    if (triggerShareTool) {
+      if (activeTool === "photopea") photopeaRef.current?.shareToChat();
+      if (activeTool === "drawio") drawioRef.current?.shareToChat();
+    }
+  }, [triggerShareTool, activeTool]);
 
   return (
     <div className={styles.workspaceStage}>
@@ -29,20 +42,8 @@ const WorkspaceStage = ({ layout, activeTool }) => {
               : styles.panelHidden
         }`}
       >
-        {activeTool === "photopea" && (
-          <iframe
-            src="https://www.photopea.com/"
-            className={styles.toolIframe}
-            title="Photopea Workspace"
-          />
-        )}
-        {activeTool === "drawio" && (
-          <iframe
-            src="https://app.diagrams.net/?embed=1&ui=min&spin=1&proto=json"
-            className={styles.toolIframe}
-            title="Draw.io Workspace"
-          />
-        )}
+        {activeTool === "photopea" && <PhotopeaTool ref={photopeaRef} />}
+        {activeTool === "drawio" && <DrawioTool ref={drawioRef} />}
         {!activeTool && (
           <div className={styles.noToolSelected}>
             <IoBrushOutline className={styles.noToolIcon} />

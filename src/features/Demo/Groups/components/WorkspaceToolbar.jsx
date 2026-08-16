@@ -6,6 +6,7 @@ import {
   IoChatbubblesOutline,
   IoAlbumsOutline,
   IoSquareOutline,
+  IoSendOutline,
 } from "react-icons/io5";
 import styles from "./GroupWorkspace.module.css";
 
@@ -17,6 +18,7 @@ const WorkspaceToolbar = ({
   onToolSelect,
   layout,
   onLayoutChange,
+  onShareToChat,
 }) => {
   const { t } = useTranslation();
 
@@ -51,6 +53,15 @@ const WorkspaceToolbar = ({
           >
             <IoShareSocialOutline /> Draw.io
           </button>
+
+          {activeTool && (
+            <>
+              <div className={styles.toolbarDivider}></div>
+              <button className={styles.shareActionBtn} onClick={onShareToChat}>
+                <IoSendOutline /> {t("share-work", "Share to Chat")}
+              </button>
+            </>
+          )}
         </div>
       </div>
 
