@@ -227,12 +227,20 @@ const VideoContent = ({ activeLesson, onNext, onPrev }) => {
   const isHls = finalVideoUrl.includes(".m3u8");
   const videoSrc = {
     type: "video",
-    sources: [
-      {
-        src: finalVideoUrl,
-        type: isHls ? "application/x-mpegURL" : "video/mp4",
-      },
-    ],
+    sources:
+      isHls && Hls.isSupported()
+        ? [
+            {
+              src: "",
+              type: "video/mp4",
+            },
+          ]
+        : [
+            {
+              src: finalVideoUrl,
+              type: isHls ? "application/x-mpegURL" : "video/mp4",
+            },
+          ],
   };
 
   return (
