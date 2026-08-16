@@ -1396,5 +1396,15 @@
   "select-tool-to-start": "Select a tool from the toolbar to start collaborating",
   "chat-only": "Chat Only",
   "split-view": "Split View",
-  "tool-only": "Tool Only"
+  "tool-only": "Tool Only",
+  "failed-to-create-group": "Failed to create group.",
+  "create-new-group": "Create New Group",
+  "create-group-desc": "Setup a dedicated space for specific topics.",
+  "group-name": "Group Name",
+  "privacy": "Privacy Setting",
+  "public-desc": "Anyone can join",
+  "private-desc": "Invitation only",
+  "loading-groups": "Loading groups...",
+  "no-groups-match": "No groups match your search.",
+  "no-groups-yet": "No groups available. Create one to get started!"
 }

@@ -1,26 +1,26 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import styles from "./GroupWorkspace.module.css";
+import { useGroups } from "../hooks/useGroups";
 
 import GroupSidebar from "./GroupSidebar";
 import WorkspaceToolbar from "./WorkspaceToolbar";
 import WorkspaceStage from "./WorkspaceStage";
 import EmptyWorkspace from "./EmptyWorkspace";
-
-const MOCK_GROUPS = [
-  { id: "g1", name: "React Developers", initials: "RD" },
-  { id: "g2", name: "UI/UX Masters", initials: "UI" },
-  { id: "g3", name: "Backend Architecture", initials: "BA" },
-];
+import CreateGroupModal from "./CreateGroupModal";
 
 const GroupWorkspace = () => {
   const { groupId } = useParams();
+
+  const { groups, isLoading, createGroup, isCreating } = useGroups();
 
   const [layout, setLayout] = useState("chat-only");
   const [activeTool, setActiveTool] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  const activeGroup = MOCK_GROUPS.find((g) => g.id === groupId);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+  const activeGroup = groups.find((g) => g.id === groupId);
 
   const handleToolSelect = (tool) => {
     setActiveTool(tool);
@@ -41,8 +41,10 @@ const GroupWorkspace = () => {
       <GroupSidebar
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
-        groups={MOCK_GROUPS}
+        groups={groups}
         activeGroupId={activeGroup?.id}
+        isLoading={isLoading}
+        onCreateClick={() => setIsCreateModalOpen(true)}
       />
 
       <main className={styles.mainWorkspace}>
@@ -67,6 +69,14 @@ const GroupWorkspace = () => {
           />
         )}
       </main>
+
+      {isCreateModalOpen && (
+        <CreateGroupModal
+          onClose={() => setIsCreateModalOpen(false)}
+          createGroup={createGroup}
+          isCreating={isCreating}
+        />
+      )}
     </div>
   );
 };

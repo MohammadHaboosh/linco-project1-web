@@ -1,29 +1,35 @@
 import { useState } from "react";
-import {
-  IoCloseOutline,
-  IoPeopleOutline,
-  IoGlobeOutline,
-  IoLockClosedOutline,
-} from "react-icons/io5";
+import { IoCloseOutline, IoPeopleOutline } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
 import styles from "./Groups.module.css";
 
-const CreateGroupModal = ({ onClose }) => {
+const CreateGroupModal = ({ onClose, createGroup, isCreating }) => {
   const { t } = useTranslation();
+
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    privacy: "PUBLIC",
+    managerId: "01a00b46-6049-74bf-9ef8-cf34fc8802f4",
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [localError, setLocalError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
+    setLocalError("");
+
+    try {
+      await createGroup({
+        name: formData.name,
+        description: formData.description,
+        isGroup: true,
+        managerId: formData.managerId,
+      });
       onClose();
-    }, 1000);
+    } catch (error) {
+      setLocalError(
+        error.message || t("failed-to-create-group", "Failed to create group."),
+      );
+    }
   };
 
   return (
@@ -50,24 +56,39 @@ const CreateGroupModal = ({ onClose }) => {
           <button
             className={styles.closeBtn}
             onClick={onClose}
-            disabled={isSubmitting}
+            disabled={isCreating}
           >
             <IoCloseOutline />
           </button>
         </div>
 
         <form className={styles.modalBody} onSubmit={handleSubmit}>
+          {localError && (
+            <div
+              style={{
+                color: "var(--app-danger-text)",
+                fontSize: "0.85rem",
+                padding: "8px",
+                background: "var(--app-danger-surface)",
+                borderRadius: "8px",
+              }}
+            >
+              {localError}
+            </div>
+          )}
+
           <div className={styles.formGroup}>
             <label>{t("group-name", "Group Name")}</label>
             <input
               type="text"
               required
               className={styles.input}
-              placeholder="e.g. React Native Experts"
+              placeholder="e.g. backend7"
               value={formData.name}
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
               }
+              disabled={isCreating}
             />
           </div>
 
@@ -82,52 +103,8 @@ const CreateGroupModal = ({ onClose }) => {
               onChange={(e) =>
                 setFormData({ ...formData, description: e.target.value })
               }
+              disabled={isCreating}
             />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label>{t("privacy", "Privacy Setting")}</label>
-            <div className={styles.radioGrid}>
-              <label
-                className={`${styles.radioCard} ${formData.privacy === "PUBLIC" ? styles.activeRadio : ""}`}
-              >
-                <input
-                  type="radio"
-                  name="privacy"
-                  value="PUBLIC"
-                  checked={formData.privacy === "PUBLIC"}
-                  onChange={() =>
-                    setFormData({ ...formData, privacy: "PUBLIC" })
-                  }
-                  hidden
-                />
-                <IoGlobeOutline className={styles.radioIcon} />
-                <div className={styles.radioText}>
-                  <strong>{t("public", "Public")}</strong>
-                  <span>{t("public-desc", "Anyone can join")}</span>
-                </div>
-              </label>
-
-              <label
-                className={`${styles.radioCard} ${formData.privacy === "PRIVATE" ? styles.activeRadio : ""}`}
-              >
-                <input
-                  type="radio"
-                  name="privacy"
-                  value="PRIVATE"
-                  checked={formData.privacy === "PRIVATE"}
-                  onChange={() =>
-                    setFormData({ ...formData, privacy: "PRIVATE" })
-                  }
-                  hidden
-                />
-                <IoLockClosedOutline className={styles.radioIcon} />
-                <div className={styles.radioText}>
-                  <strong>{t("private", "Private")}</strong>
-                  <span>{t("private-desc", "Invitation only")}</span>
-                </div>
-              </label>
-            </div>
           </div>
 
           <div className={styles.modalFooter}>
@@ -135,15 +112,16 @@ const CreateGroupModal = ({ onClose }) => {
               type="button"
               className={styles.cancelBtn}
               onClick={onClose}
+              disabled={isCreating}
             >
               {t("cancel", "Cancel")}
             </button>
             <button
               type="submit"
               className={styles.submitBtn}
-              disabled={isSubmitting}
+              disabled={isCreating}
             >
-              {isSubmitting
+              {isCreating
                 ? t("creating", "Creating...")
                 : t("create-group", "Create Group")}
             </button>

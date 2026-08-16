@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { IoChevronBack, IoAddOutline } from "react-icons/io5";
-import { PATHS } from "../../../../routes/paths";
 import styles from "./GroupWorkspace.module.css";
 
 const GroupSidebar = ({
@@ -9,6 +8,7 @@ const GroupSidebar = ({
   setIsSidebarOpen,
   groups,
   activeGroupId,
+  onCreateClick,
 }) => {
   const { t } = useTranslation();
 
@@ -40,7 +40,7 @@ const GroupSidebar = ({
       </div>
 
       <div className={styles.sidebarFooter}>
-        <button className={styles.createBtn}>
+        <button className={styles.createBtn} onClick={onCreateClick}>
           <IoAddOutline />
           <span>{t("new-group", "New Group")}</span>
         </button>
