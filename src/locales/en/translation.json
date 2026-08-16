@@ -992,5 +992,11 @@
   "remove-choice": "remove choice",
   "fill-all-choices": "All choices must have text. Please fill them in or remove the empty ones.",
   "choices-must-be-unique": "All choices must be unique. You have duplicate answers.",
-  "lesson-description-required": "Please provide a description for the lesson."
+  "lesson-description-required": "Please provide a description for the lesson.",
+  "route-error-eyebrow": "Page unavailable",
+  "route-error-title": "We couldn't open this page",
+  "route-error-network-message": "Check your internet connection, then reload the page.",
+  "route-error-message": "An unexpected error occurred while loading the page.",
+  "reload-page": "Reload page",
+  "go-to-home": "Go to home"
 }

@@ -2,11 +2,18 @@ import { createBrowserRouter } from "react-router-dom";
 import LandingRedirector from "../components/common/LandingRedirector.jsx";
 import NotFoundPage from "../pages/NotFoundPage.jsx";
 import AppHydrationFallback from "../components/common/AppHydrationFallback.jsx";
+import RouteErrorPage from "../components/common/RouteErrorPage.jsx";
+import { tryRecoverFromChunkLoadError } from "../utils/chunkLoadRecovery.js";
 import { PATHS } from "./paths";
 
 const lazyComponent = (importer) => async () => {
-  const module = await importer();
-  return { Component: module.default };
+  try {
+    const module = await importer();
+    return { Component: module.default };
+  } catch (error) {
+    tryRecoverFromChunkLoadError(error);
+    throw error;
+  }
 };
 
 const routes = [
@@ -197,6 +204,7 @@ const routes = [
 export const router = createBrowserRouter(
   routes.map((route) => ({
     HydrateFallback: AppHydrationFallback,
+    errorElement: <RouteErrorPage />,
     ...route,
   })),
 );

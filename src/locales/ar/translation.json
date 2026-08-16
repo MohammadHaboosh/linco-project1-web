@@ -996,5 +996,11 @@
   "remove-choice": "إزالة الاختيار",
   "fill-all-choices": "يجب أن تحتوي جميع الاختيارات على نص. \nيرجى ملئها أو إزالة الفارغة.",
   "choices-must-be-unique": "يجب أن تكون جميع الاختيارات فريدة من نوعها. \nلديك إجابات مكررة.",
-  "lesson-description-required": "يرجى تقديم وصف للدرس."
+  "lesson-description-required": "يرجى تقديم وصف للدرس.",
+  "route-error-eyebrow": "الصفحة غير متاحة",
+  "route-error-title": "تعذر فتح هذه الصفحة",
+  "route-error-network-message": "تحقق من اتصالك بالإنترنت، ثم أعد تحميل الصفحة.",
+  "route-error-message": "حدث خطأ غير متوقع أثناء تحميل الصفحة.",
+  "reload-page": "إعادة تحميل الصفحة",
+  "go-to-home": "الانتقال إلى الصفحة الرئيسية"
 }
