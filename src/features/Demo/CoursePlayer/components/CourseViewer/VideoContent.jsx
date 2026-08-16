@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { Plyr } from "plyr-react";
 import "plyr-react/plyr.css";
 import styles from "./CourseViewer.module.css";
@@ -13,12 +13,8 @@ import Hls from "hls.js";
 const VideoContent = ({ activeLesson, onNext, onPrev }) => {
   const { t, i18n } = useTranslation();
   const isRtl = i18n.dir() === "rtl";
-  const PreviousIcon = isRtl
-    ? IoPlaySkipForwardOutline
-    : IoPlaySkipBackOutline;
-  const NextIcon = isRtl
-    ? IoPlaySkipBackOutline
-    : IoPlaySkipForwardOutline;
+  const PreviousIcon = isRtl ? IoPlaySkipForwardOutline : IoPlaySkipBackOutline;
+  const NextIcon = isRtl ? IoPlaySkipBackOutline : IoPlaySkipForwardOutline;
   const plyrRef = useRef(null);
   const hlsRef = useRef(null);
 
@@ -39,36 +35,6 @@ const VideoContent = ({ activeLesson, onNext, onPrev }) => {
   };
 
   useEffect(() => {
-    if (!activeLesson?.videoUrl || !Hls.isSupported()) return;
-    const finalUrl = formatHlsUrl(activeLesson.videoUrl);
-    if (!finalUrl.includes(".m3u8")) return;
-
-    let isMounted = true;
-    const tempHls = new Hls();
-    tempHls.loadSource(finalUrl);
-
-    tempHls.on(Hls.Events.MANIFEST_PARSED, () => {
-      if (isMounted) {
-        const availableQualities = tempHls.levels
-          .map((l) => l.height)
-          .sort((a, b) => b - a);
-
-        availableQualities.unshift(0);
-
-        if (availableQualities.length > 1) {
-          setQualityOptions(availableQualities);
-        }
-      }
-      tempHls.destroy();
-    });
-
-    return () => {
-      isMounted = false;
-      tempHls.destroy();
-    };
-  }, [activeLesson?.videoUrl]);
-
-  useEffect(() => {
     if (!activeLesson?.videoUrl || !plyrRef.current) return;
 
     const finalVideoUrl = formatHlsUrl(activeLesson.videoUrl);
@@ -80,17 +46,74 @@ const VideoContent = ({ activeLesson, onNext, onPrev }) => {
       hlsRef.current = hls;
       hls.loadSource(finalVideoUrl);
       hls.attachMedia(video);
+
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        const availableQualities = hls.levels
+          .map((l) => l.height)
+          .sort((a, b) => b - a);
+
+        availableQualities.unshift(0);
+
+        if (availableQualities.length > 1) {
+          setQualityOptions(availableQualities);
+        }
+      });
+
+      return () => {
+        if (hlsRef.current) {
+          hlsRef.current.destroy();
+          hlsRef.current = null;
+        }
+      };
     } else if (isHls && video.canPlayType("application/vnd.apple.mpegurl")) {
       video.src = finalVideoUrl;
     }
+  }, [activeLesson?.videoUrl]);
 
-    return () => {
-      if (hlsRef.current) {
-        hlsRef.current.destroy();
-        hlsRef.current = null;
-      }
-    };
-  }, [activeLesson?.videoUrl, qualityOptions]);
+  const plyrOptions = useMemo(
+    () => ({
+      controls: [
+        "rewind",
+        "play",
+        "fast-forward",
+        "progress",
+        "current-time",
+        "duration",
+        "mute",
+        "volume",
+        "settings",
+        "pip",
+        "airplay",
+        "fullscreen",
+      ],
+      settings: ["quality", "speed"],
+      quality: {
+        default: 0,
+        options: qualityOptions,
+        forced: true,
+        onChange: (newQuality) => {
+          if (!hlsRef.current) return;
+          if (newQuality === 0) {
+            hlsRef.current.currentLevel = -1;
+          } else {
+            hlsRef.current.levels.forEach((level, levelIndex) => {
+              if (level.height === newQuality) {
+                hlsRef.current.currentLevel = levelIndex;
+              }
+            });
+          }
+        },
+      },
+      i18n: {
+        qualityLabel: {
+          0: "Auto",
+        },
+      },
+      seekTime: 10,
+      speed: { selected: 1, options: [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2] },
+    }),
+    [qualityOptions],
+  );
 
   if (!activeLesson) {
     return (
@@ -117,54 +140,12 @@ const VideoContent = ({ activeLesson, onNext, onPrev }) => {
     ],
   };
 
-  const plyrOptions = {
-    controls: [
-      "rewind",
-      "play",
-      "fast-forward",
-      "progress",
-      "current-time",
-      "duration",
-      "mute",
-      "volume",
-      "settings",
-      "pip",
-      "airplay",
-      "fullscreen",
-    ],
-    settings: ["quality", "speed"],
-    quality: {
-      default: 0,
-      options: qualityOptions,
-      forced: true,
-      onChange: (newQuality) => {
-        if (!hlsRef.current) return;
-        if (newQuality === 0) {
-          hlsRef.current.currentLevel = -1;
-        } else {
-          hlsRef.current.levels.forEach((level, levelIndex) => {
-            if (level.height === newQuality) {
-              hlsRef.current.currentLevel = levelIndex;
-            }
-          });
-        }
-      },
-    },
-    i18n: {
-      qualityLabel: {
-        0: "Auto",
-      },
-    },
-    seekTime: 10,
-    speed: { selected: 1, options: [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2] },
-  };
-
   return (
     <div className={styles.videoStage}>
       <div className={styles.videoBackdrop}>
         <div
           className={styles.videoPlayerContainer}
-          key={`${activeLesson.id || activeLesson.videoUrl}-${qualityOptions.length}`}
+          key={activeLesson.id || activeLesson.videoUrl}
         >
           <Plyr ref={plyrRef} source={videoSrc} options={plyrOptions} />
 
