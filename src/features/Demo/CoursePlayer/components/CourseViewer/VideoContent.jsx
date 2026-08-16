@@ -19,11 +19,13 @@ const VideoContent = ({ activeLesson, onNext, onPrev }) => {
   const hlsRef = useRef(null);
 
   const [qualityOptions, setQualityOptions] = useState([0]);
+  const [isPlayerReady, setIsPlayerReady] = useState(false);
 
   const [prevVideoUrl, setPrevVideoUrl] = useState(activeLesson?.videoUrl);
   if (activeLesson?.videoUrl !== prevVideoUrl) {
     setPrevVideoUrl(activeLesson?.videoUrl);
     setQualityOptions([0]);
+    setIsPlayerReady(false);
   }
 
   const formatHlsUrl = (originalUrl) => {
@@ -35,9 +37,54 @@ const VideoContent = ({ activeLesson, onNext, onPrev }) => {
   };
 
   useEffect(() => {
-    if (!activeLesson?.videoUrl || !plyrRef.current) return;
+    const finalVideoUrl = formatHlsUrl(activeLesson?.videoUrl);
+    const isHls = finalVideoUrl.includes(".m3u8");
 
-    const finalVideoUrl = formatHlsUrl(activeLesson.videoUrl);
+    if (!activeLesson?.videoUrl) return;
+
+    if (isHls && Hls.isSupported()) {
+      let isMounted = true;
+      const tempHls = new Hls();
+
+      tempHls.loadSource(finalVideoUrl);
+
+      tempHls.on(Hls.Events.MANIFEST_PARSED, () => {
+        if (isMounted) {
+          const availableQualities = tempHls.levels
+            .map((l) => l.height)
+            .sort((a, b) => b - a);
+
+          availableQualities.unshift(0);
+          setQualityOptions(availableQualities);
+          setIsPlayerReady(true);
+        }
+        tempHls.destroy();
+      });
+
+      tempHls.on(Hls.Events.ERROR, (event, data) => {
+        if (data.fatal && isMounted) {
+          setQualityOptions([0]);
+          setIsPlayerReady(true);
+          tempHls.destroy();
+        }
+      });
+
+      return () => {
+        isMounted = false;
+        tempHls.destroy();
+      };
+    } else {
+      Promise.resolve().then(() => {
+        setQualityOptions([0]);
+        setIsPlayerReady(true);
+      });
+    }
+  }, [activeLesson?.videoUrl]);
+
+  useEffect(() => {
+    if (!isPlayerReady || !plyrRef.current || !plyrRef.current.plyr) return;
+
+    const finalVideoUrl = formatHlsUrl(activeLesson?.videoUrl);
     const isHls = finalVideoUrl.includes(".m3u8");
     const video = plyrRef.current.plyr.media;
 
@@ -46,18 +93,6 @@ const VideoContent = ({ activeLesson, onNext, onPrev }) => {
       hlsRef.current = hls;
       hls.loadSource(finalVideoUrl);
       hls.attachMedia(video);
-
-      hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        const availableQualities = hls.levels
-          .map((l) => l.height)
-          .sort((a, b) => b - a);
-
-        availableQualities.unshift(0);
-
-        if (availableQualities.length > 1) {
-          setQualityOptions(availableQualities);
-        }
-      });
 
       return () => {
         if (hlsRef.current) {
@@ -68,7 +103,7 @@ const VideoContent = ({ activeLesson, onNext, onPrev }) => {
     } else if (isHls && video.canPlayType("application/vnd.apple.mpegurl")) {
       video.src = finalVideoUrl;
     }
-  }, [activeLesson?.videoUrl]);
+  }, [activeLesson?.videoUrl, isPlayerReady]);
 
   const plyrOptions = useMemo(
     () => ({
@@ -129,7 +164,6 @@ const VideoContent = ({ activeLesson, onNext, onPrev }) => {
 
   const finalVideoUrl = formatHlsUrl(activeLesson.videoUrl);
   const isHls = finalVideoUrl.includes(".m3u8");
-
   const videoSrc = {
     type: "video",
     sources: [
@@ -143,11 +177,32 @@ const VideoContent = ({ activeLesson, onNext, onPrev }) => {
   return (
     <div className={styles.videoStage}>
       <div className={styles.videoBackdrop}>
-        <div
-          className={styles.videoPlayerContainer}
-          key={activeLesson.id || activeLesson.videoUrl}
-        >
-          <Plyr ref={plyrRef} source={videoSrc} options={plyrOptions} />
+        <div className={styles.videoPlayerContainer}>
+          {!isPlayerReady ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100%",
+                minHeight: "300px",
+              }}
+            >
+              <style>{`@keyframes plyr-spin { to { transform: rotate(360deg); } }`}</style>
+              <span
+                style={{
+                  width: "40px",
+                  height: "40px",
+                  border: "3px solid rgba(255,255,255,0.2)",
+                  borderTopColor: "#1a56db",
+                  borderRadius: "50%",
+                  animation: "plyr-spin 1s linear infinite",
+                }}
+              />
+            </div>
+          ) : (
+            <Plyr ref={plyrRef} source={videoSrc} options={plyrOptions} />
+          )}
 
           <div className={styles.videoTopbarOverlay}>
             <span className={styles.videoEyebrow}>{t("current-lesson")}</span>
