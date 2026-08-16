@@ -1,17 +1,19 @@
 .leaderboard-box {
-  background-color: #ffffff;
-  border: 1px solid #e2e8f0;
+  background-color: var(--app-surface);
+  border: 1px solid var(--app-border);
   border-radius: 24px;
-  padding: 30px;
-  min-width: 550px;
-  box-shadow: 0 10px 30px rgba(17, 41, 80, 0.08);
+  padding: clamp(18px, 3vw, 30px);
+  width: min(100%, 550px);
+  min-width: 0;
+  box-sizing: border-box;
+  box-shadow: var(--app-card-shadow);
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.leaderboard-header h3 {
-  color: var(--color-linco-navy);
+.leaderboard-header h2 {
+  color: var(--app-heading);
   font-size: 1.2rem;
   font-weight: 800;
   margin: 0;
@@ -29,7 +31,7 @@
   align-items: center;
   padding: 12px 20px;
   border-radius: 12px;
-  background-color: #f8fafc;
+  background-color: var(--app-surface-muted);
   border: 1px solid transparent;
   transition:
     transform 0.2s,
@@ -38,8 +40,8 @@
 
 .leader-item:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  border-color: #e2e8f0;
+  box-shadow: var(--app-card-shadow);
+  border-color: var(--app-border);
 }
 
 .leader-item.currentUser {
@@ -51,10 +53,11 @@
   display: flex;
   align-items: center;
   gap: 15px;
+  min-width: 0;
 }
 
 .rank {
-  color: var(--color-linco-navy);
+  color: var(--app-heading);
   font-size: 1.1rem;
   font-weight: 800;
   width: 20px;
@@ -67,14 +70,15 @@
 .avatar {
   width: 40px;
   height: 40px;
-  background-color: #cbd5e1;
-  color: var(--color-linco-navy);
+  background-color: var(--app-border-strong);
+  color: var(--app-heading);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 0.9rem;
   font-weight: 700;
+  flex-shrink: 0;
 }
 
 .currentUser .avatar {
@@ -84,8 +88,9 @@
 
 .leader-name {
   font-weight: 700;
-  color: var(--color-linco-navy);
+  color: var(--app-heading);
   font-size: 0.95rem;
+  overflow-wrap: anywhere;
 }
 
 .currentUser .leader-name {
@@ -93,12 +98,13 @@
 }
 
 .points-badge {
-  background-color: #e2e8f0;
-  color: var(--color-linco-navy);
+  background-color: var(--app-surface-soft);
+  color: var(--app-heading);
   padding: 6px 12px;
   border-radius: 20px;
   font-weight: 800;
   font-size: 0.8rem;
+  white-space: nowrap;
 }
 
 .currentUser .points-badge {
@@ -108,18 +114,60 @@
 
 .view-full-btn {
   background: transparent;
-  color: var(--color-linco-navy);
-  border: 1px solid #cbd5e1;
+  color: var(--app-heading);
+  border: 1px solid var(--app-border-strong);
   padding: 12px;
   border-radius: 12px;
   font-weight: 700;
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.2s;
-  margin-top: 5px;
+  margin-block-start: 5px;
+  text-align: center;
+  text-decoration: none;
 }
 
 .view-full-btn:hover {
   background: var(--bg-navy-gradient);
   color: #ffffff;
+}
+
+.view-full-btn:focus-visible {
+  outline: 3px solid var(--app-focus-ring);
+  outline-offset: 2px;
+}
+
+@media (max-width: 520px) {
+  .leader-item {
+    align-items: flex-start;
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .leader-info {
+    gap: 9px;
+  }
+
+  .rank {
+    width: auto;
+  }
+
+  .avatar {
+    width: 34px;
+    height: 34px;
+  }
+
+  .points-badge {
+    padding-inline: 8px;
+  }
+}
+
+@media (max-width: 350px) {
+  .leader-item {
+    flex-direction: column;
+  }
+
+  .leader-points {
+    padding-inline-start: 26px;
+  }
 }

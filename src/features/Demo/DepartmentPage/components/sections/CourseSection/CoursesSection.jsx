@@ -11,11 +11,17 @@ const CoursesSection = ({ courses }) => {
         <p>{t("continue-your-current-course")}</p>
       </div>
 
-      <div className={styles["cards-grid-2"]}>
-        {courses.map((course) => (
-          <CourseCard key={course.id} course={course} />
-        ))}
-      </div>
+      {courses.length > 0 ? (
+        <div className={styles["cards-grid-2"]}>
+          {courses.map((course) => (
+            <CourseCard key={course.id} course={course} />
+          ))}
+        </div>
+      ) : (
+        <div className={styles["section-state"]}>
+          {t("no-active-courses")}
+        </div>
+      )}
     </>
   );
 };

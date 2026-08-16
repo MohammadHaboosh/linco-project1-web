@@ -16,9 +16,75 @@
 }
 
 .content-area {
-  background-color: #f8fafc;
-  padding: 40px 40px 80px 40px;
+  background-color: var(--app-page-bg);
+  color: var(--app-text);
+  padding: clamp(24px, 4vw, 40px) clamp(14px, 4vw, 40px)
+    clamp(48px, 7vw, 80px);
   flex: 1;
   width: 100%;
+  min-width: 0;
   box-sizing: border-box;
+}
+
+.statePanel {
+  min-height: 180px;
+  padding: clamp(24px, 5vw, 40px);
+  border: 1px dashed var(--app-border-strong);
+  border-radius: 16px;
+  background: var(--app-surface);
+  color: var(--app-muted);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.statePanel strong {
+  color: var(--app-heading);
+  font-size: 1.05rem;
+}
+
+.statePanel button {
+  margin-block-start: 5px;
+  padding: 9px 15px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--color-linco-blue);
+  color: #ffffff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.statePanel button:focus-visible {
+  outline: 3px solid var(--app-focus-ring);
+  outline-offset: 2px;
+}
+
+.errorState {
+  border-color: var(--app-danger-border);
+  background: var(--app-danger-surface);
+  color: var(--app-danger-text);
+}
+
+.errorState strong {
+  color: var(--app-danger-text);
+}
+
+.spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid var(--app-border);
+  border-block-start-color: var(--app-link);
+  border-radius: 50%;
+  animation: coursesSpin 0.8s linear infinite;
+}
+
+@keyframes coursesSpin {
+  to {
+    transform: rotate(360deg);
+  }
 }

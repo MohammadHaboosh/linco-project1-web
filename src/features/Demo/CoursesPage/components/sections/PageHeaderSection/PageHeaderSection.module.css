@@ -2,32 +2,40 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 40px;
+  gap: 24px;
+  margin-block-end: 40px;
+  min-width: 0;
 }
 
 .title-area {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .back-link {
   display: flex;
   align-items: center;
-  color: #64748b;
+  gap: 5px;
+  color: var(--app-muted);
   font-size: 0.95rem;
   font-weight: 600;
   text-decoration: none;
-  margin-bottom: 8px;
+  margin-block-end: 8px;
   transition: color 0.2s;
 }
 
 .back-link:hover {
-  color: var(--color-linco-navy);
+  color: var(--app-heading);
+}
+
+:global([dir="rtl"]) .back-link svg {
+  transform: scaleX(-1);
 }
 
 .title {
-  color: var(--color-linco-navy);
-  font-size: 2.2rem;
+  color: var(--app-heading);
+  font-size: clamp(1.75rem, 5vw, 2.2rem);
   font-weight: 800;
   margin: 0;
 }
@@ -35,27 +43,62 @@
 .search-bar {
   display: flex;
   align-items: center;
-  background-color: #ffffff;
-  border: 1px solid #cbd5e1;
+  background-color: var(--app-surface);
+  border: 1px solid var(--app-border-strong);
   border-radius: 8px;
-  padding: 10px 20px;
-  width: 400px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  padding: 10px 14px;
+  width: min(100%, 400px);
+  min-width: 0;
+  box-shadow: var(--app-card-shadow);
+  box-sizing: border-box;
 }
 
 .search-bar input {
   flex: 1;
+  min-width: 0;
   border: none;
   outline: none;
   font-size: 0.95rem;
-  color: var(--color-linco-navy);
+  color: var(--app-text-strong);
+  background: transparent;
+  font-family: inherit;
 }
 
 .search-bar input::placeholder {
-  color: #94a3b8;
+  color: var(--app-muted);
 }
 
 .search-icon {
-  color: #64748b;
+  color: var(--app-muted);
   font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.search-bar:focus-within {
+  border-color: var(--app-link);
+  box-shadow: 0 0 0 3px var(--app-focus-ring);
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 760px) {
+  .header-container {
+    flex-direction: column;
+    align-items: stretch;
+    margin-block-end: 28px;
+  }
+
+  .search-bar {
+    max-width: none;
+  }
 }

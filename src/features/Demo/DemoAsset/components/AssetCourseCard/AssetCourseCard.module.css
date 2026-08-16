@@ -1,16 +1,18 @@
 .card {
-  background-color: #ffffff;
-  border: 1px solid #e2e8f0;
+  background-color: var(--app-surface);
+  border: 1px solid var(--app-border);
   border-radius: 16px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   transition: all 0.3s ease;
+  min-width: 0;
+  box-shadow: var(--app-card-shadow);
 }
 .card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 25px rgba(10, 42, 84, 0.06);
-  border-color: #cbd5e1;
+  box-shadow: var(--app-card-hover-shadow);
+  border-color: var(--app-border-strong);
 }
 .imageWrapper {
   position: relative;
@@ -25,8 +27,8 @@
 .readyBadge {
   position: absolute;
   top: 12px;
-  right: 12px;
-  background-color: #10b981;
+  inset-inline-end: 12px;
+  background-color: #047857;
   color: #ffffff;
   padding: 4px 12px;
   border-radius: 8px;
@@ -38,6 +40,7 @@
   display: flex;
   flex-direction: column;
   flex: 1;
+  min-width: 0;
 }
 .sourceInfo {
   display: flex;
@@ -45,28 +48,33 @@
   gap: 6px;
   font-size: 0.8rem;
   font-weight: 600;
-  color: #8b5cf6;
-  background: #ede9fe;
+  color: var(--app-info-text);
+  background: var(--app-info-surface);
+  border: 1px solid var(--app-info-border);
   padding: 4px 10px;
   border-radius: 6px;
   width: fit-content;
-  margin-bottom: 12px;
+  max-width: 100%;
+  margin-block-end: 12px;
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
 }
 .title {
-  color: #0a2a54;
+  color: var(--app-heading);
   font-size: 1.1rem;
   font-weight: 800;
-  margin: 0 0 8px 0;
+  margin: 0 0 8px;
+  overflow-wrap: anywhere;
 }
 .description {
-  color: #64748b;
+  color: var(--app-muted);
   font-size: 0.9rem;
   line-height: 1.5;
-  margin: 0 0 20px 0;
+  margin: 0 0 20px;
   flex: 1;
 }
 .actionArea {
-  margin-top: auto;
+  margin-block-start: auto;
 }
 .importBtn {
   width: 100%;
@@ -80,17 +88,29 @@
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
-  background-color: #ffffff;
-  color: #0a2a54;
-  border: 2px solid #0a2a54;
+  background-color: var(--app-surface);
+  color: var(--app-heading);
+  border: 2px solid var(--app-heading);
 }
 .card:hover .importBtn:not(.successBtn) {
   background-color: #0a2a54;
   color: #ffffff;
 }
 .successBtn {
-  background-color: #10b981 !important;
-  border-color: #10b981 !important;
+  background-color: #047857 !important;
+  border-color: #047857 !important;
   color: #ffffff !important;
   cursor: default;
+}
+
+.importError {
+  margin: 0 0 8px;
+  color: var(--app-danger-text);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.importBtn:focus-visible {
+  outline: 3px solid var(--app-focus-ring);
+  outline-offset: 2px;
 }

@@ -1,12 +1,13 @@
 /* src/components/elements/LiveCard.module.css */
 .card {
   display: flex;
-  background: #ffffff;
-  border: 1px solid #f1f5f9;
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
   border-radius: 20px;
-  padding: 24px;
-  gap: 25px;
-  box-shadow: 0 6px 24px rgba(17, 41, 80, 0.04);
+  padding: clamp(16px, 3vw, 24px);
+  gap: clamp(16px, 3vw, 25px);
+  min-width: 0;
+  box-shadow: var(--app-card-shadow);
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
@@ -14,7 +15,7 @@
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 32px rgba(17, 41, 80, 0.1);
+  box-shadow: var(--app-card-hover-shadow);
 }
 
 .imageContainer {
@@ -24,7 +25,7 @@
   border-radius: 12px;
   overflow: hidden;
   flex-shrink: 0;
-  background-color: #f8fafc;
+  background-color: var(--app-surface-muted);
 }
 
 .statusBadge {
@@ -39,11 +40,11 @@
 }
 
 .liveBadge {
-  background: #ef4444;
+  background: #b91c1c;
 }
 
 .scheduledBadge {
-  background: #f59e0b;
+  background: #b45309;
 }
 
 .image {
@@ -51,12 +52,13 @@
   height: 100%;
   object-fit: contain;
   padding: 10px;
+  box-sizing: border-box;
 }
 
 .playIcon {
   position: absolute;
   top: 50%;
-  left: 50%;
+  inset-inline-start: 50%;
   transform: translate(-50%, -50%);
   font-size: 3rem;
   color: #ffffff;
@@ -75,20 +77,22 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  min-width: 0;
 }
 
 .title {
-  color: var(--color-linco-navy);
+  color: var(--app-heading);
   font-size: 1.15rem;
   font-weight: 800;
-  margin-bottom: 12px;
+  margin: 0 0 12px;
+  overflow-wrap: anywhere;
 }
 
 .description {
   display: -webkit-box;
   overflow: hidden;
   margin: -5px 0 10px;
-  color: #64748b;
+  color: var(--app-muted);
   font-size: 0.78rem;
   line-height: 1.45;
   -webkit-box-orient: vertical;
@@ -106,20 +110,21 @@
   align-items: center;
   gap: 10px;
   font-size: 0.85rem;
-  color: #475569;
+  color: var(--app-text);
   margin: 0;
   font-weight: 600;
 }
 
 .icon {
-  color: var(--color-linco-blue); /* إعطاء الأيقونات لوناً أزرق ليبرزها */
+  color: var(--app-link);
   font-size: 1.1rem;
+  flex-shrink: 0;
 }
 
 .actionRow {
   display: flex;
   justify-content: flex-end;
-  margin-top: auto;
+  margin-block-start: 14px;
 }
 
 .btn {
@@ -143,6 +148,11 @@
   box-shadow: 0 4px 12px rgba(17, 41, 80, 0.2);
 }
 
+.btn:focus-visible {
+  outline: 3px solid var(--app-focus-ring);
+  outline-offset: 2px;
+}
+
 @media (max-width: 620px) {
   .card {
     flex-direction: column;
@@ -150,5 +160,11 @@
 
   .imageContainer {
     width: 100%;
+    height: 150px;
+  }
+
+  .btn {
+    width: 100%;
+    box-sizing: border-box;
   }
 }

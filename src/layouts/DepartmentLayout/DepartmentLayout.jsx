@@ -9,10 +9,20 @@ import styles from "../MainLayout/MainLayout.module.css";
 import Footer from "../../components/layouts/Footer/Footer";
 import { FOOTER_CONFIG } from "../../components/layouts/Footer/footerConfig";
 import AuthSessionBoundary from "../../components/common/AuthSessionBoundary";
+import { useTranslation } from "react-i18next";
 
 const LayoutContent = () => {
-  const { demoId, role, currentRoleView, setRoleView, isLoading, demoData } =
-    useDemo();
+  const { t } = useTranslation();
+  const {
+    demoId,
+    role,
+    currentRoleView,
+    setRoleView,
+    isLoading,
+    loadError,
+    retryLoadDemo,
+    demoData,
+  } = useDemo();
   const location = useLocation();
   const isChatPage = location.pathname.includes("/chats");
   const isCoursePlayerPage = location.pathname.includes("/course-player");
@@ -20,8 +30,27 @@ const LayoutContent = () => {
     ? PATHS.DEMO.replace(":demoId", encodeURIComponent(demoId))
     : null;
 
-  if (isLoading)
-    return <div className={styles.loader}>Loading Department...</div>;
+  if (isLoading) {
+    return (
+      <div className={styles.layoutState} role="status" aria-live="polite">
+        <span className={styles.loader} aria-hidden="true" />
+        <h1>{t("loading-department")}</h1>
+        <p>{t("loading-department-description")}</p>
+      </div>
+    );
+  }
+
+  if (loadError || !demoData) {
+    return (
+      <div className={styles.layoutState} role="alert">
+        <h1>{t("department-load-failed")}</h1>
+        <p>{t("department-load-error-message")}</p>
+        <button type="button" onClick={retryLoadDemo}>
+          {t("try-again")}
+        </button>
+      </div>
+    );
+  }
 
   const navLinks =
     DEPARTMENT_NAV[role]?.navLinks || DEPARTMENT_NAV.member.navLinks;
@@ -36,7 +65,7 @@ const LayoutContent = () => {
           currentRoleView={currentRoleView}
           onRoleChange={setRoleView}
           demoName={demoData?.name}
-          currentDepartment="Demo Departments"
+          currentDepartment={t("departments")}
           demoPath={demoPath}
         />
 

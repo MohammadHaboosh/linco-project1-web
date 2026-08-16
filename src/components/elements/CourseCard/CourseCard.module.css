@@ -1,34 +1,31 @@
 .card {
   display: flex;
   flex-direction: column;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
   border-radius: 16px;
   overflow: hidden;
   height: 100%;
   min-height: 380px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow:
-    0 4px 6px -1px rgba(10, 42, 84, 0.05),
-    0 2px 4px -1px rgba(10, 42, 84, 0.03);
+  box-shadow: var(--app-card-shadow);
   position: relative;
+  min-width: 0;
 }
 
 .card:hover {
   transform: translateY(-5px);
   border-color: #1a56db;
-  box-shadow:
-    0 20px 25px -5px rgba(26, 86, 219, 0.1),
-    0 10px 10px -5px rgba(26, 86, 219, 0.04);
+  box-shadow: var(--app-card-hover-shadow);
 }
 
 .imageContainer {
   position: relative;
   width: 100%;
   height: 160px;
-  background-color: #f8fafc;
+  background-color: var(--app-surface-muted);
   overflow: hidden;
-  border-bottom: 1px solid #f1f5f9;
+  border-block-end: 1px solid var(--app-divider);
 }
 
 .coverImage {
@@ -72,23 +69,21 @@
 .statusBadge {
   position: absolute;
   top: 12px;
-  right: 12px;
+  inset-inline-end: 12px;
   padding: 4px 12px;
   border-radius: 20px;
   font-size: 0.75rem;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .statusBadge.published {
-  background: #10b981;
+  background: #047857;
   color: #ffffff;
 }
 
 .statusBadge.draft {
-  background: #f59e0b;
+  background: #b45309;
   color: #ffffff;
 }
 
@@ -97,6 +92,7 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  min-width: 0;
 }
 
 .header {
@@ -104,11 +100,11 @@
   justify-content: space-between;
   align-items: flex-start;
   gap: 10px;
-  margin-bottom: 8px;
+  margin-block-end: 8px;
 }
 
 .title {
-  color: #0a2a54;
+  color: var(--app-heading);
   font-size: 1.15rem;
   font-weight: 800;
   margin: 0;
@@ -127,7 +123,7 @@
 
 .editBtn,
 .deleteBtn {
-  background: #f1f5f9;
+  background: var(--app-surface-soft);
   border: none;
   width: 32px;
   height: 32px;
@@ -157,10 +153,10 @@
 }
 
 .description {
-  color: #64748b;
+  color: var(--app-muted);
   font-size: 0.85rem;
   line-height: 1.6;
-  margin: 0 0 15px 0;
+  margin: 0 0 15px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -178,13 +174,13 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  background: #f8fafc;
-  color: #475569;
+  background: var(--app-surface-muted);
+  color: var(--app-text);
   padding: 4px 10px;
   border-radius: 6px;
   font-size: 0.75rem;
   font-weight: 600;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--app-border);
 }
 
 .spacer {
@@ -193,8 +189,8 @@
 
 /* Owner Footer */
 .ownerFooter {
-  border-top: 1px solid #f1f5f9;
-  padding-top: 15px;
+  border-block-start: 1px solid var(--app-divider);
+  padding-block-start: 15px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -209,20 +205,20 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  color: #0a2a54;
+  color: var(--app-heading);
   font-size: 0.85rem;
   font-weight: 700;
 }
 
 .statItem svg {
-  color: #1a56db;
+  color: var(--app-link);
   font-size: 1.1rem;
 }
 
 .lastUpdated {
   font-size: 0.75rem;
-  color: #94a3b8;
-  text-align: right;
+  color: var(--app-muted);
+  text-align: end;
 }
 
 /* Trainee Footer */
@@ -247,19 +243,19 @@
 .progressLabel {
   font-size: 0.8rem;
   font-weight: 700;
-  color: #0a2a54;
+  color: var(--app-heading);
 }
 
 .progressValue {
   font-size: 0.8rem;
   font-weight: 800;
-  color: #1a56db;
+  color: var(--app-link);
 }
 
 .progressBar {
   width: 100%;
   height: 6px;
-  background: #e2e8f0;
+  background: var(--app-border);
   border-radius: 4px;
   overflow: hidden;
 }
@@ -273,7 +269,7 @@
 
 .primaryCta {
   width: 100%;
-  background: #0a2a54;
+  background: var(--bg-navy-gradient);
   color: #ffffff;
   border: none;
   padding: 12px;
@@ -294,12 +290,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-block-end: 15px;
 }
 .watchBtnOwner {
-  background: #eff6ff;
-  color: #1a56db;
-  border: 1px solid #bfdbfe;
+  background: var(--app-info-surface);
+  color: var(--app-link);
+  border: 1px solid var(--app-info-border);
   padding: 6px 12px;
   border-radius: 8px;
   font-size: 0.85rem;
@@ -316,4 +314,27 @@
   color: #ffffff;
   border-color: #1a56db;
   transform: translateY(-1px);
+}
+
+.deleteBtn:focus-visible,
+.watchBtnOwner:focus-visible,
+.primaryCta:focus-visible {
+  outline: 3px solid var(--app-focus-ring);
+  outline-offset: 2px;
+}
+
+@media (max-width: 380px) {
+  .cardBody {
+    padding: 16px;
+  }
+
+  .statsGrid {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .watchBtnOwner {
+    width: 100%;
+    justify-content: center;
+  }
 }

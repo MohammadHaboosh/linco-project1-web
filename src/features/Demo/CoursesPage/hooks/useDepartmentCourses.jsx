@@ -3,31 +3,47 @@ import { DepartmentCoursesApi } from "../api/DepartmentCoursesApi";
 
 export const useDepartmentCourses = (demoId, departmentId) => {
   const [courses, setCourses] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(Boolean(demoId && departmentId));
+  const [error, setError] = useState(false);
+  const [reloadVersion, setReloadVersion] = useState(0);
 
   useEffect(() => {
-    if (!demoId || !departmentId) return;
+    if (!demoId || !departmentId) {
+      return undefined;
+    }
+    let isCurrent = true;
 
     const fetchCourses = async () => {
       setIsLoading(true);
-      setError(null);
+      setError(false);
       try {
         const response = await DepartmentCoursesApi.getDepartmentCourse(
           demoId,
           departmentId,
         );
-        setCourses(response.data || []);
+        if (isCurrent) setCourses(response.data || []);
       } catch (err) {
         console.error("Error fetching department courses:", err);
-        setError(err.message || "Error fetching department courses");
+        if (isCurrent) {
+          setCourses([]);
+          setError(true);
+        }
       } finally {
-        setIsLoading(false);
+        if (isCurrent) setIsLoading(false);
       }
     };
 
     fetchCourses();
-  }, [demoId, departmentId]);
 
-  return { courses, isLoading, error };
+    return () => {
+      isCurrent = false;
+    };
+  }, [demoId, departmentId, reloadVersion]);
+
+  return {
+    courses,
+    isLoading,
+    error,
+    retry: () => setReloadVersion((version) => version + 1),
+  };
 };

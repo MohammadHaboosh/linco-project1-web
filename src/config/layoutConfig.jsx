@@ -140,22 +140,40 @@ export const DEMO_NAV = {
 export const DEPARTMENT_NAV = {
   member: {
     navLinks: [
-      { name: "Home", icon: <IoHomeOutline />, path: "" },
-      { name: "Courses", icon: <IoBookOutline />, path: PATHS.COURSES },
-      { name: "Road Maps", icon: <IoMapOutline />, path: PATHS.ROADMAPS },
+      { name: "Home", translationKey: "home", icon: <IoHomeOutline />, path: "" },
+      {
+        name: "Courses",
+        translationKey: "courses",
+        icon: <IoBookOutline />,
+        path: PATHS.COURSES,
+      },
+      {
+        name: "Road Maps",
+        translationKey: "learning-roadmaps",
+        icon: <IoMapOutline />,
+        path: PATHS.ROADMAPS,
+      },
       {
         name: "Leaderboard",
+        translationKey: "company-leaderboard",
         icon: <IoPersonOutline />,
         path: PATHS.LEADERBOARD,
       },
       {
         name: "Chat",
+        translationKey: "department-chat",
         icon: <IoChatbubblesOutline />,
         path: PATHS.CHAT_GROUPS,
       },
-      { name: "Lives", icon: <IoVideocamOutline />, path: PATHS.LIVES },
+      {
+        name: "Lives",
+        translationKey: "lives",
+        icon: <IoVideocamOutline />,
+        path: PATHS.LIVES,
+      },
       {
         name: "Workspace Tools",
+        translationKey: "workspace-tools",
         icon: <IoHardwareChipOutline />,
         path: PATHS.TOOLS,
       },
@@ -163,60 +181,108 @@ export const DEPARTMENT_NAV = {
   },
   admin: {
     navLinks: [
-      { name: "Home", icon: <IoHomeOutline />, path: "" },
-      { name: "Members", icon: <IoPeopleOutline />, path: PATHS.MEMBERS },
+      { name: "Home", translationKey: "home", icon: <IoHomeOutline />, path: "" },
+      {
+        name: "Members",
+        translationKey: "members",
+        icon: <IoPeopleOutline />,
+        path: PATHS.MEMBERS,
+      },
       {
         name: "Demo Library",
+        translationKey: "workspace-library",
         icon: <IoLibraryOutline />,
         path: PATHS.SM_ASSETS,
       },
-      { name: "Courses", icon: <IoBookOutline />, path: PATHS.COURSES },
-      { name: "Lives", icon: <IoVideocamOutline />, path: PATHS.LIVES },
+      {
+        name: "Courses",
+        translationKey: "courses",
+        icon: <IoBookOutline />,
+        path: PATHS.COURSES,
+      },
+      {
+        name: "Lives",
+        translationKey: "lives",
+        icon: <IoVideocamOutline />,
+        path: PATHS.LIVES,
+      },
       {
         name: "Workspace Tools",
+        translationKey: "workspace-tools",
         icon: <IoSettingsOutline />,
         path: PATHS.SM_TOOLS,
       },
       {
         name: "Leaderboard",
+        translationKey: "company-leaderboard",
         icon: <IoPersonOutline />,
         path: PATHS.LEADERBOARD,
       },
       {
         name: "Chat",
+        translationKey: "department-chat",
         icon: <IoChatbubblesOutline />,
         path: PATHS.CHAT_GROUPS,
       },
-      { name: "Road Maps", icon: <IoMapOutline />, path: PATHS.ROADMAPS },
+      {
+        name: "Road Maps",
+        translationKey: "learning-roadmaps",
+        icon: <IoMapOutline />,
+        path: PATHS.ROADMAPS,
+      },
     ],
   },
   owner: {
     navLinks: [
-      { name: "Home", icon: <IoHomeOutline />, path: "" },
+      { name: "Home", translationKey: "home", icon: <IoHomeOutline />, path: "" },
       {
         name: "Demo Library",
+        translationKey: "workspace-library",
         icon: <IoLibraryOutline />,
         path: PATHS.SM_ASSETS,
       },
-      { name: "Courses", icon: <IoBookOutline />, path: PATHS.COURSES },
-      { name: "Members", icon: <IoPeopleOutline />, path: PATHS.MEMBERS },
-      { name: "Lives", icon: <IoVideocamOutline />, path: PATHS.LIVES }, // 👈 تم التصحيح
+      {
+        name: "Courses",
+        translationKey: "courses",
+        icon: <IoBookOutline />,
+        path: PATHS.COURSES,
+      },
+      {
+        name: "Members",
+        translationKey: "members",
+        icon: <IoPeopleOutline />,
+        path: PATHS.MEMBERS,
+      },
+      {
+        name: "Lives",
+        translationKey: "lives",
+        icon: <IoVideocamOutline />,
+        path: PATHS.LIVES,
+      },
       {
         name: "Workspace Tools",
+        translationKey: "workspace-tools",
         icon: <IoSettingsOutline />,
         path: PATHS.SM_TOOLS,
       },
       {
         name: "Leaderboard",
+        translationKey: "company-leaderboard",
         icon: <IoPersonOutline />,
         path: PATHS.LEADERBOARD,
       },
       {
         name: "Chat",
+        translationKey: "department-chat",
         icon: <IoChatbubblesOutline />,
         path: PATHS.CHAT_GROUPS,
       },
-      { name: "Road Maps", icon: <IoMapOutline />, path: PATHS.ROADMAPS },
+      {
+        name: "Road Maps",
+        translationKey: "learning-roadmaps",
+        icon: <IoMapOutline />,
+        path: PATHS.ROADMAPS,
+      },
     ],
   },
 };

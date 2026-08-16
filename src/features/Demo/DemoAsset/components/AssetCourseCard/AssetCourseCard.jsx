@@ -16,6 +16,12 @@ const AssetCourseCard = ({ course, accessMethod, assetId }) => {
 
   const { pullToDepartment, isImporting, importError } =
     useCreateDepartmentCourse();
+  const sourceText =
+    accessMethod === "PURCHASED"
+      ? t("asset-source-purchased", {
+          workspaceName: course.demo?.name || t("unknown-workspace"),
+        })
+      : t("asset-source-owned");
 
   const handleImport = async () => {
     try {
@@ -27,11 +33,11 @@ const AssetCourseCard = ({ course, accessMethod, assetId }) => {
   };
 
   return (
-    <div className={styles.card}>
+    <article className={styles.card} aria-busy={isImporting}>
       <div className={styles.imageWrapper}>
         <img
           src={course.imagePath}
-          alt={course.title}
+          alt={t("course-cover-alt", { title: course.title })}
           className={styles.coverImage}
         />
         <div className={styles.readyBadge}>{t("ready-to-use")}</div>
@@ -39,49 +45,58 @@ const AssetCourseCard = ({ course, accessMethod, assetId }) => {
 
       <div className={styles.cardBody}>
         <div className={styles.sourceInfo}>
-          <IoInformationCircleOutline />{" "}
-          {accessMethod +
-            (accessMethod === "PURCHASED" ? ` from ${course.demo?.name}` : "")}
+          <IoInformationCircleOutline aria-hidden="true" />
+          {sourceText}
         </div>
 
         <h3 className={styles.title}>{course.title}</h3>
         <p className={styles.description}>{course.description}</p>
 
         {importError && (
-          <p
-            style={{
-              color: "#dc2626",
-              fontSize: "0.8rem",
-              marginBottom: "8px",
-            }}
-          >
-            {importError}
+          <p className={styles.importError} role="alert">
+            {t("course-import-failed")}
           </p>
         )}
 
         <div className={styles.actionArea}>
           <button
+            type="button"
             className={`${styles.importBtn} ${isImported ? styles.successBtn : ""}`}
             onClick={handleImport}
             disabled={isImported || isImporting}
+            aria-live="polite"
+            aria-label={t(
+              isImported
+                ? "course-added-to-department-label"
+                : isImporting
+                  ? "importing-named-course"
+                  : "add-named-course-to-department",
+              { title: course.title },
+            )}
           >
             {isImporting ? (
-              <span>Loading...</span>
+              <span>{t("importing-course")}</span>
             ) : isImported ? (
               <>
-                <IoCheckmarkCircle className={styles.btnIcon} />{" "}
+                <IoCheckmarkCircle
+                  className={styles.btnIcon}
+                  aria-hidden="true"
+                />{" "}
                 {t("added-to-department")}
               </>
             ) : (
               <>
-                <IoDownloadOutline className={styles.btnIcon} />{" "}
+                <IoDownloadOutline
+                  className={styles.btnIcon}
+                  aria-hidden="true"
+                />{" "}
                 {t("pull-to-department")}
               </>
             )}
           </button>
         </div>
       </div>
-    </div>
+    </article>
   );
 };
 

@@ -79,7 +79,7 @@ const DepartmentSwitcher = ({ currentDepartment }) => {
               </div>
             ) : (
               departments.map((dept) => {
-                const isActive = dept.id === departmentId;
+                const isActive = String(dept.id) === String(departmentId);
 
                 return (
                   <button
@@ -90,7 +90,10 @@ const DepartmentSwitcher = ({ currentDepartment }) => {
                   >
                     <span>{dept.title || dept.name}</span>
                     {isActive && (
-                      <IoCheckmarkCircle className={styles["check-icon"]} />
+                      <IoCheckmarkCircle
+                        className={styles["check-icon"]}
+                        aria-hidden="true"
+                      />
                     )}
                   </button>
                 );

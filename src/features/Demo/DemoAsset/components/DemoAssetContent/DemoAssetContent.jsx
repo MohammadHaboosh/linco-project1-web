@@ -7,11 +7,12 @@ import { useTranslation } from "react-i18next";
 import { useDemoAssets } from "../../hooks/useDemoAssets";
 
 const DemoAssetContent = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { demoId } = useParams();
   const [searchQuery, setSearchQuery] = useState("");
+  const locale = i18n.resolvedLanguage || i18n.language || "en";
 
-  const { assets, isLoading, error } = useDemoAssets(demoId);
+  const { assets, isLoading, error, retry } = useDemoAssets(demoId);
 
   const filteredAssets = assets.filter((asset) => {
     const course = asset.course;
@@ -19,51 +20,65 @@ const DemoAssetContent = () => {
 
     if (searchQuery.trim() === "") return true;
 
-    return course.title.toLowerCase().includes(searchQuery.toLowerCase());
+    return course.title
+      ?.toLocaleLowerCase(locale)
+      .includes(searchQuery.trim().toLocaleLowerCase(locale));
   });
 
   return (
-    <div className={styles.pageContainer}>
+    <div className={styles.pageContainer} dir={i18n.dir()}>
       <div className={styles.headerArea}>
         <div className={styles.headerInfo}>
           <div className={styles.iconBox}>
-            <IoFolderOpenOutline className={styles.headerIcon} />
+            <IoFolderOpenOutline
+              className={styles.headerIcon}
+              aria-hidden="true"
+            />
           </div>
           <div>
             <span className={styles.subHeading}>
-              {t("internal-repository")}
+              {t("workspace-content")}
             </span>
-            <h1 className={styles.title}>{t("company-assets")}</h1>
+            <h1 className={styles.title}>{t("workspace-library")}</h1>
             <p className={styles.description}>
-              {t(
-                "browse-all-courses-owned-by-your-company-and-import-them-into-your-department",
-              )}
+              {t("workspace-library-description")}
             </p>
           </div>
         </div>
       </div>
 
       <div className={styles.controlsBar}>
-        <div className={styles.searchBox}>
-          <IoSearchOutline className={styles.searchIcon} />
+        <label className={styles.searchBox}>
+          <span className={styles.visuallyHidden}>
+            {t("search-workspace-library")}
+          </span>
+          <IoSearchOutline className={styles.searchIcon} aria-hidden="true" />
           <input
-            type="text"
-            placeholder={t("search-company-assets")}
+            type="search"
+            placeholder={t("search-workspace-library-placeholder")}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className={styles.searchInput}
           />
-        </div>
+        </label>
       </div>
 
       {isLoading ? (
-        <p style={{ textAlign: "center", color: "#64748b", padding: "40px" }}>
+        <div className={styles.statePanel} role="status" aria-live="polite">
+          <span className={styles.spinner} aria-hidden="true" />
           {t("loading-assets")}
-        </p>
+        </div>
       ) : error ? (
-        <p style={{ textAlign: "center", color: "#dc2626", padding: "40px" }}>
-          {error}
-        </p>
+        <div
+          className={`${styles.statePanel} ${styles.errorState}`}
+          role="alert"
+        >
+          <strong>{t("assets-load-failed")}</strong>
+          <span>{t("assets-load-error-message")}</span>
+          <button type="button" onClick={retry}>
+            {t("try-again")}
+          </button>
+        </div>
       ) : filteredAssets.length > 0 ? (
         <div className={styles.coursesGrid}>
           {filteredAssets.map((asset) => (
@@ -76,9 +91,23 @@ const DemoAssetContent = () => {
           ))}
         </div>
       ) : (
-        <p style={{ textAlign: "center", color: "#64748b", padding: "40px" }}>
-          {t("no-published-assets-found")}
-        </p>
+        <div className={styles.statePanel}>
+          <strong>
+            {searchQuery.trim()
+              ? t("no-assets-match-search")
+              : t("no-published-assets-found")}
+          </strong>
+          <span>
+            {searchQuery.trim()
+              ? t("adjust-asset-search")
+              : t("workspace-library-empty-description")}
+          </span>
+          {searchQuery.trim() && (
+            <button type="button" onClick={() => setSearchQuery("")}>
+              {t("clear-search")}
+            </button>
+          )}
+        </div>
       )}
     </div>
   );

@@ -1,21 +1,26 @@
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
+import { PATHS } from "../../../../../../routes/paths";
 import styles from "./WelcomeSection.module.css";
 
-const WelcomeSection = ({ companyName, userName }) => {
+const WelcomeSection = ({ departmentName, userName }) => {
   const { t } = useTranslation();
 
   return (
     <div className={styles["welcome-text"]}>
       <div className={styles["welcome-badge"]}>
-        <span>👋</span> {t("welcome-back")}
+        <span aria-hidden="true">👋</span> {t("welcome-back")}
       </div>
 
       <h1>
-        {t("welcome-to")}{" "}
-        <span className={styles["highlight-company"]}>{companyName}</span>
-        <br />
-        {t("academy")},{" "}
-        <span className={styles["highlight-name"]}>{userName}</span>!
+        <Trans
+          i18nKey="department-welcome-heading"
+          values={{ departmentName, userName }}
+          components={{
+            department: <span className={styles["highlight-company"]} />,
+            user: <span className={styles["highlight-name"]} />,
+          }}
+        />
       </h1>
 
       <p>
@@ -25,12 +30,12 @@ const WelcomeSection = ({ companyName, userName }) => {
       </p>
 
       <div className={styles["welcome-actions"]}>
-        <button className={styles["btn-primary"]}>
+        <Link className={styles["btn-primary"]} to={PATHS.COURSES}>
           {t("resume-learning")}
-        </button>
-        <button className={styles["btn-secondary"]}>
+        </Link>
+        <Link className={styles["btn-secondary"]} to={PATHS.ROADMAPS}>
           {t("view-road-map")}
-        </button>
+        </Link>
       </div>
     </div>
   );

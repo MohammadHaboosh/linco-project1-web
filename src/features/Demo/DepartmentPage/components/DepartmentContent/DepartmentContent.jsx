@@ -6,39 +6,52 @@ import CoursesSection from "../sections/CourseSection/CoursesSection";
 import LivesSection from "../sections/LivesSection/LivesSection";
 import { useParams } from "react-router-dom";
 import { useLiveStreams } from "../../../Lives/hooks/useLiveStreams";
+import { useTranslation } from "react-i18next";
+import { useDepartmentNavigation } from "../../../../../hooks/useDepartmentNavigation";
 
 const DepartmentContent = () => {
+  const { t, i18n } = useTranslation();
   const { demoId, departmentId } = useParams();
   const {
     streams: liveStreams,
     isLoading: areLivesLoading,
     error: livesError,
+    refetch: retryLives,
   } = useLiveStreams({ demoId, departmentId });
-  const departmentData = { departmentName: "Front-End", userName: "Abrar" };
+  const { selectedDepartmentName } = useDepartmentNavigation(
+    t("department-fallback-name"),
+  );
+  const userName = t("sample-current-user-first-name");
+  const locale = i18n.resolvedLanguage || i18n.language || "en";
+  const getInitials = (name) =>
+    name
+      .trim()
+      .split(/\s+/)
+      .slice(0, 2)
+      .map((part) => Array.from(part)[0])
+      .join("")
+      .toLocaleUpperCase(locale);
 
   const leaderboardData = [
     {
       rank: 1,
-      avatar: "SA",
-      name: "Ahmad",
-      points: "1,250",
+      name: t("sample-leader-name-one"),
+      points: 1250,
       isCurrentUser: false,
     },
     {
       rank: 2,
-      avatar: "AA",
-      name: "Abrar A (You)",
-      points: "1,120",
+      name: t("sample-leader-name-two"),
+      points: 1120,
       isCurrentUser: true,
     },
     {
       rank: 3,
-      avatar: "MK",
-      name: "Omar",
-      points: "980",
+      name: t("sample-leader-name-three"),
+      points: 980,
       isCurrentUser: false,
     },
-  ];
+  ].map((leader) => ({ ...leader, avatar: getInitials(leader.name) }));
 
   const statisticsData = {
     activeCourses: { current: 5, total: 15 },
@@ -49,14 +62,14 @@ const DepartmentContent = () => {
   const coursesData = [
     {
       id: 1,
-      title: "Introduction To React Hooks",
-      description: "Description text will be here...",
+      title: t("sample-course-react-hooks-title"),
+      description: t("sample-course-react-hooks-description"),
       progress: 72,
     },
     {
       id: 2,
-      title: "Advanced Node.js",
-      description: "Description text will be here...",
+      title: t("sample-course-node-title"),
+      description: t("sample-course-node-description"),
       progress: 45,
     },
   ];
@@ -66,12 +79,12 @@ const DepartmentContent = () => {
     .slice(0, 2);
 
   return (
-    <div className={styles.contentArea}>
+    <div className={styles.contentArea} dir={i18n.dir()}>
       <div className={styles["hero-section"]}>
         <div className={styles["hero-content"]}>
           <WelcomeSection
-            companyName={departmentData.departmentName}
-            userName={departmentData.userName}
+            departmentName={selectedDepartmentName}
+            userName={userName}
           />
           <LeaderboardSection leaders={leaderboardData} />
         </div>
@@ -87,6 +100,7 @@ const DepartmentContent = () => {
           lives={livesData}
           isLoading={areLivesLoading}
           error={livesError}
+          onRetry={retryLives}
         />
       </div>
     </div>
