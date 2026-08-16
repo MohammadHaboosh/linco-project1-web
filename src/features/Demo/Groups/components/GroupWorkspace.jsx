@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import styles from "./GroupWorkspace.module.css";
-import { useGroups } from "../hooks/useGroups";
+import { useFetchGroups } from "../hooks/useFetchGroups";
 
 import GroupSidebar from "./GroupSidebar";
 import WorkspaceToolbar from "./WorkspaceToolbar";
@@ -10,9 +10,9 @@ import EmptyWorkspace from "./EmptyWorkspace";
 import CreateGroupModal from "./CreateGroupModal";
 
 const GroupWorkspace = () => {
-  const { groupId } = useParams();
+  const { demoId, groupId } = useParams();
 
-  const { groups, isLoading, createGroup, isCreating } = useGroups();
+  const { groups, isLoading, refetch } = useFetchGroups(demoId);
 
   const [layout, setLayout] = useState("chat-only");
   const [activeTool, setActiveTool] = useState(null);
@@ -72,9 +72,11 @@ const GroupWorkspace = () => {
 
       {isCreateModalOpen && (
         <CreateGroupModal
+          demoId={demoId}
           onClose={() => setIsCreateModalOpen(false)}
-          createGroup={createGroup}
-          isCreating={isCreating}
+          onSuccess={() => {
+            refetch();
+          }}
         />
       )}
     </div>

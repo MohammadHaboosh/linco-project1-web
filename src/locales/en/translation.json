@@ -1406,5 +1406,13 @@
   "private-desc": "Invitation only",
   "loading-groups": "Loading groups...",
   "no-groups-match": "No groups match your search.",
-  "no-groups-yet": "No groups available. Create one to get started!"
+  "no-groups-yet": "No groups available. Create one to get started!",
+  "group-create-failed": "Failed to create group",
+  "group-manager-required": "Please assign a manager",
+  "group-name-required": "Group name is required",
+  "group-name-placeholder": "e.g. Back-End Team",
+  "group-desc": "Description",
+  "group-description-placeholder": "What is this group about?",
+  "change-group-manager": "Change manager",
+  "creating-group": "Creating..."
 }

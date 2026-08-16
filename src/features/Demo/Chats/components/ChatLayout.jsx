@@ -4,15 +4,16 @@ import { useDepartmentChat } from "../hooks/useDepartmentChat";
 import styles from "./Chats.module.css";
 
 const ChatLayout = ({ showHeader = true }) => {
-  const { demoId, departmentId } = useParams();
-  const chat = useDepartmentChat({ demoId, departmentId });
+  const { demoId, departmentId, groupId } = useParams();
+  const activeDepartmentId = departmentId || groupId;
+  const chat = useDepartmentChat({ demoId, departmentId: activeDepartmentId });
 
   return (
     <div className={styles.chatPageWrapper}>
       <div className={styles.chatAppContainer}>
         <div className={styles.chatMainArea}>
           <ChatArea
-            key={`${demoId}:${departmentId}`}
+            key={`${demoId}:${activeDepartmentId}`}
             showHeader={showHeader}
             {...chat}
           />

@@ -466,6 +466,23 @@
   margin: 0;
 }
 
+.lockedGroup {
+  opacity: 0.6;
+  cursor: not-allowed !important;
+  background-color: var(--app-surface-muted);
+}
+
+.lockedGroup:hover {
+  background-color: var(--app-surface-muted) !important;
+  transform: none !important;
+}
+
+.lockIcon {
+  margin-inline-start: auto;
+  color: var(--app-muted);
+  font-size: 1.1rem;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

@@ -19,7 +19,6 @@
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
-  /* 💡 تم إلغاء overflow: hidden للسماح للقائمة المنسدلة بالظهور والتمرير بحرية دون قصها */
   position: relative;
   animation: modalIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   max-height: calc(100dvh - 40px);
@@ -49,11 +48,36 @@
   border-start-end-radius: 16px;
 }
 
-.header h3 {
+.modalTitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.modalTitleIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: 10px;
+  color: var(--app-primary, #1a56db);
+  font-size: 1.3rem;
+}
+
+.modalTitle h2 {
   margin: 0;
   color: var(--app-heading);
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   font-weight: 800;
+}
+
+.modalTitle p {
+  margin: 4px 0 0 0;
+  color: var(--app-muted);
+  font-size: 0.85rem;
 }
 
 .closeBtn {
@@ -127,7 +151,6 @@
   resize: vertical;
 }
 
-/* ================= Search & Results Dropdown ================= */
 .searchContainer {
   position: relative;
   width: 100%;
@@ -297,7 +320,6 @@
   margin-block-start: 6px;
 }
 
-/* ================= Selected User Card ================= */
 .selectedUserCard {
   display: flex;
   align-items: center;
@@ -362,7 +384,6 @@
   color: var(--app-heading);
 }
 
-/* ================= Footer ================= */
 .footer {
   padding: 16px 24px;
   background: var(--app-surface-muted);
@@ -481,36 +502,4 @@
   .submitBtn {
     width: 100%;
   }
-}
-
-.modalTitle {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.modalTitleIcon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: var(--app-surface);
-  border: 1px solid var(--app-border);
-  border-radius: 10px;
-  color: var(--app-primary);
-  font-size: 1.3rem;
-}
-
-.modalTitle h2 {
-  margin: 0;
-  color: var(--app-heading);
-  font-size: 1.15rem;
-  font-weight: 800;
-}
-
-.modalTitle p {
-  margin: 4px 0 0 0;
-  color: var(--app-muted);
-  font-size: 0.85rem;
 }

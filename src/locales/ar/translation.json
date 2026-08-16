@@ -1495,5 +1495,13 @@
   "private-desc": "دعوة فقط",
   "loading-groups": "جارٍ تحميل المجموعات...",
   "no-groups-match": "لا توجد مجموعات تطابق بحثك.",
-  "no-groups-yet": "لا توجد مجموعات متاحة. \nقم بإنشاء واحدة للبدء!"
+  "no-groups-yet": "لا توجد مجموعات متاحة. \nقم بإنشاء واحدة للبدء!",
+  "group-create-failed": "فشل إنشاء المجموعة",
+  "group-manager-required": "يرجى تعيين مدير",
+  "group-name-required": "اسم المجموعة مطلوب",
+  "group-name-placeholder": "فريق الباك اند",
+  "group-desc": "وصف",
+  "group-description-placeholder": "ما هو موضوع هذه المجموعة؟",
+  "change-group-manager": "تغيير مدير ",
+  "creating-group": "جارٍ الإنشاء..."
 }
