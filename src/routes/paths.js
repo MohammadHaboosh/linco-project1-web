@@ -14,7 +14,7 @@ export const PATHS = {
   CHAT_GROUPS: "chats",
   WEEKLY_TASKS: "weekly-tasks",
   LEADERBOARD: "leaderboard",
-  GROUP_WORKSPACE: "group-workspace",
+  GROUP_WORKSPACE: "groups",
   DEPARTMENTS: "departments",
 
   SIGNIN: "/signin",

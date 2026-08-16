@@ -54,7 +54,7 @@ export const DEMO_NAV = {
         path: "",
       },
       {
-        name: "Groupss",
+        name: "Groups",
         translationKey: "groups",
         icon: <IoHardwareChipOutline />,
         path: PATHS.GROUP_WORKSPACE,
@@ -88,7 +88,7 @@ export const DEMO_NAV = {
         path: PATHS.DEPARTMENTS,
       },
       {
-        name: "Groupss",
+        name: "Groups",
         translationKey: "groups",
         icon: <IoHardwareChipOutline />,
         path: PATHS.GROUP_WORKSPACE,
@@ -122,7 +122,7 @@ export const DEMO_NAV = {
         path: "",
       },
       {
-        name: "Groupss",
+        name: "Groups",
         translationKey: "groups",
         icon: <IoHardwareChipOutline />,
         path: PATHS.GROUP_WORKSPACE,
