@@ -1,7 +1,7 @@
 .floating-btn {
   position: fixed;
   top: 15px;
-  left: 20px;
+  inset-inline-start: 20px;
   width: 40px;
   height: 40px;
   background: var(--bg-navy-gradient);
@@ -42,7 +42,7 @@
   background: linear-gradient(180deg, #0a2a54 0%, #061933 100%);
   position: fixed;
   top: 0;
-  left: 0;
+  inset-inline-start: 0;
   width: 280px;
   height: 100vh;
   background: var(--bg-navy-gradient);
@@ -57,6 +57,15 @@
   overflow-x: hidden;
 }
 .sidebar.open {
+  transform: translateX(0);
+}
+
+:global([dir="rtl"]) .sidebar {
+  transform: translateX(100%);
+  box-shadow: -5px 0 25px rgba(0, 0, 0, 0.3);
+}
+
+:global([dir="rtl"]) .sidebar.open {
   transform: translateX(0);
 }
 
@@ -91,6 +100,11 @@
 .action-btn:hover {
   background-color: rgba(255, 255, 255, 0.1);
   color: #d4af37;
+}
+
+.action-btn[aria-pressed="true"] {
+  background-color: rgba(250, 204, 21, 0.12);
+  color: #facc15;
 }
 
 .top-section {
@@ -199,6 +213,10 @@
 .logout-item:hover {
   background-color: rgba(239, 68, 68, 0.1);
   color: #ef4444;
+}
+
+:global([dir="rtl"]) .menu-item.active {
+  box-shadow: inset -4px 0 0 var(--color-linco-accent, #9f1239);
 }
 
 .logout-item {

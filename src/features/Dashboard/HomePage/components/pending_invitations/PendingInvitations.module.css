@@ -1,9 +1,12 @@
 .content-section {
-  background-color: #ffffff;
-  border: 1px solid #e2e8f0;
+  background-color: var(--app-surface);
+  border: 1px solid var(--app-border);
   border-radius: 16px;
   padding: 24px;
-  box-shadow: 0 4px 15px rgba(10, 42, 84, 0.02);
+  box-shadow: var(--app-card-shadow);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .section-header {
@@ -11,12 +14,13 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid var(--app-divider);
   padding-bottom: 12px;
+  gap: 16px;
 }
 
 .section-header h2 {
-  color: #0a2a54;
+  color: var(--app-heading);
   font-size: 1.1rem;
   font-weight: 800;
   margin: 0;
@@ -24,11 +28,13 @@
 
 .view-all {
   background: transparent;
-  color: #1a56db;
+  color: var(--app-link);
   border: none;
   font-size: 0.85rem;
   font-weight: 700;
   cursor: pointer;
+  flex-shrink: 0;
+  padding: 0;
 }
 
 .view-all:hover {
@@ -41,14 +47,15 @@
   gap: 12px;
   max-height: 400px;
   overflow-y: auto;
-  padding-right: 5px;
+  padding-inline-end: 5px;
+  overflow-x: hidden;
 }
 
 .list-container::-webkit-scrollbar {
   width: 4px;
 }
 .list-container::-webkit-scrollbar-thumb {
-  background-color: #cbd5e1;
+  background-color: var(--app-border-strong);
   border-radius: 4px;
 }
 
@@ -59,7 +66,7 @@
   justify-content: center;
   align-items: center;
   gap: 12px;
-  color: #64748b;
+  color: var(--app-muted);
   font-weight: 600;
 }
 
@@ -70,14 +77,14 @@
 .loader {
   width: 30px;
   height: 30px;
-  border: 3px solid #e2e8f0;
-  border-top-color: #1a56db;
+  border: 3px solid var(--app-border);
+  border-top-color: var(--app-link);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
 
 .empty-state {
-  color: #64748b;
+  color: var(--app-muted);
   font-size: 0.9rem;
   text-align: center;
   margin: 0;
@@ -87,5 +94,25 @@
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 480px) {
+  .content-section {
+    padding: 18px;
+  }
+
+  .section-header {
+    align-items: flex-start;
+  }
+
+  .section-header h2 {
+    font-size: 1rem;
+  }
+
+  .view-all {
+    max-width: 45%;
+    font-size: 0.78rem;
+    text-align: end;
   }
 }

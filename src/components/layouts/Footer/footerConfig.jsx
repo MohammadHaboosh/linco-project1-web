@@ -2,9 +2,21 @@ import { PATHS } from "../../../routes/paths";
 
 export const FOOTER_CONFIG = {
   dashboard: [
-    { name: "Pending Invitations", path: PATHS.PENDING_INVITATIONS },
-    { name: "Joined Rooms", path: PATHS.JOINED_ROOMS },
-    { name: "My Own Rooms", path: PATHS.OWN_ROOMS },
+    {
+      name: "Pending Invitations",
+      translationKey: "pending-invitations",
+      path: PATHS.PENDING_INVITATIONS,
+    },
+    {
+      name: "Joined Workspaces",
+      translationKey: "joined-workspaces",
+      path: PATHS.JOINED_ROOMS,
+    },
+    {
+      name: "My Workspaces",
+      translationKey: "owned-workspaces",
+      path: PATHS.OWN_ROOMS,
+    },
   ],
   demo_owner: [
     {

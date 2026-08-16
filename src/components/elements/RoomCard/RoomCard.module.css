@@ -1,21 +1,22 @@
 .card {
-  background-color: #ffffff;
-  border: 1px solid #e2e8f0;
+  background-color: var(--app-surface);
+  border: 1px solid var(--app-border);
   border-radius: 16px;
   padding: 20px 24px;
   display: flex;
   flex-direction: column;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 15px rgba(10, 42, 84, 0.02);
+  box-shadow: var(--app-card-shadow);
   position: relative;
   overflow: hidden;
+  min-width: 0;
 }
 
 .card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 15px 30px rgba(10, 42, 84, 0.08);
-  border-color: #cbd5e1;
+  box-shadow: var(--app-card-hover-shadow);
+  border-color: var(--app-border-strong);
 }
 
 .cardHeader {
@@ -29,6 +30,7 @@
   display: flex;
   align-items: center;
   gap: 15px;
+  min-width: 0;
 }
 
 .logoBox {
@@ -44,6 +46,7 @@
   font-weight: 800;
   box-shadow: 0 4px 10px rgba(26, 86, 219, 0.2);
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .logoImg {
@@ -56,14 +59,16 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+  min-width: 0;
 }
 
 .companyName {
   margin: 0;
-  color: #0a2a54;
+  color: var(--app-heading);
   font-size: 1.2rem;
   font-weight: 800;
   line-height: 1.2;
+  overflow-wrap: anywhere;
 }
 
 .roleTag {
@@ -72,8 +77,8 @@
   gap: 4px;
   font-size: 0.8rem;
   font-weight: 600;
-  color: #64748b;
-  background-color: #f1f5f9;
+  color: var(--app-muted);
+  background-color: var(--app-surface-soft);
   padding: 2px 8px;
   border-radius: 6px;
   width: fit-content;
@@ -93,7 +98,7 @@
 
 .free {
   background-color: #f1f5f9;
-  color: #475569;
+  color: var(--app-text);
 }
 .starter {
   background-color: #e0e7ff;
@@ -113,7 +118,7 @@
 }
 
 .description {
-  color: #475569;
+  color: var(--app-text);
   font-size: 0.95rem;
   line-height: 1.5;
   margin: 0;
@@ -125,7 +130,7 @@
 
 .divider {
   border: none;
-  border-top: 1px solid #f1f5f9;
+  border-top: 1px solid var(--app-divider);
   margin: 20px 0 15px 0;
   width: 100%;
 }
@@ -144,11 +149,39 @@
   gap: 6px;
   font-size: 0.85rem;
   font-weight: 600;
-  color: #64748b;
+  color: var(--app-muted);
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 18px;
+  }
+
+  .cardHeader {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .brandSection {
+    flex: 1 1 200px;
+  }
+
+  .companyName {
+    font-size: 1.05rem;
+  }
+
+  .divider {
+    margin: 16px 0 13px;
+  }
+
+  .cardFooter {
+    justify-content: flex-start;
+    column-gap: 16px;
+  }
 }
 
 .footerIcon {
-  color: #1a56db;
+  color: var(--app-link);
   font-size: 1.1rem;
 }
 
@@ -168,4 +201,36 @@
 .expired {
   background-color: #ef4444;
   box-shadow: 0 0 0 3px #fee2e2;
+}
+
+:global([data-theme="dark"]) .free {
+  background-color: #263548;
+  color: #d7e1ee;
+}
+
+:global([data-theme="dark"]) .starter {
+  background-color: #262d54;
+  color: #c7d2fe;
+}
+
+:global([data-theme="dark"]) .pro {
+  background-color: #173b31;
+  color: #a7f3d0;
+}
+
+:global([data-theme="dark"]) .enterprise {
+  background-color: #49351d;
+  color: #fde68a;
+}
+
+:global([data-theme="dark"]) .trialing {
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+}
+
+:global([data-theme="dark"]) .active {
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+:global([data-theme="dark"]) .expired {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
 }

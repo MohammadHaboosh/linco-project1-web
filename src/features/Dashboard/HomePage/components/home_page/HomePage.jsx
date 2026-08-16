@@ -1,9 +1,10 @@
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import PendingInvitations from "../pending_invitations/PendingInvitations";
 import RoomSection from "../room_section/RoomSection";
 import styles from "./HomePage.module.css";
 import { useUser } from "../../../../../hooks/useUser";
 import { useHomePage } from "../../hooks/useHomePage.jsx";
+import { PATHS } from "../../../../../routes/paths.js";
 
 const HomePage = () => {
   const { t } = useTranslation();
@@ -12,6 +13,7 @@ const HomePage = () => {
     ownedRooms,
     isLoadingOwnedRooms,
     activeRooms,
+    isLoadingJoinedRooms,
     pendingInvitations,
     isLoadingInvitations,
     acceptInvitation,
@@ -26,16 +28,16 @@ const HomePage = () => {
       <div className={styles.welcomeBanner}>
         <div className={styles.bannerContent}>
           <h1 className={styles.greeting}>
-            {t("ready-to-dive-into-your-learning")}{" "}
-            <span className={styles.highlightName}>
-              {profile?.firstName || t("guest")}
-            </span>
-            !
+            <Trans
+              i18nKey="home-greeting"
+              values={{ name: profile?.firstName || t("guest") }}
+              components={{
+                name: <span className={styles.highlightName} />,
+              }}
+            />
           </h1>
           <p className={styles.bannerDesc}>
-            {t(
-              "manage-your-company-links-track-your-active-training-rooms-and-level-up-your-career-from-one-single-dashboard-1",
-            )}
+            {t("home-dashboard-description")}
           </p>
         </div>
         <div className={styles.bannerDecoration}></div>
@@ -45,26 +47,33 @@ const HomePage = () => {
         <div className={styles.mainColumn}>
           {isLoadingOwnedRooms ? (
             <div className={styles.loadingState}>
-              {t("loading-your-rooms", "Loading your workspaces...")}
+              {t("loading-workspaces")}
             </div>
           ) : (
             <RoomSection
-              title={t("recently-active-owned-rooms", "My Workspaces")}
+              title={t("owned-workspaces")}
               rooms={ownedRooms}
-              viewAllPath="/my-own-rooms"
-              emptyMessage={t("no-owned-rooms-yet")}
-              emptySubtext={t(
-                "you-dont-have-any-active-owned-rooms-right-now-create-one-to-get-started",
-              )}
+              viewAllPath={PATHS.OWN_ROOMS}
+              emptyMessage={t("no-owned-workspaces-yet")}
+              emptySubtext={t("no-owned-workspaces-description")}
             />
           )}
 
           <div className={styles.sectionSpacer}></div>
 
-          <RoomSection
-            title={t("recently-active-rooms", "Joined Workspaces")}
-            rooms={activeRooms}
-          />
+          {isLoadingJoinedRooms ? (
+            <div className={styles.loadingState}>
+              {t("loading-joined-workspaces")}
+            </div>
+          ) : (
+            <RoomSection
+              title={t("joined-workspaces")}
+              rooms={activeRooms}
+              viewAllPath={PATHS.JOINED_ROOMS}
+              emptyMessage={t("no-joined-workspaces-yet")}
+              emptySubtext={t("no-joined-workspaces-description")}
+            />
+          )}
         </div>
 
         <div className={styles.sideColumn}>
@@ -81,8 +90,9 @@ const HomePage = () => {
           <div className={styles.quickStatsCard}>
             <h3>{t("quick-activity")}</h3>
             <p>
-              {t("you-have-accessed")} {activeRooms.length + ownedRooms.length}{" "}
-              {t("workspaces-recently")}
+              {t("recent-workspaces-accessed", {
+                count: activeRooms.length + ownedRooms.length,
+              })}
             </p>
           </div>
         </div>

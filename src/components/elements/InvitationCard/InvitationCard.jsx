@@ -11,7 +11,7 @@ const InvitationCard = ({
   processingAction,
   actionError,
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const acceptLabel =
     isProcessing && processingAction === "accept"
@@ -21,6 +21,21 @@ const InvitationCard = ({
     isProcessing && processingAction === "reject"
       ? t("rejecting", "Rejecting...")
       : t("reject");
+  const roleKey = String(invitation.role || "")
+    .toLowerCase()
+    .replaceAll("_", "-")
+    .replaceAll(" ", "-");
+  const roleLabel = t(roleKey, { defaultValue: invitation.role || "" });
+  const invitationDate = invitation.createdAt
+    ? new Date(invitation.createdAt)
+    : null;
+  const timeLabel =
+    invitationDate && !Number.isNaN(invitationDate.getTime())
+      ? new Intl.DateTimeFormat(i18n.resolvedLanguage, {
+          dateStyle: "medium",
+          timeStyle: "short",
+        }).format(invitationDate)
+      : invitation.time;
 
   if (compact) {
     return (
@@ -28,10 +43,8 @@ const InvitationCard = ({
         <div className={styles["compact-header"]}>
           <span className={styles["company-name"]}>{invitation.company}</span>
           <span className={styles["compact-time"]}>
-            <IoTimeOutline
-              style={{ marginBottom: "-2px", marginRight: "4px" }}
-            />
-            {invitation.time}
+            <IoTimeOutline />
+            {timeLabel}
           </span>
         </div>
 
@@ -39,7 +52,7 @@ const InvitationCard = ({
           <span className={styles["compact-caller"]}>
             {t("from")}: {invitation.caller}
           </span>
-          <span className={styles["compact-role"]}>{invitation.role}</span>
+          <span className={styles["compact-role"]}>{roleLabel}</span>
         </div>
 
         <div
@@ -80,9 +93,9 @@ const InvitationCard = ({
       <div className={styles["vertical-divider"]}></div>
       <div className={styles["text-item"]}>{invitation.caller}</div>
       <div className={styles["vertical-divider"]}></div>
-      <div className={styles["text-item"]}>{invitation.role}</div>
+      <div className={styles["text-item"]}>{roleLabel}</div>
       <div className={styles["vertical-divider"]}></div>
-      <div className={styles["text-item"]}>{invitation.time}</div>
+      <div className={styles["text-item"]}>{timeLabel}</div>
 
       <div className={styles["list-actions"]}>
         <button

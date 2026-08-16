@@ -21,9 +21,15 @@ i18n
     },
   });
 
-i18n.on("languageChanged", (lng) => {
-  document.documentElement.dir = lng === "ar" ? "rtl" : "ltr";
-  document.documentElement.lang = lng;
-});
+const updateDocumentLanguage = (language) => {
+  if (typeof document === "undefined") return;
+
+  const locale = language?.split("-")[0] || "en";
+  document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
+  document.documentElement.lang = locale;
+};
+
+i18n.on("languageChanged", updateDocumentLanguage);
+updateDocumentLanguage(i18n.resolvedLanguage || i18n.language);
 
 export default i18n;

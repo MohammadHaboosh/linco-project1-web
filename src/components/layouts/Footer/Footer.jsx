@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import styles from "./Footer.module.css";
-import { FOOTER_CONFIG } from "./footerConfig";
 import { useTranslation } from "react-i18next";
 
 const Footer = ({ footerLinks }) => {
@@ -18,7 +17,9 @@ const Footer = ({ footerLinks }) => {
                   to={link.path}
                   style={{ color: "inherit", textDecoration: "none" }}
                 >
-                  {link.name}
+                  {link.translationKey
+                    ? t(link.translationKey, link.name)
+                    : link.name}
                 </Link>
               </li>
             ))}

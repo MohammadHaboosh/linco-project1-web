@@ -17,12 +17,9 @@ const PendingInvitations = ({
   const { t } = useTranslation();
 
   return (
-    <div
-      className={styles["content-section"]}
-      style={{ background: "transparent" }}
-    >
+    <div className={styles["content-section"]}>
       <div className={styles["section-header"]}>
-        <h2>{t("new-pending-invitations")}</h2>
+        <h2>{t("pending-invitations")}</h2>
         <button
           className={styles["view-all"]}
           onClick={() => navigate(PATHS.PENDING_INVITATIONS)}
@@ -35,11 +32,11 @@ const PendingInvitations = ({
         {isLoading ? (
           <div className={styles["loading-state"]}>
             <span className={styles.loader}></span>
-            <p>{t("loading-invitations", "Loading invitations...")}</p>
+            <p>{t("loading-invitations")}</p>
           </div>
         ) : invitations.length === 0 ? (
           <p className={styles["empty-state"]}>
-            {t("no-pending-invitations", "No pending invitations.")}
+            {t("no-pending-invitations")}
           </p>
         ) : (
           invitations.map((invitation) => (

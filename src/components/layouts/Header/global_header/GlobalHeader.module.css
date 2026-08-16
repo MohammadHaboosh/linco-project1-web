@@ -20,7 +20,7 @@
 
 .logo {
   font-size: 1.1rem;
-  margin-left: 50px;
+  margin-inline-start: 50px;
 }
 
 .brand-name {
@@ -37,8 +37,8 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding-left: 20px;
-  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  padding-inline-start: 20px;
+  border-inline-start: 1px solid rgba(255, 255, 255, 0.2);
   user-select: none;
 }
 
@@ -196,10 +196,79 @@
   }
 }
 
+@media (max-width: 768px) {
+  .header {
+    padding: 12px 14px;
+    gap: 12px;
+  }
+
+  .header-left {
+    width: 100%;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .logo {
+    margin-inline-start: 48px;
+    font-size: 1rem;
+    white-space: nowrap;
+  }
+
+  .user-profile {
+    min-width: 0;
+    padding-inline-start: 10px;
+  }
+
+  .user-name {
+    max-width: 130px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .header-actions {
+    margin-inline-start: auto;
+  }
+
+  .nav-links {
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
+  }
+
+  .nav-links::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-item-wrapper {
+    flex-shrink: 0;
+    gap: 5px;
+  }
+
+  .nav-links a {
+    padding: 6px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .company-text,
+  .user-name,
+  .app-icon {
+    display: none;
+  }
+
+  .btn-workspace {
+    padding: 7px 12px;
+    font-size: 0.78rem;
+  }
+}
+
 .nav-item-wrapper {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 5px;
 }
 
 .workspace-header-container {

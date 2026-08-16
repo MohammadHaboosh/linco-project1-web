@@ -11,11 +11,7 @@ const GlobalHeader = () => {
   const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
-  const {
-    fullName,
-    initials,
-    imagePath,
-  } = useHeader();
+  const { fullName, initials, imagePath } = useHeader();
 
   const globalLinks = DASHBOARD_NAV.global.navLinks;
 
@@ -34,7 +30,7 @@ const GlobalHeader = () => {
             {imagePath ? (
               <img
                 src={imagePath}
-                alt={`${fullName}'s profile`}
+                alt={t("profile-image-alt", { name: fullName })}
                 className={styles["user-avatar"]}
               />
             ) : (
@@ -57,7 +53,7 @@ const GlobalHeader = () => {
                   : ""
               }
             >
-              {link.name}
+              {t(link.translationKey, link.name)}
             </Link>
             {index < globalLinks.length - 1 && (
               <div className={styles["nav-divider"]}></div>
@@ -77,7 +73,7 @@ const GlobalHeader = () => {
         <div className={styles["app-icon"]}>
           <img
             src={appIconImg}
-            alt="App Icon"
+            alt={t("app-icon-alt")}
             className={styles["app-icon-img"]}
           />
         </div>

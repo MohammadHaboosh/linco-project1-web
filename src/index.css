@@ -57,6 +57,39 @@
 
 :root {
   --bg-navy-gradient: linear-gradient(135deg, #112950 0%, #1e3a8a 100%);
+  --app-page-bg: #f8fafc;
+  --app-surface: #ffffff;
+  --app-surface-muted: #f8fafc;
+  --app-surface-soft: #f1f5f9;
+  --app-border: #e2e8f0;
+  --app-border-strong: #cbd5e1;
+  --app-divider: #f1f5f9;
+  --app-heading: #0a2a54;
+  --app-text: #475569;
+  --app-text-strong: #1e293b;
+  --app-muted: #64748b;
+  --app-link: #1a56db;
+  --app-danger-surface: #fef2f2;
+  --app-card-shadow: 0 4px 15px rgba(10, 42, 84, 0.02);
+  --app-card-hover-shadow: 0 15px 30px rgba(10, 42, 84, 0.08);
+}
+
+:root[data-theme="dark"] {
+  --app-page-bg: #07111f;
+  --app-surface: #101c2d;
+  --app-surface-muted: #0c1727;
+  --app-surface-soft: #1b2a3f;
+  --app-border: #293a51;
+  --app-border-strong: #40536b;
+  --app-divider: #223148;
+  --app-heading: #e7efff;
+  --app-text: #cbd5e1;
+  --app-text-strong: #e2e8f0;
+  --app-muted: #94a3b8;
+  --app-link: #60a5fa;
+  --app-danger-surface: #321b25;
+  --app-card-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+  --app-card-hover-shadow: 0 16px 34px rgba(0, 0, 0, 0.32);
 }
 
 body {

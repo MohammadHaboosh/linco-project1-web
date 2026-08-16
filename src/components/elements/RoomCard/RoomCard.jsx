@@ -11,22 +11,28 @@ import { useTranslation } from "react-i18next";
 
 const RoomCard = ({ room }) => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const handleCardClick = () => {
     navigate(PATHS.DEMO.replace(":demoId", room?.id));
   };
 
-  const safeName = room?.name || "Workspace";
+  const safeName = room?.name || t("workspace");
   const displayDesc =
-    room?.description || "No description provided for this workspace.";
+    room?.description || t("no-workspace-description");
   const displayMembers = room?.membersCount || 0;
-  const displayRole = room?.isOwner ? "Owner" : room?.role || "Member";
+  const role = room?.isOwner ? "owner" : room?.role || "member";
+  const roleKey = String(role).toLowerCase().replaceAll("_", "-");
+  const displayRole = t(roleKey, {
+    defaultValue: String(role).replaceAll("_", " "),
+  });
   const displayDate = room?.createdAt
-    ? new Date(room.createdAt).toLocaleDateString()
+    ? new Date(room.createdAt).toLocaleDateString(i18n.resolvedLanguage)
     : room?.dateJoined || "";
   const displayPlan = room?.plan || "FREE";
   const status = room?.subscriptionStatus || "ACTIVE";
+  const planKey = String(displayPlan).toLowerCase().replaceAll("_", "-");
+  const statusKey = String(status).toLowerCase().replaceAll("_", "-");
 
   const initials = String(safeName).substring(0, 2).toUpperCase();
 
@@ -57,7 +63,8 @@ const RoomCard = ({ room }) => {
           <span
             className={`${styles.planBadge} ${styles[displayPlan.toLowerCase()]}`}
           >
-            <IoRocketOutline /> {displayPlan}
+            <IoRocketOutline />{" "}
+            {t(planKey, { defaultValue: displayPlan })}
           </span>
         </div>
       </div>
@@ -72,7 +79,7 @@ const RoomCard = ({ room }) => {
         <div className={styles.footerItem}>
           <IoPeopleOutline className={styles.footerIcon} />
           <span>
-            {displayMembers} {t("members", "Members")}
+            {t("workspace-members", { count: displayMembers })}
           </span>
         </div>
 
@@ -81,7 +88,9 @@ const RoomCard = ({ room }) => {
             className={`${styles.statusDot} ${styles[String(status).toLowerCase()]}`}
           ></span>
           <span style={{ textTransform: "capitalize" }}>
-            {String(status).toLowerCase()}
+            {t(statusKey, {
+              defaultValue: String(status).toLowerCase().replaceAll("_", " "),
+            })}
           </span>
         </div>
 

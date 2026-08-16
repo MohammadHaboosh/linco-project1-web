@@ -6,10 +6,12 @@ import {
   IoLogOutOutline,
   IoClose,
   IoMoonOutline,
+  IoSunnyOutline,
 } from "react-icons/io5";
 import { SIDEBAR_CONFIG } from "./sidebarConfig";
 import LanguageSwitcher from "../../common/LanguageSwitcher";
 import { useHeader } from "../Header/hooks/useHeader.jsx";
+import { useTheme } from "../../../hooks/useTheme.js";
 import styles from "./Sidebar.module.css";
 
 const Sidebar = () => {
@@ -17,6 +19,10 @@ const Sidebar = () => {
   const location = useLocation();
   const { t } = useTranslation();
   const { handleLogout } = useHeader();
+  const { isDark, toggleTheme } = useTheme();
+  const themeToggleLabel = t(
+    isDark ? "switch-to-light-theme" : "switch-to-dark-theme",
+  );
 
   const toggleSidebar = () => setIsOpen(!isOpen);
   const menuItems = SIDEBAR_CONFIG;
@@ -65,10 +71,12 @@ const Sidebar = () => {
             <button
               type="button"
               className={styles["action-btn"]}
-              title={t("theme", "Theme")}
-              aria-label={t("theme", "Theme")}
+              title={themeToggleLabel}
+              aria-label={themeToggleLabel}
+              aria-pressed={isDark}
+              onClick={toggleTheme}
             >
-              <IoMoonOutline />
+              {isDark ? <IoSunnyOutline /> : <IoMoonOutline />}
             </button>
           </div>
 

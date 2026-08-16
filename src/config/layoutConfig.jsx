@@ -20,11 +20,27 @@ import { PATHS } from "../routes/paths";
 export const DASHBOARD_NAV = {
   global: {
     navLinks: [
-      { name: "Home", path: PATHS.HOME },
-      { name: "Inbox", path: PATHS.PENDING_INVITATIONS },
-      { name: "Joined Rooms", path: PATHS.JOINED_ROOMS },
-      { name: "My Rooms", path: PATHS.OWN_ROOMS },
-      { name: "My Certificates", path: PATHS.CERTIFICATES },
+      { name: "Home", translationKey: "home", path: PATHS.HOME },
+      {
+        name: "Inbox",
+        translationKey: "pending-invitations",
+        path: PATHS.PENDING_INVITATIONS,
+      },
+      {
+        name: "Joined Workspaces",
+        translationKey: "joined-workspaces",
+        path: PATHS.JOINED_ROOMS,
+      },
+      {
+        name: "My Workspaces",
+        translationKey: "owned-workspaces",
+        path: PATHS.OWN_ROOMS,
+      },
+      {
+        name: "My Certificates",
+        translationKey: "my-certificates",
+        path: PATHS.CERTIFICATES,
+      },
     ],
   },
 };
