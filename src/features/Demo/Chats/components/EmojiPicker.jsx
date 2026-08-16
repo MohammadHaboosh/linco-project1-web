@@ -80,7 +80,10 @@ const EmojiPicker = ({
           selectionHandlerRef.current?.(emoji.native),
         previewPosition: "none",
         set: "native",
-        theme: "light",
+        theme:
+          document.documentElement.dataset.theme === "dark"
+            ? "dark"
+            : "light",
       });
 
       pickerMount.replaceChildren(picker);

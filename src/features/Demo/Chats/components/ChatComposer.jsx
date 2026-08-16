@@ -37,6 +37,13 @@ const ChatComposer = ({
         name: replyingTo ? getSenderName(replyingTo) : "",
       });
   const composerContextPreview = getMessagePreviewText(composerContext, t);
+  const submitLabel = isSubmitting
+    ? editingMessage
+      ? t("chat-saving-edit")
+      : t("chat-sending-message")
+    : editingMessage
+      ? t("chat-save-edit")
+      : t("chat-send-message");
   const closeEmojiPicker = useCallback(
     () => setIsEmojiPickerOpen(false),
     [setIsEmojiPickerOpen],
@@ -47,7 +54,10 @@ const ChatComposer = ({
   );
 
   return (
-    <footer className={styles.inputStickyArea}>
+    <footer
+      className={styles.inputStickyArea}
+      aria-label={t("chat-message-composer")}
+    >
       {composerContext && (
         <div className={styles.composerContext}>
           <div>
@@ -72,7 +82,9 @@ const ChatComposer = ({
           {attachmentPreviewUrl ? (
             <img
               src={attachmentPreviewUrl}
-              alt=""
+              alt={t("chat-selected-image-preview", {
+                name: selectedAttachment.name,
+              })}
               className={styles.selectedAttachmentPreview}
             />
           ) : (
@@ -121,7 +133,11 @@ const ChatComposer = ({
         </div>
       )}
 
-      <form className={styles.inputWrapper} onSubmit={handleSubmit}>
+      <form
+        className={styles.inputWrapper}
+        onSubmit={handleSubmit}
+        aria-busy={isSubmitting || isAttachmentUploading}
+      >
         <input
           ref={fileInputRef}
           type="file"
@@ -175,6 +191,7 @@ const ChatComposer = ({
           disabled={!isConnected}
           autoComplete="off"
           rows={1}
+          aria-label={t("chat-message-input")}
         />
 
         <button
@@ -183,11 +200,14 @@ const ChatComposer = ({
             canSubmit ? styles.sendBtnActive : ""
           }`}
           disabled={!canSubmit}
-          aria-label={
-            editingMessage ? t("chat-save-edit") : t("chat-send-message")
-          }
+          aria-label={submitLabel}
+          title={submitLabel}
         >
-          <IoSend />
+          {isSubmitting ? (
+            <span className={styles.composerButtonLoader} aria-hidden="true" />
+          ) : (
+            <IoSend aria-hidden="true" />
+          )}
         </button>
       </form>
     </footer>

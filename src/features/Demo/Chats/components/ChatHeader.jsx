@@ -16,7 +16,8 @@ const ChatHeader = ({
   onlineMembers,
   retry,
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.resolvedLanguage || i18n.language;
   const isConnected = connectionStatus === "connected";
   const connectionLabel = t(`chat-status-${connectionStatus}`, {
     defaultValue: t("chat-status-disconnected"),
@@ -32,11 +33,15 @@ const ChatHeader = ({
           return 1;
         }
 
-        return getDepartmentMemberName(first, "").localeCompare(
+        return new Intl.Collator(locale).compare(
+          getDepartmentMemberName(first, ""),
           getDepartmentMemberName(second, ""),
         );
       }),
-    [currentDepartmentMemberId, onlineMembers],
+    [currentDepartmentMemberId, locale, onlineMembers],
+  );
+  const formattedOnlineCount = new Intl.NumberFormat(locale).format(
+    sortedOnlineMembers.length,
   );
 
   return (
@@ -51,8 +56,10 @@ const ChatHeader = ({
             className={`${styles.connectionStatus} ${
               styles[`status-${connectionStatus}`] || ""
             }`}
+            role="status"
+            aria-live="polite"
           >
-            <span className={styles.statusDot} />
+            <span className={styles.statusDot} aria-hidden="true" />
             {connectionLabel}
           </span>
         </div>
@@ -65,6 +72,7 @@ const ChatHeader = ({
               className={styles.onlineMembersSummary}
               aria-label={t("chat-online-count", {
                 count: sortedOnlineMembers.length,
+                formattedCount: formattedOnlineCount,
               })}
             >
               <span className={styles.onlineAvatarStack} aria-hidden="true">
@@ -90,13 +98,17 @@ const ChatHeader = ({
                 })}
                 {sortedOnlineMembers.length > 3 && (
                   <span className={styles.onlineAvatarOverflow}>
-                    +{sortedOnlineMembers.length - 3}
+                    +
+                    {new Intl.NumberFormat(locale).format(
+                      sortedOnlineMembers.length - 3,
+                    )}
                   </span>
                 )}
               </span>
               <span className={styles.onlineCountLabel}>
                 {t("chat-online-count", {
                   count: sortedOnlineMembers.length,
+                  formattedCount: formattedOnlineCount,
                 })}
               </span>
             </summary>
@@ -125,12 +137,18 @@ const ChatHeader = ({
                         ) : (
                           getDepartmentMemberInitials(member)
                         )}
-                        <span className={styles.onlinePresenceDot} />
+                        <span
+                          className={styles.onlinePresenceDot}
+                          aria-hidden="true"
+                        />
                       </span>
                       <span className={styles.onlineMemberDetails}>
                         <strong>
-                          {memberName}
-                          {isCurrentMember && ` (${t("chat-you")})`}
+                          {isCurrentMember
+                            ? t("chat-current-user-name", {
+                                name: memberName,
+                              })
+                            : memberName}
                         </strong>
                         <small>{t("chat-online-now")}</small>
                       </span>
@@ -148,7 +166,7 @@ const ChatHeader = ({
             className={styles.retryHeaderButton}
             onClick={retry}
           >
-            <IoRefreshOutline />
+            <IoRefreshOutline aria-hidden="true" />
             {t("try-again")}
           </button>
         )}

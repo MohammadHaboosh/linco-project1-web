@@ -96,7 +96,7 @@ export const mergeDepartmentMembersById = (
   });
 };
 
-export const getDepartmentMemberName = (member, fallback = "Unknown member") => {
+export const getDepartmentMemberName = (member, fallback = "") => {
   const fullName = [member?.firstName, member?.lastName]
     .filter(Boolean)
     .join(" ")
@@ -123,22 +123,21 @@ export const formatFileSize = (value, language) => {
     return "";
   }
 
-  if (size < 1024) {
-    return `${size} B`;
-  }
-
-  const units = ["KB", "MB", "GB", "TB"];
-  let unitIndex = -1;
+  const units = ["byte", "kilobyte", "megabyte", "gigabyte", "terabyte"];
+  let unitIndex = 0;
   let formattedSize = size;
 
-  do {
+  while (formattedSize >= 1024 && unitIndex < units.length - 1) {
     formattedSize /= 1024;
     unitIndex += 1;
-  } while (formattedSize >= 1024 && unitIndex < units.length - 1);
+  }
 
-  return `${new Intl.NumberFormat(language, {
+  return new Intl.NumberFormat(language, {
+    style: "unit",
+    unit: units[unitIndex],
+    unitDisplay: "short",
     maximumFractionDigits: 1,
-  }).format(formattedSize)} ${units[unitIndex]}`;
+  }).format(formattedSize);
 };
 
 const normalizeAttachment = (attachment) => {
@@ -191,8 +190,8 @@ export const mergeMessagesById = (currentMessages, incomingMessages) => {
   });
 };
 
-export const getSenderName = (message) => {
-  return getDepartmentMemberName(message?.sender);
+export const getSenderName = (message, fallback = "") => {
+  return getDepartmentMemberName(message?.sender, fallback);
 };
 
 export const getSenderInitials = (message) => {

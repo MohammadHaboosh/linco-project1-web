@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 import { useRoadmapGenerator } from "../hooks/useRoadmapGenerator";
 
 const RoadmapsContent = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [title, setTitle] = useState("");
   const { roadmap, isGenerating, error, generateRoadmap, reset } =
     useRoadmapGenerator();
@@ -31,12 +31,16 @@ const RoadmapsContent = () => {
   };
 
   return (
-    <div className={styles.pageContainer}>
+    <div
+      className={styles.pageContainer}
+      dir={i18n.dir()}
+      aria-busy={isGenerating}
+    >
       <div className={styles.contentWrapper}>
         <div className={styles.headerArea}>
           <div className={styles.headerInfo}>
             <div className={styles.iconBox}>
-              <IoMapOutline className={styles.headerIcon} />
+              <IoMapOutline className={styles.headerIcon} aria-hidden="true" />
             </div>
             <div>
               <span className={styles.subHeading}>
@@ -55,21 +59,26 @@ const RoadmapsContent = () => {
               className={styles.startOverButton}
               onClick={handleStartOver}
             >
-              <IoRefreshOutline />
-              {t("generate-another-roadmap", "Generate another")}
+              <IoRefreshOutline aria-hidden="true" />
+              {t("generate-another-roadmap")}
             </button>
           )}
         </div>
 
-        <section className={styles.generatorCard}>
-          <div className={styles.generatorGlow} />
+        <section
+          className={styles.generatorCard}
+          aria-labelledby="roadmap-generator-prompt"
+        >
+          <div className={styles.generatorGlow} aria-hidden="true" />
           <div className={styles.generatorIntro}>
-            <div className={styles.sparkleIcon}>
+            <div className={styles.sparkleIcon} aria-hidden="true">
               <IoSparklesOutline />
             </div>
             <div>
-              <h2>{t("what-do-you-want-to-learn")}</h2>
-              <p>{t("roadmap-title-help")}</p>
+              <h2 id="roadmap-generator-prompt">
+                {t("what-do-you-want-to-learn")}
+              </h2>
+              <p id="roadmap-title-help">{t("roadmap-title-help")}</p>
             </div>
           </div>
 
@@ -78,7 +87,10 @@ const RoadmapsContent = () => {
               {t("roadmap-title")}
             </label>
             <div className={styles.promptInputWrapper}>
-              <IoMapOutline className={styles.promptIcon} />
+              <IoMapOutline
+                className={styles.promptIcon}
+                aria-hidden="true"
+              />
               <input
                 id="roadmap-title"
                 type="text"
@@ -88,57 +100,76 @@ const RoadmapsContent = () => {
                 disabled={isGenerating}
                 maxLength={120}
                 autoComplete="off"
+                aria-describedby="roadmap-title-help"
               />
-              <button type="submit" disabled={!title.trim() || isGenerating}>
+              <button
+                type="submit"
+                disabled={!title.trim() || isGenerating}
+                aria-busy={isGenerating}
+              >
                 {isGenerating ? (
                   <>
-                    <span className={styles.buttonLoader} />
+                    <span className={styles.buttonLoader} aria-hidden="true" />
                     {t("generating-roadmap")}
                   </>
                 ) : (
                   <>
                     {t("generate-roadmap")}
-                    <IoArrowForwardOutline />
+                    <IoArrowForwardOutline aria-hidden="true" />
                   </>
                 )}
               </button>
             </div>
             <div className={styles.promptExamples}>
               <span>{t("try-an-example")}</span>
-              {["Backend NestJS", "Cloud DevOps", "UI/UX Design"].map(
-                (example) => (
+              {[
+                "roadmap-example-backend",
+                "roadmap-example-devops",
+                "roadmap-example-design",
+              ].map((exampleKey) => {
+                const example = t(exampleKey);
+
+                return (
                   <button
                     type="button"
-                    key={example}
+                    key={exampleKey}
                     onClick={() => setTitle(example)}
                     disabled={isGenerating}
                   >
                     {example}
                   </button>
-                ),
-              )}
+                );
+              })}
             </div>
           </form>
 
           {error && (
             <div className={styles.errorBanner} role="alert">
-              <IoAlertCircleOutline />
+              <IoAlertCircleOutline aria-hidden="true" />
               <div>
                 <strong>{t("roadmap-generation-failed")}</strong>
-                <p>{error}</p>
+                <p>{t(error)}</p>
               </div>
             </div>
           )}
         </section>
 
         {isGenerating && (
-          <section className={styles.generationState} aria-live="polite">
-            <div className={styles.aiOrb}>
+          <section
+            className={styles.generationState}
+            role="status"
+            aria-live="polite"
+          >
+            <div className={styles.aiOrb} aria-hidden="true">
               <IoSparklesOutline />
             </div>
             <h2>{t("building-your-roadmap")}</h2>
             <p>{t("building-roadmap-description")}</p>
-            <div className={styles.progressTrack}>
+            <div
+              className={styles.progressTrack}
+              role="progressbar"
+              aria-label={t("roadmap-generation-progress")}
+            >
               <span />
             </div>
           </section>

@@ -6,8 +6,8 @@ const ChatEmptyState = () => {
   const { t } = useTranslation();
 
   return (
-    <div className={styles.emptyStateContainer}>
-      <div className={styles.emptyIconCircle}>
+    <div className={styles.emptyStateContainer} role="status">
+      <div className={styles.emptyIconCircle} aria-hidden="true">
         <IoChatbubblesOutline />
       </div>
       <h3>{t("chat-no-messages")}</h3>

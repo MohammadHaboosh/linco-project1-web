@@ -1,7 +1,6 @@
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import { departmentMessagesApi } from "../api/departmentMessagesApi";
 import { mergeMessagesById } from "../utils/messageUtils";
-import { getErrorMessage } from "../utils/departmentChatUtils";
 import { useDepartmentChatActions } from "./useDepartmentChatActions";
 import { useDepartmentChatConnection } from "./useDepartmentChatConnection";
 
@@ -71,12 +70,7 @@ export const useDepartmentChat = ({ demoId, departmentId }) => {
           activeContextKeyRef.current === requestContextKey &&
           error.name !== "AbortError"
         ) {
-          setHistoryError(
-            getErrorMessage(
-              error,
-              "Unable to load the department conversation.",
-            ),
-          );
+          setHistoryError("chat-error-load-conversation");
           throw error;
         }
 
@@ -188,11 +182,9 @@ export const useDepartmentChat = ({ demoId, departmentId }) => {
       mergeMessages(result.messages);
       setPageMeta(result.meta);
       return true;
-    } catch (error) {
+    } catch {
       if (activeContextKeyRef.current === requestContextKey) {
-        setHistoryError(
-          getErrorMessage(error, "Unable to load older messages."),
-        );
+        setHistoryError("chat-error-load-older");
       }
       return false;
     } finally {

@@ -135,22 +135,20 @@ export const useDepartmentChatConnection = ({
       removeTypingMember(departmentMemberId);
     };
 
-    const handleSocketException = (error) => {
+    const handleSocketException = () => {
       if (!isCurrentContext()) {
         return;
       }
 
-      const errorMessage = getErrorMessage(
-        error,
-        "The chat server rejected the request.",
-      );
       if (connectionStatusRef.current === "joining") {
         updateConnectionStatus("error");
-        setConnectionError((currentError) => currentError || errorMessage);
+        setConnectionError(
+          (currentError) => currentError || "chat-error-join",
+        );
         return;
       }
 
-      setActionError(errorMessage);
+      setActionError("chat-error-request-rejected");
     };
 
     const recoverSocketAuthentication = async () => {
@@ -174,11 +172,9 @@ export const useDepartmentChatConnection = ({
         if (isCurrentContext() && !socket.connected) {
           socket.connect();
         }
-      } catch (error) {
+      } catch {
         if (isCurrentContext()) {
-          setConnectionError(
-            getErrorMessage(error, "Unable to authenticate the chat session."),
-          );
+          setConnectionError("chat-error-authenticate");
           updateConnectionStatus("error");
         }
       } finally {
@@ -195,7 +191,7 @@ export const useDepartmentChatConnection = ({
         error,
         "Unable to connect to the department chat.",
       );
-      setConnectionError(message);
+      setConnectionError("chat-error-connect");
       updateConnectionStatus("error");
 
       if (message.toUpperCase().includes("UNAUTHORIZED")) {
@@ -221,14 +217,14 @@ export const useDepartmentChatConnection = ({
           if (timeoutError) {
             setConnectionError(
               (currentError) =>
-                currentError || "Joining the department chat timed out.",
+                currentError || "chat-error-join-timeout",
             );
             updateConnectionStatus("error");
             return;
           }
 
           if (response?.status !== "joined") {
-            setConnectionError("Unable to join the department chat.");
+            setConnectionError("chat-error-join");
             updateConnectionStatus("error");
             return;
           }
@@ -364,12 +360,12 @@ export const useDepartmentChatConnection = ({
         .timeout(CHAT_ACK_TIMEOUT)
         .emit(event, payload, (timeoutError, response) => {
           if (timeoutError) {
-            reject(new Error("The chat server did not respond in time."));
+            reject(new Error("chat-error-server-timeout"));
             return;
           }
 
           if (response?.status !== "success") {
-            reject(new Error("The chat server rejected the request."));
+            reject(new Error("chat-error-request-rejected"));
             return;
           }
 

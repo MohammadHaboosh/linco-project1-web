@@ -36,7 +36,7 @@ const ChatArea = ({
   discardPreparedAttachment,
   prepareAttachment,
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [openImage, setOpenImage] = useState(null);
   const isConnected = connectionStatus === "connected";
   const composer = useChatComposer({
@@ -75,7 +75,7 @@ const ChatArea = ({
     const senderNames = new Map();
     messages.forEach((message) => {
       if (message.sender?.id) {
-        senderNames.set(message.sender.id, getSenderName(message));
+        senderNames.set(message.sender.id, getSenderName(message, ""));
       }
     });
 
@@ -97,11 +97,25 @@ const ChatArea = ({
       return t("chat-someone-typing");
     }
 
-    return t("chat-people-typing", { count: typingMemberIds.length });
-  }, [messages, onlineMembers, t, typingMemberIds]);
+    return t("chat-people-typing", {
+      count: typingMemberIds.length,
+      formattedCount: new Intl.NumberFormat(
+        i18n.resolvedLanguage || i18n.language,
+      ).format(typingMemberIds.length),
+    });
+  }, [i18n.language, i18n.resolvedLanguage, messages, onlineMembers, t, typingMemberIds]);
+  const actionProgressText = isSending
+    ? t("chat-sending-message")
+    : pendingActionId
+      ? t("chat-updating-message")
+      : "";
 
   return (
-    <section className={styles.chatRoomWrapper}>
+    <section
+      className={styles.chatRoomWrapper}
+      aria-label={t("department-chat")}
+      aria-busy={isLoadingHistory || isSending || isUploadingAttachment}
+    >
       {showHeader && (
         <ChatHeader
           connectionStatus={connectionStatus}
@@ -142,8 +156,8 @@ const ChatArea = ({
         onDelete={composer.handleDelete}
       />
 
-      <div className={styles.typingArea} aria-live="polite">
-        {typingText}
+      <div className={styles.typingArea} role="status" aria-live="polite">
+        {actionProgressText || typingText}
       </div>
 
       <ChatComposer isConnected={isConnected} {...composer} />

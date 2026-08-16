@@ -36,6 +36,18 @@ const formatMessageTime = (value, language) => {
   ).format(date);
 };
 
+const formatFullMessageTime = (value, language) => {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return "";
+  }
+
+  return new Intl.DateTimeFormat(language, {
+    dateStyle: "long",
+    timeStyle: "short",
+  }).format(date);
+};
+
 const Attachment = ({ attachment, type, onOpenImage }) => {
   const { t, i18n } = useTranslation();
 
@@ -51,7 +63,9 @@ const Attachment = ({ attachment, type, onOpenImage }) => {
         type="button"
         className={styles.imageAttachmentButton}
         onClick={() => onOpenImage(attachment)}
-        aria-label={attachment.fileName || t("chat-image-attachment")}
+        aria-label={t("chat-open-image-attachment", {
+          name: attachment.fileName || t("chat-image-attachment"),
+        })}
       >
         <img
           src={attachment.fileUrl}
@@ -65,7 +79,14 @@ const Attachment = ({ attachment, type, onOpenImage }) => {
 
   if (type === "AUDIO" || mimeType.startsWith("audio/")) {
     return (
-      <audio className={styles.audioAttachment} controls preload="metadata">
+      <audio
+        className={styles.audioAttachment}
+        controls
+        preload="metadata"
+        aria-label={t("chat-audio-player", {
+          name: attachment.fileName || t("chat-audio-attachment"),
+        })}
+      >
         <source src={attachment.fileUrl} type={attachment.mimeType} />
       </audio>
     );
@@ -77,6 +98,9 @@ const Attachment = ({ attachment, type, onOpenImage }) => {
       target="_blank"
       rel="noreferrer"
       className={styles.fileAttachment}
+      aria-label={t("chat-open-named-attachment", {
+        name: attachment.fileName || t("chat-file-attachment"),
+      })}
     >
       <span>{attachment.fileName || t("chat-open-attachment")}</span>
       {attachment.fileSize !== null &&
@@ -104,7 +128,8 @@ const MessageItem = ({
   onDelete,
 }) => {
   const { t, i18n } = useTranslation();
-  const senderName = getSenderName(message);
+  const locale = i18n.resolvedLanguage || i18n.language;
+  const senderName = getSenderName(message, t("chat-unknown-member"));
   const isGroupStart =
     groupPosition === "single" || groupPosition === "first";
   const isGroupEnd =
@@ -120,6 +145,11 @@ const MessageItem = ({
       data-message-id={message.id}
       data-group-position={groupPosition}
       tabIndex={-1}
+      aria-label={
+        isMe
+          ? t("chat-message-from-you")
+          : t("chat-message-from", { name: senderName })
+      }
     >
       {!isMe && (
         <div
@@ -181,8 +211,13 @@ const MessageItem = ({
             {message.isEdited && !message.isDeleted && (
               <span>{t("chat-edited")}</span>
             )}
-            <time dateTime={message.createdAt}>
-              {formatMessageTime(message.createdAt, i18n.language)}
+            <time
+              dateTime={message.createdAt}
+              aria-label={t("chat-message-sent-at", {
+                date: formatFullMessageTime(message.createdAt, locale),
+              })}
+            >
+              {formatMessageTime(message.createdAt, locale)}
             </time>
           </div>
         </div>

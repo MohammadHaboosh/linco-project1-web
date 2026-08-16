@@ -50,6 +50,11 @@ const ChatMessages = ({
         className={styles.messagesScrollArea}
         ref={scrollAreaRef}
         onScroll={onScroll}
+        role="log"
+        aria-label={t("chat-message-list")}
+        aria-live="polite"
+        aria-relevant="additions text"
+        aria-busy={isLoadingHistory || isLoadingOlder}
       >
         {hasNextPage && (
           <button
@@ -65,8 +70,8 @@ const ChatMessages = ({
         )}
 
         {isLoadingHistory && messages.length === 0 ? (
-          <div className={styles.loadingState}>
-            <span className={styles.spinner} />
+          <div className={styles.loadingState} role="status">
+            <span className={styles.spinner} aria-hidden="true" />
             <p>{t("chat-loading-conversation")}</p>
           </div>
         ) : messages.length === 0 ? (

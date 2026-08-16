@@ -3,7 +3,6 @@ import { departmentMessagesApi } from "../api/departmentMessagesApi";
 import {
   getAttachmentErrorKey,
   getAttachmentMessageType,
-  getErrorMessage,
 } from "../utils/departmentChatUtils";
 
 export const useDepartmentChatActions = ({
@@ -104,7 +103,7 @@ export const useDepartmentChatActions = ({
           const attachmentErrorKey = getAttachmentErrorKey(error);
           setActionError(
             attachmentErrorKey ||
-              getErrorMessage(error, "Unable to upload the attachment."),
+              "chat-attachment-upload-failed",
           );
         }
         throw error;
@@ -178,7 +177,7 @@ export const useDepartmentChatActions = ({
             (currentError) =>
               currentError ||
               attachmentErrorKey ||
-              getErrorMessage(error, "Unable to send the message."),
+              "chat-error-send-message",
           );
         }
         throw error;
@@ -217,7 +216,7 @@ export const useDepartmentChatActions = ({
           setActionError(
             (currentError) =>
               currentError ||
-              getErrorMessage(error, "Unable to edit the message."),
+              "chat-error-edit-message",
           );
         }
         throw error;
@@ -248,7 +247,7 @@ export const useDepartmentChatActions = ({
           setActionError(
             (currentError) =>
               currentError ||
-              getErrorMessage(error, "Unable to delete the message."),
+              "chat-error-delete-message",
           );
         }
         throw error;

@@ -8,6 +8,7 @@ import {
   IoDocumentTextOutline,
   IoFlagOutline,
   IoLayersOutline,
+  IoMapOutline,
   IoRocketOutline,
   IoTimeOutline,
 } from "react-icons/io5";
@@ -19,7 +20,7 @@ const RoadmapList = ({ icon, title, items, accent = "blue" }) => {
   return (
     <div className={`${styles.detailGroup} ${styles[accent]}`}>
       <div className={styles.detailTitle}>
-        {icon}
+        <span aria-hidden="true">{icon}</span>
         <h4>{title}</h4>
       </div>
       <ul>
@@ -32,7 +33,8 @@ const RoadmapList = ({ icon, title, items, accent = "blue" }) => {
 };
 
 const GeneratedRoadmap = ({ roadmap }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.resolvedLanguage || i18n.language;
   const steps = Array.isArray(roadmap.steps) ? roadmap.steps : [];
   const difficulty = String(roadmap.difficulty ?? "").toLowerCase();
   const difficultyClass = ["beginner", "intermediate", "advanced"].includes(
@@ -40,37 +42,58 @@ const GeneratedRoadmap = ({ roadmap }) => {
   )
     ? styles[difficulty]
     : styles.intermediate;
+  const difficultyLabel = ["beginner", "intermediate", "advanced"].includes(
+    difficulty,
+  )
+    ? t(`roadmap-difficulty-${difficulty}`)
+    : roadmap.difficulty || t("difficulty-not-specified");
+  const formattedStepCount = new Intl.NumberFormat(locale).format(steps.length);
+  const formatStepNumber = (value, minimumIntegerDigits = 1) => {
+    const numericValue = Number(value);
+
+    return Number.isFinite(numericValue)
+      ? new Intl.NumberFormat(locale, { minimumIntegerDigits }).format(
+          numericValue,
+        )
+      : value;
+  };
+  const prerequisites = Array.isArray(roadmap.prerequisites)
+    ? roadmap.prerequisites
+    : [];
+  const careerOutcomes = Array.isArray(roadmap.careerOutcomes)
+    ? roadmap.careerOutcomes
+    : [];
 
   return (
     <section className={styles.resultSection} aria-live="polite">
       <div className={styles.resultHero}>
         <div className={styles.resultHeroContent}>
           <span className={styles.generatedLabel}>
-            <IoCheckmarkCircleOutline />
-            {t("ai-generated-roadmap", "AI-generated roadmap")}
+            <IoCheckmarkCircleOutline aria-hidden="true" />
+            {t("ai-generated-roadmap")}
           </span>
           <h2>{roadmap.title}</h2>
           <p>{roadmap.description}</p>
 
           <div className={styles.roadmapMeta}>
             <span>
-              <IoTimeOutline />
-              {roadmap.duration || t("duration-not-specified", "Flexible duration")}
+              <IoTimeOutline aria-hidden="true" />
+              {roadmap.duration || t("duration-not-specified")}
             </span>
             <span className={difficultyClass}>
-              <IoBarChartOutline />
-              {roadmap.difficulty || t("difficulty-not-specified", "Adaptive")}
+              <IoBarChartOutline aria-hidden="true" />
+              {difficultyLabel}
             </span>
             <span>
-              <IoLayersOutline />
+              <IoLayersOutline aria-hidden="true" />
               {t("roadmap-step-count", {
                 count: steps.length,
-                defaultValue: "{{count}} learning steps",
+                formattedCount: formattedStepCount,
               })}
             </span>
           </div>
         </div>
-        <div className={styles.heroMark}>
+        <div className={styles.heroMark} aria-hidden="true">
           <IoRocketOutline />
         </div>
       </div>
@@ -79,115 +102,139 @@ const GeneratedRoadmap = ({ roadmap }) => {
         <div className={styles.overviewCard}>
           <div className={styles.overviewHeading}>
             <div className={styles.overviewIcon}>
-              <IoBookOutline />
+              <IoBookOutline aria-hidden="true" />
             </div>
             <div>
-              <span>{t("before-you-start", "Before you start")}</span>
-              <h3>{t("prerequisites", "Prerequisites")}</h3>
+              <span>{t("before-you-start")}</span>
+              <h3>{t("prerequisites")}</h3>
             </div>
           </div>
-          <ul>
-            {(roadmap.prerequisites ?? []).map((item, index) => (
-              <li key={`${item}-${index}`}>
-                <IoCheckmarkCircleOutline /> <span>{item}</span>
-              </li>
-            ))}
-          </ul>
+          {prerequisites.length > 0 ? (
+            <ul>
+              {prerequisites.map((item, index) => (
+                <li key={`${item}-${index}`}>
+                  <IoCheckmarkCircleOutline aria-hidden="true" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className={styles.overviewEmpty}>
+              {t("roadmap-no-prerequisites")}
+            </p>
+          )}
         </div>
 
         <div className={styles.overviewCard}>
           <div className={styles.overviewHeading}>
             <div className={`${styles.overviewIcon} ${styles.outcomeIcon}`}>
-              <IoBriefcaseOutline />
+              <IoBriefcaseOutline aria-hidden="true" />
             </div>
             <div>
-              <span>{t("where-this-leads", "Where this leads")}</span>
-              <h3>{t("career-outcomes", "Career outcomes")}</h3>
+              <span>{t("where-this-leads")}</span>
+              <h3>{t("career-outcomes")}</h3>
             </div>
           </div>
-          <div className={styles.outcomeTags}>
-            {(roadmap.careerOutcomes ?? []).map((outcome, index) => (
-              <span key={`${outcome}-${index}`}>{outcome}</span>
-            ))}
-          </div>
+          {careerOutcomes.length > 0 ? (
+            <div className={styles.outcomeTags}>
+              {careerOutcomes.map((outcome, index) => (
+                <span key={`${outcome}-${index}`}>{outcome}</span>
+              ))}
+            </div>
+          ) : (
+            <p className={styles.overviewEmpty}>
+              {t("roadmap-no-career-outcomes")}
+            </p>
+          )}
         </div>
       </div>
 
       <div className={styles.timelineHeader}>
-        <span>{t("step-by-step-plan", "Step-by-step plan")}</span>
-        <h3>{t("your-learning-journey", "Your learning journey")}</h3>
-        <p>
-          {t(
-            "roadmap-timeline-description",
-            "Follow each milestone in order and complete the practical deliverables before moving forward.",
-          )}
-        </p>
+        <span>{t("step-by-step-plan")}</span>
+        <h3>{t("your-learning-journey")}</h3>
+        <p>{t("roadmap-timeline-description")}</p>
       </div>
 
-      <div className={styles.timeline}>
-        {steps.map((step, index) => (
-          <article className={styles.stepRow} key={`${step.week}-${step.topic}`}>
-            <div className={styles.timelineRail}>
-              <div className={styles.weekMarker}>{step.week ?? index + 1}</div>
-              {index < steps.length - 1 && <div className={styles.railLine} />}
-            </div>
+      {steps.length > 0 ? (
+        <div className={styles.timeline} role="list">
+          {steps.map((step, index) => {
+            const stepId = `roadmap-step-${index}`;
+            const week = formatStepNumber(step.week ?? index + 1);
 
-            <div className={styles.stepCard}>
-              <div className={styles.stepHeader}>
-                <div>
-                  <span className={styles.weekLabel}>
-                    {t("roadmap-week", {
-                      week: step.week ?? index + 1,
-                      defaultValue: "Week {{week}}",
-                    })}
-                  </span>
-                  <h3>{step.topic}</h3>
+            return (
+              <article
+                className={styles.stepRow}
+                key={`${step.week}-${step.topic}-${index}`}
+                role="listitem"
+                aria-labelledby={stepId}
+              >
+                <div className={styles.timelineRail}>
+                  <div className={styles.weekMarker}>{week}</div>
+                  {index < steps.length - 1 && (
+                    <div className={styles.railLine} aria-hidden="true" />
+                  )}
                 </div>
-                <span className={styles.stepNumber}>
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-              </div>
 
-              {step.goal && (
-                <div className={styles.goalBox}>
-                  <IoFlagOutline />
-                  <div>
-                    <strong>{t("goal", "Goal")}</strong>
-                    <p>{step.goal}</p>
+                <div className={styles.stepCard}>
+                  <div className={styles.stepHeader}>
+                    <div>
+                      <span className={styles.weekLabel}>
+                        {t("roadmap-week", { week })}
+                      </span>
+                      <h3 id={stepId}>{step.topic}</h3>
+                    </div>
+                    <span className={styles.stepNumber} aria-hidden="true">
+                      {formatStepNumber(index + 1, 2)}
+                    </span>
+                  </div>
+
+                  {step.goal && (
+                    <div className={styles.goalBox}>
+                      <IoFlagOutline aria-hidden="true" />
+                      <div>
+                        <strong>{t("goal")}</strong>
+                        <p>{step.goal}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className={styles.detailsGrid}>
+                    <RoadmapList
+                      icon={<IoConstructOutline />}
+                      title={t("skills")}
+                      items={step.skills}
+                      accent="blue"
+                    />
+                    <RoadmapList
+                      icon={<IoRocketOutline />}
+                      title={t("projects")}
+                      items={step.projects}
+                      accent="purple"
+                    />
+                    <RoadmapList
+                      icon={<IoCheckmarkCircleOutline />}
+                      title={t("deliverables")}
+                      items={step.deliverables}
+                      accent="green"
+                    />
+                    <RoadmapList
+                      icon={<IoDocumentTextOutline />}
+                      title={t("resources")}
+                      items={step.resources}
+                      accent="orange"
+                    />
                   </div>
                 </div>
-              )}
-
-              <div className={styles.detailsGrid}>
-                <RoadmapList
-                  icon={<IoConstructOutline />}
-                  title={t("skills", "Skills")}
-                  items={step.skills}
-                  accent="blue"
-                />
-                <RoadmapList
-                  icon={<IoRocketOutline />}
-                  title={t("projects", "Projects")}
-                  items={step.projects}
-                  accent="purple"
-                />
-                <RoadmapList
-                  icon={<IoCheckmarkCircleOutline />}
-                  title={t("deliverables", "Deliverables")}
-                  items={step.deliverables}
-                  accent="green"
-                />
-                <RoadmapList
-                  icon={<IoDocumentTextOutline />}
-                  title={t("resources", "Resources")}
-                  items={step.resources}
-                  accent="orange"
-                />
-              </div>
-            </div>
-          </article>
-        ))}
-      </div>
+              </article>
+            );
+          })}
+        </div>
+      ) : (
+        <div className={styles.noStepsState} role="status">
+          <IoMapOutline aria-hidden="true" />
+          <p>{t("roadmap-no-steps")}</p>
+        </div>
+      )}
     </section>
   );
 };

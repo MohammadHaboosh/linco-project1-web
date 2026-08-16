@@ -41,7 +41,7 @@ export const useRoadmapGenerator = () => {
       } catch (requestError) {
         if (requestError.name === "AbortError") return false;
 
-        setError(requestError.message || "Failed to generate roadmap.");
+        setError("roadmap-generation-error-message");
         return false;
       } finally {
         if (activeControllerRef.current === controller) {
