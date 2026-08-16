@@ -39,6 +39,7 @@ const GroupWorkspace = () => {
   return (
     <div className={styles.appContainer}>
       <GroupSidebar
+        demoId={demoId}
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
         groups={groups}

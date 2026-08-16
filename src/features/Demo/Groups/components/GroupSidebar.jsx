@@ -8,6 +8,7 @@ import {
 import styles from "./GroupWorkspace.module.css";
 
 const GroupSidebar = ({
+  demoId,
   isSidebarOpen,
   setIsSidebarOpen,
   groups,
@@ -45,7 +46,7 @@ const GroupSidebar = ({
           return (
             <Link
               key={group.id}
-              to={isLocked ? "#" : group.id}
+              to={isLocked ? "#" : `/demos/${demoId}/groups/${group.id}`}
               className={`
                 ${styles.groupItem} 
                 ${activeGroupId === group.id ? styles.activeGroup : ""} 
@@ -54,7 +55,8 @@ const GroupSidebar = ({
               onClick={(e) => handleGroupClick(e, isLocked)}
             >
               <div className={styles.groupAvatar}>{group.initials}</div>
-              <span className={styles.groupName}>{group.title}</span>{" "}
+              <span className={styles.groupName}>{group.title}</span>
+
               {isLocked && <IoLockClosedOutline className={styles.lockIcon} />}
             </Link>
           );
