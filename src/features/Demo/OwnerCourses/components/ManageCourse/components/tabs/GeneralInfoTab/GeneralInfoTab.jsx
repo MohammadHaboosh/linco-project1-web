@@ -216,7 +216,9 @@ const GeneralInfoTab = ({ data = {}, onChange }) => {
             {t("course-price-usd")}
           </label>
           <div className={styles.priceInputWrapper}>
-            <span className={styles.currencySymbol}>$</span>
+            <span className={styles.currencySymbol} aria-hidden="true">
+              {t("usd-currency-symbol")}
+            </span>
             <input
               id="course-price"
               type="number"

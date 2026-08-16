@@ -22,6 +22,9 @@ const LessonList = ({
   onAddAttachment,
   onDeleteAttachment,
   onFetchAttachments,
+  isLoading,
+  hasError,
+  onRetry,
 }) => {
   const { t, i18n } = useTranslation();
   const [draggedIndex, setDraggedIndex] = useState(null);
@@ -91,12 +94,24 @@ const LessonList = ({
           type="button"
           className={styles.addLessonBtn}
           onClick={onAddLesson}
+          disabled={isLoading || hasError}
         >
           <IoAddOutline aria-hidden="true" /> {t("add-lesson")}
         </button>
       </div>
 
-      {lessons.length === 0 ? (
+      {isLoading ? (
+        <div className={styles.emptyState} role="status">
+          {t("loading-lessons")}
+        </div>
+      ) : hasError ? (
+        <div className={styles.drawerError} role="alert">
+          <span>{t("course-lessons-load-failed")}</span>
+          <button type="button" onClick={onRetry}>
+            {t("retry")}
+          </button>
+        </div>
+      ) : lessons.length === 0 ? (
         <div className={styles.emptyState} role="status">
           {t("no-lessons-added-yet")}
         </div>

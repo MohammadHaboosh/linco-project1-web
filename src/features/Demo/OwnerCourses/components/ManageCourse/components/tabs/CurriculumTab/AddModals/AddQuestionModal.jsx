@@ -168,10 +168,7 @@ const AddQuestionModal = ({ isOpen, onClose, onSubmit }) => {
               <div className={styles.labelRow}>
                 <label className={styles.label}>{t("answer-choices")}</label>
                 <span className={styles.hintLabel}>
-                  {t(
-                    "select-one-or-more-correct-answers",
-                    "Select one or more correct answers",
-                  )}
+                  {t("select-one-or-more-correct-answers")}
                 </span>
               </div>
 

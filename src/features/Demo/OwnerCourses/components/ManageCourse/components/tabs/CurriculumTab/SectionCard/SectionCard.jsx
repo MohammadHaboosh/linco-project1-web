@@ -87,6 +87,9 @@ const SectionCard = ({ section, index, isExpanded, logic }) => {
               logic.handleDeleteAttachment(section.id, lessonId, attId)
             }
             onFetchAttachments={logic.handleFetchAttachments}
+            isLoading={section.isLessonsLoading}
+            hasError={section.lessonsLoadError}
+            onRetry={() => logic.handleFetchLessonsForSection(section.id)}
           />
           <div className={styles.bottomAssessmentRow}>
             <QuestionBankSection

@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { quizApi } from "../api/quizApi";
 import { questionBankApi } from "../api/questionBankApi";
 import { attachmentApi } from "../api/attachmentApi";
+import { lessonApi } from "../api/lessonApi";
 import { useTranslation } from "react-i18next";
 
 export const useCurriculumLogic = (
@@ -318,6 +319,42 @@ export const useCurriculumLogic = (
     }
   };
 
+  const handleFetchLessonsForSection = async (sectionId) => {
+    if (!sectionId || isTempId(sectionId)) return;
+    setSections((prev) =>
+      prev.map((sec) =>
+        sec.id === sectionId
+          ? { ...sec, isLessonsLoading: true, lessonsLoadError: false }
+          : sec,
+      ),
+    );
+
+    try {
+      const lessons = await lessonApi.getLessons(sectionId);
+      setSections((prev) =>
+        prev.map((sec) =>
+          sec.id === sectionId
+            ? {
+                ...sec,
+                lessons: lessons || [],
+                isLessonsLoading: false,
+                lessonsLoadError: false,
+              }
+            : sec,
+        ),
+      );
+    } catch (error) {
+      console.error("Error fetching section lessons:", error);
+      setSections((prev) =>
+        prev.map((sec) =>
+          sec.id === sectionId
+            ? { ...sec, isLessonsLoading: false, lessonsLoadError: true }
+            : sec,
+        ),
+      );
+    }
+  };
+
   const handleAddAttachment = (secId, lessonId, attachmentData) => {
     if (!lessonId || !attachmentData) return;
     setSections((prev) =>
@@ -396,6 +433,7 @@ export const useCurriculumLogic = (
     deleteQuiz,
     deleteQuestion,
     handleFetchAttachments,
+    handleFetchLessonsForSection,
     handleFetchQuestionsForSection,
     handleFetchQuizForSection,
     handleAddAttachment,

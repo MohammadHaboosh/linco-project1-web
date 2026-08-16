@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { sectionApi } from "../api/sectionApi";
 import { lessonApi } from "../api/lessonApi";
 import { attachmentApi } from "../api/attachmentApi";
@@ -12,7 +13,12 @@ export const useCourseSaver = ({
   saveGeneralInfo,
   setIsSaving,
 }) => {
+  const { t, i18n } = useTranslation();
   const [uploadProgress, setUploadProgress] = useState(null);
+  const [saveFeedback, setSaveFeedback] = useState(null);
+
+  const formatNumber = (value) =>
+    new Intl.NumberFormat(i18n.resolvedLanguage || i18n.language).format(value);
 
   const isTempId = (id) =>
     !id || String(id).startsWith("temp-") || String(id).startsWith("temp_");
@@ -28,8 +34,10 @@ export const useCourseSaver = ({
     } = deletedIds;
 
     try {
+      setSaveFeedback(null);
       if (setIsSaving) setIsSaving(true);
       const activeCourseId = courseId || assetId || demoId;
+      let hadItemSaveErrors = false;
 
       if (saveGeneralInfo) {
         await saveGeneralInfo();
@@ -100,11 +108,17 @@ export const useCourseSaver = ({
 
           let realLessonId = lesson.id;
           let finalVideoUrl = lesson.videoUrl || "";
+          if (finalVideoUrl.startsWith("blob:")) finalVideoUrl = "";
 
           if (isNewLesson) {
             if (lesson.videoFile) {
+              const lessonTitle =
+                lesson.title ||
+                t("lesson-number", { number: formatNumber(index + 1) });
               setUploadProgress({
-                title: lesson.title || `Lesson ${index + 1}`,
+                title: t("course-studio-uploading-lesson", {
+                  title: lessonTitle,
+                }),
                 percent: 0,
               });
 
@@ -125,20 +139,32 @@ export const useCourseSaver = ({
                 uploadData.publicUrl ||
                 finalVideoUrl;
 
+              if (!finalVideoUrl) {
+                const videoUrlError = new Error(
+                  t("course-studio-video-url-missing"),
+                );
+                videoUrlError.name = "CourseValidationError";
+                throw videoUrlError;
+              }
+
               if (uploadUrl) {
                 await lessonApi.uploadVideoToStorage(
                   uploadUrl,
                   lesson.videoFile,
                   (percent) => {
                     setUploadProgress({
-                      title: lesson.title || `Lesson ${index + 1}`,
+                      title: t("course-studio-uploading-lesson", {
+                        title: lessonTitle,
+                      }),
                       percent: percent,
                     });
                   },
                 );
 
                 setUploadProgress({
-                  title: lesson.title || `Lesson ${index + 1}`,
+                  title: t("course-studio-uploading-lesson", {
+                    title: lessonTitle,
+                  }),
                   percent: 100,
                 });
                 await new Promise((resolve) => setTimeout(resolve, 400));
@@ -151,7 +177,7 @@ export const useCourseSaver = ({
               videoUrl: finalVideoUrl,
               courseId: activeCourseId,
               description:
-                lesson.description?.trim() || "No description provided.",
+                lesson.description?.trim() || t("lesson-default-description"),
               duration: Number(lesson.duration) || 0,
             };
 
@@ -202,7 +228,9 @@ export const useCourseSaver = ({
                     att.file,
                     (percent) => {
                       setUploadProgress({
-                        title: `Uploading: ${att.file.name}`,
+                        title: t("course-studio-uploading-attachment", {
+                          fileName: att.file.name,
+                        }),
                         percent: percent,
                       });
                     },
@@ -230,6 +258,8 @@ export const useCourseSaver = ({
                 `Failed to process attachments for lesson ID ${realLessonId}:`,
                 attError,
               );
+              hadItemSaveErrors = true;
+              updatedAttachmentsList.push(...newAttachments);
             }
           }
 
@@ -260,6 +290,7 @@ export const useCourseSaver = ({
               };
             } catch (err) {
               console.error("Failed to create quiz", err);
+              hadItemSaveErrors = true;
             }
           } else if (sec.quiz.isModified) {
             try {
@@ -275,6 +306,7 @@ export const useCourseSaver = ({
               };
             } catch (err) {
               console.error("Failed to update quiz", err);
+              hadItemSaveErrors = true;
             }
           }
         }
@@ -294,6 +326,7 @@ export const useCourseSaver = ({
               });
             } catch (err) {
               console.error("Failed to save question", err);
+              hadItemSaveErrors = true;
               updatedQuestionsList.push(q);
             }
           } else {
@@ -312,11 +345,28 @@ export const useCourseSaver = ({
       }
 
       setSections(updatedSectionsList);
-      alert("All changes saved successfully!");
+      if (hadItemSaveErrors) {
+        setSaveFeedback({
+          type: "error",
+          message: t("course-manager-save-failed"),
+        });
+        return false;
+      }
+
+      setSaveFeedback({
+        type: "success",
+        message: t("course-studio-save-success"),
+      });
       return true;
     } catch (error) {
       console.error("Error saving:", error);
-      alert("Failed to save: " + error.message);
+      setSaveFeedback({
+        type: "error",
+        message:
+          error?.name === "CourseValidationError"
+            ? error.message
+            : t("course-manager-save-failed"),
+      });
       return false;
     } finally {
       setUploadProgress(null);
@@ -324,5 +374,10 @@ export const useCourseSaver = ({
     }
   };
 
-  return { saveCourseData, uploadProgress };
+  return {
+    saveCourseData,
+    uploadProgress,
+    saveFeedback,
+    clearSaveFeedback: () => setSaveFeedback(null),
+  };
 };

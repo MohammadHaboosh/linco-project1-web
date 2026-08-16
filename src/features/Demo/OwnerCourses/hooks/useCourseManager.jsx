@@ -1,16 +1,17 @@
 import { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { courseManagerApi } from "../api/courseManagerApi";
-import { publishCourseApi } from "../../PublishCourse/api/publishCourseApi";
 import { sectionApi } from "../api/sectionApi";
 import { lessonApi } from "../api/lessonApi";
-import { quizApi } from "../api/quizApi";
 
 export const useCourseManager = (demoId, assetId) => {
-  const [isLoading, setIsLoading] = useState(true);
+  const { t } = useTranslation();
+  const hasRouteIdentifiers = Boolean(demoId && assetId);
+  const [isLoading, setIsLoading] = useState(hasRouteIdentifiers);
   const [isSaving, setIsSaving] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(!hasRouteIdentifiers);
   const [courseId, setCourseId] = useState(null);
-  const [deletedQuizzes, setDeletedQuizzes] = useState([]);
+  const [requestVersion, setRequestVersion] = useState(0);
 
   const [generalInfo, setGeneralInfo] = useState({
     title: "",
@@ -23,8 +24,6 @@ export const useCourseManager = (demoId, assetId) => {
     imagePreview: null,
   });
 
-  const [faqs, setFaqs] = useState([]);
-
   const [sections, setSections] = useState([]);
   const [deletedSectionIds, setDeletedSectionIds] = useState([]);
   const handleGeneralInfoChange = useCallback((keyOrObject, value) => {
@@ -35,21 +34,19 @@ export const useCourseManager = (demoId, assetId) => {
       return { ...prev, [keyOrObject]: value };
     });
   }, []);
-  const isTempId = (id) => {
-    if (!id) return true;
-    const strId = String(id);
-    return strId.startsWith("temp-") || strId.startsWith("temp_");
-  };
   useEffect(() => {
     if (!demoId || !assetId) return;
 
     const loadCourseData = async () => {
       try {
         setIsLoading(true);
-        setError(null);
+        setError(false);
         const assetData = await courseManagerApi.getAsset(demoId, assetId);
 
         const course = assetData.course || assetData.data?.course || assetData;
+        if (!course?.id) {
+          throw new Error("The course payload did not include an identifier");
+        }
         setCourseId(course.id);
 
         setGeneralInfo({
@@ -68,6 +65,7 @@ export const useCourseManager = (demoId, assetId) => {
           const formattedSections = await Promise.all(
             (sectionsData || []).map(async (sec) => {
               let lessonsList = sec.lessons || [];
+              let lessonsLoadError = false;
 
               if (!lessonsList || lessonsList.length === 0) {
                 try {
@@ -78,6 +76,7 @@ export const useCourseManager = (demoId, assetId) => {
                     err,
                   );
                   lessonsList = [];
+                  lessonsLoadError = true;
                 }
               }
 
@@ -91,6 +90,8 @@ export const useCourseManager = (demoId, assetId) => {
                 isNew: false,
                 isQuizFetched: false,
                 isQuestionsFetched: false,
+                isLessonsLoading: false,
+                lessonsLoadError,
               };
             }),
           );
@@ -98,17 +99,24 @@ export const useCourseManager = (demoId, assetId) => {
           setSections(formattedSections);
         }
       } catch (err) {
-        setError(err.message || "Failed to load course details.");
+        console.error("Failed to load course details:", err);
+        setError(true);
       } finally {
         setIsLoading(false);
       }
     };
 
     loadCourseData();
-  }, [demoId, assetId]);
+  }, [demoId, assetId, requestVersion]);
 
   const saveGeneralInfo = useCallback(async () => {
-    if (!courseId) return;
+    if (!courseId) {
+      const missingCourseError = new Error(
+        t("course-studio-missing-course-error"),
+      );
+      missingCourseError.name = "CourseValidationError";
+      throw missingCourseError;
+    }
 
     const hasTitle = generalInfo.title?.trim();
     const hasDescription = generalInfo.description?.trim();
@@ -130,9 +138,11 @@ export const useCourseManager = (demoId, assetId) => {
       !hasValidPrice ||
       !hasImage
     ) {
-      throw new Error(
-        "Please fill in all required fields: Course Thumbnail, Title, Price, Tags, and Description.",
+      const validationError = new Error(
+        t("course-studio-required-fields-error"),
       );
+      validationError.name = "CourseValidationError";
+      throw validationError;
     }
 
     let tagIds = [];
@@ -171,31 +181,7 @@ export const useCourseManager = (demoId, assetId) => {
     }));
 
     return generalResult;
-  }, [courseId, generalInfo]);
-
-  const handleDeleteQuiz = async (sectionId, quizId) => {
-    if (String(quizId).startsWith("temp_") || isTempId?.(sectionId)) {
-      setSections((prev) =>
-        prev.map((sec) =>
-          sec.id === sectionId ? { ...sec, quiz: null } : sec,
-        ),
-      );
-      return;
-    }
-
-    try {
-      await quizApi.deleteQuiz(sectionId, quizId);
-
-      setSections((prev) =>
-        prev.map((sec) =>
-          sec.id === sectionId ? { ...sec, quiz: null } : sec,
-        ),
-      );
-    } catch (err) {
-      console.error("Failed to delete quiz:", err);
-      throw err;
-    }
-  };
+  }, [courseId, generalInfo, t]);
 
   return {
     isLoading,
@@ -206,13 +192,11 @@ export const useCourseManager = (demoId, assetId) => {
     generalInfo,
     setGeneralInfo,
     handleGeneralInfoChange,
-    handleDeleteQuiz,
     saveGeneralInfo,
-    faqs,
-    setFaqs,
     sections,
     setSections,
     deletedSectionIds,
     setDeletedSectionIds,
+    retryCourse: () => setRequestVersion((version) => version + 1),
   };
 };

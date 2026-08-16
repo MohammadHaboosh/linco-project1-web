@@ -11,7 +11,7 @@ const UploadProgressOverlay = ({ progress, styles }) => {
   ).format(normalizedProgress / 100);
 
   return (
-    <div className={styles.progressOverlay} role="presentation">
+    <div className={styles.progressOverlay}>
       <div
         className={styles.progressCard}
         role="dialog"
@@ -36,7 +36,7 @@ const UploadProgressOverlay = ({ progress, styles }) => {
         >
           <div
             className={styles.progressBarFill}
-            style={{ width: `${normalizedProgress}%` }}
+            style={{ inlineSize: `${normalizedProgress}%` }}
           />
         </div>
         <p

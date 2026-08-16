@@ -7,6 +7,7 @@ import {
   IoChatbubblesOutline,
   IoSaveOutline,
   IoChevronForwardOutline,
+  IoCloseOutline,
 } from "react-icons/io5";
 import { useCourseManager } from "../../../hooks/useCourseManager";
 import { useCourseSaver } from "../../../hooks/useCourseSaver";
@@ -24,6 +25,8 @@ const CourseManagerLayout = () => {
 
   const {
     isLoading,
+    error,
+    retryCourse,
     isSaving,
     setIsSaving,
     courseId,
@@ -40,7 +43,12 @@ const CourseManagerLayout = () => {
   const [deletedQuizIds, setDeletedQuizIds] = useState([]);
   const [deletedQuestionIds, setDeletedQuestionIds] = useState([]);
 
-  const { saveCourseData, uploadProgress } = useCourseSaver({
+  const {
+    saveCourseData,
+    uploadProgress,
+    saveFeedback,
+    clearSaveFeedback,
+  } = useCourseSaver({
     courseId,
     assetId,
     demoId,
@@ -93,20 +101,50 @@ const CourseManagerLayout = () => {
 
   if (isLoading)
     return (
-      <div className={styles.loadingScreen}>
-        <div className={styles.spinner}></div>
-        <p>{t("loading-workspace")}</p>
+      <div
+        className={styles.loadingScreen}
+        role="status"
+        aria-live="polite"
+      >
+        <div className={styles.spinner} aria-hidden="true"></div>
+        <h1>{t("loading-course-manager")}</h1>
+        <p>{t("loading-course-manager-description")}</p>
       </div>
     );
+
+  if (error) {
+    return (
+      <div className={styles.loadingScreen} role="alert">
+        <h1>{t("course-manager-load-failed")}</h1>
+        <p>{t("course-manager-load-error-message")}</p>
+        <div className={styles.stateActions}>
+          <button type="button" onClick={() => navigate(-1)}>
+            {t("back-to-courses")}
+          </button>
+          <button type="button" onClick={retryCourse}>
+            {t("try-again")}
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   const TABS = [
     {
       id: "general",
-      icon: <IoInformationCircleOutline />,
+      icon: <IoInformationCircleOutline aria-hidden="true" />,
       label: t("general-info"),
     },
-    { id: "curriculum", icon: <IoListOutline />, label: t("curriculum") },
-    { id: "faqs", icon: <IoChatbubblesOutline />, label: t("faqs") },
+    {
+      id: "curriculum",
+      icon: <IoListOutline aria-hidden="true" />,
+      label: t("curriculum"),
+    },
+    {
+      id: "faqs",
+      icon: <IoChatbubblesOutline aria-hidden="true" />,
+      label: t("faqs"),
+    },
   ];
 
   return (
@@ -115,25 +153,33 @@ const CourseManagerLayout = () => {
 
       <header className={styles.topHeader}>
         <div className={styles.headerLeft}>
-          <button className={styles.backBtn} onClick={() => navigate(-1)}>
-            <IoArrowBackOutline />
+          <button
+            type="button"
+            className={styles.backBtn}
+            onClick={() => navigate(-1)}
+            aria-label={t("back-to-courses")}
+            title={t("back-to-courses")}
+          >
+            <IoArrowBackOutline aria-hidden="true" />
           </button>
           <div className={styles.courseHeaderInfo}>
             <span className={styles.badge}>{t("editing-mode")}</span>
-            <h2>{generalInfo?.title || "Untitled Course"}</h2>
+            <h1>{generalInfo?.title || t("untitled-course")}</h1>
           </div>
         </div>
         <div className={styles.headerRight}>
           {activeTab !== "faqs" && (
             <button
+              type="button"
               className={styles.saveBtn}
               onClick={executeSave}
               disabled={isSaving}
+              aria-busy={isSaving}
             >
               {isSaving ? (
-                <div className={styles.btnSpinner}></div>
+                <span className={styles.btnSpinner} aria-hidden="true"></span>
               ) : (
-                <IoSaveOutline />
+                <IoSaveOutline aria-hidden="true" />
               )}
               <span>{isSaving ? t("saving") : t("save-changes")}</span>
             </button>
@@ -141,24 +187,55 @@ const CourseManagerLayout = () => {
         </div>
       </header>
 
+      {saveFeedback && (
+        <div
+          className={`${styles.feedbackBanner} ${
+            saveFeedback.type === "error"
+              ? styles.feedbackError
+              : styles.feedbackSuccess
+          }`}
+          role={saveFeedback.type === "error" ? "alert" : "status"}
+        >
+          <span>{saveFeedback.message}</span>
+          <button
+            type="button"
+            onClick={clearSaveFeedback}
+            aria-label={t("dismiss-save-message")}
+          >
+            <IoCloseOutline aria-hidden="true" />
+          </button>
+        </div>
+      )}
+
       <div className={styles.layoutGrid}>
         <aside className={styles.sidebar}>
           <div className={styles.sidebarHeader}>
-            <span>NAVIGATION</span>
+            <span>{t("course-manager-navigation")}</span>
           </div>
-          <nav className={styles.navMenu}>
+          <nav
+            className={styles.navMenu}
+            aria-label={t("course-manager-navigation")}
+          >
             {TABS.map((tab) => (
               <button
+                type="button"
                 key={tab.id}
                 className={`${styles.navItem} ${activeTab === tab.id ? styles.activeNav : ""}`}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => {
+                  setActiveTab(tab.id);
+                  clearSaveFeedback();
+                }}
+                aria-current={activeTab === tab.id ? "page" : undefined}
               >
                 <div className={styles.navItemContent}>
                   <span className={styles.navIcon}>{tab.icon}</span>
                   <span className={styles.navLabel}>{tab.label}</span>
                 </div>
                 {activeTab === tab.id && (
-                  <IoChevronForwardOutline className={styles.activeArrow} />
+                  <IoChevronForwardOutline
+                    className={styles.activeArrow}
+                    aria-hidden="true"
+                  />
                 )}
               </button>
             ))}

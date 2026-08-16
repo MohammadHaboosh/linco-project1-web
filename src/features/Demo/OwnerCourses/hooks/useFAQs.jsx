@@ -4,17 +4,26 @@ import { faqsApi } from "../api/faqsApi";
 export const useFAQs = (courseId) => {
   const [faqs, setFaqs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [errorf, setError] = useState(null);
+  const [error, setError] = useState(false);
 
   const fetchFaqs = useCallback(async () => {
-    if (!courseId) return;
+    if (!courseId) {
+      setLoading(false);
+      return;
+    }
+
     try {
+      setLoading(true);
+      setError(false);
       const res = await faqsApi.getFaqs(courseId);
-      if (res.success) {
-        setFaqs(res.data);
+      if (!res.success) {
+        throw new Error("FAQ request was unsuccessful");
       }
+
+      setFaqs(res.data || []);
     } catch (err) {
-      setError(err.message || "Failed to fetch FAQs");
+      console.error("Failed to fetch course FAQs:", err);
+      setError(true);
     } finally {
       setLoading(false);
     }
@@ -34,8 +43,10 @@ export const useFAQs = (courseId) => {
         return { success: true };
       }
     } catch (err) {
-      return { success: false, errorf: err.message };
+      console.error("Failed to create a course FAQ:", err);
     }
+
+    return { success: false };
   };
 
   const removeFaq = async (faqId) => {
@@ -46,14 +57,16 @@ export const useFAQs = (courseId) => {
         return { success: true };
       }
     } catch (err) {
-      return { success: false, errorf: err.message };
+      console.error("Failed to delete a course FAQ:", err);
     }
+
+    return { success: false };
   };
 
   return {
     faqs,
     loading,
-    errorf,
+    error,
     addFaq,
     removeFaq,
     refetch: fetchFaqs,

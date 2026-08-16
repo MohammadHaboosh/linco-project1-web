@@ -2,7 +2,6 @@ import {
   IoLibraryOutline,
   IoAddCircleOutline,
   IoReorderTwoOutline,
-  IoPencilOutline,
   IoTrashOutline,
 } from "react-icons/io5";
 import styles from "./QuestionBankSection.module.css";
@@ -64,17 +63,6 @@ const QuestionBankSection = ({
                 <span className={styles.qText}>{q.question}</span>
               </div>
               <div className={styles.actions}>
-                <button
-                  type="button"
-                  className={styles.iconBtn}
-                  aria-label={t("edit-question-label", {
-                    number: new Intl.NumberFormat(
-                      i18n.resolvedLanguage || i18n.language,
-                    ).format(qIdx + 1),
-                  })}
-                >
-                  <IoPencilOutline aria-hidden="true" />
-                </button>
                 <button
                   type="button"
                   className={styles.iconBtnDanger}

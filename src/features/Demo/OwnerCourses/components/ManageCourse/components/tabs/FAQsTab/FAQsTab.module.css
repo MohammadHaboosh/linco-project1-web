@@ -1,273 +1,503 @@
 .tabCard {
-  background: #ffffff;
-  border-radius: 12px;
-  border: 1px solid #e5e7eb;
-  padding: 24px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-width: 0;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border: 1px solid var(--app-border);
+  border-radius: 1rem;
+  background: var(--app-surface);
+  color: var(--app-text);
+  box-shadow: var(--app-card-shadow);
 }
 
 .tabHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #f3f4f6;
+  min-width: 0;
+  padding-block-end: 1rem;
+  border-block-end: 1px solid var(--app-divider);
 }
 
 .tabTitle {
+  margin: 0;
+  color: var(--app-heading);
   font-size: 1.2rem;
   font-weight: 700;
-  color: #111827;
-  margin: 0;
+  line-height: 1.4;
 }
 
 .tabSubtitle {
+  margin: 0.25rem 0 0;
+  color: var(--app-muted);
   font-size: 0.875rem;
-  color: #6b7280;
-  margin: 4px 0 0 0;
+  line-height: 1.5;
 }
 
 .faqsList {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-bottom: 20px;
+  gap: 0.75rem;
+  min-width: 0;
 }
 
-/* تصميم مطابق لمستطيل القسم (Section Card) */
 .faqCard {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  transition: all 0.2s ease;
+  min-width: 0;
   overflow: hidden;
+  border: 1px solid var(--app-border);
+  border-radius: 0.75rem;
+  background: var(--app-surface);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .faqCard:hover {
-  border-color: #d1d5db;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  border-color: var(--app-border-strong);
+  box-shadow: var(--app-card-shadow);
 }
 
 .faqHeader {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 14px 18px;
-  cursor: pointer;
-  user-select: none;
-  background: #ffffff;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-width: 0;
+  padding: 0.75rem 1rem;
+  background: var(--app-surface);
 }
 
-.faqHeaderLeft {
+.faqToggle {
   display: flex;
   align-items: center;
-  gap: 12px;
-  flex: 1;
+  gap: 0.75rem;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0.25rem;
+  border: 0;
+  border-radius: 0.4rem;
+  background: transparent;
+  color: var(--app-text-strong);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
 }
 
 .faqIcon {
-  color: #4f46e5;
-  font-size: 1.1rem;
+  flex: 0 0 auto;
+  color: var(--app-link);
 }
 
 .faqQuestionText {
-  font-weight: 600;
-  color: #1f2937;
+  min-width: 0;
   font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
 }
 
 .faqActions {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 0.375rem;
+  flex: 0 0 auto;
 }
 
-.actionBtn {
-  background: transparent;
-  border: 1px solid #e5e7eb;
-  cursor: pointer;
-  color: #4b5563;
-  padding: 6px 10px;
-  border-radius: 6px;
-  display: flex;
+.actionBtn,
+.iconOnlyBtn {
+  display: inline-flex;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
+  gap: 0.3rem;
+  min-height: 2.2rem;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid var(--app-border);
+  border-radius: 0.5rem;
+  background: transparent;
+  color: var(--app-text);
+  font: inherit;
   font-size: 0.825rem;
-  font-weight: 500;
-  transition: all 0.2s;
-}
-
-.actionBtn:hover {
-  background: #f9fafb;
-  color: #111827;
-  border-color: #d1d5db;
-}
-
-.deleteBtn:hover {
-  background: #fef2f2;
-  color: #dc2626;
-  border-color: #fecaca;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 .iconOnlyBtn {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  color: #6b7280;
-  padding: 6px;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.2s;
+  width: 2.2rem;
+  flex: 0 0 2.2rem;
+  padding: 0;
+  border-color: transparent;
+  color: var(--app-muted);
+  font-size: 1rem;
 }
 
+.actionBtn:hover,
 .iconOnlyBtn:hover {
-  background: #f3f4f6;
-  color: #111827;
+  border-color: var(--app-border-strong);
+  background: var(--app-surface-soft);
+  color: var(--app-heading);
+}
+
+.deleteBtn:hover:not(:disabled) {
+  border-color: var(--app-danger-border);
+  background: var(--app-danger-surface);
+  color: var(--app-danger-text);
+}
+
+.actionBtn:disabled,
+.iconOnlyBtn:disabled {
+  opacity: 0.6;
+  cursor: wait;
 }
 
 .faqBody {
-  padding: 16px 18px 18px 48px;
+  padding: 1rem 1.125rem;
+  border-block-start: 1px solid var(--app-divider);
+  background: var(--app-surface-muted);
+  color: var(--app-text);
   font-size: 0.9rem;
-  color: #4b5563;
-  line-height: 1.6;
-  border-top: 1px solid #f3f4f6;
-  background: #f9fafb;
+  line-height: 1.7;
 }
 
-.emptyState {
+.faqBody p {
+  margin: 0;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.emptyState,
+.errorState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 10rem;
+  padding: clamp(1.25rem, 5vw, 2.5rem) 1rem;
+  border: 1px dashed var(--app-border-strong);
+  border-radius: 0.75rem;
+  background: var(--app-surface-muted);
+  color: var(--app-muted);
   text-align: center;
-  padding: 40px 20px;
-  background: #f9fafb;
-  border: 1px dashed #e5e7eb;
-  border-radius: 8px;
-  color: #6b7280;
-  margin-bottom: 20px;
+}
+
+.emptyState p,
+.errorState p,
+.errorState h4 {
+  max-width: 40rem;
+  margin: 0;
+  line-height: 1.6;
 }
 
 .emptyIcon {
-  font-size: 2.2rem;
-  color: #9ca3af;
-  margin-bottom: 8px;
+  margin-block-end: 0.5rem;
+  color: var(--app-muted);
+}
+
+.faqLoader {
+  width: 2rem;
+  height: 2rem;
+  margin-block-end: 0.75rem;
+  border: 3px solid var(--app-border);
+  border-block-start-color: var(--app-link);
+  border-radius: 50%;
+  animation: faqSpin 0.8s linear infinite;
+}
+
+.errorState {
+  border-color: var(--app-danger-border);
+  background: var(--app-danger-surface);
+  color: var(--app-danger-text);
+}
+
+.errorState h4 {
+  margin-block-end: 0.25rem;
+  color: inherit;
+  font-size: 1.05rem;
+}
+
+.errorState button {
+  margin-block-start: 1rem;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid currentColor;
+  border-radius: 0.5rem;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.actionError {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-width: 0;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--app-danger-border);
+  border-radius: 0.65rem;
+  background: var(--app-danger-surface);
+  color: var(--app-danger-text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.actionError button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  padding: 0.15rem 0.35rem;
+  border: 0;
+  border-radius: 0.3rem;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 1.2rem;
+  cursor: pointer;
 }
 
 .addBtnRoot {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 0.5rem;
   width: 100%;
-  padding: 11px;
-  background: #4f46e5;
+  min-height: 2.75rem;
+  padding: 0.65rem 1rem;
+  border: 0;
+  border-radius: 0.6rem;
+  background: var(--color-linco-blue);
   color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
+  font: inherit;
   font-size: 0.9rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: filter 0.2s ease;
 }
 
-.addBtnRoot:hover {
-  background: #4338ca;
+.addBtnRoot:hover:not(:disabled),
+.submitBtn:hover:not(:disabled) {
+  filter: brightness(1.08);
 }
 
-/* Modal Styling */
+.addBtnRoot:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
 .modalOverlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  inset: 0;
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  padding: 1rem;
+  background: var(--app-overlay);
+  backdrop-filter: blur(0.25rem);
 }
 
 .modalContent {
-  background: #ffffff;
-  border-radius: 12px;
-  width: 100%;
-  max-width: 500px;
-  padding: 24px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 31.25rem);
+  max-height: calc(100dvh - 2rem);
+  min-width: 0;
+  overflow: hidden;
+  padding: clamp(1rem, 4vw, 1.5rem);
+  border: 1px solid var(--app-border);
+  border-radius: 1rem;
+  background: var(--app-surface);
+  color: var(--app-text);
+  box-shadow: var(--app-card-hover-shadow);
 }
 
 .modalHeader {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-block-end: 1.25rem;
 }
 
 .modalTitle {
+  min-width: 0;
+  margin: 0;
+  color: var(--app-heading);
   font-size: 1.15rem;
   font-weight: 700;
-  color: #111827;
-  margin: 0;
+  line-height: 1.4;
+}
+
+.modalContent form {
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0.2rem;
+  scrollbar-color: var(--app-border-strong) transparent;
+  scrollbar-width: thin;
 }
 
 .formGroup {
-  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 0;
+  margin-block-end: 1rem;
 }
 
 .formLabel {
-  display: block;
+  color: var(--app-text-strong);
   font-size: 0.85rem;
-  font-weight: 600;
-  color: #374151;
-  margin-bottom: 6px;
+  font-weight: 700;
 }
 
 .formInput,
 .formTextarea {
   width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 0.9rem;
+  min-width: 0;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--app-border-strong);
+  border-radius: 0.6rem;
   outline: none;
-  transition: border-color 0.2s;
+  background: var(--app-surface-muted);
+  color: var(--app-text-strong);
+  font: inherit;
+  font-size: 0.9rem;
+}
+
+.formInput::placeholder,
+.formTextarea::placeholder {
+  color: var(--app-muted);
+  opacity: 1;
 }
 
 .formInput:focus,
 .formTextarea:focus {
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  border-color: var(--app-link);
+  background: var(--app-surface);
+  box-shadow: 0 0 0 3px var(--app-focus-ring);
 }
 
 .formTextarea {
+  min-height: 6.25rem;
   resize: vertical;
-  min-height: 100px;
+  line-height: 1.6;
+}
+
+.modalError {
+  margin: 0 0 1rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--app-danger-border);
+  border-radius: 0.55rem;
+  background: var(--app-danger-surface);
+  color: var(--app-danger-text);
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.5;
 }
 
 .modalFooter {
   display: flex;
+  align-items: center;
   justify-content: flex-end;
-  gap: 10px;
-  margin-top: 24px;
+  gap: 0.625rem;
+  margin-block-start: 1.25rem;
+  padding-block-start: 1rem;
+  border-block-start: 1px solid var(--app-divider);
+}
+
+.cancelBtn,
+.submitBtn {
+  min-height: 2.55rem;
+  padding: 0.55rem 1rem;
+  border: 0;
+  border-radius: 0.55rem;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 .cancelBtn {
-  padding: 8px 16px;
-  background: #f3f4f6;
-  border: none;
-  border-radius: 6px;
-  font-weight: 600;
-  color: #374151;
-  cursor: pointer;
+  background: var(--app-surface-soft);
+  color: var(--app-text);
 }
 
 .submitBtn {
-  padding: 8px 16px;
-  background: #4f46e5;
-  border: none;
-  border-radius: 6px;
-  font-weight: 600;
+  background: var(--color-linco-blue);
   color: #ffffff;
-  cursor: pointer;
+}
+
+.cancelBtn:disabled,
+.submitBtn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.faqToggle:focus-visible,
+.actionBtn:focus-visible,
+.iconOnlyBtn:focus-visible,
+.errorState button:focus-visible,
+.actionError button:focus-visible,
+.addBtnRoot:focus-visible,
+.cancelBtn:focus-visible,
+.submitBtn:focus-visible {
+  outline: 3px solid var(--app-focus-ring);
+  outline-offset: 2px;
+}
+
+@keyframes faqSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 36rem) {
+  .faqHeader {
+    align-items: stretch;
+    flex-direction: column;
+    padding: 0.75rem;
+  }
+
+  .faqActions {
+    justify-content: flex-end;
+    width: 100%;
+  }
+
+  .faqActions .actionBtn {
+    flex: 1 1 auto;
+  }
+
+  .modalOverlay {
+    align-items: flex-end;
+    padding: 0.5rem;
+  }
+
+  .modalContent {
+    max-height: calc(100dvh - 1rem);
+    border-radius: 1rem;
+  }
+}
+
+@media (max-width: 22rem) {
+  .modalFooter {
+    align-items: stretch;
+    flex-direction: column-reverse;
+  }
+
+  .cancelBtn,
+  .submitBtn {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faqCard,
+  .addBtnRoot {
+    transition: none;
+  }
+
+  .faqLoader {
+    animation: none;
+  }
 }
