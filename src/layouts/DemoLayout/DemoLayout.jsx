@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { DemoProvider, useDemo } from "../../hooks/useDemo";
 import Sidebar from "../../components/layouts/SideBar/Sidebar";
 import Header from "../../components/layouts/Header/global_header/Header";
@@ -21,6 +21,9 @@ const LayoutContent = () => {
     retryLoadDemo,
     demoData,
   } = useDemo();
+
+  const location = useLocation();
+  const isGroupsPage = location.pathname.includes("/groups");
 
   if (isLoading)
     return (
@@ -49,20 +52,43 @@ const LayoutContent = () => {
   return (
     <div className={styles.appContainer}>
       <Sidebar />
-      <div className={`${styles.mainWrapper} custom-scrollbar`}>
+      <div
+        className={`${styles.mainWrapper} ${isGroupsPage ? "" : "custom-scrollbar"}`}
+        style={
+          isGroupsPage
+            ? {
+                overflow: "hidden",
+                height: "100vh",
+                display: "flex",
+                flexDirection: "column",
+              }
+            : {}
+        }
+      >
         <Header
           role={role}
           currentRoleView={currentRoleView}
           onRoleChange={setRoleView}
           demoName={demoData?.name}
         />
-
         <SubHeader navLinks={navLinks} />
-
-        <main className={styles.pageContent}>
+        <main
+          className={styles.pageContent}
+          style={
+            isGroupsPage
+              ? {
+                  flex: 1,
+                  minHeight: 0,
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: 0,
+                }
+              : {}
+          }
+        >
           <Outlet />
         </main>
-        <Footer footerLinks={footerLinks} />
+        {!isGroupsPage && <Footer footerLinks={footerLinks} />}
       </div>
     </div>
   );
