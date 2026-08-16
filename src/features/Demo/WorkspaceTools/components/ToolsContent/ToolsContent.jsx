@@ -3,29 +3,29 @@ import ToolCard from "../ToolCard/ToolCard";
 import ToolViewer from "../ToolViewer/ToolViewer";
 import styles from "./ToolsContent.module.css";
 import { IoExtensionPuzzleOutline } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
 
 const TOOLS_DATA = [
   {
     id: "drawio",
     name: "Draw.io",
-    description:
-      "Create professional flowcharts, process diagrams, and architectural layouts directly in your workspace.",
+    descriptionKey: "drawio-description",
     url: "https://embed.diagrams.net/?embed=1&ui=min",
     icon: "https://cdn.jsdelivr.net/gh/jgraph/drawio/src/main/webapp/images/logo.png",
-    tags: ["Diagrams", "Architecture", "UML"],
+    tagKeys: ["tool-tag-diagrams", "tool-tag-architecture", "tool-tag-uml"],
   },
   {
     id: "photopea",
     name: "Photopea",
-    description:
-      "Advanced image editor supporting PSD, XCF, Sketch, XD and CDR formats. Photoshop alternative.",
+    descriptionKey: "photopea-description",
     url: "https://www.photopea.com/",
     icon: "https://www.photopea.com/promo/icon512.png",
-    tags: ["Design", "Image Editing", "UI/UX"],
+    tagKeys: ["tool-tag-design", "tool-tag-image-editing", "tool-tag-ui-ux"],
   },
 ];
 
 const ToolsContent = () => {
+  const { t } = useTranslation();
   const [selectedTool, setSelectedTool] = useState(null);
 
   const handleOpenTool = (tool) => {
@@ -40,19 +40,24 @@ const ToolsContent = () => {
     <div className={styles.contentArea}>
       <div className={styles.headerArea}>
         <div className={styles.headerIconWrapper}>
-          <IoExtensionPuzzleOutline className={styles.headerIcon} />
+          <IoExtensionPuzzleOutline
+            className={styles.headerIcon}
+            aria-hidden="true"
+          />
         </div>
         <div>
-          <span className={styles.subHeading}>INTEGRATIONS</span>
-          <h1 className={styles.mainHeading}>Workspace Tools</h1>
+          <span className={styles.subHeading}>{t("integrations")}</span>
+          <h1 className={styles.mainHeading}>{t("workspace-tools")}</h1>
           <p className={styles.description}>
-            Access powerful external tools seamlessly without leaving your LinCo
-            environment.
+            {t("workspace-tools-description")}
           </p>
         </div>
       </div>
 
-      <div className={styles.toolsGrid}>
+      <section
+        className={styles.toolsGrid}
+        aria-label={t("available-workspace-tools")}
+      >
         {TOOLS_DATA.map((tool) => (
           <ToolCard
             key={tool.id}
@@ -60,7 +65,7 @@ const ToolsContent = () => {
             onOpen={() => handleOpenTool(tool)}
           />
         ))}
-      </div>
+      </section>
 
       {selectedTool && (
         <ToolViewer tool={selectedTool} onClose={handleCloseTool} />

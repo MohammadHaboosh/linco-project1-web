@@ -1,17 +1,24 @@
 import { IoOpenOutline } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
 import styles from "./ToolCard.module.css";
 
 const ToolCard = ({ tool, onOpen }) => {
+  const { t } = useTranslation();
+
   return (
-    <div className={styles.card}>
+    <article className={styles.card}>
       <div className={styles.cardHeader}>
         <div className={styles.iconContainer}>
-          <img src={tool.icon} alt={tool.name} className={styles.toolIcon} />
+          <img
+            src={tool.icon}
+            alt={t("tool-logo-alt", { name: tool.name })}
+            className={styles.toolIcon}
+          />
         </div>
         <div className={styles.tagsArea}>
-          {tool.tags.slice(0, 2).map((tag, idx) => (
-            <span key={idx} className={styles.tag}>
-              {tag}
+          {tool.tagKeys.slice(0, 2).map((tagKey) => (
+            <span key={tagKey} className={styles.tag}>
+              {t(tagKey)}
             </span>
           ))}
         </div>
@@ -19,15 +26,21 @@ const ToolCard = ({ tool, onOpen }) => {
 
       <div className={styles.cardBody}>
         <h3 className={styles.toolName}>{tool.name}</h3>
-        <p className={styles.toolDesc}>{tool.description}</p>
+        <p className={styles.toolDesc}>{t(tool.descriptionKey)}</p>
       </div>
 
       <div className={styles.cardFooter}>
-        <button className={styles.launchBtn} onClick={onOpen}>
-          Launch Tool <IoOpenOutline className={styles.btnIcon} />
+        <button
+          type="button"
+          className={styles.launchBtn}
+          onClick={onOpen}
+          aria-label={t("launch-named-tool", { name: tool.name })}
+        >
+          {t("launch-tool")}
+          <IoOpenOutline className={styles.btnIcon} aria-hidden="true" />
         </button>
       </div>
-    </div>
+    </article>
   );
 };
 

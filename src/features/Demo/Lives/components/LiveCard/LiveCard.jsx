@@ -8,6 +8,7 @@ import {
   IoVideocamOutline,
 } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
+import { useId } from "react";
 import styles from "./LiveCard.module.css";
 
 const getDurationInMinutes = (startedAt, endedAt) => {
@@ -25,6 +26,7 @@ const getDurationInMinutes = (startedAt, endedAt) => {
 
 const LiveCard = ({ live, canManage, roomPath }) => {
   const { t, i18n } = useTranslation();
+  const titleId = useId();
   const normalizedStatus = String(live.status || "").toUpperCase();
   const scheduleDate = new Date(live.scheduledAt);
   const hasValidSchedule = !Number.isNaN(scheduleDate.getTime());
@@ -35,23 +37,27 @@ const LiveCard = ({ live, canManage, roomPath }) => {
       : normalizedStatus === "SCHEDULED"
         ? styles.scheduledCard
         : styles.endedCard;
+  const locale = i18n.resolvedLanguage || i18n.language || "en";
   const dateLabel = hasValidSchedule
-    ? scheduleDate.toLocaleDateString(i18n.resolvedLanguage, {
+    ? new Intl.DateTimeFormat(locale, {
         day: "numeric",
         month: "short",
         year: "numeric",
-      })
+      }).format(scheduleDate)
     : t("schedule-unavailable");
   const timeLabel =
     normalizedStatus === "LIVE"
       ? t("in-progress")
       : duration
-        ? t("duration-minutes", { count: duration })
+        ? t("duration-minutes", {
+            count: duration,
+            formattedCount: new Intl.NumberFormat(locale).format(duration),
+          })
         : hasValidSchedule
-          ? scheduleDate.toLocaleTimeString(i18n.resolvedLanguage, {
+          ? new Intl.DateTimeFormat(locale, {
               hour: "2-digit",
               minute: "2-digit",
-            })
+            }).format(scheduleDate)
           : t("time-unavailable");
 
   const getStatusBadge = () => {
@@ -113,7 +119,10 @@ const LiveCard = ({ live, canManage, roomPath }) => {
   );
 
   return (
-    <article className={`${styles.card} ${statusClass}`}>
+    <article
+      className={`${styles.card} ${statusClass}`}
+      aria-labelledby={titleId}
+    >
       <div className={styles.visual}>
         <span className={styles.glow} aria-hidden="true" />
         <span className={styles.gridPattern} aria-hidden="true" />
@@ -144,8 +153,8 @@ const LiveCard = ({ live, canManage, roomPath }) => {
       </div>
 
       <div className={styles.cardBody}>
-        <h3 className={styles.title} title={live.title}>
-          {live.title}
+        <h3 id={titleId} className={styles.title} title={live.title}>
+          {live.title || t("untitled-live-stream")}
         </h3>
         <p
           className={styles.description}
@@ -182,6 +191,15 @@ const LiveCard = ({ live, canManage, roomPath }) => {
             href={roomPath}
             target="_blank"
             rel="noopener noreferrer"
+            aria-label={
+              normalizedStatus === "LIVE"
+                ? t("join-named-stream-new-tab", {
+                    title: live.title || t("untitled-live-stream"),
+                  })
+                : t("start-named-stream-new-tab", {
+                    title: live.title || t("untitled-live-stream"),
+                  })
+            }
           >
             {actionContent}
           </a>

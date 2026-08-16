@@ -13,14 +13,19 @@ import { useDepartmentMembers } from "../../hooks/useDepartmentMembers";
 import AddDepartmentMemberModal from "../AddDepartmentMemberModal/AddDepartmentMemberModal";
 import styles from "./DepartmentMembersContent.module.css";
 
-const normalizeLabel = (value, fallback = "—") => {
-  if (!value) return fallback;
+const ROLE_TRANSLATION_KEYS = {
+  ADMIN: "admin",
+  MANAGER: "manager",
+  MEMBER: "member",
+  OWNER: "owner",
+  SECTION_MANAGER: "section-manager",
+  SECTIONMANAGER: "section-manager",
+};
 
-  return String(value)
-    .trim()
-    .toLowerCase()
-    .replace(/[_-]+/g, " ")
-    .replace(/\b\w/g, (character) => character.toUpperCase());
+const JOB_TITLE_TRANSLATION_KEYS = {
+  INTERN: "intern",
+  JUNIOR: "junior",
+  SENIOR: "senior",
 };
 
 const DepartmentMembersContent = () => {
@@ -30,6 +35,8 @@ const DepartmentMembersContent = () => {
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
   const { members, meta, isLoading, error, refetch } =
     useDepartmentMembers(departmentId);
+  const locale = i18n.resolvedLanguage || i18n.language || "en";
+  const numberFormatter = useMemo(() => new Intl.NumberFormat(locale), [locale]);
 
   const filteredMembers = useMemo(() => {
     const normalizedQuery = searchQuery.trim().toLowerCase();
@@ -66,20 +73,30 @@ const DepartmentMembersContent = () => {
     return { jobLevels, managers };
   }, [members]);
 
+  const formatCount = (count) => numberFormatter.format(count);
+
   const formatDate = (value) => {
-    if (!value) return "—";
+    if (!value) return t("not-available");
 
     const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return value;
+    if (Number.isNaN(date.getTime())) return t("not-available");
 
-    return new Intl.DateTimeFormat(
-      i18n.resolvedLanguage || i18n.language || "en",
-      {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-      },
-    ).format(date);
+    return new Intl.DateTimeFormat(locale, {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    }).format(date);
+  };
+
+  const translateRole = (role) => {
+    const normalizedRole = String(role ?? "").toUpperCase();
+    return t(ROLE_TRANSLATION_KEYS[normalizedRole] || "member");
+  };
+
+  const translateJobTitle = (jobTitle) => {
+    const normalizedJobTitle = String(jobTitle ?? "").toUpperCase();
+    const translationKey = JOB_TITLE_TRANSLATION_KEYS[normalizedJobTitle];
+    return translationKey ? t(translationKey) : t("not-assigned");
   };
 
   const getRoleClass = (role) => {
@@ -114,20 +131,24 @@ const DepartmentMembersContent = () => {
             type="button"
             className={styles.addMemberButton}
             onClick={() => setIsAddMemberOpen(true)}
+            aria-haspopup="dialog"
           >
             <IoPersonAddOutline />
             {t("add-members")}
           </button>
         </header>
 
-        <section className={styles.summaryGrid} aria-label="Member summary">
+        <section
+          className={styles.summaryGrid}
+          aria-label={t("department-member-summary")}
+        >
           <div className={styles.summaryCard}>
             <div className={styles.summaryIcon}>
               <IoPeopleOutline />
             </div>
             <div>
               <span>{t("total-members", "Total members")}</span>
-              <strong>{members.length}</strong>
+              <strong>{formatCount(members.length)}</strong>
             </div>
           </div>
           <div className={styles.summaryCard}>
@@ -136,7 +157,7 @@ const DepartmentMembersContent = () => {
             </div>
             <div>
               <span>{t("management-roles")}</span>
-              <strong>{summary.managers}</strong>
+              <strong>{formatCount(summary.managers)}</strong>
             </div>
           </div>
           <div className={styles.summaryCard}>
@@ -145,7 +166,7 @@ const DepartmentMembersContent = () => {
             </div>
             <div>
               <span>{t("job-levels")}</span>
-              <strong>{summary.jobLevels}</strong>
+              <strong>{formatCount(summary.jobLevels)}</strong>
             </div>
           </div>
         </section>
@@ -158,11 +179,11 @@ const DepartmentMembersContent = () => {
                 {searchQuery
                   ? t("members-match-count", {
                       count: filteredMembers.length,
-                      defaultValue: "{{count}} matching members",
+                      formattedCount: formatCount(filteredMembers.length),
                     })
                   : t("department-members-count", {
                       count: members.length,
-                      defaultValue: "{{count}} members in this department",
+                      formattedCount: formatCount(members.length),
                     })}
               </p>
             </div>
@@ -170,16 +191,13 @@ const DepartmentMembersContent = () => {
             <label className={styles.searchBox}>
               <IoSearchOutline />
               <span className={styles.srOnly}>
-                {t("search-department-members", "Search department members")}
+                {t("search-department-members")}
               </span>
               <input
                 type="search"
                 value={searchQuery}
                 onChange={(event) => setSearchQuery(event.target.value)}
-                placeholder={t(
-                  "search-members-placeholder",
-                  "Search name, email, role, or job title",
-                )}
+                placeholder={t("search-members-placeholder")}
               />
             </label>
           </div>
@@ -188,20 +206,21 @@ const DepartmentMembersContent = () => {
             <div className={styles.stateMessage} role="alert">
               <div className={styles.stateIcon}>!</div>
               <h3>{t("members-load-failed")}</h3>
-              <p>{error}</p>
-              <button type="button" onClick={refetch}>
-                <IoRefreshOutline /> {t("try-again")}
-              </button>
+              <p>{t(error)}</p>
+              {demoId && departmentId && (
+                <button type="button" onClick={refetch}>
+                  <IoRefreshOutline aria-hidden="true" /> {t("try-again")}
+                </button>
+              )}
             </div>
           ) : isLoading ? (
-            <div className={styles.loadingState} aria-live="polite">
-              <span className={styles.loader} />
-              <p>
-                {t(
-                  "loading-department-members",
-                  "Loading department members...",
-                )}
-              </p>
+            <div
+              className={styles.loadingState}
+              role="status"
+              aria-live="polite"
+            >
+              <span className={styles.loader} aria-hidden="true" />
+              <p>{t("loading-department-members")}</p>
             </div>
           ) : filteredMembers.length === 0 ? (
             <div className={styles.stateMessage}>
@@ -222,6 +241,9 @@ const DepartmentMembersContent = () => {
           ) : (
             <div className={styles.tableScroller}>
               <table className={styles.membersTable}>
+                <caption className={styles.srOnly}>
+                  {t("department-members-table-caption")}
+                </caption>
                 <thead>
                   <tr>
                     <th>{t("member")}</th>
@@ -246,7 +268,7 @@ const DepartmentMembersContent = () => {
 
                     return (
                       <tr key={departmentMember.id}>
-                        <td>
+                        <td data-label={t("member")}>
                           <div className={styles.memberIdentity}>
                             <div className={styles.avatar}>
                               {user.imagePath ? (
@@ -257,27 +279,27 @@ const DepartmentMembersContent = () => {
                             </div>
                             <div>
                               <strong>{fullName}</strong>
-                              <span>{user.email || "—"}</span>
+                              <span>{user.email || t("not-available")}</span>
                             </div>
                           </div>
                         </td>
-                        <td>
+                        <td data-label={t("job-title")}>
                           <span className={styles.jobTitle}>
-                            <IoBriefcaseOutline />
-                            {normalizeLabel(
-                              departmentMember.jobTitle,
-                              t("not-assigned", "Not assigned"),
-                            )}
+                            <IoBriefcaseOutline aria-hidden="true" />
+                            {translateJobTitle(departmentMember.jobTitle)}
                           </span>
                         </td>
-                        <td>
+                        <td data-label={t("workspace-role")}>
                           <span
                             className={`${styles.roleBadge} ${getRoleClass(demoMember.role)}`}
                           >
-                            {normalizeLabel(demoMember.role, t("member"))}
+                            {translateRole(demoMember.role)}
                           </span>
                         </td>
-                        <td className={styles.dateCell}>
+                        <td
+                          className={styles.dateCell}
+                          data-label={t("assigned")}
+                        >
                           {formatDate(departmentMember.assignedAt)}
                         </td>
                       </tr>
@@ -293,12 +315,12 @@ const DepartmentMembersContent = () => {
               <span>
                 {t("showing-members", {
                   count: filteredMembers.length,
-                  defaultValue: "Showing {{count}} members",
+                  formattedCount: formatCount(filteredMembers.length),
                 })}
               </span>
               {meta?.hasNextPage === false && (
                 <span className={styles.allLoaded}>
-                  {t("all-members-loaded", "All members loaded")}
+                  {t("all-members-loaded")}
                 </span>
               )}
             </div>

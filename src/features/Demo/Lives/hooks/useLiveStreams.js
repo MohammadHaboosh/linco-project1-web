@@ -47,7 +47,7 @@ export const useLiveStreams = ({ demoId, departmentId }) => {
         setMeta(result.meta);
       } catch (requestError) {
         if (requestError.name !== "AbortError") {
-          setError(requestError.message || "Unable to load live streams.");
+          setError("live-streams-load-error-message");
         }
       } finally {
         if (!controller.signal.aborted) {
@@ -74,7 +74,7 @@ export const useLiveStreams = ({ demoId, departmentId }) => {
       setStreams(result.streams);
       setMeta(result.meta);
     } catch (requestError) {
-      setError(requestError.message || "Unable to reload live streams.");
+      setError("live-streams-load-error-message");
       throw requestError;
     } finally {
       if (!silent) {
@@ -106,9 +106,8 @@ export const useLiveStreams = ({ demoId, departmentId }) => {
         mergeUniqueStreams(current, result.streams),
       );
       setMeta(result.meta);
-    } catch (requestError) {
-      setError(requestError.message || "Unable to load more live streams.");
-      throw requestError;
+    } catch {
+      setError("live-streams-load-more-error-message");
     } finally {
       setIsLoadingMore(false);
     }
@@ -185,7 +184,7 @@ export const useLiveStreams = ({ demoId, departmentId }) => {
     streams,
     isLoading,
     isLoadingMore,
-    error,
+    error: hasContext ? error : "live-stream-context-missing",
     hasNextPage: meta.hasNextPage,
     refetch,
     loadMore,

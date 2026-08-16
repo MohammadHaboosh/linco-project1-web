@@ -43,9 +43,7 @@ export const useAddDepartmentMember = ({
 
         if (!controller.signal.aborted) {
           setSearchResults([]);
-          setSearchError(
-            requestError.message || "Failed to search demo members.",
-          );
+          setSearchError("workspace-member-search-failed");
         }
       } finally {
         if (!controller.signal.aborted) {
@@ -94,12 +92,12 @@ export const useAddDepartmentMember = ({
       setSubmitError(null);
 
       if (!selectedMember) {
-        setSubmitError("Please select a demo member.");
+        setSubmitError("workspace-member-required");
         return;
       }
 
       if (!ALLOWED_JOB_TITLES.includes(jobTitle)) {
-        setSubmitError("Please select a job title.");
+        setSubmitError("job-title-required");
         return;
       }
 
@@ -114,10 +112,8 @@ export const useAddDepartmentMember = ({
         });
 
         await onSuccess?.(responseData);
-      } catch (requestError) {
-        setSubmitError(
-          requestError.message || "Failed to add the department member.",
-        );
+      } catch {
+        setSubmitError("department-member-add-failed");
       } finally {
         setIsSubmitting(false);
       }

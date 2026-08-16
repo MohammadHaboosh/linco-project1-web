@@ -1,7 +1,7 @@
 .pageContainer {
   min-height: calc(100vh - 75px);
   padding: 40px 60px;
-  background-color: #f8fafc;
+  background-color: var(--app-page-bg);
   animation: fadeIn 0.4s ease-out;
 }
 
@@ -26,8 +26,13 @@
 
 .headerInfo {
   display: flex;
+  min-width: 0;
   align-items: center;
   gap: 20px;
+}
+
+.headerInfo > div:last-child {
+  min-width: 0;
 }
 
 .iconBox {
@@ -50,7 +55,7 @@
 .subHeading {
   display: block;
   margin-bottom: 6px;
-  color: #1a56db;
+  color: var(--app-link);
   font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 1px;
@@ -59,7 +64,7 @@
 
 .pageTitle {
   margin: 0 0 8px;
-  color: #0a2a54;
+  color: var(--app-heading);
   font-size: 2.2rem;
   font-weight: 800;
   letter-spacing: -0.5px;
@@ -68,7 +73,7 @@
 .pageDescription {
   max-width: 600px;
   margin: 0;
-  color: #64748b;
+  color: var(--app-muted);
   font-size: 1.05rem;
   line-height: 1.5;
 }
@@ -114,15 +119,27 @@
 }
 
 .errorBanner {
-  border: 1px solid #fecaca;
-  background: #fef2f2;
-  color: #b91c1c;
+  border: 1px solid var(--app-danger-border);
+  background: var(--app-danger-surface);
+  color: var(--app-danger-text);
 }
 
 .successBanner {
-  border: 1px solid #bbf7d0;
-  background: #f0fdf4;
-  color: #166534;
+  border: 1px solid var(--app-success-border);
+  background: var(--app-success-surface);
+  color: var(--app-success-text);
+}
+
+.errorBanner > div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.errorBanner span {
+  font-weight: 500;
+  line-height: 1.45;
 }
 
 .errorBanner button {
@@ -131,10 +148,10 @@
   align-items: center;
   gap: 6px;
   padding: 7px 10px;
-  border: 1px solid #fca5a5;
+  border: 1px solid var(--app-danger-border);
   border-radius: 8px;
-  background: #ffffff;
-  color: #b91c1c;
+  background: var(--app-surface);
+  color: var(--app-danger-text);
   font: inherit;
   font-size: 0.76rem;
   font-weight: 750;
@@ -146,15 +163,16 @@
   gap: 15px;
   margin-bottom: 30px;
   padding-bottom: 10px;
-  border-bottom: 2px solid #e2e8f0;
+  border-bottom: 2px solid var(--app-border);
 }
 
 .tabBtn {
+  min-width: 0;
   padding: 10px 20px;
   border: none;
   border-radius: 10px;
   background: transparent;
-  color: #64748b;
+  color: var(--app-muted);
   font: inherit;
   font-size: 1.05rem;
   font-weight: 700;
@@ -162,20 +180,33 @@
   transition: all 0.2s ease;
 }
 
+.createBtn:focus-visible,
+.errorBanner button:focus-visible,
+.tabBtn:focus-visible,
+.loadMoreButton:focus-visible {
+  outline: 3px solid var(--app-focus-ring);
+  outline-offset: 2px;
+}
+
+:global([dir="rtl"]) .subHeading {
+  letter-spacing: 0;
+}
+
 .tabBtn:hover {
-  background-color: #f1f5f9;
-  color: #0a2a54;
+  background-color: var(--app-surface-soft);
+  color: var(--app-heading);
 }
 
 .activeTab {
-  background-color: #e0e7ff;
-  color: #1a56db;
+  background-color: var(--app-info-surface);
+  color: var(--app-link);
 }
 
 .livesGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 310px), 1fr));
   gap: 30px;
+  min-width: 0;
 }
 
 .emptyState,
@@ -187,16 +218,16 @@
   justify-content: center;
   flex-direction: column;
   padding: 45px;
-  border: 2px dashed #cbd5e1;
+  border: 2px dashed var(--app-border-strong);
   border-radius: 16px;
-  background: #ffffff;
-  color: #64748b;
+  background: var(--app-surface);
+  color: var(--app-muted);
   text-align: center;
 }
 
 .emptyState > svg {
   margin-bottom: 10px;
-  color: #94a3b8;
+  color: var(--app-muted);
   font-size: 2.4rem;
 }
 
@@ -211,8 +242,8 @@
   width: 28px;
   height: 28px;
   margin-bottom: 13px;
-  border: 3px solid #dbeafe;
-  border-top-color: #1a56db;
+  border: 3px solid var(--app-info-border);
+  border-block-start-color: var(--app-link);
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
 }
@@ -232,10 +263,10 @@
 .loadMoreButton {
   min-width: 145px;
   padding: 10px 20px;
-  border: 1px solid #bfdbfe;
+  border: 1px solid var(--app-info-border);
   border-radius: 10px;
-  background: #ffffff;
-  color: #1a56db;
+  background: var(--app-surface);
+  color: var(--app-link);
   font: inherit;
   font-size: 0.85rem;
   font-weight: 750;
@@ -243,7 +274,7 @@
 }
 
 .loadMoreButton:hover:not(:disabled) {
-  background: #eff6ff;
+  background: var(--app-info-surface);
 }
 
 .loadMoreButton:disabled {
@@ -258,6 +289,10 @@
 
   .headerArea {
     flex-direction: column;
+  }
+
+  .createBtn {
+    align-self: flex-start;
   }
 }
 
@@ -305,5 +340,50 @@
 
   .livesGrid {
     grid-template-columns: 1fr;
+  }
+
+  .errorBanner {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .errorBanner button {
+    align-self: flex-start;
+  }
+
+  .emptyState,
+  .loadingState {
+    min-height: 170px;
+    padding: 32px 18px;
+  }
+}
+
+@media (max-width: 380px) {
+  .pageContainer {
+    padding-inline: 12px;
+  }
+
+  .headerInfo {
+    flex-direction: column;
+  }
+
+  .tabsContainer {
+    flex-direction: column;
+  }
+
+  .tabBtn {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pageContainer,
+  .loadingSpinner {
+    animation: none;
+  }
+
+  .createBtn,
+  .tabBtn {
+    transition: none;
   }
 }

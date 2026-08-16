@@ -11,10 +11,10 @@ export const useDepartmentMembers = (departmentId) => {
 
   const loadMembers = useCallback(
     async ({ signal } = {}) => {
-      if (!departmentId) {
+      if (!departmentId || !demoId) {
         setMembers([]);
         setMeta(null);
-        setError("Department ID is missing.");
+        setError("department-context-missing");
         setIsLoading(false);
         return;
       }
@@ -38,7 +38,7 @@ export const useDepartmentMembers = (departmentId) => {
 
         setMembers([]);
         setMeta(null);
-        setError(requestError.message || "Failed to load department members.");
+        setError("members-load-error-message");
       } finally {
         if (!signal?.aborted) {
           setIsLoading(false);

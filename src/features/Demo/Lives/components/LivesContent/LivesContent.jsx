@@ -51,10 +51,10 @@ const LivesContent = () => {
   const handleCreate = useCallback(
     async (streamData) => {
       await createLiveStream(streamData);
-      setFeedback(t("live-created-successfully"));
+      setFeedback("live-created-successfully");
       setActiveTab("ACTIVE");
     },
-    [createLiveStream, t],
+    [createLiveStream],
   );
 
   useEffect(() => {
@@ -103,7 +103,11 @@ const LivesContent = () => {
           <button
             type="button"
             className={styles.createBtn}
-            onClick={() => setShowScheduleModal(true)}
+            onClick={() => {
+              setFeedback(null);
+              setShowScheduleModal(true);
+            }}
+            aria-haspopup="dialog"
           >
             <IoAddOutline className={styles.btnIcon} /> {t("schedule-live")}
           </button>
@@ -112,26 +116,39 @@ const LivesContent = () => {
 
       {error && (
         <div className={styles.errorBanner} role="alert">
-          <span>{error}</span>
-          <button type="button" onClick={retryLoad} disabled={isLoading}>
-            <IoRefreshOutline /> {t("try-again")}
-          </button>
+          <div>
+            <strong>{t("live-streams-load-failed")}</strong>
+            <span>{t(error)}</span>
+          </div>
+          {demoId && departmentId && (
+            <button type="button" onClick={retryLoad} disabled={isLoading}>
+              <IoRefreshOutline aria-hidden="true" /> {t("try-again")}
+            </button>
+          )}
         </div>
       )}
 
       {feedback && (
         <div className={styles.successBanner} role="status" aria-live="polite">
-          {feedback}
+          {t(feedback)}
         </div>
       )}
 
-      <div className={styles.tabsContainer}>
+      <div
+        className={styles.tabsContainer}
+        role="tablist"
+        aria-label={t("filter-live-streams")}
+      >
         <button
           type="button"
           className={`${styles.tabBtn} ${
             activeTab === "ACTIVE" ? styles.activeTab : ""
           }`}
           onClick={() => setActiveTab("ACTIVE")}
+          role="tab"
+          id="live-stream-tab-active"
+          aria-selected={activeTab === "ACTIVE"}
+          aria-controls="live-stream-list"
         >
           {t("upcoming-and-live")}
         </button>
@@ -141,20 +158,29 @@ const LivesContent = () => {
             activeTab === "ENDED" ? styles.activeTab : ""
           }`}
           onClick={() => setActiveTab("ENDED")}
+          role="tab"
+          id="live-stream-tab-ended"
+          aria-selected={activeTab === "ENDED"}
+          aria-controls="live-stream-list"
         >
           {t("ended-sessions")}
         </button>
       </div>
 
       {isLoading ? (
-        <div className={styles.loadingState} aria-live="polite">
-          <span className={styles.loadingSpinner} />
+        <div className={styles.loadingState} role="status" aria-live="polite">
+          <span className={styles.loadingSpinner} aria-hidden="true" />
           <p>{t("loading-live-streams")}</p>
         </div>
       ) : (
         <>
           {filteredStreams.length > 0 ? (
-            <div className={styles.livesGrid}>
+            <div
+              id="live-stream-list"
+              className={styles.livesGrid}
+              role="tabpanel"
+              aria-labelledby={`live-stream-tab-${activeTab.toLowerCase()}`}
+            >
               {filteredStreams.map((stream) => (
                 <LiveCard
                   key={stream.id}
@@ -169,8 +195,13 @@ const LivesContent = () => {
               ))}
             </div>
           ) : (
-            <div className={styles.emptyState}>
-              <IoVideocamOutline />
+            <div
+              id="live-stream-list"
+              className={styles.emptyState}
+              role="tabpanel"
+              aria-labelledby={`live-stream-tab-${activeTab.toLowerCase()}`}
+            >
+              <IoVideocamOutline aria-hidden="true" />
               <p>{t("no-streams-available-in-this-category")}</p>
             </div>
           )}

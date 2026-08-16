@@ -1,6 +1,6 @@
 .contentArea {
   padding: 40px 60px;
-  background-color: #f8fafc;
+  background-color: var(--app-page-bg);
   min-height: calc(100vh - 130px);
   animation: fadeIn 0.4s ease-out;
 }
@@ -21,6 +21,11 @@
   display: flex;
   align-items: center;
   gap: 20px;
+  min-width: 0;
+}
+
+.headerArea > div:last-child {
+  min-width: 0;
 }
 
 .headerIconWrapper {
@@ -42,7 +47,7 @@
 .subHeading {
   font-size: 0.85rem;
   font-weight: 700;
-  color: #1a56db;
+  color: var(--app-link);
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: 6px;
@@ -50,7 +55,7 @@
 }
 
 .mainHeading {
-  color: #0a2a54;
+  color: var(--app-heading);
   font-size: 2.2rem;
   font-weight: 800;
   margin: 0 0 8px 0;
@@ -58,7 +63,7 @@
 }
 
 .description {
-  color: #64748b;
+  color: var(--app-muted);
   font-size: 1.05rem;
   margin: 0;
   max-width: 600px;
@@ -66,6 +71,69 @@
 
 .toolsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
   gap: 30px;
+  min-width: 0;
+}
+
+:global([dir="rtl"]) .subHeading {
+  letter-spacing: 0;
+}
+
+@media (max-width: 850px) {
+  .contentArea {
+    padding: 30px;
+  }
+}
+
+@media (max-width: 560px) {
+  .contentArea {
+    padding: 24px 16px 40px;
+  }
+
+  .headerArea {
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  .headerIconWrapper {
+    width: 52px;
+    height: 52px;
+    flex: 0 0 auto;
+    border-radius: 14px;
+  }
+
+  .headerIcon {
+    font-size: 1.65rem;
+  }
+
+  .mainHeading {
+    font-size: 1.65rem;
+  }
+
+  .description {
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  .toolsGrid {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 380px) {
+  .contentArea {
+    padding-inline: 12px;
+  }
+
+  .headerArea {
+    flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contentArea {
+    animation: none;
+  }
 }

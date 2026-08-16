@@ -47,12 +47,12 @@ const ScheduleLiveModal = ({ onClose, onCreate }) => {
 
     const scheduleDate = new Date(scheduledAt);
     if (Number.isNaN(scheduleDate.getTime())) {
-      setError(t("live-valid-schedule-required"));
+      setError("live-valid-schedule-required");
       return;
     }
 
     if (scheduleDate.getTime() < Date.now()) {
-      setError(t("live-schedule-must-be-future"));
+      setError("live-schedule-must-be-future");
       return;
     }
 
@@ -65,8 +65,8 @@ const ScheduleLiveModal = ({ onClose, onCreate }) => {
         scheduledAt: scheduleDate.toISOString(),
       });
       onClose();
-    } catch (requestError) {
-      setError(requestError.message || t("live-create-failed"));
+    } catch {
+      setError("live-create-failed");
     } finally {
       setIsSubmitting(false);
     }
@@ -111,10 +111,14 @@ const ScheduleLiveModal = ({ onClose, onCreate }) => {
           </button>
         </div>
 
-        <form className={styles.form} onSubmit={handleSubmit}>
+        <form
+          className={styles.form}
+          onSubmit={handleSubmit}
+          aria-busy={isSubmitting}
+        >
           {error && (
             <div className={styles.errorAlert} role="alert">
-              {error}
+              {t(error)}
             </div>
           )}
 

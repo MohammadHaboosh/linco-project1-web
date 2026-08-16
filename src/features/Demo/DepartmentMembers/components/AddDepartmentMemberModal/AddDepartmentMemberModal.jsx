@@ -124,10 +124,14 @@ const AddDepartmentMemberModal = ({
           </button>
         </div>
 
-        <form className={styles.modalBody} onSubmit={submitMember}>
+        <form
+          className={styles.modalBody}
+          onSubmit={submitMember}
+          aria-busy={isSubmitting}
+        >
           {submitError && (
             <div className={styles.errorAlert} role="alert">
-              {submitError}
+              {t(submitError)}
             </div>
           )}
 
@@ -141,7 +145,9 @@ const AddDepartmentMemberModal = ({
                 {renderAvatar(selectedMember, styles.selectedAvatar)}
                 <div className={styles.memberInfo}>
                   <strong>{getDisplayName(selectedMember)}</strong>
-                  <span>{getUser(selectedMember).email || "—"}</span>
+                  <span>
+                    {getUser(selectedMember).email || t("not-available")}
+                  </span>
                 </div>
                 <IoCheckmarkCircleOutline className={styles.selectedIcon} />
                 <button
@@ -170,14 +176,17 @@ const AddDepartmentMemberModal = ({
                   {isSearching && (
                     <span
                       className={styles.searchLoader}
-                      aria-label={t("searching")}
+                      role="status"
+                      aria-label={t("searching-workspace-members")}
                     />
                   )}
                 </div>
 
                 <div className={styles.searchFeedback} aria-live="polite">
                   {searchError ? (
-                    <span className={styles.searchError}>{searchError}</span>
+                    <span className={styles.searchError} role="alert">
+                      {t(searchError)}
+                    </span>
                   ) : (
                     searchQuery.trim() &&
                     !isSearching &&
@@ -188,7 +197,10 @@ const AddDepartmentMemberModal = ({
                 </div>
 
                 {searchResults.length > 0 && (
-                  <ul className={styles.resultsList}>
+                  <ul
+                    className={styles.resultsList}
+                    aria-label={t("workspace-member-search-results")}
+                  >
                     {searchResults.map((member) => (
                       <li key={member.id}>
                         <button
@@ -200,10 +212,18 @@ const AddDepartmentMemberModal = ({
                           {renderAvatar(member, styles.resultAvatar)}
                           <span className={styles.memberInfo}>
                             <strong>{getDisplayName(member)}</strong>
-                            <span>{getUser(member).email || "—"}</span>
+                            <span>
+                              {getUser(member).email || t("not-available")}
+                            </span>
                           </span>
                           <span className={styles.demoRole}>
-                            {String(member.role ?? t("member")).toLowerCase()}
+                            {t(
+                              String(member.role || "member")
+                                .toLowerCase()
+                                .replaceAll("_", "-")
+                                .replace("sectionmanager", "section-manager"),
+                              { defaultValue: t("member") },
+                            )}
                           </span>
                         </button>
                       </li>
