@@ -18,7 +18,7 @@
 .topBar {
   position: sticky;
   inset-block-start: 0;
-  z-index: 100;
+  z-index: 10;
   display: grid;
   grid-template-columns: minmax(7rem, 1fr) auto minmax(7rem, 1fr);
   align-items: center;
