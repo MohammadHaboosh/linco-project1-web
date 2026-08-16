@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import LandingRedirector from "../components/common/LandingRedirector.jsx";
 import NotFoundPage from "../pages/NotFoundPage.jsx";
+import AppHydrationFallback from "../components/common/AppHydrationFallback.jsx";
 import { PATHS } from "./paths";
 
 const lazyComponent = (importer) => async () => {
@@ -8,7 +9,7 @@ const lazyComponent = (importer) => async () => {
   return { Component: module.default };
 };
 
-export const router = createBrowserRouter([
+const routes = [
   { path: PATHS.LANDING, element: <LandingRedirector locale="en" /> },
   { path: "/ar", element: <LandingRedirector locale="ar" /> },
   {
@@ -191,4 +192,11 @@ export const router = createBrowserRouter([
     lazy: lazyComponent(() => import("../pages/LiveRoomPage.jsx")),
   },
   { path: "*", element: <NotFoundPage /> },
-]);
+];
+
+export const router = createBrowserRouter(
+  routes.map((route) => ({
+    HydrateFallback: AppHydrationFallback,
+    ...route,
+  })),
+);
