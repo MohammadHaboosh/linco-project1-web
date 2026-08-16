@@ -39,6 +39,9 @@ const GroupWorkspace = () => {
 
   const handleShareToChat = () => {
     setShareTrigger((prev) => prev + 1);
+    if (layout === "tool-only") {
+      setLayout("split");
+    }
   };
 
   return (

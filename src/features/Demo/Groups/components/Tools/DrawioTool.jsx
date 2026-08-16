@@ -50,7 +50,7 @@ const DrawioTool = forwardRef((props, ref) => {
   return (
     <iframe
       ref={iframeRef}
-      src="https://app.diagrams.net/?embed=1&ui=min&spin=1&proto=json&configure=1"
+      src="https://embed.diagrams.net/?embed=1&ui=min&spin=1&proto=json"
       className={styles.toolIframe}
       title="Draw.io Workspace"
     />
