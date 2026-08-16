@@ -1,10 +1,12 @@
 import {
   IoBusinessOutline,
-  IoPencilOutline,
-  IoImageOutline,
   IoCreateOutline,
+  IoImageOutline,
+  IoInformationCircleOutline,
+  IoPencilOutline,
   IoTrashOutline,
 } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
 import styles from "./RequestRoom.module.css";
 
 const RequestRoomStep1 = ({
@@ -15,21 +17,26 @@ const RequestRoomStep1 = ({
   onClearFile,
   errors,
 }) => {
-  const renderUploadBox = (name, icon, label, preview) => {
+  const { t } = useTranslation();
+
+  const renderUploadBox = ({ name, icon, prompt, label, preview }) => {
     if (preview) {
       return (
         <div className={styles["preview-wrapper"]}>
-          <img src={preview} alt={label} className={styles["preview-img"]} />
+          <img
+            src={preview}
+            alt={t("request-workspace-selected-preview", { label })}
+            className={styles["preview-img"]}
+          />
           <div className={styles["preview-overlay"]}>
             <button
               type="button"
               className={styles["btn-remove"]}
-              onClick={(e) => {
-                e.preventDefault();
-                onClearFile(name);
-              }}
+              onClick={() => onClearFile(name)}
+              aria-label={t("request-workspace-remove-image", { label })}
             >
-              <IoTrashOutline /> Remove
+              <IoTrashOutline aria-hidden="true" />
+              {t("remove")}
             </button>
           </div>
         </div>
@@ -42,69 +49,116 @@ const RequestRoomStep1 = ({
           type="file"
           name={name}
           className={styles["file-input"]}
-          accept="image/*"
+          accept="image/png,image/jpeg,image/webp"
           onChange={onFileChange}
+          aria-label={prompt}
+          aria-invalid={Boolean(errors[name])}
+          aria-describedby={errors[name] ? `${name}-error` : undefined}
         />
         {icon}
-        <span className={styles["upload-text"]}>{label}</span>
+        <span className={styles["upload-text"]}>{prompt}</span>
+        <small>{t("request-workspace-image-formats")}</small>
       </label>
     );
   };
 
   return (
     <>
-      <div className={styles["input-group"]}>
-        <IoBusinessOutline className={styles["icon-left"]} />
-        <input
-          type="text"
-          name="companyName"
-          placeholder="Company Name"
-          value={formData.companyName}
-          onChange={onChange}
-        />
+      <div className={styles["field-block"]}>
+        <label className={styles["field-label"]} htmlFor="companyName">
+          {t("company-name")}
+        </label>
+        <div className={styles["input-group"]}>
+          <IoBusinessOutline className={styles["icon-left"]} aria-hidden="true" />
+          <input
+            id="companyName"
+            type="text"
+            name="companyName"
+            placeholder={t("request-workspace-company-name-placeholder")}
+            value={formData.companyName}
+            onChange={onChange}
+            autoComplete="organization"
+            aria-invalid={Boolean(errors.companyName)}
+            aria-describedby={errors.companyName ? "companyName-error" : undefined}
+          />
+        </div>
+        {errors.companyName && (
+          <span id="companyName-error" className={styles["error-text"]}>
+            {errors.companyName}
+          </span>
+        )}
       </div>
-      {errors.companyName && (
-        <span className={styles["error-text"]}>{errors.companyName}</span>
-      )}
 
-      <div className={styles["input-group"]}>
-        <IoPencilOutline className={styles["icon-left"]} />
-        <input
-          type="text"
-          name="description"
-          placeholder="Brief Description"
-          value={formData.description}
-          onChange={onChange}
-        />
+      <div className={styles["field-block"]}>
+        <label className={styles["field-label"]} htmlFor="description">
+          {t("request-workspace-description-label")}
+        </label>
+        <div className={`${styles["input-group"]} ${styles["textarea-group"]}`}>
+          <IoPencilOutline className={styles["icon-left"]} aria-hidden="true" />
+          <textarea
+            id="description"
+            name="description"
+            placeholder={t("request-workspace-description-placeholder")}
+            value={formData.description}
+            onChange={onChange}
+            rows="4"
+            aria-invalid={Boolean(errors.description)}
+            aria-describedby={errors.description ? "description-error" : undefined}
+          />
+        </div>
+        {errors.description && (
+          <span id="description-error" className={styles["error-text"]}>
+            {errors.description}
+          </span>
+        )}
       </div>
-      {errors.description && (
-        <span className={styles["error-text"]}>{errors.description}</span>
-      )}
+
+      <div className={styles["upload-heading"]}>
+        <span>{t("request-workspace-brand-assets")}</span>
+        <small>{t("request-workspace-brand-assets-description")}</small>
+      </div>
 
       <div className={styles["upload-grid"]}>
         <div className={styles["upload-column"]}>
-          {renderUploadBox(
-            "logo",
-            <IoImageOutline className={styles["upload-icon"]} />,
-            "Upload Logo",
-            previews.logo,
-          )}
+          <span className={styles["upload-label"]}>
+            {t("request-workspace-company-logo")}
+          </span>
+          {renderUploadBox({
+            name: "logo",
+            icon: <IoImageOutline className={styles["upload-icon"]} aria-hidden="true" />,
+            prompt: t("request-workspace-upload-logo"),
+            label: t("request-workspace-company-logo"),
+            preview: previews.logo,
+          })}
           {errors.logo && (
-            <span className={styles["error-text"]}>{errors.logo}</span>
+            <span id="logo-error" className={styles["error-text"]}>
+              {errors.logo}
+            </span>
           )}
         </div>
 
         <div className={styles["upload-column"]}>
-          {renderUploadBox(
-            "signature",
-            <IoCreateOutline className={styles["upload-icon"]} />,
-            "Upload Signature",
-            previews.signature,
-          )}
+          <span className={styles["upload-label"]}>
+            {t("request-workspace-authorized-signature")}
+          </span>
+          {renderUploadBox({
+            name: "signature",
+            icon: <IoCreateOutline className={styles["upload-icon"]} aria-hidden="true" />,
+            prompt: t("request-workspace-upload-signature"),
+            label: t("request-workspace-authorized-signature"),
+            preview: previews.signature,
+          })}
           {errors.signature && (
-            <span className={styles["error-text"]}>{errors.signature}</span>
+            <span id="signature-error" className={styles["error-text"]}>
+              {errors.signature}
+            </span>
           )}
         </div>
+      </div>
+
+      <div className={styles["form-note"]}>
+        <IoInformationCircleOutline aria-hidden="true" />
+        <span>{t("request-workspace-review-note")}</span>
       </div>
     </>
   );

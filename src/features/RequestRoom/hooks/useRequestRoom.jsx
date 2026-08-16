@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   getUploadUrl,
   getSignatureUploadUrl,
@@ -9,6 +10,7 @@ import {
 
 export const useRequestRoom = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -24,13 +26,19 @@ export const useRequestRoom = () => {
     logo: null,
     signature: null,
   });
+  const previewsRef = useRef(previews);
+
+  useEffect(() => {
+    previewsRef.current = previews;
+  }, [previews]);
 
   useEffect(() => {
     return () => {
-      if (previews.logo) URL.revokeObjectURL(previews.logo);
-      if (previews.signature) URL.revokeObjectURL(previews.signature);
+      Object.values(previewsRef.current).forEach((preview) => {
+        if (preview) URL.revokeObjectURL(preview);
+      });
     };
-  }, [previews]);
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -38,8 +46,12 @@ export const useRequestRoom = () => {
       ...prevData,
       [name]: value,
     }));
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: null }));
+    if (errors[name] || errors.submit) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: null,
+        submit: null,
+      }));
     }
   };
 
@@ -47,37 +59,50 @@ export const useRequestRoom = () => {
     const { name, files } = e.target;
     if (files && files[0]) {
       const file = files[0];
+      const previewUrl = URL.createObjectURL(file);
 
       setFormData((prevData) => ({
         ...prevData,
         [name]: file,
       }));
 
-      setPreviews((prev) => ({
-        ...prev,
-        [name]: URL.createObjectURL(file),
-      }));
+      setPreviews((prev) => {
+        if (prev[name]) URL.revokeObjectURL(prev[name]);
 
-      if (errors[name]) {
-        setErrors((prev) => ({ ...prev, [name]: null }));
+        return {
+          ...prev,
+          [name]: previewUrl,
+        };
+      });
+
+      if (errors[name] || errors.submit) {
+        setErrors((prev) => ({
+          ...prev,
+          [name]: null,
+          submit: null,
+        }));
       }
     }
   };
 
   const clearFile = (name) => {
     setFormData((prev) => ({ ...prev, [name]: null }));
-    setPreviews((prev) => ({ ...prev, [name]: null }));
+    setPreviews((prev) => {
+      if (prev[name]) URL.revokeObjectURL(prev[name]);
+      return { ...prev, [name]: null };
+    });
   };
 
   const validateRequest = () => {
     const newErrors = {};
-    if (!formData.companyName)
-      newErrors.companyName = "Company Name is required";
-    if (!formData.description)
-      newErrors.description = "Description is required";
-    if (!formData.logo) newErrors.logo = "Company logo is required";
+    if (!formData.companyName.trim())
+      newErrors.companyName = t("request-workspace-company-name-required");
+    if (!formData.description.trim())
+      newErrors.description = t("request-workspace-description-required");
+    if (!formData.logo)
+      newErrors.logo = t("request-workspace-logo-required");
     if (!formData.signature)
-      newErrors.signature = "Signature image is required";
+      newErrors.signature = t("request-workspace-signature-required");
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -105,7 +130,9 @@ export const useRequestRoom = () => {
       navigate("/home");
     } catch (error) {
       console.error("Room request error:", error);
-      setErrors({ submit: error.message || "An error occurred." });
+      setErrors({
+        submit: error.message || t("request-workspace-submit-error"),
+      });
     } finally {
       setIsSubmitting(false);
     }
