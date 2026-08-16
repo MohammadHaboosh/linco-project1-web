@@ -140,7 +140,7 @@ const GroupWorkspace = () => {
                   : styles.panelHidden
             }`}
           >
-            <ChatLayout />
+            <ChatLayout showHeader={false} />
           </div>
 
           <div

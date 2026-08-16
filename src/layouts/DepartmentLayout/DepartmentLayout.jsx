@@ -26,6 +26,8 @@ const LayoutContent = () => {
   const location = useLocation();
   const isChatPage = location.pathname.includes("/chats");
   const isCoursePlayerPage = location.pathname.includes("/course-player");
+  const isGroupsPage = location.pathname.includes("/groups");
+
   const demoPath = demoId
     ? PATHS.DEMO.replace(":demoId", encodeURIComponent(demoId))
     : null;
@@ -55,11 +57,26 @@ const LayoutContent = () => {
   const navLinks =
     DEPARTMENT_NAV[role]?.navLinks || DEPARTMENT_NAV.member.navLinks;
   const footerLinks = FOOTER_CONFIG[`department_${role.toLowerCase()}`] || [];
+  const shouldLockHeight = isChatPage || isGroupsPage || isCoursePlayerPage;
 
   return (
     <div className={styles.appContainer}>
       <Sidebar />
-      <div className={`${styles.mainWrapper} custom-scrollbar`}>
+      <div
+        className={`${styles.mainWrapper} ${
+          shouldLockHeight ? styles.noScrollWrapper : "custom-scrollbar"
+        }`}
+        style={
+          shouldLockHeight
+            ? {
+                overflow: "hidden",
+                height: "100vh",
+                display: "flex",
+                flexDirection: "column",
+              }
+            : {}
+        }
+      >
         <Header
           role={role}
           currentRoleView={currentRoleView}
@@ -73,12 +90,23 @@ const LayoutContent = () => {
 
         <main
           className={`${styles.pageContent} ${
-            isChatPage ? styles.chatPageContent : ""
+            isChatPage || isGroupsPage ? styles.chatPageContent : ""
           }`}
+          style={
+            shouldLockHeight
+              ? {
+                  flex: 1,
+                  minHeight: 0,
+                  display: "flex",
+                  flexDirection: "column",
+                }
+              : {}
+          }
         >
           <Outlet />
         </main>
-        {!isCoursePlayerPage && !isChatPage && (
+
+        {!isCoursePlayerPage && !isChatPage && !isGroupsPage && (
           <Footer footerLinks={footerLinks} />
         )}
       </div>

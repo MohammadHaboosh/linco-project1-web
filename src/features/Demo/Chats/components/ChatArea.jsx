@@ -2,10 +2,7 @@ import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useChatComposer } from "../hooks/useChatComposer";
 import { useChatScroll } from "../hooks/useChatScroll";
-import {
-  getDepartmentMemberName,
-  getSenderName,
-} from "../utils/messageUtils";
+import { getDepartmentMemberName, getSenderName } from "../utils/messageUtils";
 import ChatComposer from "./ChatComposer";
 import ChatErrorStack from "./ChatErrorStack";
 import ChatHeader from "./ChatHeader";
@@ -14,6 +11,7 @@ import ChatMessages from "./ChatMessages";
 import styles from "./Chats.module.css";
 
 const ChatArea = ({
+  showHeader = true,
   messages,
   currentDepartmentMemberId,
   connectionStatus,
@@ -104,12 +102,14 @@ const ChatArea = ({
 
   return (
     <section className={styles.chatRoomWrapper}>
-      <ChatHeader
-        connectionStatus={connectionStatus}
-        currentDepartmentMemberId={currentDepartmentMemberId}
-        onlineMembers={onlineMembers}
-        retry={retry}
-      />
+      {showHeader && (
+        <ChatHeader
+          connectionStatus={connectionStatus}
+          currentDepartmentMemberId={currentDepartmentMemberId}
+          onlineMembers={onlineMembers}
+          retry={retry}
+        />
+      )}
 
       <ChatErrorStack
         errors={chatErrors}
@@ -148,10 +148,7 @@ const ChatArea = ({
 
       <ChatComposer isConnected={isConnected} {...composer} />
 
-      <ChatImagePreview
-        attachment={openImage}
-        onClose={closeImagePreview}
-      />
+      <ChatImagePreview attachment={openImage} onClose={closeImagePreview} />
     </section>
   );
 };
