@@ -652,27 +652,6 @@
   background: #fef2f2;
 }
 
-.form-note {
-  display: flex;
-  align-items: flex-start;
-  padding: 12px 14px;
-  border: 1px solid var(--app-info-border);
-  border-radius: 12px;
-  background: var(--app-info-surface);
-  color: var(--app-info-text);
-  font-size: 0.78rem;
-  font-weight: 600;
-  line-height: 1.5;
-  gap: 9px;
-  text-align: start;
-}
-
-.form-note svg {
-  flex: 0 0 auto;
-  margin-block-start: 2px;
-  font-size: 1rem;
-}
-
 .server-error-banner {
   width: 100%;
   margin-block-end: 18px;

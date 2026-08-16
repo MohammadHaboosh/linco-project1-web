@@ -2,7 +2,6 @@ import {
   IoBusinessOutline,
   IoCreateOutline,
   IoImageOutline,
-  IoInformationCircleOutline,
   IoPencilOutline,
   IoTrashOutline,
 } from "react-icons/io5";
@@ -156,10 +155,6 @@ const RequestRoomStep1 = ({
         </div>
       </div>
 
-      <div className={styles["form-note"]}>
-        <IoInformationCircleOutline aria-hidden="true" />
-        <span>{t("request-workspace-review-note")}</span>
-      </div>
     </>
   );
 };
