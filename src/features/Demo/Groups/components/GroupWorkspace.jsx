@@ -5,9 +5,9 @@ import {
   IoAddOutline,
   IoChatbubblesOutline,
   IoBrushOutline,
-  IoGitNetworkOutline,
-  IoSquareHalfOutline,
-  IoStopOutline,
+  IoShareSocialOutline,
+  IoAlbumsOutline,
+  IoSquareOutline,
   IoArrowBackOutline,
 } from "react-icons/io5";
 import ChatLayout from "../../Chats/components/ChatLayout";
@@ -98,7 +98,7 @@ const GroupWorkspace = () => {
                 className={`${styles.toolBtn} ${activeTool === "drawio" ? styles.activeToolBtn : ""}`}
                 onClick={() => handleToolSelect("drawio")}
               >
-                <IoGitNetworkOutline /> Draw.io
+                <IoShareSocialOutline /> Draw.io
               </button>
             </div>
           </div>
@@ -117,14 +117,14 @@ const GroupWorkspace = () => {
                 onClick={() => handleLayoutChange("split")}
                 title={t("split-view", "Split View")}
               >
-                <IoSquareHalfOutline />
+                <IoAlbumsOutline />
               </button>
               <button
                 className={`${styles.layoutBtn} ${layout === "tool-only" ? styles.activeLayoutBtn : ""}`}
                 onClick={() => handleLayoutChange("tool-only")}
                 title={t("tool-only", "Tool Only")}
               >
-                <IoStopOutline />
+                <IoSquareOutline />
               </button>
             </div>
           </div>

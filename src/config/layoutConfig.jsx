@@ -54,7 +54,7 @@ export const DEMO_NAV = {
         path: "",
       },
       {
-        name: "Groups",
+        name: "Groupss",
         translationKey: "groups",
         icon: <IoHardwareChipOutline />,
         path: PATHS.GROUP_WORKSPACE,
@@ -88,7 +88,7 @@ export const DEMO_NAV = {
         path: PATHS.DEPARTMENTS,
       },
       {
-        name: "Groups",
+        name: "Groupss",
         translationKey: "groups",
         icon: <IoHardwareChipOutline />,
         path: PATHS.GROUP_WORKSPACE,
@@ -122,7 +122,7 @@ export const DEMO_NAV = {
         path: "",
       },
       {
-        name: "Groups",
+        name: "Groupss",
         translationKey: "groups",
         icon: <IoHardwareChipOutline />,
         path: PATHS.GROUP_WORKSPACE,
@@ -140,7 +140,12 @@ export const DEMO_NAV = {
 export const DEPARTMENT_NAV = {
   member: {
     navLinks: [
-      { name: "Home", translationKey: "home", icon: <IoHomeOutline />, path: "" },
+      {
+        name: "Home",
+        translationKey: "home",
+        icon: <IoHomeOutline />,
+        path: "",
+      },
       {
         name: "Courses",
         translationKey: "courses",
@@ -181,7 +186,12 @@ export const DEPARTMENT_NAV = {
   },
   admin: {
     navLinks: [
-      { name: "Home", translationKey: "home", icon: <IoHomeOutline />, path: "" },
+      {
+        name: "Home",
+        translationKey: "home",
+        icon: <IoHomeOutline />,
+        path: "",
+      },
       {
         name: "Members",
         translationKey: "members",
@@ -234,7 +244,12 @@ export const DEPARTMENT_NAV = {
   },
   owner: {
     navLinks: [
-      { name: "Home", translationKey: "home", icon: <IoHomeOutline />, path: "" },
+      {
+        name: "Home",
+        translationKey: "home",
+        icon: <IoHomeOutline />,
+        path: "",
+      },
       {
         name: "Demo Library",
         translationKey: "workspace-library",
