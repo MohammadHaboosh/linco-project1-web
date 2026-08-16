@@ -34,7 +34,7 @@ export const uploadFileToCloud = async (uploadUrl, file) => {
 };
 
 export const updateUserProfilePhoto = async (userId, imagePath) => {
-  const response = await apiFetch(`/users/${userId}`, {
+  const response = await apiFetch(`/users/me`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
