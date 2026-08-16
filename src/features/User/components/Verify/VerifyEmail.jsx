@@ -1,81 +1,199 @@
-import { useLocation, useNavigate } from 'react-router-dom';
-import { IoMailUnreadOutline, IoArrowBackOutline } from 'react-icons/io5';
-import { PATHS } from '../../../../routes/paths.js';
-import styles from './VerifyEmail.module.css';
-
-import logoImg from '../../../../../public/images/LinCo.png';
-import mascotImg from '../../../../../public/images/linco-logo.jpg';
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import {
+  IoArrowBackOutline,
+  IoArrowForwardOutline,
+  IoCheckmarkCircle,
+  IoLockClosedOutline,
+  IoMailOpenOutline,
+  IoMailOutline,
+  IoShieldCheckmarkOutline,
+} from "react-icons/io5";
+import { resendVerificationEmail } from "../../api/userApi.js";
+import { PATHS } from "../../../../routes/paths.js";
+import styles from "./VerifyEmail.module.css";
 
 const VerifyEmail = () => {
   const location = useLocation();
-  const navigate = useNavigate();
-  const userEmail = location.state?.email || 'your email';
+  const userEmail = location.state?.email;
+  const [isResending, setIsResending] = useState(false);
+  const [resendMessage, setResendMessage] = useState({
+    type: "",
+    text: "",
+  });
 
-  const handleResend = () => {
-    alert('Verification email resent!');
+  const handleResend = async () => {
+    if (!userEmail) {
+      setResendMessage({
+        type: "error",
+        text: "We couldn't find your email address. Please return to sign up.",
+      });
+      return;
+    }
+
+    setIsResending(true);
+    setResendMessage({ type: "", text: "" });
+
+    try {
+      await resendVerificationEmail(userEmail);
+      setResendMessage({
+        type: "success",
+        text: "A new verification email is on its way.",
+      });
+    } catch (error) {
+      setResendMessage({
+        type: "error",
+        text: error.message || "We couldn't resend the email. Please try again.",
+      });
+    } finally {
+      setIsResending(false);
+    }
   };
 
   return (
-    <div className={styles['page-container']}>
-      <div className={styles['left-panel']}>
-        <div className={styles['left-content']}>
-          <div className={styles['logo-container']}>
-            <img src={logoImg} alt="LinCo Logo" className={styles.logo} />
+    <div className={styles["page-container"]}>
+      <aside className={styles["left-panel"]}>
+        <div className={styles["panel-grid"]} aria-hidden="true" />
+        <div className={styles["panel-glow"]} aria-hidden="true" />
+        <div className={styles["left-content"]}>
+          <Link
+            to={PATHS.LANDING}
+            className={styles["brand-link"]}
+            aria-label="LinCo home"
+          >
+            <img src="/icons/linco-logo-96.webp" alt="" width="48" height="48" />
+            <span>
+              <strong>LinCo</strong>
+              <small>Link Company</small>
+            </span>
+          </Link>
+
+          <div className={styles["brand-text"]}>
+            <p className={styles.eyebrow}>One last step</p>
+            <h2>Your learning workspace is almost ready.</h2>
+            <p>
+              Verify your email to protect your account and unlock your LinCo
+              learning workspace.
+            </p>
+            <ul className={styles["benefit-list"]}>
+              <li>
+                <IoCheckmarkCircle aria-hidden="true" />
+                <span>Secure account activation</span>
+              </li>
+              <li>
+                <IoCheckmarkCircle aria-hidden="true" />
+                <span>One-click email verification</span>
+              </li>
+              <li>
+                <IoCheckmarkCircle aria-hidden="true" />
+                <span>Instant access after sign in</span>
+              </li>
+            </ul>
           </div>
-          <div className={styles['mascot-box']}>
-            <img src={mascotImg} alt="LinCo Mascot" className={styles.mascot} />
-          </div>
-          <div className={styles['brand-text']}>
-            <h2>
-              <strong>LinCo..</strong> Link Company,
-            </h2>
-            <p>Empowering your learning journey with seamless connections.</p>
+
+          <div className={styles["verification-preview"]} aria-hidden="true">
+            <div className={styles["preview-header"]}>
+              <span>Account setup</span>
+              <small>Email sent</small>
+            </div>
+            <div className={styles["preview-row"]}>
+              <span className={styles["preview-icon"]}>
+                <IoMailOpenOutline />
+              </span>
+              <span>
+                <strong>Check your inbox</strong>
+                <small>Open the email from LinCo</small>
+              </span>
+              <i>1</i>
+            </div>
+            <div className={styles["preview-row"]}>
+              <span className={styles["preview-icon"]}>
+                <IoShieldCheckmarkOutline />
+              </span>
+              <span>
+                <strong>Verify your account</strong>
+                <small>Use the secure link inside</small>
+              </span>
+              <i>2</i>
+            </div>
           </div>
         </div>
-      </div>
+      </aside>
 
-      <div className={styles['right-panel']}>
-        <div className={styles['verify-wrapper']}>
-          <div className={styles['icon-container']}>
-            <IoMailUnreadOutline className={styles['mail-icon']} />
+      <main className={styles["right-panel"]}>
+        <section
+          className={styles["verify-wrapper"]}
+          aria-labelledby="verify-email-title"
+        >
+          <div className={styles["icon-container"]} aria-hidden="true">
+            <span className={styles["icon-halo"]} />
+            <IoMailOutline className={styles["mail-icon"]} />
+            <IoCheckmarkCircle className={styles["status-icon"]} />
           </div>
 
-          <h1 className={styles.title}>Check your email</h1>
+          <header className={styles.header}>
+            <span className={styles["header-kicker"]}>Email verification</span>
+            <h1 id="verify-email-title" className={styles.title}>
+              Check your inbox
+            </h1>
+            <p className={styles.description}>
+              We sent a secure verification link to
+            </p>
+          </header>
 
-          <p className={styles.description}>
-            We're glad you're here! We've sent a verification link to:
-            <br />
-            <strong className={styles['email-highlight']}>{userEmail}</strong>
-          </p>
+          <div className={styles["email-card"]}>
+            <IoMailOutline aria-hidden="true" />
+            <strong>
+              {userEmail || "the email address you registered with"}
+            </strong>
+          </div>
 
-          <p className={styles.instructions}>
-            Please click the link in that email to activate your account and
-            start using LinCo.
-          </p>
+          <div className={styles["instruction-card"]}>
+            <IoLockClosedOutline aria-hidden="true" />
+            <p>
+              Open the email and select <strong>Verify email</strong>. The link
+              is unique to your account and may expire for your security.
+            </p>
+          </div>
 
-          <button
-            className={styles['btn-primary']}
-            onClick={() => navigate(PATHS.SIGNIN)}
-          >
-            Go to Login
-          </button>
+          <Link to={PATHS.SIGNIN} className={styles["btn-primary"]}>
+            Continue to sign in
+            <IoArrowForwardOutline aria-hidden="true" />
+          </Link>
 
-          <div className={styles['resend-section']}>
-            <p>Didn't receive the email?</p>
-            <button className={styles['btn-text']} onClick={handleResend}>
-              Click to resend
+          <div className={styles.divider} aria-hidden="true">
+            <span>Didn&apos;t get the email?</span>
+          </div>
+
+          <div className={styles["resend-section"]}>
+            <p>Check your spam folder or request a fresh verification link.</p>
+            <button
+              type="button"
+              className={styles["btn-secondary"]}
+              onClick={handleResend}
+              disabled={isResending}
+            >
+              <IoMailOpenOutline aria-hidden="true" />
+              {isResending ? "Sending..." : "Resend verification email"}
             </button>
           </div>
 
-          <button
-            className={styles['btn-back']}
-            onClick={() => navigate(PATHS.SIGNUP)}
-          >
-            <IoArrowBackOutline className={styles['back-icon']} />
+          {resendMessage.text && (
+            <div
+              className={`${styles["resend-message"]} ${styles[resendMessage.type]}`}
+              role="status"
+              aria-live="polite"
+            >
+              {resendMessage.text}
+            </div>
+          )}
+
+          <Link to={PATHS.SIGNUP} className={styles["back-link"]}>
+            <IoArrowBackOutline className={styles["back-icon"]} aria-hidden="true" />
             Back to sign up
-          </button>
-        </div>
-      </div>
+          </Link>
+        </section>
+      </main>
     </div>
   );
 };
