@@ -288,6 +288,7 @@
   background-color: var(--app-page-bg);
 }
 
+/* 💡 الكلاسات الصحيحة لتقسيم الشاشة */
 .panel {
   background-color: var(--app-surface);
   border: 1px solid var(--app-border);
@@ -298,36 +299,22 @@
   transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.layout-chat-only .chatPanel {
+.panelFull {
   flex: 1;
   opacity: 1;
 }
 
-.layout-chat-only .toolPanel {
-  flex: 0;
-  width: 0;
-  opacity: 0;
-  margin: 0;
-  padding: 0;
-  border: none;
-}
-
-.layout-split .chatPanel {
+.chatPanelSplit {
   flex: 0.35;
   opacity: 1;
 }
 
-.layout-split .toolPanel {
+.toolPanelSplit {
   flex: 0.65;
   opacity: 1;
 }
 
-.layout-tool-only .toolPanel {
-  flex: 1;
-  opacity: 1;
-}
-
-.layout-tool-only .chatPanel {
+.panelHidden {
   flex: 0;
   width: 0;
   opacity: 0;
@@ -367,11 +354,11 @@
     transition: transform 0.3s ease;
   }
 
-  .layout-split .chatPanel {
+  .chatPanelSplit {
     display: none;
   }
 
-  .layout-split .toolPanel {
+  .toolPanelSplit {
     flex: 1;
   }
 

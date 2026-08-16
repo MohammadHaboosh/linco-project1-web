@@ -8,7 +8,6 @@ import {
   IoGitNetworkOutline,
   IoSquareHalfOutline,
   IoStopOutline,
-  IoChatboxOutline,
   IoArrowBackOutline,
 } from "react-icons/io5";
 import ChatLayout from "../../Chats/components/ChatLayout";
@@ -131,14 +130,28 @@ const GroupWorkspace = () => {
           </div>
         </header>
 
-        <div
-          className={`${styles.workspaceStage} ${styles[`layout-${layout}`]}`}
-        >
-          <div className={`${styles.panel} ${styles.chatPanel}`}>
+        <div className={styles.workspaceStage}>
+          <div
+            className={`${styles.panel} ${
+              layout === "chat-only"
+                ? styles.panelFull
+                : layout === "split"
+                  ? styles.chatPanelSplit
+                  : styles.panelHidden
+            }`}
+          >
             <ChatLayout />
           </div>
 
-          <div className={`${styles.panel} ${styles.toolPanel}`}>
+          <div
+            className={`${styles.panel} ${
+              layout === "tool-only"
+                ? styles.panelFull
+                : layout === "split"
+                  ? styles.toolPanelSplit
+                  : styles.panelHidden
+            }`}
+          >
             {activeTool === "photopea" && (
               <iframe
                 src="https://www.photopea.com/"
