@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   IoCloudUploadOutline,
   IoCloseOutline,
@@ -13,10 +13,15 @@ import { useTranslation } from "react-i18next";
 import { useAvailableTags } from "../../../../../hooks/useAvailableTags";
 
 const GeneralInfoTab = ({ data = {}, onChange }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const fileInputRef = useRef(null);
+  const [imageError, setImageError] = useState("");
   const tagsList = data.tags || [];
-  const { availableTags, isLoadingTags } = useAvailableTags();
+  const { availableTags, isLoadingTags, tagsError, retryTags } =
+    useAvailableTags();
+  const formattedTagCount = new Intl.NumberFormat(
+    i18n.resolvedLanguage || i18n.language,
+  ).format(tagsList.length);
 
   const handleTriggerFileInput = () => {
     if (fileInputRef.current) {
@@ -24,9 +29,15 @@ const GeneralInfoTab = ({ data = {}, onChange }) => {
     }
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files?.[0];
+  const selectImage = (file) => {
     if (file) {
+      const supportedImage = /\.(png|jpe?g|webp|gif)$/i.test(file.name);
+      if (!supportedImage) {
+        setImageError(t("course-thumbnail-invalid-file"));
+        return;
+      }
+
+      setImageError("");
       const previewUrl = URL.createObjectURL(file);
 
       onChange({
@@ -36,12 +47,32 @@ const GeneralInfoTab = ({ data = {}, onChange }) => {
     }
   };
 
+  const handleImageChange = (e) => selectImage(e.target.files?.[0]);
+
+  const handleImageDrop = (e) => {
+    e.preventDefault();
+    selectImage(e.dataTransfer.files?.[0]);
+  };
+
+  useEffect(
+    () => () => {
+      if (data.imagePreview?.startsWith("blob:")) {
+        URL.revokeObjectURL(data.imagePreview);
+      }
+    },
+    [data.imagePreview],
+  );
+
   const handleTagSelect = (e) => {
     const selectedId = e.target.value;
     if (!selectedId) return;
 
-    const selectedTagObj = availableTags.find((t) => t.id === selectedId);
-    const isDuplicate = tagsList.some((tag) => tag.id === selectedId);
+    const selectedTagObj = availableTags.find(
+      (tag) => String(tag.id) === String(selectedId),
+    );
+    const isDuplicate = tagsList.some(
+      (tag) => String(tag.id) === String(selectedId),
+    );
 
     if (selectedTagObj && !isDuplicate) {
       onChange("tags", [...tagsList, selectedTagObj]);
@@ -71,11 +102,10 @@ const GeneralInfoTab = ({ data = {}, onChange }) => {
         </div>
         <div>
           <h3 className={styles.tabTitle}>
-            {t("basic-information", "Basic Information")}
+            {t("basic-information")}
           </h3>
           <p className={styles.tabSubtitle}>
-            Manage your course settings, metadata, pricing, and visual
-            thumbnail.
+            {t("course-studio-basic-information-description")}
           </p>
         </div>
       </div>
@@ -84,25 +114,28 @@ const GeneralInfoTab = ({ data = {}, onChange }) => {
         {/* Cover Image */}
         <div className={`${styles.formGroup} ${styles.fullWidth}`}>
           <label className={styles.formLabel}>
-            Course Thumbnail <span className={styles.required}>*</span>
+            {t("course-thumbnail")} <span className={styles.required}>*</span>
           </label>
 
-          <div
+          <button
+            type="button"
             className={styles.imageUploadArea}
             onClick={handleTriggerFileInput}
-            style={{ cursor: "pointer" }}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={handleImageDrop}
+            aria-label={t("course-thumbnail-upload-label")}
           >
             {currentImageDisplay ? (
               <div className={styles.imagePreviewWrapper}>
                 <img
                   src={currentImageDisplay}
-                  alt="Course Cover"
+                  alt={t("course-thumbnail-preview-alt")}
                   className={styles.previewImage}
                 />
                 <div className={styles.imageOverlay}>
-                  <button type="button" className={styles.changeImageBtn}>
-                    Change Image
-                  </button>
+                  <span className={styles.changeImageBtn}>
+                    {t("change-image")}
+                  </span>
                 </div>
               </div>
             ) : (
@@ -111,117 +144,132 @@ const GeneralInfoTab = ({ data = {}, onChange }) => {
                   <IoCloudUploadOutline className={styles.uploadIcon} />
                 </div>
                 <p className={styles.uploadText}>
-                  <strong>Click to upload</strong> or drag and drop
+                  {t("course-thumbnail-upload-instruction")}
                 </p>
                 <p className={styles.uploadHint}>
-                  PNG, JPG, WEBP or GIF (Recommended resolution: 1280x720)
+                  {t("course-thumbnail-upload-requirements")}
                 </p>
               </div>
             )}
 
-            <input
-              ref={fileInputRef}
-              type="file"
-              style={{ display: "none" }}
-              accept="image/*"
-              onChange={handleImageChange}
-            />
-          </div>
+          </button>
+          <input
+            ref={fileInputRef}
+            className={styles.visuallyHiddenInput}
+            type="file"
+            accept=".png,.jpg,.jpeg,.webp,.gif,image/png,image/jpeg,image/webp,image/gif"
+            onChange={handleImageChange}
+            aria-label={t("course-thumbnail-file-input-label")}
+          />
+          {imageError && (
+            <p className={styles.fieldError} role="alert">
+              {imageError}
+            </p>
+          )}
         </div>
 
         {/* Title */}
         <div className={`${styles.formGroup} ${styles.fullWidth}`}>
-          <label className={styles.formLabel}>
-            Course Title <span className={styles.required}>*</span>
+          <label className={styles.formLabel} htmlFor="course-title">
+            {t("course-title")} <span className={styles.required}>*</span>
           </label>
           <input
+            id="course-title"
             type="text"
             className={styles.input}
-            value={data.title}
+            value={data.title || ""}
             onChange={(e) => onChange("title", e.target.value)}
-            placeholder="e.g. Master React JS & Modern Web Development"
+            placeholder={t("course-title-placeholder")}
+            required
           />
           <span className={styles.hintText}>
-            Keep it clear, concise, and catchy for prospective students.
+            {t("course-title-hint")}
           </span>
         </div>
 
         {/* Visibility */}
         <div className={styles.formGroup}>
-          <label className={styles.formLabel}>
-            <IoGlobeOutline className={styles.labelIcon} /> Visibility
+          <label className={styles.formLabel} htmlFor="course-visibility">
+            <IoGlobeOutline className={styles.labelIcon} aria-hidden="true" />
+            {t("visibility")}
           </label>
           <div className={styles.selectWrapper}>
             <select
+              id="course-visibility"
               className={styles.selectInput}
               value={data.visibility || "PRIVATE"}
               onChange={(e) => onChange("visibility", e.target.value)}
             >
-              <option value="PUBLIC">Public (Listed in Course Library)</option>
-              <option value="PRIVATE">
-                Private (Access by Link / Invitation)
-              </option>
+              <option value="PUBLIC">{t("course-visibility-public")}</option>
+              <option value="PRIVATE">{t("course-visibility-private")}</option>
             </select>
           </div>
           <span className={styles.hintText}>
-            Control who can discover and enroll in your course.
+            {t("course-visibility-hint")}
           </span>
         </div>
 
         {/* Price */}
         <div className={styles.formGroup}>
-          <label className={styles.formLabel}>
-            <IoCashOutline className={styles.labelIcon} /> Course Price ($)
+          <label className={styles.formLabel} htmlFor="course-price">
+            <IoCashOutline className={styles.labelIcon} aria-hidden="true" />
+            {t("course-price-usd")}
           </label>
           <div className={styles.priceInputWrapper}>
             <span className={styles.currencySymbol}>$</span>
             <input
+              id="course-price"
               type="number"
               min="0"
               step="0.01"
               className={`${styles.input} ${styles.priceInput}`}
               value={data.price ?? 0}
               onChange={(e) => onChange("price", e.target.value)}
-              placeholder="0.00"
+              placeholder={t("course-price-placeholder")}
+              inputMode="decimal"
+              dir="ltr"
             />
           </div>
-          <span className={styles.hintText}>Set to 0 for a free course.</span>
+          <span className={styles.hintText}>{t("course-price-hint")}</span>
         </div>
 
         {/* Tags */}
         <div className={`${styles.formGroup} ${styles.fullWidth}`}>
-          <label className={styles.formLabel}>
-            <IoPricetagOutline className={styles.labelIcon} /> Course Tags
+          <label className={styles.formLabel} htmlFor="course-tags">
+            <IoPricetagOutline
+              className={styles.labelIcon}
+              aria-hidden="true"
+            />
+            {t("course-tags")}
           </label>
           <div className={styles.tagsInputContainer}>
             {tagsList.map((tag, idx) => (
               <span key={tag.id || idx} className={styles.tagPill}>
                 {tag.name}
-                <IoCloseOutline
-                  className={styles.tagRemoveIcon}
+                <button
+                  type="button"
+                  className={styles.tagRemoveBtn}
                   onClick={(e) => {
                     e.stopPropagation();
                     removeTag(tag.id);
                   }}
-                />
+                  aria-label={t("remove-tag", { tagName: tag.name })}
+                >
+                  <IoCloseOutline aria-hidden="true" />
+                </button>
               </span>
             ))}
 
             <select
+              id="course-tags"
               className={styles.tagInputField}
-              style={{
-                flex: 1,
-                border: "none",
-                outline: "none",
-                background: "transparent",
-                color: "#64748b",
-              }}
               onChange={handleTagSelect}
               defaultValue=""
-              disabled={isLoadingTags}
+              disabled={isLoadingTags || tagsError}
+              aria-busy={isLoadingTags}
             >
               <option value="" disabled>
-                {isLoadingTags ? "Loading tags..." : "Select a tag to add..."}
+                {isLoadingTags ? t("loading-tags") : t("select-tag-to-add")}
               </option>
               {availableTags.map((tag) => (
                 <option key={tag.id} value={tag.id}>
@@ -230,26 +278,45 @@ const GeneralInfoTab = ({ data = {}, onChange }) => {
               ))}
             </select>
           </div>
+          {tagsError && (
+            <div className={styles.inlineError} role="alert">
+              <span>{t("course-tags-load-failed")}</span>
+              <button type="button" onClick={retryTags}>
+                {t("retry")}
+              </button>
+            </div>
+          )}
           <span className={styles.hintText}>
-            Select relevant global tags to help trainees find your course.
+            {t("course-tags-hint")}
+          </span>
+          <span className={styles.selectionStatus} aria-live="polite">
+            {t("selected-tag-count", {
+              count: tagsList.length,
+              formattedCount: formattedTagCount,
+            })}
           </span>
         </div>
 
         {/* Description */}
         <div className={`${styles.formGroup} ${styles.fullWidth}`}>
-          <label className={styles.formLabel}>
-            <IoDocumentTextOutline className={styles.labelIcon} /> Detailed
-            Description
+          <label className={styles.formLabel} htmlFor="course-description">
+            <IoDocumentTextOutline
+              className={styles.labelIcon}
+              aria-hidden="true"
+            />
+            {t("detailed-description")}
           </label>
           <textarea
+            id="course-description"
             className={styles.textarea}
             rows="5"
-            value={data.description}
+            value={data.description || ""}
             onChange={(e) => onChange("description", e.target.value)}
-            placeholder="Describe what trainees will learn, prerequisites, and the target audience..."
+            placeholder={t("course-description-placeholder")}
+            required
           />
           <span className={styles.hintText}>
-            A comprehensive overview helps drive higher enrollment.
+            {t("course-description-hint")}
           </span>
         </div>
       </div>

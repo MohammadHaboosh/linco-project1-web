@@ -1,4 +1,3 @@
-import React from "react";
 import GeneralInfoTab from "../../../OwnerCourses/components/ManageCourse/components/tabs/GeneralInfoTab/GeneralInfoTab";
 import styles from "./StepOneDetails.module.css";
 import { IoArrowForwardOutline } from "react-icons/io5";
@@ -30,7 +29,8 @@ const StepOneDetails = ({
             t("creating-course")
           ) : (
             <>
-              {t("proceed-to-curriculum")} <IoArrowForwardOutline />
+              <span>{t("proceed-to-curriculum")}</span>
+              <IoArrowForwardOutline aria-hidden="true" />
             </>
           )}
         </button>

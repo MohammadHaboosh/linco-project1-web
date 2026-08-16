@@ -1,4 +1,3 @@
-import React from "react";
 import {
   IoShieldCheckmarkOutline,
   IoTimeOutline,
@@ -7,46 +6,79 @@ import {
   IoAddCircleOutline,
 } from "react-icons/io5";
 import styles from "./SectionQuizSection.module.css";
+import { useTranslation } from "react-i18next";
 
-const SectionQuizSection = ({ quiz, onAddQuiz, onDeleteQuiz }) => {
+const SectionQuizSection = ({
+  quiz,
+  onAddQuiz,
+  onDeleteQuiz,
+  isLoading,
+  hasError,
+  onRetry,
+}) => {
+  const { t, i18n } = useTranslation();
+  const quizDuration = quiz?.durationMinutes ?? quiz?.duration;
+
   return (
     <div className={styles.quizBox}>
       <div className={styles.header}>
         <h5 className={styles.title}>
-          <IoShieldCheckmarkOutline className={styles.titleIcon} /> Section
-          Assessment
+          <IoShieldCheckmarkOutline
+            className={styles.titleIcon}
+            aria-hidden="true"
+          />
+          {t("section-assessment")}
         </h5>
       </div>
 
-      {quiz ? (
+      {isLoading ? (
+        <p className={styles.statusMessage} role="status">
+          {t("loading-quiz")}
+        </p>
+      ) : hasError ? (
+        <div className={styles.errorMessage} role="alert">
+          <span>{t("quiz-load-failed")}</span>
+          <button type="button" onClick={onRetry}>
+            {t("retry")}
+          </button>
+        </div>
+      ) : quiz ? (
         <div className={styles.quizCard}>
           <div className={styles.quizInfo}>
-            <span className={styles.quizBadge}>Quiz:</span>
+            <span className={styles.quizBadge}>{t("quiz-label")}</span>
             <span className={styles.quizTitle}>{quiz.title}</span>
           </div>
           <div className={styles.quizMeta}>
             <span className={styles.duration}>
-              <IoTimeOutline /> {quiz.duration} Mins
+              <IoTimeOutline aria-hidden="true" />
+              {t("quiz-duration-minutes", {
+                count: Number(quizDuration || 0),
+                formattedCount: new Intl.NumberFormat(
+                  i18n.resolvedLanguage || i18n.language,
+                ).format(quizDuration || 0),
+              })}
             </span>
             <button
               type="button"
               className={styles.iconBtn}
               onClick={onAddQuiz}
+              aria-label={t("edit-quiz-label", { title: quiz.title })}
             >
-              <IoPencilOutline />
+              <IoPencilOutline aria-hidden="true" />
             </button>
             <button
               type="button"
               className={styles.iconBtnDanger}
               onClick={onDeleteQuiz}
+              aria-label={t("delete-quiz-label", { title: quiz.title })}
             >
-              <IoTrashOutline />
+              <IoTrashOutline aria-hidden="true" />
             </button>
           </div>
         </div>
       ) : (
         <button type="button" className={styles.addQuizBtn} onClick={onAddQuiz}>
-          <IoAddCircleOutline /> Add Section Quiz
+          <IoAddCircleOutline aria-hidden="true" /> {t("add-section-quiz")}
         </button>
       )}
     </div>

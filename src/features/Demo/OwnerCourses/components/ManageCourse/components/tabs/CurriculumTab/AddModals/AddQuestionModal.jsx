@@ -56,35 +56,20 @@ const AddQuestionModal = ({ isOpen, onClose, onSubmit }) => {
     e.preventDefault();
 
     if (!choices.some((c) => c.isCorrect)) {
-      alert(
-        t(
-          "select-at-least-one-correct-answer",
-          "Please select at least one correct answer.",
-        ),
-      );
+      alert(t("select-at-least-one-correct-answer"));
       return;
     }
 
     const hasEmptyChoices = choices.some((c) => !c.text.trim());
     if (hasEmptyChoices) {
-      alert(
-        t(
-          "fill-all-choices",
-          "All choices must have text. Please fill them in or remove the empty ones.",
-        ),
-      );
+      alert(t("fill-all-choices"));
       return;
     }
 
     const choiceTexts = choices.map((c) => c.text.trim().toLowerCase());
     const uniqueChoices = new Set(choiceTexts);
     if (uniqueChoices.size !== choices.length) {
-      alert(
-        t(
-          "choices-must-be-unique",
-          "All choices must be unique. You have duplicate answers.",
-        ),
-      );
+      alert(t("choices-must-be-unique"));
       return;
     }
 
@@ -121,44 +106,59 @@ const AddQuestionModal = ({ isOpen, onClose, onSubmit }) => {
       <div
         className={`${styles.modalContainer} ${styles.largeModal}`}
         onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="question-dialog-title"
+        aria-describedby="question-dialog-description"
       >
         <div className={styles.modalHeader}>
           <div className={styles.headerTitleGroup}>
             <div className={`${styles.iconBadge} ${styles.emeraldBadge}`}>
-              <IoAddCircleOutline />
+              <IoAddCircleOutline aria-hidden="true" />
             </div>
             <div>
-              <h3>{t("add-question-to-bank")}</h3>
-              <p>{t("create-question-text-note-and-set-a-correct-answer")}</p>
+              <h3 id="question-dialog-title">{t("add-question-to-bank")}</h3>
+              <p id="question-dialog-description">
+                {t("create-question-text-note-and-set-a-correct-answer")}
+              </p>
             </div>
           </div>
-          <button className={styles.closeBtn} onClick={onClose}>
-            <IoCloseOutline />
+          <button
+            className={styles.closeBtn}
+            type="button"
+            onClick={onClose}
+            aria-label={t("close-question-dialog")}
+          >
+            <IoCloseOutline aria-hidden="true" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className={styles.modalForm}>
           <div className={styles.modalBodyScrollable}>
             <div className={styles.formGroup}>
-              <label className={styles.label}>{t("question-text")}</label>
+              <label className={styles.label} htmlFor="new-question-text">
+                {t("question-text")}
+              </label>
               <textarea
+                id="new-question-text"
                 required
                 rows="3"
                 className={styles.textarea}
-                placeholder="e.g. What is Authentication?"
+                placeholder={t("question-text-placeholder")}
                 value={question}
                 onChange={(e) => setQuestion(e.target.value)}
               />
             </div>
 
             <div className={styles.formGroup}>
-              <label className={styles.label}>
+              <label className={styles.label} htmlFor="new-question-note">
                 {t("question-note-optional")}
               </label>
               <textarea
+                id="new-question-note"
                 rows="2"
                 className={styles.textarea}
-                placeholder="e.g. Hint or extra information..."
+                placeholder={t("question-note-placeholder")}
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
               />
@@ -182,10 +182,11 @@ const AddQuestionModal = ({ isOpen, onClose, onSubmit }) => {
                       type="button"
                       className={`${styles.correctRadioBtn} ${choice.isCorrect ? styles.activeChoice : ""}`}
                       onClick={() => handleToggleCorrectChoice(index)}
-                      title={t(
-                        "toggle-correct-answer",
-                        "Toggle correct answer",
-                      )}
+                      title={t("toggle-correct-answer")}
+                      aria-pressed={choice.isCorrect}
+                      aria-label={t("toggle-choice-correct-label", {
+                        choice: String.fromCharCode(65 + index),
+                      })}
                     >
                       {choice.isCorrect ? <IoCheckbox /> : <IoSquareOutline />}
                     </button>
@@ -194,7 +195,12 @@ const AddQuestionModal = ({ isOpen, onClose, onSubmit }) => {
                       type="text"
                       required
                       className={styles.input}
-                      placeholder={`Choice ${String.fromCharCode(65 + index)}`}
+                      placeholder={t("choice-placeholder", {
+                        choice: String.fromCharCode(65 + index),
+                      })}
+                      aria-label={t("choice-input-label", {
+                        choice: String.fromCharCode(65 + index),
+                      })}
                       value={choice.text}
                       onChange={(e) =>
                         handleChoiceTextChange(index, e.target.value)
@@ -206,7 +212,9 @@ const AddQuestionModal = ({ isOpen, onClose, onSubmit }) => {
                         type="button"
                         className={styles.removeChoiceBtn}
                         onClick={() => handleRemoveChoice(index)}
-                        title={t("remove-choice")}
+                        aria-label={t("remove-choice-label", {
+                          choice: String.fromCharCode(65 + index),
+                        })}
                       >
                         <IoTrashOutline />
                       </button>

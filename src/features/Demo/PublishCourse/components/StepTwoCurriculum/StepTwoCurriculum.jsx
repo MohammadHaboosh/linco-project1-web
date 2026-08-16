@@ -1,4 +1,3 @@
-import React from "react";
 import CurriculumTab from "../../../OwnerCourses/components/ManageCourse/components/tabs/CurriculumTab/CurriculumTab";
 import CurriculumFooter from "../CurriculumFooter/CurriculumFooter";
 import styles from "./StepTwoCurriculum.module.css";

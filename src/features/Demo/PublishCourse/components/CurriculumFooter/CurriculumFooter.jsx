@@ -1,4 +1,3 @@
-import React from "react";
 import { IoArrowBackOutline, IoCheckmarkCircleOutline } from "react-icons/io5";
 
 const CurriculumFooter = ({
@@ -12,7 +11,7 @@ const CurriculumFooter = ({
   return (
     <div className={styles.publishActionArea}>
       <button className={styles.backStepBtn} type="button" onClick={onBack}>
-        <IoArrowBackOutline style={{ marginRight: "6px" }} /> {t("back")}
+        <IoArrowBackOutline aria-hidden="true" /> <span>{t("back")}</span>
       </button>
       <button
         className={styles.finalPublishBtn}
@@ -24,7 +23,8 @@ const CurriculumFooter = ({
           t("saving")
         ) : (
           <>
-            <IoCheckmarkCircleOutline /> {t("create-course")}
+            <IoCheckmarkCircleOutline aria-hidden="true" />
+            <span>{t("create-course")}</span>
           </>
         )}
       </button>

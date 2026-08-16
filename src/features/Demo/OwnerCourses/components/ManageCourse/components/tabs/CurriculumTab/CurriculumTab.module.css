@@ -1,478 +1,621 @@
 .tabCard {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 28px;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03);
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 1.5rem;
+  min-width: 0;
+  padding: clamp(1.1rem, 3vw, 1.75rem);
+  border: 1px solid var(--app-border);
+  border-radius: 1rem;
+  background: var(--app-surface);
+  color: var(--app-text);
+  box-shadow: var(--app-card-shadow);
 }
 
 .tabHeader {
-  border-bottom: 1px solid #f1f5f9;
-  padding-bottom: 16px;
+  min-width: 0;
+  padding-block-end: 1rem;
+  border-block-end: 1px solid var(--app-divider);
 }
 
 .tabTitle {
+  margin: 0 0 0.25rem;
+  color: var(--app-heading);
   font-size: 1.3rem;
   font-weight: 700;
-  color: #0f172a;
-  margin: 0 0 4px 0;
 }
 
 .tabSubtitle {
-  font-size: 0.9rem;
-  color: #64748b;
   margin: 0;
+  color: var(--app-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.curriculumList,
+.lessonsContainer,
+.lessonsList {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 
 .curriculumList {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  gap: 1.25rem;
 }
 
-/* ========================================================
-   بطاقة القسم المحدثة (Section Card)
-   ======================================================== */
+.curriculumEmptyState,
+.emptyState {
+  padding: clamp(1.25rem, 4vw, 2rem);
+  border: 1px dashed var(--app-border-strong);
+  border-radius: 0.75rem;
+  background: var(--app-surface-muted);
+  color: var(--app-muted);
+  text-align: center;
+}
+
+.curriculumEmptyState h4 {
+  margin: 0 0 0.35rem;
+  color: var(--app-heading);
+  font-size: 1.05rem;
+}
+
+.curriculumEmptyState p {
+  margin: 0;
+  line-height: 1.5;
+}
+
 .sectionCard {
-  border: 1px solid #cbd5e1;
-  border-radius: 14px;
-  background-color: #ffffff;
+  min-width: 0;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  border: 1px solid var(--app-border-strong);
+  border-radius: 0.875rem;
+  background: var(--app-surface);
+  box-shadow: var(--app-card-shadow);
   transition:
     border-color 0.2s ease,
     box-shadow 0.2s ease;
 }
 
 .sectionCard:hover {
-  border-color: #94a3b8;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-color: var(--app-muted);
+  box-shadow: var(--app-card-hover-shadow);
 }
 
 .sectionHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 20px;
-  background-color: #f8fafc;
-  border-bottom: 1px solid #e2e8f0;
-  cursor: pointer;
-  user-select: none;
+  gap: 0.75rem;
+  min-width: 0;
+  padding: 0.875rem 1.25rem;
+  border-block-end: 1px solid var(--app-border);
+  background: var(--app-surface-muted);
 }
 
 .sectionHeaderLeft {
   display: flex;
   align-items: center;
-  gap: 12px;
-  flex: 1;
+  gap: 0.75rem;
+  min-width: 0;
+  flex: 1 1 auto;
 }
 
-.collapseBtn {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  width: 28px;
-  height: 28px;
+.collapseBtn,
+.lessonExpandBtn {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
-  color: #64748b;
+  width: 1.875rem;
+  height: 1.875rem;
+  flex: 0 0 1.875rem;
+  padding: 0;
+  border: 1px solid var(--app-border);
+  border-radius: 0.45rem;
+  background: var(--app-surface);
+  color: var(--app-muted);
   cursor: pointer;
-  transition: all 0.2s;
 }
 
-.collapseBtn:hover {
-  background: #f1f5f9;
-  color: #0f172a;
+.collapseBtn:hover,
+.lessonExpandBtn:hover {
+  background: var(--app-surface-soft);
+  color: var(--app-heading);
 }
 
 .sectionBadge {
   display: flex;
   align-items: center;
-  gap: 6px;
-  background-color: #1e293b;
-  color: #ffffff;
+  gap: 0.4rem;
+  flex: 0 0 auto;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: var(--app-text-strong);
+  color: var(--app-surface);
   font-size: 0.8rem;
   font-weight: 700;
-  padding: 5px 12px;
-  border-radius: 20px;
   white-space: nowrap;
 }
 
+:global(:root[data-theme="dark"]) .sectionBadge {
+  background: var(--app-info-surface);
+  color: var(--app-info-text);
+}
+
 .sectionTitleInput {
+  width: 100%;
+  min-width: 4rem;
+  padding: 0.4rem 0.6rem;
   border: 1px solid transparent;
+  border-radius: 0.45rem;
+  outline: none;
   background: transparent;
+  color: var(--app-text-strong);
+  font: inherit;
   font-size: 1rem;
   font-weight: 700;
-  color: #0f172a;
-  padding: 4px 10px;
-  border-radius: 6px;
-  outline: none;
-  width: 60%;
-  transition: all 0.2s;
+}
+
+.sectionTitleInput:hover,
+.sectionTitleInput:focus {
+  background: var(--app-surface);
 }
 
 .sectionTitleInput:hover {
-  background-color: #ffffff;
-  border-color: #e2e8f0;
+  border-color: var(--app-border);
 }
 
 .sectionTitleInput:focus {
-  background-color: #ffffff;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  border-color: var(--app-link);
+  box-shadow: 0 0 0 3px var(--app-focus-ring);
 }
 
 .sectionHeaderRight {
   display: flex;
+  flex: 0 0 auto;
+}
+
+.deleteSectionBtn,
+.deleteLessonBtn,
+.deleteAttachmentBtn {
+  display: flex;
   align-items: center;
-}
-
-.deleteSectionBtn {
+  justify-content: center;
+  padding: 0.4rem;
+  border: 0;
+  border-radius: 0.45rem;
   background: transparent;
-  border: none;
-  font-size: 1.15rem;
-  color: #94a3b8;
+  color: var(--app-muted);
+  font-size: 1.1rem;
   cursor: pointer;
-  padding: 6px;
-  border-radius: 6px;
-  transition: all 0.2s ease;
 }
 
-.deleteSectionBtn:hover {
-  background-color: #fee2e2;
-  color: #ef4444;
+.deleteSectionBtn:hover,
+.deleteLessonBtn:hover,
+.deleteAttachmentBtn:hover {
+  background: var(--app-danger-surface);
+  color: var(--app-danger-text);
 }
 
 .sectionBody {
-  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 1.25rem;
+  min-width: 0;
+  padding: clamp(0.875rem, 3vw, 1.25rem);
 }
 
-/* الشبكة الخاصة بالمكونين بنك الأسئلة والـ Quiz */
 .bottomAssessmentRow {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  min-width: 0;
 }
 
-/* زر إضافة قسم جديد بالكامل */
 .addSectionBtnRoot {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 0.6rem;
   width: 100%;
-  padding: 16px;
-  background: #ffffff;
-  border: 2px dashed #94a3b8;
-  border-radius: 12px;
-  color: #334155;
-  font-weight: 700;
+  min-height: 3.25rem;
+  padding: 0.875rem;
+  border: 2px dashed var(--app-border-strong);
+  border-radius: 0.75rem;
+  background: var(--app-surface);
+  color: var(--app-text-strong);
+  font: inherit;
   font-size: 1rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s ease;
 }
 
 .addSectionBtnRoot:hover {
-  background-color: #f8fafc;
-  border-color: #475569;
-  color: #0f172a;
+  border-color: var(--app-link);
+  background: var(--app-info-surface);
+  color: var(--app-info-text);
 }
 
 .rootAddIcon {
+  flex: 0 0 auto;
   font-size: 1.3rem;
 }
 
-@media (max-width: 768px) {
-  .bottomAssessmentRow {
-    grid-template-columns: 1fr;
-  }
-}
-.lessonWrapperCard {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  overflow: hidden;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-}
-
-.lessonWrapperCard:hover {
-  border-color: #cbd5e1;
-}
-
-.lessonCardHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 16px;
-  background-color: #ffffff;
-}
-
-.lessonExpandBtn {
-  background: #f1f5f9;
-  border: none;
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #475569;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.lessonExpandBtn:hover {
-  background: #e2e8f0;
-  color: #0f172a;
-}
-
-.attachmentBadgeCount {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #d97706;
-  background-color: #fef3c7;
-  padding: 4px 10px;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.attachmentBadgeCount:hover {
-  background-color: #fde68a;
-}
-
-.attachmentsDrawer {
-  background-color: #f8fafc;
-  border-top: 1px solid #f1f5f9;
-  padding: 16px;
-}
-
-.drawerHeader h5 {
-  margin: 0 0 12px 0;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #64748b;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.attachmentsGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 12px;
-}
-
-.attachmentItemCard {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  padding: 10px 12px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
-}
-
-.attachmentInfo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  overflow: hidden;
-}
-
-.fileIcon {
-  font-size: 1.4rem;
-  color: #d97706;
-  flex-shrink: 0;
-}
-
-.fileName {
-  margin: 0;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #1e293b;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 120px;
-}
-
-.fileMeta {
-  font-size: 0.72rem;
-  color: #94a3b8;
-  display: block;
-}
-
-.deleteAttachmentBtn {
-  background: transparent;
-  border: none;
-  color: #94a3b8;
-  cursor: pointer;
-  font-size: 1.1rem;
-  padding: 4px;
-  border-radius: 6px;
-}
-
-.deleteAttachmentBtn:hover {
-  color: #ef4444;
-  background-color: #fee2e2;
-}
-
-.addAttachmentYellowCard {
-  background: #fffbeb;
-  border: 1px dashed #f59e0b;
-  border-radius: 10px;
-  padding: 10px 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  cursor: pointer;
-  color: #d97706;
-  font-weight: 600;
-  font-size: 0.88rem;
-  transition: all 0.2s ease;
-  min-height: 52px;
-}
-
-.addAttachmentYellowCard:hover {
-  background: #fef3c7;
-  border-color: #d97706;
-  transform: translateY(-1px);
-}
-
-.yellowAddIcon {
-  font-size: 1.2rem;
-}
-
-.lessonsContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 20px;
+.lessonsContainer,
+.lessonsList {
+  gap: 0.75rem;
 }
 
 .lessonsHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #f1f5f9;
+  gap: 0.75rem;
+  min-width: 0;
+  padding-block-end: 0.5rem;
+  border-block-end: 1px solid var(--app-divider);
 }
 
 .subSectionTitle {
+  min-width: 0;
+  margin: 0;
+  color: var(--app-text-strong);
   font-size: 0.95rem;
   font-weight: 700;
-  color: #1e293b;
-  margin: 0;
 }
 
 .addLessonBtn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  background-color: #2563eb;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 2.35rem;
+  padding: 0.4rem 0.85rem;
+  border: 0;
+  border-radius: 0.5rem;
+  background: var(--color-linco-blue);
   color: #ffffff;
-  border: none;
-  padding: 6px 14px;
+  font: inherit;
   font-size: 0.85rem;
-  font-weight: 600;
-  border-radius: 8px;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.15);
 }
 
 .addLessonBtn:hover {
-  background-color: #1d4ed8;
-  transform: translateY(-1px);
+  background: #1d4ed8;
 }
 
 .emptyState {
-  background-color: #f8fafc;
-  border: 1px dashed #cbd5e1;
-  border-radius: 10px;
-  padding: 24px;
-  text-align: center;
-  color: #64748b;
+  padding: 1.5rem;
   font-size: 0.88rem;
-  font-weight: 500;
+  font-weight: 600;
 }
 
-.lessonsList {
+.lessonWrapperCard {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--app-border);
+  border-radius: 0.75rem;
+  background: var(--app-surface);
+}
+
+.lessonCardHeader {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-width: 0;
+  padding: 0.75rem 1rem;
+}
+
+.lessonLeft,
+.lessonRight,
+.attachmentInfo {
+  display: flex;
+  align-items: center;
+  min-width: 0;
 }
 
 .lessonLeft {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  gap: 0.6rem;
+  flex: 1 1 auto;
 }
 
 .lessonRight {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  gap: 0.6rem;
+  flex: 0 0 auto;
 }
 
 .dragIcon {
+  flex: 0 0 auto;
+  color: var(--app-muted);
   font-size: 1.2rem;
-  color: #94a3b8;
   cursor: grab;
 }
 
+.lessonExpandBtn {
+  border: 0;
+  background: var(--app-surface-soft);
+}
+
 .lessonIcon {
+  flex: 0 0 auto;
+  color: var(--app-link);
   font-size: 1.3rem;
-  color: #2563eb;
 }
 
 .lessonMeta {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 0.15rem;
+  min-width: 0;
 }
 
 .lessonTitle {
+  color: var(--app-text-strong);
   font-size: 0.88rem;
-  font-weight: 600;
-  color: #1e293b;
+  font-weight: 700;
+  overflow-wrap: anywhere;
 }
 
 .lessonDuration {
-  font-size: 0.75rem;
-  color: #64748b;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 0.25rem;
+  color: var(--app-muted);
+  font-size: 0.75rem;
 }
 
-.deleteLessonBtn {
-  background: transparent;
-  border: none;
-  color: #94a3b8;
-  font-size: 1.1rem;
+.attachmentBadgeCount {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.65rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--app-warning-soft);
+  color: var(--app-warning-icon);
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
   cursor: pointer;
-  padding: 4px;
-  border-radius: 6px;
-  transition: all 0.2s ease;
 }
 
-.deleteLessonBtn:hover {
-  color: #ef4444;
-  background-color: #fee2e2;
+.attachmentsDrawer {
+  min-width: 0;
+  padding: 1rem;
+  border-block-start: 1px solid var(--app-divider);
+  background: var(--app-surface-muted);
+}
+
+.drawerHeader h5 {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0 0 0.75rem;
+  color: var(--app-text);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.drawerStatus,
+.noAttachments {
+  margin: 0 0 0.75rem;
+  color: var(--app-muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.drawerError {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-block-end: 0.75rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--app-danger-border);
+  border-radius: 0.55rem;
+  background: var(--app-danger-surface);
+  color: var(--app-danger-text);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.drawerError button {
+  flex: 0 0 auto;
+  padding: 0.3rem 0.65rem;
+  border: 1px solid currentColor;
+  border-radius: 0.4rem;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.attachmentsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13.75rem), 1fr));
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.attachmentItemCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-width: 0;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--app-border);
+  border-radius: 0.65rem;
+  background: var(--app-surface);
+}
+
+.attachmentInfo {
+  gap: 0.6rem;
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+.attachmentInfo > div {
+  min-width: 0;
+}
+
+.fileIcon {
+  flex: 0 0 auto;
+  color: var(--app-warning-icon);
+  font-size: 1.4rem;
+}
+
+.fileName {
+  max-width: 100%;
+  margin: 0;
+  overflow: hidden;
+  color: var(--app-text-strong);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fileMeta {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  color: var(--app-muted);
+  font-size: 0.72rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.addAttachmentYellowCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 3.25rem;
+  min-width: 0;
+  padding: 0.65rem 0.85rem;
+  border: 1px dashed var(--app-warning-icon);
+  border-radius: 0.65rem;
+  background: var(--app-warning-surface);
+  color: var(--app-warning-icon);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.addAttachmentYellowCard:hover {
+  background: var(--app-warning-soft);
+}
+
+.yellowAddIcon {
+  flex: 0 0 auto;
+  font-size: 1.2rem;
+}
+
+.collapseBtn:focus-visible,
+.lessonExpandBtn:focus-visible,
+.deleteSectionBtn:focus-visible,
+.deleteLessonBtn:focus-visible,
+.deleteAttachmentBtn:focus-visible,
+.addSectionBtnRoot:focus-visible,
+.addLessonBtn:focus-visible,
+.attachmentBadgeCount:focus-visible,
+.addAttachmentYellowCard:focus-visible,
+.drawerError button:focus-visible {
+  outline: 3px solid var(--app-focus-ring);
+  outline-offset: 2px;
+}
+
+@media (max-width: 48rem) {
+  .bottomAssessmentRow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sectionHeader {
+    align-items: flex-start;
+  }
+
+  .sectionHeaderLeft {
+    flex-wrap: wrap;
+  }
+
+  .sectionTitleInput {
+    flex: 1 1 12rem;
+  }
+
+  .lessonCardHeader {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .lessonLeft,
+  .lessonRight {
+    width: 100%;
+  }
+
+  .lessonRight {
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 30rem) {
+  .tabCard {
+    padding: 0.875rem;
+  }
+
+  .sectionHeader {
+    padding: 0.75rem;
+  }
+
+  .sectionHeaderLeft {
+    gap: 0.5rem;
+  }
+
+  .sectionTitleInput {
+    flex-basis: 100%;
+    order: 3;
+  }
+
+  .sectionBody,
+  .attachmentsDrawer {
+    padding: 0.75rem;
+  }
+
+  .lessonsHeader {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .addLessonBtn {
+    width: 100%;
+  }
+
+  .lessonLeft {
+    flex-wrap: wrap;
+  }
+
+  .lessonMeta {
+    flex: 1 1 calc(100% - 7rem);
+  }
+
+  .lessonRight {
+    justify-content: space-between;
+  }
+
+  .attachmentBadgeCount {
+    min-width: 0;
+    white-space: normal;
+  }
+
+  .drawerError {
+    align-items: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sectionCard {
+    transition: none;
+  }
 }

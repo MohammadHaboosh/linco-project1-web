@@ -68,30 +68,46 @@ const AddQuizModal = ({ isOpen, onClose, onSubmit, initialData }) => {
       <div
         className={styles.modalContainer}
         onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="quiz-dialog-title"
+        aria-describedby="quiz-dialog-description"
       >
         <div className={styles.modalHeader}>
           <div className={styles.headerTitleGroup}>
             <div className={`${styles.iconBadge} ${styles.purpleBadge}`}>
-              <IoHelpCircleOutline />
+              <IoHelpCircleOutline aria-hidden="true" />
             </div>
             <div>
-              <h3>{t("add-new-quiz")}</h3>
-              <p>{t("configure-assessment-details-and-time-constraints")}</p>
+              <h3 id="quiz-dialog-title">
+                {initialData ? t("edit-section-quiz") : t("add-new-quiz")}
+              </h3>
+              <p id="quiz-dialog-description">
+                {t("configure-assessment-details-and-time-constraints")}
+              </p>
             </div>
           </div>
-          <button className={styles.closeBtn} onClick={onClose}>
-            <IoCloseOutline />
+          <button
+            className={styles.closeBtn}
+            type="button"
+            onClick={onClose}
+            aria-label={t("close-quiz-dialog")}
+          >
+            <IoCloseOutline aria-hidden="true" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className={styles.modalBody}>
           <div className={styles.formGroup}>
-            <label className={styles.label}>{t("quiz-title")}</label>
+            <label className={styles.label} htmlFor="section-quiz-title">
+              {t("quiz-title")}
+            </label>
             <input
+              id="section-quiz-title"
               type="text"
               required
               className={styles.input}
-              placeholder="e.g. Section 1 Exam: Auth"
+              placeholder={t("quiz-title-placeholder")}
               value={formData.title}
               onChange={(e) => handleChange("title", e.target.value)}
             />
@@ -99,15 +115,20 @@ const AddQuizModal = ({ isOpen, onClose, onSubmit, initialData }) => {
 
           <div className={styles.gridTwoCols}>
             <div className={styles.formGroup}>
-              <label className={styles.label}>
-                <IoListOutline /> {t("number-of-questions-0")}
+              <label
+                className={styles.label}
+                htmlFor="section-quiz-question-count"
+              >
+                <IoListOutline aria-hidden="true" />
+                {t("number-of-questions-required")}
               </label>
               <input
+                id="section-quiz-question-count"
                 type="number"
                 min="1"
                 required
                 className={styles.input}
-                placeholder="5"
+                placeholder={t("question-count-placeholder")}
                 value={formData.numberOfQuestions}
                 onChange={(e) =>
                   handleChange("numberOfQuestions", e.target.value)
@@ -116,15 +137,20 @@ const AddQuizModal = ({ isOpen, onClose, onSubmit, initialData }) => {
             </div>
 
             <div className={styles.formGroup}>
-              <label className={styles.label}>
-                <IoTimeOutline /> {t("duration-seconds")}
+              <label
+                className={styles.label}
+                htmlFor="section-quiz-duration"
+              >
+                <IoTimeOutline aria-hidden="true" />
+                {t("duration-minutes-required")}
               </label>
               <input
+                id="section-quiz-duration"
                 type="number"
                 min="1"
                 required
                 className={styles.input}
-                placeholder="30"
+                placeholder={t("duration-minutes-placeholder")}
                 value={formData.durationMinutes}
                 onChange={(e) =>
                   handleChange("durationMinutes", e.target.value)
@@ -134,16 +160,18 @@ const AddQuizModal = ({ isOpen, onClose, onSubmit, initialData }) => {
           </div>
 
           <div className={styles.formGroup}>
-            <label className={styles.label}>
-              <IoCheckmarkCircleOutline /> {t("passing-score")}
+            <label className={styles.label} htmlFor="section-quiz-score">
+              <IoCheckmarkCircleOutline aria-hidden="true" />
+              {t("passing-score-required")}
             </label>
             <input
+              id="section-quiz-score"
               type="number"
               min="1"
               max="100"
               required
               className={styles.input}
-              placeholder="60"
+              placeholder={t("passing-score-placeholder")}
               value={formData.passingScore}
               onChange={(e) => handleChange("passingScore", e.target.value)}
             />

@@ -4,6 +4,8 @@ import { lessonApi } from "../../OwnerCourses/api/lessonApi";
 import { attachmentApi } from "../../OwnerCourses/api/attachmentApi";
 import { quizApi } from "../../OwnerCourses/api/quizApi";
 import { questionBankApi } from "../../OwnerCourses/api/questionBankApi";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export const useCoursePublisher = ({
   courseData,
@@ -17,7 +19,22 @@ export const useCoursePublisher = ({
   isTempId,
   navigate,
 }) => {
+  const { t, i18n } = useTranslation();
+  const [errorMessage, setErrorMessage] = useState("");
+  const numberFormatter = new Intl.NumberFormat(
+    i18n.resolvedLanguage || i18n.language,
+  );
+
+  const clearError = () => setErrorMessage("");
+  const getLessonUploadMessage = (lesson, index) =>
+    t("course-studio-uploading-lesson", {
+      title:
+        lesson.title ||
+        t("lesson-number", { number: numberFormatter.format(index + 1) }),
+    });
+
   const handleNextStep = async () => {
+    clearError();
     const hasTitle = courseData.title?.trim();
     const hasDescription = courseData.description?.trim();
     const hasTags = courseData.tags && courseData.tags.length > 0;
@@ -38,9 +55,7 @@ export const useCoursePublisher = ({
       !hasValidPrice ||
       !hasImage
     ) {
-      alert(
-        "Please fill in all required fields: Course Thumbnail, Title, Price, Tags, and Description.",
-      );
+      setErrorMessage(t("course-studio-required-fields-error"));
       return;
     }
 
@@ -89,13 +104,14 @@ export const useCoursePublisher = ({
       window.scrollTo(0, 0);
     } catch (error) {
       console.error("Error in Step 1 Next:", error);
-      alert(error.message || "Failed to proceed to next step");
+      setErrorMessage(t("course-studio-setup-save-error"));
     }
   };
 
   const handlePublish = async () => {
+    clearError();
     if (!courseData.id) {
-      alert("Course ID is missing. Please complete step 1 first.");
+      setErrorMessage(t("course-studio-missing-course-error"));
       return;
     }
 
@@ -166,6 +182,7 @@ export const useCoursePublisher = ({
               `Failed to create quiz for section ${section.realId}:`,
               quizError,
             );
+            throw quizError;
           }
         }
 
@@ -179,6 +196,7 @@ export const useCoursePublisher = ({
                 `Failed to create question for section ${section.realId}:`,
                 qError,
               );
+              throw qError;
             }
           }
         }
@@ -195,7 +213,7 @@ export const useCoursePublisher = ({
           if (isNewLesson) {
             if (lesson.videoFile) {
               setUploadProgress({
-                title: lesson.title || `Lesson ${index + 1}`,
+                title: getLessonUploadMessage(lesson, index),
                 percent: 0,
               });
               const uploadData = await lessonApi.getUploadUrl(
@@ -213,9 +231,7 @@ export const useCoursePublisher = ({
                 uploadData.key;
 
               if (!cloudUrl)
-                throw new Error(
-                  `الباك إند لم يرسل الرابط النهائي للدرس: ${lesson.title}`,
-                );
+                throw new Error(t("course-studio-video-url-missing"));
               finalVideoUrl = cloudUrl;
 
               if (uploadUrl) {
@@ -224,13 +240,13 @@ export const useCoursePublisher = ({
                   lesson.videoFile,
                   (percent) => {
                     setUploadProgress({
-                      title: lesson.title || `Lesson ${index + 1}`,
+                      title: getLessonUploadMessage(lesson, index),
                       percent: percent,
                     });
                   },
                 );
                 setUploadProgress({
-                  title: lesson.title || `Lesson ${index + 1}`,
+                  title: getLessonUploadMessage(lesson, index),
                   percent: 100,
                 });
                 await new Promise((resolve) => setTimeout(resolve, 400));
@@ -243,7 +259,7 @@ export const useCoursePublisher = ({
               videoUrl: finalVideoUrl,
               courseId: activeCourseId,
               description:
-                lesson.description?.trim() || "No description provided.",
+                lesson.description?.trim() || t("lesson-default-description"),
               duration: Number(lesson.duration) || 0,
             });
 
@@ -285,7 +301,9 @@ export const useCoursePublisher = ({
                     att.file,
                     (percent) => {
                       setUploadProgress({
-                        title: `Uploading Attachment: ${att.file.name}`,
+                        title: t("course-studio-uploading-attachment", {
+                          fileName: att.file.name,
+                        }),
                         percent: percent,
                       });
                     },
@@ -302,24 +320,23 @@ export const useCoursePublisher = ({
                 `Failed to process attachments for lesson ID ${realLessonId}:`,
                 attError,
               );
+              throw attError;
             }
           }
         }
       }
 
       setDeletedSectionIds([]);
-      alert(
-        "Course, sections, lessons, attachments, and quizzes saved successfully!",
-      );
+      alert(t("course-studio-save-success"));
       navigate(-1);
     } catch (error) {
       console.error("Error saving curriculum:", error);
-      alert("Failed to save: " + (error.message || "Something went wrong"));
+      setErrorMessage(t("course-studio-publish-error"));
     } finally {
       setIsPublishing(false);
       setUploadProgress(null);
     }
   };
 
-  return { handleNextStep, handlePublish };
+  return { errorMessage, clearError, handleNextStep, handlePublish };
 };

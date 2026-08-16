@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { quizApi } from "../api/quizApi";
 import { questionBankApi } from "../api/questionBankApi";
 import { attachmentApi } from "../api/attachmentApi";
+import { useTranslation } from "react-i18next";
 
 export const useCurriculumLogic = (
   sections,
@@ -10,6 +11,7 @@ export const useCurriculumLogic = (
   onDeleteQuiz,
   onDeleteQuestion,
 ) => {
+  const { t, i18n } = useTranslation();
   const [expandedSections, setExpandedSections] = useState(
     sections.length > 0 ? [sections[0].id] : [],
   );
@@ -25,6 +27,17 @@ export const useCurriculumLogic = (
   const handleFetchQuestionsForSection = useCallback(
     async (sectionId) => {
       if (isTempId(sectionId)) return;
+      setSections((prev) =>
+        prev.map((sec) =>
+          sec.id === sectionId
+            ? {
+                ...sec,
+                isQuestionsLoading: true,
+                questionsLoadError: false,
+              }
+            : sec,
+        ),
+      );
       try {
         const fetchedQuestions =
           await questionBankApi.getQuestionsBySectionId(sectionId);
@@ -35,6 +48,8 @@ export const useCurriculumLogic = (
                   ...sec,
                   questions: fetchedQuestions || [],
                   isQuestionsFetched: true,
+                  isQuestionsLoading: false,
+                  questionsLoadError: false,
                 }
               : sec,
           ),
@@ -43,7 +58,14 @@ export const useCurriculumLogic = (
         console.error("Error fetching questions:", error);
         setSections((prev) =>
           prev.map((sec) =>
-            sec.id === sectionId ? { ...sec, isQuestionsFetched: true } : sec,
+            sec.id === sectionId
+              ? {
+                  ...sec,
+                  isQuestionsFetched: true,
+                  isQuestionsLoading: false,
+                  questionsLoadError: true,
+                }
+              : sec,
           ),
         );
       }
@@ -54,12 +76,25 @@ export const useCurriculumLogic = (
   const handleFetchQuizForSection = useCallback(
     async (sectionId) => {
       if (isTempId(sectionId)) return;
+      setSections((prev) =>
+        prev.map((sec) =>
+          sec.id === sectionId
+            ? { ...sec, isQuizLoading: true, quizLoadError: false }
+            : sec,
+        ),
+      );
       try {
         const fetchedQuiz = await quizApi.getQuizBySectionId(sectionId);
         setSections((prev) =>
           prev.map((sec) =>
             sec.id === sectionId
-              ? { ...sec, quiz: fetchedQuiz, isQuizFetched: true }
+              ? {
+                  ...sec,
+                  quiz: fetchedQuiz,
+                  isQuizFetched: true,
+                  isQuizLoading: false,
+                  quizLoadError: false,
+                }
               : sec,
           ),
         );
@@ -67,7 +102,14 @@ export const useCurriculumLogic = (
         console.error("Error fetching quiz:", error);
         setSections((prev) =>
           prev.map((sec) =>
-            sec.id === sectionId ? { ...sec, isQuizFetched: true } : sec,
+            sec.id === sectionId
+              ? {
+                  ...sec,
+                  isQuizFetched: true,
+                  isQuizLoading: false,
+                  quizLoadError: true,
+                }
+              : sec,
           ),
         );
       }
@@ -80,8 +122,10 @@ export const useCurriculumLogic = (
       setExpandedSections([...expandedSections, id]);
       const targetSec = sections.find((s) => s.id === id);
       if (targetSec && !isTempId(id)) {
-        if (!targetSec.isQuizFetched) handleFetchQuizForSection(id);
-        if (!targetSec.isQuestionsFetched) handleFetchQuestionsForSection(id);
+        if (!targetSec.isQuizFetched && !targetSec.isQuizLoading)
+          handleFetchQuizForSection(id);
+        if (!targetSec.isQuestionsFetched && !targetSec.isQuestionsLoading)
+          handleFetchQuestionsForSection(id);
       }
     } else {
       setExpandedSections(expandedSections.filter((secId) => secId !== id));
@@ -90,8 +134,9 @@ export const useCurriculumLogic = (
 
   useEffect(() => {
     if (sections.length > 0 && !isTempId(sections[0].id)) {
-      if (!sections[0].isQuizFetched) handleFetchQuizForSection(sections[0].id);
-      if (!sections[0].isQuestionsFetched)
+      if (!sections[0].isQuizFetched && !sections[0].isQuizLoading)
+        handleFetchQuizForSection(sections[0].id);
+      if (!sections[0].isQuestionsFetched && !sections[0].isQuestionsLoading)
         handleFetchQuestionsForSection(sections[0].id);
     }
   }, [
@@ -102,9 +147,12 @@ export const useCurriculumLogic = (
   ]);
 
   const handleAddSection = () => {
+    const formattedSectionNumber = new Intl.NumberFormat(
+      i18n.resolvedLanguage || i18n.language,
+    ).format(sections.length + 1);
     const newSection = {
       id: `temp_section_${Date.now()}`,
-      title: `Section ${sections.length + 1}`,
+      title: t("section-default-title", { number: formattedSectionNumber }),
       order: sections.length + 1,
       lessons: [],
       questions: [],
@@ -117,7 +165,7 @@ export const useCurriculumLogic = (
 
   const deleteSection = (e, id) => {
     e.stopPropagation();
-    if (window.confirm("Are you sure you want to delete this section?"))
+    if (window.confirm(t("delete-section-confirmation")))
       onDeleteSection && onDeleteSection(id);
   };
 
@@ -210,7 +258,7 @@ export const useCurriculumLogic = (
 
   const deleteQuiz = (secId) => {
     const qId = sections.find((s) => s.id === secId)?.quiz?.id;
-    if (qId && window.confirm("Delete this exam?"))
+    if (qId && window.confirm(t("delete-quiz-confirmation")))
       onDeleteQuiz
         ? onDeleteQuiz(secId, qId)
         : setSections((prev) =>
@@ -219,7 +267,7 @@ export const useCurriculumLogic = (
   };
 
   const deleteQuestion = (secId, qId) => {
-    if (window.confirm("Delete this question?"))
+    if (window.confirm(t("delete-question-confirmation")))
       onDeleteQuestion
         ? onDeleteQuestion(secId, qId)
         : setSections((prev) =>
@@ -241,7 +289,7 @@ export const useCurriculumLogic = (
 
       const formatted = (fetchedAtts || []).map((att) => ({
         id: att.id,
-        title: att.name || "Resource",
+        title: att.name || t("resource"),
         fileName: att.name || "",
         path: att.path,
         isExisting: true,
@@ -266,6 +314,7 @@ export const useCurriculumLogic = (
       );
     } catch (error) {
       console.error("Error fetching attachments:", error);
+      throw error;
     }
   };
 
@@ -288,7 +337,7 @@ export const useCurriculumLogic = (
                   attachmentData.title ||
                   attachmentData.name ||
                   rawFile?.name ||
-                  "New Attachment",
+                  t("new-attachment"),
                 fileName:
                   attachmentData.fileName ||
                   rawFile?.name ||
@@ -347,6 +396,8 @@ export const useCurriculumLogic = (
     deleteQuiz,
     deleteQuestion,
     handleFetchAttachments,
+    handleFetchQuestionsForSection,
+    handleFetchQuizForSection,
     handleAddAttachment,
     handleDeleteAttachment,
   };

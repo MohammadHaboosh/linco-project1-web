@@ -9,7 +9,7 @@ import styles from "./Modal.module.css";
 import { useTranslation } from "react-i18next";
 
 const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -27,9 +27,18 @@ const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleVideoSelect = (e) => {
-    const file = e.target.files[0];
+  const selectVideo = (file) => {
     if (!file) return;
+    const supportedVideo = /\.(mp4|webm|mov)$/i.test(file.name);
+    if (!supportedVideo || file.size > 500 * 1024 * 1024) {
+      setFormData((prev) => ({
+        ...prev,
+        videoFile: null,
+        duration: 0,
+      }));
+      alert(t("lesson-video-invalid-file"));
+      return;
+    }
 
     setFormData((prev) => ({ ...prev, videoFile: file }));
 
@@ -49,6 +58,13 @@ const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
     });
 
     videoElement.src = videoUrl;
+  };
+
+  const handleVideoSelect = (e) => selectVideo(e.target.files?.[0]);
+
+  const handleVideoDrop = (e) => {
+    e.preventDefault();
+    selectVideo(e.dataTransfer.files?.[0]);
   };
 
   const resetForm = () => {
@@ -73,13 +89,13 @@ const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (!formData.videoFile) {
+      alert(t("lesson-video-required"));
+      return;
+    }
+
     if (!formData.description.trim()) {
-      alert(
-        t(
-          "lesson-description-required",
-          "Please provide a description for the lesson.",
-        ),
-      );
+      alert(t("lesson-description-required"));
       return;
     }
 
@@ -103,48 +119,85 @@ const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
       <div
         className={`${styles.modalContainer} ${styles.largeModal}`}
         onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="add-lesson-title"
+        aria-describedby="add-lesson-description"
       >
         <div className={styles.modalHeader}>
           <div className={styles.headerTitleGroup}>
             <div className={`${styles.iconBadge} ${styles.blueBadge}`}>
-              <IoVideocamOutline />
+              <IoVideocamOutline aria-hidden="true" />
             </div>
             <div>
-              <h3>{t("add-new-lesson")}</h3>
-              <p>{t("upload-video-lecture-and-lesson-details")}</p>
+              <h3 id="add-lesson-title">{t("add-new-lesson")}</h3>
+              <p id="add-lesson-description">
+                {t("upload-video-lecture-and-lesson-details")}
+              </p>
             </div>
           </div>
-          <button className={styles.closeBtn} onClick={handleClose}>
-            <IoCloseOutline />
+          <button
+            className={styles.closeBtn}
+            type="button"
+            onClick={handleClose}
+            aria-label={t("close-add-lesson-dialog")}
+          >
+            <IoCloseOutline aria-hidden="true" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className={styles.modalBody}>
           <div className={styles.formGroup}>
-            <label className={styles.label}>{t("lesson-title-0")}</label>
+            <label className={styles.label} htmlFor="new-lesson-title">
+              {t("lesson-title-required")}
+            </label>
             <input
+              id="new-lesson-title"
               type="text"
               required
               className={styles.input}
-              placeholder="e.g. Introduction to Authentication"
+              placeholder={t("lesson-title-placeholder")}
               value={formData.title}
               onChange={(e) => handleChange("title", e.target.value)}
             />
           </div>
 
           <div className={styles.formGroup}>
-            <label className={styles.label}>{t("lecture-video-file")}</label>
+            <label className={styles.label} htmlFor="new-lesson-video">
+              {t("lecture-video-file")}
+            </label>
             <div
               className={styles.dropzone}
               onClick={() => videoInputRef.current?.click()}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={handleVideoDrop}
+              role="button"
+              tabIndex="0"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  videoInputRef.current?.click();
+                }
+              }}
+              aria-label={t("video-upload-label")}
             >
-              <IoCloudUploadOutline className={styles.dropzoneIcon} />
+              <IoCloudUploadOutline
+                className={styles.dropzoneIcon}
+                aria-hidden="true"
+              />
               {formData.videoFile ? (
                 <div className={styles.fileSelectedInfo}>
                   <strong>{formData.videoFile.name}</strong>
                   <span>
-                    {(formData.videoFile.size / (1024 * 1024)).toFixed(2)} MB
-                    {formData.duration > 0 && ` • ~${formData.duration} Min`}
+                    {t("selected-video-details", {
+                      formattedSize: new Intl.NumberFormat(
+                        i18n.resolvedLanguage || i18n.language,
+                        { maximumFractionDigits: 2 },
+                      ).format(formData.videoFile.size / (1024 * 1024)),
+                      formattedDuration: new Intl.NumberFormat(
+                        i18n.resolvedLanguage || i18n.language,
+                      ).format(formData.duration),
+                    })}
                   </span>
                 </div>
               ) : (
@@ -157,21 +210,24 @@ const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
                   </span>
                 </>
               )}
-              <input
-                ref={videoInputRef}
-                type="file"
-                accept="video/*"
-                hidden
-                required
-                onChange={handleVideoSelect}
-              />
             </div>
+            <input
+              ref={videoInputRef}
+              id="new-lesson-video"
+              type="file"
+              accept=".mp4,.webm,.mov,video/mp4,video/webm,video/quicktime"
+              hidden
+              onChange={handleVideoSelect}
+              aria-required="true"
+            />
           </div>
 
-          <label className={styles.label}>
-            <IoDocumentTextOutline /> {t("lesson-desc")} *{" "}
+          <label className={styles.label} htmlFor="new-lesson-description">
+            <IoDocumentTextOutline aria-hidden="true" />
+            {t("lesson-description-required-label")}
           </label>
           <textarea
+            id="new-lesson-description"
             required
             className={styles.textarea}
             rows="3"

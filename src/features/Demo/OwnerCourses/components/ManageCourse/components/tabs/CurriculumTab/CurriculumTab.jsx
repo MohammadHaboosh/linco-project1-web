@@ -37,6 +37,12 @@ const CurriculumTab = ({
       </div>
 
       <div className={styles.curriculumList}>
+        {sections.length === 0 && (
+          <div className={styles.curriculumEmptyState} role="status">
+            <h4>{t("no-sections-yet")}</h4>
+            <p>{t("start-by-adding-a-section-to-build-your-course-structure")}</p>
+          </div>
+        )}
         {sections.map((section, idx) => (
           <SectionCard
             key={section.id}

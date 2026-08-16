@@ -12,6 +12,7 @@ import {
 } from "react-icons/io5";
 import styles from "../CurriculumTab.module.css";
 import AddAttachmentModal from "../AddModals/AddAttachmentModal";
+import { useTranslation } from "react-i18next";
 
 const LessonList = ({
   lessons = [],
@@ -22,19 +23,41 @@ const LessonList = ({
   onDeleteAttachment,
   onFetchAttachments,
 }) => {
+  const { t, i18n } = useTranslation();
   const [draggedIndex, setDraggedIndex] = useState(null);
   const [expandedLessons, setExpandedLessons] = useState([]);
+  const [attachmentStates, setAttachmentStates] = useState({});
   const [activeLessonForAttachment, setActiveLessonForAttachment] =
     useState(null);
 
-  const toggleLessonExpand = (lessonId, e) => {
+  const loadAttachments = async (lessonId) => {
+    if (!onFetchAttachments) return;
+    setAttachmentStates((current) => ({
+      ...current,
+      [lessonId]: { loading: true, error: false, loaded: false },
+    }));
+    try {
+      await onFetchAttachments(lessonId);
+      setAttachmentStates((current) => ({
+        ...current,
+        [lessonId]: { loading: false, error: false, loaded: true },
+      }));
+    } catch {
+      setAttachmentStates((current) => ({
+        ...current,
+        [lessonId]: { loading: false, error: true, loaded: false },
+      }));
+    }
+  };
+
+  const toggleLessonExpand = async (lessonId, e) => {
     if (e) e.stopPropagation();
     if (expandedLessons.includes(lessonId)) {
       setExpandedLessons(expandedLessons.filter((id) => id !== lessonId));
     } else {
       setExpandedLessons([...expandedLessons, lessonId]);
-      if (onFetchAttachments) {
-        onFetchAttachments(lessonId);
+      if (onFetchAttachments && !attachmentStates[lessonId]?.loaded) {
+        await loadAttachments(lessonId);
       }
     }
   };
@@ -63,23 +86,32 @@ const LessonList = ({
   return (
     <div className={styles.lessonsContainer}>
       <div className={styles.lessonsHeader}>
-        <h4 className={styles.subSectionTitle}>Lessons List</h4>
+        <h4 className={styles.subSectionTitle}>{t("lessons-list")}</h4>
         <button
           type="button"
           className={styles.addLessonBtn}
           onClick={onAddLesson}
         >
-          <IoAddOutline /> Add Lesson
+          <IoAddOutline aria-hidden="true" /> {t("add-lesson")}
         </button>
       </div>
 
       {lessons.length === 0 ? (
-        <div className={styles.emptyState}>No lessons added yet.</div>
+        <div className={styles.emptyState} role="status">
+          {t("no-lessons-added-yet")}
+        </div>
       ) : (
         <div className={styles.lessonsList}>
           {lessons.map((lesson, index) => {
             const isExpanded = expandedLessons.includes(lesson.id);
             const attachmentsCount = lesson.attachments?.length || 0;
+            const formattedAttachmentsCount = new Intl.NumberFormat(
+              i18n.resolvedLanguage || i18n.language,
+            ).format(attachmentsCount);
+            const formattedDuration = new Intl.NumberFormat(
+              i18n.resolvedLanguage || i18n.language,
+            ).format(lesson.duration || 0);
+            const attachmentState = attachmentStates[lesson.id];
 
             return (
               <div
@@ -95,14 +127,23 @@ const LessonList = ({
                   <div className={styles.lessonLeft}>
                     <IoReorderTwoOutline
                       className={styles.dragIcon}
-                      title="Drag to reorder"
+                      title={t("drag-lesson-to-reorder")}
                     />
 
                     <button
                       type="button"
                       className={styles.lessonExpandBtn}
                       onClick={(e) => toggleLessonExpand(lesson.id, e)}
-                      title="Toggle Attachments"
+                      aria-expanded={isExpanded}
+                      aria-label={
+                        isExpanded
+                          ? t("hide-lesson-attachments", {
+                              title: lesson.title,
+                            })
+                          : t("show-lesson-attachments", {
+                              title: lesson.title,
+                            })
+                      }
                     >
                       {isExpanded ? (
                         <IoChevronUpOutline />
@@ -111,32 +152,52 @@ const LessonList = ({
                       )}
                     </button>
 
-                    <IoPlayCircleOutline className={styles.lessonIcon} />
+                    <IoPlayCircleOutline
+                      className={styles.lessonIcon}
+                      aria-hidden="true"
+                    />
                     <div className={styles.lessonMeta}>
                       <span className={styles.lessonTitle}>
-                        {index + 1}. {lesson.title}
+                        {t("lesson-list-item-title", {
+                          number: new Intl.NumberFormat(
+                            i18n.resolvedLanguage || i18n.language,
+                          ).format(index + 1),
+                          title: lesson.title,
+                        })}
                       </span>
                       {lesson.duration && (
                         <span className={styles.lessonDuration}>
-                          <IoTimeOutline /> {lesson.duration} mins
+                          <IoTimeOutline aria-hidden="true" />
+                          {t("lesson-duration-minutes", {
+                            count: Number(lesson.duration),
+                            formattedCount: formattedDuration,
+                          })}
                         </span>
                       )}
                     </div>
                   </div>
 
                   <div className={styles.lessonRight}>
-                    <span
+                    <button
+                      type="button"
                       className={styles.attachmentBadgeCount}
                       onClick={(e) => toggleLessonExpand(lesson.id, e)}
+                      aria-expanded={isExpanded}
                     >
-                      <IoAttachOutline /> {attachmentsCount} Attachments
-                    </span>
+                      <IoAttachOutline aria-hidden="true" />
+                      {t("attachment-count", {
+                        count: attachmentsCount,
+                        formattedCount: formattedAttachmentsCount,
+                      })}
+                    </button>
 
                     <button
                       type="button"
                       className={styles.deleteLessonBtn}
                       onClick={() => onDeleteLesson(lesson.id)}
-                      title="Delete Lesson"
+                      aria-label={t("delete-lesson-label", {
+                        title: lesson.title,
+                      })}
                     >
                       <IoTrashOutline />
                     </button>
@@ -147,19 +208,41 @@ const LessonList = ({
                   <div className={styles.attachmentsDrawer}>
                     <div className={styles.drawerHeader}>
                       <h5>
-                        <IoAttachOutline /> Lesson Resources & Attachments
+                        <IoAttachOutline aria-hidden="true" />
+                        {t("lesson-resources-and-attachments")}
                       </h5>
                     </div>
 
+                    {attachmentState?.loading && (
+                      <p className={styles.drawerStatus} role="status">
+                        {t("loading-attachments")}
+                      </p>
+                    )}
+                    {attachmentState?.error && (
+                      <div className={styles.drawerError} role="alert">
+                        <span>{t("attachments-load-failed")}</span>
+                        <button
+                          type="button"
+                          onClick={() => loadAttachments(lesson.id)}
+                        >
+                          {t("retry")}
+                        </button>
+                      </div>
+                    )}
+
                     <div className={styles.attachmentsGrid}>
+                      {!attachmentState?.loading &&
+                        !attachmentState?.error &&
+                        !lesson.attachments?.length && (
+                          <p className={styles.noAttachments}>
+                            {t("no-attachments-available-for-this-lesson")}
+                          </p>
+                        )}
                       {lesson.attachments?.map((attachment) => {
                         const title =
-                          attachment.title || attachment.name || "Resource";
+                          attachment.title || attachment.name || t("resource");
                         const fileName =
                           attachment.fileName || attachment.name || "";
-                        const fileSizeStr = attachment.fileSize
-                          ? ` (${attachment.fileSize})`
-                          : "";
 
                         return (
                           <div
@@ -173,8 +256,12 @@ const LessonList = ({
                               <div>
                                 <p className={styles.fileName}>{title}</p>
                                 <span className={styles.fileMeta}>
-                                  {fileName}
-                                  {fileSizeStr}
+                                  {attachment.fileSize
+                                    ? t("attachment-file-meta", {
+                                        fileName,
+                                        fileSize: attachment.fileSize,
+                                      })
+                                    : fileName}
                                 </span>
                               </div>
                             </div>
@@ -185,7 +272,9 @@ const LessonList = ({
                                 onDeleteAttachment &&
                                 onDeleteAttachment(lesson.id, attachment.id)
                               }
-                              title="Remove attachment"
+                              aria-label={t("remove-attachment-label", {
+                                title,
+                              })}
                             >
                               <IoTrashOutline />
                             </button>
@@ -199,7 +288,7 @@ const LessonList = ({
                         onClick={() => setActiveLessonForAttachment(lesson.id)}
                       >
                         <IoAddOutline className={styles.yellowAddIcon} />
-                        <span>Add Attachment</span>
+                        <span>{t("add-attachment")}</span>
                       </button>
                     </div>
                   </div>

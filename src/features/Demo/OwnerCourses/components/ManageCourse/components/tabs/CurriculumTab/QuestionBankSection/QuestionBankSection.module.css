@@ -1,122 +1,186 @@
 .questionBankBox {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 16px;
-  background-color: #ecfdf5;
-  border: 1.5px dashed #059669;
-  border-radius: 10px;
+  gap: 0.75rem;
+  min-width: 0;
   height: 100%;
+  padding: 1rem;
+  border: 1.5px dashed var(--app-success-indicator);
+  border-radius: 0.75rem;
+  background: var(--app-success-surface);
 }
 
-.header {
+.header,
+.title,
+.questionItem,
+.questionInfo,
+.actions,
+.addQuestionBtn,
+.errorMessage {
   display: flex;
   align-items: center;
+}
+
+.header,
+.questionItem,
+.errorMessage {
   justify-content: space-between;
 }
 
 .title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
   margin: 0;
+  color: var(--app-success-text);
   font-size: 1rem;
   font-weight: 700;
-  color: #047857;
 }
 
 .titleIcon {
+  flex: 0 0 auto;
   font-size: 1.25rem;
+}
+
+.statusMessage {
+  margin: 0;
+  color: var(--app-success-text);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.errorMessage {
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.6rem;
+  border: 1px solid var(--app-danger-border);
+  border-radius: 0.5rem;
+  background: var(--app-danger-surface);
+  color: var(--app-danger-text);
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.errorMessage button {
+  flex: 0 0 auto;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid currentColor;
+  border-radius: 0.35rem;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
 }
 
 .questionsList {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0.5rem;
+  min-width: 0;
 }
 
 .questionItem {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 12px;
-  background-color: #ffffff;
-  border: 1px solid #a7f3d0;
-  border-radius: 6px;
+  gap: 0.5rem;
+  min-width: 0;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--app-success-border);
+  border-radius: 0.5rem;
+  background: var(--app-surface);
 }
 
 .questionInfo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
+  min-width: 0;
+  flex: 1 1 auto;
 }
 
 .dragHandle {
-  color: #6ee7b7;
+  flex: 0 0 auto;
+  color: var(--app-success-indicator);
   cursor: grab;
 }
 
 .qNumber {
-  font-weight: 600;
-  color: #047857;
+  flex: 0 0 auto;
+  color: var(--app-success-text);
   font-size: 0.85rem;
+  font-weight: 700;
 }
 
 .qText {
+  min-width: 0;
+  color: var(--app-text-strong);
   font-size: 0.9rem;
-  color: #064e3b;
+  overflow-wrap: anywhere;
 }
 
 .actions {
-  display: flex;
-  gap: 4px;
+  gap: 0.25rem;
+  flex: 0 0 auto;
 }
 
 .iconBtn,
 .iconBtnDanger {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-}
-
-.iconBtn {
-  color: #047857;
-}
-
-.iconBtn:hover {
-  background-color: #d1fae5;
-}
-
-.iconBtnDanger {
-  color: #ef4444;
-}
-
-.iconBtnDanger:hover {
-  background-color: #fee2e2;
-}
-
-.addQuestionBtn {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  width: 100%;
-  padding: 10px;
-  background-color: #ffffff;
-  border: 1px dashed #059669;
-  border-radius: 6px;
-  color: #047857;
-  font-weight: 600;
-  font-size: 0.9rem;
+  padding: 0.3rem;
+  border: 0;
+  border-radius: 0.35rem;
+  background: transparent;
   cursor: pointer;
-  transition: all 0.2s ease;
-  margin-top: auto;
+}
+
+.iconBtn {
+  color: var(--app-success-text);
+}
+
+.iconBtn:hover {
+  background: var(--app-success-border);
+}
+
+.iconBtnDanger {
+  color: var(--app-danger-text);
+}
+
+.iconBtnDanger:hover {
+  background: var(--app-danger-surface);
+}
+
+.addQuestionBtn {
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  min-height: 2.6rem;
+  margin-block-start: auto;
+  padding: 0.6rem;
+  border: 1px dashed var(--app-success-indicator);
+  border-radius: 0.5rem;
+  background: var(--app-surface);
+  color: var(--app-success-text);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 .addQuestionBtn:hover {
-  background-color: #d1fae5;
+  background: var(--app-success-border);
+}
+
+.iconBtn:focus-visible,
+.iconBtnDanger:focus-visible,
+.addQuestionBtn:focus-visible,
+.errorMessage button:focus-visible {
+  outline: 3px solid var(--app-focus-ring);
+  outline-offset: 2px;
+}
+
+@media (max-width: 24rem) {
+  .questionItem {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .actions {
+    align-self: flex-end;
+  }
 }

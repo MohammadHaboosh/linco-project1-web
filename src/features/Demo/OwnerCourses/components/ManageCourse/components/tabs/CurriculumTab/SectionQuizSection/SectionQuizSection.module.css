@@ -1,121 +1,187 @@
 .quizBox {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 16px;
-  background-color: #fff7ed;
-  border: 1.5px dashed #ea580c;
-  border-radius: 10px;
+  gap: 0.75rem;
+  min-width: 0;
   height: 100%;
+  padding: 1rem;
+  border: 1.5px dashed var(--app-warning-icon);
+  border-radius: 0.75rem;
+  background: var(--app-warning-surface);
 }
 
-.header {
+.header,
+.title,
+.quizCard,
+.quizInfo,
+.quizMeta,
+.duration,
+.addQuizBtn,
+.errorMessage {
   display: flex;
   align-items: center;
+}
+
+.header,
+.quizCard,
+.errorMessage {
   justify-content: space-between;
 }
 
 .title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
   margin: 0;
+  color: var(--app-warning-text);
   font-size: 1rem;
   font-weight: 700;
-  color: #c2410c;
 }
 
 .titleIcon {
+  flex: 0 0 auto;
   font-size: 1.25rem;
 }
 
+.statusMessage {
+  margin: 0;
+  color: var(--app-warning-text);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.errorMessage {
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.6rem;
+  border: 1px solid var(--app-danger-border);
+  border-radius: 0.5rem;
+  background: var(--app-danger-surface);
+  color: var(--app-danger-text);
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.errorMessage button {
+  flex: 0 0 auto;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid currentColor;
+  border-radius: 0.35rem;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
 .quizCard {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 14px;
-  background-color: #ffffff;
-  border: 1px solid #fed7aa;
-  border-radius: 6px;
+  gap: 0.75rem;
+  min-width: 0;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid var(--app-warning-border);
+  border-radius: 0.5rem;
+  background: var(--app-surface);
 }
 
 .quizInfo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
+  min-width: 0;
+  flex: 1 1 auto;
 }
 
 .quizBadge {
-  font-weight: 700;
-  color: #ea580c;
+  flex: 0 0 auto;
+  color: var(--app-warning-icon);
   font-size: 0.85rem;
+  font-weight: 700;
 }
 
 .quizTitle {
-  font-weight: 600;
-  color: #7c2d12;
+  min-width: 0;
+  color: var(--app-text-strong);
   font-size: 0.9rem;
+  font-weight: 700;
+  overflow-wrap: anywhere;
 }
 
 .quizMeta {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  gap: 0.5rem;
+  flex: 0 0 auto;
 }
 
 .duration {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 0.85rem;
-  color: #9a3412;
+  gap: 0.25rem;
+  color: var(--app-warning-text);
+  font-size: 0.82rem;
+  white-space: nowrap;
 }
 
 .iconBtn,
 .iconBtnDanger {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-}
-
-.iconBtn {
-  color: #c2410c;
-}
-
-.iconBtn:hover {
-  background-color: #ffedd5;
-}
-
-.iconBtnDanger {
-  color: #ef4444;
-}
-
-.iconBtnDanger:hover {
-  background-color: #fee2e2;
-}
-
-.addQuizBtn {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  width: 100%;
-  padding: 10px;
-  background-color: #ffffff;
-  border: 1px dashed #ea580c;
-  border-radius: 6px;
-  color: #c2410c;
-  font-weight: 600;
-  font-size: 0.9rem;
+  padding: 0.3rem;
+  border: 0;
+  border-radius: 0.35rem;
+  background: transparent;
   cursor: pointer;
-  transition: all 0.2s ease;
-  margin-top: auto;
+}
+
+.iconBtn {
+  color: var(--app-warning-text);
+}
+
+.iconBtn:hover {
+  background: var(--app-warning-soft);
+}
+
+.iconBtnDanger {
+  color: var(--app-danger-text);
+}
+
+.iconBtnDanger:hover {
+  background: var(--app-danger-surface);
+}
+
+.addQuizBtn {
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  min-height: 2.6rem;
+  margin-block-start: auto;
+  padding: 0.6rem;
+  border: 1px dashed var(--app-warning-icon);
+  border-radius: 0.5rem;
+  background: var(--app-surface);
+  color: var(--app-warning-text);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 .addQuizBtn:hover {
-  background-color: #ffedd5;
+  background: var(--app-warning-soft);
+}
+
+.iconBtn:focus-visible,
+.iconBtnDanger:focus-visible,
+.addQuizBtn:focus-visible,
+.errorMessage button:focus-visible {
+  outline: 3px solid var(--app-focus-ring);
+  outline-offset: 2px;
+}
+
+@media (max-width: 32rem) {
+  .quizCard {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .quizMeta {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .duration {
+    margin-inline-end: auto;
+  }
 }

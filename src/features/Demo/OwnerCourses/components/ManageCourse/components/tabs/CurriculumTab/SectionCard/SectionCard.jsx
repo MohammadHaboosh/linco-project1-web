@@ -8,14 +8,17 @@ import LessonList from "../LessonList/LessonList";
 import QuestionBankSection from "../QuestionBankSection/QuestionBankSection";
 import SectionQuizSection from "../SectionQuizSection/SectionQuizSection";
 import styles from "../CurriculumTab.module.css";
+import { useTranslation } from "react-i18next";
 
 const SectionCard = ({ section, index, isExpanded, logic }) => {
+  const { t, i18n } = useTranslation();
+  const formattedSectionNumber = new Intl.NumberFormat(
+    i18n.resolvedLanguage || i18n.language,
+  ).format(index + 1);
+
   return (
     <div className={styles.sectionCard}>
-      <div
-        className={styles.sectionHeader}
-        onClick={() => logic.toggleSection(section.id)}
-      >
+      <div className={styles.sectionHeader}>
         <div className={styles.sectionHeaderLeft}>
           <button
             type="button"
@@ -24,12 +27,20 @@ const SectionCard = ({ section, index, isExpanded, logic }) => {
               e.stopPropagation();
               logic.toggleSection(section.id);
             }}
+            aria-expanded={isExpanded}
+            aria-label={
+              isExpanded
+                ? t("collapse-section", { number: formattedSectionNumber })
+                : t("expand-section", { number: formattedSectionNumber })
+            }
           >
             {isExpanded ? <IoChevronUpOutline /> : <IoChevronDownOutline />}
           </button>
           <div className={styles.sectionBadge}>
-            <IoFolderOpenOutline />
-            <span>Section {index + 1}</span>
+            <IoFolderOpenOutline aria-hidden="true" />
+            <span>
+              {t("section-number", { number: formattedSectionNumber })}
+            </span>
           </div>
           <input
             type="text"
@@ -39,6 +50,9 @@ const SectionCard = ({ section, index, isExpanded, logic }) => {
             onChange={(e) =>
               logic.updateSectionTitle(section.id, e.target.value)
             }
+            aria-label={t("section-title-label", {
+              number: formattedSectionNumber,
+            })}
           />
         </div>
         <div className={styles.sectionHeaderRight}>
@@ -46,8 +60,11 @@ const SectionCard = ({ section, index, isExpanded, logic }) => {
             type="button"
             className={styles.deleteSectionBtn}
             onClick={(e) => logic.deleteSection(e, section.id)}
+            aria-label={t("delete-section-label", {
+              number: formattedSectionNumber,
+            })}
           >
-            <IoTrashOutline />
+            <IoTrashOutline aria-hidden="true" />
           </button>
         </div>
       </div>
@@ -76,11 +93,17 @@ const SectionCard = ({ section, index, isExpanded, logic }) => {
               questions={section.questions || []}
               onAddQuestion={() => logic.openModal("question", section.id)}
               onDeleteQuestion={(qId) => logic.deleteQuestion(section.id, qId)}
+              isLoading={section.isQuestionsLoading}
+              hasError={section.questionsLoadError}
+              onRetry={() => logic.handleFetchQuestionsForSection(section.id)}
             />
             <SectionQuizSection
               quiz={section.quiz}
               onAddQuiz={() => logic.openModal("quiz", section.id)}
               onDeleteQuiz={() => logic.deleteQuiz(section.id)}
+              isLoading={section.isQuizLoading}
+              hasError={section.quizLoadError}
+              onRetry={() => logic.handleFetchQuizForSection(section.id)}
             />
           </div>
         </div>

@@ -8,7 +8,7 @@
 .actionFooter {
   display: flex;
   justify-content: flex-end;
-  padding-top: 16px;
+  padding-block-start: 1rem;
 }
 
 .nextStepBtn {
@@ -18,7 +18,7 @@
   padding: 12px 24px;
   border-radius: 10px;
   border: none;
-  background-color: #2563eb;
+  background-color: var(--color-linco-blue);
   color: #ffffff;
   font-size: 0.95rem;
   font-weight: 600;
@@ -35,4 +35,20 @@
 .nextStepBtn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.nextStepBtn:focus-visible {
+  outline: 3px solid var(--app-focus-ring);
+  outline-offset: 3px;
+}
+
+:global([dir="rtl"]) .nextStepBtn svg {
+  transform: scaleX(-1);
+}
+
+@media (max-width: 30rem) {
+  .nextStepBtn {
+    width: 100%;
+    justify-content: center;
+  }
 }

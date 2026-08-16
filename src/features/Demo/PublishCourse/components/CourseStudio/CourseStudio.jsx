@@ -8,20 +8,33 @@ import { useCreateCourse } from "../../hooks/useCreateCourse";
 
 import { useCourseStudioState } from "../../hooks/useCourseStudioState";
 import { useCoursePublisher } from "../../hooks/useCoursePublisher";
+import { IoCloseOutline } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
+import { useEffect, useRef } from "react";
 
 const CourseStudio = () => {
   const navigate = useNavigate();
   const { demoId } = useParams();
+  const { t } = useTranslation();
+  const errorBannerRef = useRef(null);
 
   const state = useCourseStudioState();
 
   const { createCourse, isCreating } = useCreateCourse(demoId);
 
-  const { handleNextStep, handlePublish } = useCoursePublisher({
-    ...state,
-    createCourse,
-    navigate,
-  });
+  const { errorMessage, clearError, handleNextStep, handlePublish } =
+    useCoursePublisher({
+      ...state,
+      createCourse,
+      navigate,
+    });
+
+  useEffect(() => {
+    if (errorMessage) {
+      errorBannerRef.current?.focus();
+      errorBannerRef.current?.scrollIntoView({ block: "center" });
+    }
+  }, [errorMessage]);
 
   return (
     <div className={styles.studioContainer}>
@@ -33,7 +46,26 @@ const CourseStudio = () => {
         styles={styles}
       />
 
-      <div className={styles.workspaceCentered}>
+      <main className={styles.workspaceCentered}>
+        {errorMessage && (
+          <div
+            ref={errorBannerRef}
+            className={styles.errorBanner}
+            role="alert"
+            tabIndex="-1"
+          >
+            <span>{errorMessage}</span>
+            <button
+              type="button"
+              className={styles.dismissErrorBtn}
+              onClick={clearError}
+              aria-label={t("dismiss-error")}
+            >
+              <IoCloseOutline aria-hidden="true" />
+            </button>
+          </div>
+        )}
+
         {state.currentStep === 1 && (
           <StepOneDetails
             courseData={state.courseData}
@@ -53,7 +85,7 @@ const CourseStudio = () => {
             onDeleteSection={state.handleRemoveSection}
           />
         )}
-      </div>
+      </main>
     </div>
   );
 };
