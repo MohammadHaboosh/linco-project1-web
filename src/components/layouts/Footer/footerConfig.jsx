@@ -21,47 +21,56 @@ export const FOOTER_CONFIG = {
   demo_owner: [
     {
       name: "Demo Courses",
+      translationKey: "demo-courses",
       path: PATHS.OWNER_COURSES,
     },
     {
       name: "Departments",
+      translationKey: "departments",
       path: PATHS.DEPARTMENTS,
     },
     {
       name: "Demo Members",
+      translationKey: "demo-members",
       path: PATHS.OWNER_MEMBERS,
     },
     {
       name: "Inquiries",
+      translationKey: "inquiries",
       path: PATHS.INQUIRIES,
     },
-    { name: "Lives", path: PATHS.LIVES },
+    { name: "Lives", translationKey: "lives", path: PATHS.LIVES },
     {
       name: "Public Library",
+      translationKey: "public-library",
       path: PATHS.OWNER_LIBRARY,
     },
   ],
   demo_member: [
-    { name: "Departments", path: "" },
+    { name: "Departments", translationKey: "departments", path: "" },
     {
       name: "Certificates",
+      translationKey: "my-certificates",
       path: PATHS.CERTIFICATES,
     },
-    { name: "Lives", path: PATHS.LIVES },
+    { name: "Lives", translationKey: "lives", path: PATHS.LIVES },
     {
       name: "Inquiries",
+      translationKey: "inquiries",
       path: PATHS.INQUIRIES,
     },
   ],
   demo_admin: [
-    { name: "Departments", path: "" },
+    { name: "Departments", translationKey: "departments", path: "" },
     {
       name: "Certificates",
+      translationKey: "my-certificates",
       path: PATHS.CERTIFICATES,
     },
-    { name: "Lives", path: PATHS.LIVES },
+    { name: "Lives", translationKey: "lives", path: PATHS.LIVES },
     {
       name: "Inquiries",
+      translationKey: "inquiries",
       path: PATHS.INQUIRIES,
     },
   ],

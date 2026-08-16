@@ -8,24 +8,26 @@
     box-shadow 0.3s ease,
     border-color 0.3s ease;
   height: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .cardActive {
-  background-color: #ffffff;
-  border: 1px solid #e2eaf0;
+  background-color: var(--app-surface);
+  border: 1px solid var(--app-border);
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(17, 41, 80, 0.02);
+  box-shadow: var(--app-card-shadow);
 }
 
 .cardActive:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 35px rgba(17, 41, 80, 0.08);
+  box-shadow: var(--app-card-hover-shadow);
   border-color: var(--color-linco-blue);
 }
 
 .cardLocked {
-  background-color: #ffffff;
-  border: 1px dashed #cbd5e1;
+  background-color: var(--app-surface);
+  border: 1px dashed var(--app-border-strong);
   opacity: 0.6;
   pointer-events: none;
 }
@@ -34,18 +36,20 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-block-end: 12px;
+  gap: 12px;
 }
 
 .cardTitle {
   font-size: 1.3rem;
   font-weight: 800;
-  color: var(--color-linco-navy);
+  color: var(--app-heading);
   margin: 0;
+  overflow-wrap: anywhere;
 }
 
 .cardLocked .cardTitle {
-  color: #94a3b8;
+  color: var(--app-muted);
 }
 
 .iconBox {
@@ -59,38 +63,44 @@
 }
 
 .cardActive .iconBox {
-  background-color: #eff6ff;
-  color: var(--color-linco-blue);
+  background-color: var(--app-info-surface);
+  color: var(--app-link);
 }
 
 .cardLocked .iconBox {
   background-color: transparent;
-  color: #94a3b8;
+  color: var(--app-muted);
   font-size: 1.5rem;
 }
 
 .lockedText {
   font-size: 0.8rem;
   font-weight: 700;
-  color: #94a3b8;
-  margin-right: 8px;
+  color: var(--app-muted);
+  margin-inline-end: 8px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+:global([dir="rtl"]) .lockedText {
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .description {
   font-size: 0.95rem;
   line-height: 1.6;
-  color: #475569;
-  margin-bottom: 25px;
+  color: var(--app-text);
+  margin-block-end: 25px;
+  overflow-wrap: anywhere;
 }
 
 .cardLocked .description {
-  color: #94a3b8;
+  color: var(--app-muted);
 }
 
 .progressContainer {
-  margin-bottom: 25px;
+  margin-block-end: 25px;
 }
 
 .progressHeader {
@@ -98,29 +108,30 @@
   justify-content: space-between;
   font-size: 0.85rem;
   font-weight: 700;
-  margin-bottom: 8px;
+  margin-block-end: 8px;
 }
 
 .cardActive .progressHeader {
-  color: var(--color-linco-navy);
+  color: var(--app-heading);
 }
 .cardLocked .progressHeader {
-  color: #94a3b8;
+  color: var(--app-muted);
 }
 
 .progressBg {
   width: 100%;
   height: 8px;
+  display: flex;
   border-radius: 4px;
   overflow: hidden;
 }
 
 /* تعديل مهم: خلفية شريط التقدم أصبحت رمادية لأن الكرت أصبح أبيض */
 .cardActive .progressBg {
-  background-color: #f1f5f9;
+  background-color: var(--app-surface-soft);
 }
 .cardLocked .progressBg {
-  background-color: #f8fafc;
+  background-color: var(--app-surface-muted);
 }
 
 .progressFill {
@@ -130,33 +141,39 @@
 }
 
 .cardLocked .progressFill {
-  background-color: #e2e8f0;
+  background-color: var(--app-border);
 }
 
 .cardFooter {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: auto;
+  margin-block-start: auto;
+  gap: 14px;
+  flex-wrap: wrap;
 }
 
 .tags {
   display: flex;
   gap: 8px;
+  flex-wrap: wrap;
+  min-width: 0;
 }
 
 .tag {
-  background-color: #f1f5f9;
-  color: var(--color-linco-navy);
+  max-width: 100%;
+  background-color: var(--app-surface-soft);
+  color: var(--app-heading);
   padding: 6px 14px;
   border-radius: 20px;
   font-size: 0.75rem;
   font-weight: 700;
+  overflow-wrap: anywhere;
 }
 
 .cardLocked .tag {
-  background-color: #f8fafc;
-  color: #94a3b8;
+  background-color: var(--app-surface-muted);
+  color: var(--app-muted);
 }
 
 .stats {
@@ -164,13 +181,14 @@
   gap: 15px;
   font-size: 0.85rem;
   font-weight: 700;
+  flex-wrap: wrap;
 }
 
 .cardActive .stats {
-  color: var(--color-linco-navy);
+  color: var(--app-heading);
 }
 .cardLocked .stats {
-  color: #94a3b8;
+  color: var(--app-muted);
 }
 
 .statItem {
@@ -183,6 +201,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-shrink: 0;
 }
 
 .deleteBtn {
@@ -208,6 +227,18 @@
   transform: scale(1);
 }
 
+.deleteBtn:focus-visible {
+  opacity: 1;
+  transform: scale(1);
+  outline: 3px solid var(--app-focus-ring);
+  outline-offset: 2px;
+}
+
+.deleteBtn:disabled {
+  cursor: wait;
+  opacity: 0.55;
+}
+
 .deleteBtn:hover {
   background: #ef4444;
   color: white;
@@ -216,11 +247,9 @@
 /* تنسيقات المودال */
 .modalOverlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(10, 42, 84, 0.4);
+  inset: 0;
+  padding: 16px;
+  background: var(--app-overlay);
   backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
@@ -229,7 +258,10 @@
 }
 
 .confirmModal {
-  background: white;
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
   padding: 30px;
   border-radius: 16px;
   width: 90%;
@@ -237,6 +269,7 @@
   text-align: center;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
   animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-sizing: border-box;
 }
 
 @keyframes modalPop {
@@ -253,18 +286,18 @@
 .modalIcon {
   font-size: 3rem;
   color: #ef4444;
-  margin-bottom: 15px;
+  margin-block-end: 15px;
 }
 
 .confirmModal h3 {
-  color: #0a2a54;
-  margin-bottom: 10px;
+  color: var(--app-heading);
+  margin-block-end: 10px;
 }
 
 .confirmModal p {
-  color: #64748b;
+  color: var(--app-muted);
   font-size: 0.95rem;
-  margin-bottom: 25px;
+  margin-block-end: 25px;
 }
 
 .modalActions {
@@ -284,13 +317,13 @@
 }
 
 .cancelBtn {
-  background: #f1f5f9;
-  color: #64748b;
+  background: var(--app-surface-soft);
+  color: var(--app-text);
 }
 
 .cancelBtn:hover {
-  background: #e2e8f0;
-  color: #0a2a54;
+  background: var(--app-border);
+  color: var(--app-heading);
 }
 
 .confirmDeleteBtn {
@@ -301,4 +334,68 @@
 .confirmDeleteBtn:hover {
   background: #dc2626;
   box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.confirmModal::-webkit-scrollbar {
+  width: 7px;
+}
+
+.confirmModal::-webkit-scrollbar-track {
+  background: var(--app-surface-muted);
+}
+
+.confirmModal::-webkit-scrollbar-thumb {
+  background: var(--app-border-strong);
+  border-radius: 999px;
+}
+
+.cancelBtn:disabled,
+.confirmDeleteBtn:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+@media (max-width: 520px) {
+  .sectionCard {
+    padding: 20px 18px;
+  }
+
+  .cardHeader {
+    align-items: flex-start;
+  }
+
+  .headerActions {
+    gap: 7px;
+  }
+
+  .deleteBtn {
+    opacity: 1;
+    transform: none;
+  }
+
+  .cardFooter,
+  .stats {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .modalActions {
+    flex-direction: column-reverse;
+  }
+
+  .cancelBtn,
+  .confirmDeleteBtn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 360px) {
+  .modalOverlay {
+    padding: 8px;
+  }
+
+  .confirmModal {
+    width: 100%;
+    padding: 24px 16px;
+  }
 }

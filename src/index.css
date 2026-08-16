@@ -69,6 +69,14 @@
   --app-text-strong: #1e293b;
   --app-muted: #64748b;
   --app-link: #1a56db;
+  --app-info-surface: #eff6ff;
+  --app-info-border: #bfdbfe;
+  --app-info-text: #1e3a8a;
+  --app-warning-surface: #fffbeb;
+  --app-warning-soft: #fef3c7;
+  --app-warning-border: #fde68a;
+  --app-warning-text: #92400e;
+  --app-warning-icon: #b45309;
   --app-danger-surface: #fef2f2;
   --app-danger-border: #fecaca;
   --app-danger-text: #b91c1c;
@@ -78,6 +86,7 @@
   --app-success-indicator: #059669;
   --app-success-ring: rgba(5, 150, 105, 0.2);
   --app-focus-ring: rgba(26, 86, 219, 0.28);
+  --app-overlay: rgba(10, 42, 84, 0.62);
   --app-card-shadow: 0 4px 15px rgba(10, 42, 84, 0.02);
   --app-card-hover-shadow: 0 15px 30px rgba(10, 42, 84, 0.08);
 }
@@ -95,6 +104,14 @@
   --app-text-strong: #e2e8f0;
   --app-muted: #94a3b8;
   --app-link: #60a5fa;
+  --app-info-surface: #132c4a;
+  --app-info-border: #285583;
+  --app-info-text: #bfdbfe;
+  --app-warning-surface: #342811;
+  --app-warning-soft: #443318;
+  --app-warning-border: #785b1d;
+  --app-warning-text: #fde68a;
+  --app-warning-icon: #fbbf24;
   --app-danger-surface: #321b25;
   --app-danger-border: #7f1d1d;
   --app-danger-text: #fca5a5;
@@ -104,6 +121,7 @@
   --app-success-indicator: #34d399;
   --app-success-ring: rgba(52, 211, 153, 0.22);
   --app-focus-ring: rgba(96, 165, 250, 0.35);
+  --app-overlay: rgba(1, 7, 16, 0.78);
   --app-card-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
   --app-card-hover-shadow: 0 16px 34px rgba(0, 0, 0, 0.32);
 }
@@ -196,7 +214,7 @@ html {
   background: transparent;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #cbd5e1;
+  background-color: var(--app-border-strong);
   border-radius: 10px;
 }
 .reveal-up {

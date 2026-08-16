@@ -2,7 +2,8 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: 40px;
+  margin-block-end: 40px;
+  gap: 24px;
 }
 
 .titleArea {
@@ -12,15 +13,15 @@
 }
 
 .pageTitle {
-  color: var(--color-linco-navy);
+  color: var(--app-heading);
   font-size: 2.6rem;
   font-weight: 800;
-  margin: 0 0 10px 0;
+  margin: 0 0 10px;
   letter-spacing: -0.02em;
 }
 
 .subtitle {
-  color: #64748b;
+  color: var(--app-muted);
   font-size: 1.05rem;
   line-height: 1.5;
   margin: 0;
@@ -29,11 +30,14 @@
 .searchBar {
   display: flex;
   align-items: center;
-  background-color: #ffffff;
-  border: 1px solid #cbd5e1;
+  min-width: 0;
+  background-color: var(--app-surface);
+  border: 1px solid var(--app-border-strong);
   border-radius: 12px;
   padding: 12px 20px;
   width: 350px;
+  max-width: 100%;
+  box-sizing: border-box;
   box-shadow: 0 4px 12px rgba(17, 41, 80, 0.03);
   transition:
     box-shadow 0.2s,
@@ -50,14 +54,44 @@
   border: none;
   outline: none;
   font-size: 0.95rem;
-  color: var(--color-linco-navy);
+  color: var(--app-text-strong);
+  background: transparent;
+  min-width: 0;
 }
 
 .searchBar input::placeholder {
-  color: #94a3b8;
+  color: var(--app-muted);
 }
 
 .searchIcon {
-  color: #64748b;
+  color: var(--app-muted);
   font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+  .headerContainer {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 20px;
+    margin-block-end: 28px;
+  }
+
+  .titleArea {
+    max-width: none;
+  }
+
+  .pageTitle {
+    font-size: clamp(1.8rem, 9vw, 2.35rem);
+    overflow-wrap: anywhere;
+  }
+
+  .searchBar {
+    width: 100%;
+  }
+}
+
+@media (max-width: 360px) {
+  .searchBar {
+    padding-inline: 14px;
+  }
 }

@@ -3,16 +3,18 @@ import { useNavigate, useParams } from "react-router-dom";
 import { IoChevronDown, IoCheckmarkCircle } from "react-icons/io5";
 import { useDemo } from "../../../../hooks/useDemo";
 import { useDepartmentNavigation } from "../../../../hooks/useDepartmentNavigation";
+import { useTranslation } from "react-i18next";
 import styles from "./Header.module.css";
 
 const DepartmentSwitcher = ({ currentDepartment }) => {
+  const { t } = useTranslation();
   const [isDeptOpen, setIsDeptOpen] = useState(false);
   const deptRef = useRef(null);
   const navigate = useNavigate();
   const { demoId } = useDemo();
   const { departmentId } = useParams();
-  const { departments, isLoading } = useDepartmentNavigation(
-    currentDepartment || "Departments",
+  const { departments, isLoading, error } = useDepartmentNavigation(
+    currentDepartment || t("departments"),
   );
 
   useEffect(() => {
@@ -40,27 +42,40 @@ const DepartmentSwitcher = ({ currentDepartment }) => {
         type="button"
         className={styles["room-badge"]}
         onClick={() => setIsDeptOpen((prev) => !prev)}
+        aria-label={t("select-department")}
+        aria-expanded={isDeptOpen}
+        aria-controls="department-switcher-menu"
       >
         <span>
           {currentDepartment ||
-            (isLoading ? "Loading departments..." : "Departments")}
+            (isLoading ? t("loading-departments") : t("departments"))}
         </span>
         <IoChevronDown
           className={`${styles["dept-arrow"]} ${isDeptOpen ? styles["open"] : ""}`}
+          aria-hidden="true"
         />
       </button>
 
       {isDeptOpen && (
-        <div className={styles["dept-dropdown"]}>
+        <div
+          id="department-switcher-menu"
+          className={styles["dept-dropdown"]}
+        >
           <div className={styles["dept-dropdown-header"]}>
-            Switch Department
+            {t("switch-department")}
           </div>
           <div className={styles["dept-list"]}>
             {isLoading ? (
-              <div className={styles["dept-item"]}>Loading departments...</div>
+              <div className={styles["dept-item"]} role="status">
+                {t("loading-departments")}
+              </div>
+            ) : error ? (
+              <div className={styles["dept-item"]} role="alert">
+                {t("departments-navigation-load-failed")}
+              </div>
             ) : departments.length === 0 ? (
               <div className={styles["dept-item"]}>
-                No departments available
+                {t("no-departments-available")}
               </div>
             ) : (
               departments.map((dept) => {

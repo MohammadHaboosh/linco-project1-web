@@ -1,16 +1,14 @@
 import { useState, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { departmentApi } from "../api/departmentApi";
 
 export const useDeleteDepartment = (demoId, onSuccess) => {
+  const { t } = useTranslation();
   const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState(null);
 
   const deleteDepartment = useCallback(
     async (departmentId) => {
-      if (!window.confirm("Are you sure you want to delete this department?")) {
-        return;
-      }
-
       setIsDeleting(true);
       setError(null);
 
@@ -18,21 +16,21 @@ export const useDeleteDepartment = (demoId, onSuccess) => {
         await departmentApi.deleteDepartment(demoId, departmentId);
 
         if (onSuccess) onSuccess();
-      } catch (err) {
-        setError(
-          err.message || "An error occurred while deleting the department.",
-        );
-        alert(err.message || "Failed to delete the department.");
+        return true;
+      } catch {
+        setError(t("department-delete-failed"));
+        return false;
       } finally {
         setIsDeleting(false);
       }
     },
-    [demoId, onSuccess],
+    [demoId, onSuccess, t],
   );
 
   return {
     deleteDepartment,
     isDeleting,
     error,
+    clearError: () => setError(null),
   };
 };

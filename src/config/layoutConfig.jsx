@@ -11,7 +11,6 @@ import {
   IoSettingsOutline,
   IoBusinessOutline,
   IoLibraryOutline,
-  IoDocumentTextOutline,
   IoFolderOpenOutline,
 } from "react-icons/io5";
 
@@ -48,14 +47,21 @@ export const DASHBOARD_NAV = {
 export const DEMO_NAV = {
   member: {
     navLinks: [
-      { name: "Departments", icon: <IoBusinessOutline />, path: "" },
+      {
+        name: "Departments",
+        translationKey: "departments",
+        icon: <IoBusinessOutline />,
+        path: "",
+      },
       {
         name: "Groups",
+        translationKey: "groups",
         icon: <IoHardwareChipOutline />,
         path: PATHS.GROUP_WORKSPACE,
       },
       {
         name: "Inquiries",
+        translationKey: "inquiries",
         icon: <IoHelpCircleOutline />,
         path: PATHS.INQUIRIES,
       },
@@ -65,36 +71,43 @@ export const DEMO_NAV = {
     navLinks: [
       {
         name: "Home",
+        translationKey: "home",
         icon: <IoHomeOutline />,
         path: PATHS.OWNER_HOME,
       },
       {
         name: "Demo Courses",
+        translationKey: "demo-courses",
         icon: <IoFolderOpenOutline />,
         path: PATHS.OWNER_COURSES,
       },
       {
         name: "Departments",
+        translationKey: "departments",
         icon: <IoBusinessOutline />,
         path: PATHS.DEPARTMENTS,
       },
       {
         name: "Groups",
+        translationKey: "groups",
         icon: <IoHardwareChipOutline />,
         path: PATHS.GROUP_WORKSPACE,
       },
       {
         name: "Demo Members",
+        translationKey: "demo-members",
         icon: <IoPeopleOutline />,
         path: PATHS.OWNER_MEMBERS,
       },
       {
         name: "Inquiries",
+        translationKey: "inquiries",
         icon: <IoHelpCircleOutline />,
         path: PATHS.INQUIRIES,
       },
       {
         name: "Public Library",
+        translationKey: "public-library",
         icon: <IoLibraryOutline />,
         path: PATHS.OWNER_LIBRARY,
       },
@@ -102,14 +115,21 @@ export const DEMO_NAV = {
   },
   sectionManager: {
     navLinks: [
-      { name: "Departments", icon: <IoBusinessOutline />, path: "" },
+      {
+        name: "Departments",
+        translationKey: "departments",
+        icon: <IoBusinessOutline />,
+        path: "",
+      },
       {
         name: "Groups",
+        translationKey: "groups",
         icon: <IoHardwareChipOutline />,
         path: PATHS.GROUP_WORKSPACE,
       },
       {
         name: "Inquiries",
+        translationKey: "inquiries",
         icon: <IoHelpCircleOutline />,
         path: PATHS.INQUIRIES,
       },

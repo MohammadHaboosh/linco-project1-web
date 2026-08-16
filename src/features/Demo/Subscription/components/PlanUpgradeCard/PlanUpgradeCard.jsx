@@ -17,7 +17,7 @@ const normalizePlan = (plan) => {
 };
 
 const PlanUpgradeCard = ({ demoId, currentPlan }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const activePlan = normalizePlan(currentPlan);
   const activePlanIndex = PLAN_ORDER.indexOf(activePlan);
@@ -28,28 +28,38 @@ const PlanUpgradeCard = ({ demoId, currentPlan }) => {
     startCheckout,
     clearCheckoutError,
   } = useDemoPlanCheckout(demoId);
+  const locale = i18n.resolvedLanguage || i18n.language || "en";
+  const currencyFormatter = useMemo(
+    () =>
+      new Intl.NumberFormat(locale, {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 0,
+      }),
+    [locale],
+  );
 
   const plans = useMemo(
     () => [
       {
         id: "FREE",
-        price: "$0",
+        price: 0,
         description: t("free-plan-description"),
       },
       {
         id: "STARTER",
-        price: "$20",
+        price: 20,
         description: t("starter-plan-description"),
       },
       {
         id: "PRO",
-        price: "$100",
+        price: 100,
         description: t("pro-plan-description"),
         featured: true,
       },
       {
         id: "ENTERPRISE",
-        price: "$200",
+        price: 200,
         description: t("enterprise-plan-description"),
       },
     ],
@@ -86,7 +96,9 @@ const PlanUpgradeCard = ({ demoId, currentPlan }) => {
           <span className={styles.eyebrow}>{t("demo-subscription")}</span>
           <div className={styles.planHeading}>
             <h2 id="demo-plan-title">{t("current-plan")}</h2>
-            <span className={styles.currentPlanBadge}>{activePlan}</span>
+            <span className={styles.currentPlanBadge}>
+              {t(`plan-${activePlan.toLowerCase()}`)}
+            </span>
           </div>
           <p>
             {hasUpgrade
@@ -103,7 +115,10 @@ const PlanUpgradeCard = ({ demoId, currentPlan }) => {
             disabled={!demoId}
           >
             {t("upgrade-plan")}
-            <IoArrowForwardOutline />
+            <IoArrowForwardOutline
+              className={styles.forwardIcon}
+              aria-hidden="true"
+            />
           </button>
         )}
       </section>
@@ -160,11 +175,13 @@ const PlanUpgradeCard = ({ demoId, currentPlan }) => {
                     )}
                     <div className={styles.optionHeader}>
                       <span className={styles.planMark} aria-hidden="true">
-                        {plan.id.charAt(0)}
+                        {t(`plan-${plan.id.toLowerCase()}`).charAt(0)}
                       </span>
-                      <h3>{plan.id}</h3>
+                      <h3>{t(`plan-${plan.id.toLowerCase()}`)}</h3>
                     </div>
-                    <div className={styles.planPrice}>{plan.price}</div>
+                    <div className={styles.planPrice}>
+                      {currencyFormatter.format(plan.price)}
+                    </div>
                     <p>{plan.description}</p>
                     <button
                       type="button"

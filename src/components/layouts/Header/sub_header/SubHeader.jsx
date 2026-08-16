@@ -1,7 +1,9 @@
 import { NavLink } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import styles from "./SubHeader.module.css";
 
 const SubHeader = ({ navLinks }) => {
+  const { t } = useTranslation();
   if (!navLinks || !Array.isArray(navLinks) || navLinks.length === 0) {
     console.warn(
       "SubHeader is hidden because navLinks is empty or invalid:",
@@ -12,7 +14,7 @@ const SubHeader = ({ navLinks }) => {
 
   return (
     <div className={styles.subHeader}>
-      <nav className={styles.navLinks}>
+      <nav className={styles.navLinks} aria-label={t("workspace-navigation")}>
         {navLinks.map((link, index) => {
           const isHomeLink = !link.path;
 
@@ -26,11 +28,13 @@ const SubHeader = ({ navLinks }) => {
                 }
               >
                 <span className={styles.icon}>{link.icon}</span>
-                {link.name}
+                <span className={styles.linkText}>
+                  {t(link.translationKey || link.name, link.name)}
+                </span>
               </NavLink>
 
               {index < navLinks.length - 1 && (
-                <div className={styles.divider}></div>
+                <div className={styles.divider} aria-hidden="true"></div>
               )}
             </div>
           );

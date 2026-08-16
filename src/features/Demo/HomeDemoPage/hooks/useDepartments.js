@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { departmentApi } from "../api/departmentApi";
 
 export const useDepartments = (demoId) => {
+  const { t } = useTranslation();
   const [departments, setDepartments] = useState([]);
   const [isLoading, setIsLoading] = useState(!!demoId);
   const [error, setError] = useState(null);
@@ -18,11 +20,9 @@ export const useDepartments = (demoId) => {
           setDepartments(data);
           setError(null);
         }
-      } catch (err) {
+      } catch {
         if (isMounted) {
-          setError(
-            err.message || "An error occurred while loading departments.",
-          );
+          setError(t("departments-load-error-message"));
         }
       } finally {
         if (isMounted) {
@@ -36,7 +36,7 @@ export const useDepartments = (demoId) => {
     return () => {
       isMounted = false;
     };
-  }, [demoId]);
+  }, [demoId, t]);
 
   const refetch = useCallback(async () => {
     if (!demoId) return;
@@ -47,12 +47,12 @@ export const useDepartments = (demoId) => {
     try {
       const data = await departmentApi.getDepartments(demoId);
       setDepartments(data);
-    } catch (err) {
-      setError(err.message || "An error occurred while reloading departments.");
+    } catch {
+      setError(t("departments-load-error-message"));
     } finally {
       setIsLoading(false);
     }
-  }, [demoId]);
+  }, [demoId, t]);
 
   return {
     departments,

@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { departmentApi } from "../api/departmentApi";
 
 const SEARCH_DEBOUNCE_MS = 300;
 
 export const useCreateDepartment = (demoId, onSuccess) => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
-    name: '',
-    description: '',
+    name: "",
+    description: "",
   });
 
   const [selectedUser, setSelectedUser] = useState(null);
@@ -48,7 +50,7 @@ export const useCreateDepartment = (demoId, onSuccess) => {
 
         if (!controller.signal.aborted) {
           setSearchResults([]);
-          setSearchError(err.message || "Failed to search members.");
+          setSearchError(t("member-search-failed"));
         }
       } finally {
         if (!controller.signal.aborted) {
@@ -61,7 +63,7 @@ export const useCreateDepartment = (demoId, onSuccess) => {
       clearTimeout(delayDebounceFn);
       controller.abort();
     };
-  }, [demoId, searchQuery, selectedUser]);
+  }, [demoId, searchQuery, selectedUser, t]);
 
   const updateSearchQuery = useCallback((value) => {
     const nextQuery = String(value ?? "");
@@ -92,15 +94,15 @@ export const useCreateDepartment = (demoId, onSuccess) => {
     e.preventDefault();
     setError(null);
     if (!formData.name.trim()) {
-      setError("Department title is required.");
+      setError(t("department-title-required"));
       return;
     }
     if (!selectedUser) {
-      setError("Please select a manager/member from the search.");
+      setError(t("department-manager-required"));
       return;
     }
     if (!demoId) {
-      setError("Demo ID is missing.");
+      setError(t("workspace-id-missing"));
       return;
     }
 
@@ -114,10 +116,8 @@ export const useCreateDepartment = (demoId, onSuccess) => {
       await departmentApi.createDepartment(demoId, payload);
 
       if (onSuccess) onSuccess();
-    } catch (err) {
-      setError(
-        err.message || "An error occurred while creating the department.",
-      );
+    } catch {
+      setError(t("department-create-failed"));
     } finally {
       setIsSubmitting(false);
     }

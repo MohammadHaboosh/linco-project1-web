@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { ownerCoursesApi } from "../api/ownerCoursesApi";
 
 const mapAssetToCourse = (asset) => {
@@ -21,6 +22,7 @@ const mapAssetToCourse = (asset) => {
 };
 
 export const useOwnerCourses = (demoId) => {
+  const { t } = useTranslation();
   const [courses, setCourses] = useState([]);
   const [isLoading, setIsLoading] = useState(!!demoId);
   const [error, setError] = useState(null);
@@ -39,7 +41,7 @@ export const useOwnerCourses = (demoId) => {
           setError(null);
         }
       } catch (err) {
-        if (isMounted) setError(err.message || "Failed to fetch courses.");
+        if (isMounted) setError(t("courses-load-error-message"));
       } finally {
         if (isMounted) setIsLoading(false);
       }
@@ -50,7 +52,7 @@ export const useOwnerCourses = (demoId) => {
     return () => {
       isMounted = false;
     };
-  }, [demoId]);
+  }, [demoId, t]);
 
   const refetch = useCallback(async () => {
     if (!demoId) return;
@@ -60,12 +62,12 @@ export const useOwnerCourses = (demoId) => {
     try {
       const assetsData = await ownerCoursesApi.getDemoAssets(demoId);
       setCourses(assetsData.map(mapAssetToCourse));
-    } catch (err) {
-      setError(err.message || "An error occurred while fetching courses.");
+    } catch {
+      setError(t("courses-load-error-message"));
     } finally {
       setIsLoading(false);
     }
-  }, [demoId]);
+  }, [demoId, t]);
 
   return {
     courses,

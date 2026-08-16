@@ -37,17 +37,19 @@ const CourseManagementCard = ({
   onAddNew,
   onEditSettings,
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.resolvedLanguage || i18n.language || "en";
+  const formatCount = (count) => new Intl.NumberFormat(locale).format(count);
 
   if (isAddNew) {
     return (
-      <div className={styles.addNewCard} onClick={onAddNew}>
+      <button type="button" className={styles.addNewCard} onClick={onAddNew}>
         <div className={styles.addCircle}>
           <IoAddOutline className={styles.addIcon} />
         </div>
         <h3>{t("create-new-course")}</h3>
         <p>{t("build-a-new-curriculum-from-scratch")}</p>
-      </div>
+      </button>
     );
   }
 
@@ -56,13 +58,13 @@ const CourseManagementCard = ({
       <div className={styles.imageWrapper}>
         <img
           src={course.imagePath}
-          alt={course.title}
+          alt={t("course-thumbnail-alt", { courseTitle: course.title })}
           className={styles.courseImage}
         />
         <div className={styles.imageOverlay}></div>
         {course.isPublished && (
           <div className={styles.publishedBadge}>
-            <IoCheckmarkCircleOutline /> {t("published")}
+            <IoCheckmarkCircleOutline aria-hidden="true" /> {t("published")}
           </div>
         )}
       </div>
@@ -95,21 +97,38 @@ const CourseManagementCard = ({
 
         <div className={styles.statsRow}>
           <div className={styles.statItem}>
-            <IoListOutline className={styles.statIcon} />
+            <IoListOutline className={styles.statIcon} aria-hidden="true" />
             <span>
-              {course.sectionsCount || 0} {t("sections")}
+              {t("course-section-count", {
+                count: course.sectionsCount || 0,
+                formattedCount: formatCount(course.sectionsCount || 0),
+              })}
             </span>
           </div>
           <div className={styles.statItem}>
-            <IoVideocamOutline className={styles.statIcon} />
+            <IoVideocamOutline
+              className={styles.statIcon}
+              aria-hidden="true"
+            />
             <span>
-              {course.lessonCount || 0} {t("lessons")}
+              {t("course-lesson-count", {
+                count: course.lessonCount || 0,
+                formattedCount: formatCount(course.lessonCount || 0),
+              })}
             </span>
           </div>
           <div className={styles.statItem}>
-            <IoHelpCircleOutline className={styles.statIcon} />
+            <IoHelpCircleOutline
+              className={styles.statIcon}
+              aria-hidden="true"
+            />
             <span>
-              {course.stats?.quizzes || 0} {t("quizzes")}
+              {t("course-quiz-count", {
+                count: course.quizzes || course.stats?.quizzes || 0,
+                formattedCount: formatCount(
+                  course.quizzes || course.stats?.quizzes || 0,
+                ),
+              })}
             </span>
           </div>
         </div>
@@ -121,11 +140,11 @@ const CourseManagementCard = ({
             className={styles.settingsBtn}
             onClick={() => onEditSettings(course)}
           >
-            <IoSettingsOutline /> {t("settings", "Settings")}
+            <IoSettingsOutline aria-hidden="true" /> {t("settings")}
           </button>
         ) : (
           <button className={styles.editBtn} onClick={onEdit}>
-            <IoCreateOutline /> {t("edit")}
+            <IoCreateOutline aria-hidden="true" /> {t("edit")}
           </button>
         )}
 
@@ -134,7 +153,7 @@ const CourseManagementCard = ({
           onClick={onPublish}
           disabled={course.isPublished}
         >
-          <IoCloudUploadOutline />{" "}
+          <IoCloudUploadOutline aria-hidden="true" />{" "}
           {course.isPublished ? t("in-library") : t("publish")}
         </button>
       </div>

@@ -1,11 +1,11 @@
 .subHeader {
   position: relative;
-  background-color: #ffffff;
+  background-color: var(--app-surface);
   min-height: 65px;
   display: flex;
   align-items: center;
   padding: 0 40px;
-  border-bottom: 1px solid #e2e8f0;
+  border-block-end: 1px solid var(--app-border);
   width: 100%;
   box-sizing: border-box;
   flex-shrink: 0;
@@ -20,11 +20,11 @@
 }
 
 .subHeaderOuter {
-  background-color: #ffffff;
+  background-color: var(--app-surface);
   height: 65px;
   width: 100%;
   position: relative;
-  border-bottom: 1px solid #e2e8f0;
+  border-block-end: 1px solid var(--app-border);
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -48,7 +48,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  color: #64748b;
+  color: var(--app-muted);
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 600;
@@ -62,13 +62,13 @@
 
 .icon {
   font-size: 1.2rem;
-  color: #94a3b8;
+  color: var(--app-muted);
 }
 
 .navLink:hover {
-  background-color: #f8fafc;
-  color: var(--color-linco-navy);
-  border-color: #e2e8f0;
+  background-color: var(--app-surface-muted);
+  color: var(--app-heading);
+  border-color: var(--app-border);
 }
 
 .navLink:hover .icon {
@@ -96,7 +96,7 @@
   color: #ffffff;
   border-color: transparent;
   box-shadow:
-    0 6px 16px rgb(255, 255, 255),
+    0 6px 16px rgba(10, 42, 84, 0.18),
     inset 0 1px 1px rgba(255, 255, 255, 0.15);
   animation: activePop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
@@ -119,18 +119,22 @@
 .divider {
   width: 1px;
   height: 18px;
-  background-color: #e2e8f0;
+  background-color: var(--app-border);
   margin: 0 6px;
 }
 .edgeFadeRight {
   position: absolute;
-  right: 0;
-  top: 0;
+  inset-inline-end: 0;
+  inset-block-start: 0;
   height: 100%;
   width: 50px;
-  background: linear-gradient(to right, transparent, #ffffff);
+  background: linear-gradient(to right, transparent, var(--app-surface));
   pointer-events: none;
   z-index: 5;
+}
+
+:global([dir="rtl"]) .edgeFadeRight {
+  background: linear-gradient(to left, transparent, var(--app-surface));
 }
 
 @media (max-width: 768px) {

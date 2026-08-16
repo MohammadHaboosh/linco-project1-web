@@ -27,6 +27,61 @@
   width: 100%;
 }
 
+.layoutState {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 24px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 12px;
+  color: var(--app-text);
+  background: var(--app-page-bg);
+  text-align: center;
+}
+
+.layoutState h1,
+.layoutState p {
+  margin: 0;
+}
+
+.layoutState h1 {
+  color: var(--app-heading);
+  font-size: clamp(1.35rem, 5vw, 1.8rem);
+}
+
+.layoutState p {
+  max-width: 46ch;
+  line-height: 1.6;
+}
+
+.layoutState button {
+  margin-block-start: 6px;
+  padding: 10px 16px;
+  color: #ffffff;
+  background: var(--color-linco-blue);
+  border: 0;
+  border-radius: 9px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.loader {
+  width: 38px;
+  height: 38px;
+  border: 4px solid var(--app-border);
+  border-block-start-color: var(--app-link);
+  border-radius: 50%;
+  animation: layoutSpin 0.8s linear infinite;
+}
+
+@keyframes layoutSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .chatPageContent {
   min-height: 0;
   overflow: hidden;

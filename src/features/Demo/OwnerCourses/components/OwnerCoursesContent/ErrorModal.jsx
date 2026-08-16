@@ -8,20 +8,36 @@ const ErrorModal = ({ message, onClose }) => {
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
-      <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+      <div
+        className={styles.modalContent}
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby="course-error-title"
+        aria-describedby="course-error-description"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className={styles.modalHeader}>
           <div
             className={`${styles.modalIconContainer} ${styles.errorIconBox}`}
           >
             <IoAlertCircleOutline size={28} className={styles.errorIcon} />
           </div>
-          <button type="button" className={styles.closeBtn} onClick={onClose}>
+          <button
+            type="button"
+            className={styles.closeBtn}
+            onClick={onClose}
+            aria-label={t("close-error-dialog")}
+          >
             <IoCloseOutline size={20} />
           </button>
         </div>
 
-        <h3 className={styles.modalTitle}>{t("oops-something-went-wrong")}</h3>
-        <p className={styles.modalDesc}>{message}</p>
+        <h3 id="course-error-title" className={styles.modalTitle}>
+          {t("oops-something-went-wrong")}
+        </h3>
+        <p id="course-error-description" className={styles.modalDesc}>
+          {message}
+        </p>
 
         <div className={styles.modalFooter}>
           <button

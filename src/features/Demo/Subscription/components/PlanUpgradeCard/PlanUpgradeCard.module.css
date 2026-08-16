@@ -2,10 +2,10 @@
   display: flex;
   align-items: center;
   gap: 20px;
-  margin-bottom: 30px;
+  margin-block-end: 30px;
   padding: 22px 26px;
-  background: #ffffff;
-  border: 1px solid #dbeafe;
+  background: var(--app-surface);
+  border: 1px solid var(--app-info-border);
   border-radius: 20px;
   box-shadow: 0 8px 24px rgba(10, 42, 84, 0.06);
 }
@@ -29,12 +29,18 @@
 
 .eyebrow {
   display: block;
-  margin-bottom: 5px;
-  color: #1a56db;
+  margin-block-end: 5px;
+  color: var(--app-link);
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+:global([dir="rtl"]) .eyebrow,
+:global([dir="rtl"]) .popularBadge {
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .planHeading {
@@ -46,15 +52,15 @@
 .planHeading h2,
 .modalHeader h2 {
   margin: 0;
-  color: #0a2a54;
+  color: var(--app-heading);
   font-size: 1.25rem;
   font-weight: 800;
 }
 
 .currentPlanBadge {
   padding: 4px 10px;
-  color: #1d4ed8;
-  background: #dbeafe;
+  color: var(--app-link);
+  background: var(--app-info-surface);
   border-radius: 999px;
   font-size: 0.72rem;
   font-weight: 800;
@@ -63,7 +69,7 @@
 .planSummary p,
 .modalHeader p {
   margin: 6px 0 0;
-  color: #64748b;
+  color: var(--app-muted);
   font-size: 0.9rem;
   line-height: 1.5;
 }
@@ -107,7 +113,7 @@
   display: grid;
   place-items: center;
   padding: 24px;
-  background: rgba(10, 42, 84, 0.62);
+  background: var(--app-overlay);
   backdrop-filter: blur(5px);
   animation: overlayIn 0.2s ease-out;
 }
@@ -117,17 +123,31 @@
   max-height: calc(100vh - 48px);
   overflow-y: auto;
   padding: 30px;
-  background: #ffffff;
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
   border-radius: 24px;
   box-shadow: 0 30px 80px rgba(10, 42, 84, 0.28);
   animation: modalIn 0.25s ease-out;
+}
+
+.modal::-webkit-scrollbar {
+  width: 7px;
+}
+
+.modal::-webkit-scrollbar-track {
+  background: var(--app-surface-muted);
+}
+
+.modal::-webkit-scrollbar-thumb {
+  background: var(--app-border-strong);
+  border-radius: 999px;
 }
 
 .modalHeader {
   display: flex;
   justify-content: space-between;
   gap: 20px;
-  margin-bottom: 24px;
+  margin-block-end: 24px;
 }
 
 .modalHeader h2 {
@@ -140,8 +160,8 @@
   flex: 0 0 40px;
   display: grid;
   place-items: center;
-  color: #475569;
-  background: #f1f5f9;
+  color: var(--app-text);
+  background: var(--app-surface-soft);
   border: none;
   border-radius: 10px;
   font-size: 1.4rem;
@@ -160,8 +180,9 @@
   flex-direction: column;
   min-height: 220px;
   padding: 22px 18px 18px;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  min-width: 0;
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
   border-radius: 16px;
 }
 
@@ -171,14 +192,14 @@
 }
 
 .optionCard.activePlan {
-  background: #f8fafc;
-  border-color: #94a3b8;
+  background: var(--app-surface-muted);
+  border-color: var(--app-border-strong);
 }
 
 .popularBadge {
   position: absolute;
-  top: -10px;
-  right: 12px;
+  inset-block-start: -10px;
+  inset-inline-end: 12px;
   padding: 4px 9px;
   color: #ffffff;
   background: #1a56db;
@@ -199,21 +220,21 @@
   height: 34px;
   display: grid;
   place-items: center;
-  color: #1a56db;
-  background: #eff6ff;
+  color: var(--app-link);
+  background: var(--app-info-surface);
   border-radius: 9px;
   font-weight: 900;
 }
 
 .optionHeader h3 {
   margin: 0;
-  color: #0a2a54;
+  color: var(--app-heading);
   font-size: 1rem;
 }
 
 .planPrice {
-  margin-top: 18px;
-  color: #0a2a54;
+  margin-block-start: 18px;
+  color: var(--app-heading);
   font-size: 2rem;
   font-weight: 900;
   line-height: 1;
@@ -223,7 +244,7 @@
 .optionCard > p {
   flex: 1;
   margin: 12px 0 18px;
-  color: #64748b;
+  color: var(--app-muted);
   font-size: 0.84rem;
   line-height: 1.55;
 }
@@ -241,19 +262,23 @@
 }
 
 .activePlan .selectPlanButton {
-  color: #166534;
-  background: #dcfce7;
+  color: var(--app-success-text);
+  background: var(--app-success-surface);
 }
 
 .checkoutError {
-  margin-top: 18px;
+  margin-block-start: 18px;
   padding: 12px 14px;
-  color: #b91c1c;
-  background: #fef2f2;
-  border: 1px solid #fecaca;
+  color: var(--app-danger-text);
+  background: var(--app-danger-surface);
+  border: 1px solid var(--app-danger-border);
   border-radius: 10px;
   font-size: 0.9rem;
   font-weight: 600;
+}
+
+:global([dir="rtl"]) .forwardIcon {
+  transform: scaleX(-1);
 }
 
 @keyframes overlayIn {
@@ -286,6 +311,7 @@
   .planCard {
     align-items: flex-start;
     flex-wrap: wrap;
+    padding: 18px;
   }
 
   .planSummary {
@@ -312,6 +338,34 @@
 
   .optionCard {
     min-height: 190px;
+  }
+}
+
+@media (max-width: 360px) {
+  .planCard {
+    gap: 14px;
+  }
+
+  .planSummary {
+    flex-basis: calc(100% - 66px);
+  }
+
+  .planHeading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .modalOverlay {
+    padding: 8px;
+  }
+
+  .modal {
+    max-height: calc(100dvh - 16px);
+    padding: 18px 12px;
+  }
+
+  .modalHeader {
+    gap: 10px;
   }
 }
 

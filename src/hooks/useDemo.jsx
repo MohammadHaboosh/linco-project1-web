@@ -10,12 +10,15 @@ export const DemoProvider = ({ children }) => {
   const [actualRole, setActualRole] = useState("member");
   const [currentRoleView, setCurrentRoleView] = useState("member");
   const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
+  const [reloadVersion, setReloadVersion] = useState(0);
 
   useEffect(() => {
     if (!demoId) return;
 
     const loadDemoData = async () => {
       setIsLoading(true);
+      setLoadError(false);
       try {
         const response = await apiFetch(`/demos/${demoId}`, {
           method: "GET",
@@ -47,13 +50,15 @@ export const DemoProvider = ({ children }) => {
         setCurrentRoleView(role);
       } catch (error) {
         console.error("Failed to load demo", error);
+        setDemoData(null);
+        setLoadError(true);
       } finally {
         setIsLoading(false);
       }
     };
 
     loadDemoData();
-  }, [demoId]);
+  }, [demoId, reloadVersion]);
 
   const setRoleView = (role) => {
     if (actualRole === "owner") {
@@ -70,6 +75,8 @@ export const DemoProvider = ({ children }) => {
         currentRoleView,
         setRoleView,
         isLoading,
+        loadError,
+        retryLoadDemo: () => setReloadVersion((version) => version + 1),
       }}
     >
       {children}

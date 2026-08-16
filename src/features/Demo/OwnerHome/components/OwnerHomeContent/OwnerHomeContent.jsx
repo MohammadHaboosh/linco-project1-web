@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import {
   IoTrendingUp,
@@ -38,30 +39,66 @@ const getFreePlanTimeline = (createdAt) => {
 };
 
 const StatCard = ({ title, value, icon, trend, trendText, isPositive }) => (
-  <div className={styles.statCard}>
+  <article className={styles.statCard} aria-label={`${title}: ${value}`}>
     <div className={styles.statHeader}>
       <div className={styles.statInfo}>
         <span className={styles.statTitle}>{title}</span>
         <h3 className={styles.statValue}>{value}</h3>
       </div>
-      <div className={styles.statIconBox}>{icon}</div>
+      <div className={styles.statIconBox} aria-hidden="true">
+        {icon}
+      </div>
     </div>
     <div className={styles.statFooter}>
       <span
         className={`${styles.trendBadge} ${isPositive ? styles.positive : styles.negative}`}
       >
-        <IoTrendingUp className={!isPositive ? styles.iconDown : ""} /> {trend}
+        <IoTrendingUp
+          className={!isPositive ? styles.iconDown : ""}
+          aria-hidden="true"
+        />{" "}
+        {trend}
       </span>
       <span className={styles.trendText}>{trendText}</span>
     </div>
-  </div>
+  </article>
 );
 
 const OwnerHomeContent = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { demoId, demoData } = useDemo();
+  const locale = i18n.resolvedLanguage || i18n.language || "en";
+  const numberFormatter = useMemo(
+    () => new Intl.NumberFormat(locale),
+    [locale],
+  );
+  const percentFormatter = useMemo(
+    () =>
+      new Intl.NumberFormat(locale, {
+        style: "percent",
+        maximumFractionDigits: 0,
+      }),
+    [locale],
+  );
+  const signedPercentFormatter = useMemo(
+    () =>
+      new Intl.NumberFormat(locale, {
+        style: "percent",
+        maximumFractionDigits: 0,
+        signDisplay: "always",
+      }),
+    [locale],
+  );
+  const signedNumberFormatter = useMemo(
+    () => new Intl.NumberFormat(locale, { signDisplay: "always" }),
+    [locale],
+  );
+  const relativeTimeFormatter = useMemo(
+    () => new Intl.RelativeTimeFormat(locale, { numeric: "auto" }),
+    [locale],
+  );
 
-  const workspaceName = demoData?.name || "Your Workspace";
+  const workspaceName = demoData?.name || t("your-workspace");
   const currentPlan =
     demoData?.plan ||
     demoData?.subscription?.plan ||
@@ -71,56 +108,73 @@ const OwnerHomeContent = () => {
   const isFreePlan = String(currentPlan).trim().toUpperCase() === "FREE";
   const freePlanTimeline = getFreePlanTimeline(demoData?.createdAt);
 
-  const chartData = [
-    { day: "Mon", value: 40 },
-    { day: "Tue", value: 65 },
-    { day: "Wed", value: 85 },
-    { day: "Thu", value: 50 },
-    { day: "Fri", value: 90 },
-    { day: "Sat", value: 30 },
-    { day: "Sun", value: 45 },
-  ];
+  const chartData = useMemo(() => {
+    const weekdayFormatter = new Intl.DateTimeFormat(locale, {
+      weekday: "short",
+      timeZone: "UTC",
+    });
+    const values = [40, 65, 85, 50, 90, 30, 45];
+
+    return values.map((value, index) => ({
+      day: weekdayFormatter.format(new Date(Date.UTC(2024, 0, index + 1))),
+      value,
+    }));
+  }, [locale]);
 
   const topDepartments = [
-    { id: 1, name: "Front-End", score: 92, members: 15 },
-    { id: 2, name: "UI/UX Design", score: 85, members: 8 },
-    { id: 3, name: "Back-End", score: 78, members: 12 },
+    {
+      id: 1,
+      name: t("analytics-department-frontend"),
+      score: 92,
+      members: 15,
+    },
+    {
+      id: 2,
+      name: t("analytics-department-ui-ux"),
+      score: 85,
+      members: 8,
+    },
+    {
+      id: 3,
+      name: t("analytics-department-backend"),
+      score: 78,
+      members: 12,
+    },
   ];
 
   const recentActivities = [
     {
       id: 1,
       user: "Ahmad Sami",
-      action: "published a new course",
-      target: "Advanced React",
-      time: "2 hours ago",
+      target: t("analytics-course-advanced-react"),
+      relativeTime: { value: -2, unit: "hour" },
+      messageKey: "analytics-activity-published-course",
       type: "course",
     },
     {
       id: 2,
       user: "Sara Majed",
-      action: "joined department",
-      target: "UI/UX Design",
-      time: "5 hours ago",
+      target: t("analytics-department-ui-ux"),
+      relativeTime: { value: -5, unit: "hour" },
+      messageKey: "analytics-activity-joined-department",
       type: "user",
     },
     {
       id: 3,
       user: "Omar Nabil",
-      action: "completed weekly task in",
-      target: "Front-End",
-      time: "1 day ago",
+      target: t("analytics-department-frontend"),
+      relativeTime: { value: -1, unit: "day" },
+      messageKey: "analytics-activity-completed-task",
       type: "task",
     },
   ];
 
   return (
-    <div className={styles.pageContainer}>
+    <div className={styles.pageContainer} dir={i18n.dir()}>
       <div className={styles.welcomeBanner}>
         <div className={styles.bannerContent}>
           <h1 className={styles.greeting}>
-            {t("overview-for")}
-            <span className={styles.highlight}> {workspaceName}</span>
+            {t("overview-for-workspace", { workspaceName })}
           </h1>
           <p className={styles.bannerDesc}>
             {t("heres-what-happening-in-your-workspace-today")}
@@ -152,7 +206,13 @@ const OwnerHomeContent = () => {
                 ? t("free-plan-expired-description")
                 : freePlanTimeline
                   ? t("free-plan-warning-description", {
-                      daysElapsed: freePlanTimeline.daysElapsed,
+                      count: freePlanTimeline.daysElapsed,
+                      formattedCount: numberFormatter.format(
+                        freePlanTimeline.daysElapsed,
+                      ),
+                      totalDays: numberFormatter.format(
+                        FREE_PLAN_DURATION_DAYS,
+                      ),
                     })
                   : t("free-plan-warning-generic-description")}
             </p>
@@ -161,13 +221,12 @@ const OwnerHomeContent = () => {
             <span className={styles.warningBadge}>
               {freePlanTimeline.isExpired
                 ? t("free-plan-expired-badge")
-                : freePlanTimeline.daysRemaining === 1
-                  ? t("free-plan-day-remaining", {
-                      count: freePlanTimeline.daysRemaining,
-                    })
-                  : t("free-plan-days-remaining", {
-                      count: freePlanTimeline.daysRemaining,
-                    })}
+                : t("free-plan-days-remaining", {
+                    count: freePlanTimeline.daysRemaining,
+                    formattedCount: numberFormatter.format(
+                      freePlanTimeline.daysRemaining,
+                    ),
+                  })}
             </span>
           )}
         </section>
@@ -177,35 +236,35 @@ const OwnerHomeContent = () => {
 
       <div className={styles.statsGrid}>
         <StatCard
-          title="Total Members"
-          value="1,248"
+          title={t("analytics-total-members")}
+          value={numberFormatter.format(1248)}
           icon={<IoPeopleOutline />}
-          trend="+12%"
-          trendText="from last month"
+          trend={signedPercentFormatter.format(0.12)}
+          trendText={t("analytics-from-last-month")}
           isPositive={true}
         />
         <StatCard
-          title="Active Departments"
-          value="8"
+          title={t("analytics-active-departments")}
+          value={numberFormatter.format(8)}
           icon={<IoBusinessOutline />}
-          trend="+2"
-          trendText="new this week"
+          trend={signedNumberFormatter.format(2)}
+          trendText={t("analytics-new-this-week")}
           isPositive={true}
         />
         <StatCard
-          title="Published Courses"
-          value="45"
+          title={t("analytics-published-courses")}
+          value={numberFormatter.format(45)}
           icon={<IoBookOutline />}
-          trend="+5%"
-          trendText="from last month"
+          trend={signedPercentFormatter.format(0.05)}
+          trendText={t("analytics-from-last-month")}
           isPositive={true}
         />
         <StatCard
-          title="Avg. Completion Rate"
-          value="68%"
+          title={t("analytics-average-completion-rate")}
+          value={percentFormatter.format(0.68)}
           icon={<IoPulseOutline />}
-          trend="-2%"
-          trendText="from last week"
+          trend={signedPercentFormatter.format(-0.02)}
+          trendText={t("analytics-from-last-week")}
           isPositive={false}
         />
       </div>
@@ -215,16 +274,34 @@ const OwnerHomeContent = () => {
           <div className={styles.chartCard}>
             <div className={styles.cardHeader}>
               <h3>{t("platform-activity")}</h3>
-              <select className={styles.dateSelect}>
+              <select
+                className={styles.dateSelect}
+                aria-label={t("analytics-activity-period")}
+              >
                 <option>{t("this-week")}</option>
                 <option>{t("last-week")}</option>
               </select>
             </div>
-            <div className={styles.chartArea}>
+            <div
+              className={styles.chartArea}
+              role="group"
+              aria-label={t("analytics-platform-activity-chart")}
+            >
               {chartData.map((data, index) => (
-                <div key={index} className={styles.barWrapper}>
+                <div
+                  key={index}
+                  className={styles.barWrapper}
+                  role="img"
+                  aria-label={t("analytics-activity-bar-label", {
+                    day: data.day,
+                    value: numberFormatter.format(data.value),
+                  })}
+                >
                   <div className={styles.barTooltip}>
-                    {data.value} {t("active")}
+                    {t("analytics-active-count", {
+                      count: data.value,
+                      formattedCount: numberFormatter.format(data.value),
+                    })}
                   </div>
                   <div className={styles.barBg}>
                     <div
@@ -241,7 +318,9 @@ const OwnerHomeContent = () => {
           <div className={styles.departmentsCard}>
             <div className={styles.cardHeader}>
               <h3>{t("top-performing-departments")}</h3>
-              <button className={styles.viewAllBtn}>{t("view-all")}</button>
+              <button type="button" className={styles.viewAllBtn}>
+                {t("view-all")}
+              </button>
             </div>
             <div className={styles.departmentsList}>
               {topDepartments.map((dept) => (
@@ -249,15 +328,29 @@ const OwnerHomeContent = () => {
                   <div className={styles.deptInfo}>
                     <h4>{dept.name}</h4>
                     <span>
-                      {dept.members} {t("members")}
+                      {t("department-member-count", {
+                        count: dept.members,
+                        formattedCount: numberFormatter.format(dept.members),
+                      })}
                     </span>
                   </div>
                   <div className={styles.deptProgress}>
                     <div className={styles.progressHeader}>
                       <span>{t("performance-score")}</span>
-                      <span className={styles.scoreText}>{dept.score}%</span>
+                      <span className={styles.scoreText}>
+                        {percentFormatter.format(dept.score / 100)}
+                      </span>
                     </div>
-                    <div className={styles.progressBar}>
+                    <div
+                      className={styles.progressBar}
+                      role="progressbar"
+                      aria-label={t("department-performance-score", {
+                        department: dept.name,
+                      })}
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                      aria-valuenow={dept.score}
+                    >
                       <div
                         className={styles.progressFill}
                         style={{ width: `${dept.score}%` }}
@@ -291,19 +384,25 @@ const OwnerHomeContent = () => {
                   </div>
                   <div className={styles.activityDetails}>
                     <p className={styles.activityText}>
-                      <strong>{activity.user}</strong> {activity.action}{" "}
-                      <span className={styles.targetText}>
-                        {activity.target}
-                      </span>
+                      {t(activity.messageKey, {
+                        user: activity.user,
+                        target: activity.target,
+                      })}
                     </p>
                     <span className={styles.activityTime}>
-                      <IoTimeOutline /> {activity.time}
+                      <IoTimeOutline aria-hidden="true" />{" "}
+                      {relativeTimeFormatter.format(
+                        activity.relativeTime.value,
+                        activity.relativeTime.unit,
+                      )}
                     </span>
                   </div>
                 </div>
               ))}
             </div>
-            <button className={styles.loadMoreBtn}>{t("load-more")}</button>
+            <button type="button" className={styles.loadMoreBtn}>
+              {t("load-more")}
+            </button>
           </div>
         </div>
       </div>

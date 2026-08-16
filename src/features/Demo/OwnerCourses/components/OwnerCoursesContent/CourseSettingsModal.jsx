@@ -11,15 +11,8 @@ import { useTranslation } from "react-i18next";
 const CourseSettingsModal = ({ course, isOpen, onClose, onSave, isSaving }) => {
   const { t } = useTranslation();
 
-  const [price, setPrice] = useState(course?.price || 0);
+  const [price, setPrice] = useState(course?.price ?? 0);
   const [visibility, setVisibility] = useState(course?.visibility || "PUBLIC");
-  const [prevCourseId, setPrevCourseId] = useState(course?.id);
-
-  if (course && course.id !== prevCourseId) {
-    setPrevCourseId(course.id);
-    setPrice(course.price || 0);
-    setVisibility(course.visibility || "PUBLIC");
-  }
 
   if (!isOpen || !course) return null;
 
@@ -30,7 +23,14 @@ const CourseSettingsModal = ({ course, isOpen, onClose, onSave, isSaving }) => {
 
   return (
     <div className={styles.modalOverlay} onClick={() => !isSaving && onClose()}>
-      <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+      <div
+        className={styles.modalContent}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="course-settings-title"
+        aria-describedby="course-settings-description"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className={styles.modalHeader}>
           <div
             className={`${styles.modalIconContainer} ${styles.settingsIconBox}`}
@@ -42,58 +42,61 @@ const CourseSettingsModal = ({ course, isOpen, onClose, onSave, isSaving }) => {
             className={styles.closeBtn}
             onClick={onClose}
             disabled={isSaving}
+            aria-label={t("close-course-settings")}
           >
             <IoCloseOutline size={22} />
           </button>
         </div>
 
         <div className={styles.modalBody}>
-          <h3 className={styles.modalTitle}>
-            {t("course-settings", "Course Settings")}
+          <h3 id="course-settings-title" className={styles.modalTitle}>
+            {t("course-settings")}
           </h3>
-          <p className={styles.modalDesc}>
-            {t(
-              "update-price-visibility",
-              "Update the price and visibility for",
-            )}{" "}
-            <strong className={styles.highlightText}>{course.title}</strong>
+          <p id="course-settings-description" className={styles.modalDesc}>
+            {t("update-course-price-and-visibility", {
+              courseTitle: course.title,
+            })}
           </p>
 
           <form onSubmit={handleSubmit} className={styles.settingsForm}>
             <div className={styles.formGroup}>
-              <label className={styles.formLabel}>
+              <label className={styles.formLabel} htmlFor="course-visibility">
                 <div className={styles.labelIconWrapper}>
                   <IoGlobeOutline />
                 </div>
-                {t("visibility", "Visibility")}
+                {t("visibility")}
               </label>
               <div className={styles.selectWrapper}>
                 <select
+                  id="course-visibility"
                   className={styles.formInput}
                   value={visibility}
                   onChange={(e) => setVisibility(e.target.value)}
                   disabled={isSaving}
                 >
                   <option value="PUBLIC">
-                    {t("public", "Public (Demo & Global Library)")}
+                    {t("course-visibility-public")}
                   </option>
                   <option value="PRIVATE">
-                    {t("private", "Private (Demo Library Only)")}
+                    {t("course-visibility-private")}
                   </option>
                 </select>
               </div>
             </div>
 
             <div className={styles.formGroup}>
-              <label className={styles.formLabel}>
+              <label className={styles.formLabel} htmlFor="course-price">
                 <div className={styles.labelIconWrapper}>
                   <IoCashOutline />
                 </div>
-                {t("price", "Course Price")}
+                {t("course-price")}
               </label>
               <div className={styles.priceInputWrapper}>
-                <span className={styles.currencySymbol}>$</span>
+                <span className={styles.currencySymbol}>
+                  {t("usd-currency-symbol")}
+                </span>
                 <input
+                  id="course-price"
                   type="number"
                   min="0"
                   step="0.01"
@@ -101,7 +104,7 @@ const CourseSettingsModal = ({ course, isOpen, onClose, onSave, isSaving }) => {
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
                   disabled={isSaving}
-                  placeholder="0.00"
+                  placeholder={t("course-price-placeholder")}
                 />
               </div>
             </div>
@@ -119,12 +122,12 @@ const CourseSettingsModal = ({ course, isOpen, onClose, onSave, isSaving }) => {
                 type="submit"
                 className={styles.confirmSaveBtn}
                 disabled={isSaving}
+                aria-busy={isSaving}
               >
-                {isSaving ? (
-                  <span className={styles.loadingSpinner}></span>
-                ) : (
-                  t("save-changes")
+                {isSaving && (
+                  <span className={styles.loadingSpinner} aria-hidden="true" />
                 )}
+                {isSaving ? t("saving-changes") : t("save-changes")}
               </button>
             </div>
           </form>

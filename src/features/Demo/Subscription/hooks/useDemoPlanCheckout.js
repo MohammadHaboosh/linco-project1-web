@@ -1,7 +1,9 @@
 import { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { demoPlanApi } from "../api/demoPlanApi";
 
 export const useDemoPlanCheckout = (demoId) => {
+  const { t } = useTranslation();
   const [checkoutPlan, setCheckoutPlan] = useState(null);
   const [checkoutError, setCheckoutError] = useState("");
 
@@ -20,13 +22,13 @@ export const useDemoPlanCheckout = (demoId) => {
 
         window.location.assign(checkoutUrl);
         return true;
-      } catch (error) {
-        setCheckoutError(error.message || "Unable to start checkout.");
+      } catch {
+        setCheckoutError(t("checkout-start-failed"));
         setCheckoutPlan(null);
         return false;
       }
     },
-    [checkoutPlan, demoId],
+    [checkoutPlan, demoId, t],
   );
 
   const clearCheckoutError = useCallback(() => setCheckoutError(""), []);

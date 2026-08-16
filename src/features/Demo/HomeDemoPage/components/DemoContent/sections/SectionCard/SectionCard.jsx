@@ -8,72 +8,89 @@ import {
   IoWarningOutline,
 } from "react-icons/io5";
 import { Link, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { PATHS } from "../../../../../../../routes/paths";
 import styles from "./SectionCard.module.css";
-import { useTranslation } from "react-i18next";
 
-const SectionCard = ({ section, isOwner, onDelete }) => {
-  const { t } = useTranslation();
+const SectionCard = ({ section, isOwner, onDelete, isDeleting }) => {
+  const { t, i18n } = useTranslation();
   const { demoId } = useParams();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const locale = i18n.resolvedLanguage || i18n.language || "en";
+  const numberFormatter = new Intl.NumberFormat(locale);
+  const percentFormatter = new Intl.NumberFormat(locale, {
+    style: "percent",
+    maximumFractionDigits: 0,
+  });
+  const isLocked = section.isLocked && !isOwner;
 
-  const handleDeleteClick = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handleDeleteClick = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
     setShowConfirmModal(true);
   };
 
-  const confirmDelete = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    onDelete(section.id);
+  const confirmDelete = async (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    await onDelete(section.id);
     setShowConfirmModal(false);
   };
 
-  const cancelDelete = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setShowConfirmModal(false);
+  const cancelDelete = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (!isDeleting) setShowConfirmModal(false);
   };
 
   return (
     <>
       <Link
         to={
-          section.isLocked && !isOwner
+          isLocked
             ? "#"
             : PATHS.DEMO_SECTION.replace(":demoId", demoId).replace(
                 ":departmentId",
                 section.id,
               )
         }
+        aria-disabled={isLocked}
+        tabIndex={isLocked ? -1 : undefined}
+        onClick={(event) => {
+          if (isLocked) event.preventDefault();
+        }}
         style={{ textDecoration: "none", display: "block", height: "100%" }}
       >
-        <div
+        <article
           className={`${styles.sectionCard} ${
-            section.isLocked && !isOwner ? styles.cardLocked : styles.cardActive
+            isLocked ? styles.cardLocked : styles.cardActive
           }`}
         >
           <div className={styles.cardHeader}>
             <h3 className={styles.cardTitle}>{section.title}</h3>
 
             <div className={styles.headerActions}>
-              {section.isLocked && !isOwner && (
+              {isLocked && (
                 <span className={styles.lockedText}>{t("locked")}</span>
               )}
 
               {isOwner && (
                 <button
+                  type="button"
                   className={styles.deleteBtn}
                   onClick={handleDeleteClick}
                   title={t("delete-department")}
+                  aria-label={t("delete-department-named", {
+                    department: section.title,
+                  })}
+                  disabled={isDeleting}
                 >
-                  <IoTrashOutline />
+                  <IoTrashOutline aria-hidden="true" />
                 </button>
               )}
 
-              <div className={styles.iconBox}>
-                {section.isLocked && !isOwner ? (
+              <div className={styles.iconBox} aria-hidden="true">
+                {isLocked ? (
                   <IoLockClosedOutline />
                 ) : (
                   <IoDocumentTextOutline />
@@ -88,57 +105,96 @@ const SectionCard = ({ section, isOwner, onDelete }) => {
             <div className={styles.progressContainer}>
               <div className={styles.progressHeader}>
                 <span>{t("progress")}</span>
-                <span>{section.progress}%</span>
+                <span>{percentFormatter.format((section.progress || 0) / 100)}</span>
               </div>
-              <div className={styles.progressBg}>
+              <div
+                className={styles.progressBg}
+                role="progressbar"
+                aria-label={t("department-progress", {
+                  department: section.title,
+                })}
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow={section.progress || 0}
+              >
                 <div
                   className={styles.progressFill}
-                  style={{ width: `${section.progress}%` }}
-                ></div>
+                  style={{ width: `${section.progress || 0}%` }}
+                />
               </div>
             </div>
           )}
 
           <div className={styles.cardFooter}>
             <div className={styles.tags}>
-              {section.tags.map((tag, i) => (
-                <span key={i} className={styles.tag}>
+              {section.tags?.map((tag, index) => (
+                <span key={`${tag}-${index}`} className={styles.tag}>
                   {tag}
                 </span>
               ))}
             </div>
             <div className={styles.stats}>
               <span className={styles.statItem}>
-                <IoBookOutline /> {section.coursesCount} {t("courses")}
+                <IoBookOutline aria-hidden="true" />
+                {t("department-course-count", {
+                  count: section.coursesCount || 0,
+                  formattedCount: numberFormatter.format(
+                    section.coursesCount || 0,
+                  ),
+                })}
               </span>
               <span className={styles.statItem}>
-                <IoPeopleOutline /> {section.membersCount}
+                <IoPeopleOutline aria-hidden="true" />
+                {t("department-member-count", {
+                  count: section.membersCount || 0,
+                  formattedCount: numberFormatter.format(
+                    section.membersCount || 0,
+                  ),
+                })}
               </span>
             </div>
           </div>
-        </div>
+        </article>
       </Link>
 
       {showConfirmModal && (
         <div className={styles.modalOverlay} onClick={cancelDelete}>
           <div
             className={styles.confirmModal}
-            onClick={(e) => e.stopPropagation()}
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby={`delete-department-title-${section.id}`}
+            aria-describedby={`delete-department-desc-${section.id}`}
+            onClick={(event) => event.stopPropagation()}
           >
-            <div className={styles.modalIcon}>
+            <div className={styles.modalIcon} aria-hidden="true">
               <IoWarningOutline />
             </div>
-            <h3>{t("delete-department-confirm-title")}</h3>
-            <p>{t("delete-department-confirm-desc")}</p>
+            <h3 id={`delete-department-title-${section.id}`}>
+              {t("delete-department-confirm-title")}
+            </h3>
+            <p id={`delete-department-desc-${section.id}`}>
+              {t("delete-department-confirm-desc", {
+                department: section.title,
+              })}
+            </p>
             <div className={styles.modalActions}>
-              <button className={styles.cancelBtn} onClick={cancelDelete}>
+              <button
+                type="button"
+                className={styles.cancelBtn}
+                onClick={cancelDelete}
+                disabled={isDeleting}
+              >
                 {t("cancel")}
               </button>
               <button
+                type="button"
                 className={styles.confirmDeleteBtn}
                 onClick={confirmDelete}
+                disabled={isDeleting}
+                aria-busy={isDeleting}
               >
-                {t("delete")}
+                {isDeleting ? t("deleting-department") : t("delete")}
               </button>
             </div>
           </div>

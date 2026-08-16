@@ -30,53 +30,69 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
   });
 
   const getUserDisplayName = (userData) => {
-    if (!userData?.user) return "Unknown User";
+    if (!userData?.user) return t("unknown-user");
     const firstName = userData.user.firstName || "";
     const lastName = userData.user.lastName || "";
     const fullName = `${firstName} ${lastName}`.trim();
-    return fullName || userData.user.email || "Unknown User";
+    return fullName || userData.user.email || t("unknown-user");
   };
 
   const getInitials = (name) => (name ? name.charAt(0).toUpperCase() : "?");
 
   return (
     <div className={styles.overlay}>
-      <div className={styles.modal}>
+      <div
+        className={styles.modal}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="create-department-title"
+        aria-busy={isSubmitting}
+      >
         <div className={styles.header}>
-          <h3>{t("create-new-department")}</h3>
+          <h3 id="create-department-title">{t("create-new-department")}</h3>
           <button
+            type="button"
             className={styles.closeBtn}
             onClick={onClose}
             disabled={isSubmitting}
+            aria-label={t("close-create-department-dialog")}
           >
             <IoCloseOutline />
           </button>
         </div>
 
         <div className={styles.body}>
-          {error && <div className={styles.errorAlert}>{error}</div>}
+          {error && (
+            <div className={styles.errorAlert} role="alert">
+              {error}
+            </div>
+          )}
 
           <div className={styles.formGroup}>
-            <label>{t("department-title")}</label>
+            <label htmlFor="department-name">{t("department-title")}</label>
             <input
+              id="department-name"
               type="text"
               name="name"
               value={formData.name}
               onChange={handleChange}
               className={styles.input}
-              placeholder="e.g. Back-End Engineering"
+              placeholder={t("department-title-placeholder")}
               disabled={isSubmitting}
             />
           </div>
 
           <div className={styles.formGroup}>
-            <label>{t("department-desc")}</label>
+            <label htmlFor="department-description">
+              {t("department-desc")}
+            </label>
             <textarea
+              id="department-description"
               name="description"
               value={formData.description}
               onChange={handleChange}
               className={styles.textarea}
-              placeholder="Brief description about this department..."
+              placeholder={t("department-description-placeholder")}
               disabled={isSubmitting}
             />
           </div>
@@ -90,7 +106,9 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
                   {selectedUser.user?.imagePath ? (
                     <img
                       src={selectedUser.user.imagePath}
-                      alt={getUserDisplayName(selectedUser)}
+                      alt={t("member-avatar-alt", {
+                        name: getUserDisplayName(selectedUser),
+                      })}
                       className={styles.avatarImage}
                     />
                   ) : (
@@ -114,6 +132,7 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
                   className={styles.changeUserBtn}
                   onClick={clearSelectedUser}
                   disabled={isSubmitting}
+                  aria-label={t("change-department-manager")}
                 >
                   {t("change")}
                 </button>
@@ -127,14 +146,18 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className={styles.searchInput}
-                    placeholder={t(
-                      "search-by-name-or-email",
-                      "Search by name or email...",
-                    )}
+                    placeholder={t("search-by-name-or-email")}
+                    aria-label={t("search-for-department-manager")}
                     autoComplete="off"
                     disabled={isSubmitting}
                   />
-                  {isSearching && <span className={styles.loader}>...</span>}
+                  {isSearching && (
+                    <span
+                      className={styles.loader}
+                      role="status"
+                      aria-label={t("searching-members")}
+                    />
+                  )}
                 </div>
 
                 {searchError && !isSearching && (
@@ -146,33 +169,40 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
                 {!searchError &&
                   searchQuery.trim() !== "" &&
                   searchResults.length > 0 && (
-                    <ul className={styles.resultsList}>
+                    <ul
+                      className={styles.resultsList}
+                      aria-label={t("member-search-results")}
+                    >
                       {searchResults.map((user) => (
-                        <li
-                          key={user.id}
-                          className={styles.resultItem}
-                          onClick={() => selectUser(user)}
-                        >
-                          {user.user?.imagePath ? (
-                            <img
-                              src={user.user.imagePath}
-                              alt="Avatar"
-                              className={styles.avatarImage}
-                            />
-                          ) : (
-                            <div className={styles.avatarPlaceholder}>
-                              {getInitials(getUserDisplayName(user))}
-                            </div>
-                          )}
+                        <li key={user.id}>
+                          <button
+                            type="button"
+                            className={styles.resultItem}
+                            onClick={() => selectUser(user)}
+                          >
+                            {user.user?.imagePath ? (
+                              <img
+                                src={user.user.imagePath}
+                                alt={t("member-avatar-alt", {
+                                  name: getUserDisplayName(user),
+                                })}
+                                className={styles.avatarImage}
+                              />
+                            ) : (
+                              <div className={styles.avatarPlaceholder}>
+                                {getInitials(getUserDisplayName(user))}
+                              </div>
+                            )}
 
-                          <div className={styles.resultTextData}>
-                            <p className={styles.resultName}>
-                              {getUserDisplayName(user)}
-                            </p>
-                            <p className={styles.resultEmail}>
-                              {user.user?.email}
-                            </p>
-                          </div>
+                            <div className={styles.resultTextData}>
+                              <p className={styles.resultName}>
+                                {getUserDisplayName(user)}
+                              </p>
+                              <p className={styles.resultEmail}>
+                                {user.user?.email}
+                              </p>
+                            </div>
+                          </button>
                         </li>
                       ))}
                     </ul>
@@ -183,10 +213,7 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
                   searchResults.length === 0 &&
                   !isSearching && (
                     <div className={styles.noResults}>
-                      {t(
-                        "no-users-found",
-                        "No users found matching your search.",
-                      )}
+                      {t("no-users-found")}
                     </div>
                   )}
               </div>
@@ -196,20 +223,22 @@ const CreateDepartment = ({ demoId, onClose, onSuccess }) => {
 
         <div className={styles.footer}>
           <button
+            type="button"
             className={styles.cancelBtn}
             onClick={onClose}
             disabled={isSubmitting}
           >
-            {t("cancel", "Cancel")}
+            {t("cancel")}
           </button>
           <button
+            type="button"
             className={styles.submitBtn}
             onClick={handleSubmit}
             disabled={isSubmitting || !formData.name.trim()}
           >
             {isSubmitting
-              ? t("creating", "Creating...")
-              : t("create-department", "Create Department")}
+              ? t("creating-department")
+              : t("create-department")}
           </button>
         </div>
       </div>
