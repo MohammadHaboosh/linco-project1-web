@@ -252,19 +252,19 @@
 
 .dynamicStudentName {
   position: absolute;
-  top: 44%;
+  top: 42%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-family: "Playfair Display", "Merriweather", "Times New Roman", serif;
   font-size: 3.4cqw;
-  font-weight: 400;
+  font-weight: 300;
   width: 80%;
   color: #111827;
 }
 
 .dynamicCourseName {
   position: absolute;
-  top: 59%;
+  top: 57%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-family: "Playfair Display", "Merriweather", "Times New Roman", serif;
@@ -293,7 +293,7 @@
   left: 20.3%;
   transform: translateX(-50%);
   font-family: "Playfair Display", "Times New Roman", serif;
-  font-size: 1.25cqw;
+  font-size: 1.55cqw;
   font-weight: 400;
   width: 25%;
   color: #1f2937;
