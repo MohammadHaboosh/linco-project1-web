@@ -1,4 +1,3 @@
-/* ================= Layout & Header ================= */
 .pageContainer {
   box-sizing: border-box;
   width: 100%;
@@ -169,7 +168,6 @@
   }
 }
 
-/* ================= 💡 Certificates Grid ================= */
 .certsGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -192,8 +190,6 @@
   }
 }
 
-/* ================= 🎓 CERTIFICATE TEMPLATE OVERLAY DESIGN ================= */
-
 .cardWrapper {
   display: flex;
   flex-direction: column;
@@ -211,7 +207,7 @@
     transform 0.4s ease,
     box-shadow 0.4s ease;
   background-color: #ffffff;
-  container-type: inline-size; /* ضروري لعمل الـ cqw */
+  container-type: inline-size;
 }
 
 .certificateLayout:hover {
@@ -227,7 +223,6 @@
   pointer-events: none;
 }
 
-/* التنسيق المشترك للنصوص */
 .dynamicStudentName,
 .dynamicCourseName,
 .dynamicProviderName,
@@ -238,14 +233,12 @@
   white-space: nowrap;
 }
 
-/* ================= 💡 الإحداثيات الدقيقة بناءً على الصورة ================= */
-
 .dynamicProviderLogo {
   position: absolute;
-  top: 15%; /* تم وضعها بدقة في المربع أعلى اليمين */
-  left: 83.5%;
+  top: 14.5%;
+  left: 84%;
   transform: translate(-50%, -50%);
-  width: 12%;
+  width: 13%;
   height: 9%;
   display: flex;
   justify-content: center;
@@ -258,11 +251,11 @@
 }
 
 .dynamicStudentName {
-  top: 48%; /* تتوسط المسافة أعلى الخط الذهبي الأول */
+  position: absolute;
+  top: 44.5%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-family:
-    "Playfair Display", "Merriweather", "Times New Roman", serif; /* خط أنيق للأسماء */
+  font-family: "Playfair Display", "Merriweather", "Times New Roman", serif;
   font-size: 3.5cqw;
   font-weight: 500;
   width: 80%;
@@ -270,25 +263,23 @@
 }
 
 .dynamicCourseName {
-  top: 66%; /* تتوسط المسافة أعلى الخط الذهبي الثاني */
+  position: absolute;
+  top: 58.5%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-family: "Playfair Display", "Merriweather", "Times New Roman", serif;
-  font-size: 2.2cqw;
-  font-weight: 600;
+  font-size: 2cqw;
+  font-weight: 500;
   width: 80%;
   color: #374151;
 }
 
 .dynamicProviderName {
-  top: 79%; /* تقع تحت عبارة Proudly Offered By */
+  position: absolute;
+  top: 72%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-family: var(
-    --font-sans,
-    "Segoe UI",
-    sans-serif
-  ); /* خط حديث ومقروء لمزود الدورة */
+  font-family: var(--font-sans, "Segoe UI", sans-serif);
   font-size: 1.5cqw;
   font-weight: 600;
   letter-spacing: 0.5px;
@@ -297,11 +288,12 @@
 }
 
 .dynamicDate {
-  bottom: 21.5%; /* تقع فوق الخط الصغير أسفل اليسار */
+  position: absolute;
+  bottom: 17%;
   left: 20%;
   transform: translateX(-50%);
   font-family: "Playfair Display", "Times New Roman", serif;
-  font-size: 1.3cqw;
+  font-size: 1.2cqw;
   font-weight: 500;
   width: 25%;
   color: #1f2937;
@@ -309,14 +301,14 @@
 
 .dynamicSignature {
   position: absolute;
-  bottom: 18%; /* تقع فوق الخط الصغير أسفل اليمين تماماً */
+  bottom: 15.5%;
   left: 80%;
   transform: translateX(-50%);
   width: 15%;
-  height: 8%;
+  height: 7%;
   display: flex;
   justify-content: center;
-  align-items: flex-end; /* لضمان استناد الصورة على الخط السُفلي */
+  align-items: flex-end;
 }
 .dynamicSignature img {
   max-width: 100%;
@@ -324,7 +316,6 @@
   object-fit: contain;
 }
 
-/* ================= Actions Bar ================= */
 .actionsBar {
   display: flex;
   gap: 12px;
