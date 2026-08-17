@@ -1831,5 +1831,6 @@
   "course-player-exam-review": "مراجعة التقييم",
   "course-player-exam-review-description": "راجع إجاباتك واستفد من الملاحظات لمواصلة التعلّم.",
   "course-player-no-review-questions": "لا تتوفر مراجعة لهذا التقييم.",
-  "course-player-assessment-question-number": "السؤال {{number}}."
+  "course-player-assessment-question-number": "السؤال {{number}}.",
+  "share-work": "شارك في الدردشة"
 }

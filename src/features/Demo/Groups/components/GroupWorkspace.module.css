@@ -483,6 +483,34 @@
   font-size: 1.1rem;
 }
 
+.toolbarDivider {
+  width: 1px;
+  height: 20px;
+  background-color: var(--app-border-strong);
+  margin: 0 8px;
+}
+
+.shareActionBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border: none;
+  background-color: var(--app-link);
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(26, 86, 219, 0.2);
+}
+
+.shareActionBtn:hover {
+  background-color: var(--app-heading);
+  transform: translateY(-1px);
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

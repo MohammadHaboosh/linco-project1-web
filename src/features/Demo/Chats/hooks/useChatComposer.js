@@ -222,6 +222,20 @@ export const useChatComposer = ({
     }
   }, [uploadSelectedAttachment]);
 
+  useEffect(() => {
+    const handleToolShare = (e) => {
+      const sharedFile = e.detail?.file;
+      if (sharedFile) {
+        handleAttachmentChange({ target: { files: [sharedFile] } });
+      }
+    };
+
+    window.addEventListener("attach-file-to-chat", handleToolShare);
+    return () => {
+      window.removeEventListener("attach-file-to-chat", handleToolShare);
+    };
+  }, [handleAttachmentChange]);
+
   const handleSubmit = useCallback(
     async (event) => {
       event.preventDefault();

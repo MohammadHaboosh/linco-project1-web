@@ -1698,5 +1698,6 @@
   "course-player-exam-review": "Assessment review",
   "course-player-exam-review-description": "Review your answers and use the feedback to keep learning.",
   "course-player-no-review-questions": "No assessment review is available.",
-  "course-player-assessment-question-number": "Question {{number}}."
+  "course-player-assessment-question-number": "Question {{number}}.",
+  "share-work": "Share to Chat"
 }
