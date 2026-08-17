@@ -7,7 +7,7 @@ import {
 } from "react-icons/io5";
 import { useDepartmentMembers } from "../../DepartmentMembers/hooks/useDepartmentMembers";
 import { departmentMemberApi } from "../../DepartmentMembers/api/departmentMemberApi";
-import AddDepartmentMemberModal from "../../DepartmentMembers/components/AddDepartmentMemberModal/AddDepartmentMemberModal";
+import AddGroupMemberModal from "./AddGroupMemberModal";
 import styles from "./Groups.module.css";
 
 const GroupMembersPanel = ({ demoId, groupId, isManager }) => {
@@ -183,9 +183,9 @@ const GroupMembersPanel = ({ demoId, groupId, isManager }) => {
       </div>
 
       {isAddMemberOpen && (
-        <AddDepartmentMemberModal
+        <AddGroupMemberModal
           demoId={demoId}
-          departmentId={groupId}
+          groupId={groupId}
           onClose={() => setIsAddMemberOpen(false)}
           onSuccess={async () => {
             await refetch();

@@ -114,7 +114,7 @@ export const useCreateGroup = (demoId, currentUserId, onSuccess) => {
               demoId,
               departmentId: newGroupId,
               demoMemberId: member.id,
-              jobTitle: "JUNIOR",
+              jobTitle: "INTERN",
             }),
           ),
         );

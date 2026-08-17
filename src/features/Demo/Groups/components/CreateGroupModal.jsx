@@ -3,7 +3,6 @@ import {
   IoCloseOutline,
   IoSearchOutline,
   IoPeopleOutline,
-  IoTrashOutline,
 } from "react-icons/io5";
 import { useCreateGroup } from "../hooks/useCreateGroup";
 import styles from "./CreateGroupModal.module.css";
@@ -164,9 +163,27 @@ const CreateGroupModal = ({ demoId, currentUserId, onClose, onSuccess }) => {
                         className={styles.resultItem}
                         onClick={() => toggleMember(user)}
                       >
-                        <div className={styles.avatarPlaceholder}>
-                          {getInitials(getUserDisplayName(user))}
-                        </div>
+                        {user.user?.imagePath ? (
+                          <div
+                            className={styles.avatarImage}
+                            style={{ overflow: "hidden" }}
+                          >
+                            <img
+                              src={user.user.imagePath}
+                              alt=""
+                              style={{
+                                width: "100%",
+                                height: "100%",
+                                objectFit: "cover",
+                              }}
+                            />
+                          </div>
+                        ) : (
+                          <div className={styles.avatarPlaceholder}>
+                            {getInitials(getUserDisplayName(user))}
+                          </div>
+                        )}
+
                         <div className={styles.resultTextData}>
                           <p className={styles.resultName}>
                             {getUserDisplayName(user)}

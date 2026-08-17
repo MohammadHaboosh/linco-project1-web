@@ -1872,5 +1872,6 @@
   "missing-data": "مساحة العمل المطلوبة أو بيانات المستخدم مفقودة.",
   "confirm-remove-member": "هل أنت متأكد أنك تريد إزالة هذا العضو؟",
   "loading": "تحميل...",
-  "group-members": "أعضاء المجموعة"
+  "group-members": "أعضاء المجموعة",
+  "add-group-member-description": "بحث وإضافة أعضاء إلى هذه المجموعة."
 }

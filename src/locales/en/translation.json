@@ -1739,5 +1739,6 @@
   "missing-data": "Missing required workspace or user data.",
   "confirm-remove-member": "Are you sure you want to remove this member?",
   "loading": "Loading...",
-  "group-members": "Group Members"
+  "group-members": "Group Members",
+  "add-group-member-description": "Search and add members to this group."
 }

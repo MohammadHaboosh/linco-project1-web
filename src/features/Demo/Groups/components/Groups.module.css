@@ -155,17 +155,21 @@
 }
 
 .groupIcon {
-  width: 50px;
-  height: 50px;
-  background: var(--app-surface-soft);
-  color: var(--app-heading);
-  border-radius: 14px;
+  width: 42px;
+  height: 42px;
+  background: var(
+    --bg-navy-gradient,
+    linear-gradient(135deg, #112950, #1a56db)
+  );
+  color: #ffffff;
+  border-radius: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
   font-weight: 800;
-  font-size: 1.1rem;
-  border: 1px solid var(--app-border);
+  font-size: 1rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(26, 86, 219, 0.15);
 }
 
 .privacyBadge {
@@ -199,18 +203,21 @@
 
 .groupName {
   color: var(--app-heading);
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   font-weight: 800;
-  margin: 0 0 8px 0;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .groupDesc {
   color: var(--app-text);
-  font-size: 0.9rem;
-  line-height: 1.5;
+  font-size: 0.95rem;
+  line-height: 1.6;
   margin: 0;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
