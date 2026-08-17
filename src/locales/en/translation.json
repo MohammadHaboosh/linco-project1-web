@@ -1740,5 +1740,10 @@
   "confirm-remove-member": "Are you sure you want to remove this member?",
   "loading": "Loading...",
   "group-members": "Group Members",
-  "add-group-member-description": "Search and add members to this group."
+  "add-group-member-description": "Search and add members to this group.",
+  "failed-to-delete-group": "Failed to delete group",
+  "delete-group": "Delete Group",
+  "delete-group-confirm-title": "Delete Group?",
+  "delete-group-confirm-desc": "Are you sure you want to delete this group? This action cannot be undone.",
+  "deleting": "Deleting..."
 }

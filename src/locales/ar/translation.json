@@ -1873,5 +1873,10 @@
   "confirm-remove-member": "هل أنت متأكد أنك تريد إزالة هذا العضو؟",
   "loading": "تحميل...",
   "group-members": "أعضاء المجموعة",
-  "add-group-member-description": "بحث وإضافة أعضاء إلى هذه المجموعة."
+  "add-group-member-description": "بحث وإضافة أعضاء إلى هذه المجموعة.",
+  "failed-to-delete-group": "فشل حذف المجموعة",
+  "delete-group": "حذف المجموعة",
+  "delete-group-confirm-title": "هل تريد حذف المجموعة؟",
+  "delete-group-confirm-desc": "هل أنت متأكد أنك تريد حذف هذه المجموعة؟ \nلا يمكن التراجع عن هذا الإجراء.",
+  "deleting": "جارٍ الحذف..."
 }

@@ -1,41 +1,16 @@
 import { useTranslation } from "react-i18next";
-import {
-  IoCloseOutline,
-  IoSearchOutline,
-  IoPeopleOutline,
-} from "react-icons/io5";
+import { IoCloseOutline, IoPeopleOutline } from "react-icons/io5";
 import { useCreateGroup } from "../hooks/useCreateGroup";
 import styles from "./CreateGroupModal.module.css";
 
 const CreateGroupModal = ({ demoId, currentUserId, onClose, onSuccess }) => {
   const { t } = useTranslation();
 
-  const {
-    formData,
-    handleChange,
-    searchQuery,
-    setSearchQuery,
-    searchResults,
-    isSearching,
-    searchError,
-    selectedMembers,
-    toggleMember,
-    isSubmitting,
-    error,
-    handleSubmit,
-  } = useCreateGroup(demoId, currentUserId, () => {
-    if (onSuccess) onSuccess();
-    onClose();
-  });
-
-  const getUserDisplayName = (userData) => {
-    if (!userData?.user) return t("unknown-user");
-    const fullName =
-      `${userData.user.firstName || ""} ${userData.user.lastName || ""}`.trim();
-    return fullName || userData.user.email || t("unknown-user");
-  };
-
-  const getInitials = (name) => (name ? name.charAt(0).toUpperCase() : "?");
+  const { formData, handleChange, isSubmitting, error, handleSubmit } =
+    useCreateGroup(demoId, currentUserId, () => {
+      if (onSuccess) onSuccess();
+      onClose();
+    });
 
   return (
     <div className={styles.overlay} onClick={onClose}>
@@ -99,106 +74,6 @@ const CreateGroupModal = ({ demoId, currentUserId, onClose, onSuccess }) => {
               placeholder={"e.g. For build LinCo Project"}
               disabled={isSubmitting}
             />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label>{t("add-members", "Add Members (Optional)")}</label>
-
-            {selectedMembers.length > 0 && (
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: "8px",
-                  marginBottom: "10px",
-                }}
-              >
-                {selectedMembers.map((member) => (
-                  <div
-                    key={member.id}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "6px",
-                      background: "var(--app-info-surface)",
-                      border: "1px solid var(--app-info-border)",
-                      padding: "4px 10px",
-                      borderRadius: "20px",
-                      fontSize: "0.8rem",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {getUserDisplayName(member)}
-                    <IoCloseOutline
-                      style={{ cursor: "pointer", fontSize: "1.1rem" }}
-                      onClick={() => toggleMember(member)}
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
-
-            <div className={styles.searchContainer}>
-              <div className={styles.searchBox}>
-                <IoSearchOutline className={styles.searchIcon} />
-                <input
-                  type="search"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className={styles.searchInput}
-                  placeholder={t(
-                    "search-members-placeholder",
-                    "Search members to add...",
-                  )}
-                  disabled={isSubmitting}
-                />
-                {isSearching && <span className={styles.loader} />}
-              </div>
-
-              {searchQuery.trim() !== "" && searchResults.length > 0 && (
-                <ul className={styles.resultsList}>
-                  {searchResults.map((user) => (
-                    <li key={user.id}>
-                      <button
-                        type="button"
-                        className={styles.resultItem}
-                        onClick={() => toggleMember(user)}
-                      >
-                        {user.user?.imagePath ? (
-                          <div
-                            className={styles.avatarImage}
-                            style={{ overflow: "hidden" }}
-                          >
-                            <img
-                              src={user.user.imagePath}
-                              alt=""
-                              style={{
-                                width: "100%",
-                                height: "100%",
-                                objectFit: "cover",
-                              }}
-                            />
-                          </div>
-                        ) : (
-                          <div className={styles.avatarPlaceholder}>
-                            {getInitials(getUserDisplayName(user))}
-                          </div>
-                        )}
-
-                        <div className={styles.resultTextData}>
-                          <p className={styles.resultName}>
-                            {getUserDisplayName(user)}
-                          </p>
-                          <p className={styles.resultEmail}>
-                            {user.user?.email}
-                          </p>
-                        </div>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
           </div>
         </div>
 

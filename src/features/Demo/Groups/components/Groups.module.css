@@ -734,3 +734,151 @@
   color: var(--app-muted);
   font-weight: 600;
 }
+/* ========================================================
+   IMPROVED GROUP CARD STYLING & DELETE ACTION
+   ======================================================== */
+.groupCard {
+  background-color: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 20px rgba(10, 42, 84, 0.03);
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+.groupCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 35px rgba(26, 86, 219, 0.08);
+  border-color: var(--app-border-strong);
+}
+
+.groupTitleWrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 65%;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* زر الحذف للمدير */
+.deleteBtn {
+  background: rgba(239, 68, 68, 0.08);
+  color: #ef4444;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.deleteBtn:hover:not(:disabled) {
+  background: #ef4444;
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+.deleteBtn:focus-visible {
+  outline: 3px solid var(--app-focus-ring);
+  outline-offset: 2px;
+}
+
+.deleteBtn:disabled {
+  cursor: wait;
+  opacity: 0.55;
+}
+
+/* ========================================================
+   CONFIRMATION MODAL (DELETE)
+   ======================================================== */
+.confirmModal {
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  padding: 30px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-sizing: border-box;
+}
+
+@keyframes modalPop {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modalIcon {
+  font-size: 3.5rem;
+  color: #ef4444;
+  margin-block-end: 15px;
+}
+
+.confirmModal h3 {
+  color: var(--app-heading);
+  margin-block-end: 10px;
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+.confirmModal p {
+  color: var(--app-muted);
+  font-size: 0.95rem;
+  margin-block-end: 25px;
+  line-height: 1.5;
+}
+
+.modalActions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.cancelBtn,
+.confirmDeleteBtn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.cancelBtn {
+  background: var(--app-surface-soft);
+  color: var(--app-text);
+}
+
+.cancelBtn:hover {
+  background: var(--app-border);
+  color: var(--app-heading);
+}
+
+.confirmDeleteBtn {
+  background: #ef4444;
+  color: white;
+}
+
+.confirmDeleteBtn:hover:not(:disabled) {
+  background: #dc2626;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
