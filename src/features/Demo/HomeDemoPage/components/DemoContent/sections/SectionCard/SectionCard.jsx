@@ -1,11 +1,11 @@
 import { useState } from "react";
 import {
-  IoLayersOutline,
+  IoDocumentTextOutline,
   IoLockClosedOutline,
   IoPeopleOutline,
+  IoBookOutline,
   IoTrashOutline,
   IoWarningOutline,
-  IoOpenOutline,
 } from "react-icons/io5";
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -18,7 +18,6 @@ const SectionCard = ({ section, isOwner, onDelete, isDeleting }) => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const locale = i18n.resolvedLanguage || i18n.language || "en";
   const numberFormatter = new Intl.NumberFormat(locale);
-
   const isLocked = section.isLocked && !isOwner;
 
   const handleDeleteClick = (event) => {
@@ -63,14 +62,8 @@ const SectionCard = ({ section, isOwner, onDelete, isDeleting }) => {
             isLocked ? styles.cardLocked : styles.cardActive
           }`}
         >
-          <div className={styles.watermarkBg} aria-hidden="true">
-            <IoLayersOutline />
-          </div>
-
           <div className={styles.cardHeader}>
-            <div className={styles.iconBox} aria-hidden="true">
-              {isLocked ? <IoLockClosedOutline /> : <IoLayersOutline />}
-            </div>
+            <h3 className={styles.cardTitle}>{section.title}</h3>
 
             <div className={styles.headerActions}>
               {isLocked && (
@@ -93,23 +86,43 @@ const SectionCard = ({ section, isOwner, onDelete, isDeleting }) => {
                 </button>
               )}
 
-              <div className={styles.openIconBox} aria-hidden="true">
-                <IoOpenOutline />
+              <div className={styles.iconBox} aria-hidden="true">
+                {isLocked ? <IoLockClosedOutline /> : <IoDocumentTextOutline />}
               </div>
             </div>
           </div>
 
-          <div className={styles.cardBody}>
-            <h3 className={styles.cardTitle}>{section.title}</h3>
-            <p className={styles.description}>{section.description}</p>
-          </div>
+          <p className={styles.description}>{section.description}</p>
 
           <div className={styles.cardFooter}>
-            <span className={styles.memberPill}>
-              <IoPeopleOutline aria-hidden="true" />
-              {numberFormatter.format(section.membersCount || 0)}{" "}
-              {t("members", "Members")}
-            </span>
+            <div className={styles.tags}>
+              {section.tags?.map((tag, index) => (
+                <span key={`${tag}-${index}`} className={styles.tag}>
+                  {tag}
+                </span>
+              ))}
+            </div>
+
+            <div className={styles.stats}>
+              <span className={styles.statItem}>
+                <IoBookOutline aria-hidden="true" />
+                {t("department-course-count", {
+                  count: section.coursesCount || 0,
+                  formattedCount: numberFormatter.format(
+                    section.coursesCount || 0,
+                  ),
+                })}
+              </span>
+              <span className={styles.statItem}>
+                <IoPeopleOutline aria-hidden="true" />
+                {t("department-member-count", {
+                  count: section.membersCount || 0,
+                  formattedCount: numberFormatter.format(
+                    section.membersCount || 0,
+                  ),
+                })}
+              </span>
+            </div>
           </div>
         </article>
       </Link>
