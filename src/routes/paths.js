@@ -19,7 +19,6 @@ export const PATHS = {
 
   SIGNIN: "/signin",
 
-  NOTIFICATIONS: "/notifications",
   SETTINGS: "/settings",
   SIGNUP: "/signup",
   DEMO: "/demos/:demoId",
