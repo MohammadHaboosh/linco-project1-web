@@ -91,7 +91,6 @@
   gap: 12px;
 }
 
-.saveBtn,
 .externalLinkBtn,
 .closeBtn,
 .frameState button {
@@ -104,35 +103,6 @@
   font: inherit;
   font-weight: 700;
   cursor: pointer;
-}
-
-.saveBtn {
-  padding: 8px 14px;
-  border: 0;
-  background: var(--color-linco-blue);
-  color: #ffffff;
-  font-size: 0.85rem;
-  transition: background 0.2s ease;
-}
-
-.saveBtn:hover:not(:disabled) {
-  background: #1e40af;
-}
-
-.saveBtn:disabled,
-.closeBtn:disabled {
-  cursor: wait;
-  opacity: 0.75;
-}
-
-.saveSuccess {
-  background: var(--app-success-indicator);
-}
-
-.divider {
-  width: 1px;
-  height: 24px;
-  background: rgba(255, 255, 255, 0.24);
 }
 
 .externalLinkBtn,
@@ -159,7 +129,6 @@
   background: #ef4444;
 }
 
-.saveBtn:focus-visible,
 .externalLinkBtn:focus-visible,
 .closeBtn:focus-visible,
 .frameState button:focus-visible {
@@ -167,40 +136,16 @@
   outline-offset: 2px;
 }
 
-.btnIcon {
-  flex: 0 0 auto;
-  font-size: 1.1rem;
-}
-
-.loader,
 .frameLoader {
   flex: 0 0 auto;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
 
-.loader {
-  width: 16px;
-  height: 16px;
-  border: 2px solid rgba(255, 255, 255, 0.45);
-  border-block-start-color: #ffffff;
-}
-
 @keyframes spin {
   to {
     transform: rotate(360deg);
   }
-}
-
-.saveError {
-  flex: 0 0 auto;
-  padding: 10px 18px;
-  border-block-end: 1px solid var(--app-danger-border);
-  background: var(--app-danger-surface);
-  color: var(--app-danger-text);
-  font-size: 0.82rem;
-  font-weight: 650;
-  text-align: center;
 }
 
 .iframeWrapper {
@@ -302,16 +247,6 @@
     min-width: 0;
   }
 
-  .saveBtn {
-    min-width: 0;
-    flex: 1;
-    padding-inline: 10px;
-  }
-
-  .divider {
-    display: none;
-  }
-
   .frameState {
     padding-inline: 18px;
   }
@@ -320,11 +255,6 @@
 @media (max-width: 360px) {
   .headerActions {
     gap: 8px;
-  }
-
-  .saveBtn {
-    font-size: 0.75rem;
-    line-height: 1.25;
   }
 
   .externalLinkBtn,
@@ -337,7 +267,6 @@
 @media (prefers-reduced-motion: reduce) {
   .viewerOverlay,
   .viewerContainer,
-  .loader,
   .frameLoader {
     animation: none;
   }

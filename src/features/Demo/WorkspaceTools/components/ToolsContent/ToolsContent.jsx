@@ -1,16 +1,21 @@
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import ToolCard from "../ToolCard/ToolCard";
 import ToolViewer from "../ToolViewer/ToolViewer";
 import styles from "./ToolsContent.module.css";
 import { IoExtensionPuzzleOutline } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
+import {
+  createDrawioStorageKey,
+  DRAWIO_EMBED_URL,
+} from "../../utils/drawioProtocol";
 
 const TOOLS_DATA = [
   {
     id: "drawio",
     name: "Draw.io",
     descriptionKey: "drawio-description",
-    url: "https://embed.diagrams.net/?embed=1&ui=min",
+    url: DRAWIO_EMBED_URL,
     icon: "https://cdn.jsdelivr.net/gh/jgraph/drawio/src/main/webapp/images/logo.png",
     tagKeys: ["tool-tag-diagrams", "tool-tag-architecture", "tool-tag-uml"],
   },
@@ -26,6 +31,7 @@ const TOOLS_DATA = [
 
 const ToolsContent = () => {
   const { t } = useTranslation();
+  const { pathname } = useLocation();
   const [selectedTool, setSelectedTool] = useState(null);
 
   const handleOpenTool = (tool) => {
@@ -68,7 +74,11 @@ const ToolsContent = () => {
       </section>
 
       {selectedTool && (
-        <ToolViewer tool={selectedTool} onClose={handleCloseTool} />
+        <ToolViewer
+          tool={selectedTool}
+          onClose={handleCloseTool}
+          storageKey={createDrawioStorageKey(`workspace-tools:${pathname}`)}
+        />
       )}
     </div>
   );

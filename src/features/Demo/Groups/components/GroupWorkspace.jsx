@@ -16,6 +16,7 @@ const GroupWorkspace = () => {
 
   const [layout, setLayout] = useState("chat-only");
   const [activeTool, setActiveTool] = useState(null);
+  const [hasOpenedDrawio, setHasOpenedDrawio] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
@@ -25,6 +26,7 @@ const GroupWorkspace = () => {
 
   const handleToolSelect = (tool) => {
     setActiveTool(tool);
+    if (tool === "drawio") setHasOpenedDrawio(true);
     if (layout === "chat-only") {
       setLayout("split");
     }
@@ -74,6 +76,8 @@ const GroupWorkspace = () => {
               layout={layout}
               activeTool={activeTool}
               triggerShareTool={shareTrigger}
+              workspaceKey={`${demoId}:${groupId}`}
+              hasOpenedDrawio={hasOpenedDrawio}
             />
           </>
         ) : (

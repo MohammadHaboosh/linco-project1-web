@@ -1,36 +1,34 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  IoCheckmarkCircleOutline,
   IoCloseOutline,
-  IoCloudUploadOutline,
   IoOpenOutline,
   IoRefreshOutline,
   IoWarningOutline,
 } from "react-icons/io5";
+import {
+  createDrawioLoadAction,
+  isTrustedDrawioMessage,
+  parseDrawioMessage,
+  persistDrawioXml,
+  postDrawioMessage,
+} from "../../utils/drawioProtocol";
 import styles from "./ToolViewer.module.css";
 
-const ToolViewer = ({ tool, onClose }) => {
+const ToolViewer = ({ tool, onClose, storageKey }) => {
   const { t } = useTranslation();
   const iframeRef = useRef(null);
-  const successTimerRef = useRef(null);
-  const [isSaving, setIsSaving] = useState(false);
-  const [saveSuccess, setSaveSuccess] = useState(false);
-  const [saveError, setSaveError] = useState(false);
   const [frameStatus, setFrameStatus] = useState("loading");
   const [frameKey, setFrameKey] = useState(0);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.key === "Escape" && !isSaving) onClose();
+      if (event.key === "Escape") onClose();
     };
 
     window.addEventListener("keydown", handleKeyDown);
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.clearTimeout(successTimerRef.current);
-    };
-  }, [isSaving, onClose]);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
 
   useEffect(() => {
     if (frameStatus !== "loading") return undefined;
@@ -42,29 +40,50 @@ const ToolViewer = ({ tool, onClose }) => {
     return () => window.clearTimeout(loadTimeout);
   }, [frameKey, frameStatus]);
 
-  const handleSaveToLinCo = async () => {
-    setIsSaving(true);
-    setSaveSuccess(false);
-    setSaveError(false);
+  useEffect(() => {
+    if (tool.id !== "drawio") return undefined;
 
-    try {
-      // The embedded tool integration will request and upload an export here.
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+    const handleMessage = (event) => {
+      if (!isTrustedDrawioMessage(event, iframeRef.current)) return;
 
-      setSaveSuccess(true);
-      successTimerRef.current = window.setTimeout(
-        () => setSaveSuccess(false),
-        3000,
-      );
-    } catch {
-      setSaveError(true);
-    } finally {
-      setIsSaving(false);
-    }
-  };
+      const message = parseDrawioMessage(event.data);
+      if (!message) return;
+
+      if (message.event === "init") {
+        postDrawioMessage(
+          iframeRef.current,
+          createDrawioLoadAction(storageKey),
+        );
+        return;
+      }
+
+      if (message.event === "load") {
+        setFrameStatus("loaded");
+        return;
+      }
+
+      if (message.event === "autosave" || message.event === "save") {
+        persistDrawioXml(storageKey, message.xml);
+
+        if (message.exit) {
+          setFrameStatus("loading");
+          setFrameKey((currentKey) => currentKey + 1);
+        }
+        return;
+      }
+
+      if (message.event === "exit") {
+        setFrameStatus("loading");
+        setFrameKey((currentKey) => currentKey + 1);
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, [storageKey, tool.id]);
 
   const handleOverlayClick = (event) => {
-    if (event.target === event.currentTarget && !isSaving) onClose();
+    if (event.target === event.currentTarget) onClose();
   };
 
   const retryFrame = () => {
@@ -97,38 +116,6 @@ const ToolViewer = ({ tool, onClose }) => {
           </div>
 
           <div className={styles.headerActions}>
-            <button
-              type="button"
-              className={`${styles.saveBtn} ${saveSuccess ? styles.saveSuccess : ""}`}
-              onClick={handleSaveToLinCo}
-              disabled={isSaving || saveSuccess}
-            >
-              {isSaving ? (
-                <>
-                  <span className={styles.loader} aria-hidden="true" />
-                  {t("saving-tool-to-linco", { name: tool.name })}
-                </>
-              ) : saveSuccess ? (
-                <>
-                  <IoCheckmarkCircleOutline
-                    className={styles.btnIcon}
-                    aria-hidden="true"
-                  />
-                  {t("tool-saved-to-linco", { name: tool.name })}
-                </>
-              ) : (
-                <>
-                  <IoCloudUploadOutline
-                    className={styles.btnIcon}
-                    aria-hidden="true"
-                  />
-                  {t("save-tool-to-linco")}
-                </>
-              )}
-            </button>
-
-            <span className={styles.divider} aria-hidden="true" />
-
             <a
               href={tool.url}
               target="_blank"
@@ -143,7 +130,6 @@ const ToolViewer = ({ tool, onClose }) => {
               type="button"
               className={styles.closeBtn}
               onClick={onClose}
-              disabled={isSaving}
               autoFocus
               title={t("close-named-tool", { name: tool.name })}
               aria-label={t("close-named-tool", { name: tool.name })}
@@ -152,12 +138,6 @@ const ToolViewer = ({ tool, onClose }) => {
             </button>
           </div>
         </div>
-
-        {saveError && (
-          <div className={styles.saveError} role="alert">
-            {t("tool-save-failed", { name: tool.name })}
-          </div>
-        )}
 
         <div
           className={styles.iframeWrapper}
@@ -191,7 +171,9 @@ const ToolViewer = ({ tool, onClose }) => {
             title={t("embedded-tool-title", { name: tool.name })}
             allow="fullscreen; clipboard-read; clipboard-write"
             sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
-            onLoad={() => setFrameStatus("loaded")}
+            onLoad={() => {
+              if (tool.id !== "drawio") setFrameStatus("loaded");
+            }}
             onError={() => setFrameStatus("error")}
           />
         </div>
