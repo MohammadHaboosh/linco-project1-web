@@ -36,6 +36,9 @@ const VideoContent = ({
     : IoPlaySkipForwardOutline;
   const plyrRef = useRef(null);
   const hlsRef = useRef(null);
+  const finalVideoUrl = formatHlsUrl(activeLesson?.videoUrl);
+  const isHls = finalVideoUrl.includes(".m3u8");
+  const usesHlsJs = isHls && Hls.isSupported();
 
   const [qualityOptions, setQualityOptions] = useState([0]);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
@@ -52,51 +55,68 @@ const VideoContent = ({
   };
 
   useEffect(() => {
-    const finalVideoUrl = formatHlsUrl(activeLesson?.videoUrl);
-    const isHls = finalVideoUrl.includes(".m3u8");
-
-    if (!activeLesson?.videoUrl) return;
-
-    if (!isHls || !Hls.isSupported()) {
-      Promise.resolve().then(() => setIsPlayerReady(true));
-      return;
-    }
+    if (!finalVideoUrl) return;
 
     let isMounted = true;
-    const tempHls = new Hls();
-    tempHls.loadSource(finalVideoUrl);
 
-    tempHls.on(Hls.Events.MANIFEST_PARSED, () => {
-      if (isMounted) {
-        const availableQualities = [
-          ...new Set(tempHls.levels.map((level) => level.height)),
-        ].sort((a, b) => b - a);
+    if (!usesHlsJs) {
+      Promise.resolve().then(() => {
+        if (isMounted) setIsPlayerReady(true);
+      });
 
-        setQualityOptions([0, ...availableQualities]);
-        setIsPlayerReady(true);
-      }
-      tempHls.destroy();
+      return () => {
+        isMounted = false;
+      };
+    }
+
+    const hls = new Hls({
+      maxBufferLength: 20,
+      maxMaxBufferLength: 60,
+      backBufferLength: 30,
     });
+    hlsRef.current = hls;
 
-    tempHls.on(Hls.Events.ERROR, (_event, data) => {
-      if (data.fatal && isMounted) {
-        setPlaybackState("error");
-        tempHls.destroy();
-      }
-    });
+    const handleManifestParsed = () => {
+      if (!isMounted) return;
+
+      const availableQualities = [
+        ...new Set(
+          hls.levels
+            .map((level) => level.height)
+            .filter((height) => Number.isFinite(height) && height > 0),
+        ),
+      ].sort((a, b) => b - a);
+
+      setQualityOptions([0, ...availableQualities]);
+      setIsPlayerReady(true);
+    };
+
+    const handleHlsError = (_event, data) => {
+      if (!data.fatal || !isMounted) return;
+
+      setPlaybackState("error");
+      hls.stopLoad();
+    };
+
+    hls.on(Hls.Events.MANIFEST_PARSED, handleManifestParsed);
+    hls.on(Hls.Events.ERROR, handleHlsError);
+    hls.loadSource(finalVideoUrl);
 
     return () => {
       isMounted = false;
-      tempHls.destroy();
+      hls.off(Hls.Events.MANIFEST_PARSED, handleManifestParsed);
+      hls.off(Hls.Events.ERROR, handleHlsError);
+      hls.destroy();
+      if (hlsRef.current === hls) hlsRef.current = null;
     };
-  }, [activeLesson?.videoUrl, retryToken]);
+  }, [finalVideoUrl, retryToken, usesHlsJs]);
 
   useEffect(() => {
-    if (!isPlayerReady || !activeLesson?.videoUrl) return;
+    if (!isPlayerReady || !finalVideoUrl) return;
 
     let animationFrameId = null;
     let video = null;
-    let playbackHls = null;
+    const playbackHls = usesHlsJs ? hlsRef.current : null;
     let isDisposed = false;
     const handleReady = () => setPlaybackState("ready");
     const handlePlaybackError = () => setPlaybackState("error");
@@ -110,26 +130,17 @@ const VideoContent = ({
         return;
       }
 
-      const finalVideoUrl = formatHlsUrl(activeLesson.videoUrl);
-      const isHls = finalVideoUrl.includes(".m3u8");
-
       video.addEventListener("canplay", handleReady);
       video.addEventListener("loadeddata", handleReady);
+      video.addEventListener("playing", handleReady);
       video.addEventListener("error", handlePlaybackError);
 
-      if (isHls && Hls.isSupported()) {
-        playbackHls = new Hls();
-        hlsRef.current = playbackHls;
-        playbackHls.loadSource(finalVideoUrl);
+      if (playbackHls) {
+        playbackHls.on(Hls.Events.FRAG_BUFFERED, handleReady);
         playbackHls.attachMedia(video);
-        playbackHls.on(Hls.Events.ERROR, (_event, data) => {
-          if (data.fatal) handlePlaybackError();
-        });
-      } else if (
-        isHls &&
-        video.canPlayType("application/vnd.apple.mpegurl")
-      ) {
+      } else {
         video.src = finalVideoUrl;
+        video.load();
       }
 
       if (video.readyState >= 2) handleReady();
@@ -146,17 +157,27 @@ const VideoContent = ({
       if (video) {
         video.removeEventListener("canplay", handleReady);
         video.removeEventListener("loadeddata", handleReady);
+        video.removeEventListener("playing", handleReady);
         video.removeEventListener("error", handlePlaybackError);
       }
 
-      if (playbackHls) {
-        playbackHls.destroy();
-      }
-      if (hlsRef.current === playbackHls) {
-        hlsRef.current = null;
+      if (playbackHls && hlsRef.current === playbackHls) {
+        playbackHls.off(Hls.Events.FRAG_BUFFERED, handleReady);
+        if (playbackHls.media === video) playbackHls.detachMedia();
+      } else if (video) {
+        video.pause();
+        video.removeAttribute("src");
+        video.load();
       }
     };
-  }, [activeLesson?.videoUrl, isPlayerReady, retryToken]);
+  }, [
+    finalVideoUrl,
+    isPlayerReady,
+    qualityOptions,
+    retryToken,
+    t,
+    usesHlsJs,
+  ]);
 
   const plyrOptions = useMemo(
     () => ({
@@ -279,25 +300,21 @@ const VideoContent = ({
     );
   }
 
-  const finalVideoUrl = formatHlsUrl(activeLesson.videoUrl);
-  const isHls = finalVideoUrl.includes(".m3u8");
-  const videoSrc = {
-    type: "video",
-    sources: [
-      {
-        src: finalVideoUrl,
-        type: isHls ? "application/x-mpegURL" : "video/mp4",
-      },
-    ],
-  };
-
   return (
     <div className={styles.videoStage}>
       <div className={styles.videoBackdrop}>
         <div
           className={styles.videoPlayerContainer}
         >
-          <Plyr ref={plyrRef} source={videoSrc} options={plyrOptions} />
+          {isPlayerReady && (
+            <Plyr
+              ref={plyrRef}
+              source={null}
+              options={plyrOptions}
+              preload="metadata"
+              playsInline
+            />
+          )}
 
           {playbackState === "error" && (
             <div className={styles.videoErrorState} role="alert">
