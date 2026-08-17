@@ -25,4 +25,39 @@ export const DepartmentCoursesApi = {
       throw error;
     }
   },
+
+  deleteDepartmentCourse: async (demoId, departmentId, courseId) => {
+    if (!demoId) {
+      throw new Error("Demo ID is required to delete a department course.");
+    }
+
+    if (!departmentId) {
+      throw new Error("Department ID is required to delete a course.");
+    }
+
+    if (!courseId) {
+      throw new Error("Course ID is required to delete a department course.");
+    }
+
+    const response = await apiFetch(
+      `/departmentCourses/${encodeURIComponent(courseId)}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "x-client-type": "web",
+          "x-demo-id": demoId,
+          "x-department-id": departmentId,
+        },
+      },
+    );
+
+    const data = await response.json().catch(() => ({}));
+
+    if (!response.ok || data.success === false) {
+      throw new Error(data.message || "Failed to delete department course");
+    }
+
+    return data;
+  },
 };

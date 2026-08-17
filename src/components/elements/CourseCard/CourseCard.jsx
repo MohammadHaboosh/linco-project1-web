@@ -11,7 +11,7 @@ import styles from "./CourseCard.module.css";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
-const CourseCard = ({ course, isOwner, onDelete }) => {
+const CourseCard = ({ course, isOwner, onDelete, isDeleting = false }) => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { demoId, departmentId } = useParams();
@@ -94,8 +94,20 @@ const CourseCard = ({ course, isOwner, onDelete }) => {
                   e.stopPropagation();
                   onDelete(id);
                 }}
-                title={t("delete-named-course", { title })}
-                aria-label={t("delete-named-course", { title })}
+                title={t(
+                  isDeleting
+                    ? "removing-named-course-from-department"
+                    : "remove-named-course-from-department",
+                  { title },
+                )}
+                aria-label={t(
+                  isDeleting
+                    ? "removing-named-course-from-department"
+                    : "remove-named-course-from-department",
+                  { title },
+                )}
+                disabled={isDeleting}
+                aria-busy={isDeleting}
               >
                 <IoTrashOutline aria-hidden="true" />
               </button>

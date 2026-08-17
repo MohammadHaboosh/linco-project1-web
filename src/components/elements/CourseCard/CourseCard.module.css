@@ -152,6 +152,11 @@
   color: #ffffff;
 }
 
+.deleteBtn:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
 .description {
   color: var(--app-muted);
   font-size: 0.85rem;
