@@ -154,6 +154,12 @@
   margin-bottom: 20px;
 }
 
+.groupTitleWrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 70%;
+}
 .groupIcon {
   width: 42px;
   height: 42px;
