@@ -11,6 +11,17 @@ import styles from "./CourseCard.module.css";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
+const formatVideoDuration = (totalSeconds) => {
+  if (!totalSeconds || isNaN(totalSeconds)) return "00:00";
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  if (hours > 0) {
+    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+  }
+  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+};
+
 const CourseCard = ({ course, isOwner, onDelete, isDeleting = false }) => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
@@ -35,16 +46,15 @@ const CourseCard = ({ course, isOwner, onDelete, isDeleting = false }) => {
     status: providedStatus,
     lastUpdated: providedLastUpdated,
   } = course || {};
+
   const title = providedTitle || t("untitled-course");
   const description = providedDescription || t("no-description-provided");
   const image = providedImage || "/images/linco-logo.jpg";
   const lessonsCount = Number(providedLessonsCount) || 0;
-  const duration =
-    providedDuration ||
-    t("course-duration-hours", {
-      count: 0,
-      formattedCount: numberFormatter.format(0),
-    });
+
+  const durationInSeconds = Number(providedDuration) || 0;
+  const formattedDuration = formatVideoDuration(durationInSeconds);
+
   const progress = Math.min(100, Math.max(0, Number(providedProgress) || 0));
   const views = Number(providedViews) || 0;
   const studentsCount = Number(providedStudentsCount) || 0;
@@ -129,7 +139,10 @@ const CourseCard = ({ course, isOwner, onDelete, isDeleting = false }) => {
               })}
             </span>
             <span className={styles.tag}>
-              <IoTimeOutline aria-hidden="true" /> {duration}
+              <IoTimeOutline aria-hidden="true" />
+              <span style={{ fontWeight: "600", letterSpacing: "0.5px" }}>
+                {formattedDuration}
+              </span>
             </span>
           </div>
 
@@ -178,10 +191,10 @@ const CourseCard = ({ course, isOwner, onDelete, isDeleting = false }) => {
           <div className={styles.traineeFooter}>
             <div className={styles.progressContainer}>
               <div className={styles.progressHeader}>
-                <span className={styles.progressLabel}>
-                  {t("progress")}
+                <span className={styles.progressLabel}>{t("progress")}</span>
+                <span className={styles.progressValue}>
+                  {formattedProgress}
                 </span>
-                <span className={styles.progressValue}>{formattedProgress}</span>
               </div>
               <div
                 className={styles.progressBar}
@@ -202,9 +215,7 @@ const CourseCard = ({ course, isOwner, onDelete, isDeleting = false }) => {
               className={styles.primaryCta}
               onClick={openCourse}
               aria-label={t(
-                progress > 0
-                  ? "continue-named-course"
-                  : "start-named-course",
+                progress > 0 ? "continue-named-course" : "start-named-course",
                 { title },
               )}
             >
