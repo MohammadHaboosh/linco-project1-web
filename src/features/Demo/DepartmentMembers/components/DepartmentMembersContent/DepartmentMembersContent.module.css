@@ -181,6 +181,17 @@
   font-size: 0.8rem;
 }
 
+.mutationError {
+  margin: 16px 24px 0;
+  padding: 12px 14px;
+  border: 1px solid var(--app-danger-border);
+  border-radius: 10px;
+  background: var(--app-danger-surface);
+  color: var(--app-danger-text);
+  font-size: 0.84rem;
+  font-weight: 650;
+}
+
 .searchBox {
   box-sizing: border-box;
   display: flex;
@@ -385,6 +396,45 @@
   font-variant-numeric: tabular-nums;
 }
 
+.actionsColumn {
+  width: 72px;
+  text-align: end !important;
+  white-space: nowrap;
+}
+
+.deleteMemberButton {
+  display: inline-grid;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--app-muted);
+  font: inherit;
+  font-size: 1.15rem;
+  cursor: pointer;
+  place-items: center;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.deleteMemberButton:hover:not(:disabled) {
+  background: var(--app-danger-surface);
+  color: var(--app-danger-text);
+}
+
+.deleteMemberButton:focus-visible {
+  outline: 3px solid var(--app-focus-ring);
+  outline-offset: 2px;
+}
+
+.deleteMemberButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
 .loadingState,
 .stateMessage {
   display: flex;
@@ -548,6 +598,10 @@
     padding: 18px;
   }
 
+  .mutationError {
+    margin-inline: 18px;
+  }
+
   .tableScroller {
     overflow: visible;
   }
@@ -595,6 +649,15 @@
     font-weight: 800;
     letter-spacing: 0.035em;
     text-transform: uppercase;
+  }
+
+  .actionsColumn {
+    width: auto;
+    text-align: start !important;
+  }
+
+  .deleteMemberButton {
+    justify-self: start;
   }
 
   :global([dir="rtl"]) .membersTable td::before {

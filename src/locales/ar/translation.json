@@ -1,4 +1,10 @@
 {
+  "department-member-remove-failed": "تعذّرت إزالة العضو من هذا القسم. يرجى المحاولة مجدداً.",
+  "remove-department-member": "إزالة من القسم",
+  "remove-department-member-confirmation": "هل أنت متأكد من رغبتك في إزالة {{name}} من هذا القسم؟",
+  "removing-department-member": "جارٍ إزالة العضو...",
+  "remove-named-department-member": "إزالة {{name}} من القسم",
+  "removing-named-department-member": "جارٍ إزالة {{name}} من القسم...",
   "back-to-demo": "العودة إلى العرض التجريبي",
   "draft": "مسودة",
   "published": "منشور",

@@ -7,6 +7,8 @@ export const useDepartmentMembers = (departmentId) => {
   const [meta, setMeta] = useState(null);
   const [isLoading, setIsLoading] = useState(Boolean(departmentId));
   const [error, setError] = useState(null);
+  const [deletingMemberId, setDeletingMemberId] = useState(null);
+  const [deleteError, setDeleteError] = useState(null);
   const { demoId } = useParams();
 
   const loadMembers = useCallback(
@@ -56,13 +58,48 @@ export const useDepartmentMembers = (departmentId) => {
     return () => controller.abort();
   }, [loadMembers]);
 
-  const refetch = useCallback(() => loadMembers(), [loadMembers]);
+  const refetch = useCallback(() => {
+    setDeleteError(null);
+    return loadMembers();
+  }, [loadMembers]);
+
+  const deleteMember = useCallback(
+    async (memberId) => {
+      if (!demoId || !departmentId || !memberId || deletingMemberId) {
+        return false;
+      }
+
+      setDeletingMemberId(memberId);
+      setDeleteError(null);
+
+      try {
+        await departmentMemberApi.deleteMember(
+          demoId,
+          departmentId,
+          memberId,
+        );
+        setMembers((currentMembers) =>
+          currentMembers.filter((member) => member.id !== memberId),
+        );
+        return true;
+      } catch {
+        setDeleteError("department-member-remove-failed");
+        return false;
+      } finally {
+        setDeletingMemberId(null);
+      }
+    },
+    [demoId, departmentId, deletingMemberId],
+  );
 
   return {
     members,
     meta,
     isLoading,
     error,
+    deletingMemberId,
+    deleteError,
     refetch,
+    deleteMember,
   };
 };

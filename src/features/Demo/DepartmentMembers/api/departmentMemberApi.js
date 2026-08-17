@@ -84,6 +84,43 @@ export const departmentMemberApi = {
     return responseData;
   },
 
+  deleteMember: async (demoId, departmentId, memberId) => {
+    if (!demoId) {
+      throw new Error("Demo ID is required to delete a department member.");
+    }
+
+    if (!departmentId) {
+      throw new Error("Department ID is required to delete a member.");
+    }
+
+    if (!memberId) {
+      throw new Error("Member ID is required to delete a department member.");
+    }
+
+    const response = await apiFetch(
+      `/departmentMembers/${encodeURIComponent(memberId)}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "x-client-type": "web",
+          "x-demo-id": demoId,
+          "x-department-id": departmentId,
+        },
+      },
+    );
+
+    const responseData = await response.json().catch(() => ({}));
+
+    if (!response.ok || responseData.success === false) {
+      throw new Error(
+        responseData.message || "Failed to delete the department member.",
+      );
+    }
+
+    return responseData;
+  },
+
   getMembers: async (departmentId, demoId, options = {}) => {
     if (!departmentId) {
       throw new Error("Department ID is required to fetch members.");

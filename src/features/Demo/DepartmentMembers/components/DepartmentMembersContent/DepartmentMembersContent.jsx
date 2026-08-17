@@ -8,6 +8,7 @@ import {
   IoRefreshOutline,
   IoSearchOutline,
   IoShieldCheckmarkOutline,
+  IoTrashOutline,
 } from "react-icons/io5";
 import { useDepartmentMembers } from "../../hooks/useDepartmentMembers";
 import AddDepartmentMemberModal from "../AddDepartmentMemberModal/AddDepartmentMemberModal";
@@ -33,8 +34,16 @@ const DepartmentMembersContent = () => {
   const { t, i18n } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
-  const { members, meta, isLoading, error, refetch } =
-    useDepartmentMembers(departmentId);
+  const {
+    members,
+    meta,
+    isLoading,
+    error,
+    deletingMemberId,
+    deleteError,
+    refetch,
+    deleteMember,
+  } = useDepartmentMembers(departmentId);
   const locale = i18n.resolvedLanguage || i18n.language || "en";
   const numberFormatter = useMemo(() => new Intl.NumberFormat(locale), [locale]);
 
@@ -108,6 +117,16 @@ const DepartmentMembersContent = () => {
     }
 
     return styles.memberBadge;
+  };
+
+  const handleDeleteMember = async (memberId, memberName) => {
+    const shouldDelete = window.confirm(
+      t("remove-department-member-confirmation", { name: memberName }),
+    );
+
+    if (!shouldDelete) return;
+
+    await deleteMember(memberId);
   };
 
   return (
@@ -202,6 +221,12 @@ const DepartmentMembersContent = () => {
             </label>
           </div>
 
+          {deleteError && !isLoading && !error && (
+            <div className={styles.mutationError} role="alert">
+              {t(deleteError)}
+            </div>
+          )}
+
           {error ? (
             <div className={styles.stateMessage} role="alert">
               <div className={styles.stateIcon}>!</div>
@@ -250,6 +275,7 @@ const DepartmentMembersContent = () => {
                     <th>{t("job-title")}</th>
                     <th>{t("workspace-role")}</th>
                     <th>{t("assigned")}</th>
+                    <th className={styles.actionsColumn}>{t("actions")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -265,6 +291,8 @@ const DepartmentMembersContent = () => {
                     const initials =
                       `${user.firstName?.[0] ?? ""}${user.lastName?.[0] ?? ""}`.toUpperCase() ||
                       fullName.slice(0, 1).toUpperCase();
+                    const isDeleting =
+                      deletingMemberId === departmentMember.id;
 
                     return (
                       <tr key={departmentMember.id}>
@@ -301,6 +329,39 @@ const DepartmentMembersContent = () => {
                           data-label={t("assigned")}
                         >
                           {formatDate(departmentMember.assignedAt)}
+                        </td>
+                        <td
+                          className={styles.actionsColumn}
+                          data-label={t("actions")}
+                        >
+                          <button
+                            type="button"
+                            className={styles.deleteMemberButton}
+                            title={
+                              isDeleting
+                                ? t("removing-department-member")
+                                : t("remove-department-member")
+                            }
+                            aria-label={
+                              isDeleting
+                                ? t("removing-named-department-member", {
+                                    name: fullName,
+                                  })
+                                : t("remove-named-department-member", {
+                                    name: fullName,
+                                  })
+                            }
+                            onClick={() =>
+                              handleDeleteMember(
+                                departmentMember.id,
+                                fullName,
+                              )
+                            }
+                            disabled={Boolean(deletingMemberId)}
+                            aria-busy={isDeleting}
+                          >
+                            <IoTrashOutline aria-hidden="true" />
+                          </button>
                         </td>
                       </tr>
                     );
