@@ -6,7 +6,7 @@ import AddEditFAQModal from "./AddEditFAQModal";
 import { useFAQs } from "../../../../../hooks/useFAQs";
 import { useTranslation } from "react-i18next";
 
-const FAQsTab = ({ courseId }) => {
+const FAQsTab = ({ courseId, readOnly = false }) => {
   const { t } = useTranslation();
   const { faqs, loading, error, addFaq, removeFaq, refetch } =
     useFAQs(courseId);
@@ -38,7 +38,11 @@ const FAQsTab = ({ courseId }) => {
         <div>
           <h3 className={styles.tabTitle}>{t("course-faqs")}</h3>
           <p className={styles.tabSubtitle}>
-            {t("manage-questions-and-answers-for-your-students")}
+            {t(
+              readOnly
+                ? "course-faqs-read-only-description"
+                : "manage-questions-and-answers-for-your-students",
+            )}
           </p>
         </div>
       </div>
@@ -63,7 +67,13 @@ const FAQsTab = ({ courseId }) => {
             size={36}
             aria-hidden="true"
           />
-          <p>{t("no-faqs-added-yet-click-below-to-create-one")}</p>
+          <p>
+            {t(
+              readOnly
+                ? "no-faqs-available-in-this-course"
+                : "no-faqs-added-yet-click-below-to-create-one",
+            )}
+          </p>
         </div>
       ) : (
         <div className={styles.faqsList}>
@@ -73,12 +83,13 @@ const FAQsTab = ({ courseId }) => {
               faq={faq}
               onDelete={handleDeleteFAQ}
               isDeleting={deletingFaqId === faq.id}
+              canDelete={!readOnly}
             />
           ))}
         </div>
       )}
 
-      {actionError && (
+      {!readOnly && actionError && (
         <div className={styles.actionError} role="alert">
           <span>{actionError}</span>
           <button
@@ -91,24 +102,28 @@ const FAQsTab = ({ courseId }) => {
         </div>
       )}
 
-      <button
-        type="button"
-        className={styles.addBtnRoot}
-        onClick={() => {
-          setActionError("");
-          setIsModalOpen(true);
-        }}
-        disabled={loading || error}
-      >
-        <IoAddCircleOutline size={18} aria-hidden="true" />
-        <span>{t("add-new-faq")}</span>
-      </button>
+      {!readOnly && (
+        <>
+          <button
+            type="button"
+            className={styles.addBtnRoot}
+            onClick={() => {
+              setActionError("");
+              setIsModalOpen(true);
+            }}
+            disabled={loading || error}
+          >
+            <IoAddCircleOutline size={18} aria-hidden="true" />
+            <span>{t("add-new-faq")}</span>
+          </button>
 
-      <AddEditFAQModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSubmit={handleSaveFAQ}
-      />
+          <AddEditFAQModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onSubmit={handleSaveFAQ}
+          />
+        </>
+      )}
     </div>
   );
 };

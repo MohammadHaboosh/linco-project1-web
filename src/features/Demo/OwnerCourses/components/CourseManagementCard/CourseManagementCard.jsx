@@ -7,6 +7,7 @@ import {
   IoHelpCircleOutline,
   IoCheckmarkCircleOutline,
   IoSettingsOutline,
+  IoEyeOutline,
 } from "react-icons/io5";
 import styles from "./CourseManagementCard.module.css";
 import { useTranslation } from "react-i18next";
@@ -33,6 +34,7 @@ const CourseManagementCard = ({
   isAddNew,
   course,
   onEdit,
+  onView,
   onPublish,
   onAddNew,
   onEditSettings,
@@ -136,26 +138,37 @@ const CourseManagementCard = ({
 
       <div className={styles.cardFooter}>
         {course.isPublished ? (
-          <button
-            className={styles.settingsBtn}
-            onClick={() => onEditSettings(course)}
-          >
-            <IoSettingsOutline aria-hidden="true" /> {t("settings")}
-          </button>
+          <>
+            <button
+              type="button"
+              className={styles.viewBtn}
+              onClick={onView}
+              aria-label={t("view-course-details", { title: course.title })}
+            >
+              <IoEyeOutline aria-hidden="true" /> {t("view-course")}
+            </button>
+            <button
+              type="button"
+              className={styles.settingsBtn}
+              onClick={() => onEditSettings(course)}
+            >
+              <IoSettingsOutline aria-hidden="true" /> {t("settings")}
+            </button>
+          </>
         ) : (
-          <button className={styles.editBtn} onClick={onEdit}>
-            <IoCreateOutline aria-hidden="true" /> {t("edit")}
-          </button>
+          <>
+            <button type="button" className={styles.editBtn} onClick={onEdit}>
+              <IoCreateOutline aria-hidden="true" /> {t("edit")}
+            </button>
+            <button
+              type="button"
+              className={styles.publishBtn}
+              onClick={onPublish}
+            >
+              <IoCloudUploadOutline aria-hidden="true" /> {t("publish")}
+            </button>
+          </>
         )}
-
-        <button
-          className={`${styles.publishBtn} ${course.isPublished ? styles.publishedBtn : ""}`}
-          onClick={onPublish}
-          disabled={course.isPublished}
-        >
-          <IoCloudUploadOutline aria-hidden="true" />{" "}
-          {course.isPublished ? t("in-library") : t("publish")}
-        </button>
       </div>
     </div>
   );

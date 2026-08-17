@@ -201,6 +201,7 @@
   padding: 0 15px 15px 15px; /* تقليل الحواف السفلية */
 }
 .editBtn,
+.viewBtn,
 .publishBtn {
   flex: 1;
   display: flex;
@@ -223,6 +224,15 @@
   background: var(--app-border);
   color: var(--app-heading);
 }
+.viewBtn {
+  border: 1px solid var(--app-info-border);
+  background: var(--app-info-surface);
+  color: var(--app-info-text);
+}
+.viewBtn:hover {
+  border-color: var(--app-link);
+  color: var(--app-link);
+}
 .publishBtn {
   background: #0a2a54;
   color: #ffffff;
@@ -232,13 +242,6 @@
 .publishBtn:hover:not(:disabled) {
   background: #1a56db;
   transform: translateY(-2px);
-}
-.publishedBtn {
-  background: var(--app-success-surface);
-  color: var(--app-success-text);
-  box-shadow: none;
-  border: 1px solid var(--app-success-border);
-  cursor: default;
 }
 .settingsBtn {
   flex: 1;
@@ -269,6 +272,7 @@
 
 .addNewCard:focus-visible,
 .editBtn:focus-visible,
+.viewBtn:focus-visible,
 .publishBtn:focus-visible,
 .settingsBtn:focus-visible {
   outline: 3px solid var(--app-focus-ring);
@@ -290,6 +294,7 @@
   }
 
   .editBtn,
+  .viewBtn,
   .publishBtn,
   .settingsBtn {
     width: 100%;

@@ -18,7 +18,7 @@ import UploadProgressOverlay from "./UploadProgressOverlay/UploadProgressOverlay
 import styles from "./CourseManager.module.css";
 import { useTranslation } from "react-i18next";
 
-const CourseManagerLayout = () => {
+const CourseManagerLayout = ({ readOnly = false }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { demoId, assetId } = useParams();
@@ -107,7 +107,9 @@ const CourseManagerLayout = () => {
         aria-live="polite"
       >
         <div className={styles.spinner} aria-hidden="true"></div>
-        <h1>{t("loading-course-manager")}</h1>
+        <h1>
+          {t(readOnly ? "loading-course-details" : "loading-course-manager")}
+        </h1>
         <p>{t("loading-course-manager-description")}</p>
       </div>
     );
@@ -115,7 +117,13 @@ const CourseManagerLayout = () => {
   if (error) {
     return (
       <div className={styles.loadingScreen} role="alert">
-        <h1>{t("course-manager-load-failed")}</h1>
+        <h1>
+          {t(
+            readOnly
+              ? "course-details-load-failed"
+              : "course-manager-load-failed",
+          )}
+        </h1>
         <p>{t("course-manager-load-error-message")}</p>
         <div className={styles.stateActions}>
           <button type="button" onClick={() => navigate(-1)}>
@@ -138,7 +146,7 @@ const CourseManagerLayout = () => {
     {
       id: "curriculum",
       icon: <IoListOutline aria-hidden="true" />,
-      label: t("curriculum"),
+      label: t(readOnly ? "course-curriculum" : "curriculum"),
     },
     {
       id: "faqs",
@@ -146,10 +154,15 @@ const CourseManagerLayout = () => {
       label: t("faqs"),
     },
   ];
+  const navigationLabel = t(
+    readOnly ? "course-details-sections" : "course-manager-navigation",
+  );
 
   return (
     <div className={styles.pageContainer}>
-      <UploadProgressOverlay progress={uploadProgress} styles={styles} />
+      {!readOnly && (
+        <UploadProgressOverlay progress={uploadProgress} styles={styles} />
+      )}
 
       <header className={styles.topHeader}>
         <div className={styles.headerLeft}>
@@ -163,12 +176,14 @@ const CourseManagerLayout = () => {
             <IoArrowBackOutline aria-hidden="true" />
           </button>
           <div className={styles.courseHeaderInfo}>
-            <span className={styles.badge}>{t("editing-mode")}</span>
+            <span className={styles.badge}>
+              {t(readOnly ? "viewing-mode" : "editing-mode")}
+            </span>
             <h1>{generalInfo?.title || t("untitled-course")}</h1>
           </div>
         </div>
         <div className={styles.headerRight}>
-          {activeTab !== "faqs" && (
+          {!readOnly && activeTab !== "faqs" && (
             <button
               type="button"
               className={styles.saveBtn}
@@ -187,7 +202,7 @@ const CourseManagerLayout = () => {
         </div>
       </header>
 
-      {saveFeedback && (
+      {!readOnly && saveFeedback && (
         <div
           className={`${styles.feedbackBanner} ${
             saveFeedback.type === "error"
@@ -210,11 +225,11 @@ const CourseManagerLayout = () => {
       <div className={styles.layoutGrid}>
         <aside className={styles.sidebar}>
           <div className={styles.sidebarHeader}>
-            <span>{t("course-manager-navigation")}</span>
+            <span>{navigationLabel}</span>
           </div>
           <nav
             className={styles.navMenu}
-            aria-label={t("course-manager-navigation")}
+            aria-label={navigationLabel}
           >
             {TABS.map((tab) => (
               <button
@@ -248,6 +263,7 @@ const CourseManagerLayout = () => {
               <GeneralInfoTab
                 data={generalInfo}
                 onChange={handleGeneralInfoChange}
+                readOnly={readOnly}
               />
             )}
             {activeTab === "curriculum" && (
@@ -258,9 +274,12 @@ const CourseManagerLayout = () => {
                 onDeleteSection={handleDeleteSection}
                 onDeleteQuiz={handleDeleteQuiz}
                 onDeleteQuestion={handleDeleteQuestion}
+                readOnly={readOnly}
               />
             )}
-            {activeTab === "faqs" && <FAQsTab courseId={courseId} />}
+            {activeTab === "faqs" && (
+              <FAQsTab courseId={courseId} readOnly={readOnly} />
+            )}
           </div>
         </main>
       </div>

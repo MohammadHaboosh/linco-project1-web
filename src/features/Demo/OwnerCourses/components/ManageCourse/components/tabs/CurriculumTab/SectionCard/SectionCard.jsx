@@ -10,7 +10,7 @@ import SectionQuizSection from "../SectionQuizSection/SectionQuizSection";
 import styles from "../CurriculumTab.module.css";
 import { useTranslation } from "react-i18next";
 
-const SectionCard = ({ section, index, isExpanded, logic }) => {
+const SectionCard = ({ section, index, isExpanded, logic, readOnly = false }) => {
   const { t, i18n } = useTranslation();
   const formattedSectionNumber = new Intl.NumberFormat(
     i18n.resolvedLanguage || i18n.language,
@@ -42,31 +42,37 @@ const SectionCard = ({ section, index, isExpanded, logic }) => {
               {t("section-number", { number: formattedSectionNumber })}
             </span>
           </div>
-          <input
-            type="text"
-            className={styles.sectionTitleInput}
-            value={section.title || ""}
-            onClick={(e) => e.stopPropagation()}
-            onChange={(e) =>
-              logic.updateSectionTitle(section.id, e.target.value)
-            }
-            aria-label={t("section-title-label", {
-              number: formattedSectionNumber,
-            })}
-          />
+          {readOnly ? (
+            <h4 className={styles.sectionTitleReadOnly}>{section.title}</h4>
+          ) : (
+            <input
+              type="text"
+              className={styles.sectionTitleInput}
+              value={section.title || ""}
+              onClick={(e) => e.stopPropagation()}
+              onChange={(e) =>
+                logic.updateSectionTitle(section.id, e.target.value)
+              }
+              aria-label={t("section-title-label", {
+                number: formattedSectionNumber,
+              })}
+            />
+          )}
         </div>
-        <div className={styles.sectionHeaderRight}>
-          <button
-            type="button"
-            className={styles.deleteSectionBtn}
-            onClick={(e) => logic.deleteSection(e, section.id)}
-            aria-label={t("delete-section-label", {
-              number: formattedSectionNumber,
-            })}
-          >
-            <IoTrashOutline aria-hidden="true" />
-          </button>
-        </div>
+        {!readOnly && (
+          <div className={styles.sectionHeaderRight}>
+            <button
+              type="button"
+              className={styles.deleteSectionBtn}
+              onClick={(e) => logic.deleteSection(e, section.id)}
+              aria-label={t("delete-section-label", {
+                number: formattedSectionNumber,
+              })}
+            >
+              <IoTrashOutline aria-hidden="true" />
+            </button>
+          </div>
+        )}
       </div>
 
       {isExpanded && (
@@ -90,6 +96,7 @@ const SectionCard = ({ section, index, isExpanded, logic }) => {
             isLoading={section.isLessonsLoading}
             hasError={section.lessonsLoadError}
             onRetry={() => logic.handleFetchLessonsForSection(section.id)}
+            readOnly={readOnly}
           />
           <div className={styles.bottomAssessmentRow}>
             <QuestionBankSection
@@ -99,6 +106,7 @@ const SectionCard = ({ section, index, isExpanded, logic }) => {
               isLoading={section.isQuestionsLoading}
               hasError={section.questionsLoadError}
               onRetry={() => logic.handleFetchQuestionsForSection(section.id)}
+              readOnly={readOnly}
             />
             <SectionQuizSection
               quiz={section.quiz}
@@ -107,6 +115,7 @@ const SectionCard = ({ section, index, isExpanded, logic }) => {
               isLoading={section.isQuizLoading}
               hasError={section.quizLoadError}
               onRetry={() => logic.handleFetchQuizForSection(section.id)}
+              readOnly={readOnly}
             />
           </div>
         </div>

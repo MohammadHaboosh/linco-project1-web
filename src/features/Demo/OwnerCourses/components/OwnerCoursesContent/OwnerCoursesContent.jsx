@@ -42,6 +42,10 @@ const OwnerCoursesContent = () => {
     navigate(`/demos/${demoId}/manage-course/${assetId}`);
   };
 
+  const handleViewCourse = (assetId) => {
+    navigate(`/demos/${demoId}/view-course/${assetId}`);
+  };
+
   const handleOpenPublishModal = (course) => {
     setSelectedCourseForPublish(course);
   };
@@ -149,6 +153,7 @@ const OwnerCoursesContent = () => {
                 isAddNew={false}
                 course={course}
                 onEdit={() => handleEditCourse(course.assetId || course.id)}
+                onView={() => handleViewCourse(course.assetId || course.id)}
                 onPublish={() => handleOpenPublishModal(course)}
                 onEditSettings={() => handleOpenSettingsModal(course)}
               />

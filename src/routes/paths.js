@@ -54,4 +54,5 @@ export const PATHS = {
 
   COURSE_STUDIO: "course-studio",
   MANAGE_COURSE: "manage-course/:assetId",
+  VIEW_COURSE: "view-course/:assetId",
 };

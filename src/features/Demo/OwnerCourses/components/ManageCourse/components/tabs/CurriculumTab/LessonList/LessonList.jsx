@@ -25,6 +25,7 @@ const LessonList = ({
   isLoading,
   hasError,
   onRetry,
+  readOnly = false,
 }) => {
   const { t, i18n } = useTranslation();
   const [draggedIndex, setDraggedIndex] = useState(null);
@@ -90,14 +91,16 @@ const LessonList = ({
     <div className={styles.lessonsContainer}>
       <div className={styles.lessonsHeader}>
         <h4 className={styles.subSectionTitle}>{t("lessons-list")}</h4>
-        <button
-          type="button"
-          className={styles.addLessonBtn}
-          onClick={onAddLesson}
-          disabled={isLoading || hasError}
-        >
-          <IoAddOutline aria-hidden="true" /> {t("add-lesson")}
-        </button>
+        {!readOnly && (
+          <button
+            type="button"
+            className={styles.addLessonBtn}
+            onClick={onAddLesson}
+            disabled={isLoading || hasError}
+          >
+            <IoAddOutline aria-hidden="true" /> {t("add-lesson")}
+          </button>
+        )}
       </div>
 
       {isLoading ? (
@@ -132,18 +135,24 @@ const LessonList = ({
               <div
                 key={lesson.id}
                 className={styles.lessonWrapperCard}
-                draggable
-                onDragStart={(e) => handleDragStart(e, index)}
-                onDragOver={handleDragOver}
-                onDrop={(e) => handleDrop(e, index)}
-                style={{ opacity: draggedIndex === index ? 0.4 : 1 }}
+                draggable={!readOnly}
+                onDragStart={
+                  readOnly ? undefined : (e) => handleDragStart(e, index)
+                }
+                onDragOver={readOnly ? undefined : handleDragOver}
+                onDrop={readOnly ? undefined : (e) => handleDrop(e, index)}
+                style={{
+                  opacity: !readOnly && draggedIndex === index ? 0.4 : 1,
+                }}
               >
                 <div className={styles.lessonCardHeader}>
                   <div className={styles.lessonLeft}>
-                    <IoReorderTwoOutline
-                      className={styles.dragIcon}
-                      title={t("drag-lesson-to-reorder")}
-                    />
+                    {!readOnly && (
+                      <IoReorderTwoOutline
+                        className={styles.dragIcon}
+                        title={t("drag-lesson-to-reorder")}
+                      />
+                    )}
 
                     <button
                       type="button"
@@ -206,16 +215,18 @@ const LessonList = ({
                       })}
                     </button>
 
-                    <button
-                      type="button"
-                      className={styles.deleteLessonBtn}
-                      onClick={() => onDeleteLesson(lesson.id)}
-                      aria-label={t("delete-lesson-label", {
-                        title: lesson.title,
-                      })}
-                    >
-                      <IoTrashOutline />
-                    </button>
+                    {!readOnly && (
+                      <button
+                        type="button"
+                        className={styles.deleteLessonBtn}
+                        onClick={() => onDeleteLesson(lesson.id)}
+                        aria-label={t("delete-lesson-label", {
+                          title: lesson.title,
+                        })}
+                      >
+                        <IoTrashOutline />
+                      </button>
+                    )}
                   </div>
                 </div>
 
@@ -280,31 +291,37 @@ const LessonList = ({
                                 </span>
                               </div>
                             </div>
-                            <button
-                              type="button"
-                              className={styles.deleteAttachmentBtn}
-                              onClick={() =>
-                                onDeleteAttachment &&
-                                onDeleteAttachment(lesson.id, attachment.id)
-                              }
-                              aria-label={t("remove-attachment-label", {
-                                title,
-                              })}
-                            >
-                              <IoTrashOutline />
-                            </button>
+                            {!readOnly && (
+                              <button
+                                type="button"
+                                className={styles.deleteAttachmentBtn}
+                                onClick={() =>
+                                  onDeleteAttachment &&
+                                  onDeleteAttachment(lesson.id, attachment.id)
+                                }
+                                aria-label={t("remove-attachment-label", {
+                                  title,
+                                })}
+                              >
+                                <IoTrashOutline />
+                              </button>
+                            )}
                           </div>
                         );
                       })}
 
-                      <button
-                        type="button"
-                        className={styles.addAttachmentYellowCard}
-                        onClick={() => setActiveLessonForAttachment(lesson.id)}
-                      >
-                        <IoAddOutline className={styles.yellowAddIcon} />
-                        <span>{t("add-attachment")}</span>
-                      </button>
+                      {!readOnly && (
+                        <button
+                          type="button"
+                          className={styles.addAttachmentYellowCard}
+                          onClick={() =>
+                            setActiveLessonForAttachment(lesson.id)
+                          }
+                        >
+                          <IoAddOutline className={styles.yellowAddIcon} />
+                          <span>{t("add-attachment")}</span>
+                        </button>
+                      )}
                     </div>
                   </div>
                 )}
@@ -314,16 +331,18 @@ const LessonList = ({
         </div>
       )}
 
-      <AddAttachmentModal
-        isOpen={Boolean(activeLessonForAttachment)}
-        onClose={() => setActiveLessonForAttachment(null)}
-        onSubmit={(attachmentData) => {
-          if (onAddAttachment && activeLessonForAttachment) {
-            onAddAttachment(activeLessonForAttachment, attachmentData);
-          }
-          setActiveLessonForAttachment(null);
-        }}
-      />
+      {!readOnly && (
+        <AddAttachmentModal
+          isOpen={Boolean(activeLessonForAttachment)}
+          onClose={() => setActiveLessonForAttachment(null)}
+          onSubmit={(attachmentData) => {
+            if (onAddAttachment && activeLessonForAttachment) {
+              onAddAttachment(activeLessonForAttachment, attachmentData);
+            }
+            setActiveLessonForAttachment(null);
+          }}
+        />
+      )}
     </div>
   );
 };

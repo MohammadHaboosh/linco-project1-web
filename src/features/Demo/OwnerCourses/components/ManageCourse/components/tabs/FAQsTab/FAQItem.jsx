@@ -8,7 +8,7 @@ import {
 import styles from "./FAQsTab.module.css";
 import { useTranslation } from "react-i18next";
 
-const FAQItem = ({ faq, onDelete, isDeleting }) => {
+const FAQItem = ({ faq, onDelete, isDeleting, canDelete = true }) => {
   const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -31,16 +31,18 @@ const FAQItem = ({ faq, onDelete, isDeleting }) => {
         </button>
 
         <div className={styles.faqActions}>
-          <button
-            type="button"
-            className={`${styles.actionBtn} ${styles.deleteBtn}`}
-            onClick={() => onDelete(faq.id)}
-            disabled={isDeleting}
-            aria-busy={isDeleting}
-          >
-            <IoTrashOutline size={15} aria-hidden="true" />
-            <span>{isDeleting ? t("deleting-faq") : t("delete")}</span>
-          </button>
+          {canDelete && (
+            <button
+              type="button"
+              className={`${styles.actionBtn} ${styles.deleteBtn}`}
+              onClick={() => onDelete(faq.id)}
+              disabled={isDeleting}
+              aria-busy={isDeleting}
+            >
+              <IoTrashOutline size={15} aria-hidden="true" />
+              <span>{isDeleting ? t("deleting-faq") : t("delete")}</span>
+            </button>
+          )}
 
           <button
             type="button"

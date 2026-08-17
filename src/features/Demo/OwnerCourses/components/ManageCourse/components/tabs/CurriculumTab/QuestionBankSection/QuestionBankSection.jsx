@@ -13,6 +13,7 @@ const QuestionBankSection = ({
   isLoading,
   hasError,
   onRetry,
+  readOnly = false,
 }) => {
   const { t, i18n } = useTranslation();
   const numberFormatter = new Intl.NumberFormat(
@@ -59,19 +60,22 @@ const QuestionBankSection = ({
                 question={question}
                 number={formattedQuestionNumber}
                 onDelete={onDeleteQuestion}
+                canDelete={!readOnly}
               />
             );
           })}
         </div>
       )}
 
-      <button
-        type="button"
-        className={styles.addQuestionBtn}
-        onClick={onAddQuestion}
-      >
-        <IoAddCircleOutline /> {t("add-question")}
-      </button>
+      {!readOnly && (
+        <button
+          type="button"
+          className={styles.addQuestionBtn}
+          onClick={onAddQuestion}
+        >
+          <IoAddCircleOutline /> {t("add-question")}
+        </button>
+      )}
     </div>
   );
 };

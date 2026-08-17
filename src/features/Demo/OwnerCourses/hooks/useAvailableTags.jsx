@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
 import { apiFetch } from "../../../../api/apiFetch";
 
-export const useAvailableTags = () => {
+export const useAvailableTags = (enabled = true) => {
   const [availableTags, setAvailableTags] = useState([]);
-  const [isLoadingTags, setIsLoadingTags] = useState(true);
+  const [isLoadingTags, setIsLoadingTags] = useState(enabled);
   const [tagsError, setTagsError] = useState(false);
   const [requestVersion, setRequestVersion] = useState(0);
 
   useEffect(() => {
+    if (!enabled) return undefined;
+
     let isMounted = true;
     const controller = new AbortController();
 
@@ -47,7 +49,7 @@ export const useAvailableTags = () => {
       isMounted = false;
       controller.abort();
     };
-  }, [requestVersion]);
+  }, [enabled, requestVersion]);
 
   return {
     availableTags,

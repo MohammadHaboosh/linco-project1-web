@@ -155,6 +155,17 @@
   font-weight: 700;
 }
 
+.sectionTitleReadOnly {
+  flex: 1 1 12rem;
+  min-width: 0;
+  margin: 0;
+  color: var(--app-text-strong);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
 .sectionTitleInput:hover,
 .sectionTitleInput:focus {
   background: var(--app-surface);

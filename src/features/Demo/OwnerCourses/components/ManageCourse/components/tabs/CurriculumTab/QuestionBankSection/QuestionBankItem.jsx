@@ -20,7 +20,12 @@ const isCorrectChoice = (choice) =>
   choice?.correct === true ||
   choice?.is_correct === true;
 
-const QuestionBankItem = ({ question, number, onDelete }) => {
+const QuestionBankItem = ({
+  question,
+  number,
+  onDelete,
+  canDelete = true,
+}) => {
   const { t, i18n } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
   const detailsId = useId();
@@ -60,14 +65,16 @@ const QuestionBankItem = ({ question, number, onDelete }) => {
           )}
         </button>
 
-        <button
-          type="button"
-          className={styles.iconBtnDanger}
-          onClick={() => onDelete?.(question.id)}
-          aria-label={t("delete-question-label", { number })}
-        >
-          <IoTrashOutline aria-hidden="true" />
-        </button>
+        {canDelete && (
+          <button
+            type="button"
+            className={styles.iconBtnDanger}
+            onClick={() => onDelete?.(question.id)}
+            aria-label={t("delete-question-label", { number })}
+          >
+            <IoTrashOutline aria-hidden="true" />
+          </button>
+        )}
       </div>
 
       {isExpanded && (

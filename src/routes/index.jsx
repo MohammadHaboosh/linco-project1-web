@@ -129,6 +129,13 @@ const routes = [
         ),
       },
       {
+        path: PATHS.VIEW_COURSE,
+        lazy: lazyComponent(
+          () =>
+            import("../features/Demo/OwnerCourses/components/ViewCourse/CourseDetailsLayout.jsx"),
+        ),
+      },
+      {
         path: PATHS.SM_ASSETS,
         lazy: lazyComponent(() => import("../pages/DemoAssetsPage.jsx")),
       },

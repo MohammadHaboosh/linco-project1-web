@@ -13,6 +13,7 @@ const CurriculumTab = ({
   onDeleteSection,
   onDeleteQuiz,
   onDeleteQuestion,
+  readOnly = false,
 }) => {
   const { t } = useTranslation();
   const logic = useCurriculumLogic(
@@ -27,10 +28,14 @@ const CurriculumTab = ({
     <div className={styles.tabCard}>
       <div className={styles.tabHeader}>
         <div>
-          <h3 className={styles.tabTitle}>{t("curriculum-builder")}</h3>
+          <h3 className={styles.tabTitle}>
+            {t(readOnly ? "course-curriculum" : "curriculum-builder")}
+          </h3>
           <p className={styles.tabSubtitle}>
             {t(
-              "organize-your-course-into-structured-sections-lessons-and-assessments",
+              readOnly
+                ? "course-curriculum-read-only-description"
+                : "organize-your-course-into-structured-sections-lessons-and-assessments",
             )}
           </p>
         </div>
@@ -40,7 +45,13 @@ const CurriculumTab = ({
         {sections.length === 0 && (
           <div className={styles.curriculumEmptyState} role="status">
             <h4>{t("no-sections-yet")}</h4>
-            <p>{t("start-by-adding-a-section-to-build-your-course-structure")}</p>
+            <p>
+              {t(
+                readOnly
+                  ? "no-course-sections-available"
+                  : "start-by-adding-a-section-to-build-your-course-structure",
+              )}
+            </p>
           </div>
         )}
         {sections.map((section, idx) => (
@@ -50,39 +61,44 @@ const CurriculumTab = ({
             index={idx}
             isExpanded={logic.expandedSections.includes(section.id)}
             logic={logic}
+            readOnly={readOnly}
           />
         ))}
       </div>
 
-      <button
-        type="button"
-        className={styles.addSectionBtnRoot}
-        onClick={logic.handleAddSection}
-      >
-        <IoAddCircleOutline className={styles.rootAddIcon} />
-        <span>{t("add-new-section")}</span>
-      </button>
+      {!readOnly && (
+        <>
+          <button
+            type="button"
+            className={styles.addSectionBtnRoot}
+            onClick={logic.handleAddSection}
+          >
+            <IoAddCircleOutline className={styles.rootAddIcon} />
+            <span>{t("add-new-section")}</span>
+          </button>
 
-      <AddLessonModal
-        isOpen={logic.activeModal === "lesson"}
-        onClose={logic.closeModal}
-        onSubmit={logic.handleSaveLesson}
-      />
-      <AddQuizModal
-        isOpen={logic.activeModal === "quiz"}
-        onClose={logic.closeModal}
-        onSubmit={logic.handleSaveQuiz}
-        initialData={
-          logic.activeModal === "quiz" && logic.activeSectionId
-            ? sections.find((s) => s.id === logic.activeSectionId)?.quiz
-            : null
-        }
-      />
-      <AddQuestionModal
-        isOpen={logic.activeModal === "question"}
-        onClose={logic.closeModal}
-        onSubmit={logic.handleSaveQuestion}
-      />
+          <AddLessonModal
+            isOpen={logic.activeModal === "lesson"}
+            onClose={logic.closeModal}
+            onSubmit={logic.handleSaveLesson}
+          />
+          <AddQuizModal
+            isOpen={logic.activeModal === "quiz"}
+            onClose={logic.closeModal}
+            onSubmit={logic.handleSaveQuiz}
+            initialData={
+              logic.activeModal === "quiz" && logic.activeSectionId
+                ? sections.find((s) => s.id === logic.activeSectionId)?.quiz
+                : null
+            }
+          />
+          <AddQuestionModal
+            isOpen={logic.activeModal === "question"}
+            onClose={logic.closeModal}
+            onSubmit={logic.handleSaveQuestion}
+          />
+        </>
+      )}
     </div>
   );
 };

@@ -15,6 +15,7 @@ const SectionQuizSection = ({
   isLoading,
   hasError,
   onRetry,
+  readOnly = false,
 }) => {
   const { t, i18n } = useTranslation();
   const quizDuration = quiz?.durationMinutes ?? quiz?.duration;
@@ -58,24 +59,30 @@ const SectionQuizSection = ({
                 ).format(quizDuration || 0),
               })}
             </span>
-            <button
-              type="button"
-              className={styles.iconBtn}
-              onClick={onAddQuiz}
-              aria-label={t("edit-quiz-label", { title: quiz.title })}
-            >
-              <IoPencilOutline aria-hidden="true" />
-            </button>
-            <button
-              type="button"
-              className={styles.iconBtnDanger}
-              onClick={onDeleteQuiz}
-              aria-label={t("delete-quiz-label", { title: quiz.title })}
-            >
-              <IoTrashOutline aria-hidden="true" />
-            </button>
+            {!readOnly && (
+              <>
+                <button
+                  type="button"
+                  className={styles.iconBtn}
+                  onClick={onAddQuiz}
+                  aria-label={t("edit-quiz-label", { title: quiz.title })}
+                >
+                  <IoPencilOutline aria-hidden="true" />
+                </button>
+                <button
+                  type="button"
+                  className={styles.iconBtnDanger}
+                  onClick={onDeleteQuiz}
+                  aria-label={t("delete-quiz-label", { title: quiz.title })}
+                >
+                  <IoTrashOutline aria-hidden="true" />
+                </button>
+              </>
+            )}
           </div>
         </div>
+      ) : readOnly ? (
+        <p className={styles.statusMessage}>{t("no-quiz-added-yet")}</p>
       ) : (
         <button type="button" className={styles.addQuizBtn} onClick={onAddQuiz}>
           <IoAddCircleOutline aria-hidden="true" /> {t("add-section-quiz")}
