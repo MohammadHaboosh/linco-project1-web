@@ -12,13 +12,15 @@ import {
   parseDrawioMessage,
   persistDrawioXml,
   postDrawioMessage,
+  saveDrawioFileToDevice,
 } from "../../../WorkspaceTools/utils/drawioProtocol";
 import styles from "../GroupWorkspace.module.css";
 
-const DrawioTool = forwardRef(({ storageKey }, ref) => {
+const DrawioTool = forwardRef(({ storageKey, fileName }, ref) => {
   const iframeRef = useRef(null);
   const isReadyRef = useRef(false);
   const pendingShareRef = useRef(false);
+  const isSavingFileRef = useRef(false);
   const [frameKey, setFrameKey] = useState(0);
 
   const requestPngExport = () =>
@@ -39,6 +41,35 @@ const DrawioTool = forwardRef(({ storageKey }, ref) => {
   }));
 
   useEffect(() => {
+    const reportSaveStatus = (saved) => {
+      postDrawioMessage(iframeRef.current, {
+        action: "status",
+        messageKey: saved ? "allChangesSaved" : "unsavedChanges",
+        modified: !saved,
+      });
+    };
+
+    const saveFileToDevice = async (message) => {
+      if (isSavingFileRef.current) return;
+      isSavingFileRef.current = true;
+
+      try {
+        const result = await saveDrawioFileToDevice(message.xml, fileName);
+        reportSaveStatus(result.saved);
+
+        if (result.error) {
+          console.error("Unable to save the Draw.io file.", result.error);
+        }
+      } finally {
+        isSavingFileRef.current = false;
+
+        if (message.exit) {
+          isReadyRef.current = false;
+          setFrameKey((currentKey) => currentKey + 1);
+        }
+      }
+    };
+
     const attachExportToChat = async (message) => {
       if (
         message.format !== "png" ||
@@ -93,13 +124,19 @@ const DrawioTool = forwardRef(({ storageKey }, ref) => {
         return;
       }
 
-      if (message.event === "autosave" || message.event === "save") {
+      if (message.event === "autosave") {
         persistDrawioXml(storageKey, message.xml);
 
         if (message.exit) {
           isReadyRef.current = false;
           setFrameKey((currentKey) => currentKey + 1);
         }
+        return;
+      }
+
+      if (message.event === "save") {
+        persistDrawioXml(storageKey, message.xml);
+        void saveFileToDevice(message);
         return;
       }
 
@@ -116,7 +153,7 @@ const DrawioTool = forwardRef(({ storageKey }, ref) => {
 
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
-  }, [storageKey]);
+  }, [fileName, storageKey]);
 
   return (
     <iframe

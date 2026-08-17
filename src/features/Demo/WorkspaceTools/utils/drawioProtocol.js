@@ -20,6 +20,39 @@ const isDrawioXml = (value) => {
   return /^<(mxfile|mxGraphModel)\b/i.test(normalized);
 };
 
+const normalizeDrawioFileName = (suggestedName) => {
+  const rawName =
+    typeof suggestedName === "string" && suggestedName.trim()
+      ? suggestedName.trim()
+      : "diagram";
+  const safeName = [...rawName]
+    .map((character) => (character.charCodeAt(0) < 32 ? "-" : character))
+    .join("")
+    .replace(/[<>:"/\\|?*]/g, "-")
+    .replace(/[. ]+$/g, "")
+    .slice(0, 120);
+  const fileName = safeName || "diagram";
+
+  return /\.(drawio|xml)$/i.test(fileName) ? fileName : `${fileName}.drawio`;
+};
+
+const downloadDrawioFile = (xml, fileName) => {
+  const fileUrl = URL.createObjectURL(
+    new Blob([xml], { type: "application/xml" }),
+  );
+  const downloadLink = document.createElement("a");
+
+  downloadLink.href = fileUrl;
+  downloadLink.download = fileName;
+  downloadLink.style.display = "none";
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  downloadLink.remove();
+  window.setTimeout(() => URL.revokeObjectURL(fileUrl), 1000);
+
+  return { saved: true, usedPicker: false };
+};
+
 export const readDrawioXml = (storageKey) => {
   if (!storageKey) return EMPTY_DRAWIO_XML;
 
@@ -39,6 +72,49 @@ export const persistDrawioXml = (storageKey, xml) => {
     return true;
   } catch {
     return false;
+  }
+};
+
+export const saveDrawioFileToDevice = async (
+  xml,
+  suggestedName = "diagram.drawio",
+) => {
+  if (!isDrawioXml(xml)) {
+    return { saved: false, reason: "invalid-xml" };
+  }
+
+  const fileName = normalizeDrawioFileName(suggestedName);
+
+  if (typeof window.showSaveFilePicker !== "function") {
+    return downloadDrawioFile(xml, fileName);
+  }
+
+  let fileHandle;
+  try {
+    fileHandle = await window.showSaveFilePicker({
+      suggestedName: fileName,
+      types: [
+        {
+          description: "Draw.io diagram",
+          accept: { "application/xml": [".drawio", ".xml"] },
+        },
+      ],
+    });
+  } catch (error) {
+    if (error?.name === "AbortError") {
+      return { saved: false, cancelled: true };
+    }
+
+    return downloadDrawioFile(xml, fileName);
+  }
+
+  try {
+    const writable = await fileHandle.createWritable();
+    await writable.write(new Blob([xml], { type: "application/xml" }));
+    await writable.close();
+    return { saved: true, usedPicker: true };
+  } catch (error) {
+    return { saved: false, error };
   }
 };
 

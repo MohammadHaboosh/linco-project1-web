@@ -77,6 +77,7 @@ const GroupWorkspace = () => {
               activeTool={activeTool}
               triggerShareTool={shareTrigger}
               workspaceKey={`${demoId}:${groupId}`}
+              drawioFileName={`${activeGroup.name || "diagram"}.drawio`}
               hasOpenedDrawio={hasOpenedDrawio}
             />
           </>

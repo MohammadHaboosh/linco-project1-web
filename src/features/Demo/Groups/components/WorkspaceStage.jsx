@@ -12,6 +12,7 @@ const WorkspaceStage = ({
   activeTool,
   triggerShareTool,
   workspaceKey,
+  drawioFileName,
   hasOpenedDrawio,
 }) => {
   const { t } = useTranslation();
@@ -72,6 +73,7 @@ const WorkspaceStage = ({
               key={workspaceKey}
               ref={drawioRef}
               storageKey={drawioStorageKey}
+              fileName={drawioFileName}
             />
           </div>
         )}

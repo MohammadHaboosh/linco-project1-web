@@ -12,12 +12,14 @@ import {
   parseDrawioMessage,
   persistDrawioXml,
   postDrawioMessage,
+  saveDrawioFileToDevice,
 } from "../../utils/drawioProtocol";
 import styles from "./ToolViewer.module.css";
 
 const ToolViewer = ({ tool, onClose, storageKey }) => {
   const { t } = useTranslation();
   const iframeRef = useRef(null);
+  const isSavingFileRef = useRef(false);
   const [frameStatus, setFrameStatus] = useState("loading");
   const [frameKey, setFrameKey] = useState(0);
 
@@ -43,6 +45,38 @@ const ToolViewer = ({ tool, onClose, storageKey }) => {
   useEffect(() => {
     if (tool.id !== "drawio") return undefined;
 
+    const reportSaveStatus = (saved) => {
+      postDrawioMessage(iframeRef.current, {
+        action: "status",
+        messageKey: saved ? "allChangesSaved" : "unsavedChanges",
+        modified: !saved,
+      });
+    };
+
+    const saveFileToDevice = async (message) => {
+      if (isSavingFileRef.current) return;
+      isSavingFileRef.current = true;
+
+      try {
+        const result = await saveDrawioFileToDevice(
+          message.xml,
+          `${tool.name || "diagram"}.drawio`,
+        );
+        reportSaveStatus(result.saved);
+
+        if (result.error) {
+          console.error("Unable to save the Draw.io file.", result.error);
+        }
+      } finally {
+        isSavingFileRef.current = false;
+
+        if (message.exit) {
+          setFrameStatus("loading");
+          setFrameKey((currentKey) => currentKey + 1);
+        }
+      }
+    };
+
     const handleMessage = (event) => {
       if (!isTrustedDrawioMessage(event, iframeRef.current)) return;
 
@@ -62,13 +96,19 @@ const ToolViewer = ({ tool, onClose, storageKey }) => {
         return;
       }
 
-      if (message.event === "autosave" || message.event === "save") {
+      if (message.event === "autosave") {
         persistDrawioXml(storageKey, message.xml);
 
         if (message.exit) {
           setFrameStatus("loading");
           setFrameKey((currentKey) => currentKey + 1);
         }
+        return;
+      }
+
+      if (message.event === "save") {
+        persistDrawioXml(storageKey, message.xml);
+        void saveFileToDevice(message);
         return;
       }
 
@@ -80,7 +120,7 @@ const ToolViewer = ({ tool, onClose, storageKey }) => {
 
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
-  }, [storageKey, tool.id]);
+  }, [storageKey, tool.id, tool.name]);
 
   const handleOverlayClick = (event) => {
     if (event.target === event.currentTarget) onClose();
