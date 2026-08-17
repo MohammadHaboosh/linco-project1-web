@@ -42,6 +42,7 @@ const CourseManagementCard = ({
   const { t, i18n } = useTranslation();
   const locale = i18n.resolvedLanguage || i18n.language || "en";
   const formatCount = (count) => new Intl.NumberFormat(locale).format(count);
+  const canManageCourse = course?.accessMethod === "CREATED";
 
   if (isAddNew) {
     return (
@@ -137,25 +138,7 @@ const CourseManagementCard = ({
       </div>
 
       <div className={styles.cardFooter}>
-        {course.isPublished ? (
-          <>
-            <button
-              type="button"
-              className={styles.viewBtn}
-              onClick={onView}
-              aria-label={t("view-course-details", { title: course.title })}
-            >
-              <IoEyeOutline aria-hidden="true" /> {t("view-course")}
-            </button>
-            <button
-              type="button"
-              className={styles.settingsBtn}
-              onClick={() => onEditSettings(course)}
-            >
-              <IoSettingsOutline aria-hidden="true" /> {t("settings")}
-            </button>
-          </>
-        ) : (
+        {canManageCourse && !course.isPublished ? (
           <>
             <button type="button" className={styles.editBtn} onClick={onEdit}>
               <IoCreateOutline aria-hidden="true" /> {t("edit")}
@@ -167,6 +150,26 @@ const CourseManagementCard = ({
             >
               <IoCloudUploadOutline aria-hidden="true" /> {t("publish")}
             </button>
+          </>
+        ) : (
+          <>
+            <button
+              type="button"
+              className={styles.viewBtn}
+              onClick={onView}
+              aria-label={t("view-course-details", { title: course.title })}
+            >
+              <IoEyeOutline aria-hidden="true" /> {t("view-course")}
+            </button>
+            {canManageCourse && (
+              <button
+                type="button"
+                className={styles.settingsBtn}
+                onClick={() => onEditSettings(course)}
+              >
+                <IoSettingsOutline aria-hidden="true" /> {t("settings")}
+              </button>
+            )}
           </>
         )}
       </div>

@@ -31,6 +31,7 @@ const OwnerCoursesContent = () => {
   const [statusMessage, setStatusMessage] = useState("");
 
   const handleOpenSettingsModal = (course) => {
+    if (course.accessMethod !== "CREATED") return;
     setSelectedCourseForSettings(course);
   };
 
@@ -38,8 +39,9 @@ const OwnerCoursesContent = () => {
     navigate(`/demos/${demoId}/course-studio`);
   };
 
-  const handleEditCourse = (assetId) => {
-    navigate(`/demos/${demoId}/manage-course/${assetId}`);
+  const handleEditCourse = (course) => {
+    if (course.accessMethod !== "CREATED") return;
+    navigate(`/demos/${demoId}/manage-course/${course.assetId || course.id}`);
   };
 
   const handleViewCourse = (assetId) => {
@@ -47,6 +49,7 @@ const OwnerCoursesContent = () => {
   };
 
   const handleOpenPublishModal = (course) => {
+    if (course.accessMethod !== "CREATED") return;
     setSelectedCourseForPublish(course);
   };
 
@@ -66,6 +69,8 @@ const OwnerCoursesContent = () => {
   };
 
   const handleSaveSettings = async (courseId, newSettings) => {
+    if (selectedCourseForSettings?.accessMethod !== "CREATED") return;
+
     setIsSavingSettings(true);
     try {
       await courseManagerApi.updateCourseGeneralInfo(courseId, newSettings);
@@ -152,7 +157,7 @@ const OwnerCoursesContent = () => {
                 key={course.id}
                 isAddNew={false}
                 course={course}
-                onEdit={() => handleEditCourse(course.assetId || course.id)}
+                onEdit={() => handleEditCourse(course)}
                 onView={() => handleViewCourse(course.assetId || course.id)}
                 onPublish={() => handleOpenPublishModal(course)}
                 onEditSettings={() => handleOpenSettingsModal(course)}
