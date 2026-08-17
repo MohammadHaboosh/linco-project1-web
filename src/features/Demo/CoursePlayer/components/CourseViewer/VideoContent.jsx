@@ -10,6 +10,10 @@ import {
 import { useTranslation } from "react-i18next";
 import Hls from "hls.js";
 
+const MAX_HLS_NETWORK_RECOVERY_ATTEMPTS = 2;
+const MAX_HLS_MEDIA_RECOVERY_ATTEMPTS = 1;
+const HLS_NETWORK_RECOVERY_DELAY_MS = 750;
+
 const formatHlsUrl = (originalUrl) => {
   if (!originalUrl) return "";
   if (originalUrl.includes(".m3u8")) return originalUrl;
@@ -75,9 +79,13 @@ const VideoContent = ({
       backBufferLength: 30,
     });
     hlsRef.current = hls;
+    let networkRecoveryAttempts = 0;
+    let mediaRecoveryAttempts = 0;
+    let recoveryTimeoutId = null;
 
     const handleManifestParsed = () => {
       if (!isMounted) return;
+      networkRecoveryAttempts = 0;
 
       const availableQualities = [
         ...new Set(
@@ -94,18 +102,58 @@ const VideoContent = ({
     const handleHlsError = (_event, data) => {
       if (!data.fatal || !isMounted) return;
 
+      if (
+        data.type === Hls.ErrorTypes.NETWORK_ERROR &&
+        networkRecoveryAttempts < MAX_HLS_NETWORK_RECOVERY_ATTEMPTS
+      ) {
+        networkRecoveryAttempts += 1;
+        setPlaybackState("loading");
+        if (recoveryTimeoutId !== null) {
+          window.clearTimeout(recoveryTimeoutId);
+        }
+        recoveryTimeoutId = window.setTimeout(() => {
+          recoveryTimeoutId = null;
+          if (isMounted) hls.startLoad();
+        }, HLS_NETWORK_RECOVERY_DELAY_MS * networkRecoveryAttempts);
+        return;
+      }
+
+      if (
+        data.type === Hls.ErrorTypes.MEDIA_ERROR &&
+        mediaRecoveryAttempts < MAX_HLS_MEDIA_RECOVERY_ATTEMPTS
+      ) {
+        mediaRecoveryAttempts += 1;
+        setPlaybackState("loading");
+        hls.recoverMediaError();
+        return;
+      }
+
       setPlaybackState("error");
       hls.stopLoad();
     };
 
+    const handleFragmentBuffered = () => {
+      if (recoveryTimeoutId !== null) {
+        window.clearTimeout(recoveryTimeoutId);
+        recoveryTimeoutId = null;
+      }
+      networkRecoveryAttempts = 0;
+      mediaRecoveryAttempts = 0;
+    };
+
     hls.on(Hls.Events.MANIFEST_PARSED, handleManifestParsed);
     hls.on(Hls.Events.ERROR, handleHlsError);
+    hls.on(Hls.Events.FRAG_BUFFERED, handleFragmentBuffered);
     hls.loadSource(finalVideoUrl);
 
     return () => {
       isMounted = false;
+      if (recoveryTimeoutId !== null) {
+        window.clearTimeout(recoveryTimeoutId);
+      }
       hls.off(Hls.Events.MANIFEST_PARSED, handleManifestParsed);
       hls.off(Hls.Events.ERROR, handleHlsError);
+      hls.off(Hls.Events.FRAG_BUFFERED, handleFragmentBuffered);
       hls.destroy();
       if (hlsRef.current === hls) hlsRef.current = null;
     };
