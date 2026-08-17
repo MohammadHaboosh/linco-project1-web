@@ -24,6 +24,7 @@ const VideoContent = ({
   onPrev,
   canGoNext,
   canGoPrev,
+  showLessonNavigation = true,
 }) => {
   const { t, i18n } = useTranslation();
   const isRtl = i18n.dir() === "rtl";
@@ -327,27 +328,29 @@ const VideoContent = ({
           </div>
         </div>
 
-        <div className={styles.customVideoControls}>
-          <button
-            type="button"
-            className={styles.navVideoBtn}
-            onClick={onPrev}
-            disabled={!canGoPrev}
-            aria-label={t("prev-lesson")}
-          >
-            <PreviousIcon aria-hidden="true" /> {t("prev-lesson")}
-          </button>
+        {showLessonNavigation && (
+          <div className={styles.customVideoControls}>
+            <button
+              type="button"
+              className={styles.navVideoBtn}
+              onClick={onPrev}
+              disabled={!canGoPrev}
+              aria-label={t("prev-lesson")}
+            >
+              <PreviousIcon aria-hidden="true" /> {t("prev-lesson")}
+            </button>
 
-          <button
-            type="button"
-            className={styles.navVideoBtn}
-            onClick={onNext}
-            disabled={!canGoNext}
-            aria-label={t("next-lesson")}
-          >
-            {t("next-lesson")} <NextIcon aria-hidden="true" />
-          </button>
-        </div>
+            <button
+              type="button"
+              className={styles.navVideoBtn}
+              onClick={onNext}
+              disabled={!canGoNext}
+              aria-label={t("next-lesson")}
+            >
+              {t("next-lesson")} <NextIcon aria-hidden="true" />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

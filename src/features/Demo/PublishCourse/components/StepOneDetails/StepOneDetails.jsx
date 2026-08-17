@@ -16,7 +16,11 @@ const StepOneDetails = ({
 
   return (
     <div className={styles.stepOneWrapper}>
-      <GeneralInfoTab data={courseData} onChange={handleDataChange} />
+      <GeneralInfoTab
+        data={courseData}
+        onChange={handleDataChange}
+        showPaidTrialNote
+      />
 
       <div className={styles.actionFooter}>
         <button

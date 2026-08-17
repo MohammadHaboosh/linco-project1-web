@@ -86,11 +86,6 @@
 
 .lessonItem {
   min-width: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 0;
   border-block-end: 1px solid var(--app-divider);
   color: var(--app-text);
   font-size: 0.9rem;
@@ -100,20 +95,70 @@
   border-block-end: 0;
 }
 
-.lessonItem > span:first-child {
+.lessonButton,
+.lockedLesson {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 8px;
+  box-sizing: border-box;
+}
+
+.lessonButton {
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.lessonButton:hover,
+.activePreview {
+  background: var(--app-info-surface);
+  color: var(--app-info-text);
+}
+
+.lessonButton:focus-visible {
+  outline: 3px solid var(--app-focus-ring);
+  outline-offset: -3px;
+}
+
+.lessonButton > span:first-child,
+.lockedLesson > span:first-child {
   min-width: 0;
   overflow-wrap: anywhere;
 }
 
-.lockTag {
+.lockTag,
+.previewTag {
   flex: 0 0 auto;
   padding: 3px 8px;
-  border: 1px solid var(--app-danger-border);
   border-radius: 6px;
-  background: var(--app-danger-surface);
-  color: var(--app-danger-text);
   font-size: 0.75rem;
   font-weight: 600;
+}
+
+.lockTag {
+  border: 1px solid var(--app-danger-border);
+  background: var(--app-danger-surface);
+  color: var(--app-danger-text);
+}
+
+.previewTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid var(--app-info-border);
+  background: var(--app-info-surface);
+  color: var(--app-info-text);
 }
 
 @media (max-width: 380px) {
@@ -125,7 +170,8 @@
     padding-inline: 12px;
   }
 
-  .lessonItem {
+  .lessonButton,
+  .lockedLesson {
     align-items: flex-start;
     flex-direction: column;
     gap: 8px;

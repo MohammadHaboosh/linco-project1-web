@@ -1850,5 +1850,11 @@
   "course-player-exam-review-description": "راجع إجاباتك واستفد من الملاحظات لمواصلة التعلّم.",
   "course-player-no-review-questions": "لا تتوفر مراجعة لهذا التقييم.",
   "course-player-assessment-question-number": "السؤال {{number}}.",
-  "share-work": "شارك في الدردشة"
+  "share-work": "شارك في الدردشة",
+  "paid-course-preview-notice": "جرّب أول درسين من هذه الدورة مجانًا. اشترِ الدورة لفتح المنهج كاملًا.",
+  "free-preview": "معاينة مجانية",
+  "preview-named-lesson": "معاينة الدرس: {{title}}",
+  "course-preview": "معاينة الدورة",
+  "close-lesson-preview": "إغلاق معاينة الدرس",
+  "paid-course-creation-trial-note": "وصول تجريبي: سيتاح أول درسين في القسم الأول للمتعلمين لتجربتهما قبل شراء هذه الدورة."
 }

@@ -440,6 +440,26 @@
   line-height: 1.5;
 }
 
+.paidTrialNote {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--app-info-border);
+  border-radius: 0.65rem;
+  background: var(--app-info-surface);
+  color: var(--app-info-text);
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.paidTrialNote svg {
+  flex: 0 0 auto;
+  margin-block-start: 0.1rem;
+  font-size: 1rem;
+}
+
 .selectionStatus {
   color: var(--app-text);
   font-weight: 600;

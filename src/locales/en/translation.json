@@ -1717,5 +1717,11 @@
   "course-player-exam-review-description": "Review your answers and use the feedback to keep learning.",
   "course-player-no-review-questions": "No assessment review is available.",
   "course-player-assessment-question-number": "Question {{number}}.",
-  "share-work": "Share to Chat"
+  "share-work": "Share to Chat",
+  "paid-course-preview-notice": "Try the first two lessons of this course for free. Purchase it to unlock the full curriculum.",
+  "free-preview": "Free preview",
+  "preview-named-lesson": "Preview lesson: {{title}}",
+  "course-preview": "Course preview",
+  "close-lesson-preview": "Close lesson preview",
+  "paid-course-creation-trial-note": "Trial access: The first two lessons in the first section will be available for learners to try before purchasing this course."
 }

@@ -13,6 +13,7 @@ import { useCourseCurriculum } from "../../hooks/useCourseCurriculum";
 import { useCourseFaqs } from "../../hooks/useCourseFaqs";
 import CourseSectionItem from "../CourseSectionItem/CourseSectionItem";
 import CourseFaqItem from "../CourseFaqItem/CourseFaqItem";
+import VideoContent from "../../../CoursePlayer/components/CourseViewer/VideoContent";
 
 const CourseDetailsModal = ({
   course,
@@ -22,6 +23,7 @@ const CourseDetailsModal = ({
   buyError,
 }) => {
   const [activeTab, setActiveTab] = useState("overview");
+  const [previewLesson, setPreviewLesson] = useState(null);
   const { demoId } = useParams();
   const { t, i18n } = useTranslation();
   const {
@@ -44,6 +46,7 @@ const CourseDetailsModal = ({
 
   const locale = i18n.resolvedLanguage || i18n.language || "en";
   const numericPrice = Number(course.price) || 0;
+  const isPaidCourse = numericPrice > 0;
   const lessonCount = Number(course.lessonCount) || 0;
   const duration = Number(course.totalDuration) || 0;
   const sectionCount = Number(course.sectionsCount) || 0;
@@ -55,6 +58,7 @@ const CourseDetailsModal = ({
   const isOwnWorkspaceCourse =
     String(course.demo?.id ?? course.demoId) === String(demoId);
   const dialogTitleId = `course-details-title-${course.id}`;
+  const firstSectionId = sections[0]?.id;
 
   const formatCount = (key, count) =>
     t(key, {
@@ -214,11 +218,38 @@ const CourseDetailsModal = ({
             >
               <div className={styles.lockNotice}>
                 <p>
-                  {t(
-                    "you-must-enroll-in-this-course-to-access-the-internal-lesson-contents-and-videos",
-                  )}
+                  {isPaidCourse
+                    ? t("paid-course-preview-notice")
+                    : t(
+                        "you-must-enroll-in-this-course-to-access-the-internal-lesson-contents-and-videos",
+                      )}
                 </p>
               </div>
+
+              {previewLesson && (
+                <div className={styles.previewPanel}>
+                  <div className={styles.previewHeader}>
+                    <div>
+                      <span>{t("course-preview")}</span>
+                      <strong>{previewLesson.title}</strong>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setPreviewLesson(null)}
+                      aria-label={t("close-lesson-preview")}
+                    >
+                      <IoCloseOutline aria-hidden="true" />
+                    </button>
+                  </div>
+                  <div className={styles.previewVideoWrapper}>
+                    <VideoContent
+                      key={previewLesson.id}
+                      activeLesson={previewLesson}
+                      showLessonNavigation={false}
+                    />
+                  </div>
+                </div>
+              )}
 
               {isLoadingSections ? (
                 <p className={styles.inlineState} role="status">
@@ -239,6 +270,12 @@ const CourseDetailsModal = ({
                     isExpanded={expandedSections[section.id]}
                     onToggle={toggleSection}
                     lessonsInfo={lessonsState[section.id]}
+                    allowsPreview={
+                      isPaidCourse &&
+                      String(section.id) === String(firstSectionId)
+                    }
+                    activePreviewLessonId={previewLesson?.id}
+                    onPreviewLesson={setPreviewLesson}
                   />
                 ))
               ) : (

@@ -14,7 +14,12 @@ import styles from "./GeneralInfoTab.module.css";
 import { useTranslation } from "react-i18next";
 import { useAvailableTags } from "../../../../../hooks/useAvailableTags";
 
-const GeneralInfoTab = ({ data = {}, onChange, readOnly = false }) => {
+const GeneralInfoTab = ({
+  data = {},
+  onChange,
+  readOnly = false,
+  showPaidTrialNote = false,
+}) => {
   const { t, i18n } = useTranslation();
   const locale = i18n.resolvedLanguage || i18n.language;
   const fileInputRef = useRef(null);
@@ -28,6 +33,7 @@ const GeneralInfoTab = ({ data = {}, onChange, readOnly = false }) => {
   const formattedPrice = new Intl.NumberFormat(locale, {
     maximumFractionDigits: 2,
   }).format(Number(data.price) || 0);
+  const hasPaidPrice = Number(data.price) > 0;
 
   const handleTriggerFileInput = () => {
     if (fileInputRef.current) {
@@ -308,6 +314,12 @@ const GeneralInfoTab = ({ data = {}, onChange, readOnly = false }) => {
                 />
               </div>
               <span className={styles.hintText}>{t("course-price-hint")}</span>
+              {showPaidTrialNote && hasPaidPrice && (
+                <div className={styles.paidTrialNote} role="note">
+                  <IoInformationCircleOutline aria-hidden="true" />
+                  <span>{t("paid-course-creation-trial-note")}</span>
+                </div>
+              )}
             </>
           )}
         </div>
