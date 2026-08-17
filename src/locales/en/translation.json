@@ -1729,5 +1729,9 @@
   "preview-named-lesson": "Preview lesson: {{title}}",
   "course-preview": "Course preview",
   "close-lesson-preview": "Close lesson preview",
-  "paid-course-creation-trial-note": "Trial access: The first two lessons in the first section will be available for learners to try before purchasing this course."
+  "paid-course-creation-trial-note": "Trial access: The first two lessons in the first section will be available for learners to try before purchasing this course.",
+  "missing-data": "Missing required workspace or user data.",
+  "confirm-remove-member": "Are you sure you want to remove this member?",
+  "loading": "Loading...",
+  "group-members": "Group Members"
 }

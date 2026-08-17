@@ -1,16 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styles from "./GroupWorkspace.module.css";
 import { useFetchGroups } from "../hooks/useFetchGroups";
-
+import { useUser } from "../../../../hooks/useUser";
+import { memberApi } from "../../DemoMembers/api/memberApi";
 import GroupSidebar from "./GroupSidebar";
 import WorkspaceToolbar from "./WorkspaceToolbar";
 import WorkspaceStage from "./WorkspaceStage";
 import EmptyWorkspace from "./EmptyWorkspace";
 import CreateGroupModal from "./CreateGroupModal";
+import GroupMembersPanel from "./GroupMembersPanel";
 
 const GroupWorkspace = () => {
   const { demoId, groupId } = useParams();
+
+  const { profile } = useUser();
+  const userId = profile?.id;
+  const [currentMemberId, setCurrentMemberId] = useState(null);
 
   const { groups, isLoading, refetch } = useFetchGroups(demoId);
 
@@ -22,12 +28,44 @@ const GroupWorkspace = () => {
 
   const [shareTrigger, setShareTrigger] = useState(0);
 
+  useEffect(() => {
+    if (!demoId || !userId) return;
+
+    let isMounted = true;
+
+    const fetchCurrentMemberId = async () => {
+      try {
+        const response = await memberApi.getMembers(demoId);
+
+        if (isMounted && response?.data) {
+          const myMemberRecord = response.data.find(
+            (member) => member.user?.id === userId,
+          );
+
+          if (myMemberRecord) {
+            setCurrentMemberId(myMemberRecord.id);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch demo members for ID matching:", error);
+      }
+    };
+
+    fetchCurrentMemberId();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [demoId, userId]);
+
   const activeGroup = groups.find((g) => g.id === groupId);
+
+  const isManager = activeGroup?.managerId === currentMemberId;
 
   const handleToolSelect = (tool) => {
     setActiveTool(tool);
     if (tool === "drawio") setHasOpenedDrawio(true);
-    if (layout === "chat-only") {
+    if (layout === "chat-only" || layout === "members") {
       setLayout("split");
     }
   };
@@ -72,14 +110,22 @@ const GroupWorkspace = () => {
               onShareToChat={handleShareToChat}
             />
 
-            <WorkspaceStage
-              layout={layout}
-              activeTool={activeTool}
-              triggerShareTool={shareTrigger}
-              workspaceKey={`${demoId}:${groupId}`}
-              drawioFileName={`${activeGroup.name || "diagram"}.drawio`}
-              hasOpenedDrawio={hasOpenedDrawio}
-            />
+            {layout === "members" ? (
+              <GroupMembersPanel
+                demoId={demoId}
+                groupId={activeGroup.id}
+                isManager={isManager}
+              />
+            ) : (
+              <WorkspaceStage
+                layout={layout}
+                activeTool={activeTool}
+                triggerShareTool={shareTrigger}
+                workspaceKey={`${demoId}:${groupId}`}
+                drawioFileName={`${activeGroup.name || "diagram"}.drawio`}
+                hasOpenedDrawio={hasOpenedDrawio}
+              />
+            )}
           </>
         ) : (
           <EmptyWorkspace
@@ -92,6 +138,7 @@ const GroupWorkspace = () => {
       {isCreateModalOpen && (
         <CreateGroupModal
           demoId={demoId}
+          currentUserId={currentMemberId}
           onClose={() => setIsCreateModalOpen(false)}
           onSuccess={() => {
             refetch();

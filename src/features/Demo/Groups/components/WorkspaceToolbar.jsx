@@ -7,6 +7,7 @@ import {
   IoAlbumsOutline,
   IoSquareOutline,
   IoSendOutline,
+  IoPeopleOutline,
 } from "react-icons/io5";
 import styles from "./GroupWorkspace.module.css";
 
@@ -67,6 +68,13 @@ const WorkspaceToolbar = ({
 
       <div className={styles.toolbarRight}>
         <div className={styles.layoutSegmentedControl}>
+          <button
+            className={`${styles.layoutBtn} ${layout === "members" ? styles.activeLayoutBtn : ""}`}
+            onClick={() => onLayoutChange("members")}
+            title={t("members", "Members")}
+          >
+            <IoPeopleOutline />
+          </button>
           <button
             className={`${styles.layoutBtn} ${layout === "chat-only" ? styles.activeLayoutBtn : ""}`}
             onClick={() => onLayoutChange("chat-only")}

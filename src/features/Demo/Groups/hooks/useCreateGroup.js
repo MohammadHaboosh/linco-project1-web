@@ -1,17 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { departmentApi } from "../../HomeDemoPage/api/departmentApi";
+import { departmentMemberApi } from "../../DepartmentMembers/api/departmentMemberApi";
 
 const SEARCH_DEBOUNCE_MS = 300;
 
-export const useCreateGroup = (demoId, onSuccess) => {
+export const useCreateGroup = (demoId, currentUserId, onSuccess) => {
   const { t } = useTranslation();
-  const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-  });
+  const [formData, setFormData] = useState({ name: "", description: "" });
 
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedMembers, setSelectedMembers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
@@ -27,35 +25,33 @@ export const useCreateGroup = (demoId, onSuccess) => {
 
   useEffect(() => {
     const normalizedQuery = searchQuery.trim();
-
-    if (!normalizedQuery || selectedUser) {
-      return undefined;
-    }
+    if (!normalizedQuery) return undefined;
 
     const controller = new AbortController();
-
     const delayDebounceFn = setTimeout(async () => {
+      setIsSearching(true);
       try {
-        const results = await departmentApi.searchMembers(
+        const responseData = await departmentMemberApi.searchDemoMembers(
           demoId,
           normalizedQuery,
           { signal: controller.signal },
         );
 
         if (!controller.signal.aborted) {
-          setSearchResults(results);
+          const filteredResults = responseData.data.filter(
+            (member) => !selectedMembers.find((m) => m.id === member.id),
+          );
+          setSearchResults(filteredResults);
+          setSearchError(null);
         }
       } catch (err) {
         if (err.name === "AbortError") return;
-
         if (!controller.signal.aborted) {
           setSearchResults([]);
           setSearchError(t("member-search-failed"));
         }
       } finally {
-        if (!controller.signal.aborted) {
-          setIsSearching(false);
-        }
+        if (!controller.signal.aborted) setIsSearching(false);
       }
     }, SEARCH_DEBOUNCE_MS);
 
@@ -63,30 +59,24 @@ export const useCreateGroup = (demoId, onSuccess) => {
       clearTimeout(delayDebounceFn);
       controller.abort();
     };
-  }, [demoId, searchQuery, selectedUser, t]);
+  }, [demoId, searchQuery, selectedMembers, t]);
 
   const updateSearchQuery = useCallback((value) => {
     const nextQuery = String(value ?? "");
     setSearchQuery(nextQuery);
-    setSearchResults([]);
+    if (!nextQuery.trim()) setSearchResults([]);
     setSearchError(null);
     setIsSearching(Boolean(nextQuery.trim()));
   }, []);
 
-  const selectUser = useCallback((user) => {
-    setSelectedUser(user);
+  const toggleMember = useCallback((member) => {
+    setSelectedMembers((prev) => {
+      const exists = prev.find((m) => m.id === member.id);
+      if (exists) return prev.filter((m) => m.id !== member.id);
+      return [...prev, member];
+    });
     setSearchQuery("");
     setSearchResults([]);
-    setSearchError(null);
-    setIsSearching(false);
-  }, []);
-
-  const clearSelectedUser = useCallback(() => {
-    setSelectedUser(null);
-    setSearchQuery("");
-    setSearchResults([]);
-    setSearchError(null);
-    setIsSearching(false);
   }, []);
 
   const handleSubmit = async (e) => {
@@ -97,12 +87,8 @@ export const useCreateGroup = (demoId, onSuccess) => {
       setError(t("group-name-required", "Group name is required"));
       return;
     }
-    if (!selectedUser) {
-      setError(t("group-manager-required", "Please assign a manager"));
-      return;
-    }
-    if (!demoId) {
-      setError(t("workspace-id-missing", "Workspace ID is missing"));
+    if (!demoId || !currentUserId) {
+      setError(t("missing-data", "Missing required workspace or user data."));
       return;
     }
 
@@ -111,15 +97,34 @@ export const useCreateGroup = (demoId, onSuccess) => {
       const payload = {
         name: formData.name,
         description: formData.description,
-        managerId: selectedUser.id,
         isGroup: true,
+        managerId: currentUserId,
       };
 
-      await departmentApi.createDepartment(demoId, payload);
+      const groupResponse = await departmentApi.createDepartment(
+        demoId,
+        payload,
+      );
+      const newGroupId = groupResponse.data?.id || groupResponse.id; // حسب شكل استجابة الباك إند
+
+      if (selectedMembers.length > 0 && newGroupId) {
+        await Promise.all(
+          selectedMembers.map((member) =>
+            departmentMemberApi.addMember({
+              demoId,
+              departmentId: newGroupId,
+              demoMemberId: member.id,
+              jobTitle: "JUNIOR",
+            }),
+          ),
+        );
+      }
 
       if (onSuccess) onSuccess();
-    } catch {
-      setError(t("group-create-failed", "Failed to create group"));
+    } catch (err) {
+      setError(
+        err.message || t("group-create-failed", "Failed to create group"),
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -133,9 +138,8 @@ export const useCreateGroup = (demoId, onSuccess) => {
     searchResults,
     isSearching,
     searchError,
-    selectedUser,
-    selectUser,
-    clearSelectedUser,
+    selectedMembers,
+    toggleMember,
     isSubmitting,
     error,
     handleSubmit,
