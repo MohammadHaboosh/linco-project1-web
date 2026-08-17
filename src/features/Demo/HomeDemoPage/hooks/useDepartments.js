@@ -17,7 +17,8 @@ export const useDepartments = (demoId) => {
       try {
         const data = await departmentApi.getDepartments(demoId);
         if (isMounted) {
-          setDepartments(data);
+          const onlyDepartments = data.filter((item) => item.isGroup !== true);
+          setDepartments(onlyDepartments);
           setError(null);
         }
       } catch {
@@ -46,7 +47,8 @@ export const useDepartments = (demoId) => {
 
     try {
       const data = await departmentApi.getDepartments(demoId);
-      setDepartments(data);
+      const onlyDepartments = data.filter((item) => item.isGroup !== true);
+      setDepartments(onlyDepartments);
     } catch {
       setError(t("departments-load-error-message"));
     } finally {

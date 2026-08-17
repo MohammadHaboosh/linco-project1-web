@@ -1,11 +1,11 @@
 import { useState } from "react";
 import {
-  IoDocumentTextOutline,
+  IoLayersOutline,
   IoLockClosedOutline,
   IoPeopleOutline,
-  IoBookOutline,
   IoTrashOutline,
   IoWarningOutline,
+  IoOpenOutline,
 } from "react-icons/io5";
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -18,10 +18,7 @@ const SectionCard = ({ section, isOwner, onDelete, isDeleting }) => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const locale = i18n.resolvedLanguage || i18n.language || "en";
   const numberFormatter = new Intl.NumberFormat(locale);
-  const percentFormatter = new Intl.NumberFormat(locale, {
-    style: "percent",
-    maximumFractionDigits: 0,
-  });
+
   const isLocked = section.isLocked && !isOwner;
 
   const handleDeleteClick = (event) => {
@@ -66,14 +63,21 @@ const SectionCard = ({ section, isOwner, onDelete, isDeleting }) => {
             isLocked ? styles.cardLocked : styles.cardActive
           }`}
         >
+          <div className={styles.watermarkBg} aria-hidden="true">
+            <IoLayersOutline />
+          </div>
+
           <div className={styles.cardHeader}>
-            <h3 className={styles.cardTitle}>{section.title}</h3>
+            <div className={styles.iconBox} aria-hidden="true">
+              {isLocked ? <IoLockClosedOutline /> : <IoLayersOutline />}
+            </div>
 
             <div className={styles.headerActions}>
               {isLocked && (
                 <span className={styles.lockedText}>{t("locked")}</span>
               )}
 
+              {/* 💡 زر الحذف أصبح ثابتاً للأونر */}
               {isOwner && (
                 <button
                   type="button"
@@ -89,70 +93,23 @@ const SectionCard = ({ section, isOwner, onDelete, isDeleting }) => {
                 </button>
               )}
 
-              <div className={styles.iconBox} aria-hidden="true">
-                {isLocked ? (
-                  <IoLockClosedOutline />
-                ) : (
-                  <IoDocumentTextOutline />
-                )}
+              <div className={styles.openIconBox} aria-hidden="true">
+                <IoOpenOutline />
               </div>
             </div>
           </div>
 
-          <p className={styles.description}>{section.description}</p>
-
-          {!isOwner && (
-            <div className={styles.progressContainer}>
-              <div className={styles.progressHeader}>
-                <span>{t("progress")}</span>
-                <span>{percentFormatter.format((section.progress || 0) / 100)}</span>
-              </div>
-              <div
-                className={styles.progressBg}
-                role="progressbar"
-                aria-label={t("department-progress", {
-                  department: section.title,
-                })}
-                aria-valuemin="0"
-                aria-valuemax="100"
-                aria-valuenow={section.progress || 0}
-              >
-                <div
-                  className={styles.progressFill}
-                  style={{ width: `${section.progress || 0}%` }}
-                />
-              </div>
-            </div>
-          )}
+          <div className={styles.cardBody}>
+            <h3 className={styles.cardTitle}>{section.title}</h3>
+            <p className={styles.description}>{section.description}</p>
+          </div>
 
           <div className={styles.cardFooter}>
-            <div className={styles.tags}>
-              {section.tags?.map((tag, index) => (
-                <span key={`${tag}-${index}`} className={styles.tag}>
-                  {tag}
-                </span>
-              ))}
-            </div>
-            <div className={styles.stats}>
-              <span className={styles.statItem}>
-                <IoBookOutline aria-hidden="true" />
-                {t("department-course-count", {
-                  count: section.coursesCount || 0,
-                  formattedCount: numberFormatter.format(
-                    section.coursesCount || 0,
-                  ),
-                })}
-              </span>
-              <span className={styles.statItem}>
-                <IoPeopleOutline aria-hidden="true" />
-                {t("department-member-count", {
-                  count: section.membersCount || 0,
-                  formattedCount: numberFormatter.format(
-                    section.membersCount || 0,
-                  ),
-                })}
-              </span>
-            </div>
+            <span className={styles.memberPill}>
+              <IoPeopleOutline aria-hidden="true" />
+              {numberFormatter.format(section.membersCount || 0)}{" "}
+              {t("members", "Members")}
+            </span>
           </div>
         </article>
       </Link>
