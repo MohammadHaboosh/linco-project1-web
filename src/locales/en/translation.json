@@ -1745,5 +1745,7 @@
   "delete-group": "Delete Group",
   "delete-group-confirm-title": "Delete Group?",
   "delete-group-confirm-desc": "Are you sure you want to delete this group? This action cannot be undone.",
-  "deleting": "Deleting..."
+  "deleting": "Deleting...",
+  "department-tasks-leaderboard": "Department Leaderboard",
+  "level": "Level"
 }

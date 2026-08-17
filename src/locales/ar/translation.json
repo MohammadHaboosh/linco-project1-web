@@ -1878,5 +1878,6 @@
   "delete-group": "حذف المجموعة",
   "delete-group-confirm-title": "هل تريد حذف المجموعة؟",
   "delete-group-confirm-desc": "هل أنت متأكد أنك تريد حذف هذه المجموعة؟ \nلا يمكن التراجع عن هذا الإجراء.",
-  "deleting": "جارٍ الحذف..."
+  "deleting": "جارٍ الحذف...",
+  "department-tasks-leaderboard": "لوحة المتصدرين للقسم"
 }
