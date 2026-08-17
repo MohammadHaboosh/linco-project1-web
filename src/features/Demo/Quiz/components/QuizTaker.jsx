@@ -4,7 +4,6 @@ import {
   IoCheckmarkCircleOutline,
   IoArrowForwardOutline,
   IoArrowBackOutline,
-  IoBulbOutline,
 } from "react-icons/io5";
 import styles from "./Quiz.module.css";
 import { useTranslation } from "react-i18next";
@@ -113,11 +112,6 @@ const QuizTaker = ({
             />
             <div className={styles.questionTextWrapper}>
               <h3>{currentQuestion.question}</h3>
-              {currentQuestion.note && (
-                <p className={styles.questionNote}>
-                  <IoBulbOutline /> {currentQuestion.note}
-                </p>
-              )}
             </div>
           </div>
 
