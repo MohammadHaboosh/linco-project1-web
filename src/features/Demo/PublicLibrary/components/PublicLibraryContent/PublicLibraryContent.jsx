@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import {
   IoGlobeOutline,
@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import { usePublicCourses } from "../../hooks/usePublicCourses";
 import { useTags } from "../../hooks/useTags";
 import { useBuyCourse } from "../../hooks/useBuyCourse";
+import { useDemoAssets } from "../../../DemoAsset/hooks/useDemoAssets";
 
 const PublicLibraryContent = () => {
   const { t, i18n } = useTranslation();
@@ -21,6 +22,12 @@ const PublicLibraryContent = () => {
 
   const { courses, isLoading, error, refetch } = usePublicCourses(demoId);
   const { tags, isLoadingTags, tagsError, refetchTags } = useTags();
+  const {
+    assets,
+    isLoading: isLoadingAssets,
+    error: assetsError,
+    retry: refetchAssets,
+  } = useDemoAssets(demoId);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -30,6 +37,20 @@ const PublicLibraryContent = () => {
   const { initiatePurchase, isBuying, buyError } = useBuyCourse();
   const filterRef = useRef(null);
   const locale = i18n.resolvedLanguage || i18n.language || "en";
+  const purchasedCourseIds = useMemo(
+    () =>
+      new Set(
+        assets
+          .filter((asset) => asset?.accessMethod === "PURCHASED")
+          .map((asset) => asset?.course?.id)
+          .filter(Boolean)
+          .map(String),
+      ),
+    [assets],
+  );
+  const isLibraryLoading = isLoading || isLoadingAssets;
+  const libraryError =
+    error || (assetsError ? t("public-course-access-load-failed") : null);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -68,7 +89,20 @@ const PublicLibraryContent = () => {
   });
 
   const handleEnrollOrBuy = (course) => {
+    if (
+      purchasedCourseIds.has(String(course.id)) ||
+      isLoadingAssets ||
+      assetsError
+    ) {
+      return;
+    }
+
     void initiatePurchase(demoId, course.id);
+  };
+
+  const retryLibrary = () => {
+    void refetch();
+    refetchAssets();
   };
 
   const formattedSelectedTagCount = new Intl.NumberFormat(locale).format(
@@ -171,30 +205,31 @@ const PublicLibraryContent = () => {
         </div>
       </div>
 
-      {isLoading && (
+      {isLibraryLoading && (
         <div className={styles.pageState} role="status" aria-live="polite">
           <span className={styles.loader} aria-hidden="true" />
           <strong>{t("loading-public-courses")}</strong>
           <p>{t("loading-public-courses-description")}</p>
         </div>
       )}
-      {error && !isLoading && (
+      {libraryError && !isLibraryLoading && (
         <div className={styles.pageState} role="alert">
           <strong>{t("public-courses-load-error-title")}</strong>
-          <p>{error}</p>
-          <button type="button" onClick={refetch}>
+          <p>{libraryError}</p>
+          <button type="button" onClick={retryLibrary}>
             {t("try-again")}
           </button>
         </div>
       )}
 
-      {!isLoading && !error && (
+      {!isLibraryLoading && !libraryError && (
         <div className={styles.coursesGrid}>
           {filteredCourses.length > 0 ? (
             filteredCourses.map((course) => (
               <MarketplaceCard
                 key={course.id}
                 course={course}
+                isPurchased={purchasedCourseIds.has(String(course.id))}
                 onViewDetails={() => setSelectedCourse(course)}
               />
             ))
@@ -224,6 +259,7 @@ const PublicLibraryContent = () => {
           onEnroll={handleEnrollOrBuy}
           isBuying={isBuying}
           buyError={buyError}
+          isPurchased={purchasedCourseIds.has(String(selectedCourse.id))}
         />
       )}
     </div>
