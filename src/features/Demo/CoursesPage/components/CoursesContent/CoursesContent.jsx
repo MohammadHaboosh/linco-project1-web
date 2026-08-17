@@ -21,6 +21,9 @@ const CoursesContent = () => {
     courses: apiCourses,
     isLoading,
     error,
+    deletingCourseId,
+    deleteError,
+    deleteCourse,
     retry,
   } = useDepartmentCourses(demoId, departmentId);
 
@@ -60,12 +63,35 @@ const CoursesContent = () => {
       )
     : mappedCourses;
 
+  const handleDeleteCourse = async (courseId) => {
+    const course = mappedCourses.find(
+      (candidate) => String(candidate.id) === String(courseId),
+    );
+    const title = course?.title || t("untitled-course");
+
+    if (
+      !window.confirm(
+        t("remove-course-from-department-confirmation", { title }),
+      )
+    ) {
+      return;
+    }
+
+    await deleteCourse(courseId);
+  };
+
   return (
     <div className={styles["content-area"]} dir={i18n.dir()}>
       <PageHeaderSection
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
       />
+
+      {deleteError && (
+        <div className={styles.deleteError} role="alert">
+          {t("department-course-delete-failed")}
+        </div>
+      )}
 
       {isLoading ? (
         <div className={styles.statePanel} role="status" aria-live="polite">
@@ -84,7 +110,12 @@ const CoursesContent = () => {
           </button>
         </div>
       ) : filteredCourses.length > 0 ? (
-        <CoursesGridSection courses={filteredCourses} isOwner={isOwner} />
+        <CoursesGridSection
+          courses={filteredCourses}
+          isOwner={isOwner}
+          deletingCourseId={deletingCourseId}
+          onDelete={handleDeleteCourse}
+        />
       ) : (
         <div className={styles.statePanel}>
           <strong>

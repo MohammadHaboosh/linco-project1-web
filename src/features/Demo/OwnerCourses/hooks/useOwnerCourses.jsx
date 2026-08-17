@@ -7,6 +7,7 @@ const mapAssetToCourse = (asset) => {
 
   return {
     assetId: asset.id,
+    accessMethod: asset.accessMethod,
     id: c.id,
     title: c.title,
     description: c.description,

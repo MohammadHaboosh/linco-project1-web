@@ -11,6 +11,7 @@ export const useCourseManager = (demoId, assetId) => {
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState(!hasRouteIdentifiers);
   const [courseId, setCourseId] = useState(null);
+  const [accessMethod, setAccessMethod] = useState(null);
   const [requestVersion, setRequestVersion] = useState(0);
 
   const [generalInfo, setGeneralInfo] = useState({
@@ -41,12 +42,16 @@ export const useCourseManager = (demoId, assetId) => {
       try {
         setIsLoading(true);
         setError(false);
+        setAccessMethod(null);
         const assetData = await courseManagerApi.getAsset(demoId, assetId);
 
         const course = assetData.course || assetData.data?.course || assetData;
         if (!course?.id) {
           throw new Error("The course payload did not include an identifier");
         }
+        setAccessMethod(
+          assetData.accessMethod || assetData.data?.accessMethod || null,
+        );
         setCourseId(course.id);
 
         setGeneralInfo({
@@ -189,6 +194,7 @@ export const useCourseManager = (demoId, assetId) => {
     setIsSaving,
     error,
     courseId,
+    accessMethod,
     generalInfo,
     setGeneralInfo,
     handleGeneralInfoChange,

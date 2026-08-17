@@ -10,6 +10,10 @@ import {
 import { useTranslation } from "react-i18next";
 import Hls from "hls.js";
 
+const MAX_HLS_NETWORK_RECOVERY_ATTEMPTS = 2;
+const MAX_HLS_MEDIA_RECOVERY_ATTEMPTS = 1;
+const HLS_NETWORK_RECOVERY_DELAY_MS = 750;
+
 const formatHlsUrl = (originalUrl) => {
   if (!originalUrl) return "";
   if (originalUrl.includes(".m3u8")) return originalUrl;
@@ -36,6 +40,9 @@ const VideoContent = ({
     : IoPlaySkipForwardOutline;
   const plyrRef = useRef(null);
   const hlsRef = useRef(null);
+  const finalVideoUrl = formatHlsUrl(activeLesson?.videoUrl);
+  const isHls = finalVideoUrl.includes(".m3u8");
+  const usesHlsJs = isHls && Hls.isSupported();
 
   const [qualityOptions, setQualityOptions] = useState([0]);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
@@ -52,51 +59,112 @@ const VideoContent = ({
   };
 
   useEffect(() => {
-    const finalVideoUrl = formatHlsUrl(activeLesson?.videoUrl);
-    const isHls = finalVideoUrl.includes(".m3u8");
-
-    if (!activeLesson?.videoUrl) return;
-
-    if (!isHls || !Hls.isSupported()) {
-      Promise.resolve().then(() => setIsPlayerReady(true));
-      return;
-    }
+    if (!finalVideoUrl) return;
 
     let isMounted = true;
-    const tempHls = new Hls();
-    tempHls.loadSource(finalVideoUrl);
 
-    tempHls.on(Hls.Events.MANIFEST_PARSED, () => {
-      if (isMounted) {
-        const availableQualities = [
-          ...new Set(tempHls.levels.map((level) => level.height)),
-        ].sort((a, b) => b - a);
+    if (!usesHlsJs) {
+      Promise.resolve().then(() => {
+        if (isMounted) setIsPlayerReady(true);
+      });
 
-        setQualityOptions([0, ...availableQualities]);
-        setIsPlayerReady(true);
-      }
-      tempHls.destroy();
+      return () => {
+        isMounted = false;
+      };
+    }
+
+    const hls = new Hls({
+      maxBufferLength: 20,
+      maxMaxBufferLength: 60,
+      backBufferLength: 30,
     });
+    hlsRef.current = hls;
+    let networkRecoveryAttempts = 0;
+    let mediaRecoveryAttempts = 0;
+    let recoveryTimeoutId = null;
 
-    tempHls.on(Hls.Events.ERROR, (_event, data) => {
-      if (data.fatal && isMounted) {
-        setPlaybackState("error");
-        tempHls.destroy();
+    const handleManifestParsed = () => {
+      if (!isMounted) return;
+      networkRecoveryAttempts = 0;
+
+      const availableQualities = [
+        ...new Set(
+          hls.levels
+            .map((level) => level.height)
+            .filter((height) => Number.isFinite(height) && height > 0),
+        ),
+      ].sort((a, b) => b - a);
+
+      setQualityOptions([0, ...availableQualities]);
+      setIsPlayerReady(true);
+    };
+
+    const handleHlsError = (_event, data) => {
+      if (!data.fatal || !isMounted) return;
+
+      if (
+        data.type === Hls.ErrorTypes.NETWORK_ERROR &&
+        networkRecoveryAttempts < MAX_HLS_NETWORK_RECOVERY_ATTEMPTS
+      ) {
+        networkRecoveryAttempts += 1;
+        setPlaybackState("loading");
+        if (recoveryTimeoutId !== null) {
+          window.clearTimeout(recoveryTimeoutId);
+        }
+        recoveryTimeoutId = window.setTimeout(() => {
+          recoveryTimeoutId = null;
+          if (isMounted) hls.startLoad();
+        }, HLS_NETWORK_RECOVERY_DELAY_MS * networkRecoveryAttempts);
+        return;
       }
-    });
+
+      if (
+        data.type === Hls.ErrorTypes.MEDIA_ERROR &&
+        mediaRecoveryAttempts < MAX_HLS_MEDIA_RECOVERY_ATTEMPTS
+      ) {
+        mediaRecoveryAttempts += 1;
+        setPlaybackState("loading");
+        hls.recoverMediaError();
+        return;
+      }
+
+      setPlaybackState("error");
+      hls.stopLoad();
+    };
+
+    const handleFragmentBuffered = () => {
+      if (recoveryTimeoutId !== null) {
+        window.clearTimeout(recoveryTimeoutId);
+        recoveryTimeoutId = null;
+      }
+      networkRecoveryAttempts = 0;
+      mediaRecoveryAttempts = 0;
+    };
+
+    hls.on(Hls.Events.MANIFEST_PARSED, handleManifestParsed);
+    hls.on(Hls.Events.ERROR, handleHlsError);
+    hls.on(Hls.Events.FRAG_BUFFERED, handleFragmentBuffered);
+    hls.loadSource(finalVideoUrl);
 
     return () => {
       isMounted = false;
-      tempHls.destroy();
+      if (recoveryTimeoutId !== null) {
+        window.clearTimeout(recoveryTimeoutId);
+      }
+      hls.off(Hls.Events.MANIFEST_PARSED, handleManifestParsed);
+      hls.off(Hls.Events.ERROR, handleHlsError);
+      hls.off(Hls.Events.FRAG_BUFFERED, handleFragmentBuffered);
+      hls.destroy();
+      if (hlsRef.current === hls) hlsRef.current = null;
     };
-  }, [activeLesson?.videoUrl, retryToken]);
+  }, [finalVideoUrl, retryToken, usesHlsJs]);
 
   useEffect(() => {
-    if (!isPlayerReady || !activeLesson?.videoUrl) return;
+    if (!isPlayerReady || !finalVideoUrl) return;
 
     let animationFrameId = null;
     let video = null;
-    let playbackHls = null;
+    const playbackHls = usesHlsJs ? hlsRef.current : null;
     let isDisposed = false;
     const handleReady = () => setPlaybackState("ready");
     const handlePlaybackError = () => setPlaybackState("error");
@@ -110,26 +178,17 @@ const VideoContent = ({
         return;
       }
 
-      const finalVideoUrl = formatHlsUrl(activeLesson.videoUrl);
-      const isHls = finalVideoUrl.includes(".m3u8");
-
       video.addEventListener("canplay", handleReady);
       video.addEventListener("loadeddata", handleReady);
+      video.addEventListener("playing", handleReady);
       video.addEventListener("error", handlePlaybackError);
 
-      if (isHls && Hls.isSupported()) {
-        playbackHls = new Hls();
-        hlsRef.current = playbackHls;
-        playbackHls.loadSource(finalVideoUrl);
+      if (playbackHls) {
+        playbackHls.on(Hls.Events.FRAG_BUFFERED, handleReady);
         playbackHls.attachMedia(video);
-        playbackHls.on(Hls.Events.ERROR, (_event, data) => {
-          if (data.fatal) handlePlaybackError();
-        });
-      } else if (
-        isHls &&
-        video.canPlayType("application/vnd.apple.mpegurl")
-      ) {
+      } else {
         video.src = finalVideoUrl;
+        video.load();
       }
 
       if (video.readyState >= 2) handleReady();
@@ -146,17 +205,27 @@ const VideoContent = ({
       if (video) {
         video.removeEventListener("canplay", handleReady);
         video.removeEventListener("loadeddata", handleReady);
+        video.removeEventListener("playing", handleReady);
         video.removeEventListener("error", handlePlaybackError);
       }
 
-      if (playbackHls) {
-        playbackHls.destroy();
-      }
-      if (hlsRef.current === playbackHls) {
-        hlsRef.current = null;
+      if (playbackHls && hlsRef.current === playbackHls) {
+        playbackHls.off(Hls.Events.FRAG_BUFFERED, handleReady);
+        if (playbackHls.media === video) playbackHls.detachMedia();
+      } else if (video) {
+        video.pause();
+        video.removeAttribute("src");
+        video.load();
       }
     };
-  }, [activeLesson?.videoUrl, isPlayerReady, retryToken]);
+  }, [
+    finalVideoUrl,
+    isPlayerReady,
+    qualityOptions,
+    retryToken,
+    t,
+    usesHlsJs,
+  ]);
 
   const plyrOptions = useMemo(
     () => ({
@@ -251,7 +320,7 @@ const VideoContent = ({
 
   if (!activeLesson) {
     return (
-      <div className={styles.videoStage}>
+      <div className={`${styles.videoStage} ${styles.emptyVideoStage}`}>
         <div className={styles.emptyVideoState}>
           <IoVideocamOutline
             className={styles.emptyVideoIcon}
@@ -266,7 +335,7 @@ const VideoContent = ({
 
   if (!activeLesson.videoUrl) {
     return (
-      <div className={styles.videoStage}>
+      <div className={`${styles.videoStage} ${styles.emptyVideoStage}`}>
         <div className={styles.emptyVideoState} role="status">
           <IoVideocamOutline
             className={styles.emptyVideoIcon}
@@ -279,25 +348,21 @@ const VideoContent = ({
     );
   }
 
-  const finalVideoUrl = formatHlsUrl(activeLesson.videoUrl);
-  const isHls = finalVideoUrl.includes(".m3u8");
-  const videoSrc = {
-    type: "video",
-    sources: [
-      {
-        src: finalVideoUrl,
-        type: isHls ? "application/x-mpegURL" : "video/mp4",
-      },
-    ],
-  };
-
   return (
     <div className={styles.videoStage}>
       <div className={styles.videoBackdrop}>
         <div
           className={styles.videoPlayerContainer}
         >
-          <Plyr ref={plyrRef} source={videoSrc} options={plyrOptions} />
+          {isPlayerReady && (
+            <Plyr
+              ref={plyrRef}
+              source={null}
+              options={plyrOptions}
+              preload="metadata"
+              playsInline
+            />
+          )}
 
           {playbackState === "error" && (
             <div className={styles.videoErrorState} role="alert">
@@ -332,22 +397,24 @@ const VideoContent = ({
           <div className={styles.customVideoControls}>
             <button
               type="button"
-              className={styles.navVideoBtn}
+              className={`${styles.navVideoBtn} ${styles.previousLessonBtn}`}
               onClick={onPrev}
               disabled={!canGoPrev}
               aria-label={t("prev-lesson")}
             >
-              <PreviousIcon aria-hidden="true" /> {t("prev-lesson")}
+              <PreviousIcon aria-hidden="true" />
+              <span>{t("prev-lesson")}</span>
             </button>
 
             <button
               type="button"
-              className={styles.navVideoBtn}
+              className={`${styles.navVideoBtn} ${styles.nextLessonBtn}`}
               onClick={onNext}
               disabled={!canGoNext}
               aria-label={t("next-lesson")}
             >
-              {t("next-lesson")} <NextIcon aria-hidden="true" />
+              <span>{t("next-lesson")}</span>
+              <NextIcon aria-hidden="true" />
             </button>
           </div>
         )}

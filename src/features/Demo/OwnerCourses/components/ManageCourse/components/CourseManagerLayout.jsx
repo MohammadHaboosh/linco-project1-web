@@ -30,6 +30,7 @@ const CourseManagerLayout = ({ readOnly = false }) => {
     isSaving,
     setIsSaving,
     courseId,
+    accessMethod,
     generalInfo,
     handleGeneralInfoChange,
     saveGeneralInfo,
@@ -42,6 +43,7 @@ const CourseManagerLayout = ({ readOnly = false }) => {
   const [activeTab, setActiveTab] = useState("curriculum");
   const [deletedQuizIds, setDeletedQuizIds] = useState([]);
   const [deletedQuestionIds, setDeletedQuestionIds] = useState([]);
+  const isReadOnly = readOnly || accessMethod === "PURCHASED";
 
   const {
     saveCourseData,
@@ -57,6 +59,8 @@ const CourseManagerLayout = ({ readOnly = false }) => {
   });
 
   const executeSave = async () => {
+    if (isReadOnly) return;
+
     const success = await saveCourseData(sections, setSections, {
       deletedSectionIds,
       setDeletedSectionIds,
@@ -108,7 +112,7 @@ const CourseManagerLayout = ({ readOnly = false }) => {
       >
         <div className={styles.spinner} aria-hidden="true"></div>
         <h1>
-          {t(readOnly ? "loading-course-details" : "loading-course-manager")}
+          {t(isReadOnly ? "loading-course-details" : "loading-course-manager")}
         </h1>
         <p>{t("loading-course-manager-description")}</p>
       </div>
@@ -119,7 +123,7 @@ const CourseManagerLayout = ({ readOnly = false }) => {
       <div className={styles.loadingScreen} role="alert">
         <h1>
           {t(
-            readOnly
+            isReadOnly
               ? "course-details-load-failed"
               : "course-manager-load-failed",
           )}
@@ -146,7 +150,7 @@ const CourseManagerLayout = ({ readOnly = false }) => {
     {
       id: "curriculum",
       icon: <IoListOutline aria-hidden="true" />,
-      label: t(readOnly ? "course-curriculum" : "curriculum"),
+      label: t(isReadOnly ? "course-curriculum" : "curriculum"),
     },
     {
       id: "faqs",
@@ -155,12 +159,12 @@ const CourseManagerLayout = ({ readOnly = false }) => {
     },
   ];
   const navigationLabel = t(
-    readOnly ? "course-details-sections" : "course-manager-navigation",
+    isReadOnly ? "course-details-sections" : "course-manager-navigation",
   );
 
   return (
     <div className={styles.pageContainer}>
-      {!readOnly && (
+      {!isReadOnly && (
         <UploadProgressOverlay progress={uploadProgress} styles={styles} />
       )}
 
@@ -177,13 +181,13 @@ const CourseManagerLayout = ({ readOnly = false }) => {
           </button>
           <div className={styles.courseHeaderInfo}>
             <span className={styles.badge}>
-              {t(readOnly ? "viewing-mode" : "editing-mode")}
+              {t(isReadOnly ? "viewing-mode" : "editing-mode")}
             </span>
             <h1>{generalInfo?.title || t("untitled-course")}</h1>
           </div>
         </div>
         <div className={styles.headerRight}>
-          {!readOnly && activeTab !== "faqs" && (
+          {!isReadOnly && activeTab !== "faqs" && (
             <button
               type="button"
               className={styles.saveBtn}
@@ -202,7 +206,7 @@ const CourseManagerLayout = ({ readOnly = false }) => {
         </div>
       </header>
 
-      {!readOnly && saveFeedback && (
+      {!isReadOnly && saveFeedback && (
         <div
           className={`${styles.feedbackBanner} ${
             saveFeedback.type === "error"
@@ -263,7 +267,7 @@ const CourseManagerLayout = ({ readOnly = false }) => {
               <GeneralInfoTab
                 data={generalInfo}
                 onChange={handleGeneralInfoChange}
-                readOnly={readOnly}
+                readOnly={isReadOnly}
               />
             )}
             {activeTab === "curriculum" && (
@@ -274,11 +278,11 @@ const CourseManagerLayout = ({ readOnly = false }) => {
                 onDeleteSection={handleDeleteSection}
                 onDeleteQuiz={handleDeleteQuiz}
                 onDeleteQuestion={handleDeleteQuestion}
-                readOnly={readOnly}
+                readOnly={isReadOnly}
               />
             )}
             {activeTab === "faqs" && (
-              <FAQsTab courseId={courseId} readOnly={readOnly} />
+              <FAQsTab courseId={courseId} readOnly={isReadOnly} />
             )}
           </div>
         </main>

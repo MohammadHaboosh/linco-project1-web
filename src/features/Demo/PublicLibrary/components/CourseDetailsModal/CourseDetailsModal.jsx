@@ -5,6 +5,7 @@ import {
   IoTimeOutline,
   IoBookOutline,
   IoLayersOutline,
+  IoCheckmarkCircleOutline,
 } from "react-icons/io5";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -21,6 +22,7 @@ const CourseDetailsModal = ({
   onEnroll,
   isBuying,
   buyError,
+  isPurchased,
 }) => {
   const [activeTab, setActiveTab] = useState("overview");
   const [previewLesson, setPreviewLesson] = useState(null);
@@ -330,16 +332,23 @@ const CourseDetailsModal = ({
               {buyError}
             </div>
           )}
-          {!isOwnWorkspaceCourse && (
-            <button
-              type="button"
-              className={styles.enrollBtn}
-              disabled={isBuying}
-              aria-busy={isBuying}
-              onClick={() => onEnroll(course)}
-            >
-              {purchaseButtonLabel}
-            </button>
+          {isPurchased ? (
+            <span className={styles.purchasedNotice}>
+              <IoCheckmarkCircleOutline aria-hidden="true" />
+              {t("already-bought")}
+            </span>
+          ) : (
+            !isOwnWorkspaceCourse && (
+              <button
+                type="button"
+                className={styles.enrollBtn}
+                disabled={isBuying}
+                aria-busy={isBuying}
+                onClick={() => onEnroll(course)}
+              >
+                {purchaseButtonLabel}
+              </button>
+            )
           )}
         </div>
       </div>

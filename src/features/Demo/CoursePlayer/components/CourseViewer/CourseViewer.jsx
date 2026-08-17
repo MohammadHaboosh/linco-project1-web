@@ -127,7 +127,8 @@ const CourseViewer = () => {
     ? currentPlaylist.findIndex((lesson) => lesson.id === activeLesson.id)
     : -1;
   const canGoToPreviousLesson = activeLessonIndex > 0;
-  const canGoToNextLesson = activeLessonIndex >= 0;
+  const canGoToNextLesson =
+    activeLessonIndex >= 0 && activeLessonIndex < currentPlaylist.length - 1;
 
   useEffect(() => {
     if (!activeLessonId || !contentScrollRef.current) return;

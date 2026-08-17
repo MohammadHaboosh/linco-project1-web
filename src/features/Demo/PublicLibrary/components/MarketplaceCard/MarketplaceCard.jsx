@@ -5,12 +5,13 @@ import {
   IoTimeOutline,
   IoBookOutline,
   IoDownloadOutline,
+  IoCheckmarkCircleOutline,
 } from "react-icons/io5";
 import styles from "./MarketplaceCard.module.css";
 import { useTranslation } from "react-i18next";
 import { useDemo } from "../../../../../hooks/useDemo";
 
-const MarketplaceCard = ({ course, onViewDetails }) => {
+const MarketplaceCard = ({ course, isPurchased, onViewDetails }) => {
   const { t, i18n } = useTranslation();
   const { demoId } = useDemo();
   const locale = i18n.resolvedLanguage || i18n.language || "en";
@@ -111,32 +112,39 @@ const MarketplaceCard = ({ course, onViewDetails }) => {
           </div>
 
           <div className={styles.actionArea}>
-            {!isOwnDemoCourse && (
-              <button
-                type="button"
-                className={styles.buyBtn}
-                onClick={() => {
-                  onViewDetails();
-                }}
-                title={
-                  numericPrice === 0
-                    ? t("enroll-for-free")
-                    : t("purchase-course")
-                }
-                aria-label={
-                  numericPrice === 0
-                    ? t("enroll-in-named-course-for-free", {
-                        title: course.title,
-                      })
-                    : t("purchase-named-course", { title: course.title })
-                }
-              >
-                {numericPrice === 0 ? (
-                  <IoDownloadOutline />
-                ) : (
-                  <IoCartOutline />
-                )}
-              </button>
+            {isPurchased ? (
+              <span className={styles.purchasedStatus}>
+                <IoCheckmarkCircleOutline aria-hidden="true" />
+                {t("already-bought")}
+              </span>
+            ) : (
+              !isOwnDemoCourse && (
+                <button
+                  type="button"
+                  className={styles.buyBtn}
+                  onClick={() => {
+                    onViewDetails();
+                  }}
+                  title={
+                    numericPrice === 0
+                      ? t("enroll-for-free")
+                      : t("purchase-course")
+                  }
+                  aria-label={
+                    numericPrice === 0
+                      ? t("enroll-in-named-course-for-free", {
+                          title: course.title,
+                        })
+                      : t("purchase-named-course", { title: course.title })
+                  }
+                >
+                  {numericPrice === 0 ? (
+                    <IoDownloadOutline />
+                  ) : (
+                    <IoCartOutline />
+                  )}
+                </button>
+              )
             )}
           </div>
         </div>

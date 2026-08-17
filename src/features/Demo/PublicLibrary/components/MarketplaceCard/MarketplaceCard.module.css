@@ -248,6 +248,27 @@
   flex: 0 0 auto;
 }
 
+.purchasedStatus {
+  position: relative;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 10px;
+  border: 1px solid var(--app-success-border);
+  border-radius: 10px;
+  background: var(--app-success-surface);
+  color: var(--app-success-text);
+  font-size: 0.75rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.purchasedStatus svg {
+  flex: 0 0 auto;
+  font-size: 1rem;
+}
+
 .buyBtn {
   position: relative;
   z-index: 4;

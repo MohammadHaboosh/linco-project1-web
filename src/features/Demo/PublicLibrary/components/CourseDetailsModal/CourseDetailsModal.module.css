@@ -388,6 +388,24 @@
   font-weight: 800;
 }
 
+.purchasedNotice {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 14px;
+  border: 1px solid var(--app-success-border);
+  border-radius: 10px;
+  background: var(--app-success-surface);
+  color: var(--app-success-text);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.purchasedNotice svg {
+  flex: 0 0 auto;
+  font-size: 1.15rem;
+}
+
 .buyError {
   order: 3;
   width: 100%;
