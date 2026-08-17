@@ -12,7 +12,7 @@ import styles from "./Groups.module.css";
 
 const GroupMembersPanel = ({ demoId, groupId, isManager }) => {
   const { t } = useTranslation();
-  const { members, isLoading, refetch } = useDepartmentMembers(groupId); // API يدعم الغروبات كأقسام
+  const { members, isLoading, refetch } = useDepartmentMembers(groupId);
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -28,11 +28,7 @@ const GroupMembersPanel = ({ demoId, groupId, isManager }) => {
       return;
     setIsDeleting(true);
     try {
-      await departmentMemberApi.deleteMember({
-        demoId,
-        departmentId: groupId,
-        memberId,
-      });
+      await departmentMemberApi.deleteMember(demoId, memberId);
       await refetch();
     } catch (error) {
       alert(error.message);
@@ -41,70 +37,30 @@ const GroupMembersPanel = ({ demoId, groupId, isManager }) => {
     }
   };
 
-  if (isLoading)
+  if (isLoading) {
     return (
-      <div
-        style={{
-          padding: "40px",
-          textAlign: "center",
-          color: "var(--app-muted)",
-        }}
-      >
-        {t("loading", "Loading...")}
-      </div>
+      <div className={styles.loadingPanel}>{t("loading", "Loading...")}</div>
     );
+  }
 
   return (
-    <div
-      style={{
-        flex: 1,
-        padding: "24px",
-        backgroundColor: "var(--app-page-bg)",
-        overflowY: "auto",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "24px",
-        }}
-      >
-        <h2
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-            margin: 0,
-            color: "var(--app-heading)",
-          }}
-        >
+    <div className={styles.panelContainer}>
+      <div className={styles.panelHeader}>
+        <h2 className={styles.panelTitle}>
           <IoPeopleOutline /> {t("group-members", "Group Members")} (
           {members.length})
         </h2>
         {isManager && (
           <button
             onClick={() => setIsAddMemberOpen(true)}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-              background: "var(--app-link)",
-              color: "#fff",
-              border: "none",
-              padding: "8px 16px",
-              borderRadius: "8px",
-              cursor: "pointer",
-              fontWeight: "bold",
-            }}
+            className={styles.addMemberBtn}
           >
             <IoPersonAddOutline /> {t("add-members", "Add Members")}
           </button>
         )}
       </div>
 
-      <div style={{ display: "grid", gap: "12px" }}>
+      <div className={styles.membersGrid}>
         {members.map((member) => {
           const user = member.demoMember?.user || {};
           const fullName =
@@ -113,50 +69,23 @@ const GroupMembersPanel = ({ demoId, groupId, isManager }) => {
           const initials = fullName.substring(0, 2).toUpperCase();
 
           return (
-            <div
-              key={member.id}
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                padding: "16px",
-                background: "var(--app-surface)",
-                border: "1px solid var(--app-border)",
-                borderRadius: "12px",
-              }}
-            >
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "12px" }}
-              >
-                <div
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    background: "var(--app-info-surface)",
-                    color: "var(--app-link)",
-                    borderRadius: "50%",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {initials}
+            <div key={member.id} className={styles.memberCard}>
+              <div className={styles.memberIdentity}>
+                <div className={styles.memberAvatarBox}>
+                  {user.imagePath ? (
+                    <img
+                      src={user.imagePath}
+                      alt={fullName}
+                      className={styles.avatarImg}
+                    />
+                  ) : (
+                    <span>{initials}</span>
+                  )}
                 </div>
-                <div>
-                  <strong
-                    style={{
-                      display: "block",
-                      color: "var(--app-text-strong)",
-                    }}
-                  >
-                    {fullName}
-                  </strong>
-                  <span
-                    style={{ fontSize: "0.8rem", color: "var(--app-muted)" }}
-                  >
-                    {user.email}
-                  </span>
+
+                <div className={styles.memberDetails}>
+                  <strong className={styles.memberName}>{fullName}</strong>
+                  <span className={styles.memberEmail}>{user.email}</span>
                 </div>
               </div>
 
@@ -164,14 +93,7 @@ const GroupMembersPanel = ({ demoId, groupId, isManager }) => {
                 <button
                   onClick={() => handleRemoveMember(member.id)}
                   disabled={isDeleting}
-                  style={{
-                    background: "transparent",
-                    border: "none",
-                    color: "var(--app-danger-text)",
-                    cursor: "pointer",
-                    fontSize: "1.2rem",
-                    padding: "8px",
-                  }}
+                  className={styles.removeBtn}
                   title={t("remove", "Remove")}
                 >
                   <IoTrashOutline />

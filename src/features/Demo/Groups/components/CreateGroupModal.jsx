@@ -96,6 +96,7 @@ const CreateGroupModal = ({ demoId, currentUserId, onClose, onSuccess }) => {
               value={formData.description}
               onChange={handleChange}
               className={styles.textarea}
+              placeholder={"e.g. For build LinCo Project"}
               disabled={isSubmitting}
             />
           </div>

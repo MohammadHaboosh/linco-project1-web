@@ -105,19 +105,26 @@ export const useCreateGroup = (demoId, currentUserId, onSuccess) => {
         demoId,
         payload,
       );
-      const newGroupId = groupResponse.data?.id || groupResponse.id; // حسب شكل استجابة الباك إند
 
-      if (selectedMembers.length > 0 && newGroupId) {
-        await Promise.all(
-          selectedMembers.map((member) =>
-            departmentMemberApi.addMember({
+      const newGroupId = groupResponse?.data?.id || groupResponse?.id;
+
+      if (!newGroupId) {
+        throw new Error("Group was created but ID was not returned.");
+      }
+
+      if (selectedMembers.length > 0) {
+        for (const member of selectedMembers) {
+          try {
+            await departmentMemberApi.addMember({
               demoId,
               departmentId: newGroupId,
               demoMemberId: member.id,
               jobTitle: "INTERN",
-            }),
-          ),
-        );
+            });
+          } catch (addError) {
+            console.error(`Failed to add member ${member.id}:`, addError);
+          }
+        }
       }
 
       if (onSuccess) onSuccess();
