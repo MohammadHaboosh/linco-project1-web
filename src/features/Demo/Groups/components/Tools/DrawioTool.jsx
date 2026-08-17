@@ -25,8 +25,7 @@ const DrawioTool = forwardRef(({ storageKey }, ref) => {
     postDrawioMessage(iframeRef.current, {
       action: "export",
       format: "png",
-      spin: true,
-      message: "Updating...",
+      spinKey: "export",
     });
 
   useImperativeHandle(ref, () => ({

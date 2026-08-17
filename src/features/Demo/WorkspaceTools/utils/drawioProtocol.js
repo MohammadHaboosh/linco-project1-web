@@ -9,18 +9,30 @@ const EMPTY_DRAWIO_XML =
 export const createDrawioStorageKey = (scope) =>
   `linco:drawio:${encodeURIComponent(scope)}`;
 
+const isDrawioXml = (value) => {
+  if (typeof value !== "string" || !value.trim()) return false;
+
+  const normalized = value
+    .trim()
+    .replace(/^<\?xml[^>]*>\s*/i, "")
+    .replace(/^<!--[\s\S]*?-->\s*/, "");
+
+  return /^<(mxfile|mxGraphModel)\b/i.test(normalized);
+};
+
 export const readDrawioXml = (storageKey) => {
   if (!storageKey) return EMPTY_DRAWIO_XML;
 
   try {
-    return window.localStorage.getItem(storageKey) || EMPTY_DRAWIO_XML;
+    const storedXml = window.localStorage.getItem(storageKey);
+    return isDrawioXml(storedXml) ? storedXml : EMPTY_DRAWIO_XML;
   } catch {
     return EMPTY_DRAWIO_XML;
   }
 };
 
 export const persistDrawioXml = (storageKey, xml) => {
-  if (!storageKey || typeof xml !== "string" || !xml) return false;
+  if (!storageKey || !isDrawioXml(xml)) return false;
 
   try {
     window.localStorage.setItem(storageKey, xml);
