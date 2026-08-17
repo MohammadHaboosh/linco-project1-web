@@ -251,7 +251,7 @@ const VideoContent = ({
 
   if (!activeLesson) {
     return (
-      <div className={styles.videoStage}>
+      <div className={`${styles.videoStage} ${styles.emptyVideoStage}`}>
         <div className={styles.emptyVideoState}>
           <IoVideocamOutline
             className={styles.emptyVideoIcon}
@@ -266,7 +266,7 @@ const VideoContent = ({
 
   if (!activeLesson.videoUrl) {
     return (
-      <div className={styles.videoStage}>
+      <div className={`${styles.videoStage} ${styles.emptyVideoStage}`}>
         <div className={styles.emptyVideoState} role="status">
           <IoVideocamOutline
             className={styles.emptyVideoIcon}
@@ -332,22 +332,24 @@ const VideoContent = ({
           <div className={styles.customVideoControls}>
             <button
               type="button"
-              className={styles.navVideoBtn}
+              className={`${styles.navVideoBtn} ${styles.previousLessonBtn}`}
               onClick={onPrev}
               disabled={!canGoPrev}
               aria-label={t("prev-lesson")}
             >
-              <PreviousIcon aria-hidden="true" /> {t("prev-lesson")}
+              <PreviousIcon aria-hidden="true" />
+              <span>{t("prev-lesson")}</span>
             </button>
 
             <button
               type="button"
-              className={styles.navVideoBtn}
+              className={`${styles.navVideoBtn} ${styles.nextLessonBtn}`}
               onClick={onNext}
               disabled={!canGoNext}
               aria-label={t("next-lesson")}
             >
-              {t("next-lesson")} <NextIcon aria-hidden="true" />
+              <span>{t("next-lesson")}</span>
+              <NextIcon aria-hidden="true" />
             </button>
           </div>
         )}
