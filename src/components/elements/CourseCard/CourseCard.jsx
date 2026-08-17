@@ -39,7 +39,7 @@ const CourseCard = ({ course, isOwner, onDelete, isDeleting = false }) => {
     description: providedDescription,
     image: providedImage,
     lessonsCount: providedLessonsCount,
-    duration: providedDuration,
+    totalDuration: providedTotalDuration,
     progress: providedProgress,
     views: providedViews,
     studentsCount: providedStudentsCount,
@@ -52,7 +52,8 @@ const CourseCard = ({ course, isOwner, onDelete, isDeleting = false }) => {
   const image = providedImage || "/images/linco-logo.jpg";
   const lessonsCount = Number(providedLessonsCount) || 0;
 
-  const durationInSeconds = Number(providedDuration) || 0;
+  const rawDuration = providedTotalDuration || 0;
+  const durationInSeconds = Number(rawDuration) || 0;
   const formattedDuration = formatVideoDuration(durationInSeconds);
 
   const progress = Math.min(100, Math.max(0, Number(providedProgress) || 0));
@@ -140,7 +141,13 @@ const CourseCard = ({ course, isOwner, onDelete, isDeleting = false }) => {
             </span>
             <span className={styles.tag}>
               <IoTimeOutline aria-hidden="true" />
-              <span style={{ fontWeight: "600", letterSpacing: "0.5px" }}>
+              <span
+                style={{
+                  fontWeight: "600",
+                  letterSpacing: "0.5px",
+                  margin: "0 4px",
+                }}
+              >
                 {formattedDuration}
               </span>
             </span>
