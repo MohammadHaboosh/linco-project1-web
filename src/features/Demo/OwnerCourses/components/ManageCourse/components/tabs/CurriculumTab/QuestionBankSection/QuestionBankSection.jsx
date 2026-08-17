@@ -1,11 +1,10 @@
 import {
   IoLibraryOutline,
   IoAddCircleOutline,
-  IoReorderTwoOutline,
-  IoTrashOutline,
 } from "react-icons/io5";
 import styles from "./QuestionBankSection.module.css";
 import { useTranslation } from "react-i18next";
+import QuestionBankItem from "./QuestionBankItem";
 
 const QuestionBankSection = ({
   questions = [],
@@ -16,6 +15,9 @@ const QuestionBankSection = ({
   onRetry,
 }) => {
   const { t, i18n } = useTranslation();
+  const numberFormatter = new Intl.NumberFormat(
+    i18n.resolvedLanguage || i18n.language,
+  );
 
   return (
     <div className={styles.questionBankBox}>
@@ -46,38 +48,20 @@ const QuestionBankSection = ({
 
       {!isLoading && !hasError && questions.length > 0 && (
         <div className={styles.questionsList}>
-          {questions.map((q, qIdx) => (
-            <div key={q.id} className={styles.questionItem}>
-              <div className={styles.questionInfo}>
-                <IoReorderTwoOutline
-                  className={styles.dragHandle}
-                  aria-hidden="true"
-                />
-                <span className={styles.qNumber}>
-                  {t("question-number", {
-                    number: new Intl.NumberFormat(
-                      i18n.resolvedLanguage || i18n.language,
-                    ).format(qIdx + 1),
-                  })}
-                </span>
-                <span className={styles.qText}>{q.question}</span>
-              </div>
-              <div className={styles.actions}>
-                <button
-                  type="button"
-                  className={styles.iconBtnDanger}
-                  onClick={() => onDeleteQuestion && onDeleteQuestion(q.id)}
-                  aria-label={t("delete-question-label", {
-                    number: new Intl.NumberFormat(
-                      i18n.resolvedLanguage || i18n.language,
-                    ).format(qIdx + 1),
-                  })}
-                >
-                  <IoTrashOutline aria-hidden="true" />
-                </button>
-              </div>
-            </div>
-          ))}
+          {questions.map((question, questionIndex) => {
+            const formattedQuestionNumber = numberFormatter.format(
+              questionIndex + 1,
+            );
+
+            return (
+              <QuestionBankItem
+                key={question.id ?? `question-${questionIndex}`}
+                question={question}
+                number={formattedQuestionNumber}
+                onDelete={onDeleteQuestion}
+              />
+            );
+          })}
         </div>
       )}
 

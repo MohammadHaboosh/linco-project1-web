@@ -12,9 +12,6 @@
 
 .header,
 .title,
-.questionItem,
-.questionInfo,
-.actions,
 .addQuestionBtn,
 .errorMessage {
   display: flex;
@@ -22,7 +19,6 @@
 }
 
 .header,
-.questionItem,
 .errorMessage {
   justify-content: space-between;
 }
@@ -73,35 +69,73 @@
 .questionsList {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.625rem;
   min-width: 0;
 }
 
-.questionItem {
-  gap: 0.5rem;
+.questionCard {
   min-width: 0;
-  padding: 0.55rem 0.7rem;
+  overflow: hidden;
   border: 1px solid var(--app-success-border);
-  border-radius: 0.5rem;
+  border-radius: 0.65rem;
   background: var(--app-surface);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.questionInfo {
-  gap: 0.5rem;
+.questionCard:hover {
+  border-color: var(--app-success-indicator);
+  box-shadow: var(--app-card-shadow);
+}
+
+.questionHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+  padding: 0.35rem;
+}
+
+.questionToggle {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
   min-width: 0;
   flex: 1 1 auto;
+  padding: 0.35rem;
+  border: 0;
+  border-radius: 0.45rem;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
 }
 
-.dragHandle {
+.questionToggle:hover {
+  background: var(--app-success-surface);
+}
+
+.chevronIcon {
   flex: 0 0 auto;
-  color: var(--app-success-indicator);
-  cursor: grab;
+  margin-inline-start: auto;
+  color: var(--app-success-text);
+  font-size: 1rem;
 }
 
 .qNumber {
-  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  flex: 0 0 1.6rem;
+  border: 1px solid var(--app-success-border);
+  border-radius: 50%;
+  background: var(--app-success-surface);
   color: var(--app-success-text);
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   font-weight: 700;
 }
 
@@ -109,15 +143,146 @@
   min-width: 0;
   color: var(--app-text-strong);
   font-size: 0.9rem;
+  font-weight: 650;
+  line-height: 1.5;
   overflow-wrap: anywhere;
 }
 
-.actions {
-  gap: 0.25rem;
-  flex: 0 0 auto;
+.questionDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  min-width: 0;
+  padding: 0.85rem;
+  border-block-start: 1px solid var(--app-divider);
+  background: var(--app-surface-muted);
 }
 
-.iconBtn,
+.noteBlock {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  min-width: 0;
+  padding: 0.7rem;
+  border: 1px solid var(--app-warning-border);
+  border-radius: 0.55rem;
+  background: var(--app-warning-surface);
+}
+
+.noteIcon {
+  flex: 0 0 auto;
+  margin-block-start: 0.1rem;
+  color: var(--app-warning-icon);
+  font-size: 1.05rem;
+}
+
+.detailLabel {
+  display: block;
+  margin-block-end: 0.2rem;
+  color: var(--app-warning-text);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.noteText,
+.noChoices {
+  margin: 0;
+  color: var(--app-text);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.choicesSection {
+  min-width: 0;
+}
+
+.choicesTitle {
+  margin: 0 0 0.5rem;
+  color: var(--app-text-strong);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.choicesList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.choiceItem {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.55rem;
+  min-width: 0;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--app-border);
+  border-radius: 0.5rem;
+  background: var(--app-surface);
+}
+
+.correctChoice {
+  border-color: var(--app-success-border);
+  background: var(--app-success-surface);
+}
+
+.choiceMarker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.45rem;
+  height: 1.45rem;
+  border-radius: 0.4rem;
+  background: var(--app-surface-soft);
+  color: var(--app-muted);
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.correctChoice .choiceMarker {
+  background: var(--app-success-border);
+  color: var(--app-success-text);
+}
+
+.choiceText {
+  min-width: 0;
+  color: var(--app-text-strong);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.correctBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--app-success-text);
+  font-size: 0.7rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.correctBadge svg {
+  flex: 0 0 auto;
+  font-size: 0.95rem;
+}
+
+.noChoices {
+  padding: 0.65rem;
+  border: 1px dashed var(--app-border-strong);
+  border-radius: 0.5rem;
+  background: var(--app-surface);
+  color: var(--app-muted);
+}
+
 .iconBtnDanger {
   display: flex;
   align-items: center;
@@ -129,16 +294,10 @@
   cursor: pointer;
 }
 
-.iconBtn {
-  color: var(--app-success-text);
-}
-
-.iconBtn:hover {
-  background: var(--app-success-border);
-}
-
 .iconBtnDanger {
+  flex: 0 0 auto;
   color: var(--app-danger-text);
+  font-size: 1rem;
 }
 
 .iconBtnDanger:hover {
@@ -166,7 +325,7 @@
   background: var(--app-success-border);
 }
 
-.iconBtn:focus-visible,
+.questionToggle:focus-visible,
 .iconBtnDanger:focus-visible,
 .addQuestionBtn:focus-visible,
 .errorMessage button:focus-visible {
@@ -174,13 +333,19 @@
   outline-offset: 2px;
 }
 
-@media (max-width: 24rem) {
-  .questionItem {
-    align-items: flex-start;
-    flex-direction: column;
+@media (max-width: 30rem) {
+  .choiceItem {
+    grid-template-columns: auto minmax(0, 1fr);
   }
 
-  .actions {
-    align-self: flex-end;
+  .correctBadge {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .questionCard {
+    transition: none;
   }
 }
