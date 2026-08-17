@@ -9,35 +9,54 @@ import {
 import { useTranslation } from "react-i18next";
 
 const ReplyItem = ({ reply, onEdit, onDelete }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(reply.content);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [actionError, setActionError] = useState(null);
 
   const replyUser = reply.demoMember?.user || {};
   const replyAuthor =
-    `${replyUser.firstName || "User"} ${replyUser.lastName || ""}`.trim();
+    `${replyUser.firstName || ""} ${replyUser.lastName || ""}`.trim() ||
+    t("unknown-user");
   const avatarUrl = replyUser.imagePath;
-
-  const replyDate = new Date(reply.createdAt).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  const locale = i18n.resolvedLanguage || i18n.language || "en";
+  const createdAt = new Date(reply.createdAt);
+  const replyDate = Number.isNaN(createdAt.getTime())
+    ? t("course-player-date-unavailable")
+    : new Intl.DateTimeFormat(locale, {
+        dateStyle: "medium",
+        timeStyle: "short",
+      }).format(createdAt);
 
   const getInitials = (name) => (name ? name.charAt(0).toUpperCase() : "?");
 
   const handleSaveEdit = async () => {
-    if (!editedContent.trim()) return;
-    const success = await onEdit(reply.id, editedContent.trim());
-    if (success) {
+    if (!editedContent.trim() || isSaving) return;
+    setIsSaving(true);
+    setActionError(null);
+    const result = await onEdit(reply.id, editedContent.trim());
+    setIsSaving(false);
+    if (result?.success) {
       setIsEditing(false);
+    } else {
+      setActionError(t("course-player-reply-update-failed"));
     }
   };
 
-  const handleDelete = () => {
-    if (window.confirm("Are you sure you want to delete this reply?")) {
-      onDelete(reply.id);
+  const handleDelete = async () => {
+    if (
+      !isDeleting &&
+      window.confirm(t("course-player-delete-reply-confirmation"))
+    ) {
+      setIsDeleting(true);
+      setActionError(null);
+      const result = await onDelete(reply.id);
+      setIsDeleting(false);
+      if (!result?.success) {
+        setActionError(t("course-player-reply-delete-failed"));
+      }
     }
   };
 
@@ -46,9 +65,8 @@ const ReplyItem = ({ reply, onEdit, onDelete }) => {
       {avatarUrl && avatarUrl !== "default" ? (
         <img
           src={avatarUrl}
-          alt={replyAuthor}
+          alt={t("course-player-user-avatar", { name: replyAuthor })}
           className={styles.replyAvatar}
-          style={{ objectFit: "cover" }}
         />
       ) : (
         <div className={styles.replyAvatar}>{getInitials(replyAuthor)}</div>
@@ -60,18 +78,24 @@ const ReplyItem = ({ reply, onEdit, onDelete }) => {
           <span className={styles.date}>{replyDate}</span>
 
           {!isEditing && (
-            <div style={{ marginLeft: "auto", display: "flex", gap: "4px" }}>
+            <div className={styles.ownerActions}>
               <button
+                type="button"
                 className={styles.iconActionBtn}
                 onClick={() => setIsEditing(true)}
                 title={t("edit-reply")}
+                aria-label={t("edit-reply")}
+                disabled={isDeleting}
               >
                 <IoPencilOutline size={16} />
               </button>
               <button
+                type="button"
                 className={styles.iconActionBtnDanger}
                 onClick={handleDelete}
                 title={t("delete-reply")}
+                aria-label={t("delete-reply")}
+                disabled={isDeleting}
               >
                 <IoTrashOutline size={16} />
               </button>
@@ -84,19 +108,28 @@ const ReplyItem = ({ reply, onEdit, onDelete }) => {
             <textarea
               value={editedContent}
               onChange={(e) => setEditedContent(e.target.value)}
-              className={styles.editTextarea}
-              style={{ minHeight: "60px", padding: "12px" }}
+              className={`${styles.editTextarea} ${styles.replyEditTextarea}`}
+              aria-label={t("course-player-edit-reply-input")}
+              disabled={isSaving}
             />
             <div className={styles.editActions}>
-              <button className={styles.saveEditBtn} onClick={handleSaveEdit}>
-                <IoCheckmarkOutline /> {t("save")}
+              <button
+                type="button"
+                className={styles.saveEditBtn}
+                onClick={handleSaveEdit}
+                disabled={isSaving}
+              >
+                <IoCheckmarkOutline />
+                {isSaving ? t("course-player-saving-reply") : t("save")}
               </button>
               <button
+                type="button"
                 className={styles.cancelEditBtn}
                 onClick={() => {
                   setIsEditing(false);
                   setEditedContent(reply.content);
                 }}
+                disabled={isSaving}
               >
                 <IoCloseOutline /> {t("cancel")}
               </button>
@@ -104,6 +137,12 @@ const ReplyItem = ({ reply, onEdit, onDelete }) => {
           </div>
         ) : (
           <p className={styles.replyText}>{reply.content}</p>
+        )}
+
+        {actionError && (
+          <p className={styles.inlineError} role="alert">
+            {actionError}
+          </p>
         )}
       </div>
     </div>

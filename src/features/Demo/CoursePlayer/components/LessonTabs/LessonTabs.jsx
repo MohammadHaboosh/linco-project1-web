@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "./LessonTabs.module.css";
 import {
   IoInformationCircleOutline,
   IoChatbubblesOutline,
-  IoDocumentTextOutline,
   IoAttachOutline,
   IoHelpCircleOutline,
   IoChevronDown,
@@ -16,21 +15,39 @@ import { useParams } from "react-router-dom";
 import QASection from "./QASection";
 
 const tabs = [
-  { id: "Overview", icon: <IoInformationCircleOutline /> },
-  { id: "Attachments", icon: <IoAttachOutline /> },
-  { id: "Q&A", icon: <IoChatbubblesOutline /> },
-  { id: "FAQs", icon: <IoHelpCircleOutline /> },
+  {
+    id: "overview",
+    labelKey: "course-player-overview-tab",
+    icon: IoInformationCircleOutline,
+  },
+  {
+    id: "attachments",
+    labelKey: "course-player-attachments-tab",
+    icon: IoAttachOutline,
+  },
+  {
+    id: "questions",
+    labelKey: "course-player-questions-tab",
+    icon: IoChatbubblesOutline,
+  },
+  {
+    id: "faqs",
+    labelKey: "course-player-faqs-tab",
+    icon: IoHelpCircleOutline,
+  },
 ];
 
 const LessonTabs = ({ activeLesson }) => {
-  const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState("Overview");
+  const { t, i18n } = useTranslation();
+  const [activeTab, setActiveTab] = useState("overview");
   const [openFaq, setOpenFaq] = useState(0);
   const { attachments, isLoading, error } = useLessonAttachments(
     activeLesson?.id,
   );
   const { courseId } = useParams();
   const { faqs, loading, errorf } = useFAQs(courseId);
+  const locale = i18n.resolvedLanguage || i18n.language || "en";
+  const numberFormatter = new Intl.NumberFormat(locale);
 
   const handleDownload = (path) => {
     if (!path) return;
@@ -38,7 +55,7 @@ const LessonTabs = ({ activeLesson }) => {
     const fullUrl = path.startsWith("http")
       ? path
       : `https://lincostorage.blob.core.windows.net/uploads/${cleanPath}`;
-    window.open(fullUrl, "_blank");
+    window.open(fullUrl, "_blank", "noopener,noreferrer");
   };
   return (
     <div className={styles.tabsContainer}>
@@ -46,29 +63,56 @@ const LessonTabs = ({ activeLesson }) => {
         <div
           className={styles.tabHeaders}
           role="tablist"
-          aria-label="Lesson information"
+          aria-label={t("course-player-lesson-information")}
         >
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              role="tab"
-              aria-selected={activeTab === tab.id}
-              className={`${styles.tabBtn} ${activeTab === tab.id ? styles.activeTab : ""}`}
-              onClick={() => setActiveTab(tab.id)}
-            >
-              <span className={styles.tabIcon}>{tab.icon}</span>
-              <span className={styles.tabText}>{tab.id}</span>
+          {tabs.map((tab) => {
+            const Icon = tab.icon;
+            const isActive = activeTab === tab.id;
 
-              {tab.id === "Attachments" && attachments.length > 0 && (
-                <b className={styles.countBadge}>{attachments.length}</b>
-              )}
-            </button>
-          ))}
+            return (
+              <button
+                type="button"
+                id={`course-player-${tab.id}-tab`}
+                key={tab.id}
+                role="tab"
+                aria-selected={isActive}
+                aria-controls={`course-player-${tab.id}-panel`}
+                aria-label={t(tab.labelKey)}
+                tabIndex={isActive ? 0 : -1}
+                className={`${styles.tabBtn} ${isActive ? styles.activeTab : ""}`}
+                onClick={() => setActiveTab(tab.id)}
+              >
+                <span className={styles.tabIcon} aria-hidden="true">
+                  <Icon />
+                </span>
+                <span className={styles.tabText}>{t(tab.labelKey)}</span>
+
+                {tab.id === "attachments" && attachments.length > 0 && (
+                  <b
+                    className={styles.countBadge}
+                    aria-label={t("attachment-count", {
+                      count: attachments.length,
+                      formattedCount: numberFormatter.format(
+                        attachments.length,
+                      ),
+                    })}
+                  >
+                    {numberFormatter.format(attachments.length)}
+                  </b>
+                )}
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      <div className={styles.tabContent}>
-        {activeTab === "Overview" && (
+      <div
+        className={styles.tabContent}
+        id={`course-player-${activeTab}-panel`}
+        role="tabpanel"
+        aria-labelledby={`course-player-${activeTab}-tab`}
+      >
+        {activeTab === "overview" && (
           <div className={styles.overviewGrid}>
             <section className={styles.mainPanel}>
               <span className={styles.kicker}>{t("about-this-lesson")}</span>
@@ -90,21 +134,27 @@ const LessonTabs = ({ activeLesson }) => {
           </div>
         )}
 
-        {activeTab === "Attachments" && (
+        {activeTab === "attachments" && (
           <div className={styles.resourcePanel}>
             <div className={styles.panelHeading}>
               <div>
-                <span className={styles.kicker}>LESSON MATERIALS</span>
-                <h3>Resources & Attachments</h3>
+                <span className={styles.kicker}>{t("lesson-materials")}</span>
+                <h3>{t("resources-and-attachments")}</h3>
               </div>
             </div>
 
             <div className={styles.resourceGrid}>
               {isLoading && (
-                <p className={styles.loadingText}>Loading attachments...</p>
+                <p className={styles.loadingText} role="status">
+                  {t("loading-attachments")}
+                </p>
               )}
 
-              {error && <p className={styles.errorText}>{error}</p>}
+              {error && (
+                <p className={styles.errorText} role="alert">
+                  {t("course-player-attachments-load-failed")}
+                </p>
+              )}
 
               {!isLoading && !error && attachments.length === 0 && (
                 <div className={styles.emptyStateContainer}>
@@ -120,12 +170,19 @@ const LessonTabs = ({ activeLesson }) => {
                       <IoAttachOutline />
                     </div>
                     <div className={styles.resourceDetails}>
-                      <strong>{att.name || "Untitled Attachment"}</strong>
+                      <strong>
+                        {att.name || t("course-player-untitled-attachment")}
+                      </strong>
                       <small>{t("lesson-material")}</small>
                     </div>
                     <button
+                      type="button"
                       className={styles.downloadBtn}
                       title={t("download-view-file")}
+                      aria-label={t("course-player-download-attachment", {
+                        name:
+                          att.name || t("course-player-untitled-attachment"),
+                      })}
                       onClick={() => handleDownload(att.path)}
                     >
                       <IoCloudDownloadOutline />
@@ -136,9 +193,11 @@ const LessonTabs = ({ activeLesson }) => {
           </div>
         )}
 
-        {activeTab === "Q&A" && <QASection activeLesson={activeLesson} />}
+        {activeTab === "questions" && (
+          <QASection activeLesson={activeLesson} />
+        )}
 
-        {activeTab === "FAQs" && (
+        {activeTab === "faqs" && (
           <div className={styles.faqPanel}>
             <div className={styles.panelHeading}>
               <div>
@@ -147,9 +206,17 @@ const LessonTabs = ({ activeLesson }) => {
               </div>
             </div>
             <div className={styles.faqList}>
-              {loading && <p className={styles.loadingText}>Loading FAQs...</p>}
+              {loading && (
+                <p className={styles.loadingText} role="status">
+                  {t("loading-faqs")}
+                </p>
+              )}
 
-              {errorf && <p className={styles.errorText}>{errorf}</p>}
+              {errorf && (
+                <p className={styles.errorText} role="alert">
+                  {t("course-player-faqs-load-failed")}
+                </p>
+              )}
 
               {!loading && !errorf && faqs.length === 0 && (
                 <div className={styles.emptyStateContainer}>
@@ -165,13 +232,24 @@ const LessonTabs = ({ activeLesson }) => {
                     className={`${styles.faqItem} ${openFaq === index ? styles.faqOpen : ""}`}
                   >
                     <button
+                      type="button"
                       className={styles.faqTrigger}
                       onClick={() => setOpenFaq(openFaq === index ? -1 : index)}
+                      aria-expanded={openFaq === index}
+                      aria-controls={`course-faq-${faq.id}-answer`}
                     >
                       <span>{faq.question}</span>
                       <IoChevronDown className={styles.faqChevron} />
                     </button>
-                    <div className={styles.faqAnswer}>
+                    <div
+                      className={styles.faqAnswer}
+                      id={`course-faq-${faq.id}-answer`}
+                      role="region"
+                      aria-hidden={openFaq !== index}
+                      aria-label={t("faq-answer-region", {
+                        question: faq.question,
+                      })}
+                    >
                       <p>
                         {faq.answer ||
                           t(

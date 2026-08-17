@@ -14,10 +14,10 @@
 
 /* Chapter Card Redesign */
 .chapterCard {
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--app-border);
   border-radius: 16px;
-  background: #ffffff;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.02);
+  background: var(--app-surface);
+  box-shadow: var(--app-card-shadow);
   overflow: hidden;
   transition:
     border-color 0.25s ease,
@@ -25,14 +25,14 @@
 }
 
 .chapterCard.expanded {
-  border-color: #bfdbfe;
-  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.08);
+  border-color: var(--app-info-border);
+  box-shadow: var(--app-card-hover-shadow);
 }
 
 .chapterHeader {
   width: 100%;
   padding: 14px 16px; /* تقليص البادينج ليصبح الكرت أعرض من الداخل */
-  background: #f8fafc;
+  background: var(--app-surface-muted);
   border: none;
   border-bottom: 1px solid transparent;
   display: flex;
@@ -44,12 +44,12 @@
 }
 
 .chapterCard.expanded .chapterHeader {
-  background: #ffffff;
-  border-bottom-color: #f1f5f9;
+  background: var(--app-surface);
+  border-bottom-color: var(--app-divider);
 }
 
 .chapterHeader:hover {
-  background: #f1f5f9;
+  background: var(--app-surface-soft);
 }
 
 .chapterNumber {
@@ -59,8 +59,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #eff6ff, #dbeafe);
-  color: #2563eb;
+  background: var(--app-info-surface);
+  color: var(--app-link);
   font-size: 1rem;
   font-weight: 800;
   box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
@@ -74,13 +74,13 @@
 }
 
 .chapterInfo strong {
-  color: #0f172a;
+  color: var(--app-heading);
   font-size: 1.05rem;
   font-weight: 800;
 }
 
 .chevron {
-  color: #94a3b8;
+  color: var(--app-muted);
   font-size: 1.1rem;
   transition: transform 0.3s ease;
 }
@@ -93,7 +93,7 @@
 /* Lesson Items Redesign */
 .lessonList {
   padding: 12px 14px; /* تقليص الحواف الداخلية للدروس */
-  background: #ffffff;
+  background: var(--app-surface);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -103,9 +103,9 @@
   position: relative;
   width: 100%;
   padding: 12px 14px; /* مساحات ذكية توفر العرض */
-  border: 1px solid #f1f5f9;
+  border: 1px solid var(--app-divider);
   border-radius: 12px;
-  background: #fcfcfd;
+  background: var(--app-surface-muted);
   display: flex;
   align-items: center;
   gap: 12px;
@@ -119,13 +119,13 @@
 }
 
 .lessonItem:hover:not(:disabled) {
-  background: #eff6ff;
-  border-color: #bfdbfe;
+  background: var(--app-info-surface);
+  border-color: var(--app-info-border);
   box-shadow: 0 6px 16px rgba(37, 99, 235, 0.08);
 }
 
 .lessonItem.selected {
-  background: #eff6ff;
+  background: var(--app-info-surface);
   border-color: #3b82f6;
   box-shadow:
     inset 4px 0 0 #3b82f6,
@@ -141,7 +141,7 @@
 .lessonItem.locked {
   opacity: 0.5;
   cursor: not-allowed;
-  background: #f8fafc;
+  background: var(--app-surface-muted);
 }
 
 .lessonStatus {
@@ -151,9 +151,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #ffffff;
-  border: 2px solid #e2e8f0;
-  color: #94a3b8;
+  background: var(--app-surface);
+  border: 2px solid var(--app-border);
+  color: var(--app-muted);
   font-size: 1rem;
   flex-shrink: 0;
   transition: all 0.2s;
@@ -161,15 +161,15 @@
 
 .completed .lessonStatus {
   color: #10b981;
-  background: #ecfdf5;
+  background: var(--app-success-surface);
   border-color: #34d399;
 }
 
 .active .lessonStatus,
 .selected .lessonStatus {
   color: #2563eb;
-  background: #eff6ff;
-  border-color: #93c5fd;
+  background: var(--app-info-surface);
+  border-color: var(--app-info-border);
 }
 
 .lessonBody {
@@ -180,7 +180,7 @@
 }
 
 .lessonTitle {
-  color: #1e293b;
+  color: var(--app-text-strong);
   font-size: 0.9rem;
   font-weight: 700;
   line-height: 1.4;
@@ -195,7 +195,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  color: #64748b;
+  color: var(--app-muted);
   font-size: 0.75rem;
   font-weight: 600;
 }
@@ -222,21 +222,21 @@
 }
 
 .assessmentBox {
-  margin-top: 8px;
-  background: #fffbeb;
-  border: 1px dashed #f59e0b;
+  margin-block-start: 8px;
+  background: var(--app-warning-surface);
+  border: 1px dashed var(--app-warning-border);
 }
 
 .assessmentBox:hover {
-  background: #fef3c7;
+  background: var(--app-warning-soft);
 }
 
 .assessmentIcon {
   width: 36px;
   height: 36px;
   border-radius: 10px;
-  background: #fef3c7;
-  color: #d97706;
+  background: var(--app-warning-soft);
+  color: var(--app-warning-icon);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -245,19 +245,19 @@
 
 .assessmentText strong {
   display: block;
-  color: #b45309;
+  color: var(--app-warning-text);
   font-size: 0.9rem;
   font-weight: 800;
 }
 
 .assessmentText small {
-  color: #d97706;
+  color: var(--app-warning-icon);
   font-size: 0.75rem;
 }
 
 .finalAssessment {
-  background: #ffffff;
-  border: 1px solid #cbd5e1;
+  background: var(--app-surface);
+  border: 1px solid var(--app-border-strong);
 }
 
 .finalAssessment:hover {
@@ -269,8 +269,8 @@
   width: 36px;
   height: 36px;
   border-radius: 10px;
-  background: #eff6ff;
-  color: #2563eb;
+  background: var(--app-info-surface);
+  color: var(--app-link);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -278,8 +278,8 @@
 }
 
 .certificate {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  background: var(--app-surface-muted);
+  border: 1px solid var(--app-border);
   opacity: 0.8;
   cursor: default;
 }
@@ -288,12 +288,29 @@
   width: 36px;
   height: 36px;
   border-radius: 10px;
-  background: #e2e8f0;
-  color: #64748b;
+  background: var(--app-surface-soft);
+  color: var(--app-muted);
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 1.2rem;
+}
+
+.certificateText {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.certificateText strong {
+  color: var(--app-text-strong);
+  font-size: 0.9rem;
+}
+
+.certificateText small {
+  color: var(--app-muted);
+  line-height: 1.5;
 }
 .statusContainer {
   display: flex;
@@ -302,22 +319,22 @@
   justify-content: center;
   padding: 40px 20px;
   text-align: center;
-  color: #64748b;
+  color: var(--app-muted);
   font-size: 0.95rem;
   font-weight: 500;
-  background: #f8fafc;
-  border: 1px dashed #cbd5e1;
+  background: var(--app-surface-muted);
+  border: 1px dashed var(--app-border-strong);
   border-radius: 16px;
 }
 
 .loader {
   width: 32px;
   height: 32px;
-  border: 3px solid #e2e8f0;
-  border-top-color: #2563eb;
+  border: 3px solid var(--app-border);
+  border-block-start-color: var(--app-link);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
-  margin-bottom: 12px;
+  margin-block-end: 12px;
 }
 
 @keyframes spin {
@@ -327,14 +344,19 @@
 }
 
 .errorText {
-  color: #ef4444;
+  color: var(--app-danger-text);
   font-weight: 600;
+}
+
+.statusErrorIcon {
+  color: var(--app-danger-text);
+  font-size: 1.5rem;
 }
 
 .lessonsPlaceholder {
   text-align: center;
   padding: 16px;
-  color: #94a3b8;
+  color: var(--app-muted);
   font-size: 0.85rem;
   font-weight: 500;
 }
@@ -343,7 +365,7 @@
 .lessonItem:focus-visible {
   position: relative;
   z-index: 1;
-  outline: 3px solid rgba(59, 130, 246, 0.24);
+  outline: 3px solid var(--app-focus-ring);
   outline-offset: 2px;
 }
 

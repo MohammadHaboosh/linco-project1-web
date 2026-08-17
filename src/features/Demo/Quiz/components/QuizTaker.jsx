@@ -23,7 +23,15 @@ const QuizTaker = ({
     : IoArrowBackOutline;
   const NextIcon = isRtl ? IoArrowBackOutline : IoArrowForwardOutline;
   const [currentQIndex, setCurrentQIndex] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(examData.durationMinutes * 60);
+  const [timeLeft, setTimeLeft] = useState(
+    (Number(examData.durationMinutes) || 0) * 60,
+  );
+  const locale = i18n.resolvedLanguage || i18n.language || "en";
+  const numberFormatter = new Intl.NumberFormat(locale);
+  const timeFormatter = new Intl.NumberFormat(locale, {
+    minimumIntegerDigits: 2,
+    useGrouping: false,
+  });
 
   const questions = examData.questions || [];
   const currentQuestion = questions[currentQIndex];
@@ -39,9 +47,9 @@ const QuizTaker = ({
   }, [timeLeft, isSubmitting, onSubmit]);
 
   const formatTime = (sec) =>
-    `${Math.floor(sec / 60)
-      .toString()
-      .padStart(2, "0")}:${(sec % 60).toString().padStart(2, "0")}`;
+    `${timeFormatter.format(Math.floor(sec / 60))}:${timeFormatter.format(
+      sec % 60,
+    )}`;
 
   const handleNext = () => {
     if (currentQIndex < questions.length - 1) {
@@ -58,21 +66,35 @@ const QuizTaker = ({
   if (!currentQuestion) return null;
 
   return (
-    <div className={styles.takerContainer}>
+    <div className={styles.takerContainer} aria-busy={isSubmitting}>
       <div className={styles.compactHeader}>
         <div className={styles.headerLeft}>
           <div className={styles.scoreBox}>
-            Q {currentQIndex + 1} / {questions.length}
+            {t("course-player-assessment-question-progress", {
+              current: numberFormatter.format(currentQIndex + 1),
+              total: numberFormatter.format(questions.length),
+            })}
           </div>
           <div
             className={`${styles.timerBox} ${timeLeft < 60 ? styles.timerWarning : ""}`}
+            role="timer"
+            aria-label={t("course-player-assessment-time-remaining", {
+              time: formatTime(timeLeft),
+            })}
           >
             <IoTimeOutline /> {formatTime(timeLeft)}
           </div>
         </div>
 
         <div className={styles.progressWrapper}>
-          <div className={styles.progressBar}>
+          <div
+            className={styles.progressBar}
+            role="progressbar"
+            aria-label={t("course-player-assessment-progress")}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={Math.round(progress)}
+          >
             <div
               className={styles.progressFill}
               style={{ width: `${progress}%` }}
@@ -86,7 +108,7 @@ const QuizTaker = ({
           <div className={styles.questionHeader}>
             <img
               src="/icons/linco-logo.png"
-              alt="Thinking"
+              alt={t("course-player-thinking-mascot-alt")}
               className={styles.tinyMascot}
             />
             <div className={styles.questionTextWrapper}>
@@ -115,7 +137,7 @@ const QuizTaker = ({
                   </div>
                   <input
                     type="checkbox"
-                    hidden
+                    className={styles.choiceInput}
                     checked={isSelected || false}
                     onChange={() => toggleChoice(currentQuestion.id, choice.id)}
                   />

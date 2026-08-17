@@ -3,6 +3,7 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
+  color: var(--app-text);
 }
 
 .homeView {
@@ -29,7 +30,7 @@
 .glowBg {
   position: absolute;
   top: -50%;
-  left: -50%;
+  inset-inline-start: -50%;
   width: 200%;
   height: 200%;
   background: radial-gradient(
@@ -90,8 +91,8 @@
 }
 
 .actionCard {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
   border-radius: 20px;
   padding: 20px;
   display: flex;
@@ -104,22 +105,22 @@
     border-color 0.24s ease,
     box-shadow 0.24s ease,
     transform 0.24s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+  box-shadow: var(--app-card-shadow);
 }
 
 .actionCard:hover {
   transform: translateY(-4px);
   border-color: #8b5cf6;
   box-shadow: 0 12px 30px rgba(139, 92, 246, 0.15);
-  background: #faf5ff;
+  background: color-mix(in srgb, #8b5cf6 9%, var(--app-surface));
 }
 
 .actionIcon {
   width: 55px;
   height: 55px;
   border-radius: 14px;
-  background: #f3e8ff;
-  color: #9333ea;
+  background: color-mix(in srgb, #8b5cf6 16%, var(--app-surface));
+  color: var(--app-link);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -131,13 +132,18 @@
   display: block;
   font-size: 1.1rem;
   font-weight: 800;
-  color: #0f172a;
+  color: var(--app-heading);
   margin-bottom: 5px;
 }
 
 .actionText span {
   font-size: 0.9rem;
-  color: #64748b;
+  color: var(--app-muted);
+}
+
+.actionText {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 /* Chat View */
@@ -154,16 +160,16 @@
   justify-content: space-between;
   align-items: center;
   padding-bottom: 16px;
-  border-bottom: 1px solid #e2e8f0;
+  border-block-end: 1px solid var(--app-border);
   margin-bottom: 18px;
 }
 
 .backBtn {
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
+  background: var(--app-surface-soft);
+  border: 1px solid var(--app-border);
   padding: 10px 20px;
   border-radius: 12px;
-  color: #475569;
+  color: var(--app-text);
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
@@ -173,18 +179,18 @@
 }
 
 .backBtn:hover {
-  background: #e2e8f0;
-  color: #0f172a;
+  background: var(--app-border);
+  color: var(--app-heading);
 }
 
 .chatModeInfo {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: #f3e8ff;
+  background: color-mix(in srgb, #8b5cf6 16%, var(--app-surface));
   padding: 8px 14px;
   border-radius: 20px;
-  color: #7e22ce;
+  color: var(--app-link);
   font-size: 0.9rem;
 }
 
@@ -209,7 +215,7 @@
 }
 
 .chatModeInfo span {
-  color: #8b5cf6;
+  color: var(--app-muted);
   font-size: 0.68rem;
   font-weight: 600;
 }
@@ -259,9 +265,9 @@
 }
 
 .aiMsg .messageBubble {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  color: #1e293b;
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  color: var(--app-text-strong);
   border-end-start-radius: 4px;
 }
 
@@ -286,7 +292,7 @@
 }
 
 .suggestions > span {
-  color: #94a3b8;
+  color: var(--app-muted);
   font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.06em;
@@ -295,10 +301,10 @@
 
 .suggestions button {
   padding: 9px 13px;
-  background: #ffffff;
-  border: 1px solid #ddd6fe;
+  background: var(--app-surface);
+  border: 1px solid var(--app-info-border);
   border-radius: 12px;
-  color: #6d28d9;
+  color: var(--app-link);
   font: inherit;
   font-size: 0.82rem;
   font-weight: 650;
@@ -308,7 +314,7 @@
 }
 
 .suggestions button:hover:not(:disabled) {
-  background: #faf5ff;
+  background: color-mix(in srgb, #8b5cf6 9%, var(--app-surface));
   border-color: #a78bfa;
   transform: translateX(2px);
 }
@@ -346,10 +352,10 @@
   align-items: flex-start;
   gap: 10px;
   padding: 14px;
-  background: #fff7ed;
-  border: 1px solid #fed7aa;
+  background: var(--app-warning-surface);
+  border: 1px solid var(--app-warning-border);
   border-radius: 14px;
-  color: #c2410c;
+  color: var(--app-warning-icon);
 }
 
 .errorNotice > svg {
@@ -364,12 +370,12 @@
 }
 
 .errorNotice strong {
-  color: #9a3412;
+  color: var(--app-warning-text);
   font-size: 0.88rem;
 }
 
 .errorNotice span {
-  color: #c2410c;
+  color: var(--app-warning-text);
   font-size: 0.78rem;
   line-height: 1.45;
 }
@@ -383,7 +389,7 @@
   padding: 0;
   background: transparent;
   border: none;
-  color: #9a3412;
+  color: var(--app-warning-text);
   font: inherit;
   font-size: 0.78rem;
   font-weight: 800;
@@ -395,7 +401,7 @@
   padding: 2px;
   background: transparent;
   border: none;
-  color: #c2410c;
+  color: var(--app-warning-text);
   font-size: 1rem;
   cursor: pointer;
 }
@@ -404,11 +410,11 @@
   display: flex;
   gap: 14px;
   margin-top: auto;
-  background: #ffffff;
+  background: var(--app-surface);
   padding: 14px;
   border-radius: 20px;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
+  border: 1px solid var(--app-border);
+  box-shadow: var(--app-card-shadow);
   transition:
     border-color 0.2s ease,
     box-shadow 0.2s ease;
@@ -425,7 +431,7 @@
   border: none;
   outline: none;
   font-size: 1rem;
-  color: #0f172a;
+  color: var(--app-text-strong);
   min-height: 50px;
   max-height: 130px;
   padding: 13px 10px;
@@ -435,7 +441,7 @@
 }
 
 .chatInput::placeholder {
-  color: #94a3b8;
+  color: var(--app-muted);
 }
 
 .sendBtn {
@@ -460,7 +466,8 @@
 }
 
 .sendBtn:disabled {
-  background: #cbd5e1;
+  background: var(--app-surface-soft);
+  color: var(--app-muted);
   cursor: not-allowed;
   box-shadow: none;
 }
@@ -470,13 +477,13 @@
 .suggestions button:focus-visible,
 .sendBtn:focus-visible,
 .dismissErrorBtn:focus-visible {
-  outline: 3px solid rgba(139, 92, 246, 0.25);
+  outline: 3px solid var(--app-focus-ring);
   outline-offset: 2px;
 }
 
 .composerHint {
   margin: 7px 4px 0;
-  color: #94a3b8;
+  color: var(--app-muted);
   font-size: 0.68rem;
   text-align: center;
 }
@@ -508,7 +515,13 @@
 
 @media (max-width: 560px) {
   .chatHeader {
+    gap: 10px;
     align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .chatModeInfo {
+    width: 100%;
   }
 
   .chatModeInfo span {
@@ -521,6 +534,31 @@
 
   .suggestions {
     margin-inline-start: 0;
+  }
+
+  .heroSection {
+    padding: 28px 18px;
+  }
+
+  .actionCard {
+    gap: 12px;
+    padding: 15px;
+  }
+
+  .actionIcon {
+    width: 46px;
+    height: 46px;
+  }
+
+  .inputArea {
+    gap: 8px;
+    padding: 9px;
+  }
+
+  .sendBtn {
+    width: 44px;
+    height: 44px;
+    border-radius: 13px;
   }
 }
 

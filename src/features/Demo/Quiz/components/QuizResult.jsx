@@ -1,13 +1,13 @@
 import {
   IoArrowBackOutline,
   IoArrowForwardOutline,
-  IoRefreshOutline,
+  IoBulbOutline,
   IoCheckmarkCircleOutline,
   IoCloseCircleOutline,
-  IoBulbOutline,
+  IoRefreshOutline,
 } from "react-icons/io5";
-import styles from "./Quiz.module.css";
 import { useTranslation } from "react-i18next";
+import styles from "./Quiz.module.css";
 
 const QuizResult = ({
   scoreInfo,
@@ -16,36 +16,54 @@ const QuizResult = ({
   onRetry,
   onContinue,
 }) => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const ContinueIcon =
     i18n.dir() === "rtl" ? IoArrowBackOutline : IoArrowForwardOutline;
   const attemptData = scoreInfo.examAttempt || {};
-  const percentage = attemptData.score ?? (scoreInfo.score || 0);
+  const percentage = Number(attemptData.score ?? scoreInfo.score) || 0;
   const isPassed = percentage >= passingScore;
   const questions = scoreInfo.questions || [];
+  const locale = i18n.resolvedLanguage || i18n.language || "en";
+  const numberFormatter = new Intl.NumberFormat(locale);
+  const percentFormatter = new Intl.NumberFormat(locale, {
+    style: "percent",
+    maximumFractionDigits: 0,
+  });
+  const formattedScore = percentFormatter.format(percentage / 100);
+  const formattedPassingScore = percentFormatter.format(passingScore / 100);
 
   return (
-    <div className={styles.resultTwoColumnContainer}>
+    <div className={styles.resultTwoColumnContainer} dir={i18n.dir()}>
       <div className={styles.resultSummaryCol}>
         <div className={styles.resultContent}>
           <img
             src={isPassed ? "/images/squid-happy.png" : "/icons/sad.png"}
-            alt={isPassed ? "Happy Mascot" : "Sad Mascot"}
+            alt={
+              isPassed
+                ? t("course-player-success-mascot-alt")
+                : t("course-player-encouragement-mascot-alt")
+            }
             className={styles.mascotImgResult}
           />
 
           <h2 className={isPassed ? styles.successText : styles.failText}>
-            {isPassed ? "Awesome Job! 🌟" : "Keep Practicing! 💪"}
+            {isPassed
+              ? t("course-player-assessment-passed-title")
+              : t("course-player-assessment-failed-title")}
           </h2>
           <p className={styles.resultSubtitle}>
             {isPassed
-              ? "You've proven your skills in this section. Ready for the next challenge!"
-              : "Review your answers on the right and try again to improve your score."}
+              ? t("course-player-assessment-passed-description")
+              : t("course-player-assessment-failed-description")}
           </p>
 
           <div className={styles.horizontalScoreBoard}>
             <div
               className={`${styles.scoreRing} ${isPassed ? styles.ringSuccess : styles.ringFail}`}
+              role="img"
+              aria-label={t("course-player-assessment-score-value", {
+                score: formattedScore,
+              })}
             >
               <svg viewBox="0 0 36 36" className={styles.circularChart}>
                 <path
@@ -59,25 +77,34 @@ const QuizResult = ({
                 />
               </svg>
               <div className={styles.scorePercentage}>
-                <strong>{percentage}%</strong>
-                <span>Score</span>
+                <strong>{formattedScore}</strong>
+                <span>{t("course-player-score")}</span>
               </div>
             </div>
 
-            <div className={styles.dividerVertical} />
+            <div className={styles.dividerVertical} aria-hidden="true" />
 
             <div className={styles.statsDetails}>
               <div className={styles.statRow}>
-                <IoCheckmarkCircleOutline className={styles.correctIcon} />
-                <span>Result Status</span>
-                <strong style={{ color: isPassed ? "#10b981" : "#ef4444" }}>
-                  {isPassed ? "PASSED" : "FAILED"}
+                <IoCheckmarkCircleOutline
+                  className={styles.correctIcon}
+                  aria-hidden="true"
+                />
+                <span>{t("course-player-result-status")}</span>
+                <strong
+                  className={
+                    isPassed ? styles.statusPassed : styles.statusFailed
+                  }
+                >
+                  {isPassed
+                    ? t("course-player-passed-status")
+                    : t("course-player-failed-status")}
                 </strong>
               </div>
               <div className={styles.statRow}>
-                <div className={styles.targetDot} />
-                <span>Passing Score Required</span>
-                <strong>{passingScore}%</strong>
+                <div className={styles.targetDot} aria-hidden="true" />
+                <span>{t("course-player-passing-score-required")}</span>
+                <strong>{formattedPassingScore}</strong>
               </div>
             </div>
           </div>
@@ -89,7 +116,8 @@ const QuizResult = ({
                 className={styles.retryBtn}
                 onClick={onRetry}
               >
-                <IoRefreshOutline /> Retry Exam
+                <IoRefreshOutline aria-hidden="true" />
+                {t("course-player-retry-exam")}
               </button>
             )}
             <button
@@ -97,7 +125,8 @@ const QuizResult = ({
               className={styles.continueBtn}
               onClick={onContinue}
             >
-              Continue Course <ContinueIcon />
+              {t("course-player-continue-course")}
+              <ContinueIcon aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -105,29 +134,38 @@ const QuizResult = ({
 
       <div className={styles.resultReviewCol}>
         <div className={styles.reviewHeader}>
-          <h3>Exam Review</h3>
-          <p>Check your answers and learn from your mistakes.</p>
+          <h3>{t("course-player-exam-review")}</h3>
+          <p>{t("course-player-exam-review-description")}</p>
         </div>
 
         <div className={styles.reviewScrollArea}>
-          {questions.map((q, index) => {
-            const studentSelectedIds = userAnswers[q.id] || [];
+          {questions.length === 0 && (
+            <p className={styles.reviewEmpty} role="status">
+              {t("course-player-no-review-questions")}
+            </p>
+          )}
+          {questions.map((question, index) => {
+            const studentSelectedIds = userAnswers[question.id] || [];
 
             return (
-              <div key={q.id} className={styles.reviewQuestionCard}>
+              <section key={question.id} className={styles.reviewQuestionCard}>
                 <h4 className={styles.reviewQuestionText}>
-                  <span className={styles.questionNumber}>Q{index + 1}.</span>{" "}
-                  {q.question}
+                  <span className={styles.questionNumber}>
+                    {t("course-player-assessment-question-number", {
+                      number: numberFormatter.format(index + 1),
+                    })}
+                  </span>{" "}
+                  {question.question}
                 </h4>
 
-                {q.note && (
+                {question.note && (
                   <div className={styles.reviewNote}>
-                    <IoBulbOutline /> {q.note}
+                    <IoBulbOutline aria-hidden="true" /> {question.note}
                   </div>
                 )}
 
                 <div className={styles.reviewChoicesList}>
-                  {q.choices?.map((choice) => {
+                  {question.choices?.map((choice) => {
                     const isSelectedByStudent = studentSelectedIds.includes(
                       choice.id,
                     );
@@ -141,18 +179,23 @@ const QuizResult = ({
                       IconComponent = (
                         <IoCheckmarkCircleOutline
                           className={styles.iconCorrect}
+                          aria-hidden="true"
                         />
                       );
                     } else if (!isCorrectAnswer && isSelectedByStudent) {
                       choiceClass = styles.reviewChoiceWrong;
                       IconComponent = (
-                        <IoCloseCircleOutline className={styles.iconWrong} />
+                        <IoCloseCircleOutline
+                          className={styles.iconWrong}
+                          aria-hidden="true"
+                        />
                       );
                     } else if (isCorrectAnswer && !isSelectedByStudent) {
-                      choiceClass = styles.reviewChoiceMissed; // الإجابة الصحيحة التي نسي الطالب اختيارها
+                      choiceClass = styles.reviewChoiceMissed;
                       IconComponent = (
                         <IoCheckmarkCircleOutline
                           className={styles.iconMissed}
+                          aria-hidden="true"
                         />
                       );
                     }
@@ -163,7 +206,10 @@ const QuizResult = ({
                         className={`${styles.reviewChoiceItem} ${choiceClass}`}
                       >
                         <div className={styles.reviewChoiceContent}>
-                          <div className={styles.reviewCheckboxMock}>
+                          <div
+                            className={styles.reviewCheckboxMock}
+                            aria-hidden="true"
+                          >
                             {isSelectedByStudent && (
                               <div className={styles.reviewCheckboxFill} />
                             )}
@@ -179,7 +225,7 @@ const QuizResult = ({
                     );
                   })}
                 </div>
-              </div>
+              </section>
             );
           })}
         </div>

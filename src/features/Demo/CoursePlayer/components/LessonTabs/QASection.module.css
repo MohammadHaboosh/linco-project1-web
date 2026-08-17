@@ -29,7 +29,7 @@
   margin: 0;
   font-size: 1.75rem; /* خط كبير وعريض */
   font-weight: 900;
-  color: #0f172a;
+  color: var(--app-heading);
   letter-spacing: -0.02em;
 }
 
@@ -57,21 +57,21 @@
 
 /* ================= ASK FORM ================= */
 .askForm {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
   border-radius: 16px;
   padding: 24px;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.05);
+  box-shadow: var(--app-card-shadow);
   animation: slideDown 0.3s ease-out;
 }
 
 .askForm textarea {
   width: 100%;
-  border: 1px solid #cbd5e1;
-  background: #f8fafc;
+  border: 1px solid var(--app-border-strong);
+  background: var(--app-surface-muted);
   border-radius: 12px;
   padding: 16px;
   font-size: 1rem;
@@ -80,11 +80,11 @@
   outline: none;
   font-family: inherit;
   transition: all 0.2s;
-  color: #1e293b;
+  color: var(--app-text-strong);
 }
 
 .askForm textarea:focus {
-  background: #ffffff;
+  background: var(--app-surface);
   border-color: #3b82f6;
   box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
 }
@@ -97,7 +97,7 @@
 
 .cancelBtn {
   background: transparent;
-  color: #64748b;
+  color: var(--app-muted);
   border: none;
   padding: 10px 20px;
   border-radius: 8px;
@@ -106,8 +106,8 @@
   transition: background 0.2s;
 }
 .cancelBtn:hover {
-  background: #f1f5f9;
-  color: #0f172a;
+  background: var(--app-surface-soft);
+  color: var(--app-heading);
 }
 
 .submitBtn {
@@ -134,15 +134,15 @@
 }
 
 .questionCard {
-  background: #ffffff;
-  border: 1px solid #f1f5f9;
+  background: var(--app-surface);
+  border: 1px solid var(--app-divider);
   border-radius: 20px;
   padding: 24px;
-  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
+  box-shadow: var(--app-card-shadow);
   transition: box-shadow 0.3s ease;
 }
 .questionCard:hover {
-  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
+  box-shadow: var(--app-card-hover-shadow);
 }
 
 .userInfo {
@@ -165,26 +165,27 @@
   font-weight: 800;
   font-size: 1.2rem;
   box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.5);
+  object-fit: cover;
 }
 
 .userName {
   font-weight: 700;
-  color: #0f172a;
-  margin: 0 0 2px 0;
+  color: var(--app-heading);
+  margin: 0 0 2px;
   font-size: 1rem;
 }
 
 .date {
   font-size: 0.8rem;
-  color: #94a3b8;
+  color: var(--app-muted);
   font-weight: 500;
 }
 
 .questionText {
-  color: #334155;
+  color: var(--app-text-strong);
   font-size: 1.05rem;
   line-height: 1.7;
-  margin: 0 0 20px 0;
+  margin: 0 0 20px;
 }
 
 /* ================= THREADED REPLIES (اللمسة الإبداعية) ================= */
@@ -195,7 +196,7 @@
 
 /* الخط الجانبي الذي يربط الردود بالسؤال */
 .repliesThread {
-  border-inline-start: 2px solid #e2e8f0;
+  border-inline-start: 2px solid var(--app-border);
   margin-inline-start: 22px;
   padding-inline-start: 24px;
   display: flex;
@@ -204,7 +205,7 @@
 }
 
 .replyItem {
-  background: #f8fafc;
+  background: var(--app-surface-muted);
   padding: 16px;
   border-radius: 16px;
   border: 1px solid transparent;
@@ -215,9 +216,9 @@
     border-color 0.2s;
 }
 .replyItem:hover {
-  background: #ffffff;
-  border-color: #e2e8f0;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.02);
+  background: var(--app-surface);
+  border-color: var(--app-border);
+  box-shadow: var(--app-card-shadow);
 }
 
 .replyAvatar {
@@ -232,6 +233,7 @@
   font-weight: 800;
   font-size: 1rem;
   flex-shrink: 0;
+  object-fit: cover;
 }
 
 .replyContent {
@@ -248,12 +250,12 @@
 .replyName {
   font-size: 0.9rem;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--app-text-strong);
 }
 
 .replyText {
   font-size: 0.95rem;
-  color: #475569;
+  color: var(--app-text);
   margin: 0;
   line-height: 1.6;
 }
@@ -263,8 +265,8 @@
   display: flex;
   gap: 10px;
   margin-top: 16px;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
   padding: 6px;
   border-radius: 99px;
   box-shadow: inset 0 2px 4px rgba(15, 23, 42, 0.02);
@@ -277,7 +279,7 @@
   padding: 10px 16px;
   font-size: 0.95rem;
   outline: none;
-  color: #0f172a;
+  color: var(--app-text-strong);
 }
 
 .sendReplyBtn {
@@ -292,8 +294,8 @@
   transition: all 0.2s;
 }
 .sendReplyBtn:disabled {
-  background: #cbd5e1;
-  color: #f8fafc;
+  background: var(--app-surface-soft);
+  color: var(--app-muted);
   cursor: not-allowed;
 }
 .sendReplyBtn:not(:disabled):hover {
@@ -304,14 +306,14 @@
 .cardActions {
   display: flex;
   gap: 16px;
-  border-top: 1px solid #f1f5f9;
+  border-block-start: 1px solid var(--app-divider);
   padding-top: 16px;
 }
 
 .actionBtn {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  color: #475569;
+  background: var(--app-surface-muted);
+  border: 1px solid var(--app-border);
+  color: var(--app-text);
   font-size: 0.9rem;
   font-weight: 600;
   display: flex;
@@ -323,9 +325,9 @@
   transition: all 0.2s;
 }
 .actionBtn:hover {
-  background: #eff6ff;
-  border-color: #bfdbfe;
-  color: #2563eb;
+  background: var(--app-info-surface);
+  border-color: var(--app-info-border);
+  color: var(--app-link);
 }
 
 .iconActionBtn,
@@ -342,19 +344,19 @@
 }
 
 .iconActionBtn {
-  color: #94a3b8;
+  color: var(--app-muted);
 }
 .iconActionBtn:hover {
-  background: #f1f5f9;
-  color: #2563eb;
+  background: var(--app-surface-soft);
+  color: var(--app-link);
 }
 
 .iconActionBtnDanger {
-  color: #94a3b8;
+  color: var(--app-muted);
 }
 .iconActionBtnDanger:hover {
-  background: #fef2f2;
-  color: #ef4444;
+  background: var(--app-danger-surface);
+  color: var(--app-danger-text);
 }
 
 /* ================= EDIT MODE ================= */
@@ -376,8 +378,8 @@
   resize: vertical;
   min-height: 100px;
   font-family: inherit;
-  background: #eff6ff;
-  color: #0f172a;
+  background: var(--app-info-surface);
+  color: var(--app-text-strong);
 }
 
 .editActions {
@@ -407,23 +409,192 @@
   background: #059669;
 }
 .cancelEditBtn {
-  background: #f1f5f9;
-  color: #475569;
+  background: var(--app-surface-soft);
+  color: var(--app-text);
 }
 .cancelEditBtn:hover {
-  background: #e2e8f0;
-  color: #0f172a;
+  background: var(--app-border);
+  color: var(--app-heading);
 }
 
 /* ================= EMPTY STATE ================= */
 .emptyStateContainer {
-  background: linear-gradient(to bottom, #f8fafc, #ffffff);
-  border: 1px dashed #cbd5e1;
+  background: linear-gradient(
+    to bottom,
+    var(--app-surface-muted),
+    var(--app-surface)
+  );
+  border: 1px dashed var(--app-border-strong);
   border-radius: 16px;
   padding: 40px 20px;
   text-align: center;
-  color: #64748b;
+  color: var(--app-muted);
   font-weight: 500;
+}
+
+.statusMessage,
+.replyStatus {
+  margin: 0;
+  padding: 20px;
+  color: var(--app-muted);
+  font-size: 0.86rem;
+  text-align: center;
+}
+
+.inlineError {
+  margin: 0;
+  padding: 10px 12px;
+  color: var(--app-danger-text);
+  background: var(--app-danger-surface);
+  border: 1px solid var(--app-danger-border);
+  border-radius: 10px;
+  font-size: 0.84rem;
+  line-height: 1.5;
+  text-align: start;
+}
+
+.ownerActions {
+  display: flex;
+  gap: 4px;
+  margin-inline-start: auto;
+}
+
+.dateIcon {
+  margin-inline-end: 4px;
+  vertical-align: middle;
+}
+
+.replyEditTextarea {
+  min-height: 60px;
+  padding: 12px;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.askBtn:focus-visible,
+.cancelBtn:focus-visible,
+.submitBtn:focus-visible,
+.actionBtn:focus-visible,
+.iconActionBtn:focus-visible,
+.iconActionBtnDanger:focus-visible,
+.sendReplyBtn:focus-visible,
+.saveEditBtn:focus-visible,
+.cancelEditBtn:focus-visible {
+  outline: 3px solid var(--app-focus-ring);
+  outline-offset: 2px;
+}
+
+.askBtn:disabled,
+.cancelBtn:disabled,
+.submitBtn:disabled,
+.iconActionBtn:disabled,
+.iconActionBtnDanger:disabled,
+.saveEditBtn:disabled,
+.cancelEditBtn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+@media (max-width: 680px) {
+  .qaContainer,
+  .questionsList {
+    gap: 16px;
+  }
+
+  .panelHeadingQA {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .panelHeadingQA h3 {
+    font-size: 1.3rem;
+    overflow-wrap: anywhere;
+  }
+
+  .askBtn {
+    align-self: stretch;
+    justify-content: center;
+  }
+
+  .askForm,
+  .questionCard {
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  .userInfo {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .ownerActions {
+    flex: 0 0 auto;
+  }
+
+  .repliesThread {
+    margin-inline-start: 6px;
+    padding-inline-start: 12px;
+  }
+
+  .replyItem {
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .replyHeader {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .replyContent,
+  .questionText,
+  .replyText {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .replyInputWrapper {
+    align-items: stretch;
+    flex-direction: column;
+    border-radius: 14px;
+  }
+
+  .sendReplyBtn {
+    width: 100%;
+  }
+
+  .formActions,
+  .editActions,
+  .cardActions {
+    flex-wrap: wrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qaContainer,
+  .askForm,
+  .editBox {
+    animation-duration: 0.01ms;
+  }
+
+  .askBtn,
+  .questionCard,
+  .replyItem,
+  .actionBtn {
+    transition-duration: 0.01ms;
+  }
 }
 
 @keyframes fadeIn {

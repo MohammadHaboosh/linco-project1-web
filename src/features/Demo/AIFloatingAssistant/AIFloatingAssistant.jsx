@@ -143,7 +143,7 @@ const AIFloatingAssistant = ({ courseId }) => {
           <IoAlertCircleOutline aria-hidden="true" />
           <div>
             <strong>{t("we-couldnt-get-an-answer")}</strong>
-            <span>{error}</span>
+            <span>{t("course-assistant-request-error")}</span>
             <button
               type="button"
               onClick={retryLastQuestion}
@@ -211,10 +211,8 @@ const AIFloatingAssistant = ({ courseId }) => {
               type="button"
               className={styles.backBtn}
               onClick={() => setMode("home")}
+              aria-label={t("back")}
             >
-              <span aria-hidden="true">
-                {i18n.dir() === "rtl" ? "→" : "←"}
-              </span>
               <BackIcon aria-hidden="true" />
               {t("back")}
             </button>

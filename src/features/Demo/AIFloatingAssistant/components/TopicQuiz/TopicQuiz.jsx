@@ -25,6 +25,8 @@ const TopicQuiz = ({ courseId, quizType = "topic" }) => {
   const { t, i18n } = useTranslation();
   const isRandomQuiz = quizType === "random";
   const isRtl = i18n.dir() === "rtl";
+  const locale = i18n.resolvedLanguage || i18n.language || "en";
+  const numberFormatter = new Intl.NumberFormat(locale);
   const PreviousIcon = isRtl
     ? IoArrowForwardOutline
     : IoArrowBackOutline;
@@ -159,7 +161,7 @@ const TopicQuiz = ({ courseId, quizType = "topic" }) => {
           {error && (
             <div className={styles.generateError} role="alert">
               <IoCloseCircle />
-              <span>{error}</span>
+              <span>{t("course-player-generated-quiz-load-failed")}</span>
             </div>
           )}
 
@@ -202,11 +204,16 @@ const TopicQuiz = ({ courseId, quizType = "topic" }) => {
           <IoTrophyOutline />
         </div>
         <span className={styles.completionEyebrow}>{t("quiz-complete")}</span>
-        <h3>{t("generated-quiz-score", { score: percentage })}</h3>
+        <h3>
+          {t("generated-quiz-score", {
+            score: numberFormatter.format(percentage),
+          })}
+        </h3>
         <p>
-          {t("generated-quiz-result-summary", {
-            correct: correctAnswerCount,
-            total: questions.length,
+          {t("course-player-generated-quiz-result-summary", {
+            count: questions.length,
+            correct: numberFormatter.format(correctAnswerCount),
+            total: numberFormatter.format(questions.length),
           })}
         </p>
 
@@ -247,13 +254,20 @@ const TopicQuiz = ({ courseId, quizType = "topic" }) => {
         </div>
         <span className={styles.questionCounter}>
           {t("question-progress", {
-            current: currentQuestionIndex + 1,
-            total: questions.length,
+            current: numberFormatter.format(currentQuestionIndex + 1),
+            total: numberFormatter.format(questions.length),
           })}
         </span>
       </div>
 
-      <div className={styles.progressTrack} aria-hidden="true">
+      <div
+        className={styles.progressTrack}
+        role="progressbar"
+        aria-label={t("course-player-generated-quiz-progress")}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={Math.round(progress)}
+      >
         <span style={{ width: `${progress}%` }} />
       </div>
 
@@ -308,9 +322,10 @@ const TopicQuiz = ({ courseId, quizType = "topic" }) => {
               <strong>{isCorrect ? t("correct") : t("not-quite")}</strong>
             </div>
             <p className={styles.correctAnswerText}>
-              <span>{t("correct-answer")}:</span>{" "}
-              {getOptionLabel(currentQuestion.correctOptionIndex)}){" "}
-              {getOptionText(correctOption)}
+              {t("course-player-correct-answer-value", {
+                label: getOptionLabel(currentQuestion.correctOptionIndex),
+                answer: getOptionText(correctOption),
+              })}
             </p>
             {currentQuestion.explanation && (
               <p className={styles.explanation}>

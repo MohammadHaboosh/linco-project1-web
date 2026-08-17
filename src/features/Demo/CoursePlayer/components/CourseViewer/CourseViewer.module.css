@@ -4,22 +4,30 @@
 
 .viewerContainer {
   --course-header-height: 76px;
-  --bg-color: #f5f7fb;
-  --card-bg: #ffffff;
-  --primary-navy: #0f172a;
+  --bg-color: var(--app-page-bg);
+  --card-bg: var(--app-surface);
+  --primary-navy: var(--app-heading);
   --primary-blue: #3b82f6;
-  --text-main: #1e293b;
-  --text-muted: #64748b;
-  --border-light: #e2e8f0;
+  --text-main: var(--app-text-strong);
+  --text-muted: var(--app-muted);
+  --border-light: var(--app-border);
   width: 100%;
   height: auto;
   min-height: 100vh;
   min-height: 100dvh;
   background:
-    radial-gradient(circle at 8% 0%, rgba(219, 234, 254, 0.78), transparent 30%),
-    radial-gradient(circle at 92% 12%, rgba(237, 233, 254, 0.62), transparent 26%),
+    radial-gradient(
+      circle at 8% 0%,
+      color-mix(in srgb, var(--app-link) 12%, transparent),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 92% 12%,
+      color-mix(in srgb, #8b5cf6 10%, transparent),
+      transparent 26%
+    ),
     var(--bg-color);
-  font-family: "Inter", system-ui, sans-serif;
+  font-family: var(--font-sans, system-ui, sans-serif);
   color: var(--text-main);
   overflow: visible;
   display: flex;
@@ -29,7 +37,7 @@
 .topHeader {
   height: var(--course-header-height);
   flex: 0 0 var(--course-header-height);
-  background: rgba(255, 255, 255, 0.88);
+  background: color-mix(in srgb, var(--app-surface) 88%, transparent);
   backdrop-filter: blur(18px) saturate(140%);
   -webkit-backdrop-filter: blur(18px) saturate(140%);
   padding: 0 clamp(16px, 2.2vw, 32px);
@@ -37,7 +45,7 @@
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid var(--border-light);
-  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.045);
+  box-shadow: var(--app-card-shadow);
   z-index: 50;
   position: sticky;
   top: 0;
@@ -70,7 +78,7 @@
 
 .backBtn:hover {
   color: var(--primary-navy);
-  background: #f1f5f9;
+  background: var(--app-surface-soft);
 }
 
 .divider {
@@ -87,7 +95,7 @@
 }
 
 .courseIdentity span {
-  color: #7b8aa4;
+  color: var(--app-muted);
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.12em;
@@ -112,11 +120,16 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  background: linear-gradient(135deg, #f7faff 0%, #eef5ff 100%);
+  background: linear-gradient(
+    135deg,
+    var(--app-surface-muted) 0%,
+    var(--app-info-surface) 100%
+  );
   padding: 8px 12px;
   border-radius: 14px;
-  border: 1px solid #e3ebf8;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  border: 1px solid var(--app-info-border);
+  box-shadow: inset 0 1px 0
+    color-mix(in srgb, var(--app-surface) 75%, transparent);
 }
 
 .progressIcon {
@@ -151,7 +164,7 @@
 .progressTrack {
   width: 96px;
   height: 6px;
-  background: #e2e8f0;
+  background: var(--app-border);
   border-radius: 999px;
   overflow: hidden;
 }
@@ -184,18 +197,61 @@
   padding-block-end: 24px;
 }
 
+.courseNotice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+  padding: 10px clamp(16px, 2vw, 28px);
+  color: var(--app-info-text);
+  background: var(--app-info-surface);
+  border-block-end: 1px solid var(--app-info-border);
+  font-size: 0.86rem;
+  font-weight: 650;
+  text-align: center;
+}
+
+.courseNoticeError {
+  color: var(--app-danger-text);
+  background: var(--app-danger-surface);
+  border-block-end-color: var(--app-danger-border);
+}
+
+.courseNotice button,
+.videoErrorState button {
+  padding: 7px 12px;
+  color: #ffffff;
+  background: var(--app-link);
+  border: 0;
+  border-radius: 9px;
+  font: inherit;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.noticeSpinner {
+  width: 17px;
+  height: 17px;
+  border: 2px solid var(--app-info-border);
+  border-block-start-color: var(--app-link);
+  border-radius: 50%;
+  animation: courseSpin 0.8s linear infinite;
+}
+
 .contentColumn {
   flex: 1 1 auto;
   min-width: 0;
   height: auto;
   overflow: visible;
   padding-inline-end: 2px;
-  padding-bottom: 32px;
+  padding-block-end: 32px;
   display: flex;
   flex-direction: column;
   gap: 16px;
   scrollbar-width: thin;
-  scrollbar-color: #b9c6d8 transparent;
+  scrollbar-color: var(--app-border-strong) transparent;
   scroll-margin-top: calc(var(--course-header-height) + 16px);
 }
 
@@ -204,7 +260,7 @@
 }
 
 .contentColumn::-webkit-scrollbar-thumb {
-  background: #b9c6d8;
+  background: var(--app-border-strong);
   border-radius: 10px;
   border: 1px solid transparent;
   background-clip: padding-box;
@@ -262,7 +318,7 @@
   position: absolute;
   width: 290px;
   height: 290px;
-  right: -70px;
+  inset-inline-end: -70px;
   bottom: -100px;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(77, 118, 255, 0.4), transparent 70%);
@@ -430,7 +486,7 @@
 
 .tabsWrapper {
   flex-shrink: 0;
-  margin-bottom: 20px;
+  margin-block-end: 20px;
 }
 
 @media (max-width: 1180px) {
@@ -457,7 +513,7 @@
   }
 
   .contentColumn {
-    padding-bottom: 0;
+    padding-block-end: 0;
   }
 
   .videoWrapper {
@@ -512,8 +568,9 @@
   }
 
   .videoWrapper {
-    min-height: 240px;
-    max-height: 48dvh;
+    min-height: 250px;
+    max-height: none;
+    aspect-ratio: 4 / 3;
     border-radius: 16px;
   }
 }
@@ -526,6 +583,7 @@
   height: 100%;
   color: #8ba0cb;
   text-align: center;
+  padding: 20px;
 }
 
 .emptyVideoIcon {
@@ -614,6 +672,12 @@
   border-color: rgba(255, 255, 255, 0.2);
 }
 
+.navVideoBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .navVideoBtn svg {
   font-size: 1.2rem;
 }
@@ -621,8 +685,7 @@
 .videoTopbarOverlay {
   position: absolute;
   top: 0;
-  left: 0;
-  right: 0;
+  inset-inline: 0;
   padding: 24px 24px 60px;
   background: linear-gradient(
     to bottom,
@@ -646,6 +709,63 @@
   font-weight: 700;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
+
+.videoLoadingOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+  color: #e7f0ff;
+  background: rgba(2, 8, 23, 0.72);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: center;
+  pointer-events: none;
+}
+
+.videoLoadingOverlay > span {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-block-start-color: #ffffff;
+  border-radius: 50%;
+  animation: courseSpin 0.8s linear infinite;
+}
+
+.videoErrorState {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 24px;
+  color: #dbeafe;
+  text-align: center;
+}
+
+.videoErrorState > svg {
+  font-size: 2.25rem;
+  color: #93c5fd;
+}
+
+.videoErrorState strong {
+  color: #ffffff;
+  font-size: 1.05rem;
+}
+
+.videoErrorState span {
+  max-width: 48ch;
+  color: #bfdbfe;
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
 .quizColumn {
   flex: 1;
   display: flex;
@@ -655,6 +775,8 @@
   padding-inline-end: 4px;
   width: 100%;
   overflow: visible;
+  container-name: course-quiz;
+  container-type: inline-size;
 }
 
 .quizColumn::-webkit-scrollbar {
@@ -662,13 +784,15 @@
 }
 
 .quizColumn::-webkit-scrollbar-thumb {
-  background: #b9c6d8;
+  background: var(--app-border-strong);
   border-radius: 999px;
 }
 
 .backBtn:focus-visible,
-.navVideoBtn:focus-visible {
-  outline: 3px solid rgba(59, 130, 246, 0.28);
+.navVideoBtn:focus-visible,
+.courseNotice button:focus-visible,
+.videoErrorState button:focus-visible {
+  outline: 3px solid var(--app-focus-ring);
   outline-offset: 2px;
 }
 
@@ -678,9 +802,16 @@
   }
 
   .navVideoBtn {
+    flex: 1;
+    min-width: 0;
     padding: 8px 11px;
     border-radius: 10px;
     font-size: 0.75rem;
+    white-space: normal;
+  }
+
+  .customVideoControls {
+    gap: 8px;
   }
 
   .videoTopbarOverlay {
@@ -692,10 +823,38 @@
   }
 }
 
+@media (max-width: 380px) {
+  .topHeader {
+    padding-inline: 10px;
+  }
+
+  .courseIdentity h1 {
+    max-width: 43vw;
+    font-size: 0.78rem;
+  }
+
+  .mainLayout {
+    padding: 8px;
+  }
+
+  .videoWrapper {
+    min-height: 230px;
+  }
+}
+
+@keyframes courseSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .progressTrack span,
   .navVideoBtn,
-  .videoTopbarOverlay {
+  .videoTopbarOverlay,
+  .noticeSpinner,
+  .videoLoadingOverlay > span {
+    animation-duration: 0.01ms;
     transition-duration: 0.01ms;
   }
 

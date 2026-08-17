@@ -22,32 +22,39 @@ const QASection = ({ activeLesson }) => {
 
   const [isAsking, setIsAsking] = useState(false);
   const [newQuestionText, setNewQuestionText] = useState("");
+  const [actionError, setActionError] = useState(null);
+  const [deletingQuestionId, setDeletingQuestionId] = useState(null);
 
   const handleAskSubmit = async () => {
     if (!newQuestionText.trim()) return;
+    setActionError(null);
     const result = await addQuestion(newQuestionText.trim());
     if (result.success) {
       setNewQuestionText("");
       setIsAsking(false);
     } else {
-      alert("Failed to post question: " + result.error);
+      setActionError(t("course-player-question-post-failed"));
     }
   };
 
   const handleEdit = async (questionId, newContent) => {
+    setActionError(null);
     const result = await editQuestion(questionId, newContent);
     if (!result.success) {
-      alert("Failed to update question: " + result.error);
+      setActionError(t("course-player-question-update-failed"));
       return false;
     }
     return true;
   };
 
   const handleDelete = async (questionId) => {
-    if (window.confirm("Are you sure you want to delete this question?")) {
+    if (window.confirm(t("course-player-delete-question-confirmation"))) {
+      setActionError(null);
+      setDeletingQuestionId(questionId);
       const result = await removeQuestion(questionId);
+      setDeletingQuestionId(null);
       if (!result.success) {
-        alert("Failed to delete question: " + result.error);
+        setActionError(t("course-player-question-delete-failed"));
       }
     }
   };
@@ -68,20 +75,33 @@ const QASection = ({ activeLesson }) => {
         <div>
           <span className={styles.kicker}>{t("discussion-board")}</span>
           <h3>
-            {t("q-and-a-for")} {activeLesson.title}
+            {t("course-player-q-and-a-for-lesson", {
+              title: activeLesson.title,
+            })}
           </h3>
         </div>
 
         {!isAsking && (
-          <button className={styles.askBtn} onClick={() => setIsAsking(true)}>
+          <button
+            type="button"
+            className={styles.askBtn}
+            onClick={() => {
+              setActionError(null);
+              setIsAsking(true);
+            }}
+          >
             <IoAddOutline size={20} /> {t("ask-a-question")}
           </button>
         )}
       </div>
 
       {isAsking ? (
-        <div className={styles.askForm}>
+        <div className={styles.askForm} aria-busy={isPosting}>
+          <label className={styles.srOnly} htmlFor="course-question-input">
+            {t("course-player-question-input-label")}
+          </label>
           <textarea
+            id="course-question-input"
             placeholder={t(
               "write-your-question-here-be-specific-to-get-better-answers",
             )}
@@ -92,13 +112,18 @@ const QASection = ({ activeLesson }) => {
           />
           <div className={styles.formActions}>
             <button
+              type="button"
               className={styles.cancelBtn}
-              onClick={() => setIsAsking(false)}
+              onClick={() => {
+                setIsAsking(false);
+                setActionError(null);
+              }}
               disabled={isPosting}
             >
               {t("cancel")}
             </button>
             <button
+              type="button"
               className={styles.submitBtn}
               onClick={handleAskSubmit}
               disabled={isPosting}
@@ -110,14 +135,14 @@ const QASection = ({ activeLesson }) => {
       ) : (
         <div className={styles.questionsList}>
           {isLoading && (
-            <p
-              style={{ textAlign: "center", padding: "20px", color: "#64748b" }}
-            >
-              Loading discussions...
+            <p className={styles.statusMessage} role="status">
+              {t("course-player-loading-discussions")}
             </p>
           )}
           {error && (
-            <p style={{ color: "#ef4444", textAlign: "center" }}>{error}</p>
+            <p className={styles.inlineError} role="alert">
+              {t("course-player-discussions-load-failed")}
+            </p>
           )}
 
           {!isLoading && !error && questions.length === 0 && (
@@ -131,12 +156,18 @@ const QASection = ({ activeLesson }) => {
               <QuestionItem
                 key={q.id}
                 question={q}
-                lessonId={activeLesson.id}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
+                isDeleting={deletingQuestionId === q.id}
               />
             ))}
         </div>
+      )}
+
+      {actionError && (
+        <p className={styles.inlineError} role="alert">
+          {actionError}
+        </p>
       )}
     </div>
   );

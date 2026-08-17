@@ -13,18 +13,21 @@ import ReplyItem from "./ReplyItem";
 import { useAnswers } from "../../hooks/useAnswers";
 import { useTranslation } from "react-i18next";
 
-const QuestionItem = ({ question, onEdit, onDelete, lessonId }) => {
-  const { t } = useTranslation();
+const QuestionItem = ({ question, onEdit, onDelete, isDeleting }) => {
+  const { t, i18n } = useTranslation();
   const { demoId } = useParams();
   const [showReplies, setShowReplies] = useState(false);
   const [replyText, setReplyText] = useState("");
 
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(question.content);
+  const [actionError, setActionError] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   const {
     answers,
     isLoading,
+    error,
     isSubmitting,
     fetchAnswers,
     addAnswer,
@@ -34,12 +37,19 @@ const QuestionItem = ({ question, onEdit, onDelete, lessonId }) => {
 
   const user = question.demoMember?.user || {};
   const authorName =
-    `${user.firstName || "Unknown"} ${user.lastName || ""}`.trim();
+    `${user.firstName || ""} ${user.lastName || ""}`.trim() ||
+    t("unknown-user");
   const avatarUrl = user.imagePath;
-
-  const formattedDate = new Date(question.createdAt).toLocaleDateString(
-    "en-US",
-    { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" },
+  const locale = i18n.resolvedLanguage || i18n.language || "en";
+  const createdAt = new Date(question.createdAt);
+  const formattedDate = Number.isNaN(createdAt.getTime())
+    ? t("course-player-date-unavailable")
+    : new Intl.DateTimeFormat(locale, {
+        dateStyle: "medium",
+        timeStyle: "short",
+      }).format(createdAt);
+  const formattedReplyCount = new Intl.NumberFormat(locale).format(
+    answers.length,
   );
 
   const handleToggleReplies = () => {
@@ -49,17 +59,21 @@ const QuestionItem = ({ question, onEdit, onDelete, lessonId }) => {
 
   const handleReplySubmit = async () => {
     if (!replyText.trim() || isSubmitting) return;
+    setActionError(null);
     const result = await addAnswer(replyText.trim());
     if (result.success) {
       setReplyText("");
     } else {
-      alert("Failed to post reply: " + result.error);
+      setActionError(t("course-player-reply-post-failed"));
     }
   };
 
   const handleSaveEdit = async () => {
-    if (!editedContent.trim()) return;
+    if (!editedContent.trim() || isSaving) return;
+    setActionError(null);
+    setIsSaving(true);
     const success = await onEdit(question.id, editedContent.trim());
+    setIsSaving(false);
     if (success) {
       setIsEditing(false);
     }
@@ -73,9 +87,8 @@ const QuestionItem = ({ question, onEdit, onDelete, lessonId }) => {
         {avatarUrl && avatarUrl !== "default" ? (
           <img
             src={avatarUrl}
-            alt={authorName}
+            alt={t("course-player-user-avatar", { name: authorName })}
             className={styles.avatar}
-            style={{ objectFit: "cover" }}
           />
         ) : (
           <div className={styles.avatar}>{getInitials(authorName)}</div>
@@ -85,28 +98,40 @@ const QuestionItem = ({ question, onEdit, onDelete, lessonId }) => {
           <h4 className={styles.userName}>{authorName}</h4>
           <span className={styles.date}>
             <IoTimeOutline
-              style={{ verticalAlign: "middle", marginRight: 4 }}
+              className={styles.dateIcon}
+              aria-hidden="true"
             />
             {formattedDate}
           </span>
         </div>
 
         {!isEditing && (
-          <div
-            className={styles.ownerActions}
-            style={{ marginLeft: "auto", display: "flex", gap: "4px" }}
-          >
+          <div className={styles.ownerActions}>
             <button
+              type="button"
               className={styles.iconActionBtn}
               onClick={() => setIsEditing(true)}
-              title="Edit Question"
+              title={t("course-player-edit-question")}
+              aria-label={t("course-player-edit-question")}
+              disabled={isDeleting}
             >
               <IoPencilOutline size={18} />
             </button>
             <button
+              type="button"
               className={styles.iconActionBtnDanger}
               onClick={() => onDelete(question.id)}
-              title="Delete Question"
+              title={
+                isDeleting
+                  ? t("course-player-deleting-question")
+                  : t("course-player-delete-question")
+              }
+              aria-label={
+                isDeleting
+                  ? t("course-player-deleting-question")
+                  : t("course-player-delete-question")
+              }
+              disabled={isDeleting}
             >
               <IoTrashOutline size={18} />
             </button>
@@ -120,17 +145,27 @@ const QuestionItem = ({ question, onEdit, onDelete, lessonId }) => {
             value={editedContent}
             onChange={(e) => setEditedContent(e.target.value)}
             className={styles.editTextarea}
+            aria-label={t("course-player-edit-question-input")}
+            disabled={isSaving}
           />
           <div className={styles.editActions}>
-            <button className={styles.saveEditBtn} onClick={handleSaveEdit}>
-              <IoCheckmarkOutline /> {t("save")}
+            <button
+              type="button"
+              className={styles.saveEditBtn}
+              onClick={handleSaveEdit}
+              disabled={isSaving}
+            >
+              <IoCheckmarkOutline />
+              {isSaving ? t("course-player-saving-question") : t("save")}
             </button>
             <button
+              type="button"
               className={styles.cancelEditBtn}
               onClick={() => {
                 setIsEditing(false);
                 setEditedContent(question.content);
               }}
+              disabled={isSaving}
             >
               <IoCloseOutline /> {t("cancel")}
             </button>
@@ -141,9 +176,17 @@ const QuestionItem = ({ question, onEdit, onDelete, lessonId }) => {
       )}
 
       <div className={styles.cardActions}>
-        <button className={styles.actionBtn} onClick={handleToggleReplies}>
+        <button
+          type="button"
+          className={styles.actionBtn}
+          onClick={handleToggleReplies}
+          aria-expanded={showReplies}
+        >
           <IoChatbubblesOutline size={18} />
-          {answers.length} {answers.length === 1 ? t("reply") : t("replies")}
+          {t("course-player-reply-count", {
+            count: answers.length,
+            formattedCount: formattedReplyCount,
+          })}
         </button>
       </div>
 
@@ -151,27 +194,40 @@ const QuestionItem = ({ question, onEdit, onDelete, lessonId }) => {
         <div className={styles.repliesSection}>
           <div className={styles.repliesThread}>
             {isLoading ? (
-              <p
-                style={{
-                  fontSize: "0.85rem",
-                  color: "#64748b",
-                }}
-              >
-                Loading replies...
+              <p className={styles.replyStatus} role="status">
+                {t("course-player-loading-replies")}
+              </p>
+            ) : error ? (
+              <p className={styles.inlineError} role="alert">
+                {t("course-player-replies-load-failed")}
               </p>
             ) : (
-              answers.map((reply) => (
-                <ReplyItem
-                  key={reply.id}
-                  reply={reply}
-                  onEdit={editAnswer}
-                  onDelete={removeAnswer}
-                />
-              ))
+              <>
+                {answers.length === 0 && (
+                  <p className={styles.replyStatus}>
+                    {t("course-player-no-replies")}
+                  </p>
+                )}
+                {answers.map((reply) => (
+                  <ReplyItem
+                    key={reply.id}
+                    reply={reply}
+                    onEdit={editAnswer}
+                    onDelete={removeAnswer}
+                  />
+                ))}
+              </>
             )}
 
             <div className={styles.replyInputWrapper}>
+              <label
+                className={styles.srOnly}
+                htmlFor={`question-${question.id}-reply`}
+              >
+                {t("course-player-reply-input-label")}
+              </label>
               <input
+                id={`question-${question.id}-reply`}
                 type="text"
                 placeholder={t("write-a-reply")}
                 value={replyText}
@@ -180,13 +236,19 @@ const QuestionItem = ({ question, onEdit, onDelete, lessonId }) => {
                 onKeyDown={(e) => e.key === "Enter" && handleReplySubmit()}
               />
               <button
+                type="button"
                 className={styles.sendReplyBtn}
                 disabled={!replyText.trim() || isSubmitting}
                 onClick={handleReplySubmit}
               >
-                {isSubmitting ? "..." : t("reply")}
+                {isSubmitting ? t("course-player-posting-reply") : t("reply")}
               </button>
             </div>
+            {actionError && (
+              <p className={styles.inlineError} role="alert">
+                {actionError}
+              </p>
+            )}
           </div>
         </div>
       )}
