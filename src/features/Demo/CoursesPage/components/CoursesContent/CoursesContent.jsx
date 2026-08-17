@@ -14,8 +14,9 @@ const CoursesContent = () => {
   const isOwner = role === "owner";
   const [searchQuery, setSearchQuery] = useState("");
   const locale = i18n.resolvedLanguage || i18n.language || "en";
-  const numberFormatter = new Intl.NumberFormat(locale);
-  const dateFormatter = new Intl.DateTimeFormat(locale, { dateStyle: "medium" });
+  const dateFormatter = new Intl.DateTimeFormat(locale, {
+    dateStyle: "medium",
+  });
 
   const {
     courses: apiCourses,
@@ -41,10 +42,9 @@ const CoursesContent = () => {
         description: courseData.description,
         image: courseData.imagePath,
         lessonsCount: Number(courseData.lessonCount) || 0,
-        duration: t("course-duration-hours", {
-          count: duration,
-          formattedCount: numberFormatter.format(duration),
-        }),
+
+        totalDuration: duration,
+
         progress: 0,
         views: 0,
         studentsCount: 0,
