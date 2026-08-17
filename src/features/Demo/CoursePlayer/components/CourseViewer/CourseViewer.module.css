@@ -737,6 +737,9 @@
 }
 
 .videoErrorState {
+  position: absolute;
+  inset: 0;
+  z-index: 11;
   flex: 1;
   min-height: 0;
   display: flex;
@@ -746,6 +749,7 @@
   gap: 8px;
   padding: 24px;
   color: #dbeafe;
+  background: rgba(2, 8, 23, 0.92);
   text-align: center;
 }
 

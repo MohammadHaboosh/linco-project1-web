@@ -91,41 +91,67 @@ const VideoContent = ({
   }, [activeLesson?.videoUrl, retryToken]);
 
   useEffect(() => {
-    if (!isPlayerReady || !activeLesson?.videoUrl || !plyrRef.current?.plyr) {
-      return;
-    }
+    if (!isPlayerReady || !activeLesson?.videoUrl) return;
 
-    const finalVideoUrl = formatHlsUrl(activeLesson.videoUrl);
-    const isHls = finalVideoUrl.includes(".m3u8");
-    const video = plyrRef.current.plyr.media;
+    let animationFrameId = null;
+    let video = null;
+    let playbackHls = null;
+    let isDisposed = false;
     const handleReady = () => setPlaybackState("ready");
     const handlePlaybackError = () => setPlaybackState("error");
 
-    video.addEventListener("canplay", handleReady);
-    video.addEventListener("loadeddata", handleReady);
-    video.addEventListener("error", handlePlaybackError);
+    const initializePlayback = () => {
+      if (isDisposed) return;
 
-    if (isHls && Hls.isSupported()) {
-      const hls = new Hls();
-      hlsRef.current = hls;
-      hls.loadSource(finalVideoUrl);
-      hls.attachMedia(video);
-      hls.on(Hls.Events.ERROR, (_event, data) => {
-        if (data.fatal) handlePlaybackError();
-      });
-    } else if (isHls && video.canPlayType("application/vnd.apple.mpegurl")) {
-      video.src = finalVideoUrl;
-    }
+      video = plyrRef.current?.plyr?.media;
+      if (!video) {
+        animationFrameId = window.requestAnimationFrame(initializePlayback);
+        return;
+      }
 
-    if (video.readyState >= 2) handleReady();
+      const finalVideoUrl = formatHlsUrl(activeLesson.videoUrl);
+      const isHls = finalVideoUrl.includes(".m3u8");
+
+      video.addEventListener("canplay", handleReady);
+      video.addEventListener("loadeddata", handleReady);
+      video.addEventListener("error", handlePlaybackError);
+
+      if (isHls && Hls.isSupported()) {
+        playbackHls = new Hls();
+        hlsRef.current = playbackHls;
+        playbackHls.loadSource(finalVideoUrl);
+        playbackHls.attachMedia(video);
+        playbackHls.on(Hls.Events.ERROR, (_event, data) => {
+          if (data.fatal) handlePlaybackError();
+        });
+      } else if (
+        isHls &&
+        video.canPlayType("application/vnd.apple.mpegurl")
+      ) {
+        video.src = finalVideoUrl;
+      }
+
+      if (video.readyState >= 2) handleReady();
+    };
+
+    initializePlayback();
 
     return () => {
-      video.removeEventListener("canplay", handleReady);
-      video.removeEventListener("loadeddata", handleReady);
-      video.removeEventListener("error", handlePlaybackError);
+      isDisposed = true;
+      if (animationFrameId !== null) {
+        window.cancelAnimationFrame(animationFrameId);
+      }
 
-      if (hlsRef.current) {
-        hlsRef.current.destroy();
+      if (video) {
+        video.removeEventListener("canplay", handleReady);
+        video.removeEventListener("loadeddata", handleReady);
+        video.removeEventListener("error", handlePlaybackError);
+      }
+
+      if (playbackHls) {
+        playbackHls.destroy();
+      }
+      if (hlsRef.current === playbackHls) {
         hlsRef.current = null;
       }
     };
@@ -269,9 +295,10 @@ const VideoContent = ({
       <div className={styles.videoBackdrop}>
         <div
           className={styles.videoPlayerContainer}
-          key={`${activeLesson.id || activeLesson.videoUrl}-${qualityOptions.length}-${i18n.resolvedLanguage}-${retryToken}`}
         >
-          {playbackState === "error" ? (
+          <Plyr ref={plyrRef} source={videoSrc} options={plyrOptions} />
+
+          {playbackState === "error" && (
             <div className={styles.videoErrorState} role="alert">
               <IoVideocamOutline aria-hidden="true" />
               <strong>{t("course-player-video-load-failed")}</strong>
@@ -280,23 +307,19 @@ const VideoContent = ({
                 {t("try-again")}
               </button>
             </div>
-          ) : (
-            <>
-              {isPlayerReady && (
-                <Plyr ref={plyrRef} source={videoSrc} options={plyrOptions} />
-              )}
-              {(playbackState === "loading" || !isPlayerReady) && (
-                <div
-                  className={styles.videoLoadingOverlay}
-                  role="status"
-                  aria-live="polite"
-                >
-                  <span aria-hidden="true" />
-                  {t("course-player-loading-video")}
-                </div>
-              )}
-            </>
           )}
+
+          {playbackState !== "error" &&
+            (playbackState === "loading" || !isPlayerReady) && (
+              <div
+                className={styles.videoLoadingOverlay}
+                role="status"
+                aria-live="polite"
+              >
+                <span aria-hidden="true" />
+                {t("course-player-loading-video")}
+              </div>
+            )}
 
           <div className={styles.videoTopbarOverlay}>
             <span className={styles.videoEyebrow}>{t("current-lesson")}</span>
