@@ -9,9 +9,13 @@ export const getUploadUrl = async (fileName) => {
     },
     body: JSON.stringify({ fileName }),
   });
+  const data = await response.json().catch(() => ({}));
 
-  if (!response.ok) throw new Error("Failed to generate upload URL");
-  return response.json();
+  if (!response.ok || data.success === false) {
+    throw new Error(data.message || "Failed to generate upload URL");
+  }
+
+  return data;
 };
 
 export const getSignatureUploadUrl = async (fileName) => {
@@ -23,9 +27,15 @@ export const getSignatureUploadUrl = async (fileName) => {
     },
     body: JSON.stringify({ fileName }),
   });
+  const data = await response.json().catch(() => ({}));
 
-  if (!response.ok) throw new Error("Failed to generate signature upload URL");
-  return response.json();
+  if (!response.ok || data.success === false) {
+    throw new Error(
+      data.message || "Failed to generate signature upload URL",
+    );
+  }
+
+  return data;
 };
 
 export const uploadFileToCloud = async (uploadUrl, file) => {
@@ -75,7 +85,7 @@ export const createRoom = async ({
 
   const responseData = await response.json().catch(() => ({}));
 
-  if (!response.ok) {
+  if (!response.ok || responseData.success === false) {
     throw new Error(responseData.message || "Failed to create the room");
   }
 

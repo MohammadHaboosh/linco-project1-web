@@ -8,12 +8,15 @@ export const fetchCurrentUser = async () => {
       "x-client-type": "web",
     },
   });
+  const data = await response.json().catch(() => ({}));
 
-  if (!response.ok) {
-    throw new Error(`Error fetching profile: ${response.statusText}`);
+  if (!response.ok || data.success === false) {
+    throw new Error(
+      data.message || `Error fetching profile: ${response.statusText}`,
+    );
   }
 
-  return response.json();
+  return data;
 };
 
 export const changePassword = async (oldPassword, newPassword) => {
@@ -28,16 +31,16 @@ export const changePassword = async (oldPassword, newPassword) => {
       newPassword,
     }),
   });
+  const data = await response.json().catch(() => ({}));
 
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
+  if (!response.ok || data.success === false) {
     throw new Error(
-      errorData.message ||
+      data.message ||
         "Failed to update password. Please check your current password.",
     );
   }
 
-  return response.json().catch(() => ({}));
+  return data;
 };
 
 export const generate2FA = async () => {
@@ -48,13 +51,13 @@ export const generate2FA = async () => {
       "x-client-type": "web",
     },
   });
+  const data = await response.json().catch(() => ({}));
 
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || "Failed to generate QR code.");
+  if (!response.ok || data.success === false) {
+    throw new Error(data.message || "Failed to generate QR code.");
   }
 
-  return response.json();
+  return data;
 };
 
 export const turnOn2FA = async (code) => {
@@ -68,11 +71,11 @@ export const turnOn2FA = async (code) => {
       "tfaCode": code
      }), 
   });
+  const data = await response.json().catch(() => ({}));
 
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || "Failed to verify and enable 2FA.");
+  if (!response.ok || data.success === false) {
+    throw new Error(data.message || "Failed to verify and enable 2FA.");
   }
 
-  return response.json();
+  return data;
 };

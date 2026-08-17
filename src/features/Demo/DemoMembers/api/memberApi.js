@@ -90,7 +90,7 @@ export const memberApi = {
 
     const responseData = await response.json().catch(() => ({}));
 
-    if (!response.ok) {
+    if (!response.ok || responseData.success === false) {
       throw new Error(responseData.message || "Failed to fetch demo members.");
     }
 
@@ -120,7 +120,7 @@ export const memberApi = {
 
     const responseData = await response.json().catch(() => ({}));
 
-    if (!response.ok) {
+    if (!response.ok || responseData.success === false) {
       throw new Error(responseData.message || "Failed to delete demo member.");
     }
 
@@ -160,7 +160,7 @@ export const memberApi = {
 
     const responseData = await response.json().catch(() => ({}));
 
-    if (!response.ok) {
+    if (!response.ok || responseData.success === false) {
       throw new Error(responseData.message || "Failed to update member role.");
     }
 

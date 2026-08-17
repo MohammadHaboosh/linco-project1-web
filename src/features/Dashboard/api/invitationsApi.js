@@ -7,12 +7,13 @@ export const fetchPendingInvitations = async () => {
       "Content-Type": "application/json",
     },
   });
+  const data = await response.json().catch(() => ({}));
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch pending invitations");
+  if (!response.ok || data.success === false) {
+    throw new Error(data.message || "Failed to fetch pending invitations");
   }
 
-  return response.json();
+  return data;
 };
 
 const updateInvitationStatus = async (invitationId, action) => {
@@ -27,7 +28,7 @@ const updateInvitationStatus = async (invitationId, action) => {
   );
   const data = await response.json().catch(() => null);
 
-  if (!response.ok) {
+  if (!response.ok || data?.success === false) {
     throw new Error(data?.message || `Failed to ${action} invitation`);
   }
 

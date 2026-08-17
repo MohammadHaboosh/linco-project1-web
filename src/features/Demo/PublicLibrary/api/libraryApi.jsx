@@ -54,7 +54,7 @@ export const libraryApi = {
       const data = await response.json();
       console.log("Buy Course Response:", data);
 
-      if (!response.ok) {
+      if (!response.ok || data.success === false) {
         throw new Error(data.message || "Failed to buy course");
       }
       return data;

@@ -57,7 +57,7 @@ export const departmentApi = {
 
       const data = await response.json();
 
-      if (!response.ok) {
+      if (!response.ok || data.success === false) {
         throw new Error(data.message || "Failed to create department");
       }
       return data;
@@ -79,7 +79,7 @@ export const departmentApi = {
       });
 
       const data = await response.json();
-      if (!response.ok)
+      if (!response.ok || data.success === false)
         throw new Error(data.message || "Failed to fetch departments");
       const rawDepartments = data.data || [];
 
@@ -114,7 +114,7 @@ export const departmentApi = {
       });
 
       const data = await response.json();
-      if (!response.ok)
+      if (!response.ok || data.success === false)
         throw new Error(data.message || "Failed to delete department");
 
       return data;

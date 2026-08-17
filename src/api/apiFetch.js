@@ -1,5 +1,6 @@
 import { API_BASE_URL } from "../config/apiConfig";
 import { clearUser } from "../features/User/store/userSlice";
+import i18n from "../i18n";
 import { store } from "../store/Store";
 
 let refreshPromise = null;
@@ -13,21 +14,48 @@ class RefreshTokenError extends Error {
   }
 }
 
+const readErrorMessage = async (response, fallbackMessage) => {
+  const payload = await response.clone().json().catch(() => ({}));
+  const backendMessage =
+    typeof payload?.message === "string" ? payload.message.trim() : "";
+
+  return backendMessage || fallbackMessage;
+};
+
+export const getApiLanguage = () => {
+  const language = i18n.resolvedLanguage || i18n.language || "en";
+  return language.toLowerCase().split("-")[0] === "ar" ? "ar" : "en";
+};
+
+export const createApiHeaders = (initialHeaders) => {
+  const headers = new Headers(initialHeaders);
+
+  if (!headers.has("x-client-type")) {
+    headers.set("x-client-type", "web");
+  }
+
+  headers.set("accept-language", getApiLanguage());
+
+  return headers;
+};
+
 const refreshAccessToken = () => {
   if (!refreshPromise) {
     refreshPromise = fetch(`${API_BASE_URL}/authentication/refresh-tokens`, {
       method: "POST",
-      headers: {
+      headers: createApiHeaders({
         "Content-Type": "application/json",
-        "x-client-type": "web",
-      },
+      }),
       credentials: "include",
     })
-      .then((response) => {
+      .then(async (response) => {
         if (!response.ok) {
           const sessionExpired = [400, 401, 403].includes(response.status);
           throw new RefreshTokenError(
-            "Failed to refresh the access token",
+            await readErrorMessage(
+              response,
+              "Failed to refresh the access token",
+            ),
             sessionExpired,
           );
         }
@@ -65,11 +93,7 @@ export const apiFetch = async (
   options = {},
   { redirectOnAuthFailure = true } = {},
 ) => {
-  const headers = new Headers(options.headers);
-
-  if (!headers.has("x-client-type")) {
-    headers.set("x-client-type", "web");
-  }
+  const headers = createApiHeaders(options.headers);
 
   const requestOptions = {
     ...options,
@@ -97,7 +121,7 @@ export const apiFetch = async (
       return response;
     }
 
-    throw new Error("Your session has expired. Please sign in again.", {
+    throw new Error(error.message, {
       cause: error,
     });
   }
@@ -108,7 +132,12 @@ export const apiFetch = async (
     endSession(redirectOnAuthFailure);
 
     if (redirectOnAuthFailure) {
-      throw new Error("Your session has expired. Please sign in again.");
+      throw new Error(
+        await readErrorMessage(
+          response,
+          "Your session has expired. Please sign in again.",
+        ),
+      );
     }
   }
 

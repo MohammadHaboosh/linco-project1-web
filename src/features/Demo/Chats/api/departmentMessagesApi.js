@@ -8,7 +8,7 @@ const parseResponse = async (
 ) => {
   const payload = await response.json().catch(() => ({}));
 
-  if (!response.ok) {
+  if (!response.ok || payload.success === false) {
     throw new Error(payload.message || fallback);
   }
 

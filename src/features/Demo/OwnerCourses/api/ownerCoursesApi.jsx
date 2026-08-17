@@ -27,7 +27,13 @@ export const ownerCoursesApi = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     });
-    console.log("Course Publish response:", response);
-    return response;
+    const data = await response.json().catch(() => ({}));
+
+    if (!response.ok || data.success === false) {
+      throw new Error(data.message || "Failed to publish course");
+    }
+
+    console.log("Course Publish response:", data);
+    return data;
   },
 };

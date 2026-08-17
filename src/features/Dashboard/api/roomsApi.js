@@ -8,10 +8,10 @@ export const fetchDemos = async () => {
     },
   });
 
-  const data = await response.json();
+  const data = await response.json().catch(() => ({}));
   
-  if (!response.ok) {
-    throw new Error("Failed to fetch demos");
+  if (!response.ok || data.success === false) {
+    throw new Error(data.message || "Failed to fetch demos");
   }
 
   return data;
