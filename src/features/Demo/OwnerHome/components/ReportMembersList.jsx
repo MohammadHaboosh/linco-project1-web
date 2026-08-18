@@ -3,12 +3,14 @@ import { useTranslation } from "react-i18next";
 import { IoRibbonOutline, IoCheckmarkCircleOutline } from "react-icons/io5";
 import MemberReportModal from "./MemberReportModal";
 import styles from "../OwnerHomeContent.module.css";
+import { ReportMembersListSkeleton } from "./OwnerHomeSkeletons";
 
-const ReportMembersList = ({ members, numberFormatter }) => {
+const ReportMembersList = ({ members, numberFormatter, isLoading }) => {
   const { t } = useTranslation();
   const [showAll, setShowAll] = useState(false);
   const [selectedMember, setSelectedMember] = useState(null);
 
+  if (isLoading) return <ReportMembersListSkeleton />;
   if (!members || members.length === 0) return null;
 
   const sortedMembers = [...members].sort(

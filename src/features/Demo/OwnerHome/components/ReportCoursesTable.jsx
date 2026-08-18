@@ -5,10 +5,12 @@ import {
   IoBarChartOutline,
 } from "react-icons/io5";
 import styles from "../OwnerHomeContent.module.css";
+import { ReportCoursesTableSkeleton } from "./OwnerHomeSkeletons";
 
-const ReportCoursesTable = ({ courses, numberFormatter }) => {
+const ReportCoursesTable = ({ courses, numberFormatter, isLoading }) => {
   const { t } = useTranslation();
 
+  if (isLoading) return <ReportCoursesTableSkeleton />;
   if (!courses || courses.length === 0) return null;
 
   const publishedCourses = courses.filter((c) => c.isPublished);

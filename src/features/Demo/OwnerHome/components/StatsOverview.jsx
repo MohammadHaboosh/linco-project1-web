@@ -5,6 +5,7 @@ import {
   IoCheckmarkDoneOutline,
 } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
+import { StatsOverviewSkeleton } from "./OwnerHomeSkeletons";
 import styles from "../OwnerHomeContent.module.css";
 
 const StatCard = ({ title, value, icon, subText, subTextHighlight }) => (
@@ -27,8 +28,14 @@ const StatCard = ({ title, value, icon, subText, subTextHighlight }) => (
   </article>
 );
 
-const StatsOverview = ({ overview, numberFormatter, percentFormatter }) => {
+const StatsOverview = ({
+  overview,
+  numberFormatter,
+  percentFormatter,
+  isLoading,
+}) => {
   const { t } = useTranslation();
+  if (isLoading) return <StatsOverviewSkeleton />;
   if (!overview) return null;
 
   return (

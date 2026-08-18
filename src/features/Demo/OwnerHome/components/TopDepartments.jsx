@@ -1,9 +1,16 @@
 import { useTranslation } from "react-i18next";
 import { IoTrophyOutline, IoMedalOutline } from "react-icons/io5";
 import styles from "../OwnerHomeContent.module.css";
+import { TopDepartmentsSkeleton } from "./OwnerHomeSkeletons";
 
-const TopDepartments = ({ departments, numberFormatter, percentFormatter }) => {
+const TopDepartments = ({
+  departments,
+  numberFormatter,
+  percentFormatter,
+  isLoading,
+}) => {
   const { t } = useTranslation();
+  if (isLoading) return <TopDepartmentsSkeleton />;
   if (!departments || departments.length === 0) return null;
 
   const sortedDepts = [...departments]

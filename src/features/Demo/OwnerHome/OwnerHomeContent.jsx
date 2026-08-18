@@ -40,16 +40,6 @@ const OwnerHomeContent = () => {
     "FREE";
   const isFreePlan = String(currentPlan).trim().toUpperCase() === "FREE";
 
-  if (isLoading) {
-    return (
-      <div className={styles.pageContainer}>
-        <div className={styles.loadingState}>
-          <span className={styles.loader}></span> {t("generating-report")}
-        </div>
-      </div>
-    );
-  }
-
   if (error) {
     return (
       <div className={styles.pageContainer}>
@@ -75,40 +65,40 @@ const OwnerHomeContent = () => {
         <PlanUpgradeCard demoId={demoId} currentPlan={currentPlan} />
       )}
 
-      {reportData && (
-        <>
-          <StatsOverview
-            overview={reportData.overview}
+      <StatsOverview
+        overview={reportData?.overview}
+        numberFormatter={numberFormatter}
+        percentFormatter={percentFormatter}
+        isLoading={isLoading}
+      />
+
+      <div className={styles.mainLayout}>
+        <div className={styles.leftColumn}>
+          <TopDepartments
+            departments={reportData?.departments}
             numberFormatter={numberFormatter}
             percentFormatter={percentFormatter}
+            isLoading={isLoading}
           />
+        </div>
 
-          <div className={styles.mainLayout}>
-            <div className={styles.leftColumn}>
-              <TopDepartments
-                departments={reportData.departments}
-                numberFormatter={numberFormatter}
-                percentFormatter={percentFormatter}
-              />
-            </div>
+        <div className={styles.rightColumn}>
+          <ReportMembersList
+            members={reportData?.members}
+            numberFormatter={numberFormatter}
+            isLoading={isLoading}
+          />
+        </div>
+      </div>
 
-            <div className={styles.rightColumn}>
-              <ReportMembersList
-                members={reportData.members}
-                numberFormatter={numberFormatter}
-              />
-            </div>
-          </div>
-
-          <div className={styles.fullWidthSection}>
-            <ReportCoursesTable
-              courses={reportData.courses}
-              numberFormatter={numberFormatter}
-              percentFormatter={percentFormatter}
-            />
-          </div>
-        </>
-      )}
+      <div className={styles.fullWidthSection}>
+        <ReportCoursesTable
+          courses={reportData?.courses}
+          numberFormatter={numberFormatter}
+          percentFormatter={percentFormatter}
+          isLoading={isLoading}
+        />
+      </div>
     </div>
   );
 };
