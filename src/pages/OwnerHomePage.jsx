@@ -1,4 +1,4 @@
-import OwnerHomeContent from "../features/Demo/OwnerHome/components/OwnerHomeContent/OwnerHomeContent";
+import OwnerHomeContent from "../features/Demo/OwnerHome/OwnerHomeContent";
 
 const OwnerHomePage = () => {
   return (
