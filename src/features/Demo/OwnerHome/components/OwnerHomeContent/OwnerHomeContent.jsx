@@ -10,6 +10,7 @@ import {
   IoWarningOutline,
 } from "react-icons/io5";
 import { useDemo } from "../../../../../hooks/useDemo";
+import PlanUpgradeCard from "../../../Subscription/components/PlanUpgradeCard/PlanUpgradeCard";
 import styles from "./OwnerHomeContent.module.css";
 
 const FREE_PLAN_DURATION_DAYS = 14;
@@ -65,7 +66,7 @@ const StatCard = ({ title, value, icon, trend, trendText, isPositive }) => (
 
 const OwnerHomeContent = () => {
   const { t, i18n } = useTranslation();
-  const { demoData } = useDemo();
+  const { demoId, demoData } = useDemo();
   const locale = i18n.resolvedLanguage || i18n.language || "en";
   const numberFormatter = useMemo(
     () => new Intl.NumberFormat(locale),
@@ -216,18 +217,34 @@ const OwnerHomeContent = () => {
                   : t("free-plan-warning-generic-description")}
             </p>
           </div>
-          {freePlanTimeline && (
-            <span className={styles.warningBadge}>
-              {freePlanTimeline.isExpired
-                ? t("free-plan-expired-badge")
-                : t("free-plan-days-remaining", {
+          <PlanUpgradeCard
+            demoId={demoId}
+            currentPlan={currentPlan}
+            triggerOnly
+            triggerClassName={styles.warningButton}
+            triggerLabel={
+              freePlanTimeline
+                ? freePlanTimeline.isExpired
+                  ? t("free-plan-expired-badge")
+                  : t("free-plan-days-remaining", {
+                      count: freePlanTimeline.daysRemaining,
+                      formattedCount: numberFormatter.format(
+                        freePlanTimeline.daysRemaining,
+                      ),
+                    })
+                : t("upgrade-plan")
+            }
+            triggerAriaLabel={
+              freePlanTimeline && !freePlanTimeline.isExpired
+                ? `${t("upgrade-plan")}: ${t("free-plan-days-remaining", {
                     count: freePlanTimeline.daysRemaining,
                     formattedCount: numberFormatter.format(
                       freePlanTimeline.daysRemaining,
                     ),
-                  })}
-            </span>
-          )}
+                  })}`
+                : t("upgrade-plan")
+            }
+          />
         </section>
       )}
 

@@ -21,6 +21,10 @@ const PlanUpgradeCard = ({
   currentPlan,
   accessGate = false,
   workspaceName = "",
+  triggerOnly = false,
+  triggerLabel,
+  triggerClassName,
+  triggerAriaLabel,
 }) => {
   const { t, i18n } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -86,10 +90,30 @@ const PlanUpgradeCard = ({
   }, [accessGate, closeModal, isModalOpen]);
 
   const isPlanPanelOpen = accessGate || isModalOpen;
+  const openModal = () => {
+    clearCheckoutError();
+    setIsModalOpen(true);
+  };
 
   return (
     <>
-      {!accessGate && (
+      {!accessGate && triggerOnly && hasUpgrade && (
+        <button
+          type="button"
+          className={triggerClassName || styles.upgradeButton}
+          onClick={openModal}
+          disabled={!demoId}
+          aria-label={triggerAriaLabel}
+        >
+          {triggerLabel || t("upgrade-plan")}
+          <IoArrowForwardOutline
+            className={styles.forwardIcon}
+            aria-hidden="true"
+          />
+        </button>
+      )}
+
+      {!accessGate && !triggerOnly && (
         <section className={styles.planCard} aria-labelledby="demo-plan-title">
           <div className={styles.planIcon} aria-hidden="true">
             <IoTrendingUp />
@@ -114,7 +138,7 @@ const PlanUpgradeCard = ({
             <button
               type="button"
               className={styles.upgradeButton}
-              onClick={() => setIsModalOpen(true)}
+              onClick={openModal}
               disabled={!demoId}
             >
               {t("upgrade-plan")}
