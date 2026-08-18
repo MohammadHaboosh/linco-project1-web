@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { IoCloseOutline, IoPeopleOutline } from "react-icons/io5";
 import { useCreateGroup } from "../hooks/useCreateGroup";
@@ -12,12 +13,26 @@ const CreateGroupModal = ({ demoId, currentUserId, onClose, onSuccess }) => {
       onClose();
     });
 
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape" && !isSubmitting) onClose();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isSubmitting, onClose]);
+
+  const handleOverlayClick = (event) => {
+    if (event.target === event.currentTarget && !isSubmitting) onClose();
+  };
+
   return (
-    <div className={styles.overlay} onClick={onClose}>
+    <div className={styles.overlay} onMouseDown={handleOverlayClick}>
       <div
         className={styles.modal}
-        onClick={(e) => e.stopPropagation()}
         role="dialog"
+        aria-modal="true"
+        aria-labelledby="create-group-title"
       >
         <div className={styles.header}>
           <div className={styles.modalTitle}>
@@ -25,11 +40,13 @@ const CreateGroupModal = ({ demoId, currentUserId, onClose, onSuccess }) => {
               <IoPeopleOutline />
             </div>
             <div>
-              <h2>{t("create-new-group", "Create New Group")}</h2>
+              <h2 id="create-group-title">
+                {t("create-new-group", "Create New Group")}
+              </h2>
               <p>
                 {t(
                   "create-group-desc",
-                  "Setup a dedicated workspace for your team.",
+                  "Set up a dedicated workspace for your team.",
                 )}
               </p>
             </div>
@@ -39,6 +56,7 @@ const CreateGroupModal = ({ demoId, currentUserId, onClose, onSuccess }) => {
             className={styles.closeBtn}
             onClick={onClose}
             disabled={isSubmitting}
+            aria-label={t("close", "Close")}
           >
             <IoCloseOutline />
           </button>
@@ -52,8 +70,11 @@ const CreateGroupModal = ({ demoId, currentUserId, onClose, onSuccess }) => {
           )}
 
           <div className={styles.formGroup}>
-            <label>{t("group-name", "Group Name")}</label>
+            <label htmlFor="create-group-name">
+              {t("group-name", "Group Name")}
+            </label>
             <input
+              id="create-group-name"
               type="text"
               name="name"
               value={formData.name}
@@ -65,13 +86,19 @@ const CreateGroupModal = ({ demoId, currentUserId, onClose, onSuccess }) => {
           </div>
 
           <div className={styles.formGroup}>
-            <label>{t("group-desc", "Description")}</label>
+            <label htmlFor="create-group-description">
+              {t("group-desc", "Description")}
+            </label>
             <textarea
+              id="create-group-description"
               name="description"
               value={formData.description}
               onChange={handleChange}
               className={styles.textarea}
-              placeholder={"e.g. For build LinCo Project"}
+              placeholder={t(
+                "group-description-placeholder",
+                "What is this group about?",
+              )}
               disabled={isSubmitting}
             />
           </div>

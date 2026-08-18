@@ -52,15 +52,32 @@ const GroupMembersPanel = ({ demoId, groupId, isManager }) => {
         </h2>
         {isManager && (
           <button
+            type="button"
             onClick={() => setIsAddMemberOpen(true)}
             className={styles.addMemberBtn}
+            aria-label={t("add-members", "Add Members")}
           >
-            <IoPersonAddOutline /> {t("add-members", "Add Members")}
+            <IoPersonAddOutline />
+            <span className={styles.addMemberLabel}>
+              {t("add-members", "Add Members")}
+            </span>
           </button>
         )}
       </div>
 
       <div className={styles.membersGrid}>
+        {members.length === 0 && (
+          <div className={styles.membersEmptyState}>
+            <IoPeopleOutline aria-hidden="true" />
+            <strong>{t("no-group-members", "No group members yet")}</strong>
+            <span>
+              {t(
+                "no-group-members-description",
+                "Add members to start collaborating in this workspace.",
+              )}
+            </span>
+          </div>
+        )}
         {members.map((member) => {
           const user = member.demoMember?.user || {};
           const fullName =
@@ -91,10 +108,15 @@ const GroupMembersPanel = ({ demoId, groupId, isManager }) => {
 
               {isManager && (
                 <button
+                  type="button"
                   onClick={() => handleRemoveMember(member.id)}
                   disabled={isDeleting}
                   className={styles.removeBtn}
                   title={t("remove", "Remove")}
+                  aria-label={t("remove-member-name", {
+                    defaultValue: "Remove {{name}}",
+                    name: fullName,
+                  })}
                 >
                   <IoTrashOutline />
                 </button>

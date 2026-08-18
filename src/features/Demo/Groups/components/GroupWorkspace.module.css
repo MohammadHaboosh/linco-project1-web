@@ -8,6 +8,8 @@
   color: var(--app-text-strong);
   overflow: hidden;
   font-family: var(--font-sans);
+  position: relative;
+  isolation: isolate;
 }
 
 .sidebar {
@@ -21,19 +23,25 @@
   transition:
     width 0.4s cubic-bezier(0.25, 1, 0.5, 1),
     border-color 0.4s ease,
-    opacity 0.4s ease;
+    opacity 0.4s ease,
+    transform 0.32s cubic-bezier(0.25, 1, 0.5, 1),
+    box-shadow 0.32s ease;
 }
 
 .sidebarOpen {
   width: 280px;
-  border-right: 1px solid var(--app-border);
+  border-inline-end: 1px solid var(--app-border);
   opacity: 1;
 }
 
 .sidebarClosed {
   width: 0;
-  border-right: 0px solid transparent;
+  border-inline-end: 0 solid transparent;
   opacity: 0;
+}
+
+.sidebarBackdrop {
+  display: none;
 }
 
 .sidebarHeader {
@@ -72,6 +80,18 @@
   color: var(--app-text-strong);
 }
 
+.toggleSidebarBtn:focus-visible,
+.openSidebarBtn:focus-visible,
+.absoluteOpenBtn:focus-visible,
+.groupItem:focus-visible,
+.createBtn:focus-visible,
+.toolBtn:focus-visible,
+.shareActionBtn:focus-visible,
+.layoutBtn:focus-visible {
+  outline: 3px solid var(--app-focus-ring);
+  outline-offset: 2px;
+}
+
 .openSidebarBtn {
   display: flex;
   align-items: center;
@@ -84,7 +104,7 @@
   color: var(--app-text-strong);
   font-size: 1.3rem;
   cursor: pointer;
-  margin-right: 16px;
+  margin-inline-end: 16px;
   transition: all 0.2s ease;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
@@ -97,8 +117,8 @@
 
 .absoluteOpenBtn {
   position: absolute;
-  top: 14px;
-  left: 24px;
+  inset-block-start: 14px;
+  inset-inline-start: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -128,6 +148,8 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 .groupsList::-webkit-scrollbar {
@@ -136,6 +158,67 @@
 .groupsList::-webkit-scrollbar-thumb {
   background-color: var(--app-border-strong);
   border-radius: 4px;
+}
+
+.sidebarStatus {
+  min-height: 180px;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--app-muted);
+  text-align: center;
+  white-space: normal;
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+.sidebarStatus > svg {
+  font-size: 2rem;
+  opacity: 0.65;
+}
+
+.sidebarRetryBtn {
+  min-height: 40px;
+  padding: 8px 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid var(--app-border-strong);
+  border-radius: 9px;
+  background: var(--app-surface);
+  color: var(--app-link);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.sidebarRetryBtn:hover {
+  background: var(--app-info-surface);
+  border-color: var(--app-info-border);
+}
+
+.sidebarRetryBtn:focus-visible {
+  outline: 3px solid var(--app-focus-ring);
+  outline-offset: 2px;
+}
+
+.sidebarLoader {
+  width: 24px;
+  height: 24px;
+  border: 3px solid var(--app-border);
+  border-block-start-color: var(--app-link);
+  border-radius: 50%;
+  animation: sidebarSpin 0.7s linear infinite;
+}
+
+@keyframes sidebarSpin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .groupItem {
@@ -153,6 +236,17 @@
 .groupItem:hover {
   background-color: var(--app-surface-soft);
   color: var(--app-text-strong);
+}
+
+.activeGroup {
+  border-color: var(--app-info-border);
+  background-color: var(--app-info-surface);
+  color: var(--app-heading);
+  box-shadow: inset 3px 0 0 var(--app-link);
+}
+
+:global([dir="rtl"]) .activeGroup {
+  box-shadow: inset -3px 0 0 var(--app-link);
 }
 
 .groupIconWrapper {
@@ -252,6 +346,60 @@
   position: relative;
 }
 
+.workspaceStatus {
+  flex: 1;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--app-muted);
+  text-align: center;
+}
+
+.workspaceStatus h2,
+.workspaceStatus p {
+  margin: 0;
+}
+
+.workspaceStatus h2 {
+  color: var(--app-heading);
+  font-size: 1.35rem;
+}
+
+.workspaceStatus p {
+  max-width: 44ch;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.workspaceStatus button {
+  min-height: 44px;
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--app-link);
+  color: #ffffff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.workspaceStatus button:focus-visible {
+  outline: 3px solid var(--app-focus-ring);
+  outline-offset: 2px;
+}
+
+.workspaceLoader {
+  width: 34px;
+  height: 34px;
+  border: 4px solid var(--app-border);
+  border-block-start-color: var(--app-link);
+  border-radius: 50%;
+  animation: sidebarSpin 0.7s linear infinite;
+}
+
 .workspaceToolbar {
   height: 64px;
   background-color: var(--app-surface);
@@ -268,12 +416,14 @@
   flex: 1;
   display: flex;
   align-items: center;
+  min-width: 0;
 }
 
 .activeGroupInfo {
   display: flex;
   align-items: center;
   gap: 12px;
+  min-width: 0;
 }
 
 .activeGroupAvatar {
@@ -294,6 +444,10 @@
   font-size: 1.1rem;
   font-weight: 800;
   color: var(--app-heading);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .toolbarCenter {
@@ -323,6 +477,12 @@
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
+}
+
+.toolBtn > svg,
+.shareActionBtn > svg,
+.layoutBtn > svg {
+  flex-shrink: 0;
 }
 
 .toolBtn:hover {
@@ -463,6 +623,7 @@
   justify-content: center;
   background-color: var(--app-page-bg);
   position: relative;
+  padding: 32px;
 }
 
 .emptyStateContent {
@@ -543,6 +704,10 @@
   box-shadow: 0 4px 10px rgba(26, 86, 219, 0.2);
 }
 
+.mobileShareLabel {
+  display: none;
+}
+
 .shareActionBtn:hover {
   background-color: var(--app-heading);
   transform: translateY(-1px);
@@ -562,13 +727,114 @@
 @media (max-width: 900px) {
   .sidebar {
     position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
     height: 100%;
+    max-width: 100%;
+    z-index: 30;
+  }
+
+  .sidebarOpen,
+  .sidebarClosed {
+    width: min(88vw, 320px);
+    opacity: 1;
+  }
+
+  .sidebarOpen {
+    transform: translateX(0);
+    border-inline-end: 1px solid var(--app-border);
+    box-shadow: 16px 0 40px rgba(15, 23, 42, 0.2);
   }
 
   .sidebarClosed {
     transform: translateX(-100%);
-    width: 280px;
-    opacity: 1;
+    border-inline-end: 0;
+    pointer-events: none;
+  }
+
+  :global([dir="rtl"]) .sidebarClosed {
+    transform: translateX(100%);
+  }
+
+  :global([dir="rtl"]) .sidebarOpen {
+    box-shadow: -16px 0 40px rgba(15, 23, 42, 0.2);
+  }
+
+  .sidebarBackdrop {
+    position: absolute;
+    inset: 0;
+    z-index: 25;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: rgba(15, 23, 42, 0.46);
+    backdrop-filter: blur(2px);
+    cursor: pointer;
+  }
+
+  .sidebarHeader {
+    min-height: 64px;
+    height: auto;
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  .sidebarFooter {
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+  }
+
+  .toggleSidebarBtn,
+  .createBtn {
+    min-height: 44px;
+  }
+
+  .toggleSidebarBtn {
+    width: 44px;
+  }
+
+  .groupItem {
+    min-height: 48px;
+    padding-block: 11px;
+  }
+
+  .workspaceToolbar {
+    height: auto;
+    min-height: 64px;
+    padding: 10px 12px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+  }
+
+  .openSidebarBtn {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    margin-inline-end: 10px;
+  }
+
+  .activeGroupAvatar {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+  }
+
+  .activeGroupInfo h3 {
+    font-size: 1rem;
+  }
+
+  .toolbarRight {
+    flex: none;
+  }
+
+  .layoutSegmentedControl {
+    padding: 3px;
+  }
+
+  .layoutBtn {
+    width: 36px;
+    height: 36px;
   }
 
   .chatPanelSplit {
@@ -580,6 +846,153 @@
   }
 
   .toolbarCenter {
+    display: flex;
+    grid-column: 1 / -1;
+    min-width: 0;
+  }
+
+  .toolSelectors {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .toolBtn,
+  .shareActionBtn {
+    min-height: 42px;
+    min-width: 0;
+    justify-content: center;
+  }
+
+  .toolBtn {
+    flex: 1;
+  }
+
+  .shareActionBtn {
+    flex: 1.2;
+  }
+
+  .workspaceStage {
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .panel {
+    border-radius: 12px;
+  }
+
+  .emptyWorkspace {
+    padding: 28px 20px;
+  }
+
+  .emptyStateContent {
+    max-width: 340px;
+  }
+
+  .emptyStateIcon {
+    width: 68px;
+    height: 68px;
+    border-radius: 20px;
+    font-size: 2rem;
+    margin-bottom: 18px;
+  }
+
+  .emptyStateContent h2 {
+    font-size: 1.35rem;
+  }
+
+  .emptyStateContent p {
+    font-size: 0.95rem;
+  }
+
+  .absoluteOpenBtn {
+    inset-block-start: 12px;
+    inset-inline-start: 12px;
+  }
+}
+
+@media (max-width: 520px) {
+  .workspaceToolbar {
+    padding: 8px;
+    gap: 8px;
+  }
+
+  .activeGroupAvatar {
     display: none;
+  }
+
+  .activeGroupInfo {
+    gap: 0;
+  }
+
+  .openSidebarBtn {
+    margin-inline-end: 8px;
+  }
+
+  .toolBtn {
+    padding-inline: 8px;
+    gap: 5px;
+    font-size: 0.82rem;
+  }
+
+  .toolLabel,
+  .shareLabel,
+  .mobileShareLabel {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .shareActionBtn {
+    padding-inline: 9px;
+  }
+
+  .shareLabel {
+    display: none;
+  }
+
+  .mobileShareLabel {
+    display: inline;
+  }
+
+  .toolbarDivider {
+    margin-inline: 4px;
+  }
+
+  .workspaceStage {
+    gap: 0;
+    padding: 0;
+  }
+
+  .panel {
+    border-inline: 0;
+    border-block-end: 0;
+    border-radius: 0;
+  }
+
+  .emptyWorkspace {
+    padding-inline: 18px;
+  }
+}
+
+@media (max-width: 350px) {
+  .mobileShareLabel {
+    display: none;
+  }
+
+  .shareActionBtn {
+    flex: 0.8;
+    font-size: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar,
+  .sidebarLoader,
+  .workspaceLoader,
+  .panel,
+  .emptyStateContent {
+    animation: none;
+    transition: none;
   }
 }

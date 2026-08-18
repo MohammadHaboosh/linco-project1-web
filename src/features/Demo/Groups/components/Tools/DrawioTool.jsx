@@ -5,6 +5,7 @@ import {
   forwardRef,
   useImperativeHandle,
 } from "react";
+import { useTranslation } from "react-i18next";
 import {
   createDrawioLoadAction,
   DRAWIO_EMBED_URL,
@@ -17,6 +18,7 @@ import {
 import styles from "../GroupWorkspace.module.css";
 
 const DrawioTool = forwardRef(({ storageKey, fileName }, ref) => {
+  const { t } = useTranslation();
   const iframeRef = useRef(null);
   const isReadyRef = useRef(false);
   const pendingShareRef = useRef(false);
@@ -161,7 +163,9 @@ const DrawioTool = forwardRef(({ storageKey, fileName }, ref) => {
       ref={iframeRef}
       src={DRAWIO_EMBED_URL}
       className={styles.toolIframe}
-      title="Draw.io Workspace"
+      title={t("named-tool-workspace", {
+        name: t("drawio", "Draw.io"),
+      })}
     />
   );
 });

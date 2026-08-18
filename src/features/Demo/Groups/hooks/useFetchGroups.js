@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { departmentApi } from "../../HomeDemoPage/api/departmentApi";
 
 export const useFetchGroups = (demoId) => {
+  const { t } = useTranslation();
   const [groups, setGroups] = useState([]);
   const [isLoading, setIsLoading] = useState(!!demoId);
   const [error, setError] = useState(null);
@@ -29,11 +31,11 @@ export const useFetchGroups = (demoId) => {
       setGroups(filteredGroups);
     } catch (err) {
       console.error("Error fetching groups:", err);
-      setError(err.message || "Failed to fetch groups");
+      setError(t("groups-load-failed", "Couldn't load groups"));
     } finally {
       setIsLoading(false);
     }
-  }, [demoId]);
+  }, [demoId, t]);
 
   useEffect(() => {
     let isMounted = true;

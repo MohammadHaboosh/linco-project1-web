@@ -18,6 +18,7 @@ const GroupCard = ({ group, isManager, onDelete, isDeleting }) => {
 
   const isPrivate = group.privacy === "PRIVATE";
   const groupName = group.name || group.title || "";
+  const memberCount = group.membersCount || 0;
 
   const handleDeleteClick = (event) => {
     event.preventDefault();
@@ -74,8 +75,8 @@ const GroupCard = ({ group, isManager, onDelete, isDeleting }) => {
             <p className={styles.groupDesc}>
               {group.description ||
                 t(
-                  "no-description-provided",
-                  "No description provided for this workspace.",
+                  "no-group-description",
+                  "No description was provided for this group.",
                 )}
             </p>
           </div>
@@ -83,9 +84,7 @@ const GroupCard = ({ group, isManager, onDelete, isDeleting }) => {
           <div className={styles.cardFooter}>
             <div className={styles.membersCount}>
               <IoPeopleOutline />
-              <span>
-                {group.membersCount || 0} {t("members", "Members")}
-              </span>
+              <span>{t("workspace-members", { count: memberCount })}</span>
             </div>
             <Link
               to={`/demos/${demoId}/groups/${group.id}`}

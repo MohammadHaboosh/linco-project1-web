@@ -64,7 +64,6 @@ const LayoutContent = () => {
           isGroupsPage
             ? {
                 overflow: "hidden",
-                height: "100vh",
                 display: "flex",
                 flexDirection: "column",
               }

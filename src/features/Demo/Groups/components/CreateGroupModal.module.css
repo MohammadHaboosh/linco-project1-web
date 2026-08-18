@@ -466,18 +466,48 @@
 @media (max-width: 520px) {
   .overlay {
     align-items: flex-end;
-    padding: 8px;
+    padding: 0;
   }
 
   .modal {
-    max-height: calc(100dvh - 16px);
-    border-radius: 14px;
+    max-height: calc(100dvh - 12px);
+    border-radius: 20px 20px 0 0;
   }
 
   .header,
   .body,
   .footer {
     padding-inline: 16px;
+  }
+
+  .header {
+    align-items: flex-start;
+    padding-block: 18px;
+  }
+
+  .modalTitle {
+    min-width: 0;
+  }
+
+  .modalTitle > div:last-child {
+    min-width: 0;
+  }
+
+  .modalTitleIcon {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+  }
+
+  .closeBtn {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    margin-block-start: -4px;
+  }
+
+  .body {
+    padding-block: 20px;
   }
 
   .selectedUserCard {
@@ -495,11 +525,30 @@
   }
 
   .footer {
-    flex-direction: column-reverse;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-block-end: max(16px, env(safe-area-inset-bottom));
   }
 
   .cancelBtn,
   .submitBtn {
     width: 100%;
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 380px) {
+  .modalTitle p {
+    display: none;
+  }
+
+  .footer {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal {
+    animation: none;
   }
 }
