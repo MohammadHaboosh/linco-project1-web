@@ -211,3 +211,30 @@ export const WelcomeBannerSkeleton = () => {
     </div>
   );
 };
+
+export const FreePlanWarningSkeleton = () => {
+  return (
+    <ThemeWrapper>
+      <section className={styles.freePlanWarning}>
+        <Skeleton
+          width={44}
+          height={44}
+          borderRadius={13}
+          style={{ flexShrink: 0 }}
+        />
+
+        <div className={styles.warningContent}>
+          <div style={{ marginBottom: "6px" }}>
+            <Skeleton width={180} height={18} borderRadius={6} />
+          </div>
+          <Skeleton width="70%" height={14} borderRadius={6} />
+        </div>
+
+        <div className={styles.warningActions}>
+          <Skeleton width={110} height={24} borderRadius={20} />
+          <Skeleton width={130} height={38} borderRadius={10} />
+        </div>
+      </section>
+    </ThemeWrapper>
+  );
+};

@@ -58,6 +58,7 @@ const OwnerHomeContent = () => {
           numberFormatter={numberFormatter}
           demoId={demoId}
           currentPlan={currentPlan}
+          isLoading={isLoading}
         />
       )}
 

@@ -15,8 +15,6 @@ const ReportCoursesTable = ({ courses, numberFormatter, isLoading }) => {
 
   const publishedCourses = courses.filter((c) => c.isPublished);
 
-  if (publishedCourses.length === 0) return null;
-
   return (
     <div className={styles.tableCard}>
       <div className={styles.cardHeader}>

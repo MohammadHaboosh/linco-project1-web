@@ -11,7 +11,6 @@ const ReportMembersList = ({ members, numberFormatter, isLoading }) => {
   const [selectedMember, setSelectedMember] = useState(null);
 
   if (isLoading) return <ReportMembersListSkeleton />;
-  if (!members || members.length === 0) return null;
 
   const sortedMembers = [...members].sort(
     (a, b) =>

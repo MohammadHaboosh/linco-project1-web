@@ -11,7 +11,6 @@ const TopDepartments = ({
 }) => {
   const { t } = useTranslation();
   if (isLoading) return <TopDepartmentsSkeleton />;
-  if (!departments || departments.length === 0) return null;
 
   const sortedDepts = [...departments]
     .sort((a, b) => b.examPassRate - a.examPassRate)

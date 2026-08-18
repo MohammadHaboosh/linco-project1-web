@@ -1,6 +1,7 @@
 import { IoWarningOutline, IoTimeOutline } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
-import PlanUpgradeCard from "../../Subscription/components/PlanUpgradeCard/PlanUpgradeCard";
+import PlanUpgradeCard from "../../../../Subscription/components/PlanUpgradeCard/PlanUpgradeCard";
+import { FreePlanWarningSkeleton } from "./OwnerHomeSkeletons";
 import styles from "../OwnerHomeContent.module.css";
 
 const FREE_PLAN_DURATION_DAYS = 14;
@@ -35,8 +36,12 @@ const FreePlanWarning = ({
   numberFormatter,
   demoId,
   currentPlan,
+  isLoading,
 }) => {
   const { t } = useTranslation();
+
+  if (isLoading) return <FreePlanWarningSkeleton />;
+
   const freePlanTimeline = getFreePlanTimeline(createdAt);
 
   if (!freePlanTimeline) return null;

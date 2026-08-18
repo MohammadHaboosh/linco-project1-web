@@ -36,7 +36,6 @@ const StatsOverview = ({
 }) => {
   const { t } = useTranslation();
   if (isLoading) return <StatsOverviewSkeleton />;
-  if (!overview) return null;
 
   return (
     <div className={styles.statsGrid}>
