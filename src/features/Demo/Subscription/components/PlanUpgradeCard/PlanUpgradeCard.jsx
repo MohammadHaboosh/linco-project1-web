@@ -2,10 +2,13 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   IoArrowForwardOutline,
   IoCloseOutline,
+  IoHomeOutline,
   IoSettingsOutline,
   IoTrendingUp,
 } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
+import { PATHS } from "../../../../../routes/paths";
 import { useDemoPlanCheckout } from "../../hooks/useDemoPlanCheckout";
 import { useDemoSubscriptionPortal } from "../../hooks/useDemoSubscriptionPortal";
 import styles from "./PlanUpgradeCard.module.css";
@@ -208,7 +211,12 @@ const PlanUpgradeCard = ({
                     : t("checkout-redirect-note")}
                 </p>
               </div>
-              {!accessGate && (
+              {accessGate ? (
+                <Link to={PATHS.HOME} className={styles.homeButton}>
+                  <IoHomeOutline aria-hidden="true" />
+                  {t("go-to-home")}
+                </Link>
+              ) : (
                 <button
                   type="button"
                   className={styles.closeButton}
