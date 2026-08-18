@@ -369,66 +369,145 @@
   margin: 0;
 }
 
-/* ================= Top Departments ================= */
-.viewAllBtn {
-  background: transparent;
-  border: none;
-  color: var(--app-link);
-  font-weight: 700;
-  cursor: pointer;
-}
-.viewAllBtn:hover {
-  text-decoration: underline;
-}
-
+/* ================= Top Departments (Leaderboard Style) ================= */
 .departmentsList {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 14px;
 }
 
 .deptItem {
   display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 18px;
+  background-color: var(--app-surface);
+  border: 1px solid var(--app-border-soft);
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.deptItem:hover {
+  background-color: var(--app-surface-soft);
+  border-color: var(--app-border-strong);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+}
+
+.rankContainer {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--app-surface-muted);
+  flex-shrink: 0;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.goldTrophy {
+  color: #eab308;
+  font-size: 1.7rem;
+  filter: drop-shadow(0 2px 4px rgba(234, 179, 8, 0.3));
+}
+.silverMedal {
+  color: #94a3b8;
+  font-size: 1.6rem;
+  filter: drop-shadow(0 2px 4px rgba(148, 163, 184, 0.3));
+}
+.bronzeMedal {
+  color: #b45309;
+  font-size: 1.6rem;
+  filter: drop-shadow(0 2px 4px rgba(180, 83, 9, 0.3));
+}
+.standardRank {
+  color: var(--app-muted);
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.deptMainContent {
+  flex: 1;
+  min-width: 0;
+  display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 20px;
 }
+
+.deptInfo {
+  flex: 1;
+  min-width: 0;
+}
+
 .deptInfo h4 {
   margin: 0 0 4px;
   color: var(--app-heading);
   font-size: 1.05rem;
-  overflow-wrap: anywhere;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
 .deptInfo span {
   color: var(--app-muted);
   font-size: 0.85rem;
+  font-weight: 600;
 }
 
 .deptProgress {
-  width: 50%;
+  width: 160px;
+  flex-shrink: 0;
 }
+
 .progressHeader {
   display: flex;
   justify-content: space-between;
   font-size: 0.8rem;
   font-weight: 700;
-  color: var(--app-text);
-  margin-block-end: 6px;
+  color: var(--app-muted);
+  margin-block-end: 8px;
 }
+
 .scoreText {
-  color: var(--app-link);
+  color: var(--app-heading);
+  font-weight: 800;
 }
+
 .progressBar {
   width: 100%;
   height: 8px;
   display: flex;
-  background-color: var(--app-surface-soft);
-  border-radius: 4px;
+  background-color: var(--app-surface-muted);
+  border-radius: 6px;
   overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
 }
+
 .progressFill {
   height: 100%;
-  background-color: var(--app-link);
-  border-radius: 4px;
+  background: linear-gradient(90deg, #3b82f6 0%, #1d4ed8 100%);
+  border-radius: 6px;
+  transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1); /* حركة ناعمة عند التحميل */
+}
+
+@media (max-width: 640px) {
+  .deptItem {
+    align-items: flex-start;
+  }
+
+  .deptMainContent {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .deptProgress {
+    width: 100%;
+  }
 }
 
 /* ================= Activity Feed ================= */
