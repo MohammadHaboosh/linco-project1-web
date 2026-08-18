@@ -241,6 +241,10 @@ const OwnerHomeContent = () => {
         </section>
       )}
 
+      {!isFreePlan && (
+        <PlanUpgradeCard demoId={demoId} currentPlan={currentPlan} />
+      )}
+
       <div className={styles.statsGrid}>
         <StatCard
           title={t("analytics-total-members")}

@@ -46,4 +46,46 @@ export const demoPlanApi = {
 
     return parsedCheckoutUrl.toString();
   },
+
+  createSubscriptionPortalSession: async ({ demoId }) => {
+    const normalizedDemoId = String(demoId || "").trim();
+    if (!normalizedDemoId) {
+      throw new Error("Demo ID is required to manage a subscription.");
+    }
+
+    const response = await apiFetch("/payments/subscriptions/manage", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-demo-id": normalizedDemoId,
+      },
+      body: JSON.stringify({ demoId: normalizedDemoId }),
+    });
+
+    const payload = await response.json().catch(() => ({}));
+
+    if (!response.ok || payload.success === false) {
+      throw new Error(
+        payload.message || "Unable to open the subscription portal.",
+      );
+    }
+
+    const portalUrl = payload.data?.url;
+    if (!portalUrl) {
+      throw new Error("The subscription portal response did not include a URL.");
+    }
+
+    let parsedPortalUrl;
+    try {
+      parsedPortalUrl = new URL(portalUrl);
+    } catch {
+      throw new Error("The subscription portal response included an invalid URL.");
+    }
+
+    if (parsedPortalUrl.protocol !== "https:") {
+      throw new Error("The subscription portal URL must use a secure connection.");
+    }
+
+    return parsedPortalUrl.toString();
+  },
 };
