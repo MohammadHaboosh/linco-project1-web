@@ -40,7 +40,6 @@ const ReportCoursesTable = ({ courses, numberFormatter }) => {
           <tbody>
             {publishedCourses.map((course) => (
               <tr key={course.courseId}>
-                {/* خلية اسم الكورس */}
                 <td>
                   <div className={styles.courseCell}>
                     <div className={styles.courseIcon} aria-hidden="true">
@@ -52,7 +51,6 @@ const ReportCoursesTable = ({ courses, numberFormatter }) => {
                   </div>
                 </td>
 
-                {/* الخلايا الرقمية */}
                 <td className={styles.centerCell}>
                   <span className={styles.numericValue}>
                     {numberFormatter.format(course.assignedMemberCount)}
@@ -65,7 +63,6 @@ const ReportCoursesTable = ({ courses, numberFormatter }) => {
                   </span>
                 </td>
 
-                {/* خلية النسبة المئوية */}
                 <td className={styles.centerCell}>
                   <span
                     className={`${styles.scoreBadge} ${
@@ -78,7 +75,6 @@ const ReportCoursesTable = ({ courses, numberFormatter }) => {
                   </span>
                 </td>
 
-                {/* خلية الشهادات */}
                 <td className={styles.centerCell}>
                   {course.certificationsIssued > 0 ? (
                     <span className={styles.metricBadgeGold}>
