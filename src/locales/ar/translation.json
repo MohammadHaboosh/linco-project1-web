@@ -1951,5 +1951,17 @@
   "certification-rate": "معدل الشهادة",
   "average-exam-score": "متوسط ​​درجات الامتحان",
   "exams-performance": "أداء الامتحانات",
-  "exam-pass-rate": "معدل النجاح في الامتحان"
+  "exam-pass-rate": "معدل النجاح في الامتحان",
+  "academic-performance": "الأداء الأكاديمي",
+  "assigned-courses": "الدورات المخصصة",
+  "average-score": "متوسط ​​النتيجة",
+  "highest-score": "أعلى الدرجات",
+  "total-attempts": "إجمالي المحاولات",
+  "exams-failed": "الامتحانات فاشلة",
+  "pass-rate": "معدل النجاح",
+  "engagement-activity": "نشاط المشاركة",
+  "questions-asked": "الأسئلة المطروحة",
+  "answers-provided": "الإجابات المقدمة",
+  "messages-sent": "الرسائل المرسلة",
+  "show-less": "عرض أقل"
 }

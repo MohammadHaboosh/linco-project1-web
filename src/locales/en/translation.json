@@ -1811,5 +1811,18 @@
   "certification-rate": "Certification Rate",
   "exams-performance": "Exams Performance",
   "average-exam-score": "Average Exam Score",
-  "exam-pass-rate": "Exam Pass Rate"
+  "exam-pass-rate": "Exam Pass Rate",
+  "academic-performance": "Academic Performance",
+  "assigned-courses": "Assigned Courses",
+  "average-score": "Average Score",
+  "highest-score": "Highest Score",
+  "total-attempts": "Total Attempts",
+  "exams-failed": "Exams Failed",
+  "pass-rate": "Pass Rate",
+  "engagement-activity": "Engagement Activity",
+  "questions-asked": "Questions Asked",
+  "answers-provided": "Answers Provided",
+  "messages-sent": "Messages Sent",
+  "show-less": "Show Less",
+  "all-members": "All Members"
 }

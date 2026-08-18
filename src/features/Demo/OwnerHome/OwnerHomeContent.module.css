@@ -859,3 +859,337 @@
     transform: rotate(360deg);
   }
 }
+/* ================= Clickable Items & Scroll ================= */
+.clickableItem {
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    transform 0.2s;
+  border-radius: 12px;
+  padding: 8px;
+  margin-inline-start: -8px;
+}
+
+.clickableItem:hover {
+  background-color: var(--app-surface-soft);
+  transform: translateX(4px);
+}
+
+:global([dir="rtl"]) .clickableItem:hover {
+  transform: translateX(-4px);
+}
+
+.scrollableList {
+  max-height: 500px;
+  overflow-y: auto;
+  padding-inline-end: 10px;
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(10, 42, 84, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modalContent {
+  background-color: var(--app-surface);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 650px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 35px 40px;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.closeBtn {
+  position: absolute;
+  top: 25px;
+  inset-inline-end: 25px;
+  background: var(--app-surface-soft);
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.3rem;
+  color: var(--app-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.closeBtn:hover {
+  background: var(--app-danger-surface);
+  color: var(--app-danger-text);
+  transform: rotate(90deg);
+}
+
+.memberProfileHeader {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-block-end: 20px;
+}
+
+.modalAvatar {
+  width: 85px;
+  height: 85px;
+  border-radius: 20px;
+  object-fit: cover;
+  border: 2px solid var(--app-border-strong);
+}
+
+.modalUserInfo h2 {
+  margin: 0 0 8px 0;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--app-heading);
+}
+
+.modalUserTags {
+  display: flex;
+  gap: 8px;
+  margin-block-end: 10px;
+}
+
+.primaryTag,
+.secondaryTag {
+  padding: 4px 12px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.primaryTag {
+  background-color: var(--app-info-surface);
+  color: var(--app-link);
+}
+
+.secondaryTag {
+  background-color: var(--app-surface-muted);
+  color: var(--app-muted);
+}
+
+.modalUserMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  font-size: 0.85rem;
+  color: var(--app-muted);
+  font-weight: 600;
+}
+
+.modalUserMeta span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.modalDepartments {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: var(--app-surface-soft);
+  padding: 15px;
+  border-radius: 14px;
+}
+
+.modalDepartments strong {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--app-heading);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.deptTagsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.deptTag {
+  background-color: #ffffff;
+  border: 1px solid var(--app-border);
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  color: var(--app-text);
+  font-weight: 600;
+}
+
+.modalDivider {
+  border: none;
+  border-top: 1px dashed var(--app-border-strong);
+  margin: 25px 0;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--app-heading);
+  margin-block-end: 20px;
+}
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin-block-end: 25px;
+}
+
+.metricCard {
+  background-color: var(--app-surface-soft);
+  border: 1px solid var(--app-border);
+  padding: 16px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.metricLabel {
+  font-size: 0.8rem;
+  color: var(--app-muted);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.metricValue {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--app-heading);
+}
+
+.textLink {
+  color: var(--app-link);
+}
+
+.highlightCardGold {
+  background: linear-gradient(135deg, #fef08a 0%, #fde047 100%);
+  border-color: #facc15;
+}
+
+.highlightCardGold .metricLabel,
+.highlightCardGold .metricValue {
+  color: #854d0e;
+}
+
+.cardBgIcon {
+  position: absolute;
+  right: -10px;
+  bottom: -10px;
+  font-size: 4rem;
+  opacity: 0.1;
+  color: #854d0e;
+}
+
+.smallIcon {
+  font-size: 1.3rem;
+  color: var(--app-link);
+  margin-block-end: 4px;
+}
+
+/* Exam Stats Details */
+.examStatsWrapper {
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--app-surface);
+  border: 1px solid var(--app-border-strong);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.examStatItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.examStatIcon {
+  font-size: 2rem;
+}
+
+.examStatItem p {
+  margin: 0 0 2px 0;
+  font-size: 0.8rem;
+  color: var(--app-muted);
+  font-weight: 700;
+}
+
+.examStatItem strong {
+  font-size: 1.2rem;
+  color: var(--app-heading);
+}
+
+.examProgressRing {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 4px solid var(--app-link);
+  border-top-color: var(--app-surface-muted);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--app-link);
+}
+
+@media (max-width: 640px) {
+  .modalContent {
+    padding: 25px 20px;
+  }
+
+  .memberProfileHeader {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .modalUserMeta {
+    justify-content: center;
+  }
+
+  .metricsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .examStatsWrapper {
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .examStatItem {
+    width: 45%;
+  }
+}
