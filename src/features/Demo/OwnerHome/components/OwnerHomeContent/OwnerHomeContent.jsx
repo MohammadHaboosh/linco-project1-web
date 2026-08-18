@@ -10,7 +10,6 @@ import {
   IoWarningOutline,
 } from "react-icons/io5";
 import { useDemo } from "../../../../../hooks/useDemo";
-import PlanUpgradeCard from "../../../Subscription/components/PlanUpgradeCard/PlanUpgradeCard";
 import styles from "./OwnerHomeContent.module.css";
 
 const FREE_PLAN_DURATION_DAYS = 14;
@@ -66,7 +65,7 @@ const StatCard = ({ title, value, icon, trend, trendText, isPositive }) => (
 
 const OwnerHomeContent = () => {
   const { t, i18n } = useTranslation();
-  const { demoId, demoData } = useDemo();
+  const { demoData } = useDemo();
   const locale = i18n.resolvedLanguage || i18n.language || "en";
   const numberFormatter = useMemo(
     () => new Intl.NumberFormat(locale),
@@ -231,8 +230,6 @@ const OwnerHomeContent = () => {
           )}
         </section>
       )}
-
-      <PlanUpgradeCard demoId={demoId} currentPlan={currentPlan} />
 
       <div className={styles.statsGrid}>
         <StatCard

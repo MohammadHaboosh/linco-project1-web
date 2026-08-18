@@ -16,7 +16,12 @@ const normalizePlan = (plan) => {
   return PLAN_ORDER.includes(normalizedPlan) ? normalizedPlan : "FREE";
 };
 
-const PlanUpgradeCard = ({ demoId, currentPlan }) => {
+const PlanUpgradeCard = ({
+  demoId,
+  currentPlan,
+  accessGate = false,
+  workspaceName = "",
+}) => {
   const { t, i18n } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const activePlan = normalizePlan(currentPlan);
@@ -75,7 +80,7 @@ const PlanUpgradeCard = ({ demoId, currentPlan }) => {
   }, [clearCheckoutError, isStartingCheckout]);
 
   useEffect(() => {
-    if (!isModalOpen) return undefined;
+    if (!isModalOpen || accessGate) return undefined;
 
     const handleKeyDown = (event) => {
       if (event.key === "Escape") closeModal();
@@ -83,51 +88,57 @@ const PlanUpgradeCard = ({ demoId, currentPlan }) => {
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [closeModal, isModalOpen]);
+  }, [accessGate, closeModal, isModalOpen]);
+
+  const isPlanPanelOpen = accessGate || isModalOpen;
 
   return (
     <>
-      <section className={styles.planCard} aria-labelledby="demo-plan-title">
-        <div className={styles.planIcon} aria-hidden="true">
-          <IoTrendingUp />
-        </div>
-
-        <div className={styles.planSummary}>
-          <span className={styles.eyebrow}>{t("demo-subscription")}</span>
-          <div className={styles.planHeading}>
-            <h2 id="demo-plan-title">{t("current-plan")}</h2>
-            <span className={styles.currentPlanBadge}>
-              {t(`plan-${activePlan.toLowerCase()}`)}
-            </span>
+      {!accessGate && (
+        <section className={styles.planCard} aria-labelledby="demo-plan-title">
+          <div className={styles.planIcon} aria-hidden="true">
+            <IoTrendingUp />
           </div>
-          <p>
-            {hasUpgrade
-              ? t("upgrade-plan-summary")
-              : t("enterprise-plan-active-summary")}
-          </p>
-        </div>
 
-        {hasUpgrade && (
-          <button
-            type="button"
-            className={styles.upgradeButton}
-            onClick={() => setIsModalOpen(true)}
-            disabled={!demoId}
-          >
-            {t("upgrade-plan")}
-            <IoArrowForwardOutline
-              className={styles.forwardIcon}
-              aria-hidden="true"
-            />
-          </button>
-        )}
-      </section>
+          <div className={styles.planSummary}>
+            <span className={styles.eyebrow}>{t("demo-subscription")}</span>
+            <div className={styles.planHeading}>
+              <h2 id="demo-plan-title">{t("current-plan")}</h2>
+              <span className={styles.currentPlanBadge}>
+                {t(`plan-${activePlan.toLowerCase()}`)}
+              </span>
+            </div>
+            <p>
+              {hasUpgrade
+                ? t("upgrade-plan-summary")
+                : t("enterprise-plan-active-summary")}
+            </p>
+          </div>
 
-      {isModalOpen && (
+          {hasUpgrade && (
+            <button
+              type="button"
+              className={styles.upgradeButton}
+              onClick={() => setIsModalOpen(true)}
+              disabled={!demoId}
+            >
+              {t("upgrade-plan")}
+              <IoArrowForwardOutline
+                className={styles.forwardIcon}
+                aria-hidden="true"
+              />
+            </button>
+          )}
+        </section>
+      )}
+
+      {isPlanPanelOpen && (
         <div
           className={styles.modalOverlay}
           onMouseDown={(event) => {
-            if (event.target === event.currentTarget) closeModal();
+            if (!accessGate && event.target === event.currentTarget) {
+              closeModal();
+            }
           }}
         >
           <section
@@ -138,19 +149,39 @@ const PlanUpgradeCard = ({ demoId, currentPlan }) => {
           >
             <div className={styles.modalHeader}>
               <div>
-                <span className={styles.eyebrow}>{t("demo-subscription")}</span>
-                <h2 id="upgrade-plan-title">{t("choose-your-plan")}</h2>
-                <p>{t("checkout-redirect-note")}</p>
+                <span className={styles.eyebrow}>
+                  {accessGate
+                    ? t("subscription-expired")
+                    : t("demo-subscription")}
+                </span>
+                <h2 id="upgrade-plan-title">
+                  {accessGate
+                    ? t("restore-workspace-access")
+                    : t("choose-your-plan")}
+                </h2>
+                <p>
+                  {accessGate
+                    ? hasUpgrade
+                      ? t("expired-subscription-checkout-note", {
+                          workspaceName,
+                        })
+                      : t("expired-enterprise-plan-summary", {
+                          workspaceName,
+                        })
+                    : t("checkout-redirect-note")}
+                </p>
               </div>
-              <button
-                type="button"
-                className={styles.closeButton}
-                onClick={closeModal}
-                disabled={isStartingCheckout}
-                aria-label={t("close")}
-              >
-                <IoCloseOutline />
-              </button>
+              {!accessGate && (
+                <button
+                  type="button"
+                  className={styles.closeButton}
+                  onClick={closeModal}
+                  disabled={isStartingCheckout}
+                  aria-label={t("close")}
+                >
+                  <IoCloseOutline />
+                </button>
+              )}
             </div>
 
             <div className={styles.planGrid}>
