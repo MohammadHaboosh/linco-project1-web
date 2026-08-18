@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { IoAlertCircleOutline } from "react-icons/io5";
 import { useDemo } from "../../../hooks/useDemo";
 import { useOwnerReport } from "./hooks/useOwnerReport";
 import PlanUpgradeCard from "../Subscription/components/PlanUpgradeCard/PlanUpgradeCard";
@@ -16,7 +17,7 @@ const OwnerHomeContent = () => {
   const { demoId, demoData } = useDemo();
   const locale = i18n.resolvedLanguage || i18n.language || "en";
 
-  const { reportData, isLoading, error } = useOwnerReport(demoId);
+  const { reportData, isLoading, error, refetch } = useOwnerReport(demoId);
 
   const numberFormatter = useMemo(
     () => new Intl.NumberFormat(locale),
@@ -42,14 +43,37 @@ const OwnerHomeContent = () => {
 
   if (error) {
     return (
-      <div className={styles.pageContainer}>
-        <div className={styles.errorState}>{error}</div>
+      <div className={styles.pageContainer} dir={i18n.dir()}>
+        <section className={styles.errorState} role="alert">
+          <IoAlertCircleOutline
+            className={styles.stateIcon}
+            aria-hidden="true"
+          />
+          <h1>{t("analytics-report-load-failed")}</h1>
+          <p>{t("analytics-report-load-error-message")}</p>
+          <button
+            type="button"
+            className={styles.stateAction}
+            onClick={refetch}
+          >
+            {t("try-again")}
+          </button>
+        </section>
       </div>
     );
   }
 
   return (
-    <div className={styles.pageContainer} dir={i18n.dir()}>
+    <div
+      className={styles.pageContainer}
+      dir={i18n.dir()}
+      aria-busy={isLoading}
+    >
+      {isLoading && (
+        <p className={styles.srOnly} role="status" aria-live="polite">
+          {t("analytics-report-loading")}
+        </p>
+      )}
       <WelcomeBanner workspaceName={workspaceName} isLoading={isLoading} />
 
       {isFreePlan && (
@@ -87,6 +111,7 @@ const OwnerHomeContent = () => {
           <ReportMembersList
             members={reportData?.members}
             numberFormatter={numberFormatter}
+            percentFormatter={percentFormatter}
             isLoading={isLoading}
           />
         </div>

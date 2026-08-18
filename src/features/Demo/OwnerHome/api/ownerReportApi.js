@@ -17,8 +17,6 @@ export const ownerReportApi = {
     if (!response.ok || !data.success) {
       throw new Error(data.message || "Failed to fetch owner report");
     }
-
-    console.log("Owner Report Data:", data.data);
     return data.data;
   },
 };

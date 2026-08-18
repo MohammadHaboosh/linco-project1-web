@@ -15,7 +15,7 @@ export const useOwnerReport = (demoId) => {
       setReportData(data);
     } catch (err) {
       console.error("Failed to fetch report:", err);
-      setError(err.message || "Failed to load report data.");
+      setError(true);
     } finally {
       setIsLoading(false);
     }

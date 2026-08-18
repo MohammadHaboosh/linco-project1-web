@@ -8,7 +8,12 @@ import { useTranslation } from "react-i18next";
 import { StatsOverviewSkeleton } from "./OwnerHomeSkeletons";
 import styles from "../OwnerHomeContent.module.css";
 
-const StatCard = ({ title, value, icon, subText, subTextHighlight }) => (
+const getMetric = (value) => {
+  const metric = Number(value);
+  return Number.isFinite(metric) ? metric : 0;
+};
+
+const StatCard = ({ title, value, icon, summary }) => (
   <article className={styles.statCard}>
     <div className={styles.statHeader}>
       <div className={styles.statInfo}>
@@ -20,10 +25,7 @@ const StatCard = ({ title, value, icon, subText, subTextHighlight }) => (
       </div>
     </div>
     <div className={styles.statFooter}>
-      <span className={styles.trendText}>
-        <strong className={styles.highlightText}>{subTextHighlight}</strong>{" "}
-        {subText}
-      </span>
+      <p className={styles.trendText}>{summary}</p>
     </div>
   </article>
 );
@@ -37,37 +39,51 @@ const StatsOverview = ({
   const { t } = useTranslation();
   if (isLoading) return <StatsOverviewSkeleton />;
 
+  const safeOverview = overview || {};
+  const totalMembers = getMetric(safeOverview.totalMembers);
+  const newMembers = getMetric(safeOverview.newMembers);
+  const publishedCourses = getMetric(safeOverview.publishedCourses);
+  const totalCourses = getMetric(safeOverview.totalCourses);
+  const totalCertifications = getMetric(safeOverview.totalCertifications);
+  const certificationRate = getMetric(safeOverview.certificationRate);
+  const examPassRate = getMetric(safeOverview.examPassRate);
+  const averageExamScore = getMetric(safeOverview.averageExamScore);
+
   return (
     <div className={styles.statsGrid}>
       <StatCard
-        title={t("total-members")}
-        value={numberFormatter.format(overview.totalMembers)}
+        title={t("analytics-total-members")}
+        value={numberFormatter.format(totalMembers)}
         icon={<IoPeopleOutline />}
-        subTextHighlight={`+${numberFormatter.format(overview.newMembers)}`}
-        subText={t("new-members-recently")}
+        summary={t("analytics-new-members-summary", {
+          count: newMembers,
+          formattedCount: numberFormatter.format(newMembers),
+        })}
       />
       <StatCard
-        title={t("published-courses")}
-        value={numberFormatter.format(overview.publishedCourses)}
+        title={t("analytics-published-courses")}
+        value={numberFormatter.format(publishedCourses)}
         icon={<IoBookOutline />}
-        subTextHighlight={numberFormatter.format(overview.totalCourses)}
-        subText={t("total-created-courses")}
+        summary={t("analytics-total-courses-summary", {
+          count: totalCourses,
+          formattedCount: numberFormatter.format(totalCourses),
+        })}
       />
       <StatCard
-        title={t("certifications-issued")}
-        value={numberFormatter.format(overview.totalCertifications)}
+        title={t("analytics-certifications-issued")}
+        value={numberFormatter.format(totalCertifications)}
         icon={<IoRibbonOutline />}
-        subTextHighlight={percentFormatter.format(
-          overview.certificationRate / 100,
-        )}
-        subText={t("certification-rate")}
+        summary={t("analytics-certification-rate-summary", {
+          formattedRate: percentFormatter.format(certificationRate / 100),
+        })}
       />
       <StatCard
-        title={t("exams-performance")}
-        value={percentFormatter.format(overview.examPassRate / 100)}
+        title={t("analytics-exam-pass-rate")}
+        value={percentFormatter.format(examPassRate / 100)}
         icon={<IoCheckmarkDoneOutline />}
-        subTextHighlight={`${overview.averageExamScore}%`}
-        subText={t("average-exam-score")}
+        summary={t("analytics-average-exam-score-summary", {
+          formattedScore: percentFormatter.format(averageExamScore / 100),
+        })}
       />
     </div>
   );

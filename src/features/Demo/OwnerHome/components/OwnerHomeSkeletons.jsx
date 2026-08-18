@@ -16,7 +16,7 @@ const ThemeWrapper = ({ children }) => (
 export const StatsOverviewSkeleton = () => {
   return (
     <ThemeWrapper>
-      <div className={styles.statsGrid}>
+      <div className={styles.statsGrid} aria-hidden="true">
         {Array(4)
           .fill(0)
           .map((_, index) => (
@@ -28,12 +28,15 @@ export const StatsOverviewSkeleton = () => {
                     width={80}
                     height={36}
                     borderRadius={8}
-                    style={{ marginTop: "8px" }}
+                    style={{ marginBlockStart: "8px" }}
                   />
                 </div>
                 <Skeleton width={48} height={48} borderRadius={14} />
               </div>
-              <div className={styles.statFooter} style={{ marginTop: "12px" }}>
+              <div
+                className={styles.statFooter}
+                style={{ marginBlockStart: "12px" }}
+              >
                 <Skeleton width={160} height={14} borderRadius={6} />
               </div>
             </article>
@@ -46,7 +49,7 @@ export const StatsOverviewSkeleton = () => {
 export const TopDepartmentsSkeleton = () => {
   return (
     <ThemeWrapper>
-      <div className={styles.departmentsCard}>
+      <div className={styles.departmentsCard} aria-hidden="true">
         <div className={styles.cardHeader}>
           <Skeleton width={220} height={24} borderRadius={8} />
         </div>
@@ -59,7 +62,7 @@ export const TopDepartmentsSkeleton = () => {
                 <div className={styles.deptMainContent}>
                   <div className={styles.deptInfo}>
                     <Skeleton width={150} height={18} borderRadius={6} />
-                    <div style={{ marginTop: "6px" }}>
+                    <div style={{ marginBlockStart: "6px" }}>
                       <Skeleton width={90} height={14} borderRadius={6} />
                     </div>
                   </div>
@@ -82,7 +85,7 @@ export const TopDepartmentsSkeleton = () => {
 export const ReportMembersListSkeleton = () => {
   return (
     <ThemeWrapper>
-      <div className={styles.membersCard}>
+      <div className={styles.membersCard} aria-hidden="true">
         <div className={styles.cardHeader}>
           <Skeleton width={180} height={24} borderRadius={8} />
         </div>
@@ -105,7 +108,7 @@ export const ReportMembersListSkeleton = () => {
                   className={styles.activityDetails}
                   style={{ width: "100%" }}
                 >
-                  <div style={{ marginBottom: "8px" }}>
+                  <div style={{ marginBlockEnd: "8px" }}>
                     <Skeleton width={160} height={16} borderRadius={6} />
                   </div>
                   <div className={styles.memberMetrics}>
@@ -126,7 +129,7 @@ export const ReportCoursesTableSkeleton = () => {
 
   return (
     <ThemeWrapper>
-      <div className={styles.tableCard}>
+      <div className={styles.tableCard} aria-hidden="true">
         <div className={styles.cardHeader}>
           <div className={styles.headerTitleGroup}>
             <Skeleton width={36} height={36} borderRadius={10} />
@@ -139,11 +142,19 @@ export const ReportCoursesTableSkeleton = () => {
           <table className={styles.dataTable}>
             <thead>
               <tr>
-                <th>{t("course-title")}</th>
-                <th className={styles.centerCell}>{t("assigned-members")}</th>
-                <th className={styles.centerCell}>{t("attempts")}</th>
-                <th className={styles.centerCell}>{t("avg-score")}</th>
-                <th className={styles.centerCell}>{t("certifications")}</th>
+                <th>{t("analytics-course-title-column")}</th>
+                <th className={styles.centerCell}>
+                  {t("analytics-assigned-members-column")}
+                </th>
+                <th className={styles.centerCell}>
+                  {t("analytics-attempts-column")}
+                </th>
+                <th className={styles.centerCell}>
+                  {t("analytics-average-score-column")}
+                </th>
+                <th className={styles.centerCell}>
+                  {t("analytics-certifications-column")}
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -151,7 +162,10 @@ export const ReportCoursesTableSkeleton = () => {
                 .fill(0)
                 .map((_, index) => (
                   <tr key={index}>
-                    <td>
+                    <td
+                      className={styles.courseTitleCell}
+                      data-label={t("analytics-course-title-column")}
+                    >
                       <div className={styles.courseCell}>
                         <Skeleton
                           width={42}
@@ -162,16 +176,28 @@ export const ReportCoursesTableSkeleton = () => {
                         <Skeleton width={180} height={16} borderRadius={6} />
                       </div>
                     </td>
-                    <td className={styles.centerCell}>
+                    <td
+                      className={styles.centerCell}
+                      data-label={t("analytics-assigned-members-column")}
+                    >
                       <Skeleton width={40} height={16} borderRadius={4} />
                     </td>
-                    <td className={styles.centerCell}>
+                    <td
+                      className={styles.centerCell}
+                      data-label={t("analytics-attempts-column")}
+                    >
                       <Skeleton width={40} height={16} borderRadius={4} />
                     </td>
-                    <td className={styles.centerCell}>
+                    <td
+                      className={styles.centerCell}
+                      data-label={t("analytics-average-score-column")}
+                    >
                       <Skeleton width={60} height={28} borderRadius={8} />
                     </td>
-                    <td className={styles.centerCell}>
+                    <td
+                      className={styles.centerCell}
+                      data-label={t("analytics-certifications-column")}
+                    >
                       <Skeleton width={50} height={24} borderRadius={20} />
                     </td>
                   </tr>
@@ -186,7 +212,7 @@ export const ReportCoursesTableSkeleton = () => {
 
 export const WelcomeBannerSkeleton = () => {
   return (
-    <div className={styles.welcomeBanner}>
+    <div className={styles.welcomeBanner} aria-hidden="true">
       <div className={styles.bannerContent} style={{ width: "100%" }}>
         <Skeleton
           baseColor="rgba(255, 255, 255, 0.15)"
@@ -194,7 +220,10 @@ export const WelcomeBannerSkeleton = () => {
           width="50%"
           height={32}
           borderRadius={8}
-          style={{ marginBottom: "12px", minWidth: "250px" }}
+          style={{
+            marginBlockEnd: "12px",
+            minWidth: "min(250px, 100%)",
+          }}
         />
         <Skeleton
           baseColor="rgba(255, 255, 255, 0.1)"
@@ -202,7 +231,7 @@ export const WelcomeBannerSkeleton = () => {
           width="35%"
           height={20}
           borderRadius={6}
-          style={{ minWidth: "150px" }}
+          style={{ minWidth: "min(150px, 100%)" }}
         />
       </div>
       <div className={styles.bannerDecoration}>
@@ -215,7 +244,7 @@ export const WelcomeBannerSkeleton = () => {
 export const FreePlanWarningSkeleton = () => {
   return (
     <ThemeWrapper>
-      <section className={styles.freePlanWarning}>
+      <section className={styles.freePlanWarning} aria-hidden="true">
         <Skeleton
           width={44}
           height={44}
@@ -224,7 +253,7 @@ export const FreePlanWarningSkeleton = () => {
         />
 
         <div className={styles.warningContent}>
-          <div style={{ marginBottom: "6px" }}>
+          <div style={{ marginBlockEnd: "6px" }}>
             <Skeleton width={180} height={18} borderRadius={6} />
           </div>
           <Skeleton width="70%" height={14} borderRadius={6} />

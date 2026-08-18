@@ -1,9 +1,11 @@
 .pageContainer {
   width: 100%;
+  min-width: 0;
   padding: clamp(20px, 3vw, 40px) clamp(16px, 4vw, 60px);
   background-color: var(--app-page-bg);
   box-sizing: border-box;
   min-height: calc(100vh - 75px);
+  overflow: clip;
   animation: fadeIn 0.4s ease-out;
 }
 
@@ -35,12 +37,15 @@
 
 .bannerContent {
   position: relative;
+  min-width: 0;
   z-index: 2;
 }
 .greeting {
   font-size: 2rem;
   font-weight: 800;
-  margin: 0 0 8px;
+  margin: 0;
+  margin-block-end: 8px;
+  overflow-wrap: anywhere;
 }
 .highlight {
   color: #bfdbfe;
@@ -54,7 +59,7 @@
 .bannerDecoration {
   position: absolute;
   inset-inline-end: 5%;
-  top: 50%;
+  inset-block-start: 50%;
   transform: translateY(-50%);
   opacity: 0.1;
   z-index: 1;
@@ -128,6 +133,7 @@
 }
 
 .warningActions {
+  max-width: 100%;
   flex-shrink: 0;
   display: flex;
   align-items: flex-end;
@@ -155,13 +161,14 @@
 }
 
 .warningButton {
+  max-width: 100%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 7px;
   padding: 10px 15px;
   color: #ffffff;
-  background: #1a56db;
+  background: var(--color-linco-blue);
   border: 0;
   border-radius: 10px;
   font-size: 0.82rem;
@@ -257,6 +264,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  gap: 12px;
 }
 .statTitle {
   color: var(--app-muted);
@@ -274,7 +282,9 @@
   color: var(--app-heading);
   font-size: 2rem;
   font-weight: 800;
-  margin: 5px 0 0;
+  margin: 0;
+  margin-block-start: 5px;
+  overflow-wrap: anywhere;
 }
 
 .statIconBox {
@@ -315,9 +325,11 @@
   transform: scaleY(-1);
 }
 .trendText {
+  margin: 0;
   color: var(--app-muted);
   font-size: 0.8rem;
   font-weight: 600;
+  line-height: 1.5;
 }
 
 /* ================= 3. Main Layout ================= */
@@ -335,6 +347,7 @@
 }
 
 .leftColumn {
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 30px;
@@ -361,6 +374,7 @@
   justify-content: space-between;
   align-items: center;
   margin-block-end: 25px;
+  gap: 12px;
 }
 .cardHeader h3 {
   color: var(--app-heading);
@@ -371,6 +385,9 @@
 
 /* ================= Top Departments (Leaderboard Style) ================= */
 .departmentsList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -512,6 +529,9 @@
 
 /* ================= Activity Feed ================= */
 .activityList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -554,7 +574,7 @@
   width: 100%;
   min-width: 0;
 }
-.activityItem:last-child .activityDetails {
+.activityList > li:last-child .activityDetails {
   border-block-end: none;
   padding-block-end: 0;
 }
@@ -606,7 +626,9 @@
 
   .statCard,
   .departmentsCard,
-  .activityCard {
+  .activityCard,
+  .membersCard,
+  .tableCard {
     padding: 18px 16px;
     border-radius: 16px;
   }
@@ -641,28 +663,80 @@
 }
 
 /* ================= 💡 Additions for Reports ================= */
-.loadingState,
 .errorState {
+  width: min(100%, 620px);
+  min-height: 320px;
+  margin: clamp(24px, 8vh, 80px) auto;
+  padding: clamp(24px, 5vw, 42px);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 15px;
-  height: 40vh;
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--app-muted);
+  gap: 12px;
+  color: var(--app-text);
+  background: var(--app-surface);
+  border: 1px solid var(--app-danger-border);
+  border-radius: 24px;
+  box-shadow: var(--app-card-shadow);
+  text-align: center;
 }
-.errorState {
+
+.errorState h1,
+.errorState p {
+  margin: 0;
+}
+
+.errorState h1 {
+  color: var(--app-heading);
+  font-size: clamp(1.3rem, 4vw, 1.75rem);
+}
+
+.errorState p {
+  max-width: 48ch;
+  color: var(--app-muted);
+  line-height: 1.6;
+}
+
+.stateIcon {
+  font-size: 2.8rem;
   color: var(--app-danger-text);
 }
 
-.highlightText {
-  color: var(--app-link);
+.stateAction {
+  margin-block-start: 6px;
+  padding: 11px 18px;
+  color: #ffffff;
+  background: var(--color-linco-blue);
+  border: 0;
+  border-radius: 10px;
+  font: inherit;
   font-weight: 800;
+  cursor: pointer;
+}
+
+.stateAction:hover {
+  background: #1648b8;
+}
+
+.stateAction:focus-visible {
+  outline: 3px solid var(--app-focus-ring);
+  outline-offset: 3px;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .fullWidthSection {
-  margin-top: 30px;
+  margin-block-start: 30px;
 }
 
 /* ================= 💡 Advanced Table Styles ================= */
@@ -670,6 +744,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  min-width: 0;
 }
 
 .headerIcon {
@@ -686,6 +761,7 @@
 }
 
 .tableCard {
+  min-width: 0;
   background-color: var(--app-surface);
   border: 1px solid var(--app-border);
   border-radius: 24px;
@@ -694,14 +770,35 @@
 }
 
 .tableWrapper {
+  max-width: 100%;
   overflow-x: auto;
   width: 100%;
   border-radius: 16px;
   border: 1px solid var(--app-border-soft);
+  scrollbar-color: var(--app-border-strong) var(--app-surface-muted);
+}
+
+.tableWrapper:focus-visible {
+  outline: 3px solid var(--app-focus-ring);
+  outline-offset: 3px;
+}
+
+.tableWrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
+.tableWrapper::-webkit-scrollbar-track {
+  background: var(--app-surface-muted);
+}
+
+.tableWrapper::-webkit-scrollbar-thumb {
+  background: var(--app-border-strong);
+  border-radius: 999px;
 }
 
 .dataTable {
   width: 100%;
+  min-width: 680px;
   border-collapse: collapse;
   text-align: start;
   background-color: var(--app-surface);
@@ -716,18 +813,18 @@
   text-transform: uppercase;
   letter-spacing: 0.8px;
   white-space: nowrap;
-  border-bottom: 1px solid var(--app-border);
+  border-block-end: 1px solid var(--app-border);
 }
 
 .dataTable td {
   padding: 14px 20px;
-  border-bottom: 1px solid var(--app-border-soft);
+  border-block-end: 1px solid var(--app-border-soft);
   vertical-align: middle;
   transition: background-color 0.2s ease;
 }
 
 .dataTable tr:last-child td {
-  border-bottom: none;
+  border-block-end: none;
 }
 
 .dataTable tr:hover td {
@@ -758,10 +855,12 @@
 }
 
 .courseNameText {
+  min-width: 0;
   font-weight: 700;
   color: var(--app-heading);
   font-size: 0.98rem;
   line-height: 1.4;
+  overflow-wrap: anywhere;
 }
 
 .numericValue {
@@ -798,6 +897,7 @@
 
 /* ================= Members List & Avatar ================= */
 .membersCard {
+  min-width: 0;
   background-color: var(--app-surface);
   border: 1px solid var(--app-border);
   border-radius: 24px;
@@ -807,12 +907,15 @@
 
 .memberMetrics {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
-  margin-top: 6px;
+  margin-block-start: 6px;
 }
 
 .metricBadge,
 .metricBadgeGold {
+  min-width: 0;
+  max-width: 100%;
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -820,6 +923,8 @@
   border-radius: 20px;
   font-size: 0.75rem;
   font-weight: 700;
+  line-height: 1.35;
+  white-space: normal;
 }
 
 .metricBadge {
@@ -828,9 +933,9 @@
 }
 
 .metricBadgeGold {
-  background-color: #fef08a;
-  color: #854d0e;
-  border: 1px solid #fde047;
+  background-color: var(--app-warning-soft);
+  color: var(--app-warning-text);
+  border: 1px solid var(--app-warning-border);
 }
 
 .memberAvatar {
@@ -843,13 +948,81 @@
   border: 1px solid var(--app-border-soft);
 }
 
+.memberJobTitle {
+  display: block;
+  margin-block-start: 2px;
+  color: var(--app-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.viewAllBtn {
+  flex: 0 0 auto;
+  padding: 8px 12px;
+  color: var(--app-link);
+  background: var(--app-info-surface);
+  border: 1px solid var(--app-info-border);
+  border-radius: 9px;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.viewAllBtn:hover {
+  background: var(--app-surface-soft);
+}
+
+.viewAllBtn:focus-visible,
+.clickableItem:focus-visible,
+.closeBtn:focus-visible {
+  outline: 3px solid var(--app-focus-ring);
+  outline-offset: 3px;
+}
+
+.emptyState {
+  min-height: 190px;
+  padding: 28px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--app-muted);
+  background: var(--app-surface-muted);
+  border: 1px dashed var(--app-border-strong);
+  border-radius: 16px;
+  text-align: center;
+}
+
+.emptyState > svg {
+  font-size: 2.4rem;
+  color: var(--app-link);
+}
+
+.emptyState h4,
+.emptyState p {
+  margin: 0;
+}
+
+.emptyState h4 {
+  color: var(--app-heading);
+  font-size: 1rem;
+}
+
+.emptyState p {
+  max-width: 42ch;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
 /* ================= Loading Spinner ================= */
 .loader {
   display: inline-block;
   width: 24px;
   height: 24px;
   border: 3px solid var(--app-border);
-  border-top-color: var(--app-link);
+  border-block-start-color: var(--app-link);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -861,7 +1034,14 @@
 }
 /* ================= Clickable Items & Scroll ================= */
 .clickableItem {
+  width: 100%;
+  min-width: 0;
   cursor: pointer;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  font: inherit;
+  text-align: start;
   transition:
     background-color 0.2s,
     transform 0.2s;
@@ -883,12 +1063,22 @@
   max-height: 500px;
   overflow-y: auto;
   padding-inline-end: 10px;
+  scrollbar-color: var(--app-border-strong) transparent;
+}
+
+.scrollableList::-webkit-scrollbar {
+  width: 7px;
+}
+
+.scrollableList::-webkit-scrollbar-thumb {
+  background: var(--app-border-strong);
+  border-radius: 999px;
 }
 
 .modalOverlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(10, 42, 84, 0.4);
+  background-color: var(--app-overlay);
   backdrop-filter: blur(4px);
   z-index: 1000;
   display: flex;
@@ -899,16 +1089,34 @@
 }
 
 .modalContent {
+  min-width: 0;
   background-color: var(--app-surface);
+  color: var(--app-text);
+  border: 1px solid var(--app-border);
   border-radius: 24px;
   width: 100%;
   max-width: 650px;
   max-height: 90vh;
   overflow-y: auto;
+  overscroll-behavior: contain;
   padding: 35px 40px;
   position: relative;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
   animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  scrollbar-color: var(--app-border-strong) var(--app-surface-muted);
+}
+
+.modalContent::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modalContent::-webkit-scrollbar-track {
+  background: var(--app-surface-muted);
+}
+
+.modalContent::-webkit-scrollbar-thumb {
+  background: var(--app-border-strong);
+  border-radius: 999px;
 }
 
 @keyframes slideUp {
@@ -924,7 +1132,7 @@
 
 .closeBtn {
   position: absolute;
-  top: 25px;
+  inset-block-start: 25px;
   inset-inline-end: 25px;
   background: var(--app-surface-soft);
   border: none;
@@ -959,17 +1167,25 @@
   border-radius: 20px;
   object-fit: cover;
   border: 2px solid var(--app-border-strong);
+  background: var(--app-surface-soft);
 }
 
 .modalUserInfo h2 {
-  margin: 0 0 8px 0;
+  margin: 0;
+  margin-block-end: 8px;
   font-size: 1.5rem;
   font-weight: 800;
   color: var(--app-heading);
+  overflow-wrap: anywhere;
+}
+
+.modalUserInfo {
+  min-width: 0;
 }
 
 .modalUserTags {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   margin-block-end: 10px;
 }
@@ -1005,6 +1221,13 @@
   display: flex;
   align-items: center;
   gap: 5px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.modalUserMeta bdi {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .modalDepartments {
@@ -1032,7 +1255,7 @@
 }
 
 .deptTag {
-  background-color: #ffffff;
+  background-color: var(--app-surface);
   border: 1px solid var(--app-border);
   padding: 4px 10px;
   border-radius: 8px;
@@ -1043,8 +1266,8 @@
 
 .modalDivider {
   border: none;
-  border-top: 1px dashed var(--app-border-strong);
-  margin: 25px 0;
+  border-block-start: 1px dashed var(--app-border-strong);
+  margin-block: 25px;
 }
 
 .sectionTitle {
@@ -1085,6 +1308,11 @@
   text-transform: uppercase;
 }
 
+:global([dir="rtl"]) .metricLabel {
+  letter-spacing: 0;
+  text-transform: none;
+}
+
 .metricValue {
   font-size: 1.6rem;
   font-weight: 800;
@@ -1096,22 +1324,22 @@
 }
 
 .highlightCardGold {
-  background: linear-gradient(135deg, #fef08a 0%, #fde047 100%);
-  border-color: #facc15;
+  background: var(--app-warning-soft);
+  border-color: var(--app-warning-border);
 }
 
 .highlightCardGold .metricLabel,
 .highlightCardGold .metricValue {
-  color: #854d0e;
+  color: var(--app-warning-text);
 }
 
 .cardBgIcon {
   position: absolute;
-  right: -10px;
-  bottom: -10px;
+  inset-inline-end: -10px;
+  inset-block-end: -10px;
   font-size: 4rem;
   opacity: 0.1;
-  color: #854d0e;
+  color: var(--app-warning-text);
 }
 
 .smallIcon {
@@ -1141,7 +1369,8 @@
 }
 
 .examStatItem p {
-  margin: 0 0 2px 0;
+  margin: 0;
+  margin-block-end: 2px;
   font-size: 0.8rem;
   color: var(--app-muted);
   font-weight: 700;
@@ -1157,7 +1386,7 @@
   height: 45px;
   border-radius: 50%;
   border: 4px solid var(--app-link);
-  border-top-color: var(--app-surface-muted);
+  border-block-start-color: var(--app-surface-muted);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1166,9 +1395,127 @@
   color: var(--app-link);
 }
 
+.mutedText {
+  color: var(--app-muted);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.mutedIcon {
+  color: var(--app-muted);
+}
+
+.successIcon {
+  color: var(--app-success-indicator);
+}
+
+.dangerIcon {
+  color: var(--app-danger-text);
+}
+
 @media (max-width: 640px) {
+  .fullWidthSection {
+    margin-block-start: 16px;
+  }
+
+  .tableWrapper {
+    overflow: visible;
+    border: 0;
+  }
+
+  .dataTable {
+    display: block;
+    min-width: 0;
+    background: transparent;
+  }
+
+  .dataTable thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .dataTable tbody {
+    display: grid;
+    gap: 12px;
+  }
+
+  .dataTable tr {
+    display: grid;
+    overflow: hidden;
+    background: var(--app-surface);
+    border: 1px solid var(--app-border);
+    border-radius: 14px;
+  }
+
+  .dataTable td,
+  .dataTable td.centerCell {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-width: 0;
+    padding: 11px 13px;
+    text-align: end;
+  }
+
+  .dataTable td::before {
+    content: attr(data-label);
+    flex: 0 1 48%;
+    color: var(--app-muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-align: start;
+  }
+
+  .dataTable tr:last-child td:not(:last-child) {
+    border-block-end: 1px solid var(--app-border-soft);
+  }
+
+  .dataTable td:last-child {
+    border-block-end: 0;
+  }
+
+  .dataTable td.courseTitleCell {
+    display: block;
+    padding: 14px 13px;
+    background: var(--app-surface-muted);
+  }
+
+  .dataTable td.courseTitleCell::before {
+    display: block;
+    margin-block-end: 9px;
+  }
+
+  .courseCell {
+    min-width: 0;
+  }
+
+  .courseNameText {
+    flex: 1;
+    text-align: start;
+  }
+
   .modalContent {
-    padding: 25px 20px;
+    max-height: calc(100dvh - 24px);
+    padding-block: 58px 25px;
+    padding-inline: 20px;
+    border-radius: 18px;
+  }
+
+  .modalOverlay {
+    padding: 12px;
+  }
+
+  .closeBtn {
+    inset-block-start: 14px;
+    inset-inline-end: 14px;
   }
 
   .memberProfileHeader {
@@ -1178,6 +1525,15 @@
 
   .modalUserMeta {
     justify-content: center;
+  }
+
+  .modalUserTags {
+    justify-content: center;
+  }
+
+  .modalDepartments {
+    align-items: stretch;
+    flex-direction: column;
   }
 
   .metricsGrid {
@@ -1192,4 +1548,88 @@
   .examStatItem {
     width: 45%;
   }
+}
+
+@media (max-width: 380px) {
+  .pageContainer {
+    padding-inline: 12px;
+  }
+
+  .welcomeBanner {
+    padding-inline: 16px;
+  }
+
+  .freePlanWarning {
+    padding: 16px 14px;
+  }
+
+  .warningActions,
+  .warningButton {
+    width: 100%;
+  }
+
+  .warningActions {
+    margin-inline-start: 0;
+  }
+
+  .statCard,
+  .departmentsCard,
+  .activityCard,
+  .membersCard,
+  .tableCard {
+    padding-inline: 14px;
+  }
+
+  .memberMetrics {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .metricBadge,
+  .metricBadgeGold {
+    width: 100%;
+  }
+
+  .modalOverlay {
+    padding: 8px;
+  }
+
+  .modalContent {
+    max-height: calc(100dvh - 16px);
+    padding-inline: 14px;
+  }
+
+  .metricsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .examStatsWrapper {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .examStatItem {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pageContainer,
+  .modalOverlay,
+  .modalContent {
+    animation: none;
+  }
+
+  .statCard,
+  .deptItem,
+  .clickableItem,
+  .progressFill {
+    transition: none;
+  }
+}
+
+:global(:root[data-theme="dark"]) .welcomeBanner {
+  background: linear-gradient(135deg, #081d3a 0%, #102d58 100%);
+  border: 1px solid var(--app-border-strong);
+  box-shadow: var(--app-card-shadow);
 }

@@ -1,3 +1,4 @@
+import { useId } from "react";
 import { IoWarningOutline, IoTimeOutline } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
 import PlanUpgradeCard from "../../Subscription/components/PlanUpgradeCard/PlanUpgradeCard";
@@ -39,39 +40,46 @@ const FreePlanWarning = ({
   isLoading,
 }) => {
   const { t } = useTranslation();
+  const titleId = useId();
 
   if (isLoading) return <FreePlanWarningSkeleton />;
 
   const freePlanTimeline = getFreePlanTimeline(createdAt);
-
-  if (!freePlanTimeline) return null;
+  const isExpired = freePlanTimeline?.isExpired ?? false;
 
   return (
     <section
       className={`${styles.freePlanWarning} ${
-        freePlanTimeline.isExpired ? styles.freePlanExpired : ""
+        isExpired ? styles.freePlanExpired : ""
       }`}
-      role={freePlanTimeline.isExpired ? "alert" : "status"}
+      role={isExpired ? "alert" : "status"}
+      aria-labelledby={titleId}
     >
       <div className={styles.warningIcon} aria-hidden="true">
         <IoWarningOutline />
       </div>
       <div className={styles.warningContent}>
-        <h2>
-          {freePlanTimeline.isExpired
+        <h2 id={titleId}>
+          {isExpired
             ? t("free-plan-expired-title")
             : t("free-plan-warning-title")}
         </h2>
         <p>
-          {freePlanTimeline.isExpired
-            ? t("free-plan-expired-description")
-            : t("free-plan-warning-description", {
-                count: freePlanTimeline.daysElapsed,
-                formattedCount: numberFormatter.format(
-                  freePlanTimeline.daysElapsed,
-                ),
+          {isExpired
+            ? t("free-plan-expired-description", {
                 totalDays: numberFormatter.format(FREE_PLAN_DURATION_DAYS),
-              })}
+              })
+            : freePlanTimeline
+              ? t("free-plan-warning-description", {
+                  count: freePlanTimeline.daysElapsed,
+                  formattedCount: numberFormatter.format(
+                    freePlanTimeline.daysElapsed,
+                  ),
+                  totalDays: numberFormatter.format(FREE_PLAN_DURATION_DAYS),
+                })
+              : t("free-plan-warning-generic-description", {
+                  totalDays: numberFormatter.format(FREE_PLAN_DURATION_DAYS),
+                })}
         </p>
       </div>
 
@@ -79,7 +87,7 @@ const FreePlanWarning = ({
         {freePlanTimeline && (
           <span className={styles.warningBadge}>
             <IoTimeOutline aria-hidden="true" />
-            {freePlanTimeline.isExpired
+            {isExpired
               ? t("free-plan-expired-badge")
               : t("free-plan-days-remaining", {
                   count: freePlanTimeline.daysRemaining,
