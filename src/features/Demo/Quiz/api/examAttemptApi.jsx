@@ -12,7 +12,6 @@ export const examAttemptApi = {
       throw new Error(data.message || "Failed to retrieve exam");
     }
 
-    console.log("Generated Exam Attempt:", data.data);
     return data.data;
   },
 
@@ -31,7 +30,6 @@ export const examAttemptApi = {
       throw new Error(data.message || "Failed to submit exam");
     }
 
-    console.log("Submitted Exam Attempt:", data.data);
     return data;
   },
 };

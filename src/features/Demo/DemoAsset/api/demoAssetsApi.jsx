@@ -15,7 +15,6 @@ export const demoAssetsApi = {
       });
 
       const data = await response.json();
-      console.log("Create Department Course Response:", data);
 
       if (!response.ok || data.success === false) {
         throw new Error(data.message || "Failed to create department course");

@@ -12,7 +12,6 @@ export const attachmentApi = {
     });
 
     const data = await response.json();
-    console.log("Fetched Lesson Attachments:", data.data);
 
     if (!response.ok || !data.success) {
       throw new Error(data.message || "Failed to fetch attachments");
@@ -32,7 +31,6 @@ export const attachmentApi = {
     );
 
     const data = await response.json();
-    console.log("Fetched Attachments Upload URLs Data:", data.data);
 
     if (!response.ok || !data.success) {
       throw new Error(data.message || "Failed to get attachments upload URLs");
@@ -58,7 +56,6 @@ export const attachmentApi = {
 
       xhr.addEventListener("load", () => {
         if (xhr.status >= 200 && xhr.status < 300) {
-          console.log("Attachment file successfully uploaded to storage");
           resolve(true);
         } else {
           reject(
@@ -92,7 +89,6 @@ export const attachmentApi = {
     });
 
     const data = await response.json();
-    console.log("Created Attachment:", data.data);
 
     if (!response.ok || !data.success) {
       throw new Error(data.message || "Failed to create attachment");
@@ -111,7 +107,6 @@ export const attachmentApi = {
     );
 
     const data = await response.json();
-    console.log("Deleted Attachment:", attachmentId);
 
     if (!response.ok || !data.success) {
       throw new Error(data.message || "Failed to delete attachment");

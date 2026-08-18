@@ -17,7 +17,6 @@ export const libraryApi = {
       throw new Error(data.message || "Failed to fetch public courses");
     }
 
-    console.log("Fetched public Courses:", data.data);
     return data.data;
   },
 
@@ -35,7 +34,6 @@ export const libraryApi = {
       throw new Error(data.message || "Failed to fetch tags");
     }
 
-    console.log("Fetched Tags:", data.data);
     return data.data;
   },
 
@@ -52,7 +50,6 @@ export const libraryApi = {
       });
 
       const data = await response.json();
-      console.log("Buy Course Response:", data);
 
       if (!response.ok || data.success === false) {
         throw new Error(data.message || "Failed to buy course");
@@ -78,7 +75,6 @@ export const libraryApi = {
       );
 
       const data = await response.json();
-      console.log("Payment Status Response:", data);
 
       if (!response.ok || !data.success) {
         throw new Error(data.message || "Failed to fetch payment status");

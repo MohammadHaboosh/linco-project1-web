@@ -20,7 +20,6 @@ export const questionBankApi = {
       throw new Error(data.message || "Failed to add question to bank");
     }
 
-    console.log("Created Question:", data.data);
     return data.data;
   },
 
@@ -35,7 +34,6 @@ export const questionBankApi = {
     const data = await response.json();
     if (!response.ok || !data.success) throw new Error(data.message);
 
-    console.log("get Question:", data.data);
     return data.data || [];
   },
 
@@ -53,7 +51,6 @@ export const questionBankApi = {
       throw new Error(data.message || "Failed to delete question");
     }
 
-    console.log("Deleted Question:", data);
     return data;
   },
 };

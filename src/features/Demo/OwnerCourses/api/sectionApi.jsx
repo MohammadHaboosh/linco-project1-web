@@ -9,7 +9,6 @@ export const sectionApi = {
     const data = await response.json();
     if (!response.ok || !data.success) throw new Error(data.message);
 
-    console.log("Fetched Course Sections:", data.data);
     return data.data;
   },
 
@@ -22,7 +21,6 @@ export const sectionApi = {
     const data = await response.json();
     if (!response.ok || !data.success) throw new Error(data.message);
 
-    console.log("Created Course Section:", data.data);
     return data.data;
   },
 
@@ -40,7 +38,6 @@ export const sectionApi = {
     );
 
     const data = await response.json();
-    console.log("Update Section Response:", data);
     if (!response.ok || !data.success) {
       throw new Error(data.message || "Failed to update section");
     }
@@ -57,7 +54,6 @@ export const sectionApi = {
     );
 
     const data = await response.json();
-    console.log("Delete Section Response:", data);
     if (!response.ok || !data.success) {
       throw new Error(data.message || "Failed to delete section");
     }

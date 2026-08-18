@@ -9,7 +9,6 @@ export const lessonApi = {
     const data = await response.json();
     if (!response.ok || !data.success) throw new Error(data.message);
 
-    console.log("Fetched Section Lessons:", data.data);
     return data.data;
   },
 
@@ -24,7 +23,6 @@ export const lessonApi = {
     );
 
     const data = await response.json();
-    console.log("Fetched Video Upload URL Data:", data.data);
     if (!response.ok || !data.success) {
       throw new Error(data.message || "Failed to get video upload URL");
     }
@@ -49,7 +47,6 @@ export const lessonApi = {
 
       xhr.addEventListener("load", () => {
         if (xhr.status >= 200 && xhr.status < 300) {
-          console.log("Video file successfully uploaded to Azure Blob Storage");
           resolve(true);
         } else {
           reject(
@@ -81,7 +78,6 @@ export const lessonApi = {
     });
 
     const data = await response.json();
-    console.log("Created Lesson:", data.data);
     if (!response.ok || !data.success) {
       throw new Error(data.message || "Failed to create lesson");
     }

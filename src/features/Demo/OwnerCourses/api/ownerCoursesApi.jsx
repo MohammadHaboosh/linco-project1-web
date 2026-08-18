@@ -18,7 +18,6 @@ export const ownerCoursesApi = {
       throw new Error(data.message || "Failed to fetch owner courses");
     }
 
-    console.log("Fetched Demo Assets:", data.data);
     return data.data;
   },
 
@@ -33,7 +32,6 @@ export const ownerCoursesApi = {
       throw new Error(data.message || "Failed to publish course");
     }
 
-    console.log("Course Publish response:", data);
     return data;
   },
 };

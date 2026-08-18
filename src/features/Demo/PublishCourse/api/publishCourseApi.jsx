@@ -12,7 +12,6 @@ export const publishCourseApi = {
     if (!response.ok || !data.success) {
       throw new Error(data.message || "Failed to create tag");
     }
-    console.log("Created Tag:", data.data);
     return data.data;
   },
 
@@ -27,7 +26,6 @@ export const publishCourseApi = {
     if (!response.ok || !data.success) {
       throw new Error(data.message || "Failed to create course");
     }
-    console.log("Created Course:", data.data);
     return data.data;
   },
 };

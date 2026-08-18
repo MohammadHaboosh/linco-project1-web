@@ -17,7 +17,6 @@ export const answerApi = {
       throw new Error(data.message || "Failed to fetch answers");
     }
 
-    console.log("Fetched answers:", data.data);
     return data.data || [];
   },
 
@@ -39,7 +38,6 @@ export const answerApi = {
       throw new Error(data.message || "Failed to create answer");
     }
 
-    console.log("Created answer:", data.data);
     return data.data;
   },
 
@@ -60,7 +58,6 @@ export const answerApi = {
       throw new Error(data.message || "Failed to update answer");
     }
 
-    console.log("Updated answer:", data.data);
     return data.data;
   },
 
@@ -80,7 +77,6 @@ export const answerApi = {
       throw new Error(data?.message || "Failed to delete answer");
     }
 
-    console.log("Deleted answer:", answerId);
     return true;
   },
 };

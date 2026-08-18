@@ -48,10 +48,6 @@ export const useCreateCourse = (demoId) => {
       let finalImagePath = courseData.imagePath;
 
       if (courseData.imageFile) {
-        console.log(
-          "[useCreateCourse] Uploading image for created course:",
-          courseId,
-        );
         const imageResult = await courseManagerApi.uploadAndSaveCourseImage(
           courseId,
           courseData.imageFile,

@@ -17,7 +17,6 @@ export const qAndAApi = {
       throw new Error(data.message || "Failed to fetch questions");
     }
 
-    console.log("Fetched questions:", data.data);
     return data.data;
   },
 
@@ -39,7 +38,6 @@ export const qAndAApi = {
       throw new Error(data.message || "Failed to create question");
     }
 
-    console.log("Created question:", data.data);
     return data.data;
   },
 
@@ -61,7 +59,6 @@ export const qAndAApi = {
       throw new Error(data.message || "Failed to update question");
     }
 
-    console.log("Updated question:", data.data);
     return data.data;
   },
 

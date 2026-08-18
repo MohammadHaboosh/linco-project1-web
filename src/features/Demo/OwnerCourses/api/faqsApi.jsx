@@ -11,7 +11,6 @@ export const faqsApi = {
     const data = await response.json();
     if (!response.ok || !data.success) throw new Error(data.message);
 
-    console.log("Fetched FAQs:", data.data);
     return data;
   },
 
@@ -24,7 +23,6 @@ export const faqsApi = {
     const data = await response.json();
     if (!response.ok || !data.success) throw new Error(data.message);
 
-    console.log("Created FAQ:", data.data);
     return data;
   },
 
@@ -37,7 +35,6 @@ export const faqsApi = {
       },
     );
     const data = await response.json();
-    console.log("Delete FAQ Response:", data);
     if (!response.ok || !data.success) {
       throw new Error(data.message || "Failed to delete FAQ");
     }

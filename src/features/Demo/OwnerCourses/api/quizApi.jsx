@@ -17,7 +17,6 @@ export const quizApi = {
     const data = await response.json();
     if (!response.ok || !data.success) throw new Error(data.message);
 
-    console.log("Created Quiz:", data.data);
     return data.data;
   },
 
@@ -40,7 +39,6 @@ export const quizApi = {
       quiz = payload;
     }
 
-    console.log("Fetched Quiz for section", sectionId, ":", quiz);
     return quiz;
   },
 
@@ -51,7 +49,6 @@ export const quizApi = {
     });
 
     const data = await response.json();
-    console.log("Delete Quiz Response:", data);
     if (!response.ok || !data.success) {
       throw new Error(data.message || "Failed to delete quiz");
     }
@@ -77,7 +74,6 @@ export const quizApi = {
       throw new Error(data.message || "Failed to update quiz");
     }
 
-    console.log("Updated Quiz:", data.data);
     return data.data;
   },
 };

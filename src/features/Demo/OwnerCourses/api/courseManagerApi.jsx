@@ -12,7 +12,6 @@ export const courseManagerApi = {
     const data = await response.json();
     if (!response.ok || !data.success) throw new Error(data.message);
 
-    console.log("Fetched Asset Details:", data.data);
     return data.data;
   },
 
@@ -25,7 +24,6 @@ export const courseManagerApi = {
     const data = await response.json();
     if (!response.ok || !data.success) throw new Error(data.message);
 
-    console.log("Fetched Course Upload URL Data:", data.data);
     return data.data;
   },
 
@@ -42,7 +40,6 @@ export const courseManagerApi = {
     if (!response.ok) {
       throw new Error("Failed to upload image to storage service.");
     }
-    console.log(" Image successfully uploaded to Azure Blob Storage");
     return true;
   },
 
@@ -55,21 +52,16 @@ export const courseManagerApi = {
     const data = await response.json();
     if (!response.ok || !data.success) throw new Error(data.message);
 
-    console.log("Updated Course General Info:", data.data);
     return data.data;
   },
 
   uploadAndSaveCourseImage: async (courseId, file, currentPayload) => {
-    console.log(" Starting Full Image Upload & Save Flow for:", file.name);
 
     const uploadData = await courseManagerApi.getCourseUploadUrl(file.name);
     const uploadUrl = uploadData.uploadUrl;
 
     const fullCdnUrl =
       uploadData.cdnUrl || uploadData.fileKey || uploadData.key;
-
-    console.log("Target Upload URL:", uploadUrl);
-    console.log("Full CDN Image URL to be stored:", fullCdnUrl);
 
     await courseManagerApi.uploadImageToStorage(uploadUrl, file);
 
@@ -80,7 +72,6 @@ export const courseManagerApi = {
       imagePath: fullCdnUrl,
     };
 
-    console.log(" Sending Final Course Payload:", updatedPayload);
     return await courseManagerApi.updateCourseGeneralInfo(
       courseId,
       updatedPayload,

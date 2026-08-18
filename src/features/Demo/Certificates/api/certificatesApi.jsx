@@ -14,7 +14,6 @@ export const certificatesApi = {
       throw new Error(data.message || "Failed to fetch certificates");
     }
 
-    console.log("Fetched Certificates:", data.data);
     return data.data || [];
   },
 };
