@@ -1193,31 +1193,3 @@
     width: 45%;
   }
 }
-/* ================= 💡 Empty States ================= */
-.emptyState {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 20px;
-  text-align: center;
-  color: var(--app-muted);
-  background-color: var(--app-surface-muted);
-  border-radius: 16px;
-  border: 1px dashed var(--app-border-strong);
-  margin-top: 10px;
-}
-
-.emptyStateIcon {
-  font-size: 3.5rem;
-  color: var(--app-border-strong);
-  margin-bottom: 12px;
-  opacity: 0.6;
-}
-
-.emptyState p {
-  margin: 0;
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--app-muted);
-}
