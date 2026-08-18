@@ -50,7 +50,7 @@ const OwnerHomeContent = () => {
 
   return (
     <div className={styles.pageContainer} dir={i18n.dir()}>
-      <WelcomeBanner workspaceName={workspaceName} />
+      <WelcomeBanner workspaceName={workspaceName} isLoading={isLoading} />
 
       {isFreePlan && (
         <FreePlanWarning
