@@ -46,12 +46,11 @@ const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
     const videoElement = document.createElement("video");
 
     videoElement.addEventListener("loadedmetadata", () => {
-      const durationInSeconds = videoElement.duration;
-      const durationInMinutes = Math.ceil(durationInSeconds / 60);
+      const durationInSeconds = Math.round(videoElement.duration);
 
       setFormData((prev) => ({
         ...prev,
-        duration: durationInMinutes,
+        duration: durationInSeconds,
       }));
 
       URL.revokeObjectURL(videoUrl);

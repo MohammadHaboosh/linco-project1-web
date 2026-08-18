@@ -4,6 +4,7 @@ import {
   IoChevronBack,
   IoAddOutline,
   IoLockClosedOutline,
+  IoChatbubblesOutline, // 💡 أيقونة جديدة للغروبات
 } from "react-icons/io5";
 import styles from "./GroupWorkspace.module.css";
 
@@ -42,6 +43,7 @@ const GroupSidebar = ({
       <div className={styles.groupsList}>
         {groups.map((group) => {
           const isLocked = group.isLocked;
+          const groupName = group.name || group.title;
 
           return (
             <Link
@@ -54,8 +56,18 @@ const GroupSidebar = ({
               `}
               onClick={(e) => handleGroupClick(e, isLocked)}
             >
-              <div className={styles.groupAvatar}>{group.initials}</div>
-              <span className={styles.groupName}>{group.title}</span>
+              <div className={styles.groupIconWrapper}>
+                <IoChatbubblesOutline />
+              </div>
+
+              <div className={styles.groupTextData}>
+                <span className={styles.groupName}>{groupName}</span>
+                {group.description && (
+                  <span className={styles.groupSidebarDesc}>
+                    {group.description}
+                  </span>
+                )}
+              </div>
 
               {isLocked && <IoLockClosedOutline className={styles.lockIcon} />}
             </Link>

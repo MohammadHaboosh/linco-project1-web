@@ -3,81 +3,60 @@ import LeaderboardPodium from "./LeaderboardPodium";
 import LeaderboardList from "./LeaderboardList";
 import styles from "./LeaderboardContent.module.css";
 import { useTranslation } from "react-i18next";
-
-const mockLeaderboard = [
-  {
-    id: 1,
-    name: "Lina H.",
-    role: "Front-End Developer",
-    level: "Senior",
-    xp: 2490,
-    avatar: "/images/avatar4.jpg",
-  },
-  {
-    id: 2,
-    name: "Ahmad Ahmad",
-    role: "Front-End Developer",
-    level: "Senior",
-    xp: 2400,
-    avatar: "/images/avatar1.jpg",
-  },
-  {
-    id: 3,
-    name: "Abrar (You)",
-    role: "Front-End Developer",
-    level: "Senior",
-    xp: 2350,
-    avatar: "/images/avatar2.jpg",
-    isCurrentUser: true,
-  },
-  {
-    id: 4,
-    name: "Omar Nabil",
-    role: "Front-End Developer",
-    level: "Mid-Level",
-    xp: 2200,
-    avatar: "/images/avatar3.jpg",
-  },
-  {
-    id: 5,
-    name: "Tarek Ziad",
-    role: "Front-End Developer",
-    level: "Junior",
-    xp: 2100,
-    avatar: "/images/avatar5.jpg",
-  },
-  {
-    id: 6,
-    name: "Nour Samer",
-    role: "Front-End Developer",
-    level: "Junior",
-    xp: 2050,
-    avatar: "/images/avatar6.jpg",
-  },
-];
+import { useLeaderboard } from "../hooks/useLeaderboard";
+import { useUser } from "../../../../hooks/useUser";
 
 const LeaderboardContent = () => {
-  const [activeTab, setActiveTab] = useState("weekly");
-
-  const topThree = mockLeaderboard.slice(0, 3);
-  const restOfUsers = mockLeaderboard.slice(3);
   const { t } = useTranslation();
+  const { profile } = useUser();
+  const currentUserId = profile?.id;
+
+  const { leaderboard, isLoading, error } = useLeaderboard();
+
+  const [activeTab, setActiveTab] = useState("all-time");
+
+  const topThree = leaderboard.slice(0, 3);
+  const restOfUsers = leaderboard.slice(3);
+
+  if (isLoading) {
+    return (
+      <div
+        className={styles.contentArea}
+        style={{ textAlign: "center", padding: "50px" }}
+      >
+        {t("loading", "Loading...")}
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div
+        className={styles.contentArea}
+        style={{ color: "red", textAlign: "center" }}
+      >
+        {error}
+      </div>
+    );
+  }
 
   return (
     <div className={styles.contentArea}>
       <div className={styles.headerArea}>
         <span className={styles.subHeading}>{t("company-leaderboard-0")}</span>
-        <h1 className={styles.mainHeading}>{t("weekly-tasks-leaderboard")}</h1>
+        <h1 className={styles.mainHeading}>
+          {t("department-tasks-leaderboard", "Department Leaderboard")}
+        </h1>
       </div>
 
       <div className={styles.leaderboardContainer}>
-        <LeaderboardPodium topThree={topThree} />
+        <LeaderboardPodium topThree={topThree} currentUserId={currentUserId} />
 
         <div className={styles.listHeader}>
           <h2>{t("company-leaderboard")}</h2>
         </div>
 
-        <LeaderboardList allUsers={mockLeaderboard} />
+        <LeaderboardList allUsers={leaderboard} currentUserId={currentUserId} />
       </div>
     </div>
   );

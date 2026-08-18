@@ -1,4 +1,3 @@
-/* ================= Layout & Header ================= */
 .pageContainer {
   box-sizing: border-box;
   width: 100%;
@@ -169,7 +168,6 @@
   }
 }
 
-/* ================= 💡 Certificates Grid ================= */
 .certsGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -191,8 +189,6 @@
     grid-template-columns: 1fr;
   }
 }
-
-/* ================= 🎓 CERTIFICATE TEMPLATE OVERLAY DESIGN ================= */
 
 .cardWrapper {
   display: flex;
@@ -233,19 +229,17 @@
 .dynamicDate {
   position: absolute;
   color: #1e293b;
-  font-family: "Georgia", "Times New Roman", serif;
   text-align: center;
   white-space: nowrap;
-  transform: translateX(-50%);
 }
 
 .dynamicProviderLogo {
   position: absolute;
-  top: 15.6%;
-  left: 85.8%;
+  top: 14.5%;
+  left: 84%;
   transform: translate(-50%, -50%);
-  width: 12%;
-  height: 8%;
+  width: 13%;
+  height: 9%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -257,45 +251,61 @@
 }
 
 .dynamicStudentName {
-  top: 36.5%;
+  position: absolute;
+  top: 42%;
   left: 50%;
-  font-size: 3.8cqw;
-  font-style: italic;
-  font-weight: 500;
+  transform: translate(-50%, -50%);
+  font-family: "Playfair Display", "Merriweather", "Times New Roman", serif;
+  font-size: 3.4cqw;
+  font-weight: 300;
   width: 80%;
+  color: #111827;
 }
 
 .dynamicCourseName {
-  top: 56.5%;
+  position: absolute;
+  top: 57%;
   left: 50%;
-  font-size: 2.2cqw;
-  font-weight: 600;
+  transform: translate(-50%, -50%);
+  font-family: "Playfair Display", "Merriweather", "Times New Roman", serif;
+  font-size: 2cqw;
+  font-weight: 400;
   width: 80%;
+  color: #374151;
 }
 
 .dynamicProviderName {
-  top: 71%;
+  position: absolute;
+  top: 73%;
   left: 50%;
-  font-size: 1.8cqw;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-sans, "Segoe UI", sans-serif);
+  font-size: 1.4cqw;
   font-weight: 500;
+  letter-spacing: 0.5px;
   width: 80%;
+  color: #334155;
 }
 
 .dynamicDate {
-  bottom: 14.5%;
-  left: 17.5%;
-  font-size: 1.4cqw;
-  font-weight: 600;
+  position: absolute;
+  bottom: 18.5%;
+  left: 20.3%;
+  transform: translateX(-50%);
+  font-family: "Playfair Display", "Times New Roman", serif;
+  font-size: 1.55cqw;
+  font-weight: 400;
   width: 25%;
+  color: #1f2937;
 }
 
 .dynamicSignature {
   position: absolute;
-  bottom: 14.5%;
-  left: 82.5%;
+  bottom: 17%;
+  left: 79.7%;
   transform: translateX(-50%);
-  width: 15%;
-  height: 6%;
+  width: 14%;
+  height: 7%;
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -306,7 +316,6 @@
   object-fit: contain;
 }
 
-/* ================= Actions Bar ================= */
 .actionsBar {
   display: flex;
   gap: 12px;

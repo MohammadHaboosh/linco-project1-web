@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import {
   IoAddOutline,
   IoSearchOutline,
@@ -8,18 +9,58 @@ import { useTranslation } from "react-i18next";
 import GroupCard from "./GroupCard";
 import CreateGroupModal from "./CreateGroupModal";
 import styles from "./Groups.module.css";
-import { useGroups } from "../hooks/useGroups";
+
+import { useFetchGroups } from "../hooks/useFetchGroups";
+import { useUser } from "../../../../hooks/useUser";
+import { memberApi } from "../../DemoMembers/api/memberApi";
+import { useDeleteDepartment } from "../../HomeDemoPage/hooks/useDeleteDepartment";
 
 const GroupsContent = () => {
   const { t } = useTranslation();
+  const { demoId } = useParams();
+  const { profile } = useUser();
+  const userId = profile?.id;
+
   const [searchQuery, setSearchQuery] = useState("");
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [currentMemberId, setCurrentMemberId] = useState(null);
 
-  const { groups, isLoading, error, createGroup, isCreating } = useGroups();
+  const { groups, isLoading, error, refetch } = useFetchGroups(demoId);
 
-  const filteredGroups = groups.filter((group) =>
-    group.name.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+  const { deleteDepartment, isDeleting } = useDeleteDepartment(demoId, () => {
+    refetch();
+  });
+
+  useEffect(() => {
+    if (!demoId || !userId) return;
+    let isMounted = true;
+
+    const fetchCurrentMemberId = async () => {
+      try {
+        const response = await memberApi.getMembers(demoId);
+        if (isMounted && response?.data) {
+          const myMemberRecord = response.data.find(
+            (member) => member.user?.id === userId,
+          );
+          if (myMemberRecord) {
+            setCurrentMemberId(myMemberRecord.id);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch demo members for ID matching:", error);
+      }
+    };
+
+    fetchCurrentMemberId();
+    return () => {
+      isMounted = false;
+    };
+  }, [demoId, userId]);
+
+  const filteredGroups = groups.filter((group) => {
+    const groupName = group.title || group.name || "";
+    return groupName.toLowerCase().includes(searchQuery.toLowerCase());
+  });
 
   return (
     <div className={styles.pageContainer}>
@@ -91,7 +132,13 @@ const GroupsContent = () => {
           <div className={styles.groupsGrid}>
             {filteredGroups.length > 0 ? (
               filteredGroups.map((group) => (
-                <GroupCard key={group.id} group={group} />
+                <GroupCard
+                  key={group.id}
+                  group={group}
+                  isManager={group.managerId === currentMemberId}
+                  onDelete={() => deleteDepartment(group.id)}
+                  isDeleting={isDeleting}
+                />
               ))
             ) : (
               <p
@@ -116,9 +163,10 @@ const GroupsContent = () => {
 
       {isCreateModalOpen && (
         <CreateGroupModal
+          demoId={demoId}
+          currentUserId={currentMemberId}
           onClose={() => setIsCreateModalOpen(false)}
-          createGroup={createGroup}
-          isCreating={isCreating}
+          onSuccess={() => refetch()}
         />
       )}
     </div>

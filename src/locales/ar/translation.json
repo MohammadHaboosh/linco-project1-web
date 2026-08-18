@@ -40,7 +40,6 @@
   "close-navigation-menu": "إغلاق قائمة التنقل",
   "my-profile": "ملفي الشخصي",
   "profile-and-settings": "الملف الشخصي والإعدادات",
-  "notifications": "الإشعارات",
   "logout": "تسجيل الخروج",
   "sign-in": "تسجيل الدخول",
   "sign-up": "إنشاء حساب",
@@ -1868,5 +1867,16 @@
   "preview-named-lesson": "معاينة الدرس: {{title}}",
   "course-preview": "معاينة الدورة",
   "close-lesson-preview": "إغلاق معاينة الدرس",
-  "paid-course-creation-trial-note": "وصول تجريبي: سيتاح أول درسين في القسم الأول للمتعلمين لتجربتهما قبل شراء هذه الدورة."
+  "paid-course-creation-trial-note": "وصول تجريبي: سيتاح أول درسين في القسم الأول للمتعلمين لتجربتهما قبل شراء هذه الدورة.",
+  "missing-data": "مساحة العمل المطلوبة أو بيانات المستخدم مفقودة.",
+  "confirm-remove-member": "هل أنت متأكد أنك تريد إزالة هذا العضو؟",
+  "loading": "تحميل...",
+  "group-members": "أعضاء المجموعة",
+  "add-group-member-description": "بحث وإضافة أعضاء إلى هذه المجموعة.",
+  "failed-to-delete-group": "فشل حذف المجموعة",
+  "delete-group": "حذف المجموعة",
+  "delete-group-confirm-title": "هل تريد حذف المجموعة؟",
+  "delete-group-confirm-desc": "هل أنت متأكد أنك تريد حذف هذه المجموعة؟ \nلا يمكن التراجع عن هذا الإجراء.",
+  "deleting": "جارٍ الحذف...",
+  "department-tasks-leaderboard": "لوحة المتصدرين للقسم"
 }

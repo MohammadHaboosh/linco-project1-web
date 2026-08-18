@@ -18,10 +18,6 @@ const SectionCard = ({ section, isOwner, onDelete, isDeleting }) => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const locale = i18n.resolvedLanguage || i18n.language || "en";
   const numberFormatter = new Intl.NumberFormat(locale);
-  const percentFormatter = new Intl.NumberFormat(locale, {
-    style: "percent",
-    maximumFractionDigits: 0,
-  });
   const isLocked = section.isLocked && !isOwner;
 
   const handleDeleteClick = (event) => {
@@ -74,6 +70,7 @@ const SectionCard = ({ section, isOwner, onDelete, isDeleting }) => {
                 <span className={styles.lockedText}>{t("locked")}</span>
               )}
 
+              {/* 💡 زر الحذف أصبح ثابتاً للأونر */}
               {isOwner && (
                 <button
                   type="button"
@@ -90,40 +87,12 @@ const SectionCard = ({ section, isOwner, onDelete, isDeleting }) => {
               )}
 
               <div className={styles.iconBox} aria-hidden="true">
-                {isLocked ? (
-                  <IoLockClosedOutline />
-                ) : (
-                  <IoDocumentTextOutline />
-                )}
+                {isLocked ? <IoLockClosedOutline /> : <IoDocumentTextOutline />}
               </div>
             </div>
           </div>
 
           <p className={styles.description}>{section.description}</p>
-
-          {!isOwner && (
-            <div className={styles.progressContainer}>
-              <div className={styles.progressHeader}>
-                <span>{t("progress")}</span>
-                <span>{percentFormatter.format((section.progress || 0) / 100)}</span>
-              </div>
-              <div
-                className={styles.progressBg}
-                role="progressbar"
-                aria-label={t("department-progress", {
-                  department: section.title,
-                })}
-                aria-valuemin="0"
-                aria-valuemax="100"
-                aria-valuenow={section.progress || 0}
-              >
-                <div
-                  className={styles.progressFill}
-                  style={{ width: `${section.progress || 0}%` }}
-                />
-              </div>
-            </div>
-          )}
 
           <div className={styles.cardFooter}>
             <div className={styles.tags}>
@@ -133,6 +102,7 @@ const SectionCard = ({ section, isOwner, onDelete, isDeleting }) => {
                 </span>
               ))}
             </div>
+
             <div className={styles.stats}>
               <span className={styles.statItem}>
                 <IoBookOutline aria-hidden="true" />

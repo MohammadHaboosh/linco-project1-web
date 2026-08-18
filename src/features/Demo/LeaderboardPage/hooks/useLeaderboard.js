@@ -1,105 +1,49 @@
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { leaderboardApi } from "../api/leaderboardApi";
 
-export const useLeaderboard = (demoId) => {
-  const [leaderboard, setLeaderboard] = useState([
-    {
-      id: 1,
-      name: "Ahmad Yasin",
-      role: "Senior Developer",
-      xp: 12500,
-      tasks: 45,
-      rankChange: 1,
-      avatar: "/images/avatar1.jpg",
-    },
-    {
-      id: 2,
-      name: "Sarah Khaled",
-      role: "UI/UX Designer",
-      xp: 11200,
-      tasks: 40,
-      rankChange: -1,
-      avatar: "/images/avatar2.jpg",
-    },
-    {
-      id: 3,
-      name: "Omar Nabil",
-      role: "Backend Engineer",
-      xp: 10800,
-      tasks: 38,
-      rankChange: 2,
-      avatar: "/images/avatar3.jpg",
-    },
-    {
-      id: 4,
-      name: "Lina Majed",
-      role: "Frontend Intern",
-      xp: 9500,
-      tasks: 32,
-      rankChange: 0,
-      avatar: "/images/avatar4.jpg",
-    },
-    {
-      id: 5,
-      name: "Tarek Ziad",
-      role: "DevOps Engineer",
-      xp: 8900,
-      tasks: 29,
-      rankChange: -2,
-      avatar: "/images/avatar5.jpg",
-    },
-    {
-      id: 6,
-      name: "Nour Samer",
-      role: "QA Tester",
-      xp: 8400,
-      tasks: 27,
-      rankChange: 1,
-      avatar: "/images/avatar6.jpg",
-    },
-  ]);
-  const [timeframe, setTimeframe] = useState("weekly");
+export const useLeaderboard = () => {
+  const { demoId, departmentId } = useParams();
 
-  const [isLoading, setIsLoading] = useState(!!demoId);
+  const [leaderboard, setLeaderboard] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  //   useEffect(() => {
-  //     let isMounted = true;
-  //     if (!demoId) return;
+  useEffect(() => {
+    if (!demoId || !departmentId) return;
 
-  //     const loadData = async () => {
-  //       try {
-  //         const data = await leaderboardApi.getLeaderboard(demoId, timeframe);
-  //         setLeaderboard(data);
-  //         if (isMounted) {
-  //           setLeaderboard(data);
-  //           setError(null);
-  //         }
-  //       } catch (err) {
-  //         if (isMounted) setError("Failed to load leaderboard data.");
-  //       } finally {
-  //         if (isMounted) setIsLoading(false);
-  //       }
-  //     };
+    let isMounted = true;
+    const controller = new AbortController();
 
-  //     loadData();
+    const fetchLeaderboard = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const response = await leaderboardApi.getDepartmentLeaderboard(
+          demoId,
+          departmentId,
+          { signal: controller.signal },
+        );
 
-  //     return () => {
-  //       isMounted = false;
-  //     };
-  //   }, [demoId, timeframe]);
+        if (isMounted && response.data) {
+          setLeaderboard(response.data);
+        }
+      } catch (err) {
+        if (err.name !== "AbortError" && isMounted) {
+          setError(err.message || "Failed to load leaderboard");
+        }
+      } finally {
+        if (isMounted) setIsLoading(false);
+      }
+    };
 
-  const changeTimeframe = (newTimeframe) => {
-    if (newTimeframe === timeframe) return;
-    setIsLoading(true);
-    setTimeframe(newTimeframe);
-  };
+    fetchLeaderboard();
 
-  return {
-    leaderboard,
-    timeframe,
-    setTimeframe: changeTimeframe,
-    isLoading,
-    error,
-  };
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
+  }, [demoId, departmentId]);
+
+  return { leaderboard, isLoading, error };
 };

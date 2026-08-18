@@ -99,51 +99,6 @@
   color: var(--app-muted);
 }
 
-.progressContainer {
-  margin-block-end: 25px;
-}
-
-.progressHeader {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.85rem;
-  font-weight: 700;
-  margin-block-end: 8px;
-}
-
-.cardActive .progressHeader {
-  color: var(--app-heading);
-}
-.cardLocked .progressHeader {
-  color: var(--app-muted);
-}
-
-.progressBg {
-  width: 100%;
-  height: 8px;
-  display: flex;
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-/* تعديل مهم: خلفية شريط التقدم أصبحت رمادية لأن الكرت أصبح أبيض */
-.cardActive .progressBg {
-  background-color: var(--app-surface-soft);
-}
-.cardLocked .progressBg {
-  background-color: var(--app-surface-muted);
-}
-
-.progressFill {
-  height: 100%;
-  background-color: var(--color-linco-blue); /* لون أزرق مشرق للتقدم */
-  border-radius: 4px;
-}
-
-.cardLocked .progressFill {
-  background-color: var(--app-border);
-}
-
 .cardFooter {
   display: flex;
   justify-content: space-between;
@@ -196,7 +151,10 @@
   align-items: center;
   gap: 5px;
 }
-/* تنسيقات زر الحذف ليكون أنيقاً ويظهر عند التمرير */
+
+/* ==========================================================
+   تنسيقات زر الحذف ليكون ظاهراً دائماً للأونر 
+========================================================== */
 .headerActions {
   display: flex;
   align-items: center;
@@ -216,20 +174,13 @@
   justify-content: center;
   font-size: 1.1rem;
   cursor: pointer;
-  opacity: 0; /* مخفي افتراضياً */
-  transform: scale(0.9);
+  /* 💡 تم التعديل: الزر مرئي دائماً */
+  opacity: 1;
+  transform: scale(1);
   transition: all 0.2s ease;
 }
 
-/* يظهر الزر عند تمرير الماوس على الكرت بأكمله */
-.sectionCard:hover .deleteBtn {
-  opacity: 1;
-  transform: scale(1);
-}
-
 .deleteBtn:focus-visible {
-  opacity: 1;
-  transform: scale(1);
   outline: 3px solid var(--app-focus-ring);
   outline-offset: 2px;
 }
@@ -242,9 +193,12 @@
 .deleteBtn:hover {
   background: #ef4444;
   color: white;
+  transform: scale(1.05); /* حركة خفيفة عند التأشير */
 }
 
-/* تنسيقات المودال */
+/* ==========================================================
+   تنسيقات المودال
+========================================================== */
 .modalOverlay {
   position: fixed;
   inset: 0;
@@ -366,11 +320,6 @@
 
   .headerActions {
     gap: 7px;
-  }
-
-  .deleteBtn {
-    opacity: 1;
-    transform: none;
   }
 
   .cardFooter,

@@ -11,15 +11,30 @@ import styles from "./MarketplaceCard.module.css";
 import { useTranslation } from "react-i18next";
 import { useDemo } from "../../../../../hooks/useDemo";
 
+const formatVideoDuration = (totalSeconds) => {
+  if (!totalSeconds || isNaN(totalSeconds)) return "00:00";
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  if (hours > 0) {
+    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+  }
+  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+};
+
 const MarketplaceCard = ({ course, isPurchased, onViewDetails }) => {
   const { t, i18n } = useTranslation();
   const { demoId } = useDemo();
   const locale = i18n.resolvedLanguage || i18n.language || "en";
   const numericPrice = Number(course.price) || 0;
   const lessonCount = Number(course.lessonCount) || 0;
-  const duration = Number(course.totalDuration) || 0;
-  const formattedLessonCount = new Intl.NumberFormat(locale).format(lessonCount);
-  const formattedDuration = new Intl.NumberFormat(locale).format(duration);
+
+  const durationInSeconds = Number(course.totalDuration) || 0;
+  const formattedDuration = formatVideoDuration(durationInSeconds);
+
+  const formattedLessonCount = new Intl.NumberFormat(locale).format(
+    lessonCount,
+  );
   const formattedPrice = new Intl.NumberFormat(locale, {
     style: "currency",
     currency: "USD",
@@ -104,10 +119,16 @@ const MarketplaceCard = ({ course, isPurchased, onViewDetails }) => {
             </span>
             <span title={t("course-duration")}>
               <IoTimeOutline />
-              {t("course-duration-minutes", {
-                count: duration,
-                formattedCount: formattedDuration,
-              })}
+              <span
+                style={{
+                  fontWeight: "600",
+                  letterSpacing: "0.5px",
+                  marginLeft: "4px",
+                  marginRight: "4px",
+                }}
+              >
+                {formattedDuration}
+              </span>
             </span>
           </div>
 

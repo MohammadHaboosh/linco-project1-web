@@ -155,13 +155,38 @@
   color: var(--app-text-strong);
 }
 
-.activeGroup {
-  background-color: var(--app-info-surface);
-  border-color: var(--app-info-border);
-  color: var(--app-link);
-  font-weight: 700;
+.groupIconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  color: var(--app-muted);
+  flex-shrink: 0;
+  transition: color 0.2s;
 }
 
+.activeGroup .groupIconWrapper {
+  color: var(--app-link);
+}
+
+.groupTextData {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+.groupSidebarDesc {
+  font-size: 0.7rem;
+  color: var(--app-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 2px;
+}
+.activeGroup .groupSidebarDesc {
+  color: var(--app-link);
+  opacity: 0.8;
+}
 .groupAvatar {
   width: 36px;
   height: 36px;

@@ -3,17 +3,13 @@ import { departmentApi } from "../../HomeDemoPage/api/departmentApi";
 
 export const useFetchGroups = (demoId) => {
   const [groups, setGroups] = useState([]);
-
   const [isLoading, setIsLoading] = useState(!!demoId);
   const [error, setError] = useState(null);
 
   const fetchGroups = useCallback(async () => {
-    if (!demoId) {
-      return;
-    }
+    if (!demoId) return;
 
     await Promise.resolve();
-
     setIsLoading(true);
     setError(null);
 
@@ -22,7 +18,7 @@ export const useFetchGroups = (demoId) => {
         await departmentApi.getDepartments(demoId);
 
       const filteredGroups = allDepartmentsAndGroups
-        .filter((item) => item.isGroup === true)
+        .filter((item) => item.isGroup === true && item.isJoind === true)
         .map((group) => ({
           ...group,
           initials: group.title
@@ -41,24 +37,14 @@ export const useFetchGroups = (demoId) => {
 
   useEffect(() => {
     let isMounted = true;
-
     const initFetch = async () => {
-      if (isMounted) {
-        await fetchGroups();
-      }
+      if (isMounted) await fetchGroups();
     };
-
     initFetch();
-
     return () => {
       isMounted = false;
     };
   }, [fetchGroups]);
 
-  return {
-    groups,
-    isLoading,
-    error,
-    refetch: fetchGroups,
-  };
+  return { groups, isLoading, error, refetch: fetchGroups };
 };

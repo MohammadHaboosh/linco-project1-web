@@ -13,6 +13,17 @@ import { useCourseSections } from "../../hooks/useCourseSections";
 import { useSectionLessons } from "../../hooks/useSectionLessons";
 import { useTranslation } from "react-i18next";
 
+const formatVideoDuration = (totalSeconds) => {
+  if (!totalSeconds || isNaN(totalSeconds)) return "00:00";
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  if (hours > 0) {
+    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+  }
+  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+};
+
 const SectionItem = ({ section, index, activeLesson, onSelectLesson }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { lessons, isLoading, error } = useSectionLessons(
@@ -76,13 +87,15 @@ const SectionItem = ({ section, index, activeLesson, onSelectLesson }) => {
           ) : (
             lessons.map((lesson, lessonIndex) => {
               const isActive = activeLesson?.id === lesson.id;
-              const duration = Number(
-                lesson.isQuiz ? lesson.durationMinutes : lesson.duration,
-              );
-              const durationCount = Number.isFinite(duration) ? duration : 0;
-              const durationKey = lesson.isQuiz
-                ? "quiz-duration-minutes"
-                : "lesson-duration-minutes";
+
+              const timeDisplay = lesson.isQuiz
+                ? t("quiz-duration-minutes", {
+                    count: Number(lesson.durationMinutes) || 0,
+                    formattedCount: numberFormatter.format(
+                      Number(lesson.durationMinutes) || 0,
+                    ),
+                  })
+                : formatVideoDuration(Number(lesson.duration) || 0);
 
               return (
                 <button
@@ -107,10 +120,16 @@ const SectionItem = ({ section, index, activeLesson, onSelectLesson }) => {
                     <span className={styles.lessonMeta}>
                       <span>
                         <IoTimeOutline aria-hidden="true" />
-                        {t(durationKey, {
-                          count: durationCount,
-                          formattedCount: numberFormatter.format(durationCount),
-                        })}
+
+                        <span
+                          style={{
+                            fontWeight: "600",
+                            letterSpacing: "0.5px",
+                            margin: "0 4px",
+                          }}
+                        >
+                          {timeDisplay}
+                        </span>
                       </span>
                     </span>
                   </span>

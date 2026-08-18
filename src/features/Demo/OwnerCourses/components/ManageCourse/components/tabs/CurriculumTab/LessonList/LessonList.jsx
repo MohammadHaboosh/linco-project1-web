@@ -14,6 +14,20 @@ import styles from "../CurriculumTab.module.css";
 import AddAttachmentModal from "../AddModals/AddAttachmentModal";
 import { useTranslation } from "react-i18next";
 
+const formatVideoDuration = (totalSeconds) => {
+  if (!totalSeconds || isNaN(totalSeconds)) return "00:00";
+
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  if (hours > 0) {
+    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+  }
+
+  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+};
+
 const LessonList = ({
   lessons = [],
   onAddLesson,
@@ -126,9 +140,7 @@ const LessonList = ({
             const formattedAttachmentsCount = new Intl.NumberFormat(
               i18n.resolvedLanguage || i18n.language,
             ).format(attachmentsCount);
-            const formattedDuration = new Intl.NumberFormat(
-              i18n.resolvedLanguage || i18n.language,
-            ).format(lesson.duration || 0);
+            const formattedDuration = formatVideoDuration(lesson.duration || 0);
             const attachmentState = attachmentStates[lesson.id];
 
             return (
@@ -189,13 +201,17 @@ const LessonList = ({
                           title: lesson.title,
                         })}
                       </span>
-                      {lesson.duration && (
+                      {lesson.duration > 0 && (
                         <span className={styles.lessonDuration}>
                           <IoTimeOutline aria-hidden="true" />
-                          {t("lesson-duration-minutes", {
-                            count: Number(lesson.duration),
-                            formattedCount: formattedDuration,
-                          })}
+                          <span
+                            style={{
+                              fontWeight: "600",
+                              letterSpacing: "0.5px",
+                            }}
+                          >
+                            {formattedDuration}
+                          </span>
                         </span>
                       )}
                     </div>
