@@ -79,12 +79,10 @@ const ResetPassword = () => {
       <div className={styles["page-container"]}>
         <div className={styles["card"]}>
           <div
-            className={styles["icon-wrapper"]}
-            style={{ backgroundColor: "#dcfce7" }}
+            className={`${styles["icon-wrapper"]} ${styles["completed-icon-wrapper"]}`}
           >
             <IoShieldCheckmarkOutline
-              className={styles["header-icon"]}
-              style={{ color: "#166534" }}
+              className={`${styles["header-icon"]} ${styles["completed-icon"]}`}
             />
           </div>
           <h1 className={styles["title"]}>Password Reset</h1>

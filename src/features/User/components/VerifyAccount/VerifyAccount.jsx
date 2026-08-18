@@ -45,11 +45,7 @@ const VerifyAccount = () => {
       <div className={styles["page-container"]}>
         <div className={styles["card"]}>
           <IoReloadOutline
-            className={styles["success-icon"]}
-            style={{
-              animation: "spin 2s linear infinite",
-              color: "var(--color-linco-navy)",
-            }}
+            className={`${styles["success-icon"]} ${styles["loading-icon"]}`}
           />
           <h1 className={styles["title"]} style={{ marginTop: "20px" }}>
             Verifying...
@@ -65,27 +61,18 @@ const VerifyAccount = () => {
   if (status === "error") {
     return (
       <div className={styles["page-container"]}>
-        <div
-          className={styles["card"]}
-          style={{ borderTopColor: "var(--color-linco-accent)" }}
-        >
+        <div className={`${styles.card} ${styles["error-card"]}`}>
           <div
-            className={styles["icon-wrapper"]}
-            style={{
-              backgroundColor: "var(--color-linco-accent-light)",
-              boxShadow: "0 0 20px rgba(159, 18, 57, 0.2)",
-            }}
+            className={`${styles["icon-wrapper"]} ${styles["error-icon-wrapper"]}`}
           >
             <IoCloseCircleOutline
-              className={styles["success-icon"]}
-              style={{ color: "var(--color-linco-accent)" }}
+              className={`${styles["success-icon"]} ${styles["error-icon"]}`}
             />
           </div>
           <h1 className={styles["title"]}>Verification Failed</h1>
           <p className={styles["subtitle"]}>{errorMessage}</p>
           <button
-            className={styles["btn-primary"]}
-            style={{ background: "var(--color-linco-accent)" }}
+            className={`${styles["btn-primary"]} ${styles["error-button"]}`}
             onClick={() => navigate(PATHS.SIGNUP)}
           >
             Back to Sign Up
