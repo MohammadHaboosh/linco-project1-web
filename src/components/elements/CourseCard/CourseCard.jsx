@@ -22,7 +22,13 @@ const formatVideoDuration = (totalSeconds) => {
   return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 };
 
-const CourseCard = ({ course, isOwner, onDelete, isDeleting = false }) => {
+const CourseCard = ({
+  course,
+  isOwner,
+  onDelete,
+  deleteId,
+  isDeleting = false,
+}) => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { demoId, departmentId } = useParams();
@@ -103,7 +109,7 @@ const CourseCard = ({ course, isOwner, onDelete, isDeleting = false }) => {
                 className={styles.deleteBtn}
                 onClick={(e) => {
                   e.stopPropagation();
-                  onDelete(id);
+                  onDelete(deleteId ?? id);
                 }}
                 title={t(
                   isDeleting

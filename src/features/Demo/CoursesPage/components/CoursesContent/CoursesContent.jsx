@@ -22,7 +22,7 @@ const CoursesContent = () => {
     courses: apiCourses,
     isLoading,
     error,
-    deletingCourseId,
+    deletingDepartmentCourseId,
     deleteError,
     deleteCourse,
     retry,
@@ -37,6 +37,7 @@ const CoursesContent = () => {
 
     return [
       {
+        departmentCourseId: item.id,
         id: courseData.id,
         title: courseData.title,
         description: courseData.description,
@@ -63,9 +64,10 @@ const CoursesContent = () => {
       )
     : mappedCourses;
 
-  const handleDeleteCourse = async (courseId) => {
+  const handleDeleteCourse = async (departmentCourseId) => {
     const course = mappedCourses.find(
-      (candidate) => String(candidate.id) === String(courseId),
+      (candidate) =>
+        String(candidate.departmentCourseId) === String(departmentCourseId),
     );
     const title = course?.title || t("untitled-course");
 
@@ -77,7 +79,7 @@ const CoursesContent = () => {
       return;
     }
 
-    await deleteCourse(courseId);
+    await deleteCourse(departmentCourseId);
   };
 
   return (
@@ -113,7 +115,7 @@ const CoursesContent = () => {
         <CoursesGridSection
           courses={filteredCourses}
           isOwner={isOwner}
-          deletingCourseId={deletingCourseId}
+          deletingDepartmentCourseId={deletingDepartmentCourseId}
           onDelete={handleDeleteCourse}
         />
       ) : (
