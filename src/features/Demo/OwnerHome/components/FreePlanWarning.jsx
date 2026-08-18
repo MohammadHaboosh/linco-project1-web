@@ -1,6 +1,6 @@
 import { IoWarningOutline, IoTimeOutline } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
-import PlanUpgradeCard from "../../../../Subscription/components/PlanUpgradeCard/PlanUpgradeCard";
+import PlanUpgradeCard from "../../Subscription/components/PlanUpgradeCard/PlanUpgradeCard";
 import { FreePlanWarningSkeleton } from "./OwnerHomeSkeletons";
 import styles from "../OwnerHomeContent.module.css";
 
