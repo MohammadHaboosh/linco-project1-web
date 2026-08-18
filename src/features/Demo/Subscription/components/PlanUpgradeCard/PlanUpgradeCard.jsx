@@ -47,11 +47,6 @@ const PlanUpgradeCard = ({
   const plans = useMemo(
     () => [
       {
-        id: "FREE",
-        price: 0,
-        description: t("free-plan-description"),
-      },
-      {
         id: "STARTER",
         price: 20,
         description: t("starter-plan-description"),
