@@ -1,23 +1,25 @@
-import { apiFetch } from "../../../../api/apiFetch";
+import { apiFetch } from '../../../../api/apiFetch';
 
-const SUPPORTED_PLANS = new Set(["FREE", "STARTER", "PRO", "ENTERPRISE"]);
+const SUPPORTED_PLANS = new Set(['FREE', 'STARTER', 'PRO', 'ENTERPRISE']);
 
 export const demoPlanApi = {
   createCheckoutSession: async ({ demoId, plan }) => {
     if (!demoId) {
-      throw new Error("Demo ID is required to start checkout.");
+      throw new Error('Demo ID is required to start checkout.');
     }
 
-    const normalizedPlan = String(plan || "").trim().toUpperCase();
+    const normalizedPlan = String(plan || '')
+      .trim()
+      .toUpperCase();
     if (!SUPPORTED_PLANS.has(normalizedPlan)) {
-      throw new Error("A valid Demo plan is required.");
+      throw new Error('A valid Demo plan is required.');
     }
 
-    const response = await apiFetch("/payments/checkout/demo", {
-      method: "POST",
+    const response = await apiFetch('/payments/checkout/demo', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        "x-demo-id": demoId,
+        'Content-Type': 'application/json',
+        'x-demo-id': demoId,
       },
       body: JSON.stringify({ plan: normalizedPlan }),
     });
@@ -25,65 +27,70 @@ export const demoPlanApi = {
     const payload = await response.json().catch(() => ({}));
 
     if (!response.ok || payload.success === false) {
-      throw new Error(payload.message || "Unable to start checkout.");
+      throw new Error(payload.message || 'Unable to start checkout.');
     }
 
     const checkoutUrl = payload.data?.url;
     if (!checkoutUrl) {
-      throw new Error("The checkout response did not include a URL.");
+      throw new Error('The checkout response did not include a URL.');
     }
 
     let parsedCheckoutUrl;
     try {
       parsedCheckoutUrl = new URL(checkoutUrl);
     } catch {
-      throw new Error("The checkout response included an invalid URL.");
+      throw new Error('The checkout response included an invalid URL.');
     }
 
-    if (parsedCheckoutUrl.protocol !== "https:") {
-      throw new Error("The checkout URL must use a secure connection.");
+    if (parsedCheckoutUrl.protocol !== 'https:') {
+      throw new Error('The checkout URL must use a secure connection.');
     }
 
     return parsedCheckoutUrl.toString();
   },
 
   createSubscriptionPortalSession: async ({ demoId }) => {
-    const normalizedDemoId = String(demoId || "").trim();
+    const normalizedDemoId = String(demoId || '').trim();
     if (!normalizedDemoId) {
-      throw new Error("Demo ID is required to manage a subscription.");
+      throw new Error('Demo ID is required to manage a subscription.');
     }
 
-    const response = await apiFetch("/payments/subscriptions/manage", {
-      method: "POST",
+    const response = await apiFetch('/payments/subscriptions/manage', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        "x-demo-id": normalizedDemoId,
+        'Content-Type': 'application/json',
+        'x-demo-id': normalizedDemoId,
       },
-      body: JSON.stringify({ demoId: normalizedDemoId }),
     });
 
     const payload = await response.json().catch(() => ({}));
 
     if (!response.ok || payload.success === false) {
       throw new Error(
-        payload.message || "Unable to open the subscription portal.",
+        payload.message || 'Unable to open the subscription portal.',
       );
     }
 
     const portalUrl = payload.data?.url;
     if (!portalUrl) {
-      throw new Error("The subscription portal response did not include a URL.");
+      throw new Error(
+        'The subscription portal response did not include a URL.',
+      );
     }
 
     let parsedPortalUrl;
     try {
       parsedPortalUrl = new URL(portalUrl);
     } catch {
-      throw new Error("The subscription portal response included an invalid URL.");
+      throw new Error(
+        'The subscription portal response included an invalid URL.',
+      );
     }
 
-    if (parsedPortalUrl.protocol !== "https:") {
-      throw new Error("The subscription portal URL must use a secure connection.");
+    if (parsedPortalUrl.protocol !== 'https:') {
+      throw new Error(
+        'The subscription portal URL must use a secure connection.',
+      );
     }
 
     return parsedPortalUrl.toString();
