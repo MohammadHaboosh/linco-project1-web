@@ -1,9 +1,5 @@
 import { useTranslation } from "react-i18next";
-import {
-  IoPersonOutline,
-  IoRibbonOutline,
-  IoCheckmarkCircleOutline,
-} from "react-icons/io5";
+import { IoRibbonOutline, IoCheckmarkCircleOutline } from "react-icons/io5";
 import styles from "../OwnerHomeContent.module.css";
 
 const ReportMembersList = ({ members, numberFormatter }) => {
@@ -26,9 +22,20 @@ const ReportMembersList = ({ members, numberFormatter }) => {
       <div className={styles.activityList}>
         {topMembers.map((member) => (
           <div key={member.memberId} className={styles.activityItem}>
-            <div className={`${styles.activityIcon} ${styles.user}`}>
-              <IoPersonOutline />
-            </div>
+            <img
+              src={
+                member.imagePath ||
+                member.avatar ||
+                "/images/default-avatar.png"
+              }
+              alt={member.fullName}
+              className={styles.memberAvatar}
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = "/images/default-avatar.png";
+              }}
+            />
+
             <div className={styles.activityDetails}>
               <p className={styles.activityText}>
                 <strong>{member.fullName}</strong> (

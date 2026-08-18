@@ -1796,5 +1796,20 @@
   "delete-group-confirm-desc": "Are you sure you want to delete this group? This action cannot be undone.",
   "deleting": "Deleting...",
   "department-tasks-leaderboard": "Department Leaderboard",
-  "level": "Level"
+  "level": "Level",
+  "courses-performance-report": "Courses Performance Report",
+  "assigned-members": "Assigned Members",
+  "attempts": "Attempts",
+  "avg-score": "Avg Score",
+  "certifications": "Certifications",
+  "exams-passed": "Exams Passed",
+  "top-active-members": "Top Active Members",
+  "new-members-recently": "New Members Recently",
+  "published-courses": "Published Courses",
+  "total-created-courses": "Total Created Courses",
+  "certifications-issued": "Certifications Issued",
+  "certification-rate": "Certification Rate",
+  "exams-performance": "Exams Performance",
+  "average-exam-score": "Average Exam Score",
+  "exam-pass-rate": "Exam Pass Rate"
 }

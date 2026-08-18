@@ -1936,5 +1936,20 @@
   "delete-group-confirm-title": "هل تريد حذف المجموعة؟",
   "delete-group-confirm-desc": "هل أنت متأكد أنك تريد حذف هذه المجموعة؟ \nلا يمكن التراجع عن هذا الإجراء.",
   "deleting": "جارٍ الحذف...",
-  "department-tasks-leaderboard": "لوحة المتصدرين للقسم"
+  "department-tasks-leaderboard": "لوحة المتصدرين للقسم",
+  "courses-performance-report": "تقرير أداء المقررات",
+  "assigned-members": "الأعضاء المعينون",
+  "attempts": "محاولات",
+  "avg-score": "متوسط ​​النتيجة",
+  "certifications": "الشهادات",
+  "top-active-members": "أعلى الأعضاء النشطين",
+  "exams-passed": "نجحت الامتحانات",
+  "new-members-recently": "الأعضاء الجدد مؤخرا",
+  "published-courses": "الدورات المنشورة",
+  "total-created-courses": "إجمالي الدورات التدريبية التي تم إنشاؤها",
+  "certifications-issued": "الشهادات الصادرة",
+  "certification-rate": "معدل الشهادة",
+  "average-exam-score": "متوسط ​​درجات الامتحان",
+  "exams-performance": "أداء الامتحانات",
+  "exam-pass-rate": "معدل النجاح في الامتحان"
 }
