@@ -3,4 +3,4 @@ export const isDemoSubscriptionExpired = (demoData) =>
     demoData?.subscriptionStatus || demoData?.subscription?.status || "",
   )
     .trim()
-    .toLowerCase() === "expired";
+    .toUpperCase() === "EXPIRED";

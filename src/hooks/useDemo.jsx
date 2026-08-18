@@ -4,6 +4,10 @@ import { apiFetch } from "../api/apiFetch";
 
 const DemoContext = createContext();
 
+const isExpiredSubscriptionResponse = (response, payload) =>
+  response.status === 403 &&
+  /\bsubscription\b.*\bexpired\b/i.test(String(payload?.message || ""));
+
 export const DemoProvider = ({ children }) => {
   const { demoId } = useParams();
   const [demoData, setDemoData] = useState(null);
@@ -29,11 +33,28 @@ export const DemoProvider = ({ children }) => {
           },
         });
 
+        const data = await response.json().catch(() => ({}));
+
         if (!response.ok) {
-          throw new Error(`HTTP Error: ${response.status}`);
+          if (isExpiredSubscriptionResponse(response, data)) {
+            const responseDemo =
+              data?.data &&
+              !Array.isArray(data.data) &&
+              typeof data.data === "object"
+                ? data.data
+                : {};
+
+            setDemoData({
+              ...responseDemo,
+              id: responseDemo.id || demoId,
+              subscriptionStatus: "EXPIRED",
+            });
+            return;
+          }
+
+          throw new Error(data.message || `HTTP Error: ${response.status}`);
         }
 
-        const data = await response.json();
         const demos = Array.isArray(data.data) ? data.data : [data.data];
         const activeDemo = demos.find(
           (demo) => String(demo?.id) === String(demoId),
