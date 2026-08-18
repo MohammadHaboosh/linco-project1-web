@@ -1,0 +1,98 @@
+import { IoWarningOutline, IoTimeOutline } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
+import PlanUpgradeCard from "../../Subscription/components/PlanUpgradeCard/PlanUpgradeCard";
+import styles from "../OwnerHomeContent.module.css";
+
+const FREE_PLAN_DURATION_DAYS = 14;
+const MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
+
+const getFreePlanTimeline = (createdAt) => {
+  const createdAtTimestamp = Date.parse(createdAt);
+  if (Number.isNaN(createdAtTimestamp)) return null;
+
+  const now = Date.now();
+  const expiresAtTimestamp =
+    createdAtTimestamp + FREE_PLAN_DURATION_DAYS * MILLISECONDS_PER_DAY;
+
+  return {
+    daysElapsed: Math.min(
+      FREE_PLAN_DURATION_DAYS,
+      Math.max(
+        0,
+        Math.floor((now - createdAtTimestamp) / MILLISECONDS_PER_DAY),
+      ),
+    ),
+    daysRemaining: Math.max(
+      0,
+      Math.ceil((expiresAtTimestamp - now) / MILLISECONDS_PER_DAY),
+    ),
+    isExpired: now >= expiresAtTimestamp,
+  };
+};
+
+const FreePlanWarning = ({
+  createdAt,
+  numberFormatter,
+  demoId,
+  currentPlan,
+}) => {
+  const { t } = useTranslation();
+  const freePlanTimeline = getFreePlanTimeline(createdAt);
+
+  if (!freePlanTimeline) return null;
+
+  return (
+    <section
+      className={`${styles.freePlanWarning} ${
+        freePlanTimeline.isExpired ? styles.freePlanExpired : ""
+      }`}
+      role={freePlanTimeline.isExpired ? "alert" : "status"}
+    >
+      <div className={styles.warningIcon} aria-hidden="true">
+        <IoWarningOutline />
+      </div>
+      <div className={styles.warningContent}>
+        <h2>
+          {freePlanTimeline.isExpired
+            ? t("free-plan-expired-title")
+            : t("free-plan-warning-title")}
+        </h2>
+        <p>
+          {freePlanTimeline.isExpired
+            ? t("free-plan-expired-description")
+            : t("free-plan-warning-description", {
+                count: freePlanTimeline.daysElapsed,
+                formattedCount: numberFormatter.format(
+                  freePlanTimeline.daysElapsed,
+                ),
+                totalDays: numberFormatter.format(FREE_PLAN_DURATION_DAYS),
+              })}
+        </p>
+      </div>
+
+      <div className={styles.warningActions}>
+        {freePlanTimeline && (
+          <span className={styles.warningBadge}>
+            <IoTimeOutline aria-hidden="true" />
+            {freePlanTimeline.isExpired
+              ? t("free-plan-expired-badge")
+              : t("free-plan-days-remaining", {
+                  count: freePlanTimeline.daysRemaining,
+                  formattedCount: numberFormatter.format(
+                    freePlanTimeline.daysRemaining,
+                  ),
+                })}
+          </span>
+        )}
+        <PlanUpgradeCard
+          demoId={demoId}
+          currentPlan={currentPlan}
+          triggerOnly
+          triggerClassName={styles.warningButton}
+        />
+      </div>
+    </section>
+  );
+};
+
+export default FreePlanWarning;
