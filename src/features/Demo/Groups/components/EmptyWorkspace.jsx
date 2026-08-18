@@ -9,8 +9,10 @@ const EmptyWorkspace = ({ isSidebarOpen, setIsSidebarOpen }) => {
     <div className={styles.emptyWorkspace}>
       {!isSidebarOpen && (
         <button
+          type="button"
           className={styles.absoluteOpenBtn}
           onClick={() => setIsSidebarOpen(true)}
+          aria-label={t("open-workspaces", "Open workspaces")}
         >
           <IoMenu />
         </button>

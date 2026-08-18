@@ -1,30 +1,45 @@
 .podiumWrapper {
-  display: flex;
+  --podium-background: #0a2a54;
+  --podium-first-background: linear-gradient(180deg, #16457f 0%, #0a2a54 100%);
+  --podium-shadow: 0 12px 30px rgba(10, 42, 84, 0.18);
+  --podium-current-name: #0a2a54;
+
+  min-width: 0;
+  min-height: 390px;
+  margin: 0;
+  padding: 104px 0 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 180px));
+  align-items: end;
   justify-content: center;
-  align-items: flex-end;
-  gap: 20px;
-  height: 350px;
-  margin-bottom: 50px;
-  width: 100%;
+  gap: clamp(8px, 2.5vw, 20px);
+}
+
+:global(:root[data-theme="dark"]) .podiumWrapper {
+  --podium-background: #17385f;
+  --podium-first-background: linear-gradient(180deg, #24568c 0%, #17385f 100%);
+  --podium-shadow: 0 14px 34px rgba(0, 0, 0, 0.32);
+  --podium-current-name: #bfdbfe;
 }
 
 .podiumCol {
+  position: relative;
+  min-width: 0;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
-  width: 160px;
 }
 
-/* الكتل الكحلية */
 .podiumBlock {
-  background-color: #0a2a54;
   width: 100%;
   border-radius: 16px 16px 4px 4px;
+  background: var(--podium-background);
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 10px 30px rgba(10, 42, 84, 0.15);
+  box-shadow: var(--podium-shadow);
   transition: transform 0.3s ease;
 }
 
@@ -34,9 +49,8 @@
 
 .rank1 .podiumBlock {
   height: 220px;
-  border-top: 4px solid #d4af37; /* اللمسة الذهبية للمركز الأول */
-  background: linear-gradient(180deg, #0f3669 0%, #0a2a54 100%);
-  width: 180px;
+  border-block-start: 4px solid #d4af37;
+  background: var(--podium-first-background);
 }
 
 .rank2 .podiumBlock {
@@ -47,86 +61,175 @@
   height: 130px;
 }
 
-/* رقم الرتبة الكبير داخل الكتلة */
 .rankNumber {
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 2.5rem;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: clamp(1.8rem, 5vw, 2.5rem);
   font-weight: 800;
 }
 
 .rank1 .rankNumber {
-  font-size: 3.5rem;
   color: #ffffff;
+  font-size: clamp(2.4rem, 7vw, 3.5rem);
 }
 
-/* الميدالية الفوقية */
 .medalBadge {
   position: absolute;
-  top: -20px;
+  inset-block-start: -20px;
   width: 40px;
   height: 40px;
-  background-color: #ffffff;
-  border: 2px solid #cbd5e1;
+  border: 2px solid var(--app-border-strong);
   border-radius: 50%;
+  background-color: var(--app-surface);
+  color: var(--app-heading);
   display: flex;
   justify-content: center;
   align-items: center;
-  font-weight: 800;
-  color: #0a2a54;
   font-size: 1.1rem;
+  font-weight: 800;
   z-index: 10;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--app-card-shadow);
 }
 
 .rank1 .medalBadge {
-  top: -25px;
+  inset-block-start: -25px;
   width: 50px;
   height: 50px;
-  background-color: #d4af37;
+  border-width: 3px;
   border-color: #ffffff;
+  background-color: #b78b13;
   color: #ffffff;
   font-size: 1.4rem;
-  border-width: 3px;
 }
 
-/* أيقونة الحبار */
 .squidMascot {
   position: absolute;
-  top: -120px;
+  inset-block-start: -120px;
   width: 110px;
+  max-width: 80%;
+  height: auto;
   z-index: 20;
   filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.2));
   animation: floatMascot 3s ease-in-out infinite;
 }
 
-@keyframes floatMascot {
-  0% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
-}
-
-/* أسماء المستخدمين تحت المنصة */
 .userInfo {
-  margin-top: 15px;
+  min-width: 0;
+  width: 100%;
+  margin-block-start: 15px;
   text-align: center;
 }
 
 .userName {
-  color: #1a56db;
-  font-size: 1.1rem;
-  font-weight: 800;
   margin: 0;
+  color: var(--app-link);
+  font-size: clamp(0.85rem, 2.4vw, 1.08rem);
+  font-weight: 800;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
 }
 
 .highlightUser {
-  color: #0a2a54;
+  color: var(--podium-current-name);
   text-decoration: underline;
   text-decoration-color: #d4af37;
   text-decoration-thickness: 3px;
+  text-underline-offset: 3px;
+}
+
+.scoreText {
+  display: block;
+  margin-block-start: 4px;
+  color: var(--app-muted);
+  font-size: 0.8rem;
+  font-weight: 750;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.emptySpot .podiumBlock {
+  border: 1px dashed var(--app-border-strong);
+  border-block-start-width: 3px;
+  background: var(--app-surface-soft);
+  box-shadow: none;
+}
+
+.emptySpot .rankNumber,
+.emptySpot .userName {
+  color: var(--app-muted);
+}
+
+@keyframes floatMascot {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@media (max-width: 600px) {
+  .podiumWrapper {
+    min-height: 300px;
+    padding-block-start: 82px;
+    gap: 6px;
+  }
+
+  .rank1 .podiumBlock {
+    height: 154px;
+  }
+
+  .rank2 .podiumBlock {
+    height: 116px;
+  }
+
+  .rank3 .podiumBlock {
+    height: 94px;
+  }
+
+  .podiumBlock {
+    border-radius: 11px 11px 3px 3px;
+  }
+
+  .medalBadge {
+    inset-block-start: -15px;
+    width: 30px;
+    height: 30px;
+    font-size: 0.9rem;
+  }
+
+  .rank1 .medalBadge {
+    inset-block-start: -19px;
+    width: 38px;
+    height: 38px;
+    font-size: 1.05rem;
+  }
+
+  .squidMascot {
+    inset-block-start: -87px;
+    width: 78px;
+  }
+
+  .userInfo {
+    margin-block-start: 10px;
+  }
+
+  .scoreText {
+    font-size: 0.72rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .squidMascot {
+    animation: none;
+  }
+
+  .podiumBlock {
+    transition: none;
+  }
+
+  .podiumCol:hover .podiumBlock {
+    transform: none;
+  }
 }

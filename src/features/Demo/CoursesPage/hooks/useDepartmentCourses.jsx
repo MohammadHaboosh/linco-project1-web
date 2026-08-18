@@ -5,7 +5,8 @@ export const useDepartmentCourses = (demoId, departmentId) => {
   const [courses, setCourses] = useState([]);
   const [isLoading, setIsLoading] = useState(Boolean(demoId && departmentId));
   const [error, setError] = useState(false);
-  const [deletingCourseId, setDeletingCourseId] = useState(null);
+  const [deletingDepartmentCourseId, setDeletingDepartmentCourseId] =
+    useState(null);
   const [deleteError, setDeleteError] = useState(false);
   const [reloadVersion, setReloadVersion] = useState(0);
 
@@ -43,24 +44,28 @@ export const useDepartmentCourses = (demoId, departmentId) => {
   }, [demoId, departmentId, reloadVersion]);
 
   const deleteCourse = useCallback(
-    async (courseId) => {
-      if (!demoId || !departmentId || !courseId || deletingCourseId) {
+    async (departmentCourseId) => {
+      if (
+        !demoId ||
+        !departmentId ||
+        !departmentCourseId ||
+        deletingDepartmentCourseId
+      ) {
         return false;
       }
 
-      setDeletingCourseId(courseId);
+      setDeletingDepartmentCourseId(departmentCourseId);
       setDeleteError(false);
 
       try {
         await DepartmentCoursesApi.deleteDepartmentCourse(
           demoId,
           departmentId,
-          courseId,
+          departmentCourseId,
         );
         setCourses((currentCourses) =>
           currentCourses.filter(
-            (item) =>
-              String(item?.asset?.course?.id) !== String(courseId),
+            (item) => String(item?.id) !== String(departmentCourseId),
           ),
         );
         return true;
@@ -72,17 +77,17 @@ export const useDepartmentCourses = (demoId, departmentId) => {
         setDeleteError(true);
         return false;
       } finally {
-        setDeletingCourseId(null);
+        setDeletingDepartmentCourseId(null);
       }
     },
-    [demoId, departmentId, deletingCourseId],
+    [demoId, departmentId, deletingDepartmentCourseId],
   );
 
   return {
     courses,
     isLoading,
     error,
-    deletingCourseId,
+    deletingDepartmentCourseId,
     deleteError,
     deleteCourse,
     retry: () => setReloadVersion((version) => version + 1),

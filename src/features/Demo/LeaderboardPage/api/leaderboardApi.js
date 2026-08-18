@@ -22,7 +22,6 @@ export const leaderboardApi = {
       throw new Error(data.message || "Failed to fetch leaderboard.");
     }
 
-    console.log("leaderboard data :", data.data);
     return data;
   },
 };

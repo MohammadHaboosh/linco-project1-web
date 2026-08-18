@@ -10,6 +10,8 @@ import Footer from "../../components/layouts/Footer/Footer";
 import { FOOTER_CONFIG } from "../../components/layouts/Footer/footerConfig";
 import AuthSessionBoundary from "../../components/common/AuthSessionBoundary";
 import { useTranslation } from "react-i18next";
+import ExpiredSubscriptionGate from "../../features/Demo/Subscription/components/ExpiredSubscriptionGate/ExpiredSubscriptionGate";
+import { isDemoSubscriptionExpired } from "../../features/Demo/Subscription/utils/demoSubscription";
 
 const LayoutContent = () => {
   const { t } = useTranslation();
@@ -50,6 +52,10 @@ const LayoutContent = () => {
         </button>
       </div>
     );
+  }
+
+  if (isDemoSubscriptionExpired(demoData)) {
+    return <ExpiredSubscriptionGate demoId={demoId} demoData={demoData} />;
   }
 
   const navLinks =

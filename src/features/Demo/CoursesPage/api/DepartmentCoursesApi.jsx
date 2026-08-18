@@ -26,7 +26,11 @@ export const DepartmentCoursesApi = {
     }
   },
 
-  deleteDepartmentCourse: async (demoId, departmentId, courseId) => {
+  deleteDepartmentCourse: async (
+    demoId,
+    departmentId,
+    departmentCourseId,
+  ) => {
     if (!demoId) {
       throw new Error("Demo ID is required to delete a department course.");
     }
@@ -35,12 +39,14 @@ export const DepartmentCoursesApi = {
       throw new Error("Department ID is required to delete a course.");
     }
 
-    if (!courseId) {
-      throw new Error("Course ID is required to delete a department course.");
+    if (!departmentCourseId) {
+      throw new Error(
+        "Department course ID is required to delete a department course.",
+      );
     }
 
     const response = await apiFetch(
-      `/departmentCourses/${encodeURIComponent(courseId)}`,
+      `/departmentCourses/${encodeURIComponent(departmentCourseId)}`,
       {
         method: "DELETE",
         headers: {

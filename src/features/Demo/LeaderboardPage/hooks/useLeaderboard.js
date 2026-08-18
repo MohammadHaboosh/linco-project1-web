@@ -4,20 +4,24 @@ import { leaderboardApi } from "../api/leaderboardApi";
 
 export const useLeaderboard = () => {
   const { demoId, departmentId } = useParams();
+  const hasRequiredIds = Boolean(demoId && departmentId);
 
   const [leaderboard, setLeaderboard] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(hasRequiredIds);
+  const [error, setError] = useState(!hasRequiredIds);
+  const [reloadVersion, setReloadVersion] = useState(0);
 
   useEffect(() => {
-    if (!demoId || !departmentId) return;
+    if (!demoId || !departmentId) {
+      return undefined;
+    }
 
     let isMounted = true;
     const controller = new AbortController();
 
     const fetchLeaderboard = async () => {
       setIsLoading(true);
-      setError(null);
+      setError(false);
       try {
         const response = await leaderboardApi.getDepartmentLeaderboard(
           demoId,
@@ -25,12 +29,15 @@ export const useLeaderboard = () => {
           { signal: controller.signal },
         );
 
-        if (isMounted && response.data) {
-          setLeaderboard(response.data);
+        if (isMounted) {
+          setLeaderboard(
+            Array.isArray(response?.data) ? response.data.filter(Boolean) : [],
+          );
         }
       } catch (err) {
-        if (err.name !== "AbortError" && isMounted) {
-          setError(err.message || "Failed to load leaderboard");
+        if (err?.name !== "AbortError" && isMounted) {
+          setLeaderboard([]);
+          setError(true);
         }
       } finally {
         if (isMounted) setIsLoading(false);
@@ -43,7 +50,12 @@ export const useLeaderboard = () => {
       isMounted = false;
       controller.abort();
     };
-  }, [demoId, departmentId]);
+  }, [demoId, departmentId, reloadVersion]);
 
-  return { leaderboard, isLoading, error };
+  return {
+    leaderboard,
+    isLoading: hasRequiredIds && isLoading,
+    error: !hasRequiredIds || error,
+    retry: () => setReloadVersion((version) => version + 1),
+  };
 };

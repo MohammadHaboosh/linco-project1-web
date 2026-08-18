@@ -1,7 +1,9 @@
 import { useEffect, useRef, forwardRef, useImperativeHandle } from "react";
+import { useTranslation } from "react-i18next";
 import styles from "../GroupWorkspace.module.css";
 
 const PhotopeaTool = forwardRef((props, ref) => {
+  const { t } = useTranslation();
   const iframeRef = useRef(null);
 
   useImperativeHandle(ref, () => ({
@@ -41,7 +43,9 @@ const PhotopeaTool = forwardRef((props, ref) => {
       ref={iframeRef}
       src="https://www.photopea.com/"
       className={styles.toolIframe}
-      title="Photopea Workspace"
+      title={t("named-tool-workspace", {
+        name: t("photopea", "Photopea"),
+      })}
     />
   );
 });

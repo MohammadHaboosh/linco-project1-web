@@ -9,6 +9,8 @@ import Footer from "../../components/layouts/Footer/Footer";
 import { FOOTER_CONFIG } from "../../components/layouts/Footer/footerConfig";
 import AuthSessionBoundary from "../../components/common/AuthSessionBoundary";
 import { useTranslation } from "react-i18next";
+import ExpiredSubscriptionGate from "../../features/Demo/Subscription/components/ExpiredSubscriptionGate/ExpiredSubscriptionGate";
+import { isDemoSubscriptionExpired } from "../../features/Demo/Subscription/utils/demoSubscription";
 
 const LayoutContent = () => {
   const { t } = useTranslation();
@@ -46,6 +48,10 @@ const LayoutContent = () => {
     );
   }
 
+  if (isDemoSubscriptionExpired(demoData)) {
+    return <ExpiredSubscriptionGate demoId={demoData.id} demoData={demoData} />;
+  }
+
   const navLinks = DEMO_NAV[role.toLowerCase()]?.navLinks || [];
   const footerLinks = FOOTER_CONFIG[`demo_${role.toLowerCase()}`] || [];
 
@@ -58,7 +64,6 @@ const LayoutContent = () => {
           isGroupsPage
             ? {
                 overflow: "hidden",
-                height: "100vh",
                 display: "flex",
                 flexDirection: "column",
               }

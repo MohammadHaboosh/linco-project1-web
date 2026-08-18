@@ -4,17 +4,21 @@ import styles from "./CoursesGridSection.module.css";
 const CoursesGridSection = ({
   courses,
   isOwner,
-  deletingCourseId,
+  deletingDepartmentCourseId,
   onDelete,
 }) => {
   return (
     <div className={styles["grid-container"]}>
       {courses.map((course) => (
         <CourseCard
-          key={course.id}
+          key={course.departmentCourseId || course.id}
           course={course}
           isOwner={isOwner}
-          isDeleting={String(deletingCourseId) === String(course.id)}
+          deleteId={course.departmentCourseId}
+          isDeleting={
+            String(deletingDepartmentCourseId) ===
+            String(course.departmentCourseId)
+          }
           onDelete={onDelete}
         />
       ))}

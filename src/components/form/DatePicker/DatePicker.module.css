@@ -10,11 +10,11 @@
   width: 100%;
   min-height: 54px;
   padding: 0 50px;
-  border: 1px solid #cbd5e1;
+  border: 1px solid var(--app-border-strong);
   border-radius: 14px;
   outline: none;
-  background: #f8fafc;
-  color: #07172f;
+  background: var(--app-surface-muted);
+  color: var(--app-text-strong);
   font: inherit;
   font-size: 1rem;
   text-align: start;
@@ -26,29 +26,29 @@
 }
 
 .trigger-input:hover {
-  border-color: #94a3b8;
+  border-color: var(--app-muted);
 }
 
 .trigger-input:focus-visible,
 .trigger-input.active {
   border-color: #216be3;
-  background: #ffffff;
-  box-shadow: 0 0 0 4px rgba(33, 107, 227, 0.12);
+  background: var(--app-surface);
+  box-shadow: 0 0 0 4px var(--app-focus-ring);
 }
 
 .placeholder-text {
-  color: #64748b;
+  color: var(--app-muted);
   font-weight: 500;
 }
 
 .value-text {
-  color: #07172f;
+  color: var(--app-text-strong);
 }
 
 .icon-right {
   position: absolute;
   inset-inline-end: 18px;
-  color: #123566;
+  color: var(--app-heading);
   font-size: 1.2rem;
   pointer-events: none;
 }
@@ -60,10 +60,10 @@
   z-index: 50;
   width: min(100%, 310px);
   padding: 15px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--app-border);
   border-radius: 16px;
-  background: #ffffff;
-  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.16);
+  background: var(--app-surface);
+  box-shadow: var(--app-card-hover-shadow);
   animation: fade-in 180ms ease-out;
 }
 
@@ -85,13 +85,13 @@
   border: 0;
   border-radius: 9px;
   background: transparent;
-  color: #0b2145;
+  color: var(--app-heading);
   font-size: 1rem;
   cursor: pointer;
 }
 
 .nav-btn:hover {
-  background: #f1f5f9;
+  background: var(--app-surface-soft);
 }
 
 .select-group {
@@ -103,11 +103,11 @@
 .header-select {
   min-width: 0;
   padding: 5px 7px;
-  border: 1px solid #cbd5e1;
+  border: 1px solid var(--app-border-strong);
   border-radius: 7px;
   outline: none;
-  background: #ffffff;
-  color: #0b2145;
+  background: var(--app-surface);
+  color: var(--app-heading);
   font-size: 0.8rem;
   font-weight: 650;
   cursor: pointer;
@@ -126,7 +126,7 @@
 
 .days-of-week {
   margin-block-end: 7px;
-  color: #94a3b8;
+  color: var(--app-muted);
   font-size: 0.72rem;
   font-weight: 750;
 }
@@ -141,7 +141,7 @@
   border: 0;
   border-radius: 9px;
   background: transparent;
-  color: #334155;
+  color: var(--app-text);
   font-size: 0.82rem;
   font-weight: 550;
   cursor: pointer;
@@ -151,8 +151,8 @@
 }
 
 .day-btn:hover:not(.selected) {
-  background: #f1f5f9;
-  color: #07172f;
+  background: var(--app-surface-soft);
+  color: var(--app-text-strong);
 }
 
 .day-btn.selected {
