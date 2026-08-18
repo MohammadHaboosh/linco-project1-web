@@ -217,34 +217,27 @@ const OwnerHomeContent = () => {
                   : t("free-plan-warning-generic-description")}
             </p>
           </div>
-          <PlanUpgradeCard
-            demoId={demoId}
-            currentPlan={currentPlan}
-            triggerOnly
-            triggerClassName={styles.warningButton}
-            triggerLabel={
-              freePlanTimeline
-                ? freePlanTimeline.isExpired
+          <div className={styles.warningActions}>
+            {freePlanTimeline && (
+              <span className={styles.warningBadge}>
+                <IoTimeOutline aria-hidden="true" />
+                {freePlanTimeline.isExpired
                   ? t("free-plan-expired-badge")
                   : t("free-plan-days-remaining", {
                       count: freePlanTimeline.daysRemaining,
                       formattedCount: numberFormatter.format(
                         freePlanTimeline.daysRemaining,
                       ),
-                    })
-                : t("upgrade-plan")
-            }
-            triggerAriaLabel={
-              freePlanTimeline && !freePlanTimeline.isExpired
-                ? `${t("upgrade-plan")}: ${t("free-plan-days-remaining", {
-                    count: freePlanTimeline.daysRemaining,
-                    formattedCount: numberFormatter.format(
-                      freePlanTimeline.daysRemaining,
-                    ),
-                  })}`
-                : t("upgrade-plan")
-            }
-          />
+                    })}
+              </span>
+            )}
+            <PlanUpgradeCard
+              demoId={demoId}
+              currentPlan={currentPlan}
+              triggerOnly
+              triggerClassName={styles.warningButton}
+            />
+          </div>
         </section>
       )}
 

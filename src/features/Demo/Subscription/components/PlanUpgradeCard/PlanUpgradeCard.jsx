@@ -22,9 +22,7 @@ const PlanUpgradeCard = ({
   accessGate = false,
   workspaceName = "",
   triggerOnly = false,
-  triggerLabel,
   triggerClassName,
-  triggerAriaLabel,
 }) => {
   const { t, i18n } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -103,9 +101,8 @@ const PlanUpgradeCard = ({
           className={triggerClassName || styles.upgradeButton}
           onClick={openModal}
           disabled={!demoId}
-          aria-label={triggerAriaLabel}
         >
-          {triggerLabel || t("upgrade-plan")}
+          {t("upgrade-plan")}
           <IoArrowForwardOutline
             className={styles.forwardIcon}
             aria-hidden="true"

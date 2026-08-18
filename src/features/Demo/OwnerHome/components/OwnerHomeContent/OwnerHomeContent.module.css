@@ -123,28 +123,55 @@
   color: var(--app-danger-text);
 }
 
-.warningButton {
+.warningActions {
   flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.warningBadge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
-  padding: 7px 12px;
+  gap: 6px;
+  padding: 6px 10px;
   color: var(--app-warning-text);
   background: var(--app-warning-soft);
-  border: 0;
+  border: 1px solid var(--app-warning-border);
   border-radius: 999px;
   font-size: 0.78rem;
   font-weight: 800;
   white-space: nowrap;
+}
+
+.warningBadge svg {
+  font-size: 1rem;
+}
+
+.warningButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 10px 15px;
+  color: #ffffff;
+  background: #1a56db;
+  border: 0;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  white-space: nowrap;
   cursor: pointer;
+  box-shadow: 0 5px 14px rgba(26, 86, 219, 0.2);
   transition:
     background-color 0.2s ease,
     transform 0.2s ease;
 }
 
 .warningButton:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--app-warning-soft) 82%, var(--app-warning-border));
+  background: #1648b8;
   transform: translateY(-1px);
 }
 
@@ -153,13 +180,10 @@
   opacity: 0.6;
 }
 
-.freePlanExpired .warningButton {
+.freePlanExpired .warningBadge {
   color: var(--app-danger-text);
   background: color-mix(in srgb, var(--app-danger-surface) 82%, var(--app-danger-border));
-}
-
-.freePlanExpired .warningButton:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--app-danger-surface) 68%, var(--app-danger-border));
+  border-color: var(--app-danger-border);
 }
 
 @media (max-width: 640px) {
@@ -172,7 +196,8 @@
     flex-basis: calc(100% - 60px);
   }
 
-  .warningButton {
+  .warningActions {
+    align-items: flex-start;
     margin-inline-start: 60px;
   }
 }
@@ -642,7 +667,7 @@
     flex-direction: column;
   }
 
-  .warningButton {
+  .warningActions {
     margin-inline-start: 0;
   }
 }
