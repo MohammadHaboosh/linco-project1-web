@@ -5,6 +5,7 @@ import AppHydrationFallback from "../components/common/AppHydrationFallback.jsx"
 import RouteErrorPage from "../components/common/RouteErrorPage.jsx";
 import { tryRecoverFromChunkLoadError } from "../utils/chunkLoadRecovery.js";
 import { PATHS } from "./paths";
+import { routeModules } from "./routeModules.js";
 
 const lazyComponent = (importer) => async () => {
   try {
@@ -21,189 +22,177 @@ const routes = [
   { path: "/ar", element: <LandingRedirector locale="ar" /> },
   {
     path: PATHS.SIGNIN,
-    lazy: lazyComponent(() => import("../pages/SigninPage.jsx")),
+    lazy: lazyComponent(routeModules.signin),
   },
   {
     path: PATHS.SIGNUP,
-    lazy: lazyComponent(() => import("../pages/SignupPage.jsx")),
+    lazy: lazyComponent(routeModules.signup),
   },
   {
     path: PATHS.CHECK_EMAIL,
-    lazy: lazyComponent(() => import("../pages/VerifyEmailPage.jsx")),
+    lazy: lazyComponent(routeModules.verifyEmail),
   },
   {
     path: PATHS.VERIFY_EMAIL,
-    lazy: lazyComponent(() => import("../pages/VerifyAccountPage.jsx")),
+    lazy: lazyComponent(routeModules.verifyAccount),
   },
   {
     path: PATHS.FORGOT_PASSWORD,
-    lazy: lazyComponent(() => import("../pages/ForgotPasswordPage.jsx")),
+    lazy: lazyComponent(routeModules.forgotPassword),
   },
   {
     path: PATHS.RESET_PASSWORD,
-    lazy: lazyComponent(() => import("../pages/ResetPasswordPage.jsx")),
+    lazy: lazyComponent(routeModules.resetPassword),
   },
   {
     path: PATHS.PAYMENT_SUCCESS,
-    lazy: lazyComponent(() => import("../pages/PaymentSuccessPage.jsx")),
+    lazy: lazyComponent(routeModules.paymentSuccess),
   },
   {
     path: PATHS.REQUEST_ROOM,
-    lazy: lazyComponent(() => import("../pages/RequestRoomPage.jsx")),
+    lazy: lazyComponent(routeModules.requestRoom),
   },
   {
-    lazy: lazyComponent(
-      () => import("../layouts/DashboardLayout/DashboardLayout.jsx"),
-    ),
+    lazy: lazyComponent(routeModules.dashboardLayout),
     children: [
       {
         path: PATHS.HOME,
-        lazy: lazyComponent(() => import("../pages/HomePage.jsx")),
+        lazy: lazyComponent(routeModules.home),
       },
       {
         path: PATHS.PROFILE,
-        lazy: lazyComponent(() => import("../pages/ProfilePage.jsx")),
+        lazy: lazyComponent(routeModules.profile),
       },
       {
         path: PATHS.JOINED_ROOMS,
-        lazy: lazyComponent(() => import("../pages/JoinedRooms.jsx")),
+        lazy: lazyComponent(routeModules.joinedRooms),
       },
       {
         path: PATHS.OWN_ROOMS,
-        lazy: lazyComponent(() => import("../pages/MyOwnRoomsPage.jsx")),
+        lazy: lazyComponent(routeModules.ownedRooms),
       },
       {
         path: PATHS.PENDING_INVITATIONS,
-        lazy: lazyComponent(
-          () => import("../pages/PendingInvitationsPage.jsx"),
-        ),
+        lazy: lazyComponent(routeModules.pendingInvitations),
       },
       {
         path: PATHS.CERTIFICATES,
-        lazy: lazyComponent(() => import("../pages/CertificatesPage.jsx")),
+        lazy: lazyComponent(routeModules.certificates),
       },
     ],
   },
   {
     path: PATHS.DEMO,
-    lazy: lazyComponent(() => import("../layouts/DemoLayout/DemoLayout.jsx")),
+    lazy: lazyComponent(routeModules.demoProviderLayout),
     children: [
       {
-        index: true,
-        lazy: lazyComponent(
-          () => import("../components/common/DemoRedirector.jsx"),
-        ),
+        lazy: lazyComponent(routeModules.demoLayout),
+        children: [
+          {
+            index: true,
+            lazy: lazyComponent(routeModules.demoRedirector),
+          },
+          {
+            path: PATHS.DEPARTMENTS,
+            lazy: lazyComponent(routeModules.homeDemo),
+          },
+          {
+            path: PATHS.OWNER_HOME,
+            lazy: lazyComponent(routeModules.ownerHome),
+          },
+          {
+            path: PATHS.OWNER_MEMBERS,
+            lazy: lazyComponent(routeModules.demoMembers),
+          },
+          {
+            path: PATHS.OWNER_LIBRARY,
+            lazy: lazyComponent(routeModules.publicLibrary),
+          },
+          {
+            path: PATHS.GROUP_WORKSPACE,
+            lazy: lazyComponent(routeModules.groupWorkspace),
+          },
+          {
+            path: PATHS.COURSE_STUDIO,
+            lazy: lazyComponent(routeModules.courseStudio),
+          },
+          {
+            path: PATHS.MANAGE_COURSE,
+            lazy: lazyComponent(routeModules.manageCourse),
+          },
+          {
+            path: PATHS.VIEW_COURSE,
+            lazy: lazyComponent(routeModules.viewCourse),
+          },
+          {
+            path: PATHS.SM_ASSETS,
+            lazy: lazyComponent(routeModules.demoAssets),
+          },
+          {
+            path: PATHS.OWNER_COURSES,
+            lazy: lazyComponent(routeModules.ownerCourses),
+          },
+          {
+            path: PATHS.INQUIRIES,
+            lazy: lazyComponent(routeModules.inquiries),
+          },
+        ],
       },
       {
-        path: PATHS.DEPARTMENTS,
-        lazy: lazyComponent(() => import("../pages/HomeDemoPage.jsx")),
+        path: "departments/:departmentId",
+        lazy: lazyComponent(routeModules.departmentLayout),
+        children: [
+          {
+            index: true,
+            lazy: lazyComponent(routeModules.departmentHome),
+          },
+          {
+            path: PATHS.MEMBERS,
+            lazy: lazyComponent(routeModules.departmentMembers),
+          },
+          {
+            path: PATHS.LEARNING_PATH,
+            lazy: lazyComponent(routeModules.learningPath),
+          },
+          {
+            path: PATHS.SM_ASSETS,
+            lazy: lazyComponent(routeModules.demoAssets),
+          },
+          {
+            path: PATHS.LIVES,
+            lazy: lazyComponent(routeModules.lives),
+          },
+          {
+            path: PATHS.COURSE_PLAYER,
+            lazy: lazyComponent(routeModules.coursePlayer),
+          },
+          {
+            path: PATHS.COURSES,
+            lazy: lazyComponent(routeModules.courses),
+          },
+          {
+            path: PATHS.LEADERBOARD,
+            lazy: lazyComponent(routeModules.leaderboard),
+          },
+          {
+            path: PATHS.ROADMAPS,
+            lazy: lazyComponent(routeModules.roadmaps),
+          },
+          {
+            path: PATHS.TOOLS,
+            lazy: lazyComponent(routeModules.tools),
+          },
+          {
+            path: PATHS.CHAT_GROUPS,
+            lazy: lazyComponent(routeModules.chats),
+          },
+        ],
       },
       {
-        path: PATHS.OWNER_HOME,
-        lazy: lazyComponent(() => import("../pages/OwnerHomePage.jsx")),
-      },
-      {
-        path: PATHS.OWNER_MEMBERS,
-        lazy: lazyComponent(() => import("../pages/DemoMembersPage.jsx")),
-      },
-      {
-        path: PATHS.OWNER_LIBRARY,
-        lazy: lazyComponent(() => import("../pages/PublicLibraryPage.jsx")),
-      },
-      {
-        path: PATHS.GROUP_WORKSPACE,
-        lazy: lazyComponent(() => import("../pages/GroupWorkspacePage.jsx")),
-      },
-      {
-        path: PATHS.COURSE_STUDIO,
-        lazy: lazyComponent(
-          () =>
-            import("../features/Demo/PublishCourse/components/CourseStudio/CourseStudio.jsx"),
-        ),
-      },
-      {
-        path: PATHS.MANAGE_COURSE,
-        lazy: lazyComponent(
-          () =>
-            import("../features/Demo/OwnerCourses/components/ManageCourse/components/CourseManagerLayout.jsx"),
-        ),
-      },
-      {
-        path: PATHS.VIEW_COURSE,
-        lazy: lazyComponent(
-          () =>
-            import("../features/Demo/OwnerCourses/components/ViewCourse/CourseDetailsLayout.jsx"),
-        ),
-      },
-      {
-        path: PATHS.SM_ASSETS,
-        lazy: lazyComponent(() => import("../pages/DemoAssetsPage.jsx")),
-      },
-      {
-        path: PATHS.OWNER_COURSES,
-        lazy: lazyComponent(() => import("../pages/OwnerCoursesPage.jsx")),
-      },
-      {
-        path: PATHS.INQUIRIES,
-        lazy: lazyComponent(() => import("../pages/InquiriesPage.jsx")),
+        path: "departments/:departmentId/lives/:streamId/room",
+        lazy: lazyComponent(routeModules.liveRoom),
       },
     ],
-  },
-  {
-    path: PATHS.DEMO_SECTION,
-    lazy: lazyComponent(
-      () => import("../layouts/DepartmentLayout/DepartmentLayout.jsx"),
-    ),
-    children: [
-      {
-        index: true,
-        lazy: lazyComponent(() => import("../pages/DepartmentPage.jsx")),
-      },
-      {
-        path: PATHS.MEMBERS,
-        lazy: lazyComponent(() => import("../pages/DepartmentMembersPage.jsx")),
-      },
-      {
-        path: PATHS.LEARNING_PATH,
-        lazy: lazyComponent(() => import("../pages/LearningPathPage.jsx")),
-      },
-      {
-        path: PATHS.SM_ASSETS,
-        lazy: lazyComponent(() => import("../pages/DemoAssetsPage.jsx")),
-      },
-      {
-        path: PATHS.LIVES,
-        lazy: lazyComponent(() => import("../pages/LivesPage.jsx")),
-      },
-      {
-        path: PATHS.COURSE_PLAYER,
-        lazy: lazyComponent(() => import("../pages/CoursePlayerPage.jsx")),
-      },
-      {
-        path: PATHS.COURSES,
-        lazy: lazyComponent(() => import("../pages/CoursesPage.jsx")),
-      },
-      {
-        path: PATHS.LEADERBOARD,
-        lazy: lazyComponent(() => import("../pages/LeaderboardPage.jsx")),
-      },
-      {
-        path: PATHS.ROADMAPS,
-        lazy: lazyComponent(() => import("../pages/RoadmapsPage.jsx")),
-      },
-      {
-        path: PATHS.TOOLS,
-        lazy: lazyComponent(() => import("../pages/WorkspaceToolsPage.jsx")),
-      },
-      {
-        path: PATHS.CHAT_GROUPS,
-        lazy: lazyComponent(() => import("../pages/ChatsPage.jsx")),
-      },
-    ],
-  },
-  {
-    path: PATHS.LIVE_ROOM,
-    lazy: lazyComponent(() => import("../pages/LiveRoomPage.jsx")),
   },
   { path: "*", element: <NotFoundPage /> },
 ];

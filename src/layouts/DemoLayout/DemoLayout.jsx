@@ -1,5 +1,5 @@
 import { Outlet, useLocation } from "react-router-dom";
-import { DemoProvider, useDemo } from "../../hooks/useDemo";
+import { useDemo } from "../../hooks/useDemo";
 import Sidebar from "../../components/layouts/SideBar/Sidebar";
 import Header from "../../components/layouts/Header/global_header/Header";
 import SubHeader from "../../components/layouts/Header/sub_header/SubHeader";
@@ -102,9 +102,7 @@ const LayoutContent = () => {
 const DemoLayout = () => {
   return (
     <AuthSessionBoundary>
-      <DemoProvider>
-        <LayoutContent />
-      </DemoProvider>
+      <LayoutContent />
     </AuthSessionBoundary>
   );
 };

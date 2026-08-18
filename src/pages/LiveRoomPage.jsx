@@ -1,5 +1,5 @@
 import LiveRoom from "../features/Demo/Lives/components/LiveRoom/LiveRoom";
-import { DemoProvider, useDemo } from "../hooks/useDemo";
+import { useDemo } from "../hooks/useDemo";
 import AuthSessionBoundary from "../components/common/AuthSessionBoundary";
 import ExpiredSubscriptionGate from "../features/Demo/Subscription/components/ExpiredSubscriptionGate/ExpiredSubscriptionGate";
 import { isDemoSubscriptionExpired } from "../features/Demo/Subscription/utils/demoSubscription";
@@ -42,9 +42,7 @@ const LiveRoomAccess = () => {
 const LiveRoomPage = () => {
   return (
     <AuthSessionBoundary>
-      <DemoProvider>
-        <LiveRoomAccess />
-      </DemoProvider>
+      <LiveRoomAccess />
     </AuthSessionBoundary>
   );
 };
