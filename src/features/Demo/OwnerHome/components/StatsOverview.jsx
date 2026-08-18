@@ -1,8 +1,6 @@
 import {
   IoPeopleOutline,
-  IoBusinessOutline,
   IoBookOutline,
-  IoSchoolOutline,
   IoRibbonOutline,
   IoCheckmarkDoneOutline,
 } from "react-icons/io5";
@@ -39,14 +37,14 @@ const StatsOverview = ({ overview, numberFormatter, percentFormatter }) => {
         title={t("total-members")}
         value={numberFormatter.format(overview.totalMembers)}
         icon={<IoPeopleOutline />}
-        subTextHighlight={`+${overview.newMembers}`}
+        subTextHighlight={`+${numberFormatter.format(overview.newMembers)}`}
         subText={t("new-members-recently")}
       />
       <StatCard
         title={t("published-courses")}
         value={numberFormatter.format(overview.publishedCourses)}
         icon={<IoBookOutline />}
-        subTextHighlight={overview.totalCourses}
+        subTextHighlight={numberFormatter.format(overview.totalCourses)}
         subText={t("total-created-courses")}
       />
       <StatCard

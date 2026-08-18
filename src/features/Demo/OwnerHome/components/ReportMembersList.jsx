@@ -32,15 +32,17 @@ const ReportMembersList = ({ members, numberFormatter }) => {
             <div className={styles.activityDetails}>
               <p className={styles.activityText}>
                 <strong>{member.fullName}</strong> (
-                {member.jobTitle[0] || t("member")})
+                {member.jobTitle?.[0] || t("member")})
               </p>
               <div className={styles.memberMetrics}>
                 <span className={styles.metricBadge}>
-                  <IoCheckmarkCircleOutline /> {member.examsPassed}{" "}
+                  <IoCheckmarkCircleOutline />{" "}
+                  {numberFormatter.format(member.examsPassed)}{" "}
                   {t("exams-passed")}
                 </span>
                 <span className={styles.metricBadgeGold}>
-                  <IoRibbonOutline /> {member.certificationsEarned}{" "}
+                  <IoRibbonOutline />{" "}
+                  {numberFormatter.format(member.certificationsEarned)}{" "}
                   {t("certifications")}
                 </span>
               </div>
