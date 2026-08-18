@@ -35,17 +35,15 @@ const DemoContent = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleDeleteSection = async (id) => deleteDepartment(id);
-  const normalizedSearch = searchQuery.trim().toLocaleLowerCase(
-    i18n.resolvedLanguage || i18n.language || "en",
-  );
+  const normalizedSearch = searchQuery
+    .trim()
+    .toLocaleLowerCase(i18n.resolvedLanguage || i18n.language || "en");
   const filteredDepartments = normalizedSearch
     ? departments.filter((department) =>
         [department.title, department.name, department.description].some(
           (value) =>
             String(value || "")
-              .toLocaleLowerCase(
-                i18n.resolvedLanguage || i18n.language || "en",
-              )
+              .toLocaleLowerCase(i18n.resolvedLanguage || i18n.language || "en")
               .includes(normalizedSearch),
         ),
       )
@@ -55,7 +53,7 @@ const DemoContent = () => {
     <div className={styles.contentArea} dir={i18n.dir()}>
       <div className={styles.innerContainer}>
         <DemoHeaderSection
-          title={t("training-sections")}
+          title={t("training-departments")}
           subtitle={t(
             "select-your-specialized-department-to-unlock-tailored-road-maps",
           )}
@@ -80,7 +78,10 @@ const DemoContent = () => {
             <p>{t("loading-departments-description")}</p>
           </div>
         ) : error ? (
-          <div className={`${styles.pageState} ${styles.errorState}`} role="alert">
+          <div
+            className={`${styles.pageState} ${styles.errorState}`}
+            role="alert"
+          >
             <IoAlertCircleOutline aria-hidden="true" />
             <h2>{t("departments-load-failed")}</h2>
             <p>{error}</p>
@@ -97,7 +98,7 @@ const DemoContent = () => {
                 onClick={() => setShowCreateModal(true)}
               >
                 <IoAdd className={styles.addIcon} aria-hidden="true" />
-                <h3>{t("create-new-section")}</h3>
+                <h3>{t("create-new-department")}</h3>
               </button>
             )}
 

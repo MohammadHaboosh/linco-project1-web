@@ -1,18 +1,46 @@
 .page {
   position: relative;
   isolation: isolate;
-  min-height: 100vh;
+  min-block-size: 100vh;
+  min-block-size: 100dvh;
+  inline-size: 100%;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 22px;
-  padding: 48px 20px;
-  overflow: hidden;
+  padding-block: 48px;
+  padding-inline: 20px;
+  overflow-x: clip;
+  color: var(--app-text);
+  scrollbar-color: var(--app-border-strong) transparent;
   background:
-    radial-gradient(circle at 15% 20%, rgba(59, 130, 246, 0.28), transparent 34%),
-    radial-gradient(circle at 85% 80%, rgba(191, 219, 254, 0.16), transparent 30%),
-    linear-gradient(145deg, #071c38 0%, #112950 52%, #173c72 100%);
+    radial-gradient(
+      circle at 15% 20%,
+      color-mix(in srgb, var(--app-link) 18%, transparent),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 85% 80%,
+      color-mix(in srgb, var(--app-info-border) 22%, transparent),
+      transparent 30%
+    ),
+    var(--app-page-bg);
+}
+
+.page::-webkit-scrollbar {
+  inline-size: 8px;
+}
+
+.page::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.page::-webkit-scrollbar-thumb {
+  background: var(--app-border-strong);
+  border: 2px solid var(--app-page-bg);
+  border-radius: 999px;
 }
 
 .page::before,
@@ -20,26 +48,26 @@
   content: "";
   position: absolute;
   z-index: -1;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--app-border);
   border-radius: 50%;
 }
 
 .page::before {
   width: 460px;
   height: 460px;
-  top: -260px;
-  right: -100px;
+  inset-block-start: -260px;
+  inset-inline-end: -100px;
 }
 
 .page::after {
   width: 360px;
   height: 360px;
-  bottom: -230px;
-  left: -80px;
+  inset-block-end: -230px;
+  inset-inline-start: -80px;
 }
 
 .brand {
-  color: #ffffff;
+  color: var(--app-heading);
   font-size: 1.65rem;
   font-weight: 900;
   letter-spacing: -0.04em;
@@ -48,59 +76,66 @@
 
 .brand::after {
   content: ".";
-  color: #60a5fa;
+  color: var(--app-link);
 }
 
 .statusCard {
-  width: min(620px, 100%);
-  padding: 42px;
+  inline-size: min(620px, 100%);
+  min-inline-size: 0;
+  box-sizing: border-box;
+  padding-block: 42px;
+  padding-inline: 42px;
   text-align: center;
-  background: rgba(255, 255, 255, 0.98);
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
   border-radius: 28px;
-  box-shadow: 0 32px 80px rgba(2, 12, 27, 0.34);
+  box-shadow: var(--app-card-hover-shadow);
   animation: cardIn 0.4s ease-out;
 }
 
 .statusIcon {
-  width: 80px;
-  height: 80px;
+  inline-size: 80px;
+  block-size: 80px;
   display: grid;
   place-items: center;
-  margin: 0 auto 20px;
+  margin-block: 0 20px;
+  margin-inline: auto;
   border-radius: 24px;
   font-size: 3rem;
 }
 
 .successIcon {
-  color: #15803d;
-  background: #dcfce7;
+  color: var(--app-success-text);
+  background: var(--app-success-surface);
+  border: 1px solid var(--app-success-border);
 }
 
 .pendingIcon,
 .verifyingIcon {
-  color: #1d4ed8;
-  background: #dbeafe;
+  color: var(--app-info-text);
+  background: var(--app-info-surface);
+  border: 1px solid var(--app-info-border);
 }
 
 .errorIcon {
-  color: #b91c1c;
-  background: #fee2e2;
+  color: var(--app-danger-text);
+  background: var(--app-danger-surface);
+  border: 1px solid var(--app-danger-border);
 }
 
 .spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid #bfdbfe;
-  border-top-color: #1d4ed8;
+  inline-size: 32px;
+  block-size: 32px;
+  border: 3px solid var(--app-info-border);
+  border-block-start-color: var(--app-info-text);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
 
 .eyebrow {
   display: block;
-  margin-bottom: 8px;
-  color: #1a56db;
+  margin-block-end: 8px;
+  color: var(--app-link);
   font-size: 0.76rem;
   font-weight: 900;
   letter-spacing: 0.1em;
@@ -109,26 +144,29 @@
 
 .statusCard h1 {
   margin: 0;
-  color: #0a2a54;
+  color: var(--app-heading);
   font-size: clamp(1.8rem, 5vw, 2.35rem);
   line-height: 1.2;
   letter-spacing: -0.03em;
 }
 
 .description {
-  max-width: 480px;
-  margin: 14px auto 0;
-  color: #64748b;
+  max-inline-size: 480px;
+  margin-block: 14px 0;
+  margin-inline: auto;
+  color: var(--app-text);
   font-size: 1rem;
   line-height: 1.7;
 }
 
 .receipt {
-  margin: 28px 0;
-  padding: 4px 20px;
+  min-inline-size: 0;
+  margin-block: 28px;
+  padding-block: 4px;
+  padding-inline: 20px;
   text-align: start;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  background: var(--app-surface-muted);
+  border: 1px solid var(--app-border);
   border-radius: 16px;
 }
 
@@ -137,83 +175,96 @@
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-  padding: 15px 0;
-  border-bottom: 1px solid #e2e8f0;
+  padding-block: 15px;
+  padding-inline: 0;
+  min-inline-size: 0;
+  border-block-end: 1px solid var(--app-border);
 }
 
 .receiptRow:last-child {
-  border-bottom: none;
+  border-block-end: none;
 }
 
 .receiptRow span {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: #64748b;
+  min-inline-size: 0;
+  color: var(--app-muted);
   font-size: 0.88rem;
   font-weight: 700;
 }
 
 .receiptRow span svg {
-  color: #1a56db;
+  flex: 0 0 auto;
+  color: var(--app-link);
   font-size: 1.1rem;
 }
 
 .receiptRow strong {
-  min-width: 0;
+  min-inline-size: 0;
+  max-inline-size: 65%;
   overflow-wrap: anywhere;
-  color: #0a2a54;
+  color: var(--app-text-strong);
   font-size: 0.92rem;
 }
 
-.paidStatus {
-  color: #15803d !important;
+.receiptRow .paidStatus {
+  color: var(--app-success-text);
 }
 
 .primaryButton,
 .secondaryButton {
-  min-height: 48px;
+  min-block-size: 48px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 9px;
-  padding: 12px 22px;
+  max-inline-size: 100%;
+  padding-block: 12px;
+  padding-inline: 22px;
   border-radius: 12px;
   font-size: 0.92rem;
   font-weight: 800;
   text-decoration: none;
+  text-align: center;
+  overflow-wrap: anywhere;
   cursor: pointer;
   transition: 0.2s ease;
 }
 
 .primaryButton {
   color: #ffffff;
-  background: #1a56db;
-  border: 1px solid #1a56db;
-  box-shadow: 0 7px 18px rgba(26, 86, 219, 0.23);
-}
-
-.primaryButton:hover {
-  background: #1648b8;
-  transform: translateY(-1px);
+  background: var(--color-linco-blue);
+  border: 1px solid var(--color-linco-blue);
+  box-shadow: 0 7px 18px var(--app-focus-ring);
 }
 
 .secondaryButton {
-  color: #0a2a54;
-  background: #ffffff;
-  border: 1px solid #cbd5e1;
+  color: var(--app-text-strong);
+  background: var(--app-surface);
+  border: 1px solid var(--app-border-strong);
 }
 
-.secondaryButton:hover {
-  background: #f8fafc;
-  border-color: #94a3b8;
+.primaryButton:focus-visible,
+.secondaryButton:focus-visible,
+.brand:focus-visible {
+  outline: 3px solid var(--app-focus-ring);
+  outline-offset: 3px;
 }
 
 .actionRow {
   display: flex;
   justify-content: center;
   gap: 12px;
-  margin-top: 26px;
+  margin-block-start: 26px;
+}
+
+.successActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
 }
 
 .secureNote {
@@ -221,14 +272,32 @@
   align-items: center;
   gap: 7px;
   margin: 0;
-  color: rgba(255, 255, 255, 0.75);
+  max-inline-size: 100%;
+  color: var(--app-muted);
   font-size: 0.82rem;
   font-weight: 600;
 }
 
 .secureNote svg {
-  color: #93c5fd;
+  flex: 0 0 auto;
+  color: var(--app-link);
   font-size: 1.05rem;
+}
+
+:global([dir="rtl"]) .directionalIcon {
+  transform: scaleX(-1);
+}
+
+@media (hover: hover) {
+  .primaryButton:hover {
+    background: color-mix(in srgb, var(--color-linco-blue) 86%, #000000);
+    transform: translateY(-1px);
+  }
+
+  .secondaryButton:hover {
+    background: var(--app-surface-soft);
+    border-color: var(--app-border-strong);
+  }
 }
 
 @keyframes spin {
@@ -251,17 +320,20 @@
 @media (max-width: 600px) {
   .page {
     justify-content: flex-start;
-    padding-top: 32px;
+    gap: 18px;
+    padding-block: 32px;
+    padding-inline: 16px;
   }
 
   .statusCard {
-    padding: 30px 20px;
+    padding-block: 30px;
+    padding-inline: 20px;
     border-radius: 22px;
   }
 
   .statusIcon {
-    width: 68px;
-    height: 68px;
+    inline-size: 68px;
+    block-size: 68px;
     border-radius: 20px;
     font-size: 2.5rem;
   }
@@ -272,14 +344,54 @@
     gap: 6px;
   }
 
+  .receiptRow strong {
+    max-inline-size: 100%;
+  }
+
   .actionRow {
     flex-direction: column;
   }
 
+  .successActions {
+    flex-direction: column;
+  }
+
   .actionRow > *,
+  .successActions > *,
   .statusCard > .primaryButton,
   .statusCard > .secondaryButton {
-    width: 100%;
+    inline-size: 100%;
+  }
+}
+
+@media (max-width: 360px) {
+  .page {
+    padding-block: 24px;
+    padding-inline: 12px;
+  }
+
+  .brand {
+    font-size: 1.45rem;
+  }
+
+  .statusCard {
+    padding-block: 26px;
+    padding-inline: 16px;
+    border-radius: 18px;
+  }
+
+  .statusCard h1 {
+    font-size: 1.65rem;
+  }
+
+  .receipt {
+    margin-block: 24px;
+    padding-inline: 14px;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    padding-inline: 16px;
   }
 }
 
