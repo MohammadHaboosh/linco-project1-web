@@ -12,7 +12,7 @@
   gap: 22px;
   padding-block: 48px;
   padding-inline: 20px;
-  overflow-x: clip;
+  overflow: clip;
   color: var(--app-text);
   scrollbar-color: var(--app-border-strong) transparent;
   background:
