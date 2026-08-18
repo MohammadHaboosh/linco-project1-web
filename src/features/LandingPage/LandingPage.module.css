@@ -194,6 +194,47 @@
   height: 24px;
 }
 
+.themeToggle {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--landing-white);
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease;
+}
+
+.themeToggle:hover {
+  border-color: rgba(255, 255, 255, 0.34);
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+}
+
+.themeToggle svg {
+  width: 19px;
+  height: 19px;
+}
+
+.sunIcon {
+  display: none;
+}
+
+:global(:root[data-theme="dark"]) .moonIcon {
+  display: none;
+}
+
+:global(:root[data-theme="dark"]) .sunIcon {
+  display: block;
+}
+
 .primaryButton,
 .secondaryButton,
 .secondaryButtonDark,
@@ -1394,6 +1435,159 @@
   text-decoration: none;
 }
 
+:global(:root[data-theme="dark"]) .landing {
+  --landing-slate-950: #edf4ff;
+  --landing-slate-700: #d1dbe8;
+  --landing-slate-600: #aebdd0;
+  --landing-slate-500: #91a3ba;
+  --landing-slate-300: #40536b;
+  --landing-slate-200: #293a51;
+  --landing-slate-100: #1b2a3f;
+  --landing-slate-50: #0c1727;
+  background: #07111f;
+  color: #edf4ff;
+}
+
+:global(:root[data-theme="dark"]) .outcomesSection,
+:global(:root[data-theme="dark"]) .evidenceSection,
+:global(:root[data-theme="dark"]) .faqSection,
+:global(:root[data-theme="dark"]) .ctaSection {
+  background: #07111f;
+}
+
+:global(:root[data-theme="dark"]) .howSection {
+  background: #0c1727;
+}
+
+:global(:root[data-theme="dark"]) .solutionsSection {
+  background: #09182b;
+}
+
+:global(:root[data-theme="dark"]) .sectionHeader h2,
+:global(:root[data-theme="dark"]) .outcomeCard h3,
+:global(:root[data-theme="dark"]) .solutionCard h3,
+:global(:root[data-theme="dark"]) .stepsGrid h3,
+:global(:root[data-theme="dark"]) .evidenceCopy h3,
+:global(:root[data-theme="dark"]) .faqButton {
+  color: #edf4ff;
+}
+
+:global(:root[data-theme="dark"]) .outcomeCard,
+:global(:root[data-theme="dark"]) .solutionCard {
+  border-color: #293a51;
+  background: #101c2d;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.2);
+}
+
+:global(:root[data-theme="dark"]) .iconBox,
+:global(:root[data-theme="dark"]) .featureIcon,
+:global(:root[data-theme="dark"]) .previewMetricIcon,
+:global(:root[data-theme="dark"]) .previewRecognition span,
+:global(:root[data-theme="dark"]) .previewLogo {
+  background: rgba(37, 107, 227, 0.16);
+  color: #83bcff;
+}
+
+:global(:root[data-theme="dark"]) .stepNumber {
+  background: #173764;
+  box-shadow: 0 0 0 1px #40536b;
+}
+
+:global(:root[data-theme="dark"]) .evidenceImage {
+  box-shadow: 0 28px 65px rgba(0, 0, 0, 0.3);
+}
+
+:global(:root[data-theme="dark"]) .productWindow,
+:global(:root[data-theme="dark"]) .previewShell {
+  background: #0c1727;
+}
+
+:global(:root[data-theme="dark"]) .windowBar {
+  border-color: #293a51;
+  background: #101c2d;
+}
+
+:global(:root[data-theme="dark"]) .windowBar span {
+  background: #52657c;
+}
+
+:global(:root[data-theme="dark"]) .previewToolbar {
+  border-color: #293a51;
+}
+
+:global(:root[data-theme="dark"]) .previewToolbar span {
+  color: #edf4ff;
+}
+
+:global(:root[data-theme="dark"]) .previewToolbar > i {
+  border-color: #203a5f;
+}
+
+:global(:root[data-theme="dark"]) .previewMetricGrid > div,
+:global(:root[data-theme="dark"]) .previewCourseList > div,
+:global(:root[data-theme="dark"]) .previewChatLayout,
+:global(:root[data-theme="dark"]) .previewAnalyticsLayout,
+:global(:root[data-theme="dark"]) .previewRecognition > div {
+  border-color: #293a51;
+  background: #101c2d;
+}
+
+:global(:root[data-theme="dark"]) .previewMetricGrid > div > i {
+  background: rgba(37, 107, 227, 0.1);
+}
+
+:global(:root[data-theme="dark"]) .previewCourseList i {
+  background: linear-gradient(
+    to right,
+    var(--landing-blue-600) var(--preview-progress),
+    #293a51 var(--preview-progress)
+  );
+}
+
+:global(:root[data-theme="dark"][dir="rtl"]) .previewCourseList i {
+  background: linear-gradient(
+    to left,
+    var(--landing-blue-600) var(--preview-progress),
+    #293a51 var(--preview-progress)
+  );
+}
+
+:global(:root[data-theme="dark"]) .previewChannels,
+:global(:root[data-theme="dark"]) .previewRecognition {
+  border-color: #293a51;
+  background: #0c1727;
+}
+
+:global(:root[data-theme="dark"]) .previewChannels .channelActive {
+  background: rgba(37, 107, 227, 0.16);
+  color: #83bcff;
+}
+
+:global(:root[data-theme="dark"]) .previewMessages > div > i {
+  background: #203a5f;
+}
+
+:global(:root[data-theme="dark"]) .previewMessages > div:nth-child(2) > i {
+  background: #1d443d;
+}
+
+:global(:root[data-theme="dark"]) .previewMessages > div:nth-child(3) > i {
+  background: #493723;
+}
+
+:global(:root[data-theme="dark"]) .previewMessages b,
+:global(:root[data-theme="dark"]) .previewComposer span {
+  background: #34465d;
+}
+
+:global(:root[data-theme="dark"]) .previewComposer {
+  border-color: #34465d;
+}
+
+:global(:root[data-theme="dark"]) .previewChart {
+  background-image: linear-gradient(#26374d 1px, transparent 1px);
+}
+
 @keyframes enter {
   from {
     opacity: 0;
@@ -1470,12 +1664,13 @@
 
   .navActions {
     display: grid;
-    grid-template-columns: auto 1fr 1.25fr;
+    grid-template-columns: auto auto 1fr 1.25fr;
     margin-block-start: 18px;
   }
 
   .signInLink,
-  .languageLink {
+  .languageLink,
+  .themeToggle {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1779,8 +1974,13 @@
     grid-template-columns: 1fr 1fr;
   }
 
+  .navActions .themeToggle {
+    grid-column: 1;
+    justify-self: start;
+  }
+
   .navActions .languageLink {
-    grid-column: 1 / -1;
+    grid-column: 2;
   }
 
   .outcomeCard {

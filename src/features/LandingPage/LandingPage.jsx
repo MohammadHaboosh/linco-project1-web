@@ -10,12 +10,15 @@ import {
   IoCloseOutline,
   IoLayersOutline,
   IoMenuOutline,
+  IoMoonOutline,
   IoPeopleOutline,
   IoRibbonOutline,
   IoSchoolOutline,
   IoSparklesOutline,
+  IoSunnyOutline,
   IoVideocamOutline,
 } from "react-icons/io5";
+import { useTheme } from "../../hooks/useTheme.js";
 import { PATHS } from "../../routes/paths";
 import { getLandingContent } from "./landingContent";
 import styles from "./LandingPage.module.css";
@@ -217,6 +220,7 @@ const LandingPage = ({ locale = "en" }) => {
   const content = getLandingContent(locale);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState(0);
+  const { toggleTheme } = useTheme();
   const isArabic = content.locale === "ar";
   const localizedPath = isArabic ? "/ar" : "/";
   const alternatePath = isArabic ? "/" : "/ar";
@@ -340,6 +344,22 @@ const LandingPage = ({ locale = "en" }) => {
               <a href="#faq">{content.nav.faq}</a>
             </div>
             <div className={styles.navActions}>
+              <button
+                type="button"
+                className={styles.themeToggle}
+                aria-label={content.nav.themeToggle}
+                title={content.nav.themeToggle}
+                onClick={toggleTheme}
+              >
+                <IoMoonOutline
+                  className={styles.moonIcon}
+                  aria-hidden="true"
+                />
+                <IoSunnyOutline
+                  className={styles.sunIcon}
+                  aria-hidden="true"
+                />
+              </button>
               <Link
                 to={alternatePath}
                 className={styles.languageLink}
