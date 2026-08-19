@@ -13,65 +13,40 @@ const AppLayoutSkeleton = () => {
         defaultValue: "Preparing your workspace",
       })}
     >
-      <div className={styles.meshLayer} aria-hidden="true" />
-      <div className={styles.meshLayerSecondary} aria-hidden="true" />
-
-      <div className={styles.centerStage}>
-        <div className={styles.ringFrame} aria-hidden="true">
-          <svg
-            className={styles.ringSvg}
-            viewBox="0 0 220 220"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <defs>
-              <linearGradient
-                id="linco-ring-gradient"
-                x1="0%"
-                y1="0%"
-                x2="100%"
-                y2="100%"
-              >
-                <stop offset="0%" stopColor="var(--color-linco-blue)" />
-                <stop offset="55%" stopColor="var(--color-linco-light)" />
-                <stop offset="100%" stopColor="transparent" />
-              </linearGradient>
-            </defs>
-            <circle
-              className={styles.ringTrack}
-              cx="110"
-              cy="110"
-              r="90"
-              fill="none"
-            />
-            <circle
-              className={styles.ringStroke}
-              cx="110"
-              cy="110"
-              r="90"
-              fill="none"
-            />
-          </svg>
+      <div className={styles.wireframeLayer} aria-hidden="true">
+        <div className={styles.wireHeader} />
+        <div className={styles.wireSubHeader} />
+        <div className={styles.wireContent}>
+          {Array.from({ length: 8 }).map((_, index) => (
+            <div key={`wire-card-${index}`} className={styles.wireCard} />
+          ))}
         </div>
+      </div>
 
-        <div className={styles.logoOrb}>
-          <img
-            src="/icons/linco-logo-96.webp"
-            alt="LinCo"
-            className={styles.logoImage}
-          />
-        </div>
+      <div className={styles.glassOverlay}>
+        <div className={styles.centerStage}>
+          <div className={styles.logoShell}>
+            <span className={styles.ripple} aria-hidden="true" />
+            <span className={`${styles.ripple} ${styles.rippleDelayed}`} aria-hidden="true" />
+            <img
+              src="/icons/linco-logo-96.webp"
+              alt={t("app-loader-logo-alt", { defaultValue: "LinCo" })}
+              className={styles.logoImage}
+            />
+          </div>
 
-        <div className={styles.brandBlock}>
           <p className={styles.brandName}>
-            {t("app-loader-brand", { defaultValue: "LinCo" })}
+            {t("app-loader-brand", { defaultValue: "LINCO" })}
           </p>
+
+          <div className={styles.progressTrack} aria-hidden="true">
+            <span className={styles.progressSweep} />
+          </div>
+
           <p className={styles.statusText}>
             {t("app-loader-status", {
-              defaultValue: "Preparing your workspace",
+              defaultValue: "Preparing your workspace...",
             })}
-            <span className={styles.dot1}>.</span>
-            <span className={styles.dot2}>.</span>
-            <span className={styles.dot3}>.</span>
           </p>
         </div>
       </div>
