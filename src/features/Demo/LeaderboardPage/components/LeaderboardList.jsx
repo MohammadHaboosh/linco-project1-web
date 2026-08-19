@@ -24,16 +24,24 @@ const LeaderboardList = ({ allUsers, currentUserId }) => {
             Number.isFinite(numericRank) && numericRank > 0
               ? numericRank
               : index + 1;
+
+          const resolvedUserId = user.userId || user.user?.id;
           const isMe =
             currentUserId != null &&
-            user.user?.id != null &&
-            String(user.user.id) === String(currentUserId);
+            resolvedUserId != null &&
+            String(resolvedUserId) === String(currentUserId);
+
           const fullName =
             `${user.firstName || ""} ${user.lastName || ""}`.trim() ||
             t("member");
           const displayName = isMe
-            ? t("leaderboard-current-user", { name: fullName })
+            ? `${fullName} (${t("you", "You")})`
             : fullName;
+
+          const initials =
+            `${user.firstName?.[0] || ""}${user.lastName?.[0] || ""}`.toUpperCase() ||
+            "U";
+
           const numericScore = Number(user.totalScore);
           const score = Number.isFinite(numericScore)
             ? Math.max(0, numericScore)
@@ -46,7 +54,12 @@ const LeaderboardList = ({ allUsers, currentUserId }) => {
 
           return (
             <li
-              key={user.demoMemberId || user.user?.id || `rank-${index}`}
+              key={
+                user.departmentMemberId ||
+                user.userId ||
+                user.demoMemberId ||
+                `rank-${index}`
+              }
               className={`${styles.rowCard} ${isMe ? styles.currentUserRow : ""}`}
               aria-current={isMe ? "true" : undefined}
               aria-label={t("leaderboard-entry-summary", {
@@ -67,7 +80,30 @@ const LeaderboardList = ({ allUsers, currentUserId }) => {
               </div>
 
               <div className={styles.nameCol}>
-                <span className={styles.nameText}>{displayName}</span>
+                <div className={styles.memberProfile}>
+                  <div className={styles.avatarWrapper}>
+                    {user.imagePath ? (
+                      <img
+                        src={user.imagePath}
+                        alt={fullName}
+                        className={styles.avatarImg}
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                          if (e.currentTarget.nextSibling) {
+                            e.currentTarget.nextSibling.style.display = "flex";
+                          }
+                        }}
+                      />
+                    ) : null}
+                    <span
+                      className={styles.avatarFallback}
+                      style={{ display: user.imagePath ? "none" : "flex" }}
+                    >
+                      {initials}
+                    </span>
+                  </div>
+                  <span className={styles.nameText}>{displayName}</span>
+                </div>
               </div>
 
               <div className={styles.detailsCol}>
