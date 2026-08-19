@@ -93,7 +93,8 @@
   width: 92%;
   aspect-ratio: 1;
   border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--color-linco-light) 55%, transparent);
+  border: 1px solid
+    color-mix(in srgb, var(--color-linco-light) 55%, transparent);
   background: radial-gradient(
     circle,
     color-mix(in srgb, var(--color-linco-light) 25%, transparent) 0%,
@@ -139,7 +140,9 @@
     var(--color-linco-light),
     transparent
   );
-  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--color-linco-light) 60%, transparent));
+  filter: drop-shadow(
+    0 0 10px color-mix(in srgb, var(--color-linco-light) 60%, transparent)
+  );
   animation: progressSweep 1.65s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 

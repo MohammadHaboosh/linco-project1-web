@@ -27,7 +27,10 @@ const AppLayoutSkeleton = () => {
         <div className={styles.centerStage}>
           <div className={styles.logoShell}>
             <span className={styles.ripple} aria-hidden="true" />
-            <span className={`${styles.ripple} ${styles.rippleDelayed}`} aria-hidden="true" />
+            <span
+              className={`${styles.ripple} ${styles.rippleDelayed}`}
+              aria-hidden="true"
+            />
             <img
               src="/icons/linco-logo-96.webp"
               alt={t("app-loader-logo-alt", { defaultValue: "LinCo" })}
