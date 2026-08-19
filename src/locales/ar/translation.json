@@ -2048,5 +2048,6 @@
   "questions-asked": "الأسئلة المطروحة",
   "answers-provided": "الإجابات المقدمة",
   "messages-sent": "الرسائل المرسلة",
-  "show-less": "عرض أقل"
+  "show-less": "عرض أقل",
+  "section-title-unique-error": "يجب أن تكون عناوين الأقسام فريدة."
 }

@@ -1893,5 +1893,6 @@
   "answers-provided": "Answers Provided",
   "messages-sent": "Messages Sent",
   "show-less": "Show Less",
-  "all-members": "All Members"
+  "all-members": "All Members",
+  "section-title-unique-error": "Section titles must be unique."
 }

@@ -121,6 +121,17 @@ export const useCoursePublisher = ({
       const activeCourseId = courseData.id;
       const sections = courseData.sections || [];
 
+      const processedTitles = sections.map((sec, index) => {
+        return sec.title?.trim() || `Section ${index + 1}`;
+      });
+
+      const uniqueTitles = new Set(processedTitles.map((t) => t.toLowerCase()));
+      if (uniqueTitles.size !== processedTitles.length) {
+        setErrorMessage(t("section-title-unique-error"));
+        setIsPublishing(false);
+        return;
+      }
+
       if (deletedSectionIds.length > 0) {
         await Promise.all(
           deletedSectionIds.map((secId) =>
@@ -133,7 +144,10 @@ export const useCoursePublisher = ({
 
       for (let index = 0; index < sections.length; index++) {
         const sec = sections[index];
-        const payload = { title: sec.title, order: sec.order || index + 1 };
+
+        const finalTitle = processedTitles[index];
+        const payload = { title: finalTitle, order: sec.order || index + 1 };
+
         const isNewSection = !sec.id || sec.isNew || isTempId(sec.id);
 
         let savedSection;
@@ -164,6 +178,7 @@ export const useCoursePublisher = ({
 
         processedSections.push({
           ...sec,
+          title: finalTitle,
           realId: finalSecId,
         });
       }
@@ -254,7 +269,7 @@ export const useCoursePublisher = ({
             }
 
             const createdLesson = await lessonApi.createLesson(section.realId, {
-              title: lesson.title,
+              title: lesson.title?.trim() || `Lesson ${index + 1}`,
               order: lesson.order || index + 1,
               videoUrl: finalVideoUrl,
               courseId: activeCourseId,
@@ -331,7 +346,10 @@ export const useCoursePublisher = ({
       navigate(-1);
     } catch (error) {
       console.error("Error saving curriculum:", error);
-      setErrorMessage(t("course-studio-publish-error"));
+      const backendMessage = error?.response?.data?.message || error?.message;
+      t("course-studio-publish-error");
+
+      setErrorMessage(backendMessage);
     } finally {
       setIsPublishing(false);
       setUploadProgress(null);
