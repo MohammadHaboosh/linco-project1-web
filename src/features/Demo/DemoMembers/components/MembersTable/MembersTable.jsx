@@ -4,10 +4,12 @@ import {
   IoShieldCheckmark,
   IoCheckmarkOutline,
   IoCloseOutline,
+  IoPeopleOutline,
 } from "react-icons/io5";
 import { useState } from "react";
 import styles from "./MembersTable.module.css";
 import { useTranslation } from "react-i18next";
+import MembersTableSkeleton from "./MembersTableSkeleton";
 
 const MembersTable = ({
   members,
@@ -105,6 +107,8 @@ const MembersTable = ({
     if (wasUpdated) cancelEditingRole();
   };
 
+  if (isLoading) return <MembersTableSkeleton />;
+
   return (
     <div
       className={styles.tableWrapper}
@@ -121,24 +125,15 @@ const MembersTable = ({
           </tr>
         </thead>
         <tbody>
-          {(deleteError || updateError) && !isLoading && !error && (
+          {(deleteError || updateError) && !error && (
             <tr className={styles.stateRow}>
               <td colSpan="4" className={styles.errorState} role="alert">
                 {deleteError || updateError}
               </td>
             </tr>
           )}
-          {isLoading ? (
-            <tr className={styles.stateRow}>
-              <td
-                colSpan="4"
-                className={styles.emptyState}
-                role="status"
-              >
-                {t("loading-members")}
-              </td>
-            </tr>
-          ) : error ? (
+
+          {error ? (
             <tr className={styles.stateRow}>
               <td colSpan="4" className={styles.emptyState} role="alert">
                 <span>{error}</span>
@@ -154,7 +149,27 @@ const MembersTable = ({
           ) : members.length === 0 ? (
             <tr className={styles.stateRow}>
               <td colSpan="4" className={styles.emptyState} role="status">
-                {t("no-members-found")}
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: "8px",
+                    padding: "30px 0",
+                  }}
+                >
+                  <IoPeopleOutline
+                    style={{
+                      fontSize: "3rem",
+                      color: "var(--app-border-strong)",
+                    }}
+                  />
+                  <strong
+                    style={{ color: "var(--app-heading)", fontSize: "1.1rem" }}
+                  >
+                    {t("no-members-found")}
+                  </strong>
+                </div>
               </td>
             </tr>
           ) : (
@@ -217,10 +232,7 @@ const MembersTable = ({
                   <td className={styles.dateText} data-label={t("joined")}>
                     {formatJoinedAt(member.joinedAt)}
                   </td>
-                  <td
-                    className={styles.actionsCol}
-                    data-label={t("actions")}
-                  >
+                  <td className={styles.actionsCol} data-label={t("actions")}>
                     {isEditing ? (
                       <>
                         <button
@@ -266,9 +278,7 @@ const MembersTable = ({
                         type="button"
                         className={`${styles.actionBtn} ${styles.deleteBtn}`}
                         title={
-                          isDeleting
-                            ? t("removing-member")
-                            : t("remove-member")
+                          isDeleting ? t("removing-member") : t("remove-member")
                         }
                         aria-label={
                           isDeleting

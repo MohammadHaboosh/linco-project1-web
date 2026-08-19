@@ -12,6 +12,10 @@ import {
 } from "react-icons/io5";
 import { useDepartmentMembers } from "../../hooks/useDepartmentMembers";
 import AddDepartmentMemberModal from "../AddDepartmentMemberModal/AddDepartmentMemberModal";
+import {
+  SummaryCardsSkeleton,
+  MembersTableSkeleton,
+} from "./DepartmentMembersSkeleton";
 import styles from "./DepartmentMembersContent.module.css";
 
 const ROLE_TRANSLATION_KEYS = {
@@ -45,7 +49,10 @@ const DepartmentMembersContent = () => {
     deleteMember,
   } = useDepartmentMembers(departmentId);
   const locale = i18n.resolvedLanguage || i18n.language || "en";
-  const numberFormatter = useMemo(() => new Intl.NumberFormat(locale), [locale]);
+  const numberFormatter = useMemo(
+    () => new Intl.NumberFormat(locale),
+    [locale],
+  );
 
   const filteredMembers = useMemo(() => {
     const normalizedQuery = searchQuery.trim().toLowerCase();
@@ -157,38 +164,42 @@ const DepartmentMembersContent = () => {
           </button>
         </header>
 
-        <section
-          className={styles.summaryGrid}
-          aria-label={t("department-member-summary")}
-        >
-          <div className={styles.summaryCard}>
-            <div className={styles.summaryIcon}>
-              <IoPeopleOutline />
+        {isLoading ? (
+          <SummaryCardsSkeleton />
+        ) : (
+          <section
+            className={styles.summaryGrid}
+            aria-label={t("department-member-summary")}
+          >
+            <div className={styles.summaryCard}>
+              <div className={styles.summaryIcon}>
+                <IoPeopleOutline />
+              </div>
+              <div>
+                <span>{t("total-members", "Total members")}</span>
+                <strong>{formatCount(members.length)}</strong>
+              </div>
             </div>
-            <div>
-              <span>{t("total-members", "Total members")}</span>
-              <strong>{formatCount(members.length)}</strong>
+            <div className={styles.summaryCard}>
+              <div className={styles.summaryIcon}>
+                <IoShieldCheckmarkOutline />
+              </div>
+              <div>
+                <span>{t("management-roles")}</span>
+                <strong>{formatCount(summary.managers)}</strong>
+              </div>
             </div>
-          </div>
-          <div className={styles.summaryCard}>
-            <div className={styles.summaryIcon}>
-              <IoShieldCheckmarkOutline />
+            <div className={styles.summaryCard}>
+              <div className={styles.summaryIcon}>
+                <IoBriefcaseOutline />
+              </div>
+              <div>
+                <span>{t("job-levels")}</span>
+                <strong>{formatCount(summary.jobLevels)}</strong>
+              </div>
             </div>
-            <div>
-              <span>{t("management-roles")}</span>
-              <strong>{formatCount(summary.managers)}</strong>
-            </div>
-          </div>
-          <div className={styles.summaryCard}>
-            <div className={styles.summaryIcon}>
-              <IoBriefcaseOutline />
-            </div>
-            <div>
-              <span>{t("job-levels")}</span>
-              <strong>{formatCount(summary.jobLevels)}</strong>
-            </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         <section className={styles.membersPanel}>
           <div className={styles.panelToolbar}>
@@ -239,14 +250,7 @@ const DepartmentMembersContent = () => {
               )}
             </div>
           ) : isLoading ? (
-            <div
-              className={styles.loadingState}
-              role="status"
-              aria-live="polite"
-            >
-              <span className={styles.loader} aria-hidden="true" />
-              <p>{t("loading-department-members")}</p>
-            </div>
+            <MembersTableSkeleton />
           ) : filteredMembers.length === 0 ? (
             <div className={styles.stateMessage}>
               <div className={styles.emptyIcon}>
@@ -291,8 +295,7 @@ const DepartmentMembersContent = () => {
                     const initials =
                       `${user.firstName?.[0] ?? ""}${user.lastName?.[0] ?? ""}`.toUpperCase() ||
                       fullName.slice(0, 1).toUpperCase();
-                    const isDeleting =
-                      deletingMemberId === departmentMember.id;
+                    const isDeleting = deletingMemberId === departmentMember.id;
 
                     return (
                       <tr key={departmentMember.id}>
@@ -352,10 +355,7 @@ const DepartmentMembersContent = () => {
                                   })
                             }
                             onClick={() =>
-                              handleDeleteMember(
-                                departmentMember.id,
-                                fullName,
-                              )
+                              handleDeleteMember(departmentMember.id, fullName)
                             }
                             disabled={Boolean(deletingMemberId)}
                             aria-busy={isDeleting}
