@@ -49,10 +49,10 @@
   background:
     linear-gradient(
       165deg,
-      color-mix(in srgb, var(--app-page-bg) 88%, transparent),
-      color-mix(in srgb, var(--app-surface) 84%, transparent)
+      color-mix(in srgb, var(--app-page-bg) 92%, transparent),
+      color-mix(in srgb, var(--app-surface) 90%, transparent)
     ),
-    var(--bg-navy-gradient);
+    color-mix(in srgb, var(--app-page-bg) 94%, var(--bg-navy-gradient));
   backdrop-filter: blur(28px) saturate(120%);
   -webkit-backdrop-filter: blur(28px) saturate(120%);
 }
@@ -111,12 +111,12 @@
 
 .brandName {
   margin: 120px 0 0;
-  color: color-mix(in srgb, var(--color-linco-light) 90%, #ffffff);
+  color: var(--app-heading);
   font-size: clamp(1.2rem, 1.8vw, 1.5rem);
   font-weight: 800;
   letter-spacing: 0.32em;
   text-transform: uppercase;
-  text-shadow: 0 10px 22px rgba(1, 7, 16, 0.45);
+  text-shadow: 0 8px 20px color-mix(in srgb, var(--app-page-bg) 42%, transparent);
 }
 
 .progressTrack {
@@ -148,7 +148,7 @@
 
 .statusText {
   margin: 2px 0 0;
-  color: color-mix(in srgb, var(--color-linco-light) 78%, var(--app-text));
+  color: var(--app-text-strong);
   font-size: clamp(0.88rem, 1.4vw, 0.98rem);
   letter-spacing: 0.05em;
   animation: statusBreath 2.2s ease-in-out infinite;
