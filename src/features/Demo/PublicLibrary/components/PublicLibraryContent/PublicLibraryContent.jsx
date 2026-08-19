@@ -8,6 +8,7 @@ import {
   IoCheckmarkOutline,
 } from "react-icons/io5";
 import MarketplaceCard from "../MarketplaceCard/MarketplaceCard";
+import MarketplaceCardSkeleton from "../MarketplaceCard/MarketplaceCardSkeleton";
 import CourseDetailsModal from "../CourseDetailsModal/CourseDetailsModal";
 import styles from "./PublicLibraryContent.module.css";
 import { useTranslation } from "react-i18next";
@@ -205,13 +206,6 @@ const PublicLibraryContent = () => {
         </div>
       </div>
 
-      {isLibraryLoading && (
-        <div className={styles.pageState} role="status" aria-live="polite">
-          <span className={styles.loader} aria-hidden="true" />
-          <strong>{t("loading-public-courses")}</strong>
-          <p>{t("loading-public-courses-description")}</p>
-        </div>
-      )}
       {libraryError && !isLibraryLoading && (
         <div className={styles.pageState} role="alert">
           <strong>{t("public-courses-load-error-title")}</strong>
@@ -222,33 +216,41 @@ const PublicLibraryContent = () => {
         </div>
       )}
 
-      {!isLibraryLoading && !libraryError && (
-        <div className={styles.coursesGrid}>
-          {filteredCourses.length > 0 ? (
-            filteredCourses.map((course) => (
-              <MarketplaceCard
-                key={course.id}
-                course={course}
-                isPurchased={purchasedCourseIds.has(String(course.id))}
-                onViewDetails={() => setSelectedCourse(course)}
-              />
-            ))
-          ) : (
-            <div className={styles.emptyState} role="status">
-              <strong>
-                {courses.length === 0
-                  ? t("public-library-empty-title")
-                  : t("public-library-no-results-title")}
-              </strong>
-              <p>
-                {courses.length === 0
-                  ? t("public-library-empty-description")
-                  : t("no-courses-found-matching-your-criteria")}
-              </p>
-            </div>
-          )}
-        </div>
-      )}
+      <div className={styles.coursesGrid}>
+        {isLibraryLoading &&
+          Array(8)
+            .fill(0)
+            .map((_, idx) => (
+              <MarketplaceCardSkeleton key={`skeleton-${idx}`} />
+            ))}
+
+        {!isLibraryLoading &&
+          !libraryError &&
+          filteredCourses.length > 0 &&
+          filteredCourses.map((course) => (
+            <MarketplaceCard
+              key={course.id}
+              course={course}
+              isPurchased={purchasedCourseIds.has(String(course.id))}
+              onViewDetails={() => setSelectedCourse(course)}
+            />
+          ))}
+
+        {!isLibraryLoading && !libraryError && filteredCourses.length === 0 && (
+          <div className={styles.emptyState} role="status">
+            <strong>
+              {courses.length === 0
+                ? t("public-library-empty-title")
+                : t("public-library-no-results-title")}
+            </strong>
+            <p>
+              {courses.length === 0
+                ? t("public-library-empty-description")
+                : t("no-courses-found-matching-your-criteria")}
+            </p>
+          </div>
+        )}
+      </div>
 
       {selectedCourse && (
         <CourseDetailsModal

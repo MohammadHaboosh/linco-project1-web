@@ -28,7 +28,7 @@ const GroupMembersPanel = ({ demoId, groupId, isManager, currentUserId }) => {
       return;
     setIsDeleting(true);
     try {
-      await departmentMemberApi.deleteMember(demoId, memberId);
+      await departmentMemberApi.deleteMember(demoId, groupId, memberId);
       await refetch();
     } catch (error) {
       alert(error.message);

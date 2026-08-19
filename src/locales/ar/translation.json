@@ -1667,7 +1667,7 @@
   "certificates-remaining-summary_few": "حصلت على {{formattedEarned}} شهادة؛ وتبقت {{formattedRemaining}} شهادات.",
   "certificates-remaining-summary_many": "حصلت على {{formattedEarned}} شهادة؛ وتبقت {{formattedRemaining}} شهادة.",
   "certificates-remaining-summary_other": "حصلت على {{formattedEarned}} شهادة؛ وتبقت {{formattedRemaining}} شهادة.",
-  "workspace-leaderboard": "لوحة متصدري الغرفة",
+  "workspace-leaderboard": "لوحة متصدري القسم",
   "department-leaderboard-title": "لوحة متصدري القسم",
   "department-leaderboard-description": "تعرّف على ترتيب أعضاء القسم وفق نقاط الخبرة التي اكتسبوها.",
   "loading-leaderboard-title": "جارٍ تحميل لوحة المتصدرين...",

@@ -10,6 +10,7 @@ import {
 
 import DemoHeaderSection from "./sections/DemoHeaderSection/DemoHeaderSection";
 import SectionCard from "./sections/SectionCard/SectionCard";
+import SectionCardSkeleton from "./sections/SectionCard/SectionCardSkeleton";
 import CreateDepartment from "../CreateDepartment/CreateDepartment";
 import { useDepartments } from "../../hooks/useDepartments";
 
@@ -71,38 +72,43 @@ const DemoContent = () => {
           </div>
         )}
 
-        {isLoading ? (
-          <div className={styles.pageState} role="status" aria-live="polite">
-            <span className={styles.loader} aria-hidden="true" />
-            <h2>{t("loading-departments")}</h2>
-            <p>{t("loading-departments-description")}</p>
-          </div>
-        ) : error ? (
-          <div
-            className={`${styles.pageState} ${styles.errorState}`}
-            role="alert"
-          >
-            <IoAlertCircleOutline aria-hidden="true" />
-            <h2>{t("departments-load-failed")}</h2>
-            <p>{error}</p>
-            <button type="button" onClick={refetch}>
-              <IoRefreshOutline aria-hidden="true" /> {t("try-again")}
+        <div
+          className={styles.sectionsGrid}
+          aria-busy={isLoading || isDeleting}
+        >
+          {role === "owner" && !normalizedSearch && (
+            <button
+              type="button"
+              className={styles.createSectionCard}
+              onClick={() => setShowCreateModal(true)}
+            >
+              <IoAdd className={styles.addIcon} aria-hidden="true" />
+              <h3>{t("create-new-department")}</h3>
             </button>
-          </div>
-        ) : (
-          <div className={styles.sectionsGrid} aria-busy={isDeleting}>
-            {role === "owner" && !normalizedSearch && (
-              <button
-                type="button"
-                className={styles.createSectionCard}
-                onClick={() => setShowCreateModal(true)}
-              >
-                <IoAdd className={styles.addIcon} aria-hidden="true" />
-                <h3>{t("create-new-department")}</h3>
-              </button>
-            )}
+          )}
 
-            {filteredDepartments.map((section) => (
+          {isLoading &&
+            Array(role === "owner" ? 5 : 6)
+              .fill(0)
+              .map((_, idx) => <SectionCardSkeleton key={`skeleton-${idx}`} />)}
+
+          {!isLoading && error && (
+            <div
+              className={`${styles.pageState} ${styles.errorState}`}
+              role="alert"
+            >
+              <IoAlertCircleOutline aria-hidden="true" />
+              <h2>{t("departments-load-failed")}</h2>
+              <p>{error}</p>
+              <button type="button" onClick={refetch}>
+                <IoRefreshOutline aria-hidden="true" /> {t("try-again")}
+              </button>
+            </div>
+          )}
+
+          {!isLoading &&
+            !error &&
+            filteredDepartments.map((section) => (
               <SectionCard
                 key={section.id}
                 section={section}
@@ -112,28 +118,27 @@ const DemoContent = () => {
               />
             ))}
 
-            {filteredDepartments.length === 0 && (
-              <div className={styles.emptyState} role="status">
-                <IoBusinessOutline aria-hidden="true" />
-                <h2>
-                  {normalizedSearch
-                    ? t("no-departments-match-search")
-                    : t("no-departments-yet")}
-                </h2>
-                <p>
-                  {normalizedSearch
-                    ? t("adjust-department-search")
-                    : t("departments-empty-description")}
-                </p>
-                {normalizedSearch && (
-                  <button type="button" onClick={() => setSearchQuery("")}>
-                    {t("clear-search")}
-                  </button>
-                )}
-              </div>
-            )}
-          </div>
-        )}
+          {!isLoading && !error && filteredDepartments.length === 0 && (
+            <div className={styles.emptyState} role="status">
+              <IoBusinessOutline aria-hidden="true" />
+              <h2>
+                {normalizedSearch
+                  ? t("no-departments-match-search")
+                  : t("no-departments-yet")}
+              </h2>
+              <p>
+                {normalizedSearch
+                  ? t("adjust-department-search")
+                  : t("departments-empty-description")}
+              </p>
+              {normalizedSearch && (
+                <button type="button" onClick={() => setSearchQuery("")}>
+                  {t("clear-search")}
+                </button>
+              )}
+            </div>
+          )}
+        </div>
 
         {showCreateModal && (
           <CreateDepartment

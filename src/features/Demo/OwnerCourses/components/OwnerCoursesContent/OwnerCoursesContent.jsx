@@ -6,6 +6,7 @@ import {
   IoRefreshOutline,
 } from "react-icons/io5";
 import CourseManagementCard from "../CourseManagementCard/CourseManagementCard";
+import CourseManagementCardSkeleton from "../CourseManagementCard/CourseManagementCardSkeleton";
 import styles from "./OwnerCoursesContent.module.css";
 import { useTranslation } from "react-i18next";
 import { useOwnerCourses } from "../../hooks/useOwnerCourses";
@@ -109,7 +110,11 @@ const OwnerCoursesContent = () => {
         </div>
 
         {statusMessage && (
-          <div className={styles.successMessage} role="status" aria-live="polite">
+          <div
+            className={styles.successMessage}
+            role="status"
+            aria-live="polite"
+          >
             {statusMessage}
             <button
               type="button"
@@ -124,15 +129,18 @@ const OwnerCoursesContent = () => {
         <div className={styles.coursesGrid} aria-busy={isLoading}>
           <CourseManagementCard isAddNew={true} onAddNew={handleAddNewCourse} />
 
-          {isLoading && (
-            <div className={styles.stateCard} role="status" aria-live="polite">
-              <span className={styles.pageSpinner} aria-hidden="true" />
-              <h2>{t("loading-courses")}</h2>
-              <p>{t("loading-courses-description")}</p>
-            </div>
-          )}
+          {isLoading &&
+            Array(11)
+              .fill(0)
+              .map((_, idx) => (
+                <CourseManagementCardSkeleton key={`skeleton-${idx}`} />
+              ))}
+
           {!isLoading && error && (
-            <div className={`${styles.stateCard} ${styles.errorState}`} role="alert">
+            <div
+              className={`${styles.stateCard} ${styles.errorState}`}
+              role="alert"
+            >
               <IoAlertCircleOutline aria-hidden="true" />
               <h2>{t("courses-load-failed")}</h2>
               <p>{error}</p>
