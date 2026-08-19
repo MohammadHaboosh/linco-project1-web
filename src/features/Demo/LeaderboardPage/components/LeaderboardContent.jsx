@@ -7,6 +7,7 @@ import { useUser } from "../../../../hooks/useUser";
 import {
   IoAlertCircleOutline,
   IoPeopleOutline,
+  IoTrophyOutline,
 } from "react-icons/io5";
 
 const LeaderboardContent = () => {
@@ -29,10 +30,7 @@ const LeaderboardContent = () => {
     >
       <div className={styles.headerArea}>
         <span className={styles.subHeading}>{t("workspace-leaderboard")}</span>
-        <h1
-          id="department-leaderboard-title"
-          className={styles.mainHeading}
-        >
+        <h1 id="department-leaderboard-title" className={styles.mainHeading}>
           {t("department-leaderboard-title")}
         </h1>
         <p className={styles.headerDescription}>
@@ -67,19 +65,6 @@ const LeaderboardContent = () => {
       ) : (
         <div className={styles.leaderboardContainer}>
           <section
-            className={styles.podiumSection}
-            aria-labelledby="top-performers-title"
-          >
-            <h2 id="top-performers-title" className={styles.visuallyHidden}>
-              {t("leaderboard-top-performers")}
-            </h2>
-            <LeaderboardPodium
-              topThree={topThree}
-              currentUserId={currentUserId}
-            />
-          </section>
-
-          <section
             className={styles.listSection}
             aria-labelledby="full-rankings-title"
           >
@@ -87,7 +72,8 @@ const LeaderboardContent = () => {
               <h2 id="full-rankings-title">
                 {t("leaderboard-full-ranking-title")}
               </h2>
-              <p>
+              <p className={styles.participantCount}>
+                <IoPeopleOutline />
                 {t("leaderboard-participant-count", {
                   count: leaderboard.length,
                   formattedCount: formattedParticipantCount,
@@ -99,6 +85,24 @@ const LeaderboardContent = () => {
               allUsers={leaderboard}
               currentUserId={currentUserId}
             />
+          </section>
+
+          <section
+            className={styles.podiumSection}
+            aria-labelledby="top-performers-title"
+          >
+            <div className={styles.podiumWidget}>
+              <div className={styles.widgetHeader}>
+                <IoTrophyOutline className={styles.widgetIcon} />
+                <h2 id="top-performers-title" className={styles.widgetTitle}>
+                  {t("leaderboard-top-performers")}
+                </h2>
+              </div>
+              <LeaderboardPodium
+                topThree={topThree}
+                currentUserId={currentUserId}
+              />
+            </div>
           </section>
         </div>
       )}

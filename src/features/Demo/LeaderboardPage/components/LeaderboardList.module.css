@@ -1,44 +1,46 @@
 .listWrapper {
-  --leaderboard-current-background: #0a2a54;
+  --leaderboard-current-background: linear-gradient(
+    135deg,
+    #0a2a54 0%,
+    #16457f 100%
+  );
   --leaderboard-current-border: #0a2a54;
   --leaderboard-current-text: #ffffff;
-  --leaderboard-current-muted: #dbeafe;
+  --leaderboard-current-muted: #bfdbfe;
   --leaderboard-current-points: #fde68a;
-
   min-width: 0;
   width: 100%;
-  padding: 18px;
-  border: 1px solid var(--app-border);
-  border-radius: 16px;
+  padding: 10px;
+  border-radius: 24px;
   box-sizing: border-box;
-  background: var(--app-surface);
-  box-shadow: var(--app-card-shadow);
+  background: transparent;
 }
 
 :global(:root[data-theme="dark"]) .listWrapper {
-  --leaderboard-current-background: #17385f;
+  --leaderboard-current-background: linear-gradient(
+    135deg,
+    #17385f 0%,
+    #24568c 100%
+  );
   --leaderboard-current-border: #366494;
-  --leaderboard-current-text: #f8fafc;
-  --leaderboard-current-muted: #dbeafe;
-  --leaderboard-current-points: #fde68a;
 }
 
 .columnHeader,
 .rowCard {
   display: grid;
-  grid-template-columns:
-    64px minmax(130px, 1.8fr) minmax(120px, 1.4fr) minmax(120px, 1fr)
-    minmax(145px, auto);
+  grid-template-columns: 50px minmax(130px, 1.8fr) minmax(100px, 1.2fr) minmax(
+      100px,
+      1fr
+    ) minmax(120px, auto);
   gap: 14px;
   align-items: center;
 }
 
 .columnHeader {
-  padding: 0 18px 12px;
+  padding: 0 20px 14px;
   color: var(--app-muted);
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 800;
-  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
@@ -57,14 +59,14 @@
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .rowCard {
   min-width: 0;
-  padding: 15px 18px;
-  border: 1px solid var(--app-border-strong);
-  border-radius: 12px;
+  padding: 12px 20px;
+  border: 1px solid var(--app-border);
+  border-radius: 16px;
   box-sizing: border-box;
   background-color: var(--app-surface);
   transition:
@@ -74,21 +76,25 @@
 }
 
 .rowCard:hover {
-  border-color: var(--app-link);
-  transform: translateY(-2px);
-  box-shadow: var(--app-card-hover-shadow);
+  border-color: var(--app-border-strong);
+  transform: translateX(4px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+}
+
+:global([dir="rtl"]) .rowCard:hover {
+  transform: translateX(-4px);
 }
 
 .currentUserRow {
-  border-color: var(--leaderboard-current-border);
-  background-color: var(--leaderboard-current-background);
+  border: none;
+  background: var(--leaderboard-current-background);
   color: var(--leaderboard-current-text);
-  box-shadow: 0 8px 20px rgba(10, 42, 84, 0.22);
+  box-shadow: 0 8px 25px rgba(10, 42, 84, 0.2);
 }
 
 .currentUserRow:hover {
-  border-color: var(--leaderboard-current-border);
-  box-shadow: 0 10px 26px rgba(10, 42, 84, 0.3);
+  transform: scale(1.01);
+  box-shadow: 0 12px 30px rgba(10, 42, 84, 0.25);
 }
 
 .rankCol {
@@ -100,20 +106,23 @@
 .rankBadge {
   width: 34px;
   height: 34px;
-  border-radius: 9px;
-  background-color: var(--app-info-surface);
-  color: var(--app-info-text);
+  border-radius: 10px;
+  background-color: var(--app-surface-muted);
+  color: var(--app-muted);
+  border: 1px solid var(--app-border-strong);
   display: flex;
   flex: 0 0 auto;
   justify-content: center;
   align-items: center;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 800;
 }
 
 .badgeMe {
   background-color: #ffffff;
   color: #0a2a54;
+  border: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .nameCol,
@@ -124,55 +133,6 @@
   min-width: 0;
 }
 
-.nameCol {
-  color: var(--app-heading);
-  font-size: 1rem;
-  font-weight: 800;
-  overflow-wrap: anywhere;
-}
-
-.detailsCol {
-  display: contents;
-}
-
-.roleCol,
-.levelCol {
-  color: var(--app-text);
-  font-size: 0.9rem;
-  font-weight: 600;
-  overflow-wrap: anywhere;
-}
-
-.levelCol {
-  color: var(--app-muted);
-}
-
-.xpCol {
-  color: var(--app-heading);
-  font-size: 0.96rem;
-  font-weight: 800;
-  text-align: end;
-  overflow-wrap: anywhere;
-}
-
-.mobileLabel {
-  display: none;
-}
-
-.currentUserRow .nameCol,
-.currentUserRow .roleCol,
-.currentUserRow .mobileLabel {
-  color: var(--leaderboard-current-text);
-}
-
-.currentUserRow .levelCol {
-  color: var(--leaderboard-current-muted);
-}
-
-.currentUserRow .xpCol {
-  color: var(--leaderboard-current-points);
-}
-
 .memberProfile {
   display: flex;
   align-items: center;
@@ -181,20 +141,21 @@
 }
 
 .avatarWrapper {
-  width: 38px;
-  height: 38px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   overflow: hidden;
   flex-shrink: 0;
   background-color: var(--app-info-surface);
-  border: 2px solid var(--app-border-strong);
+  border: 2px solid var(--app-border);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .currentUserRow .avatarWrapper {
-  border-color: #ffffff;
+  border-color: #d4af37;
+  border-width: 3px;
 }
 
 .avatarImg {
@@ -209,7 +170,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 800;
   color: var(--app-link);
 }
@@ -217,6 +178,56 @@
 .currentUserRow .avatarFallback {
   background-color: #ffffff;
   color: #0a2a54;
+}
+
+.nameText {
+  font-weight: 800;
+  font-size: 0.98rem;
+  overflow-wrap: anywhere;
+}
+
+.detailsCol {
+  display: contents;
+}
+
+.roleCol {
+  font-weight: 700;
+  color: var(--app-text);
+  font-size: 0.85rem;
+  overflow-wrap: anywhere;
+}
+
+.levelCol {
+  font-weight: 700;
+  color: var(--app-muted);
+  font-size: 0.85rem;
+  overflow-wrap: anywhere;
+}
+
+.xpCol {
+  font-weight: 900;
+  color: var(--app-heading);
+  font-size: 1.05rem;
+  text-align: end;
+  overflow-wrap: anywhere;
+}
+
+.mobileLabel {
+  display: none;
+}
+
+.currentUserRow .nameText,
+.currentUserRow .roleCol,
+.currentUserRow .mobileLabel {
+  color: var(--leaderboard-current-text);
+}
+
+.currentUserRow .levelCol {
+  color: var(--leaderboard-current-muted);
+}
+
+.currentUserRow .xpCol {
+  color: var(--leaderboard-current-points);
 }
 
 @media (max-width: 820px) {
@@ -233,16 +244,17 @@
   }
 
   .rowCard {
-    grid-template-columns: auto minmax(0, 1fr) minmax(120px, auto);
+    grid-template-columns: auto minmax(0, 1fr) minmax(100px, auto);
     grid-template-areas:
       "rank name points"
       "rank details details";
-    gap: 12px;
+    gap: 10px 14px;
+    padding: 16px;
   }
 
   .rankCol {
     grid-area: rank;
-    align-self: start;
+    align-self: center;
   }
 
   .nameCol {
@@ -254,7 +266,7 @@
     min-width: 0;
     display: flex;
     align-items: flex-start;
-    gap: 12px 24px;
+    gap: 20px;
   }
 
   .roleCol,
@@ -272,6 +284,9 @@
 
   .xpCol {
     grid-area: points;
+    padding-block-start: 0;
+    border-block-start: none;
+    text-align: end;
   }
 
   .mobileLabel {
