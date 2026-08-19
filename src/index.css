@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap");
 
 @font-face {
   font-family: "Plus Jakarta Sans";
@@ -14,11 +13,12 @@
 }
 
 @font-face {
-  font-family: "Cairo";
+  font-family: "Noto Sans Arabic";
   font-style: normal;
   font-weight: 400 800;
+  font-stretch: 100%;
   font-display: swap;
-  src: local("Cairo");
+  src: url("/fonts/noto-sans-arabic-variable.woff2") format("woff2");
   unicode-range:
     U+0600-06ff, U+0750-077f, U+0870-088e, U+0890-0891, U+0897-08e1,
     U+08e3-08ff, U+200c-200e, U+2010-2011, U+204f, U+2e41, U+fb50-fdff,
@@ -33,7 +33,7 @@
   --color-linco-bg: #f8fafc;
   --color-linco-accent: #9f1239;
   --color-linco-accent-light: #ffe4e6;
-  --font-sans: "Plus Jakarta Sans", "Cairo", sans-serif;
+  --font-sans: "Plus Jakarta Sans", "Noto Sans Arabic", sans-serif;
 
   --color-white: #ffffff;
 
@@ -54,7 +54,7 @@
   --color-blue-50: #eff6ff;
   --color-blue-500: #3b82f6;
 
-  --font-sans: "Plus Jakarta Sans", "Cairo", sans-serif;
+  --font-sans: "Plus Jakarta Sans", "Noto Sans Arabic", sans-serif;
 }
 
 :root {

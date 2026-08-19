@@ -13,14 +13,10 @@ const AppLayoutSkeleton = () => {
         defaultValue: "Preparing your workspace",
       })}
     >
-      <div className={styles.wireframeLayer} aria-hidden="true">
-        <div className={styles.wireHeader} />
-        <div className={styles.wireSubHeader} />
-        <div className={styles.wireContent}>
-          {Array.from({ length: 8 }).map((_, index) => (
-            <div key={`wire-card-${index}`} className={styles.wireCard} />
-          ))}
-        </div>
+      <div className={styles.ambientBackground} aria-hidden="true">
+        <div className={`${styles.glowOrb} ${styles.orbPrimary}`} />
+        <div className={`${styles.glowOrb} ${styles.orbSecondary}`} />
+        <div className={`${styles.glowOrb} ${styles.orbAccent}`} />
       </div>
 
       <div className={styles.glassOverlay}>
