@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import PageHeaderSection from "../sections/PageHeaderSection/PageHeaderSection";
 import CoursesGridSection from "../sections/CoursesGridSection/CoursesGridSection";
-import CourseCardSkeleton from "../CourseCard/CourseCardSkeleton";
+import CourseCardSkeleton from "../../../../../components/elements/CourseCard/CourseCardSkeleton";
 import styles from "./CoursesContent.module.css";
 import { useDemo } from "../../../../../hooks/useDemo";
 import { useDepartmentCourses } from "../../hooks/useDepartmentCourses";

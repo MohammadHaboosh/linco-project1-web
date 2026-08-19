@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { IoFolderOpenOutline, IoSearchOutline } from "react-icons/io5";
 import AssetCourseCard from "../AssetCourseCard/AssetCourseCard";
+import AssetCourseCardSkeleton from "../AssetCourseCard/AssetCourseCardSkeleton";
 import styles from "./DemoAssetContent.module.css";
 import { useTranslation } from "react-i18next";
 import { useDemoAssets } from "../../hooks/useDemoAssets";
@@ -36,9 +37,7 @@ const DemoAssetContent = () => {
             />
           </div>
           <div>
-            <span className={styles.subHeading}>
-              {t("workspace-content")}
-            </span>
+            <span className={styles.subHeading}>{t("workspace-content")}</span>
             <h1 className={styles.title}>{t("workspace-library")}</h1>
             <p className={styles.description}>
               {t("workspace-library-description")}
@@ -63,10 +62,14 @@ const DemoAssetContent = () => {
         </label>
       </div>
 
+      {/* 💡 2. عرض شبكة الهياكل العظمية أثناء التحميل */}
       {isLoading ? (
-        <div className={styles.statePanel} role="status" aria-live="polite">
-          <span className={styles.spinner} aria-hidden="true" />
-          {t("loading-assets")}
+        <div className={styles.coursesGrid}>
+          {Array(8)
+            .fill(0)
+            .map((_, idx) => (
+              <AssetCourseCardSkeleton key={`asset-skeleton-${idx}`} />
+            ))}
         </div>
       ) : error ? (
         <div
