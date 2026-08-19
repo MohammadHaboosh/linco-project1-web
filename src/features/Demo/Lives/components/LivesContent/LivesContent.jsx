@@ -13,6 +13,7 @@ import {
   canManageLiveStreams,
 } from "../../utils/liveStreamUtils";
 import LiveCard from "../LiveCard/LiveCard";
+import LiveCardSkeleton from "../LiveCard/LiveCardSkeleton";
 import ScheduleLiveModal from "../ScheduleLiveModal/ScheduleLiveModal";
 import styles from "./LivesContent.module.css";
 
@@ -168,9 +169,12 @@ const LivesContent = () => {
       </div>
 
       {isLoading ? (
-        <div className={styles.loadingState} role="status" aria-live="polite">
-          <span className={styles.loadingSpinner} aria-hidden="true" />
-          <p>{t("loading-live-streams")}</p>
+        <div className={styles.livesGrid} role="status" aria-live="polite">
+          {Array(6)
+            .fill(0)
+            .map((_, idx) => (
+              <LiveCardSkeleton key={`live-skeleton-${idx}`} />
+            ))}
         </div>
       ) : (
         <>

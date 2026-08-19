@@ -1,9 +1,14 @@
 import LeaderboardPodium from "./LeaderboardPodium";
 import LeaderboardList from "./LeaderboardList";
+import {
+  LeaderboardListSkeleton,
+  LeaderboardPodiumSkeleton,
+} from "./LeaderboardSkeletons";
 import styles from "./LeaderboardContent.module.css";
 import { useTranslation } from "react-i18next";
 import { useLeaderboard } from "../hooks/useLeaderboard";
 import { useUser } from "../../../../hooks/useUser";
+import Skeleton from "react-loading-skeleton";
 import {
   IoAlertCircleOutline,
   IoPeopleOutline,
@@ -38,13 +43,7 @@ const LeaderboardContent = () => {
         </p>
       </div>
 
-      {isLoading ? (
-        <div className={styles.statePanel} role="status" aria-live="polite">
-          <span className={styles.spinner} aria-hidden="true" />
-          <strong>{t("loading-leaderboard-title")}</strong>
-          <p>{t("loading-leaderboard-description")}</p>
-        </div>
-      ) : error ? (
+      {error ? (
         <div
           className={`${styles.statePanel} ${styles.errorState}`}
           role="alert"
@@ -56,7 +55,7 @@ const LeaderboardContent = () => {
             {t("try-again")}
           </button>
         </div>
-      ) : leaderboard.length === 0 ? (
+      ) : leaderboard.length === 0 && !isLoading ? (
         <div className={styles.statePanel} role="status">
           <IoPeopleOutline aria-hidden="true" />
           <strong>{t("leaderboard-empty-title")}</strong>
@@ -72,19 +71,29 @@ const LeaderboardContent = () => {
               <h2 id="full-rankings-title">
                 {t("leaderboard-full-ranking-title")}
               </h2>
-              <p className={styles.participantCount}>
-                <IoPeopleOutline />
-                {t("leaderboard-participant-count", {
-                  count: leaderboard.length,
-                  formattedCount: formattedParticipantCount,
-                })}
-              </p>
+              {isLoading ? (
+                <div style={{ opacity: 0.7 }}>
+                  <Skeleton width={110} height={32} borderRadius={12} />
+                </div>
+              ) : (
+                <p className={styles.participantCount}>
+                  <IoPeopleOutline />
+                  {t("leaderboard-participant-count", {
+                    count: leaderboard.length,
+                    formattedCount: formattedParticipantCount,
+                  })}
+                </p>
+              )}
             </div>
 
-            <LeaderboardList
-              allUsers={leaderboard}
-              currentUserId={currentUserId}
-            />
+            {isLoading ? (
+              <LeaderboardListSkeleton />
+            ) : (
+              <LeaderboardList
+                allUsers={leaderboard}
+                currentUserId={currentUserId}
+              />
+            )}
           </section>
 
           <section
@@ -98,10 +107,15 @@ const LeaderboardContent = () => {
                   {t("leaderboard-top-performers")}
                 </h2>
               </div>
-              <LeaderboardPodium
-                topThree={topThree}
-                currentUserId={currentUserId}
-              />
+
+              {isLoading ? (
+                <LeaderboardPodiumSkeleton />
+              ) : (
+                <LeaderboardPodium
+                  topThree={topThree}
+                  currentUserId={currentUserId}
+                />
+              )}
             </div>
           </section>
         </div>
