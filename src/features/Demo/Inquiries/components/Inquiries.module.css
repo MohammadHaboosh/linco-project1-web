@@ -265,7 +265,6 @@
 .ticketMessage,
 .ticketReply {
   min-width: 0;
-  overflow: hidden;
   padding: 15px;
   border: 1px solid var(--app-divider);
   border-radius: 12px;
@@ -307,14 +306,6 @@
   overflow-wrap: anywhere;
   word-break: break-word;
   white-space: pre-wrap;
-}
-
-.ticketReply p {
-  max-height: 14rem;
-  padding-inline-end: 4px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  scrollbar-color: var(--app-border-strong) transparent;
 }
 
 .modalOverlay {
@@ -695,7 +686,6 @@
   min-width: 0;
   max-width: 100%;
   padding: 20px;
-  overflow: hidden;
   box-sizing: border-box;
   border: 1px solid var(--app-border);
   border-radius: 16px;
@@ -720,13 +710,6 @@
   overflow-wrap: anywhere;
   word-break: break-word;
   white-space: pre-wrap;
-}
-
-.responsePanel p {
-  max-height: min(45vh, 28rem);
-  padding-inline-end: 4px;
-  overflow-y: auto;
-  scrollbar-color: var(--app-border-strong) transparent;
 }
 
 .panelLabel {
