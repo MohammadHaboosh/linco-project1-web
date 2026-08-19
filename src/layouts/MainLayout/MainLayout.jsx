@@ -6,13 +6,11 @@ import SubHeader from "../../components/layouts/Header/sub_header/SubHeader";
 import Footer from "../../components/layouts/Footer/Footer";
 import AppLayoutSkeleton from "../AppLayoutSkeleton.jsx";
 import styles from "./MainLayout.module.css";
-import useMinimumLoader from "../../hooks/useMinimumLoader.js";
 
 const LayoutContent = () => {
   const { role, currentRoleView, setRoleView, isLoading, demoData } = useDemo();
-  const shouldShowLoader = useMinimumLoader(isLoading, 2000);
 
-  if (shouldShowLoader) {
+  if (isLoading) {
     return <AppLayoutSkeleton />;
   }
 

@@ -12,7 +12,6 @@ import { useTranslation } from "react-i18next";
 import ExpiredSubscriptionGate from "../../features/Demo/Subscription/components/ExpiredSubscriptionGate/ExpiredSubscriptionGate";
 import { isDemoSubscriptionExpired } from "../../features/Demo/Subscription/utils/demoSubscription";
 import AppLayoutSkeleton from "../AppLayoutSkeleton.jsx";
-import useMinimumLoader from "../../hooks/useMinimumLoader.js";
 
 const LayoutContent = () => {
   const { t } = useTranslation();
@@ -25,12 +24,11 @@ const LayoutContent = () => {
     retryLoadDemo,
     demoData,
   } = useDemo();
-  const shouldShowLoader = useMinimumLoader(isLoading, 2000);
 
   const location = useLocation();
   const isGroupsPage = location.pathname.includes("/groups");
 
-  if (shouldShowLoader) {
+  if (isLoading) {
     return <AppLayoutSkeleton />;
   }
 
