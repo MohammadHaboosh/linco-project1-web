@@ -199,6 +199,7 @@
   box-shadow: 0 0 0 3px #d1fae5;
 }
 .expired,
+.canceled,
 .cancelled {
   background-color: #ef4444;
   box-shadow: 0 0 0 3px #fee2e2;
@@ -233,6 +234,7 @@
 }
 
 :global([data-theme="dark"]) .expired,
+:global([data-theme="dark"]) .canceled,
 :global([data-theme="dark"]) .cancelled {
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
 }
