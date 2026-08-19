@@ -4,7 +4,7 @@ import Sidebar from "../../components/layouts/SideBar/Sidebar";
 import Header from "../../components/layouts/Header/global_header/Header";
 import SubHeader from "../../components/layouts/Header/sub_header/SubHeader";
 import Footer from "../../components/layouts/Footer/Footer";
-import AppLayoutSkeleton from "../AppLayoutSkeleton";
+import AppLayoutSkeleton from "../AppLayoutSkeleton.jsx";
 import styles from "./MainLayout.module.css";
 
 const LayoutContent = () => {

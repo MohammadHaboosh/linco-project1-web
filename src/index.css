@@ -139,22 +139,6 @@ html {
   scroll-behavior: smooth;
 }
 
-.app-hydration-loading {
-  display: grid;
-  place-items: center;
-  min-height: 100vh;
-  background: var(--bg-navy-gradient);
-}
-
-.app-hydration-loading span {
-  width: 42px;
-  height: 42px;
-  border: 4px solid rgba(255, 255, 255, 0.25);
-  border-top-color: #ffffff;
-  border-radius: 50%;
-  animation: hydration-spin 700ms linear infinite;
-}
-
 .not-found-page {
   display: grid;
   place-items: center;
@@ -187,19 +171,9 @@ html {
   text-decoration: none;
 }
 
-@keyframes hydration-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
-  }
-
-  .app-hydration-loading span {
-    animation: none;
   }
 }
 
