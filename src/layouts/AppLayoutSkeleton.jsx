@@ -1,5 +1,5 @@
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import "react-skeleton-loading/dist/skeleton.css";
+import "react-loading-skeleton/dist/skeleton.css";
 import styles from "./AppLayoutSkeleton.module.css";
 
 const AppLayoutSkeleton = () => {
