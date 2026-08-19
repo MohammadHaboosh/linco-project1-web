@@ -22,7 +22,7 @@ export const useCreateGroup = (demoId, currentUserId, onSuccess) => {
       return;
     }
     if (!demoId || !currentUserId) {
-      setError(t("missing-data", "Missing required workspace or user data."));
+      setError(t("missing-data", "Missing required demo or user data."));
       return;
     }
 

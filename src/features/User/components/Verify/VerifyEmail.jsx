@@ -70,10 +70,10 @@ const VerifyEmail = () => {
 
           <div className={styles["brand-text"]}>
             <p className={styles.eyebrow}>One last step</p>
-            <h2>Your learning workspace is almost ready.</h2>
+            <h2>Your learning demo is almost ready.</h2>
             <p>
               Verify your email to protect your account and unlock your LinCo
-              learning workspace.
+              learning demo.
             </p>
             <ul className={styles["benefit-list"]}>
               <li>

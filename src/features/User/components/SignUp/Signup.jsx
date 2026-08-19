@@ -49,7 +49,7 @@ const SignupPage = () => {
 
           <div className={styles["brand-text"]}>
             <p className={styles.eyebrow}>Build a stronger learning foundation</p>
-            <h2>Bring your company&apos;s learning into one workspace.</h2>
+            <h2>Bring your company&apos;s learning into one demo.</h2>
             <p>
               {t(
                 "transform-the-way-your-company-learns-build-a-centralized-hub-for-onboarding-training-and-team-collaboration-0",
@@ -58,7 +58,7 @@ const SignupPage = () => {
             <ul className={styles["benefit-list"]}>
               <li>
                 <IoCheckmarkCircle aria-hidden="true" />
-                <span>Dedicated department workspaces</span>
+                <span>Dedicated department demos</span>
               </li>
               <li>
                 <IoCheckmarkCircle aria-hidden="true" />
@@ -73,7 +73,7 @@ const SignupPage = () => {
 
           <div className={styles["workspace-preview"]} aria-hidden="true">
             <div className={styles["preview-header"]}>
-              <span>Your learning workspace</span>
+              <span>Your learning demo</span>
               <small>Ready</small>
             </div>
             <div className={styles["preview-row"]}>

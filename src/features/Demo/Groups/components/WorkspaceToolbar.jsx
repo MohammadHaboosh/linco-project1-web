@@ -35,7 +35,7 @@ const WorkspaceToolbar = ({
             type="button"
             className={styles.openSidebarBtn}
             onClick={() => setIsSidebarOpen(true)}
-            aria-label={t("open-workspaces", "Open workspaces")}
+            aria-label={t("open-workspaces", "Open demos")}
           >
             <IoMenu />
           </button>
@@ -52,7 +52,7 @@ const WorkspaceToolbar = ({
         <div
           className={styles.toolSelectors}
           role="group"
-          aria-label={t("workspace-tools", "Workspace tools")}
+          aria-label={t("workspace-tools", "Demo tools")}
         >
           <button
             type="button"
@@ -101,7 +101,7 @@ const WorkspaceToolbar = ({
         <div
           className={styles.layoutSegmentedControl}
           role="group"
-          aria-label={t("workspace-view", "Workspace view")}
+          aria-label={t("workspace-view", "Demo view")}
         >
           <button
             type="button"

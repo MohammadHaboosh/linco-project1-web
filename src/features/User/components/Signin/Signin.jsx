@@ -68,7 +68,7 @@ const Signin = () => {
 
           <div className={styles["brand-text"]}>
             <p className={styles.eyebrow}>Corporate learning, connected</p>
-            <h2>Welcome back to your team&apos;s learning workspace.</h2>
+            <h2>Welcome back to your team&apos;s learning demo.</h2>
             <p>
               {t(
                 "transform-the-way-your-company-learns-build-a-centralized-hub-for-onboarding-training-and-team-collaboration-0",
@@ -92,7 +92,7 @@ const Signin = () => {
 
           <div className={styles["workspace-preview"]} aria-hidden="true">
             <div className={styles["preview-header"]}>
-              <span>Learning workspace</span>
+              <span>Learning demo</span>
               <small>Active</small>
             </div>
             <div className={styles["preview-row"]}>

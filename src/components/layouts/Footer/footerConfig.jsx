@@ -8,12 +8,12 @@ export const FOOTER_CONFIG = {
       path: PATHS.PENDING_INVITATIONS,
     },
     {
-      name: "Joined Workspaces",
+      name: "Joined Demos",
       translationKey: "joined-workspaces",
       path: PATHS.JOINED_ROOMS,
     },
     {
-      name: "My Workspaces",
+      name: "My Demos",
       translationKey: "owned-workspaces",
       path: PATHS.OWN_ROOMS,
     },
@@ -124,7 +124,7 @@ export const FOOTER_CONFIG = {
       path: PATHS.CHAT_GROUPS,
     },
     {
-      name: "Workspace Tools",
+      name: "Demo Tools",
       translationKey: "workspace-tools",
       path: PATHS.TOOLS,
     },

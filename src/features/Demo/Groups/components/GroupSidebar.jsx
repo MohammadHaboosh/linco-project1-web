@@ -38,17 +38,17 @@ const GroupSidebar = ({
       className={`${styles.sidebar} ${
         isSidebarOpen ? styles.sidebarOpen : styles.sidebarClosed
       }`}
-      aria-label={t("group-workspaces", "Group workspaces")}
+      aria-label={t("group-workspaces", "Group demos")}
       aria-hidden={!isSidebarOpen}
       inert={!isSidebarOpen}
     >
       <div className={styles.sidebarHeader}>
-        <h2>{t("workspaces", "Workspaces")}</h2>
+        <h2>{t("workspaces", "Demos")}</h2>
         <button
           type="button"
           className={styles.toggleSidebarBtn}
           onClick={() => setIsSidebarOpen(false)}
-          aria-label={t("close-workspaces", "Close workspaces")}
+          aria-label={t("close-workspaces", "Close demos")}
         >
           <IoChevronBack />
         </button>

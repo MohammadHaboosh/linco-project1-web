@@ -5,7 +5,7 @@ export const LANDING_CONTENT = {
     seo: {
       title: "LinCo | Corporate Learning and Team Development",
       description:
-        "Build job-ready teams with one workspace for courses, live learning, collaboration, department learning paths, and progress analytics.",
+        "Build job-ready teams with one demo for courses, live learning, collaboration, department learning paths, and progress analytics.",
     },
     brand: {
       name: "LinCo",
@@ -28,18 +28,18 @@ export const LANDING_CONTENT = {
     skipLink: "Skip to main content",
     hero: {
       eyebrow: "Corporate learning, connected",
-      title: "Build job-ready teams in one connected learning workspace.",
+      title: "Build job-ready teams in one connected learning demo.",
       description:
         "LinCo helps companies organize courses, live sessions, department learning paths, collaboration, certificates, and progress analytics in one place.",
       primaryCta: "Create account",
       secondaryCta: "Explore the platform",
       productLabel: "LinCo learning management dashboard",
       points: [
-        "Dedicated department workspaces",
+        "Dedicated department demos",
         "Live and self-paced learning",
         "Clear progress visibility",
       ],
-      panelLabel: "One workspace for the whole learning journey",
+      panelLabel: "One demo for the whole learning journey",
       panelItems: ["Courses", "Live sessions", "Team progress"],
     },
     outcomes: {
@@ -51,7 +51,7 @@ export const LANDING_CONTENT = {
         {
           title: "Centralize every learning flow",
           description:
-            "Bring courses, live sessions, tasks, resources, and certificates into one organized company workspace.",
+            "Bring courses, live sessions, tasks, resources, and certificates into one organized company demo.",
         },
         {
           title: "Connect learning to daily work",
@@ -73,7 +73,7 @@ export const LANDING_CONTENT = {
       steps: [
         {
           number: "01",
-          title: "Create your company workspace",
+          title: "Create your company demo",
           description:
             "Set up the company environment and organize employees into the departments where they learn and collaborate.",
         },
@@ -127,7 +127,7 @@ export const LANDING_CONTENT = {
       eyebrow: "Product in practice",
       title: "Built around real company learning workflows.",
       description:
-        "Each capability is part of the same workspace, so administrators and learners keep the context they need.",
+        "Each capability is part of the same demo, so administrators and learners keep the context they need.",
       items: [
         {
           title: "Manage learning from one dashboard",
@@ -143,13 +143,13 @@ export const LANDING_CONTENT = {
         {
           title: "Keep collaboration beside the learning",
           description:
-            "Let employees discuss work, share resources, and use connected workspace tools without losing their learning context.",
+            "Let employees discuss work, share resources, and use connected demo tools without losing their learning context.",
           bullets: [
             "Real-time team conversations",
             "Department-focused channels",
             "Shared resources and embedded tools",
           ],
-          alt: "LinCo collaboration workspace for department communication",
+          alt: "LinCo collaboration demo for department communication",
         },
         {
           title: "Recognize progress across the company",
@@ -201,12 +201,12 @@ export const LANDING_CONTENT = {
         {
           question: "What is LinCo?",
           answer:
-            "LinCo is a corporate learning workspace that brings courses, live sessions, department learning paths, collaboration, recognition, and progress analytics into one platform.",
+            "LinCo is a corporate learning demo that brings courses, live sessions, department learning paths, collaboration, recognition, and progress analytics into one platform.",
         },
         {
-          question: "How does a company workspace get created?",
+          question: "How does a company demo get created?",
           answer:
-            "Create an account, submit your company workspace request, and provide the company information needed to organize your learning environment.",
+            "Create an account, submit your company demo request, and provide the company information needed to organize your learning environment.",
         },
         {
           question: "Can every department have its own learning path?",
@@ -232,7 +232,7 @@ export const LANDING_CONTENT = {
     },
     cta: {
       eyebrow: "Create a stronger learning foundation",
-      title: "Bring your company’s learning into one connected workspace.",
+      title: "Bring your company’s learning into one connected demo.",
       description:
         "Create your LinCo account and take the first step toward a structured learning environment for every department.",
       primary: "Create account",
@@ -240,7 +240,7 @@ export const LANDING_CONTENT = {
     },
     footer: {
       description:
-        "A connected corporate learning workspace for courses, live development, collaboration, and measurable progress.",
+        "A connected corporate learning demo for courses, live development, collaboration, and measurable progress.",
       product: "Product",
       features: "Features",
       howItWorks: "How it works",
@@ -257,7 +257,7 @@ export const LANDING_CONTENT = {
     seo: {
       title: "LinCo | منصة التعلم المؤسسي وتطوير الفرق",
       description:
-        "ابنِ فرقاً جاهزة للعمل عبر مساحة واحدة للدورات والتعلم المباشر والتعاون ومسارات الأقسام وتحليلات التقدم.",
+        "ابنِ فرقاً جاهزة للعمل عبر غرفة واحدة للدورات والتعلم المباشر والتعاون ومسارات الأقسام وتحليلات التقدم.",
     },
     brand: {
       name: "LinCo",
@@ -280,18 +280,18 @@ export const LANDING_CONTENT = {
     skipLink: "انتقل إلى المحتوى الرئيسي",
     hero: {
       eyebrow: "تعلم مؤسسي أكثر ترابطاً",
-      title: "ابنِ فرقاً جاهزة للعمل ضمن مساحة تعلم واحدة مترابطة.",
+      title: "ابنِ فرقاً جاهزة للعمل ضمن غرفة تعليمية واحدة مترابطة.",
       description:
         "تساعد LinCo الشركات على تنظيم الدورات والجلسات المباشرة ومسارات التعلم حسب الأقسام والتعاون والشهادات وتحليلات التقدم في مكان واحد.",
       primaryCta: "إنشاء حساب",
       secondaryCta: "استكشف المنصة",
       productLabel: "لوحة إدارة التعلم في LinCo",
       points: [
-        "مساحات مخصصة لكل قسم",
+        "غرف مخصصة لكل قسم",
         "تعلم مباشر وذاتي الوتيرة",
         "رؤية واضحة لتقدم الفرق",
       ],
-      panelLabel: "مساحة واحدة لرحلة التعلم كاملة",
+      panelLabel: "غرفة واحدة لرحلة التعلم كاملة",
       panelItems: ["الدورات", "الجلسات المباشرة", "تقدم الفرق"],
     },
     outcomes: {
@@ -303,7 +303,7 @@ export const LANDING_CONTENT = {
         {
           title: "وحّد مسارات التعلم",
           description:
-            "اجمع الدورات والجلسات المباشرة والمهام والموارد والشهادات ضمن مساحة منظمة للشركة.",
+            "اجمع الدورات والجلسات المباشرة والمهام والموارد والشهادات ضمن غرفة منظمة للشركة.",
         },
         {
           title: "اربط التعلم بالعمل اليومي",
@@ -325,7 +325,7 @@ export const LANDING_CONTENT = {
       steps: [
         {
           number: "01",
-          title: "أنشئ مساحة شركتك",
+          title: "أنشئ غرفة شركتك",
           description:
             "جهّز بيئة الشركة ونظّم الموظفين ضمن الأقسام التي يتعلمون ويتعاونون من خلالها.",
         },
@@ -379,7 +379,7 @@ export const LANDING_CONTENT = {
       eyebrow: "المنتج في الواقع العملي",
       title: "مصممة حول احتياجات التعلم الفعلية في الشركات.",
       description:
-        "تعمل جميع الإمكانات ضمن مساحة واحدة ليحافظ المديرون والمتعلمون على السياق الذي يحتاجونه.",
+        "تعمل جميع الإمكانات ضمن غرفة واحدة ليحافظ المديرون والمتعلمون على السياق الذي يحتاجونه.",
       items: [
         {
           title: "أدر التعلم من لوحة واحدة",
@@ -401,7 +401,7 @@ export const LANDING_CONTENT = {
             "قنوات مخصصة للأقسام",
             "موارد مشتركة وأدوات مدمجة",
           ],
-          alt: "مساحة تعاون LinCo للتواصل ضمن الأقسام",
+          alt: "غرفة LinCo للتعاون والتواصل ضمن الأقسام",
         },
         {
           title: "قدّر التقدم على مستوى الشركة",
@@ -453,12 +453,12 @@ export const LANDING_CONTENT = {
         {
           question: "ما هي LinCo؟",
           answer:
-            "LinCo مساحة تعلم مؤسسية تجمع الدورات والجلسات المباشرة ومسارات الأقسام والتعاون والتقدير وتحليلات التقدم ضمن منصة واحدة.",
+            "LinCo غرفة تعلم مؤسسية تجمع الدورات والجلسات المباشرة ومسارات الأقسام والتعاون والتقدير وتحليلات التقدم ضمن منصة واحدة.",
         },
         {
-          question: "كيف يتم إنشاء مساحة للشركة؟",
+          question: "كيف يتم إنشاء غرفة للشركة؟",
           answer:
-            "أنشئ حساباً ثم أرسل طلب مساحة الشركة وأضف المعلومات اللازمة لتنظيم بيئة التعلم الخاصة بها.",
+            "أنشئ حساباً ثم أرسل طلب غرفة الشركة وأضف المعلومات اللازمة لتنظيم بيئة التعلم الخاصة بها.",
         },
         {
           question: "هل يمكن أن يكون لكل قسم مسار تعلم خاص؟",
@@ -484,7 +484,7 @@ export const LANDING_CONTENT = {
     },
     cta: {
       eyebrow: "أساس أقوى للتعلم",
-      title: "اجمع تعلم شركتك ضمن مساحة واحدة مترابطة.",
+      title: "اجمع تعلم شركتك ضمن غرفة واحدة مترابطة.",
       description:
         "أنشئ حسابك في LinCo واتخذ الخطوة الأولى نحو بيئة تعلم منظمة لكل قسم.",
       primary: "إنشاء حساب",
@@ -492,7 +492,7 @@ export const LANDING_CONTENT = {
     },
     footer: {
       description:
-        "مساحة تعلم مؤسسية مترابطة للدورات والتطوير المباشر والتعاون والتقدم القابل للمتابعة.",
+        "غرفة تعلم مؤسسية مترابطة للدورات والتطوير المباشر والتعاون والتقدم القابل للمتابعة.",
       product: "المنتج",
       features: "الميزات",
       howItWorks: "آلية العمل",

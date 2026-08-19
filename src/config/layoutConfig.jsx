@@ -26,12 +26,12 @@ export const DASHBOARD_NAV = {
         path: PATHS.PENDING_INVITATIONS,
       },
       {
-        name: "Joined Workspaces",
+        name: "Joined Demos",
         translationKey: "joined-workspaces",
         path: PATHS.JOINED_ROOMS,
       },
       {
-        name: "My Workspaces",
+        name: "My Demos",
         translationKey: "owned-workspaces",
         path: PATHS.OWN_ROOMS,
       },
@@ -177,7 +177,7 @@ export const DEPARTMENT_NAV = {
         path: PATHS.LIVES,
       },
       {
-        name: "Workspace Tools",
+        name: "Demo Tools",
         translationKey: "workspace-tools",
         icon: <IoHardwareChipOutline />,
         path: PATHS.TOOLS,
@@ -217,7 +217,7 @@ export const DEPARTMENT_NAV = {
         path: PATHS.LIVES,
       },
       {
-        name: "Workspace Tools",
+        name: "Demo Tools",
         translationKey: "workspace-tools",
         icon: <IoSettingsOutline />,
         path: PATHS.SM_TOOLS,
@@ -275,7 +275,7 @@ export const DEPARTMENT_NAV = {
         path: PATHS.LIVES,
       },
       {
-        name: "Workspace Tools",
+        name: "Demo Tools",
         translationKey: "workspace-tools",
         icon: <IoSettingsOutline />,
         path: PATHS.SM_TOOLS,

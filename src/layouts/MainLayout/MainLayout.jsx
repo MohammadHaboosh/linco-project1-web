@@ -10,7 +10,7 @@ const LayoutContent = () => {
   const { role, currentRoleView, setRoleView, isLoading, demoData } = useDemo();
 
   if (isLoading) {
-    return <div className={styles.loader}>Loading Demo Workspace...</div>;
+    return <div className={styles.loader}>Loading Demo...</div>;
   }
 
   return (

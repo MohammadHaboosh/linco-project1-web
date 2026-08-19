@@ -46,7 +46,7 @@ const CreateGroupModal = ({ demoId, currentUserId, onClose, onSuccess }) => {
               <p>
                 {t(
                   "create-group-desc",
-                  "Set up a dedicated workspace for your team.",
+                  "Set up a dedicated demo for your team.",
                 )}
               </p>
             </div>

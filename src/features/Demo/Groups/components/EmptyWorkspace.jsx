@@ -12,7 +12,7 @@ const EmptyWorkspace = ({ isSidebarOpen, setIsSidebarOpen }) => {
           type="button"
           className={styles.absoluteOpenBtn}
           onClick={() => setIsSidebarOpen(true)}
-          aria-label={t("open-workspaces", "Open workspaces")}
+          aria-label={t("open-workspaces", "Open demos")}
         >
           <IoMenu />
         </button>
@@ -21,7 +21,7 @@ const EmptyWorkspace = ({ isSidebarOpen, setIsSidebarOpen }) => {
         <div className={styles.emptyStateIcon}>
           <IoPeopleOutline />
         </div>
-        <h2>{t("welcome-to-workspaces", "Collaborative Workspaces")}</h2>
+        <h2>{t("welcome-to-workspaces", "Collaborative Demos")}</h2>
         <p>
           {t(
             "select-workspace-desc",

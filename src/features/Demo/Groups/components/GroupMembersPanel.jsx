@@ -73,7 +73,7 @@ const GroupMembersPanel = ({ demoId, groupId, isManager }) => {
             <span>
               {t(
                 "no-group-members-description",
-                "Add members to start collaborating in this workspace.",
+                "Add members to start collaborating in this demo.",
               )}
             </span>
           </div>

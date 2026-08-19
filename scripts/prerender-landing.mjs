@@ -69,7 +69,7 @@ const buildHead = (locale) => {
     <meta property="og:image" content="${socialImage}" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="LinCo connected corporate learning workspace" />
+    <meta property="og:image:alt" content="LinCo connected corporate learning demo" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${escapeAttribute(content.seo.title)}" />
     <meta name="twitter:description" content="${escapeAttribute(content.seo.description)}" />
@@ -132,7 +132,7 @@ Sitemap: ${siteUrl}/sitemap.xml
 
 const llms = `# LinCo
 
-> LinCo is a corporate learning workspace for courses, live sessions, department learning paths, collaboration, certificates, and progress analytics.
+> LinCo is a corporate learning demo for courses, live sessions, department learning paths, collaboration, certificates, and progress analytics.
 
 ## Canonical public pages
 
@@ -143,7 +143,7 @@ const llms = `# LinCo
 
 - Companies can organize employees into department learning spaces.
 - LinCo supports company courses, shared courses, live sessions, practical tasks, collaboration, certificates, leaderboards, and progress analytics.
-- The primary public conversion is account creation; company workspace requests follow account creation.
+- The primary public conversion is account creation; company demo requests follow account creation.
 
 ## Contact
 

@@ -148,7 +148,7 @@ const GroupWorkspace = () => {
           type="button"
           className={styles.sidebarBackdrop}
           onClick={() => setIsSidebarOpen(false)}
-          aria-label={t("close-workspaces", "Close workspaces")}
+          aria-label={t("close-workspaces", "Close demos")}
           tabIndex={-1}
         />
       )}
