@@ -1,5 +1,6 @@
 import styles from "./PendingInvitations.module.css";
 import InvitationCard from "../../../../../components/elements/InvitationCard/InvitationCard.jsx";
+import InvitationCardSkeleton from "../../../../../components/elements/InvitationCard/InvitationCardSkeleton.jsx";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { PATHS } from "../../../../../routes/paths.js";
@@ -30,14 +31,16 @@ const PendingInvitations = ({
 
       <div className={styles["list-container"]}>
         {isLoading ? (
-          <div className={styles["loading-state"]}>
-            <span className={styles.loader}></span>
-            <p>{t("loading-invitations")}</p>
-          </div>
+          Array(3)
+            .fill(0)
+            .map((_, idx) => (
+              <InvitationCardSkeleton
+                key={`inv-skeleton-${idx}`}
+                compact={true}
+              />
+            ))
         ) : invitations.length === 0 ? (
-          <p className={styles["empty-state"]}>
-            {t("no-pending-invitations")}
-          </p>
+          <p className={styles["empty-state"]}>{t("no-pending-invitations")}</p>
         ) : (
           invitations.map((invitation) => (
             <InvitationCard

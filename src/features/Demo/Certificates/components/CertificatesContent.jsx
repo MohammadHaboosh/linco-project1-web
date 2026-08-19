@@ -5,6 +5,7 @@ import {
   IoSchoolOutline,
 } from "react-icons/io5";
 import CertificateCard from "./CertificateCard";
+import CertificateCardSkeleton from "./CertificateCardSkeleton";
 import styles from "./Certificates.module.css";
 import { useTranslation } from "react-i18next";
 import { useCertificates } from "../hooks/useCertificates";
@@ -55,9 +56,12 @@ const CertificatesContent = () => {
 
         <div className={styles.gridSection}>
           {isLoading ? (
-            <div className={styles.emptyState}>
-              <span className={styles.loader}></span>
-              <p>{t("loading-certificates")}</p>
+            <div className={styles.certsGrid}>
+              {Array(6)
+                .fill(0)
+                .map((_, idx) => (
+                  <CertificateCardSkeleton key={`cert-skeleton-${idx}`} />
+                ))}
             </div>
           ) : error ? (
             <div className={styles.emptyState} role="alert">
@@ -71,9 +75,7 @@ const CertificatesContent = () => {
               <h3>{t("no-certificates-found")}</h3>
               <p>
                 {searchQuery
-                  ? t(
-                      "no-results-match-your-search",
-                    )
+                  ? t("no-results-match-your-search")
                   : t(
                       "complete-courses-to-earn-your-certificates-and-showcase-your-skills",
                     )}

@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { IoFolderOpenOutline } from "react-icons/io5";
 import RoomCard from "../../../../../components/elements/RoomCard/RoomCard.jsx";
+import RoomCardSkeleton from "../../../../../components/elements/RoomCard/RoomCardSkeleton.jsx";
 import styles from "./RoomSection.module.css";
 import { useTranslation } from "react-i18next";
 
@@ -10,6 +11,7 @@ const RoomSection = ({
   viewAllPath,
   emptyMessage,
   emptySubtext,
+  isLoading,
 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -18,7 +20,7 @@ const RoomSection = ({
     <div className={styles.section}>
       <div className={styles["section-header"]}>
         <h2>{title}</h2>
-        {viewAllPath && rooms.length > 0 && (
+        {viewAllPath && rooms.length > 0 && !isLoading && (
           <button
             className={styles["view-all"]}
             onClick={() => navigate(viewAllPath)}
@@ -28,7 +30,15 @@ const RoomSection = ({
         )}
       </div>
 
-      {rooms.length > 0 ? (
+      {isLoading ? (
+        <div className={styles["cards-grid"]}>
+          {Array(3)
+            .fill(0)
+            .map((_, idx) => (
+              <RoomCardSkeleton key={`room-skeleton-${idx}`} />
+            ))}
+        </div>
+      ) : rooms.length > 0 ? (
         <div className={styles["cards-grid"]}>
           {rooms.map((room) => (
             <RoomCard key={room.id} room={room} />

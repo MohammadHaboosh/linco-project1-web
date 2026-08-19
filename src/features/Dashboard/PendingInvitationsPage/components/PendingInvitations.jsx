@@ -7,6 +7,7 @@ import {
   IoAlertCircleOutline,
 } from "react-icons/io5";
 import InvitationCard from "../../../../components/elements/InvitationCard/InvitationCard";
+import InvitationCardSkeleton from "../../../../components/elements/InvitationCard/InvitationCardSkeleton";
 import { usePendingInvitations } from "../hooks/usePendingInvitations.jsx";
 import styles from "./PendingInvitations.module.css";
 
@@ -32,19 +33,16 @@ const PendingInvitationsContent = () => {
 
   return (
     <div className={styles.pageContainer}>
-      {/* 1. الترويسة الفخمة */}
       <div className={styles.pageHeader}>
         <div className={styles.headerInfo}>
           <div className={styles.iconBox}>
             <IoMailUnreadOutline className={styles.headerIcon} />
-            {invitations.length > 0 && (
+            {invitations.length > 0 && !isLoading && (
               <span className={styles.badge}>{invitations.length}</span>
             )}
           </div>
           <div>
-            <h1 className={styles.title}>
-              {t("pending-invitations")}
-            </h1>
+            <h1 className={styles.title}>{t("pending-invitations")}</h1>
             <p className={styles.description}>
               {t("review-and-manage-invitations")}
             </p>
@@ -52,7 +50,6 @@ const PendingInvitationsContent = () => {
         </div>
       </div>
 
-      {/* 2. شريط البحث والأدوات */}
       <div className={styles.controlsSection}>
         <div className={styles.searchBox}>
           <IoSearchOutline className={styles.searchIcon} />
@@ -67,12 +64,17 @@ const PendingInvitationsContent = () => {
         </div>
       </div>
 
-      {/* 3. قائمة الدعوات */}
       <div className={styles.listSection}>
         {isLoading ? (
-          <div className={styles.loadingState}>
-            <span className={styles.loader}></span>
-            <p>{t("loading-invitations")}</p>
+          <div className={styles.invitationsGrid}>
+            {Array(6)
+              .fill(0)
+              .map((_, idx) => (
+                <InvitationCardSkeleton
+                  key={`full-inv-skeleton-${idx}`}
+                  compact={false}
+                />
+              ))}
           </div>
         ) : error ? (
           <div className={styles.emptyState} role="alert">
@@ -83,14 +85,11 @@ const PendingInvitationsContent = () => {
             <p>{t("try-again-later")}</p>
           </div>
         ) : filteredInvitations.length === 0 ? (
-          // حالة عدم وجود دعوات (Empty State)
           <div className={styles.emptyState}>
             <div className={styles.emptyIconBox}>
               <IoCheckmarkDoneOutline />
             </div>
-            <h3>
-              {searchQuery ? t("no-results-found") : t("all-caught-up")}
-            </h3>
+            <h3>{searchQuery ? t("no-results-found") : t("all-caught-up")}</h3>
             <p>
               {searchQuery
                 ? t("no-invitations-match-search")

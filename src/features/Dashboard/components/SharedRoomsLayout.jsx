@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 import RoomCard from "../../../components/elements/RoomCard/RoomCard.jsx";
+import RoomCardSkeleton from "../../../components/elements/RoomCard/RoomCardSkeleton.jsx";
 import styles from "./SharedRoomsLayout.module.css";
 import { useTranslation } from "react-i18next";
 
@@ -57,9 +58,12 @@ const SharedRoomsLayout = ({
 
         <div className={styles.listSection}>
           {isLoading ? (
-            <div className={styles.loadingState}>
-              <span className={styles.loader}></span>
-              <p>{t("loading-workspaces")}</p>
+            <div className={styles.cardsGrid}>
+              {Array(6)
+                .fill(0)
+                .map((_, idx) => (
+                  <RoomCardSkeleton key={`layout-room-skeleton-${idx}`} />
+                ))}
             </div>
           ) : error ? (
             <div className={styles.emptyState} role="alert">

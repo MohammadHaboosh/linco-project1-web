@@ -20,7 +20,7 @@ const HomePage = () => {
     rejectInvitation,
     processingInvitationId,
     processingAction,
-    invitationActionError,
+    actionError: invitationActionError,
   } = useHomePage();
 
   return (
@@ -36,44 +36,32 @@ const HomePage = () => {
               }}
             />
           </h1>
-          <p className={styles.bannerDesc}>
-            {t("home-dashboard-description")}
-          </p>
+          <p className={styles.bannerDesc}>{t("home-dashboard-description")}</p>
         </div>
         <div className={styles.bannerDecoration}></div>
       </div>
 
       <div className={styles.contentGrid}>
         <div className={styles.mainColumn}>
-          {isLoadingOwnedRooms ? (
-            <div className={styles.loadingState}>
-              {t("loading-workspaces")}
-            </div>
-          ) : (
-            <RoomSection
-              title={t("owned-workspaces")}
-              rooms={ownedRooms}
-              viewAllPath={PATHS.OWN_ROOMS}
-              emptyMessage={t("no-owned-workspaces-yet")}
-              emptySubtext={t("no-owned-workspaces-description")}
-            />
-          )}
+          <RoomSection
+            title={t("owned-workspaces")}
+            rooms={ownedRooms}
+            isLoading={isLoadingOwnedRooms}
+            viewAllPath={PATHS.OWN_ROOMS}
+            emptyMessage={t("no-owned-workspaces-yet")}
+            emptySubtext={t("no-owned-workspaces-description")}
+          />
 
           <div className={styles.sectionSpacer}></div>
 
-          {isLoadingJoinedRooms ? (
-            <div className={styles.loadingState}>
-              {t("loading-joined-workspaces")}
-            </div>
-          ) : (
-            <RoomSection
-              title={t("joined-workspaces")}
-              rooms={activeRooms}
-              viewAllPath={PATHS.JOINED_ROOMS}
-              emptyMessage={t("no-joined-workspaces-yet")}
-              emptySubtext={t("no-joined-workspaces-description")}
-            />
-          )}
+          <RoomSection
+            title={t("joined-workspaces")}
+            rooms={activeRooms}
+            isLoading={isLoadingJoinedRooms}
+            viewAllPath={PATHS.JOINED_ROOMS}
+            emptyMessage={t("no-joined-workspaces-yet")}
+            emptySubtext={t("no-joined-workspaces-description")}
+          />
         </div>
 
         <div className={styles.sideColumn}>
