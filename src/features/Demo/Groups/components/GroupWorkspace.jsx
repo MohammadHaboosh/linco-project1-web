@@ -46,7 +46,8 @@ const GroupWorkspace = () => {
 
   const { deleteDepartment, isDeleting: isDeletingGroup } = useDeleteDepartment(
     demoId,
-    () => {
+    async () => {
+      await refetch();
       navigate(`/demos/${demoId}/groups`);
     },
   );
