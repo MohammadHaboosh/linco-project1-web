@@ -10,7 +10,7 @@ import { departmentMemberApi } from "../../DepartmentMembers/api/departmentMembe
 import AddGroupMemberModal from "./AddGroupMemberModal";
 import styles from "./Groups.module.css";
 
-const GroupMembersPanel = ({ demoId, groupId, isManager }) => {
+const GroupMembersPanel = ({ demoId, groupId, isManager, currentUserId }) => {
   const { t } = useTranslation();
   const { members, isLoading, refetch } = useDepartmentMembers(groupId);
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
@@ -80,6 +80,8 @@ const GroupMembersPanel = ({ demoId, groupId, isManager }) => {
         )}
         {members.map((member) => {
           const user = member.demoMember?.user || {};
+          const isCurrentUser = user.id === currentUserId;
+
           const fullName =
             `${user.firstName || ""} ${user.lastName || ""}`.trim() ||
             user.email;
@@ -101,12 +103,25 @@ const GroupMembersPanel = ({ demoId, groupId, isManager }) => {
                 </div>
 
                 <div className={styles.memberDetails}>
-                  <strong className={styles.memberName}>{fullName}</strong>
+                  <strong className={styles.memberName}>
+                    {fullName}
+                    {isCurrentUser && (
+                      <span
+                        style={{
+                          color: "var(--app-link)",
+                          fontSize: "0.8rem",
+                          marginInlineStart: "4px",
+                        }}
+                      >
+                        ({t("you", "you")})
+                      </span>
+                    )}
+                  </strong>
                   <span className={styles.memberEmail}>{user.email}</span>
                 </div>
               </div>
 
-              {isManager && (
+              {isManager && !isCurrentUser && (
                 <button
                   type="button"
                   onClick={() => handleRemoveMember(member.id)}

@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { IoWarningOutline } from "react-icons/io5";
 import styles from "./GroupWorkspace.module.css";
 import { useFetchGroups } from "../hooks/useFetchGroups";
 import { useUser } from "../../../../hooks/useUser";
 import { memberApi } from "../../DemoMembers/api/memberApi";
+import { useDeleteDepartment } from "../../HomeDemoPage/hooks/useDeleteDepartment";
 import GroupSidebar from "./GroupSidebar";
 import WorkspaceToolbar from "./WorkspaceToolbar";
 import WorkspaceStage from "./WorkspaceStage";
@@ -21,6 +23,7 @@ const isMobileWorkspace = () =>
 const GroupWorkspace = () => {
   const { t } = useTranslation();
   const { demoId, groupId } = useParams();
+  const navigate = useNavigate();
 
   const { profile } = useUser();
   const userId = profile?.id;
@@ -38,6 +41,23 @@ const GroupWorkspace = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const [shareTrigger, setShareTrigger] = useState(0);
+
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+  const { deleteDepartment, isDeleting: isDeletingGroup } = useDeleteDepartment(
+    demoId,
+    async () => {
+      await refetch();
+      navigate(`/demos/${demoId}/groups`);
+    },
+  );
+
+  const confirmDeleteGroup = async () => {
+    if (activeGroup) {
+      await deleteDepartment(activeGroup.id);
+      setShowDeleteConfirm(false);
+    }
+  };
 
   useEffect(() => {
     if (!demoId || !userId) return;
@@ -179,6 +199,8 @@ const GroupWorkspace = () => {
               onLayoutChange={handleLayoutChange}
               onShareToChat={handleShareToChat}
               isMobile={isMobile}
+              isManager={isManager}
+              onDeleteClick={() => setShowDeleteConfirm(true)} // 💡 وظيفة زر الحذف
             />
 
             {visibleLayout === "members" ? (
@@ -186,6 +208,7 @@ const GroupWorkspace = () => {
                 demoId={demoId}
                 groupId={activeGroup.id}
                 isManager={isManager}
+                currentUserId={userId}
               />
             ) : (
               <WorkspaceStage
@@ -215,6 +238,51 @@ const GroupWorkspace = () => {
             refetch();
           }}
         />
+      )}
+
+      {showDeleteConfirm && (
+        <div
+          className={styles.modalOverlay}
+          onClick={() => !isDeletingGroup && setShowDeleteConfirm(false)}
+        >
+          <div
+            className={styles.confirmModal}
+            role="alertdialog"
+            aria-modal="true"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className={styles.modalIcon} aria-hidden="true">
+              <IoWarningOutline />
+            </div>
+            <h3>{t("delete-group-confirm-title", "Delete Group?")}</h3>
+            <p>
+              {t(
+                "delete-group-confirm-desc",
+                "Are you sure you want to delete this group? This action cannot be undone.",
+              )}
+            </p>
+            <div className={styles.modalActions}>
+              <button
+                type="button"
+                className={styles.cancelBtn}
+                onClick={() => setShowDeleteConfirm(false)}
+                disabled={isDeletingGroup}
+              >
+                {t("cancel", "Cancel")}
+              </button>
+              <button
+                type="button"
+                className={styles.confirmDeleteBtn}
+                onClick={confirmDeleteGroup}
+                disabled={isDeletingGroup}
+              >
+                {isDeletingGroup
+                  ? t("deleting", "Deleting...")
+                  : t("delete", "Delete")}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

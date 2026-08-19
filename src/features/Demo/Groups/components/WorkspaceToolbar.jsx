@@ -8,6 +8,7 @@ import {
   IoSquareOutline,
   IoSendOutline,
   IoPeopleOutline,
+  IoTrashOutline,
 } from "react-icons/io5";
 import styles from "./GroupWorkspace.module.css";
 
@@ -21,6 +22,8 @@ const WorkspaceToolbar = ({
   onLayoutChange,
   onShareToChat,
   isMobile,
+  isManager,
+  onDeleteClick,
 }) => {
   const { t } = useTranslation();
   const groupName = activeGroup.name || activeGroup.title || "";
@@ -45,6 +48,18 @@ const WorkspaceToolbar = ({
             {groupInitials}
           </div>
           <h3 title={groupName}>{groupName}</h3>
+
+          {isManager && (
+            <button
+              type="button"
+              className={styles.deleteGroupBtnToolbar}
+              onClick={onDeleteClick}
+              title={t("delete-group", "Delete Group")}
+              aria-label={t("delete-group", "Delete Group")}
+            >
+              <IoTrashOutline />
+            </button>
+          )}
         </div>
       </div>
 
@@ -62,7 +77,9 @@ const WorkspaceToolbar = ({
             aria-label={t("open-photopea", "Open Photopea")}
           >
             <IoBrushOutline />
-            <span className={styles.toolLabel}>{t("photopea", "Photopea")}</span>
+            <span className={styles.toolLabel}>
+              {t("photopea", "Photopea")}
+            </span>
           </button>
           <button
             type="button"
