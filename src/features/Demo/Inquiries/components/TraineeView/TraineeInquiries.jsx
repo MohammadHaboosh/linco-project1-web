@@ -4,11 +4,13 @@ import {
   IoAddOutline,
   IoTimeOutline,
   IoCheckmarkDoneOutline,
+  IoChatbubblesOutline,
 } from "react-icons/io5";
 import NewInquiryModal from "./NewInquiryModal";
 import styles from "../Inquiries.module.css";
 import { useTranslation } from "react-i18next";
 import { useInquiries } from "../../hooks/useInquiries";
+import { TraineeInquiriesSkeleton } from "../InquiriesSkeletons";
 
 const TraineeInquiries = ({ demoId }) => {
   const { t, i18n } = useTranslation();
@@ -44,7 +46,7 @@ const TraineeInquiries = ({ demoId }) => {
   };
 
   return (
-    <div className={styles.pageContainer}>
+    <div className={styles.pageContainer} dir={i18n.dir()}>
       <div className={styles.headerArea}>
         <div className={styles.headerInfo}>
           <div className={styles.iconBox}>
@@ -67,19 +69,21 @@ const TraineeInquiries = ({ demoId }) => {
       </div>
 
       {isLoading ? (
-        <div className={styles.pageState} role="status" aria-live="polite">
-          {t("loading-inquiries")}
-        </div>
+        <TraineeInquiriesSkeleton />
       ) : error && inquiries.length === 0 ? (
-        <div className={styles.pageState} role="alert">
+        <div className={styles.emptyStatePremium} role="alert">
+          <IoChatbubblesOutline />
+          <h3>{t("failed-to-load-inquiries")}</h3>
           <p>{error}</p>
-          <button type="button" onClick={refetch}>
+          <button type="button" className={styles.primaryBtn} onClick={refetch}>
             {t("try-again")}
           </button>
         </div>
       ) : inquiries.length === 0 ? (
-        <div className={styles.pageState} role="status">
-          {t("no-inquiries-found")}
+        <div className={styles.emptyStatePremium} role="status">
+          <IoChatbubblesOutline />
+          <h3>{t("no-inquiries-found")}</h3>
+          <p>{t("no-inquiries-description")}</p>
         </div>
       ) : (
         <>
@@ -132,12 +136,6 @@ const TraineeInquiries = ({ demoId }) => {
               >
                 {isLoadingMore ? t("loading-inquiries") : t("load-more")}
               </button>
-            </div>
-          )}
-
-          {error && (
-            <div className={styles.inlineError} role="alert">
-              {error}
             </div>
           )}
         </>

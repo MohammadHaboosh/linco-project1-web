@@ -1894,5 +1894,8 @@
   "messages-sent": "Messages Sent",
   "show-less": "Show Less",
   "all-members": "All Members",
-  "section-title-unique-error": "Section titles must be unique."
+  "section-title-unique-error": "Section titles must be unique.",
+  "failed-to-load-inquiries": "Failed to load inquiries",
+  "no-inquiries-description": "No inquiries description",
+  "manager-no-inquiries-desc": "The inbox is empty. There are no inquiries or support tickets from trainees at the moment."
 }

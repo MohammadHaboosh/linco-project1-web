@@ -4,10 +4,12 @@ import {
   IoSearchOutline,
   IoSendOutline,
   IoPersonCircleOutline,
+  IoInboxOutline,
 } from "react-icons/io5";
 import styles from "../Inquiries.module.css";
 import { useTranslation } from "react-i18next";
 import { useInquiries } from "../../hooks/useInquiries";
+import { ManagerInboxSkeleton } from "../InquiriesSkeletons";
 
 const ManagerInbox = ({ demoId }) => {
   const { t, i18n } = useTranslation();
@@ -96,7 +98,7 @@ const ManagerInbox = ({ demoId }) => {
   };
 
   return (
-    <div className={styles.pageContainer}>
+    <div className={styles.pageContainer} dir={i18n.dir()}>
       <div className={styles.headerArea}>
         <div className={styles.headerInfo}>
           <div className={styles.iconBox}>
@@ -111,196 +113,210 @@ const ManagerInbox = ({ demoId }) => {
         </div>
       </div>
 
-      <div className={styles.inboxLayout}>
-        <div className={styles.inboxSidebar}>
-          <div className={styles.searchContainer}>
-            <IoSearchOutline className={styles.searchIcon} />
-            <input
-              type="search"
-              placeholder={t("search-tickets")}
-              aria-label={t("search-inquiries")}
-              className={styles.inboxSearch}
-              value={searchQuery}
-              onChange={(event) => setSearchQuery(event.target.value)}
-            />
+      {isLoading ? (
+        <ManagerInboxSkeleton />
+      ) : error && inquiries.length === 0 ? (
+        <div className={styles.emptyStatePremium} role="alert">
+          <IoInboxOutline />
+          <h3>{t("failed-to-load-inquiries")}</h3>
+          <p>{error}</p>
+          <button type="button" className={styles.primaryBtn} onClick={refetch}>
+            {t("try-again")}
+          </button>
+        </div>
+      ) : inquiries.length === 0 ? (
+        <div className={styles.emptyStatePremium} role="status">
+          <IoInboxOutline />
+          <h3>{t("no-inquiries-found")}</h3>
+          <p>{t("manager-no-inquiries-desc")}</p>
+        </div>
+      ) : (
+        <div className={styles.inboxLayout}>
+          <div className={styles.inboxSidebar}>
+            <div className={styles.searchContainer}>
+              <IoSearchOutline className={styles.searchIcon} />
+              <input
+                type="search"
+                placeholder={t("search-tickets")}
+                aria-label={t("search-inquiries")}
+                className={styles.inboxSearch}
+                value={searchQuery}
+                onChange={(event) => setSearchQuery(event.target.value)}
+              />
+            </div>
+
+            <div className={styles.ticketsList}>
+              {filteredInquiries.length === 0 ? (
+                <div className={styles.listState} role="status">
+                  {t("no-inquiries-found")}
+                </div>
+              ) : (
+                <>
+                  {filteredInquiries.map((inquiry) => (
+                    <button
+                      type="button"
+                      key={inquiry.id}
+                      className={`${styles.inboxItem} ${activeInquiry?.id === inquiry.id ? styles.inboxItemActive : ""}`}
+                      onClick={() => handleSelectInquiry(inquiry.id)}
+                      aria-pressed={activeInquiry?.id === inquiry.id}
+                      aria-label={t("open-inquiry", {
+                        subject: inquiry.subject,
+                      })}
+                    >
+                      <div className={styles.itemHeader}>
+                        <span className={styles.senderName}>
+                          {inquiry.creatorName || t("unknown-user")}
+                        </span>
+                        <span className={styles.itemDate}>
+                          {formatDate(inquiry.createdAt)}
+                        </span>
+                      </div>
+                      <div className={styles.itemSubject}>
+                        {inquiry.subject}
+                      </div>
+                      <span
+                        className={`${styles.statusDot} ${inquiry.status === "pending" ? styles.dotPending : styles.dotAnswered}`}
+                      >
+                        {inquiry.status === "answered"
+                          ? t("answered")
+                          : t("pending")}
+                      </span>
+                    </button>
+                  ))}
+
+                  {hasNextPage && (
+                    <button
+                      type="button"
+                      className={styles.loadMoreButton}
+                      onClick={loadMore}
+                      disabled={isLoadingMore}
+                      aria-busy={isLoadingMore}
+                    >
+                      {isLoadingMore ? t("loading-inquiries") : t("load-more")}
+                    </button>
+                  )}
+                </>
+              )}
+            </div>
           </div>
 
-          <div className={styles.ticketsList}>
-            {isLoading ? (
-              <div
-                className={styles.listState}
-                role="status"
-                aria-live="polite"
-              >
-                {t("loading-inquiries")}
-              </div>
-            ) : error && inquiries.length === 0 ? (
-              <div className={styles.listState} role="alert">
-                <p>{error}</p>
-                <button type="button" onClick={refetch}>
-                  {t("try-again")}
-                </button>
-              </div>
-            ) : filteredInquiries.length === 0 ? (
-              <div className={styles.listState} role="status">
-                {t("no-inquiries-found")}
-              </div>
-            ) : (
+          <div className={styles.inboxDetail}>
+            {activeInquiry ? (
               <>
-                {filteredInquiries.map((inquiry) => (
-                  <button
-                    type="button"
-                    key={inquiry.id}
-                    className={`${styles.inboxItem} ${activeInquiry?.id === inquiry.id ? styles.inboxItemActive : ""}`}
-                    onClick={() => handleSelectInquiry(inquiry.id)}
-                    aria-pressed={activeInquiry?.id === inquiry.id}
-                    aria-label={t("open-inquiry", {
-                      subject: inquiry.subject,
-                    })}
-                  >
-                    <div className={styles.itemHeader}>
-                      <span className={styles.senderName}>
-                        {inquiry.creatorName || t("unknown-user")}
-                      </span>
-                      <span className={styles.itemDate}>
-                        {formatDate(inquiry.createdAt)}
+                <div className={styles.detailHeader}>
+                  <h2>{activeInquiry.subject}</h2>
+                  <div className={styles.senderInfo}>
+                    {activeInquiry.creatorImagePath ? (
+                      <img
+                        src={activeInquiry.creatorImagePath}
+                        alt=""
+                        className={styles.senderAvatarImage}
+                      />
+                    ) : (
+                      <IoPersonCircleOutline className={styles.senderAvatar} />
+                    )}
+                    <div>
+                      <strong>
+                        {activeInquiry.creatorName || t("unknown-user")}
+                      </strong>
+                      <span>
+                        {getTranslatedRole(activeInquiry.creatorRole)}
                       </span>
                     </div>
-                    <div className={styles.itemSubject}>{inquiry.subject}</div>
-                    <span
-                      className={`${styles.statusDot} ${inquiry.status === "pending" ? styles.dotPending : styles.dotAnswered}`}
-                    >
-                      {inquiry.status === "answered"
-                        ? t("answered")
-                        : t("pending")}
-                    </span>
-                  </button>
-                ))}
-
-                {hasNextPage && (
-                  <button
-                    type="button"
-                    className={styles.loadMoreButton}
-                    onClick={loadMore}
-                    disabled={isLoadingMore}
-                    aria-busy={isLoadingMore}
-                  >
-                    {isLoadingMore ? t("loading-inquiries") : t("load-more")}
-                  </button>
-                )}
-              </>
-            )}
-
-            {error && inquiries.length > 0 && (
-              <div className={styles.inlineError} role="alert">
-                {error}
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className={styles.inboxDetail}>
-          {activeInquiry ? (
-            <>
-              <div className={styles.detailHeader}>
-                <h2>{activeInquiry.subject}</h2>
-                <div className={styles.senderInfo}>
-                  {activeInquiry.creatorImagePath ? (
-                    <img
-                      src={activeInquiry.creatorImagePath}
-                      alt=""
-                      className={styles.senderAvatarImage}
-                    />
-                  ) : (
-                    <IoPersonCircleOutline className={styles.senderAvatar} />
-                  )}
-                  <div>
-                    <strong>
-                      {activeInquiry.creatorName || t("unknown-user")}
-                    </strong>
-                    <span>{getTranslatedRole(activeInquiry.creatorRole)}</span>
                   </div>
                 </div>
-              </div>
 
-              <div className={styles.detailContent}>
-                <section className={styles.questionPanel}>
-                  <strong className={styles.panelLabel}>{t("question")}</strong>
-                  <p>{activeInquiry.question}</p>
-                  <span className={styles.panelMeta}>
-                    {formatDate(activeInquiry.createdAt)}
-                  </span>
-                </section>
-
-                {activeInquiry.response && (
-                  <section className={styles.responsePanel}>
-                    <strong className={styles.panelLabel}>{t("response")}</strong>
-                    <p>{activeInquiry.response}</p>
+                <div className={styles.detailContent}>
+                  <section className={styles.questionPanel}>
+                    <strong className={styles.panelLabel}>
+                      {t("question")}
+                    </strong>
+                    <p>{activeInquiry.question}</p>
                     <span className={styles.panelMeta}>
-                      {t("inquiry-response-meta", {
-                        name:
-                          activeInquiry.responseSenderName || t("support-team"),
-                        date: formatDate(activeInquiry.responseCreatedAt),
-                      })}
+                      {formatDate(activeInquiry.createdAt)}
                     </span>
                   </section>
-                )}
-              </div>
 
-              {!activeInquiry.response && (
-                <form
-                  className={styles.responseArea}
-                  onSubmit={handleSendResponse}
-                  aria-busy={replyingInquiryId === activeInquiry.id}
-                >
-                  <label
-                    className={styles.visuallyHidden}
-                    htmlFor="inquiry-response"
-                  >
-                    {t("response")}
-                  </label>
-                  <textarea
-                    id="inquiry-response"
-                    placeholder={t("write-your-response-here")}
-                    value={responseText}
-                    onChange={(event) => {
-                      setResponseText(event.target.value);
-                      setResponseError("");
-                    }}
-                    rows="3"
-                    disabled={replyingInquiryId === activeInquiry.id}
-                  />
-                  {responseError && (
-                    <div className={styles.responseError} role="alert">
-                      {responseError}
-                    </div>
+                  {activeInquiry.response && (
+                    <section className={styles.responsePanel}>
+                      <strong className={styles.panelLabel}>
+                        {t("response")}
+                      </strong>
+                      <p>{activeInquiry.response}</p>
+                      <span className={styles.panelMeta}>
+                        {t("inquiry-response-meta", {
+                          name:
+                            activeInquiry.responseSenderName ||
+                            t("support-team"),
+                          date: formatDate(activeInquiry.responseCreatedAt),
+                        })}
+                      </span>
+                    </section>
                   )}
-                  <div className={styles.responseActions}>
-                    <button
-                      type="submit"
-                      className={styles.sendResponseBtn}
-                      disabled={
-                        !responseText.trim() ||
-                        replyingInquiryId === activeInquiry.id
-                      }
-                      aria-busy={replyingInquiryId === activeInquiry.id}
+                </div>
+
+                {!activeInquiry.response && (
+                  <form
+                    className={styles.responseArea}
+                    onSubmit={handleSendResponse}
+                    aria-busy={replyingInquiryId === activeInquiry.id}
+                  >
+                    <label
+                      className={styles.visuallyHidden}
+                      htmlFor="inquiry-response"
                     >
-                      <IoSendOutline />
-                      {replyingInquiryId === activeInquiry.id
-                        ? t("sending-response")
-                        : t("send-response")}
-                    </button>
-                  </div>
-                </form>
-              )}
-            </>
-          ) : (
-            <div className={styles.emptyInbox}>
-              {t("select-a-ticket-to-view-details")}
-            </div>
-          )}
+                      {t("response")}
+                    </label>
+                    <textarea
+                      id="inquiry-response"
+                      placeholder={t("write-your-response-here")}
+                      value={responseText}
+                      onChange={(event) => {
+                        setResponseText(event.target.value);
+                        setResponseError("");
+                      }}
+                      rows="3"
+                      disabled={replyingInquiryId === activeInquiry.id}
+                    />
+                    {responseError && (
+                      <div className={styles.responseError} role="alert">
+                        {responseError}
+                      </div>
+                    )}
+                    <div className={styles.responseActions}>
+                      <button
+                        type="submit"
+                        className={styles.sendResponseBtn}
+                        disabled={
+                          !responseText.trim() ||
+                          replyingInquiryId === activeInquiry.id
+                        }
+                        aria-busy={replyingInquiryId === activeInquiry.id}
+                      >
+                        <IoSendOutline />
+                        {replyingInquiryId === activeInquiry.id
+                          ? t("sending-response")
+                          : t("send-response")}
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </>
+            ) : (
+              <div className={styles.emptyInbox}>
+                <IoMailUnreadOutline
+                  style={{
+                    fontSize: "4rem",
+                    color: "var(--app-border-strong)",
+                    marginBottom: "12px",
+                  }}
+                />
+                {t("select-a-ticket-to-view-details")}
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
