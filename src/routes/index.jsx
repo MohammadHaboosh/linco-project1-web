@@ -30,7 +30,6 @@ import GroupWorkspacePage from "../pages/GroupWorkspacePage.jsx";
 import DemoAssetsPage from "../pages/DemoAssetsPage.jsx";
 import OwnerCoursesPage from "../pages/OwnerCoursesPage.jsx";
 import InquiriesPage from "../pages/InquiriesPage.jsx";
-import DepartmentPage from "../pages/DepartmentPage.jsx";
 import DepartmentMembersPage from "../pages/DepartmentMembersPage.jsx";
 import LearningPathPage from "../pages/LearningPathPage.jsx";
 import LivesPage from "../pages/LivesPage.jsx";
@@ -173,7 +172,7 @@ const routes = [
         children: [
           {
             index: true,
-            Component: DepartmentPage,
+            Component: CoursesPage,
           },
           {
             path: PATHS.MEMBERS,
@@ -194,10 +193,6 @@ const routes = [
           {
             path: PATHS.COURSE_PLAYER,
             Component: CoursePlayerPage,
-          },
-          {
-            path: PATHS.COURSES,
-            Component: CoursesPage,
           },
           {
             path: PATHS.LEADERBOARD,
