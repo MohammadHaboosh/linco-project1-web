@@ -4,12 +4,92 @@ import {
   IoSearchOutline,
   IoSendOutline,
   IoPersonCircleOutline,
-  IoInboxOutline,
+  IoMailOutline,
 } from "react-icons/io5";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import styles from "../Inquiries.module.css";
 import { useTranslation } from "react-i18next";
 import { useInquiries } from "../../hooks/useInquiries";
-import { ManagerInboxSkeleton } from "../InquiriesSkeletons";
+
+const ThemeWrapper = ({ children }) => (
+  <SkeletonTheme
+    baseColor="var(--app-surface-soft)"
+    highlightColor="var(--app-border)"
+  >
+    {children}
+  </SkeletonTheme>
+);
+
+const ManagerInboxSkeleton = () => (
+  <ThemeWrapper>
+    <div className={styles.inboxLayout}>
+      <div className={styles.inboxSidebar}>
+        <div className={styles.searchContainer}>
+          <Skeleton height={42} borderRadius={100} />
+        </div>
+        <div className={styles.ticketsList}>
+          {Array(5)
+            .fill(0)
+            .map((_, index) => (
+              <div key={index} className={styles.inboxItem}>
+                <div className={styles.itemHeader}>
+                  <Skeleton width={110} height={16} borderRadius={4} />
+                  <Skeleton width={60} height={12} borderRadius={4} />
+                </div>
+                <div style={{ marginBottom: "12px" }}>
+                  <Skeleton width="85%" height={14} borderRadius={4} />
+                </div>
+                <Skeleton width={65} height={22} borderRadius={6} />
+              </div>
+            ))}
+        </div>
+      </div>
+
+      <div className={styles.inboxDetail}>
+        <div className={styles.detailHeader}>
+          <div style={{ marginBottom: "16px" }}>
+            <Skeleton width="60%" height={28} borderRadius={6} />
+          </div>
+          <div className={styles.senderInfo}>
+            <Skeleton circle width={42} height={42} />
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "4px" }}
+            >
+              <Skeleton width={130} height={16} borderRadius={4} />
+              <Skeleton width={80} height={12} borderRadius={4} />
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.detailContent} style={{ overflow: "hidden" }}>
+          <section className={styles.questionPanel}>
+            <Skeleton width={70} height={14} style={{ marginBottom: "12px" }} />
+            <Skeleton
+              width="100%"
+              height={12}
+              count={3}
+              style={{ marginBottom: "6px" }}
+            />
+            <Skeleton
+              width="50%"
+              height={12}
+              style={{ marginBottom: "16px" }}
+            />
+            <Skeleton width={90} height={12} />
+          </section>
+        </div>
+
+        <div className={styles.responseArea}>
+          <Skeleton height={90} borderRadius={12} />
+          <div className={styles.responseActions}>
+            <Skeleton width={140} height={42} borderRadius={12} />
+          </div>
+        </div>
+      </div>
+    </div>
+  </ThemeWrapper>
+);
 
 const ManagerInbox = ({ demoId }) => {
   const { t, i18n } = useTranslation();
@@ -24,6 +104,7 @@ const ManagerInbox = ({ demoId }) => {
     refetch,
     replyToInquiry,
   } = useInquiries({ demoId, scope: "manager" });
+
   const [activeInquiryId, setActiveInquiryId] = useState(null);
   const [responseText, setResponseText] = useState("");
   const [responseError, setResponseError] = useState("");
@@ -50,10 +131,8 @@ const ManagerInbox = ({ demoId }) => {
 
   const formatDate = (value) => {
     if (!value) return t("date-not-available");
-
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return t("date-not-available");
-
     return new Intl.DateTimeFormat(locale, {
       dateStyle: "medium",
       timeStyle: "short",
@@ -62,11 +141,9 @@ const ManagerInbox = ({ demoId }) => {
 
   const getTranslatedRole = (role) => {
     const normalizedRole = String(role ?? "").toUpperCase();
-
     if (normalizedRole === "OWNER") return t("owner");
     if (["ADMIN", "MANAGER"].includes(normalizedRole)) return t("admin");
     if (normalizedRole === "MEMBER") return t("member");
-
     return t("trainee");
   };
 
@@ -98,7 +175,7 @@ const ManagerInbox = ({ demoId }) => {
   };
 
   return (
-    <div className={styles.pageContainer} dir={i18n.dir()}>
+    <div className={styles.pageContainer}>
       <div className={styles.headerArea}>
         <div className={styles.headerInfo}>
           <div className={styles.iconBox}>
@@ -117,8 +194,8 @@ const ManagerInbox = ({ demoId }) => {
         <ManagerInboxSkeleton />
       ) : error && inquiries.length === 0 ? (
         <div className={styles.emptyStatePremium} role="alert">
-          <IoInboxOutline />
-          <h3>{t("failed-to-load-inquiries")}</h3>
+          <IoMailOutline />
+          <h3>{t("failed-to-load-inquiries", "فشل في تحميل صندوق الوارد")}</h3>
           <p>{error}</p>
           <button type="button" className={styles.primaryBtn} onClick={refetch}>
             {t("try-again")}
@@ -126,7 +203,7 @@ const ManagerInbox = ({ demoId }) => {
         </div>
       ) : inquiries.length === 0 ? (
         <div className={styles.emptyStatePremium} role="status">
-          <IoInboxOutline />
+          <IoMailOutline />
           <h3>{t("no-inquiries-found")}</h3>
           <p>{t("manager-no-inquiries-desc")}</p>
         </div>

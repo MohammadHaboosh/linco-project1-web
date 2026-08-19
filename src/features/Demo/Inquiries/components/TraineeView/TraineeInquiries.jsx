@@ -4,13 +4,58 @@ import {
   IoAddOutline,
   IoTimeOutline,
   IoCheckmarkDoneOutline,
+  IoChatboxOutline,
   IoChatbubblesOutline,
 } from "react-icons/io5";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import NewInquiryModal from "./NewInquiryModal";
 import styles from "../Inquiries.module.css";
 import { useTranslation } from "react-i18next";
 import { useInquiries } from "../../hooks/useInquiries";
-import { TraineeInquiriesSkeleton } from "../InquiriesSkeletons";
+
+const ThemeWrapper = ({ children }) => (
+  <SkeletonTheme
+    baseColor="var(--app-surface-soft)"
+    highlightColor="var(--app-border)"
+  >
+    {children}
+  </SkeletonTheme>
+);
+
+const TraineeInquiriesSkeleton = () => (
+  <ThemeWrapper>
+    <div className={styles.ticketsGrid}>
+      {Array(6)
+        .fill(0)
+        .map((_, index) => (
+          <article key={index} className={styles.ticketCard}>
+            <div className={styles.ticketHeader}>
+              <Skeleton width={85} height={26} borderRadius={20} />
+              <Skeleton width={90} height={14} borderRadius={4} />
+            </div>
+            <div style={{ marginBottom: "15px" }}>
+              <Skeleton width="80%" height={22} borderRadius={6} />
+            </div>
+            <div className={styles.ticketMessage}>
+              <Skeleton
+                width={60}
+                height={14}
+                style={{ marginBottom: "8px" }}
+              />
+              <Skeleton
+                width="100%"
+                height={12}
+                count={2}
+                style={{ marginBottom: "4px" }}
+              />
+              <Skeleton width="60%" height={12} />
+            </div>
+          </article>
+        ))}
+    </div>
+  </ThemeWrapper>
+);
 
 const TraineeInquiries = ({ demoId }) => {
   const { t, i18n } = useTranslation();
@@ -46,7 +91,7 @@ const TraineeInquiries = ({ demoId }) => {
   };
 
   return (
-    <div className={styles.pageContainer} dir={i18n.dir()}>
+    <div className={styles.pageContainer}>
       <div className={styles.headerArea}>
         <div className={styles.headerInfo}>
           <div className={styles.iconBox}>
@@ -81,7 +126,7 @@ const TraineeInquiries = ({ demoId }) => {
         </div>
       ) : inquiries.length === 0 ? (
         <div className={styles.emptyStatePremium} role="status">
-          <IoChatbubblesOutline />
+          <IoChatboxOutline />
           <h3>{t("no-inquiries-found")}</h3>
           <p>{t("no-inquiries-description")}</p>
         </div>
