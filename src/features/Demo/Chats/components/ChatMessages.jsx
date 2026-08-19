@@ -8,6 +8,7 @@ import {
 import { getMessagePreviewText } from "../utils/chatPresentationUtils";
 import ChatEmptyState from "./ChatEmptyState";
 import MessageItem from "./MessageItem";
+import { ChatMessagesSkeleton } from "./ChatSkeletons";
 import styles from "./Chats.module.css";
 
 const ChatMessages = ({
@@ -63,17 +64,12 @@ const ChatMessages = ({
             onClick={onLoadOlder}
             disabled={isLoadingOlder}
           >
-            {isLoadingOlder
-              ? t("chat-loading-older")
-              : t("chat-load-older")}
+            {isLoadingOlder ? t("chat-loading-older") : t("chat-load-older")}
           </button>
         )}
 
         {isLoadingHistory && messages.length === 0 ? (
-          <div className={styles.loadingState} role="status">
-            <span className={styles.spinner} aria-hidden="true" />
-            <p>{t("chat-loading-conversation")}</p>
-          </div>
+          <ChatMessagesSkeleton />
         ) : messages.length === 0 ? (
           <ChatEmptyState />
         ) : (
@@ -101,10 +97,7 @@ const ChatMessages = ({
             const replySenderName =
               getDepartmentMemberName(message.replyTo?.sender, "") ||
               getDepartmentMemberName(referencedMessage?.sender, "") ||
-              getDepartmentMemberName(
-                onlineMembersById.get(replySenderId),
-                "",
-              );
+              getDepartmentMemberName(onlineMembersById.get(replySenderId), "");
             const replyPreviewText =
               getMessagePreviewText(message.replyTo, t) ||
               getMessagePreviewText(referencedMessage, t);
