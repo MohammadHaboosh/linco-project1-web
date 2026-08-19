@@ -2049,5 +2049,8 @@
   "answers-provided": "الإجابات المقدمة",
   "messages-sent": "الرسائل المرسلة",
   "show-less": "عرض أقل",
-  "section-title-unique-error": "يجب أن تكون عناوين الأقسام فريدة."
+  "section-title-unique-error": "يجب أن تكون عناوين الأقسام فريدة.",
+  "failed-to-load-inquiries": "فشل في تحميل الاستفسارات",
+  "no-inquiries-description": "لا يوجد وصف للاستفسارات",
+  "manager-no-inquiries-desc": "البريد الوارد فارغ. \nلا توجد استفسارات أو تذاكر دعم من المتدربين في الوقت الحالي."
 }

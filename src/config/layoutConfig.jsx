@@ -141,16 +141,10 @@ export const DEPARTMENT_NAV = {
   member: {
     navLinks: [
       {
-        name: "Home",
-        translationKey: "home",
-        icon: <IoHomeOutline />,
-        path: "",
-      },
-      {
         name: "Courses",
         translationKey: "courses",
         icon: <IoBookOutline />,
-        path: PATHS.COURSES,
+        path: "",
       },
       {
         name: "Road Maps",
@@ -187,9 +181,9 @@ export const DEPARTMENT_NAV = {
   admin: {
     navLinks: [
       {
-        name: "Home",
-        translationKey: "home",
-        icon: <IoHomeOutline />,
+        name: "Courses",
+        translationKey: "courses",
+        icon: <IoBookOutline />,
         path: "",
       },
       {
@@ -203,12 +197,6 @@ export const DEPARTMENT_NAV = {
         translationKey: "workspace-library",
         icon: <IoLibraryOutline />,
         path: PATHS.SM_ASSETS,
-      },
-      {
-        name: "Courses",
-        translationKey: "courses",
-        icon: <IoBookOutline />,
-        path: PATHS.COURSES,
       },
       {
         name: "Lives",
@@ -245,9 +233,9 @@ export const DEPARTMENT_NAV = {
   owner: {
     navLinks: [
       {
-        name: "Home",
-        translationKey: "home",
-        icon: <IoHomeOutline />,
+        name: "Courses",
+        translationKey: "courses",
+        icon: <IoBookOutline />,
         path: "",
       },
       {
@@ -255,12 +243,6 @@ export const DEPARTMENT_NAV = {
         translationKey: "workspace-library",
         icon: <IoLibraryOutline />,
         path: PATHS.SM_ASSETS,
-      },
-      {
-        name: "Courses",
-        translationKey: "courses",
-        icon: <IoBookOutline />,
-        path: PATHS.COURSES,
       },
       {
         name: "Members",

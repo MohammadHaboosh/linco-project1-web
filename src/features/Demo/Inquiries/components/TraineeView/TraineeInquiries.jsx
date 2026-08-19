@@ -4,11 +4,58 @@ import {
   IoAddOutline,
   IoTimeOutline,
   IoCheckmarkDoneOutline,
+  IoChatboxOutline,
+  IoChatbubblesOutline,
 } from "react-icons/io5";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import NewInquiryModal from "./NewInquiryModal";
 import styles from "../Inquiries.module.css";
 import { useTranslation } from "react-i18next";
 import { useInquiries } from "../../hooks/useInquiries";
+
+const ThemeWrapper = ({ children }) => (
+  <SkeletonTheme
+    baseColor="var(--app-surface-soft)"
+    highlightColor="var(--app-border)"
+  >
+    {children}
+  </SkeletonTheme>
+);
+
+const TraineeInquiriesSkeleton = () => (
+  <ThemeWrapper>
+    <div className={styles.ticketsGrid}>
+      {Array(6)
+        .fill(0)
+        .map((_, index) => (
+          <article key={index} className={styles.ticketCard}>
+            <div className={styles.ticketHeader}>
+              <Skeleton width={85} height={26} borderRadius={20} />
+              <Skeleton width={90} height={14} borderRadius={4} />
+            </div>
+            <div style={{ marginBottom: "15px" }}>
+              <Skeleton width="80%" height={22} borderRadius={6} />
+            </div>
+            <div className={styles.ticketMessage}>
+              <Skeleton
+                width={60}
+                height={14}
+                style={{ marginBottom: "8px" }}
+              />
+              <Skeleton
+                width="100%"
+                height={12}
+                count={2}
+                style={{ marginBottom: "4px" }}
+              />
+              <Skeleton width="60%" height={12} />
+            </div>
+          </article>
+        ))}
+    </div>
+  </ThemeWrapper>
+);
 
 const TraineeInquiries = ({ demoId }) => {
   const { t, i18n } = useTranslation();
@@ -67,19 +114,21 @@ const TraineeInquiries = ({ demoId }) => {
       </div>
 
       {isLoading ? (
-        <div className={styles.pageState} role="status" aria-live="polite">
-          {t("loading-inquiries")}
-        </div>
+        <TraineeInquiriesSkeleton />
       ) : error && inquiries.length === 0 ? (
-        <div className={styles.pageState} role="alert">
+        <div className={styles.emptyStatePremium} role="alert">
+          <IoChatbubblesOutline />
+          <h3>{t("failed-to-load-inquiries")}</h3>
           <p>{error}</p>
-          <button type="button" onClick={refetch}>
+          <button type="button" className={styles.primaryBtn} onClick={refetch}>
             {t("try-again")}
           </button>
         </div>
       ) : inquiries.length === 0 ? (
-        <div className={styles.pageState} role="status">
-          {t("no-inquiries-found")}
+        <div className={styles.emptyStatePremium} role="status">
+          <IoChatboxOutline />
+          <h3>{t("no-inquiries-found")}</h3>
+          <p>{t("no-inquiries-description")}</p>
         </div>
       ) : (
         <>
@@ -132,12 +181,6 @@ const TraineeInquiries = ({ demoId }) => {
               >
                 {isLoadingMore ? t("loading-inquiries") : t("load-more")}
               </button>
-            </div>
-          )}
-
-          {error && (
-            <div className={styles.inlineError} role="alert">
-              {error}
             </div>
           )}
         </>
