@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   IoAnalyticsOutline,
@@ -42,6 +42,10 @@ const SOLUTION_ICONS = [
 const PUBLIC_SITE_URL = (
   import.meta.env.VITE_PUBLIC_SITE_URL || "https://linco.com"
 ).replace(/\/$/, "");
+
+const revealDelay = (index, step = 90) => ({
+  "--reveal-delay": `${index * step}ms`,
+});
 
 const ProductPreview = ({ item, variant = 0 }) => {
   const PreviewIcon = [IoSchoolOutline, IoChatbubblesOutline, IoAnalyticsOutline][
@@ -182,7 +186,10 @@ const ProductPreview = ({ item, variant = 0 }) => {
 };
 
 const SectionHeader = ({ eyebrow, title, description, id, align = "center" }) => (
-  <div className={`${styles.sectionHeader} ${styles[align]}`}>
+  <div
+    className={`${styles.sectionHeader} ${styles[align]}`}
+    data-scroll-reveal="up"
+  >
     <p className={styles.eyebrow}>{eyebrow}</p>
     <h2 id={id}>{title}</h2>
     <p className={styles.sectionDescription}>{description}</p>
@@ -220,6 +227,7 @@ const LandingPage = ({ locale = "en" }) => {
   const content = getLandingContent(locale);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState(0);
+  const landingRef = useRef(null);
   const { toggleTheme } = useTheme();
   const isArabic = content.locale === "ar";
   const localizedPath = isArabic ? "/ar" : "/";
@@ -281,8 +289,50 @@ const LandingPage = ({ locale = "en" }) => {
     document.title = content.seo.title;
   }, [content]);
 
+  useEffect(() => {
+    const landingElement = landingRef.current;
+
+    if (!landingElement) return undefined;
+
+    const revealElements = Array.from(
+      landingElement.querySelectorAll("[data-scroll-reveal]"),
+    );
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (prefersReducedMotion || !("IntersectionObserver" in window)) {
+      revealElements.forEach((element) => {
+        element.classList.add(styles.revealed);
+      });
+      return undefined;
+    }
+
+    landingElement.classList.add(styles.motionReady);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+
+          entry.target.classList.add(styles.revealed);
+          observer.unobserve(entry.target);
+        });
+      },
+      {
+        threshold: 0.12,
+        rootMargin: "0px 0px -8% 0px",
+      },
+    );
+
+    revealElements.forEach((element) => observer.observe(element));
+
+    return () => observer.disconnect();
+  }, [content.locale]);
+
   return (
     <div
+      ref={landingRef}
       className={styles.landing}
       lang={content.locale}
       dir={content.direction}
@@ -442,7 +492,12 @@ const LandingPage = ({ locale = "en" }) => {
               {content.outcomes.items.map((item, index) => {
                 const Icon = OUTCOME_ICONS[index];
                 return (
-                  <article className={styles.outcomeCard} key={item.title}>
+                  <article
+                    className={styles.outcomeCard}
+                    key={item.title}
+                    data-scroll-reveal="up"
+                    style={revealDelay(index)}
+                  >
                     <span className={styles.iconBox}>
                       <Icon aria-hidden="true" />
                     </span>
@@ -468,8 +523,12 @@ const LandingPage = ({ locale = "en" }) => {
               id="how-title"
             />
             <ol className={styles.stepsGrid}>
-              {content.how.steps.map((step) => (
-                <li key={step.number}>
+              {content.how.steps.map((step, index) => (
+                <li
+                  key={step.number}
+                  data-scroll-reveal="up"
+                  style={revealDelay(index, 110)}
+                >
                   <span className={styles.stepNumber}>{step.number}</span>
                   <h3>{step.title}</h3>
                   <p>{step.description}</p>
@@ -495,7 +554,12 @@ const LandingPage = ({ locale = "en" }) => {
               {content.features.items.map((item, index) => {
                 const Icon = FEATURE_ICONS[index];
                 return (
-                  <article className={styles.featureCard} key={item.title}>
+                  <article
+                    className={styles.featureCard}
+                    key={item.title}
+                    data-scroll-reveal="scale"
+                    style={revealDelay(index)}
+                  >
                     <div className={styles.featureCardTop}>
                       <span className={styles.featureIcon}>
                         <Icon aria-hidden="true" />
@@ -528,10 +592,17 @@ const LandingPage = ({ locale = "en" }) => {
                   className={`${styles.evidenceRow} ${index % 2 ? styles.evidenceReverse : ""}`}
                   key={item.title}
                 >
-                  <div className={styles.evidenceImage}>
+                  <div
+                    className={styles.evidenceImage}
+                    data-scroll-reveal={index % 2 ? "right" : "left"}
+                  >
                     <ProductPreview item={item} variant={index} />
                   </div>
-                  <div className={styles.evidenceCopy}>
+                  <div
+                    className={styles.evidenceCopy}
+                    data-scroll-reveal={index % 2 ? "left" : "right"}
+                    style={revealDelay(1, 120)}
+                  >
                     <span className={styles.evidenceIndex}>0{index + 1}</span>
                     <h3>{item.title}</h3>
                     <p>{item.description}</p>
@@ -566,7 +637,12 @@ const LandingPage = ({ locale = "en" }) => {
               {content.solutions.items.map((item, index) => {
                 const Icon = SOLUTION_ICONS[index];
                 return (
-                  <article className={styles.solutionCard} key={item.title}>
+                  <article
+                    className={styles.solutionCard}
+                    key={item.title}
+                    data-scroll-reveal="up"
+                    style={revealDelay(index, 75)}
+                  >
                     <span>
                       <Icon aria-hidden="true" />
                     </span>
@@ -592,7 +668,7 @@ const LandingPage = ({ locale = "en" }) => {
               id="faq-title"
               align="start"
             />
-            <div className={styles.faqList}>
+            <div className={styles.faqList} data-scroll-reveal="up">
               {content.faq.items.map((item, index) => (
                 <FAQItem
                   key={item.question}
@@ -610,7 +686,10 @@ const LandingPage = ({ locale = "en" }) => {
         </section>
 
         <section className={styles.ctaSection} aria-labelledby="cta-title">
-          <div className={`${styles.container} ${styles.ctaPanel}`}>
+          <div
+            className={`${styles.container} ${styles.ctaPanel}`}
+            data-scroll-reveal="scale"
+          >
             <p className={styles.eyebrow}>{content.cta.eyebrow}</p>
             <h2 id="cta-title">{content.cta.title}</h2>
             <p>{content.cta.description}</p>
