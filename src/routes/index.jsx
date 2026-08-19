@@ -3,194 +3,223 @@ import LandingRedirector from "../components/common/LandingRedirector.jsx";
 import NotFoundPage from "../pages/NotFoundPage.jsx";
 import AppHydrationFallback from "../components/common/AppHydrationFallback.jsx";
 import RouteErrorPage from "../components/common/RouteErrorPage.jsx";
-import { tryRecoverFromChunkLoadError } from "../utils/chunkLoadRecovery.js";
+import DemoRedirector from "../components/common/DemoRedirector.jsx";
+import DashboardLayout from "../layouts/DashboardLayout/DashboardLayout.jsx";
+import DemoProviderLayout from "../layouts/DemoProviderLayout/DemoProviderLayout.jsx";
+import DemoLayout from "../layouts/DemoLayout/DemoLayout.jsx";
+import DepartmentLayout from "../layouts/DepartmentLayout/DepartmentLayout.jsx";
+import SigninPage from "../pages/SigninPage.jsx";
+import SignupPage from "../pages/SignupPage.jsx";
+import VerifyEmailPage from "../pages/VerifyEmailPage.jsx";
+import VerifyAccountPage from "../pages/VerifyAccountPage.jsx";
+import ForgotPasswordPage from "../pages/ForgotPasswordPage.jsx";
+import ResetPasswordPage from "../pages/ResetPasswordPage.jsx";
+import PaymentSuccessPage from "../pages/PaymentSuccessPage.jsx";
+import RequestRoomPage from "../pages/RequestRoomPage.jsx";
+import HomePage from "../pages/HomePage.jsx";
+import ProfilePage from "../pages/ProfilePage.jsx";
+import JoinedRooms from "../pages/JoinedRooms.jsx";
+import MyOwnRoomsPage from "../pages/MyOwnRoomsPage.jsx";
+import PendingInvitationsPage from "../pages/PendingInvitationsPage.jsx";
+import CertificatesPage from "../pages/CertificatesPage.jsx";
+import HomeDemoPage from "../pages/HomeDemoPage.jsx";
+import OwnerHomePage from "../pages/OwnerHomePage.jsx";
+import DemoMembersPage from "../pages/DemoMembersPage.jsx";
+import PublicLibraryPage from "../pages/PublicLibraryPage.jsx";
+import GroupWorkspacePage from "../pages/GroupWorkspacePage.jsx";
+import DemoAssetsPage from "../pages/DemoAssetsPage.jsx";
+import OwnerCoursesPage from "../pages/OwnerCoursesPage.jsx";
+import InquiriesPage from "../pages/InquiriesPage.jsx";
+import DepartmentPage from "../pages/DepartmentPage.jsx";
+import DepartmentMembersPage from "../pages/DepartmentMembersPage.jsx";
+import LearningPathPage from "../pages/LearningPathPage.jsx";
+import LivesPage from "../pages/LivesPage.jsx";
+import CoursePlayerPage from "../pages/CoursePlayerPage.jsx";
+import CoursesPage from "../pages/CoursesPage.jsx";
+import LeaderboardPage from "../pages/LeaderboardPage.jsx";
+import RoadmapsPage from "../pages/RoadmapsPage.jsx";
+import WorkspaceToolsPage from "../pages/WorkspaceToolsPage.jsx";
+import ChatsPage from "../pages/ChatsPage.jsx";
+import LiveRoomPage from "../pages/LiveRoomPage.jsx";
+import CourseStudio from "../features/Demo/PublishCourse/components/CourseStudio/CourseStudio.jsx";
+import CourseManagerLayout from "../features/Demo/OwnerCourses/components/ManageCourse/components/CourseManagerLayout.jsx";
+import CourseDetailsLayout from "../features/Demo/OwnerCourses/components/ViewCourse/CourseDetailsLayout.jsx";
 import { PATHS } from "./paths";
-import { routeModules } from "./routeModules.js";
-
-const lazyComponent = (importer) => async () => {
-  try {
-    const module = await importer();
-    return { Component: module.default };
-  } catch (error) {
-    tryRecoverFromChunkLoadError(error);
-    throw error;
-  }
-};
 
 const routes = [
   { path: PATHS.LANDING, element: <LandingRedirector locale="en" /> },
   { path: "/ar", element: <LandingRedirector locale="ar" /> },
   {
     path: PATHS.SIGNIN,
-    lazy: lazyComponent(routeModules.signin),
+    Component: SigninPage,
   },
   {
     path: PATHS.SIGNUP,
-    lazy: lazyComponent(routeModules.signup),
+    Component: SignupPage,
   },
   {
     path: PATHS.CHECK_EMAIL,
-    lazy: lazyComponent(routeModules.verifyEmail),
+    Component: VerifyEmailPage,
   },
   {
     path: PATHS.VERIFY_EMAIL,
-    lazy: lazyComponent(routeModules.verifyAccount),
+    Component: VerifyAccountPage,
   },
   {
     path: PATHS.FORGOT_PASSWORD,
-    lazy: lazyComponent(routeModules.forgotPassword),
+    Component: ForgotPasswordPage,
   },
   {
     path: PATHS.RESET_PASSWORD,
-    lazy: lazyComponent(routeModules.resetPassword),
+    Component: ResetPasswordPage,
   },
   {
     path: PATHS.PAYMENT_SUCCESS,
-    lazy: lazyComponent(routeModules.paymentSuccess),
+    Component: PaymentSuccessPage,
   },
   {
     path: PATHS.REQUEST_ROOM,
-    lazy: lazyComponent(routeModules.requestRoom),
+    Component: RequestRoomPage,
   },
   {
-    lazy: lazyComponent(routeModules.dashboardLayout),
+    Component: DashboardLayout,
     children: [
       {
         path: PATHS.HOME,
-        lazy: lazyComponent(routeModules.home),
+        Component: HomePage,
       },
       {
         path: PATHS.PROFILE,
-        lazy: lazyComponent(routeModules.profile),
+        Component: ProfilePage,
       },
       {
         path: PATHS.JOINED_ROOMS,
-        lazy: lazyComponent(routeModules.joinedRooms),
+        Component: JoinedRooms,
       },
       {
         path: PATHS.OWN_ROOMS,
-        lazy: lazyComponent(routeModules.ownedRooms),
+        Component: MyOwnRoomsPage,
       },
       {
         path: PATHS.PENDING_INVITATIONS,
-        lazy: lazyComponent(routeModules.pendingInvitations),
+        Component: PendingInvitationsPage,
       },
       {
         path: PATHS.CERTIFICATES,
-        lazy: lazyComponent(routeModules.certificates),
+        Component: CertificatesPage,
       },
     ],
   },
   {
     path: PATHS.DEMO,
-    lazy: lazyComponent(routeModules.demoProviderLayout),
+    Component: DemoProviderLayout,
     children: [
       {
-        lazy: lazyComponent(routeModules.demoLayout),
+        Component: DemoLayout,
         children: [
           {
             index: true,
-            lazy: lazyComponent(routeModules.demoRedirector),
+            Component: DemoRedirector,
           },
           {
             path: PATHS.DEPARTMENTS,
-            lazy: lazyComponent(routeModules.homeDemo),
+            Component: HomeDemoPage,
           },
           {
             path: PATHS.OWNER_HOME,
-            lazy: lazyComponent(routeModules.ownerHome),
+            Component: OwnerHomePage,
           },
           {
             path: PATHS.OWNER_MEMBERS,
-            lazy: lazyComponent(routeModules.demoMembers),
+            Component: DemoMembersPage,
           },
           {
             path: PATHS.OWNER_LIBRARY,
-            lazy: lazyComponent(routeModules.publicLibrary),
+            Component: PublicLibraryPage,
           },
           {
             path: PATHS.GROUP_WORKSPACE,
-            lazy: lazyComponent(routeModules.groupWorkspace),
+            Component: GroupWorkspacePage,
           },
           {
             path: PATHS.COURSE_STUDIO,
-            lazy: lazyComponent(routeModules.courseStudio),
+            Component: CourseStudio,
           },
           {
             path: PATHS.MANAGE_COURSE,
-            lazy: lazyComponent(routeModules.manageCourse),
+            Component: CourseManagerLayout,
           },
           {
             path: PATHS.VIEW_COURSE,
-            lazy: lazyComponent(routeModules.viewCourse),
+            Component: CourseDetailsLayout,
           },
           {
             path: PATHS.SM_ASSETS,
-            lazy: lazyComponent(routeModules.demoAssets),
+            Component: DemoAssetsPage,
           },
           {
             path: PATHS.OWNER_COURSES,
-            lazy: lazyComponent(routeModules.ownerCourses),
+            Component: OwnerCoursesPage,
           },
           {
             path: PATHS.INQUIRIES,
-            lazy: lazyComponent(routeModules.inquiries),
+            Component: InquiriesPage,
           },
         ],
       },
       {
         path: "departments/:departmentId",
-        lazy: lazyComponent(routeModules.departmentLayout),
+        Component: DepartmentLayout,
         children: [
           {
             index: true,
-            lazy: lazyComponent(routeModules.departmentHome),
+            Component: DepartmentPage,
           },
           {
             path: PATHS.MEMBERS,
-            lazy: lazyComponent(routeModules.departmentMembers),
+            Component: DepartmentMembersPage,
           },
           {
             path: PATHS.LEARNING_PATH,
-            lazy: lazyComponent(routeModules.learningPath),
+            Component: LearningPathPage,
           },
           {
             path: PATHS.SM_ASSETS,
-            lazy: lazyComponent(routeModules.demoAssets),
+            Component: DemoAssetsPage,
           },
           {
             path: PATHS.LIVES,
-            lazy: lazyComponent(routeModules.lives),
+            Component: LivesPage,
           },
           {
             path: PATHS.COURSE_PLAYER,
-            lazy: lazyComponent(routeModules.coursePlayer),
+            Component: CoursePlayerPage,
           },
           {
             path: PATHS.COURSES,
-            lazy: lazyComponent(routeModules.courses),
+            Component: CoursesPage,
           },
           {
             path: PATHS.LEADERBOARD,
-            lazy: lazyComponent(routeModules.leaderboard),
+            Component: LeaderboardPage,
           },
           {
             path: PATHS.ROADMAPS,
-            lazy: lazyComponent(routeModules.roadmaps),
+            Component: RoadmapsPage,
           },
           {
             path: PATHS.TOOLS,
-            lazy: lazyComponent(routeModules.tools),
+            Component: WorkspaceToolsPage,
           },
           {
             path: PATHS.CHAT_GROUPS,
-            lazy: lazyComponent(routeModules.chats),
+            Component: ChatsPage,
           },
         ],
       },
       {
         path: "departments/:departmentId/lives/:streamId/room",
-        lazy: lazyComponent(routeModules.liveRoom),
+        Component: LiveRoomPage,
       },
     ],
   },

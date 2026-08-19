@@ -1,6 +1,9 @@
 import { useEffect, useRef } from "react";
 import { IoHappyOutline } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
+import emojiData from "@emoji-mart/data";
+import arabicTranslations from "@emoji-mart/data/i18n/ar.json";
+import { Picker } from "emoji-mart";
 import styles from "./Chats.module.css";
 
 const EmojiPicker = ({
@@ -55,44 +58,23 @@ const EmojiPicker = ({
     const isArabic = String(i18n.resolvedLanguage || i18n.language)
       .toLowerCase()
       .startsWith("ar");
-    let isCancelled = false;
 
-    const mountEmojiPicker = async () => {
-      const [{ default: emojiData }, { Picker }, arabicTranslations] =
-        await Promise.all([
-          import("@emoji-mart/data"),
-          import("emoji-mart"),
-          isArabic
-            ? import("@emoji-mart/data/i18n/ar.json")
-            : Promise.resolve(null),
-        ]);
+    const picker = new Picker({
+      data: emojiData,
+      dynamicWidth: true,
+      i18n: isArabic ? arabicTranslations : undefined,
+      locale: isArabic ? "ar" : "en",
+      onEmojiSelect: (emoji) =>
+        selectionHandlerRef.current?.(emoji.native),
+      previewPosition: "none",
+      set: "native",
+      theme:
+        document.documentElement.dataset.theme === "dark" ? "dark" : "light",
+    });
 
-      if (isCancelled) {
-        return;
-      }
-
-      const picker = new Picker({
-        data: emojiData,
-        dynamicWidth: true,
-        i18n: arabicTranslations?.default,
-        locale: isArabic ? "ar" : "en",
-        onEmojiSelect: (emoji) =>
-          selectionHandlerRef.current?.(emoji.native),
-        previewPosition: "none",
-        set: "native",
-        theme:
-          document.documentElement.dataset.theme === "dark"
-            ? "dark"
-            : "light",
-      });
-
-      pickerMount.replaceChildren(picker);
-    };
-
-    void mountEmojiPicker();
+    pickerMount.replaceChildren(picker);
 
     return () => {
-      isCancelled = true;
       pickerMount.replaceChildren();
     };
   }, [i18n.language, i18n.resolvedLanguage, isOpen]);

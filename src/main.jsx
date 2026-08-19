@@ -4,13 +4,11 @@ import { Provider } from "react-redux";
 import { store } from "./store/Store.js";
 import App from "./App.jsx";
 import { applyTheme, getPreferredTheme } from "./hooks/useTheme.js";
-import { registerChunkLoadRecovery } from "./utils/chunkLoadRecovery.js";
 
 import "./index.css";
 
 import "./i18n";
 
-registerChunkLoadRecovery();
 applyTheme(getPreferredTheme());
 
 const rootElement = document.getElementById("root");
