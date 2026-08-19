@@ -1,10 +1,8 @@
 import {
   IoPlayCircle,
   IoTrashOutline,
-  IoEyeOutline,
   IoBookOutline,
   IoTimeOutline,
-  IoPeopleOutline,
   IoPlayOutline,
 } from "react-icons/io5";
 import styles from "./CourseCard.module.css";
@@ -176,26 +174,6 @@ const CourseCard = ({
 
         {isOwner ? (
           <div className={styles.ownerFooter}>
-            <div className={styles.statsGrid}>
-              <div className={styles.statItem}>
-                <IoEyeOutline aria-hidden="true" />
-                <span>
-                  {t("course-view-count", {
-                    count: views,
-                    formattedCount: numberFormatter.format(views),
-                  })}
-                </span>
-              </div>
-              <div className={styles.statItem}>
-                <IoPeopleOutline aria-hidden="true" />
-                <span>
-                  {t("course-student-count", {
-                    count: studentsCount,
-                    formattedCount: numberFormatter.format(studentsCount),
-                  })}
-                </span>
-              </div>
-            </div>
             <div className={styles.lastUpdated}>
               {t("course-last-updated", { date: lastUpdated })}
             </div>

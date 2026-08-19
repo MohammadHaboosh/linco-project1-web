@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import PageHeaderSection from "../sections/PageHeaderSection/PageHeaderSection";
 import CoursesGridSection from "../sections/CoursesGridSection/CoursesGridSection";
+import CourseCardSkeleton from "../CourseCard/CourseCardSkeleton";
 import styles from "./CoursesContent.module.css";
 import { useDemo } from "../../../../../hooks/useDemo";
 import { useDepartmentCourses } from "../../hooks/useDepartmentCourses";
@@ -43,9 +44,7 @@ const CoursesContent = () => {
         description: courseData.description,
         image: courseData.imagePath,
         lessonsCount: Number(courseData.lessonCount) || 0,
-
         totalDuration: duration,
-
         progress: 0,
         views: 0,
         studentsCount: 0,
@@ -96,9 +95,15 @@ const CoursesContent = () => {
       )}
 
       {isLoading ? (
-        <div className={styles.statePanel} role="status" aria-live="polite">
-          <span className={styles.spinner} aria-hidden="true" />
-          {t("loading-courses")}
+        <div className={styles.skeletonGrid}>
+          {Array(6)
+            .fill(0)
+            .map((_, idx) => (
+              <CourseCardSkeleton
+                key={`course-skeleton-${idx}`}
+                isOwner={isOwner}
+              />
+            ))}
         </div>
       ) : error ? (
         <div
