@@ -1,0 +1,110 @@
+.skeletonContainer {
+  display: flex;
+  height: 100vh;
+  height: 100dvh;
+  width: 100%;
+  background-color: var(--app-page-bg);
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 260px;
+  height: 100%;
+  background-color: var(--app-surface);
+  border-inline-end: 1px solid var(--app-border);
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.sidebarLogo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.sidebarNav {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 0;
+}
+
+.mainWrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background-color: var(--app-page-bg);
+}
+
+.header {
+  height: 70px;
+  background-color: var(--app-surface);
+  border-block-end: 1px solid var(--app-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  flex-shrink: 0;
+  z-index: 5;
+}
+
+.subHeader {
+  height: 55px;
+  background-color: var(--app-surface);
+  border-block-end: 1px solid var(--app-border);
+  display: flex;
+  align-items: center;
+  padding: 0 30px;
+  flex-shrink: 0;
+}
+
+.content {
+  flex: 1;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 80px;
+  }
+  .sidebarLogo > span:last-child,
+  .navItem > span:last-child {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+  .header,
+  .subHeader {
+    padding: 0 16px;
+  }
+  .content {
+    padding: 20px 16px;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

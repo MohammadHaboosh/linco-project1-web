@@ -4,13 +4,14 @@ import Sidebar from "../../components/layouts/SideBar/Sidebar";
 import Header from "../../components/layouts/Header/global_header/Header";
 import SubHeader from "../../components/layouts/Header/sub_header/SubHeader";
 import Footer from "../../components/layouts/Footer/Footer";
+import AppLayoutSkeleton from "../AppLayoutSkeleton";
 import styles from "./MainLayout.module.css";
 
 const LayoutContent = () => {
   const { role, currentRoleView, setRoleView, isLoading, demoData } = useDemo();
 
   if (isLoading) {
-    return <div className={styles.loader}>Loading Demo...</div>;
+    return <AppLayoutSkeleton />;
   }
 
   return (
