@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { registerUser, getUploadUrl, uploadFileToCloud } from "../api/userApi";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { PATHS } from "../../../routes/paths";
 
 export const useSignup = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState({});
@@ -56,16 +58,16 @@ export const useSignup = () => {
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
 
-    if (!formData.email) newErrors.email = "Email is required";
+    if (!formData.email) newErrors.email = t("auth-email-required");
 
     if (!formData.password) {
-      newErrors.password = "Password is required";
+      newErrors.password = t("auth-password-required");
     } else if (!passwordRegex.test(formData.password)) {
-      newErrors.password = "Please meet all password requirements.";
+      newErrors.password = t("auth-meet-password-requirements");
     }
 
     if (!formData.confirmPassword) {
-      newErrors.confirmPassword = "Confirm your password";
+      newErrors.confirmPassword = t("auth-confirm-your-password");
     }
 
     if (
@@ -73,7 +75,7 @@ export const useSignup = () => {
       formData.confirmPassword &&
       formData.password !== formData.confirmPassword
     ) {
-      newErrors.passwordMatch = "Passwords do not match!";
+      newErrors.passwordMatch = t("auth-passwords-do-not-match");
     }
 
     setErrors(newErrors);
@@ -82,9 +84,12 @@ export const useSignup = () => {
 
   const validateStep2 = () => {
     const newErrors = {};
-    if (!formData.firstName) newErrors.firstName = "First name is required";
-    if (!formData.lastName) newErrors.lastName = "Last name is required";
-    if (!formData.birthDate) newErrors.birthDate = "Date of birth is required";
+    if (!formData.firstName)
+      newErrors.firstName = t("auth-first-name-required");
+    if (!formData.lastName)
+      newErrors.lastName = t("auth-last-name-required");
+    if (!formData.birthDate)
+      newErrors.birthDate = t("auth-date-of-birth-required");
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -93,7 +98,7 @@ export const useSignup = () => {
   const validateStep3 = () => {
     const newErrors = {};
     if (!formData.imagePath)
-      newErrors.imagePath = "Please upload a profile image";
+      newErrors.imagePath = t("auth-profile-image-required");
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -139,14 +144,19 @@ export const useSignup = () => {
     } catch (error) {
       console.error("Signup error:", error);
 
-      if (error.message === "Email already exists") {
+      if (
+        error.status === 409 ||
+        error.code === "EmailAlreadyExists" ||
+        error.code === "EmailAlreadyExistsException" ||
+        error.message === "Email already exists"
+      ) {
         setStep(1);
         setErrors((prev) => ({
           ...prev,
-          email: "This email is already in use. Please sign in or use another.",
+          email: t("auth-email-already-in-use"),
         }));
       } else {
-        setServerError(error.message || "Failed to sign up. Please try again.");
+        setServerError(error.message || t("auth-signup-failed"));
       }
     } finally {
       setIsSubmitting(false);

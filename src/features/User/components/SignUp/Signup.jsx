@@ -14,8 +14,11 @@ import SignupStep3 from "./SignupStep3";
 import styles from "./Signup.module.css";
 
 const SignupPage = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
+  const numberFormatter = new Intl.NumberFormat(
+    i18n.resolvedLanguage || i18n.language || "en",
+  );
   const {
     step,
     formData,
@@ -38,18 +41,18 @@ const SignupPage = () => {
           <Link
             to={PATHS.LANDING}
             className={styles["brand-link"]}
-            aria-label="LinCo home"
+            aria-label={t("auth-linco-home")}
           >
             <img src="/icons/linco-logo-96.webp" alt="" width="48" height="48" />
             <span>
-              <strong>LinCo</strong>
-              <small>Link Company</small>
+              <strong>{t("linco-brand")}</strong>
+              <small>{t("link-company")}</small>
             </span>
           </Link>
 
           <div className={styles["brand-text"]}>
-            <p className={styles.eyebrow}>Build a stronger learning foundation</p>
-            <h2>Bring your company&apos;s learning into one demo.</h2>
+            <p className={styles.eyebrow}>{t("auth-signup-eyebrow")}</p>
+            <h2>{t("auth-signup-hero-title")}</h2>
             <p>
               {t(
                 "transform-the-way-your-company-learns-build-a-centralized-hub-for-onboarding-training-and-team-collaboration-0",
@@ -58,31 +61,31 @@ const SignupPage = () => {
             <ul className={styles["benefit-list"]}>
               <li>
                 <IoCheckmarkCircle aria-hidden="true" />
-                <span>Dedicated department demos</span>
+                <span>{t("auth-benefit-department-demos")}</span>
               </li>
               <li>
                 <IoCheckmarkCircle aria-hidden="true" />
-                <span>Live and self-paced learning</span>
+                <span>{t("auth-benefit-flexible-learning")}</span>
               </li>
               <li>
                 <IoCheckmarkCircle aria-hidden="true" />
-                <span>Progress your team can see</span>
+                <span>{t("auth-benefit-visible-progress")}</span>
               </li>
             </ul>
           </div>
 
           <div className={styles["workspace-preview"]} aria-hidden="true">
             <div className={styles["preview-header"]}>
-              <span>Your learning demo</span>
-              <small>Ready</small>
+              <span>{t("auth-your-learning-demo")}</span>
+              <small>{t("auth-ready")}</small>
             </div>
             <div className={styles["preview-row"]}>
               <span className={styles["preview-icon"]}>
                 <IoBookOutline />
               </span>
               <span>
-                <strong>Learning paths</strong>
-                <small>Organized by department</small>
+                <strong>{t("auth-learning-paths")}</strong>
+                <small>{t("auth-organized-by-department")}</small>
               </span>
               <i style={{ "--preview-progress": "78%" }} />
             </div>
@@ -91,8 +94,8 @@ const SignupPage = () => {
                 <IoAnalyticsOutline />
               </span>
               <span>
-                <strong>Team progress</strong>
-                <small>Clear and measurable</small>
+                <strong>{t("auth-team-progress")}</strong>
+                <small>{t("auth-clear-and-measurable")}</small>
               </span>
               <i style={{ "--preview-progress": "64%" }} />
             </div>
@@ -104,17 +107,24 @@ const SignupPage = () => {
         <div className={styles["form-wrapper"]}>
           <div className={styles.header}>
             <div className={styles["step-heading"]}>
-              <span className={styles["header-kicker"]}>Create your account</span>
-              <span className={styles["step-count"]}>Step {step} of 3</span>
+              <span className={styles["header-kicker"]}>
+                {t("create-account")}
+              </span>
+              <span className={styles["step-count"]}>
+                {t("auth-step-of", {
+                  step: numberFormatter.format(step),
+                  total: numberFormatter.format(3),
+                })}
+              </span>
             </div>
             <h1 className={styles.title}>{t("sign-up")}</h1>
             <p className={styles.subtitle}>
-              Join thousands of learners on LinCo.
+              {t("auth-join-linco-learners")}
             </p>
             <div
               className={styles["progress-track"]}
               role="progressbar"
-              aria-label="Account setup progress"
+              aria-label={t("auth-account-setup-progress")}
               aria-valuemin="1"
               aria-valuemax="3"
               aria-valuenow={step}
@@ -178,9 +188,9 @@ const SignupPage = () => {
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (
-                  "Loading..."
+                  t("loading")
                 ) : step === 3 ? (
-                  "Sign Up"
+                  t("sign-up")
                 ) : (
                   <>
                     {t("continue")} {" "}

@@ -1,7 +1,10 @@
 import { IoPerson, IoArrowBackOutline } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
 import styles from "./Signup.module.css";
 
 const SignupStep3 = ({ formData, onFileChange, onBack, errors }) => {
+  const { t } = useTranslation();
+
   return (
     <>
       <label className={styles["upload-box"]}>
@@ -16,7 +19,7 @@ const SignupStep3 = ({ formData, onFileChange, onBack, errors }) => {
         <span className={styles["upload-text"]}>
           {formData.imagePath
             ? formData.imagePath.name
-            : "Upload a profile image"}
+            : t("auth-upload-profile-image")}
         </span>
       </label>
       {errors.imagePath && (
@@ -36,7 +39,7 @@ const SignupStep3 = ({ formData, onFileChange, onBack, errors }) => {
         onClick={onBack}
       >
         <IoArrowBackOutline className={styles["back-icon"]} />
-        Back to edit
+        {t("auth-back-to-edit")}
       </button>
     </>
   );

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   signinUser,
   resendVerificationEmail,
@@ -11,6 +12,7 @@ import { setUser } from "../store/userSlice.js";
 export const useSignin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -50,13 +52,13 @@ export const useSignin = () => {
   const validate = () => {
     const newErrors = {};
     if (!formData.email) {
-      newErrors.email = "Email is required";
+      newErrors.email = t("auth-email-required");
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address";
+      newErrors.email = t("auth-valid-email-required");
     }
 
     if (!formData.password) {
-      newErrors.password = "Password is required";
+      newErrors.password = t("auth-password-required");
     }
 
     setErrors(newErrors);
@@ -73,12 +75,12 @@ export const useSignin = () => {
       await resendVerificationEmail(formData.email);
       setResendMessage({
         type: "success",
-        text: "Verification email sent successfully! Please check your inbox.",
+        text: t("auth-verification-email-sent"),
       });
     } catch (error) {
       setResendMessage({
         type: "error",
-        text: error.message || "Failed to resend email. Please try again.",
+        text: error.message || t("auth-resend-email-failed"),
       });
     } finally {
       setIsResending(false);
@@ -112,7 +114,7 @@ export const useSignin = () => {
         setIsUnverified(true);
       }
       setServerError(
-        error.message || "Failed to sign in. Please check your credentials.",
+        error.message || t("auth-signin-failed"),
       );
     } finally {
       setIsSubmitting(false);
@@ -123,7 +125,7 @@ export const useSignin = () => {
     if (e) e.preventDefault();
 
     if (!twoFactorCode || twoFactorCode.length < 6) {
-      setTwoFactorError("Please enter a valid 6-digit code.");
+      setTwoFactorError(t("auth-valid-six-digit-code-required"));
       return;
     }
 
@@ -136,7 +138,7 @@ export const useSignin = () => {
       dispatch(setUser(userData));
       navigate("/home");
     } catch (error) {
-      setTwoFactorError(error.message || "Invalid authentication code.");
+      setTwoFactorError(error.message || t("auth-invalid-authentication-code"));
     } finally {
       setIsVerifying2FA(false);
     }

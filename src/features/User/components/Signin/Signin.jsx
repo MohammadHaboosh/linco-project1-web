@@ -18,7 +18,10 @@ import { useTranslation } from "react-i18next";
 
 const Signin = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const numberFormatter = new Intl.NumberFormat(
+    i18n.resolvedLanguage || i18n.language || "en",
+  );
   const {
     formData,
     errors,
@@ -57,18 +60,18 @@ const Signin = () => {
           <Link
             to={PATHS.LANDING}
             className={styles["brand-link"]}
-            aria-label="LinCo home"
+            aria-label={t("auth-linco-home")}
           >
             <img src="/icons/linco-logo-96.webp" alt="" width="48" height="48" />
             <span>
-              <strong>LinCo</strong>
-              <small>Link Company</small>
+              <strong>{t("linco-brand")}</strong>
+              <small>{t("link-company")}</small>
             </span>
           </Link>
 
           <div className={styles["brand-text"]}>
-            <p className={styles.eyebrow}>Corporate learning, connected</p>
-            <h2>Welcome back to your team&apos;s learning demo.</h2>
+            <p className={styles.eyebrow}>{t("auth-signin-eyebrow")}</p>
+            <h2>{t("auth-signin-hero-title")}</h2>
             <p>
               {t(
                 "transform-the-way-your-company-learns-build-a-centralized-hub-for-onboarding-training-and-team-collaboration-0",
@@ -77,31 +80,35 @@ const Signin = () => {
             <ul className={styles["benefit-list"]}>
               <li>
                 <IoCheckmarkCircle aria-hidden="true" />
-                <span>Learning paths in one place</span>
+                <span>{t("auth-benefit-learning-paths")}</span>
               </li>
               <li>
                 <IoCheckmarkCircle aria-hidden="true" />
-                <span>Live sessions and team collaboration</span>
+                <span>{t("auth-benefit-live-collaboration")}</span>
               </li>
               <li>
                 <IoCheckmarkCircle aria-hidden="true" />
-                <span>Clear progress for every department</span>
+                <span>{t("auth-benefit-clear-progress")}</span>
               </li>
             </ul>
           </div>
 
           <div className={styles["workspace-preview"]} aria-hidden="true">
             <div className={styles["preview-header"]}>
-              <span>Learning demo</span>
-              <small>Active</small>
+              <span>{t("auth-learning-demo")}</span>
+              <small>{t("auth-active")}</small>
             </div>
             <div className={styles["preview-row"]}>
               <span className={styles["preview-icon"]}>
                 <IoBookOutline />
               </span>
               <span>
-                <strong>Team courses</strong>
-                <small>12 learning activities</small>
+                <strong>{t("auth-team-courses")}</strong>
+                <small>
+                  {t("auth-learning-activities", {
+                    formattedCount: numberFormatter.format(12),
+                  })}
+                </small>
               </span>
               <i style={{ "--preview-progress": "82%" }} />
             </div>
@@ -110,8 +117,8 @@ const Signin = () => {
                 <IoAnalyticsOutline />
               </span>
               <span>
-                <strong>Weekly progress</strong>
-                <small>On track</small>
+                <strong>{t("auth-weekly-progress")}</strong>
+                <small>{t("auth-on-track")}</small>
               </span>
               <i style={{ "--preview-progress": "68%" }} />
             </div>
@@ -123,14 +130,16 @@ const Signin = () => {
         <div className={styles["form-wrapper"]}>
           <div className={styles.header}>
             <span className={styles["header-kicker"]}>
-              {is2FAStep ? "Secure verification" : "Welcome back"}
+              {is2FAStep
+                ? t("auth-secure-verification")
+                : t("welcome-back")}
             </span>
             <h1 className={styles.title}>
-              {is2FAStep ? "Two-Factor Authentication" : t("sign-in")}
+              {is2FAStep ? t("auth-two-factor-authentication") : t("sign-in")}
             </h1>
             <p className={styles.subtitle}>
               {is2FAStep ? (
-                "Please enter the 6-digit code from your authenticator app."
+                t("auth-enter-authenticator-code")
               ) : (
                 <>
                   {t("welcome-back")}
@@ -158,6 +167,7 @@ const Signin = () => {
                       onChange={handleInputChange}
                       className={styles["white-input"]}
                       autoComplete="email"
+                      dir="ltr"
                     />
                     {errors.email && (
                       <span className={styles["error-text"]}>{errors.email}</span>
@@ -169,18 +179,21 @@ const Signin = () => {
                     <input
                       type={showPassword ? "text" : "password"}
                       name="password"
-                      placeholder="Enter your password"
+                      placeholder={t("auth-enter-password")}
                       value={formData.password}
                       onChange={handleInputChange}
                       className={styles["white-input"]}
                       autoComplete="current-password"
+                      dir="ltr"
                     />
                     <button
                       type="button"
                       onClick={togglePassword}
                       className={styles["icon-btn"]}
                       aria-label={
-                        showPassword ? "Hide password" : "Show password"
+                        showPassword
+                          ? t("auth-hide-password")
+                          : t("auth-show-password")
                       }
                     >
                       {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
@@ -195,7 +208,7 @@ const Signin = () => {
                   <div className={styles["divider-container"]}>
                     <div className={styles.line}></div>
                     <span className={styles["divider-text"]}>
-                      OR WITH GOOGLE
+                      {t("auth-or-with-google")}
                     </span>
                     <div className={styles.line}></div>
                   </div>
@@ -206,17 +219,17 @@ const Signin = () => {
                     onClick={handleGoogleLogin}
                   >
                     <FcGoogle className={styles["google-icon"]} />
-                    Continue with Google
+                    {t("auth-continue-with-google")}
                   </button>
 
                   <div className={styles["forgot-password"]}>
-                    <span>Forget password ? </span>
+                    <span>{t("auth-forgot-password-question")} </span>
                     <button
                       type="button"
                       onClick={() => navigate(PATHS.FORGOT_PASSWORD)}
                       className={styles["forgot-link"]}
                     >
-                      Yes
+                      {t("auth-reset-it")}
                     </button>
                   </div>
                 </div>
@@ -233,8 +246,8 @@ const Signin = () => {
                         disabled={isResending}
                       >
                         {isResending
-                          ? "Sending..."
-                          : "Resend Verification Email"}
+                          ? t("auth-sending")
+                          : t("auth-resend-verification-email")}
                       </button>
                     </div>
                   )}
@@ -257,14 +270,14 @@ const Signin = () => {
                   className={styles["btn-secondary"]}
                   onClick={() => navigate(PATHS.SIGNUP)}
                 >
-                  Sign Up
+                  {t("sign-up")}
                 </button>
                 <button
                   type="submit"
                   className={styles["btn-primary"]}
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? "Signing In..." : "Sign In"}
+                  {isSubmitting ? t("auth-signing-in") : t("sign-in")}
                 </button>
                 </div>
               </>
@@ -282,7 +295,8 @@ const Signin = () => {
                       value={twoFactorCode}
                       onChange={(e) => setTwoFactorCode(e.target.value)}
                       className={`${styles["white-input"]} ${styles["code-input"]}`}
-                      aria-label="Six-digit authentication code"
+                      aria-label={t("verification-code")}
+                      dir="ltr"
                     />
                   </div>
                   {twoFactorError && (
@@ -298,14 +312,14 @@ const Signin = () => {
                     className={styles["btn-secondary"]}
                     onClick={() => setIs2FAStep(false)}
                   >
-                    Back
+                    {t("back")}
                   </button>
                   <button
                     type="submit"
                     className={styles["btn-primary"]}
                     disabled={isVerifying2FA}
                   >
-                    {isVerifying2FA ? "Verifying..." : "Verify"}
+                    {isVerifying2FA ? t("auth-verifying") : t("auth-verify")}
                   </button>
                 </div>
               </>

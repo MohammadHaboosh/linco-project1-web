@@ -11,10 +11,12 @@ import {
 } from "react-icons/io5";
 import { resendVerificationEmail } from "../../api/userApi.js";
 import { PATHS } from "../../../../routes/paths.js";
+import { Trans, useTranslation } from "react-i18next";
 import styles from "./VerifyEmail.module.css";
 
 const VerifyEmail = () => {
   const location = useLocation();
+  const { t } = useTranslation();
   const userEmail = location.state?.email;
   const [isResending, setIsResending] = useState(false);
   const [resendMessage, setResendMessage] = useState({
@@ -26,7 +28,7 @@ const VerifyEmail = () => {
     if (!userEmail) {
       setResendMessage({
         type: "error",
-        text: "We couldn't find your email address. Please return to sign up.",
+        text: t("auth-email-address-not-found"),
       });
       return;
     }
@@ -38,12 +40,12 @@ const VerifyEmail = () => {
       await resendVerificationEmail(userEmail);
       setResendMessage({
         type: "success",
-        text: "A new verification email is on its way.",
+        text: t("auth-new-verification-email-sent"),
       });
     } catch (error) {
       setResendMessage({
         type: "error",
-        text: error.message || "We couldn't resend the email. Please try again.",
+        text: error.message || t("auth-resend-email-failed"),
       });
     } finally {
       setIsResending(false);
@@ -59,50 +61,47 @@ const VerifyEmail = () => {
           <Link
             to={PATHS.LANDING}
             className={styles["brand-link"]}
-            aria-label="LinCo home"
+            aria-label={t("auth-linco-home")}
           >
             <img src="/icons/linco-logo-96.webp" alt="" width="48" height="48" />
             <span>
-              <strong>LinCo</strong>
-              <small>Link Company</small>
+              <strong>{t("linco-brand")}</strong>
+              <small>{t("link-company")}</small>
             </span>
           </Link>
 
           <div className={styles["brand-text"]}>
-            <p className={styles.eyebrow}>One last step</p>
-            <h2>Your learning demo is almost ready.</h2>
-            <p>
-              Verify your email to protect your account and unlock your LinCo
-              learning demo.
-            </p>
+            <p className={styles.eyebrow}>{t("auth-one-last-step")}</p>
+            <h2>{t("auth-learning-demo-almost-ready")}</h2>
+            <p>{t("auth-verify-email-hero-description")}</p>
             <ul className={styles["benefit-list"]}>
               <li>
                 <IoCheckmarkCircle aria-hidden="true" />
-                <span>Secure account activation</span>
+                <span>{t("auth-secure-account-activation")}</span>
               </li>
               <li>
                 <IoCheckmarkCircle aria-hidden="true" />
-                <span>One-click email verification</span>
+                <span>{t("auth-one-click-verification")}</span>
               </li>
               <li>
                 <IoCheckmarkCircle aria-hidden="true" />
-                <span>Instant access after sign in</span>
+                <span>{t("auth-instant-access-after-signin")}</span>
               </li>
             </ul>
           </div>
 
           <div className={styles["verification-preview"]} aria-hidden="true">
             <div className={styles["preview-header"]}>
-              <span>Account setup</span>
-              <small>Email sent</small>
+              <span>{t("auth-account-setup")}</span>
+              <small>{t("auth-email-sent")}</small>
             </div>
             <div className={styles["preview-row"]}>
               <span className={styles["preview-icon"]}>
                 <IoMailOpenOutline />
               </span>
               <span>
-                <strong>Check your inbox</strong>
-                <small>Open the email from LinCo</small>
+                <strong>{t("auth-check-your-inbox")}</strong>
+                <small>{t("auth-open-email-from-linco")}</small>
               </span>
               <i>1</i>
             </div>
@@ -111,8 +110,8 @@ const VerifyEmail = () => {
                 <IoShieldCheckmarkOutline />
               </span>
               <span>
-                <strong>Verify your account</strong>
-                <small>Use the secure link inside</small>
+                <strong>{t("auth-verify-your-account")}</strong>
+                <small>{t("auth-use-secure-link")}</small>
               </span>
               <i>2</i>
             </div>
@@ -132,41 +131,45 @@ const VerifyEmail = () => {
           </div>
 
           <header className={styles.header}>
-            <span className={styles["header-kicker"]}>Email verification</span>
+            <span className={styles["header-kicker"]}>
+              {t("auth-email-verification")}
+            </span>
             <h1 id="verify-email-title" className={styles.title}>
-              Check your inbox
+              {t("auth-check-your-inbox")}
             </h1>
             <p className={styles.description}>
-              We sent a secure verification link to
+              {t("auth-verification-link-sent-to")}
             </p>
           </header>
 
           <div className={styles["email-card"]}>
             <IoMailOutline aria-hidden="true" />
-            <strong>
-              {userEmail || "the email address you registered with"}
+            <strong dir={userEmail ? "ltr" : undefined}>
+              {userEmail || t("auth-registered-email-address")}
             </strong>
           </div>
 
           <div className={styles["instruction-card"]}>
             <IoLockClosedOutline aria-hidden="true" />
             <p>
-              Open the email and select <strong>Verify email</strong>. The link
-              is unique to your account and may expire for your security.
+              <Trans
+                i18nKey="auth-verify-email-instruction"
+                components={{ strong: <strong /> }}
+              />
             </p>
           </div>
 
           <Link to={PATHS.SIGNIN} className={styles["btn-primary"]}>
-            Continue to sign in
+            {t("auth-continue-to-sign-in")}
             <IoArrowForwardOutline aria-hidden="true" />
           </Link>
 
           <div className={styles.divider} aria-hidden="true">
-            <span>Didn&apos;t get the email?</span>
+            <span>{t("auth-did-not-get-email")}</span>
           </div>
 
           <div className={styles["resend-section"]}>
-            <p>Check your spam folder or request a fresh verification link.</p>
+            <p>{t("auth-check-spam-or-request-link")}</p>
             <button
               type="button"
               className={styles["btn-secondary"]}
@@ -174,7 +177,9 @@ const VerifyEmail = () => {
               disabled={isResending}
             >
               <IoMailOpenOutline aria-hidden="true" />
-              {isResending ? "Sending..." : "Resend verification email"}
+              {isResending
+                ? t("auth-sending")
+                : t("auth-resend-verification-email")}
             </button>
           </div>
 
@@ -190,7 +195,7 @@ const VerifyEmail = () => {
 
           <Link to={PATHS.SIGNUP} className={styles["back-link"]}>
             <IoArrowBackOutline className={styles["back-icon"]} aria-hidden="true" />
-            Back to sign up
+            {t("auth-back-to-sign-up")}
           </Link>
         </section>
       </main>

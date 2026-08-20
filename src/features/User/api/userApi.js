@@ -1,6 +1,14 @@
 import { apiFetch, createApiHeaders } from "../../../api/apiFetch";
+import i18n from "../../../i18n";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+const createResponseError = (data, response, fallbackKey) => {
+  const error = new Error(data.message || i18n.t(fallbackKey));
+  error.code = data.error || data.code;
+  error.status = response.status;
+  return error;
+};
 
 export const getUploadUrl = async (fileName) => {
   const response = await apiFetch("/users/upload-url", {
@@ -14,7 +22,7 @@ export const getUploadUrl = async (fileName) => {
   const data = await response.json().catch(() => ({}));
 
   if (!response.ok || data.success === false) {
-    throw new Error(data.message || "Failed to generate upload URL");
+    throw createResponseError(data, response, "auth-upload-url-failed");
   }
 
   return data;
@@ -31,7 +39,7 @@ export const uploadFileToCloud = async (uploadUrl, file) => {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to upload image to the cloud");
+    throw new Error(i18n.t("auth-upload-image-failed"));
   }
 };
 
@@ -47,7 +55,7 @@ export const updateUserProfilePhoto = async (userId, imagePath) => {
   const data = await response.json().catch(() => ({}));
 
   if (!response.ok || data.success === false) {
-    throw new Error(data.message || "Failed to update profile photo");
+    throw createResponseError(data, response, "auth-update-profile-photo-failed");
   }
 
   return data;
@@ -73,7 +81,7 @@ export const registerUser = async (userData) => {
 
   if (!response.ok || data.success === false) {
     console.error("Backend Error Response:", data);
-    throw new Error(data.message || `HTTP error! status: ${response.status}`);
+    throw createResponseError(data, response, "auth-signup-failed");
   }
 
   return data;
@@ -96,11 +104,7 @@ export const signinUser = async (credentials) => {
     const data = await response.json().catch(() => ({}));
 
     if (!response.ok || data.success === false) {
-      const err = new Error(
-        data.message || `HTTP error! status: ${response.status}`,
-      );
-      err.code = data.error;
-      throw err;
+      throw createResponseError(data, response, "auth-signin-failed");
     }
 
     return data;
@@ -127,7 +131,11 @@ export const verify2FASignin = async (twoFactorToken, code) => {
     const data = await response.json().catch(() => ({}));
 
     if (!response.ok || data.success === false) {
-      throw new Error(data.message || `HTTP error! status: ${response.status}`);
+      throw createResponseError(
+        data,
+        response,
+        "auth-two-factor-verification-failed",
+      );
     }
 
     return data;
@@ -153,7 +161,7 @@ export const resendVerificationEmail = async (email) => {
     const data = await response.json().catch(() => ({}));
 
     if (!response.ok || data.success === false) {
-      throw new Error(data.message || `HTTP error! status: ${response.status}`);
+      throw createResponseError(data, response, "auth-resend-email-failed");
     }
 
     return data;
@@ -176,7 +184,7 @@ export const logoutUser = async () => {
     const data = await response.json().catch(() => ({}));
 
     if (!response.ok || data.success === false) {
-      throw new Error(data.message || `HTTP error! status: ${response.status}`);
+      throw createResponseError(data, response, "auth-signout-failed");
     }
 
     return data;
@@ -202,7 +210,7 @@ export const fetchCurrentUser = async () => {
   if (response.status === 401) return null;
 
   if (!response.ok || data.success === false) {
-    throw new Error(data.message || "Failed to fetch the current user");
+    throw createResponseError(data, response, "auth-current-user-failed");
   }
 
   return data;
@@ -223,7 +231,7 @@ export const verifyUserEmail = async (token) => {
     const data = await response.json().catch(() => ({}));
 
     if (!response.ok || data.success === false) {
-      throw new Error(data.message || `HTTP error! status: ${response.status}`);
+      throw createResponseError(data, response, "auth-account-verification-failed");
     }
 
     return data;
@@ -246,7 +254,7 @@ export const forgotPassword = async (email) => {
     const data = await response.json().catch(() => ({}));
 
     if (!response.ok || data.success === false) {
-      throw new Error(data.message || `HTTP error! status: ${response.status}`);
+      throw createResponseError(data, response, "auth-reset-link-failed");
     }
 
     return data;
@@ -273,7 +281,7 @@ export const resetPassword = async (token, newPassword) => {
     const data = await response.json().catch(() => ({}));
     
     if (!response.ok || data.success === false) {
-      throw new Error(data.message || `HTTP error! status: ${response.status}`);
+      throw createResponseError(data, response, "auth-reset-password-failed");
     }
 
     return data;

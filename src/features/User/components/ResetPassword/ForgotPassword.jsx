@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoMailOutline, IoKeyOutline } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
 import { forgotPassword } from "../../api/userApi.js";
 import { PATHS } from "../../../../routes/paths"; 
 import styles from "./PasswordReset.module.css";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("idle"); 
   const [message, setMessage] = useState("");
@@ -15,7 +17,7 @@ const ForgotPassword = () => {
     e.preventDefault();
     if (!email) {
       setStatus("error");
-      setMessage("Please enter your email address.");
+      setMessage(t("auth-enter-email-address"));
       return;
     }
 
@@ -25,10 +27,10 @@ const ForgotPassword = () => {
     try {
       await forgotPassword(email);
       setStatus("success");
-      setMessage("Password reset link sent! Please check your email inbox.");
+      setMessage(t("auth-password-reset-link-sent"));
     } catch (error) {
       setStatus("error");
-      setMessage(error.message || "Failed to send reset link. Please try again.");
+      setMessage(error.message || t("auth-reset-link-failed"));
     }
   };
 
@@ -39,12 +41,13 @@ const ForgotPassword = () => {
           <IoKeyOutline className={styles["header-icon"]} />
         </div>
         
-        <h1 className={styles["title"]}>Forgot Password?</h1>
+        <h1 className={styles["title"]}>{t("auth-forgot-password-title")}</h1>
         
         {status === "success" ? (
           <>
             <p className={styles["subtitle"]}>
-              We've sent a secure link to <strong>{email}</strong>. Click the link to reset your password.
+              {t("auth-secure-link-sent-to")} <strong dir="ltr">{email}</strong>.{" "}
+              {t("auth-click-link-to-reset-password")}
             </p>
             <div className={`${styles.alert} ${styles.success}`}>
               {message}
@@ -53,7 +56,7 @@ const ForgotPassword = () => {
         ) : (
           <>
             <p className={styles["subtitle"]}>
-              No worries, we'll send you reset instructions.
+              {t("auth-reset-instructions-description")}
             </p>
 
             {status === "error" && (
@@ -65,11 +68,12 @@ const ForgotPassword = () => {
                 <IoMailOutline className={styles["input-icon"]} />
                 <input
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder={t("auth-enter-your-email")}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className={styles["input-field"]}
                   disabled={status === "loading"}
+                  dir="ltr"
                 />
               </div>
 
@@ -78,7 +82,9 @@ const ForgotPassword = () => {
                 className={styles["btn-primary"]}
                 disabled={status === "loading"}
               >
-                {status === "loading" ? "Sending..." : "Reset Password"}
+                {status === "loading"
+                  ? t("auth-sending")
+                  : t("auth-reset-password")}
               </button>
             </form>
           </>
@@ -88,7 +94,7 @@ const ForgotPassword = () => {
           className={styles["btn-text"]}
           onClick={() => navigate(PATHS.SIGNIN)}
         >
-          ← Back to Sign In
+          {t("auth-back-to-sign-in")}
         </button>
       </div>
     </div>

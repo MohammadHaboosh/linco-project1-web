@@ -10,10 +10,11 @@ import {
 import { resetPassword } from "../../api/userApi";
 import { PATHS } from "../../../../routes/paths";
 import styles from "./PasswordReset.module.css";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 const ResetPassword = () => {
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
 
@@ -27,21 +28,29 @@ const ResetPassword = () => {
 
   const missingCriteria = [];
   if (password) {
-    if (!/.{8,}/.test(password)) missingCriteria.push("8+ chars");
-    if (!/[A-Z]/.test(password)) missingCriteria.push("uppercase");
-    if (!/[a-z]/.test(password)) missingCriteria.push("lowercase");
-    if (!/\d/.test(password)) missingCriteria.push("number");
-    if (!/[@$!%*?&]/.test(password)) missingCriteria.push("special char");
+    if (!/.{8,}/.test(password))
+      missingCriteria.push(t("auth-password-minimum-length"));
+    if (!/[A-Z]/.test(password))
+      missingCriteria.push(t("auth-password-uppercase"));
+    if (!/[a-z]/.test(password))
+      missingCriteria.push(t("auth-password-lowercase"));
+    if (!/\d/.test(password))
+      missingCriteria.push(t("auth-password-number"));
+    if (!/[@$!%*?&]/.test(password))
+      missingCriteria.push(t("auth-password-special-character"));
   }
+
+  const requirementsList = new Intl.ListFormat(
+    i18n.resolvedLanguage || i18n.language || "en",
+    { style: "short", type: "conjunction" },
+  ).format(missingCriteria);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!token) {
       setStatus("error");
-      setMessage(
-        "Missing verification token. Please use the link sent to your email.",
-      );
+      setMessage(t("auth-missing-reset-token"));
       return;
     }
 
@@ -50,13 +59,13 @@ const ResetPassword = () => {
 
     if (!passwordRegex.test(password)) {
       setStatus("error");
-      setMessage("Please ensure your password meets all requirements.");
+      setMessage(t("auth-meet-password-requirements"));
       return;
     }
 
     if (password !== confirmPassword) {
       setStatus("error");
-      setMessage("Passwords do not match.");
+      setMessage(t("auth-passwords-do-not-match"));
       return;
     }
 
@@ -69,7 +78,7 @@ const ResetPassword = () => {
     } catch (error) {
       setStatus("error");
       setMessage(
-        error.message || "Failed to reset password. The link might be expired.",
+        error.message || t("auth-reset-password-failed"),
       );
     }
   };
@@ -85,15 +94,17 @@ const ResetPassword = () => {
               className={`${styles["header-icon"]} ${styles["completed-icon"]}`}
             />
           </div>
-          <h1 className={styles["title"]}>Password Reset</h1>
+          <h1 className={styles["title"]}>{t("auth-password-reset-title")}</h1>
           <p className={styles["subtitle"]}>
-            {t('your-password-has-been-successfully-reset-you-can-now-use-your-new-password-to-sign-in')}
+            {t(
+              "your-password-has-been-successfully-reset-you-can-now-use-your-new-password-to-sign-in",
+            )}
           </p>
           <button
             className={styles["btn-primary"]}
             onClick={() => navigate(PATHS.SIGNIN)}
           >
-            {t('go-to-sign-in')}
+            {t("go-to-sign-in")}
           </button>
         </div>
       </div>
@@ -107,9 +118,9 @@ const ResetPassword = () => {
           <IoLockClosedOutline className={styles["header-icon"]} />
         </div>
 
-        <h1 className={styles["title"]}>Set New Password</h1>
+        <h1 className={styles["title"]}>{t("auth-set-new-password")}</h1>
         <p className={styles["subtitle"]}>
-          Please enter your new password below.
+          {t("auth-enter-new-password-below")}
         </p>
 
         {status === "error" && (
@@ -121,7 +132,7 @@ const ResetPassword = () => {
             <IoLockClosedOutline className={styles["input-icon"]} />
             <input
               type={showPassword ? "text" : "password"}
-              placeholder="New password"
+              placeholder={t("new-password")}
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
@@ -129,11 +140,17 @@ const ResetPassword = () => {
               }}
               className={styles["input-field"]}
               disabled={status === "loading"}
+              dir="ltr"
             />
             <button
               type="button"
               className={styles["icon-btn"]}
               onClick={() => setShowPassword(!showPassword)}
+              aria-label={
+                showPassword
+                  ? t("auth-hide-password")
+                  : t("auth-show-password")
+              }
             >
               {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
             </button>
@@ -143,13 +160,15 @@ const ResetPassword = () => {
           <div className={styles["feedback-container"]}>
             {password && missingCriteria.length > 0 && (
               <span className={styles["password-feedback-text"]}>
-                Missing: {missingCriteria.join(", ")}.
+                {t("auth-password-missing-requirements", {
+                  requirements: requirementsList,
+                })}
               </span>
             )}
             {password && missingCriteria.length === 0 && (
               <span className={styles["password-success-text"]}>
-                <IoCheckmarkCircle className={styles["success-icon"]} /> Secure
-                password
+                <IoCheckmarkCircle className={styles["success-icon"]} />
+                {t("auth-secure-password")}
               </span>
             )}
           </div>
@@ -158,7 +177,7 @@ const ResetPassword = () => {
             <IoLockClosedOutline className={styles["input-icon"]} />
             <input
               type={showConfirmPassword ? "text" : "password"}
-              placeholder="Confirm new password"
+              placeholder={t("confirm-new-password")}
               value={confirmPassword}
               onChange={(e) => {
                 setConfirmPassword(e.target.value);
@@ -166,11 +185,17 @@ const ResetPassword = () => {
               }}
               className={styles["input-field"]}
               disabled={status === "loading"}
+              dir="ltr"
             />
             <button
               type="button"
               className={styles["icon-btn"]}
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              aria-label={
+                showConfirmPassword
+                  ? t("auth-hide-confirm-password")
+                  : t("auth-show-confirm-password")
+              }
             >
               {showConfirmPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
             </button>
@@ -181,7 +206,9 @@ const ResetPassword = () => {
             className={styles["btn-primary"]}
             disabled={status === "loading"}
           >
-            {status === "loading" ? "Resetting..." : "Reset Password"}
+            {status === "loading"
+              ? t("auth-resetting-password")
+              : t("auth-reset-password")}
           </button>
         </form>
       </div>

@@ -5,6 +5,7 @@ import {
   IoReloadOutline,
 } from "react-icons/io5";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { verifyUserEmail } from "../../api/userApi";
 import { PATHS } from "../../../../routes/paths.js";
 import styles from "./VerifyAccount.module.css";
@@ -12,14 +13,13 @@ import logoImg from "../../../../../public/icons/celebrating.png";
 
 const VerifyAccount = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
 
   const token = searchParams.get("token");
 
   const [status, setStatus] = useState(token ? "loading" : "error");
-  const [errorMessage, setErrorMessage] = useState(
-    token ? "" : "Invalid or missing verification token.",
-  );
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     if (!token) return;
@@ -30,10 +30,7 @@ const VerifyAccount = () => {
         setStatus("success");
       } catch (error) {
         setStatus("error");
-        setErrorMessage(
-          error.message ||
-            "Failed to verify your account. The link might be expired or invalid.",
-        );
+        setErrorMessage(error.message || "");
       }
     };
 
@@ -48,10 +45,10 @@ const VerifyAccount = () => {
             className={`${styles["success-icon"]} ${styles["loading-icon"]}`}
           />
           <h1 className={styles["title"]} style={{ marginTop: "20px" }}>
-            Verifying...
+            {t("auth-verifying")}
           </h1>
           <p className={styles["subtitle"]}>
-            Please wait while we verify your email address.
+            {t("auth-verifying-email-address")}
           </p>
         </div>
       </div>
@@ -69,13 +66,18 @@ const VerifyAccount = () => {
               className={`${styles["success-icon"]} ${styles["error-icon"]}`}
             />
           </div>
-          <h1 className={styles["title"]}>Verification Failed</h1>
-          <p className={styles["subtitle"]}>{errorMessage}</p>
+          <h1 className={styles["title"]}>{t("auth-verification-failed")}</h1>
+          <p className={styles["subtitle"]}>
+            {errorMessage ||
+              (token
+                ? t("auth-account-verification-failed")
+                : t("auth-invalid-verification-token"))}
+          </p>
           <button
             className={`${styles["btn-primary"]} ${styles["error-button"]}`}
             onClick={() => navigate(PATHS.SIGNUP)}
           >
-            Back to Sign Up
+            {t("auth-back-to-sign-up")}
           </button>
         </div>
       </div>
@@ -85,20 +87,19 @@ const VerifyAccount = () => {
   return (
     <div className={styles["page-container"]}>
       <div className={styles["card"]}>
-        <img src={logoImg} alt="LinCo Logo" className={styles["logo"]} />
+        <img src={logoImg} alt={t("auth-linco-logo")} className={styles["logo"]} />
         <div className={styles["icon-wrapper"]}>
           <IoCheckmarkCircle className={styles["success-icon"]} />
         </div>
-        <h1 className={styles["title"]}>Email Verified!</h1>
+        <h1 className={styles["title"]}>{t("auth-email-verified")}</h1>
         <p className={styles["subtitle"]}>
-          Thank you for verifying your email address. Your LinCo account is now
-          active and ready to use.
+          {t("auth-email-verified-description")}
         </p>
         <button
           className={styles["btn-primary"]}
           onClick={() => navigate(PATHS.SIGNIN)}
         >
-          Go to Sign In
+          {t("go-to-sign-in")}
         </button>
       </div>
     </div>

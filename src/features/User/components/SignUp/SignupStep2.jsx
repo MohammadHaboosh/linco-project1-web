@@ -1,8 +1,11 @@
 import { IoPersonOutline, IoArrowBackOutline } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
 import DatePicker from "../../../../components/form/DatePicker/DatePicker.jsx";
 import styles from "./Signup.module.css";
 
 const SignupStep2 = ({ formData, onChange, onBack, errors }) => {
+  const { t } = useTranslation();
+
   return (
     <>
       <div className={styles["input-group"]}>
@@ -10,7 +13,7 @@ const SignupStep2 = ({ formData, onChange, onBack, errors }) => {
         <input
           type="text"
           name="firstName"
-          placeholder="First Name"
+          placeholder={t("first-name")}
           value={formData.firstName}
           onChange={onChange}
           autoComplete="given-name"
@@ -25,7 +28,7 @@ const SignupStep2 = ({ formData, onChange, onBack, errors }) => {
         <input
           type="text"
           name="lastName"
-          placeholder="Last Name"
+          placeholder={t("last-name")}
           value={formData.lastName}
           onChange={onChange}
           autoComplete="family-name"
@@ -39,7 +42,7 @@ const SignupStep2 = ({ formData, onChange, onBack, errors }) => {
         <IoPersonOutline className={styles["icon-left"]} />
         <DatePicker
           name="birthDate" // Updated name
-          placeholder="Date of birth"
+          placeholder={t("date-of-birth")}
           value={formData.birthDate} // Updated value
           onChange={onChange}
         />
@@ -56,7 +59,7 @@ const SignupStep2 = ({ formData, onChange, onBack, errors }) => {
         onClick={onBack}
       >
         <IoArrowBackOutline className={styles["back-icon"]} />
-        register on another email
+        {t("auth-register-with-another-email")}
       </button>
     </>
   );

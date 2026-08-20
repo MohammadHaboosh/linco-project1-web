@@ -4,9 +4,12 @@ import {
   IoChevronBack,
   IoChevronForward,
 } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
 import styles from "./DatePicker.module.css";
 
 const DatePicker = ({ name, value, onChange, placeholder }) => {
+  const { t, i18n } = useTranslation();
+  const locale = i18n.resolvedLanguage || i18n.language || "en";
   const [isOpen, setIsOpen] = useState(false);
   const panelRef = useRef(null);
 
@@ -14,20 +17,19 @@ const DatePicker = ({ name, value, onChange, placeholder }) => {
   const [currentMonth, setCurrentMonth] = useState(initialDate.getMonth());
   const [currentYear, setCurrentYear] = useState(initialDate.getFullYear());
 
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
+  const months = Array.from({ length: 12 }, (_, month) =>
+    new Intl.DateTimeFormat(locale, { month: "long" }).format(
+      new Date(2024, month, 1),
+    ),
+  );
+  const weekdays = Array.from({ length: 7 }, (_, day) =>
+    new Intl.DateTimeFormat(locale, { weekday: "short" }).format(
+      new Date(2024, 0, 7 + day),
+    ),
+  );
+  const numberFormatter = new Intl.NumberFormat(locale, {
+    useGrouping: false,
+  });
 
   const currentYearActual = new Date().getFullYear();
   const years = Array.from({ length: 100 }, (_, i) => currentYearActual - i);
@@ -44,6 +46,13 @@ const DatePicker = ({ name, value, onChange, placeholder }) => {
 
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
+  const displayValue = value
+    ? new Intl.DateTimeFormat(locale, {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }).format(new Date(`${value}T00:00:00`))
+    : placeholder;
 
   const handleDayClick = (day) => {
     const formattedDate = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
@@ -84,7 +93,7 @@ const DatePicker = ({ name, value, onChange, placeholder }) => {
         <span
           className={value ? styles["value-text"] : styles["placeholder-text"]}
         >
-          {value || placeholder}
+          {displayValue}
         </span>
         <IoCalendarOutline className={styles["icon-right"]} />
       </button>
@@ -93,7 +102,7 @@ const DatePicker = ({ name, value, onChange, placeholder }) => {
         <div
           className={styles["calendar-panel"]}
           role="dialog"
-          aria-label="Choose a date"
+          aria-label={t("auth-choose-date")}
         >
           {/* Header Controls */}
           <div className={styles["calendar-header"]}>
@@ -101,6 +110,7 @@ const DatePicker = ({ name, value, onChange, placeholder }) => {
               type="button"
               onClick={handlePrevMonth}
               className={styles["nav-btn"]}
+              aria-label={t("auth-previous-month")}
             >
               <IoChevronBack />
             </button>
@@ -125,7 +135,7 @@ const DatePicker = ({ name, value, onChange, placeholder }) => {
               >
                 {years.map((y) => (
                   <option key={y} value={y}>
-                    {y}
+                    {numberFormatter.format(y)}
                   </option>
                 ))}
               </select>
@@ -135,13 +145,14 @@ const DatePicker = ({ name, value, onChange, placeholder }) => {
               type="button"
               onClick={handleNextMonth}
               className={styles["nav-btn"]}
+              aria-label={t("auth-next-month")}
             >
               <IoChevronForward />
             </button>
           </div>
 
           <div className={styles["days-of-week"]}>
-            {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((d) => (
+            {weekdays.map((d) => (
               <div key={d} className={styles["dow-item"]}>
                 {d}
               </div>
@@ -166,7 +177,7 @@ const DatePicker = ({ name, value, onChange, placeholder }) => {
                   onClick={() => handleDayClick(day)}
                   className={`${styles["day-btn"]} ${isSelected ? styles.selected : ""}`}
                 >
-                  {day}
+                  {numberFormatter.format(day)}
                 </button>
               );
             })}
