@@ -53,6 +53,7 @@ export const useCourseSaver = ({
               }),
             });
             if (setIsSaving) setIsSaving(false);
+            window.scrollTo({ top: 0, behavior: "smooth" });
             return false;
           }
         }

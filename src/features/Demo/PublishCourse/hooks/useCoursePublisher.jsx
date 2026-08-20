@@ -146,6 +146,7 @@ export const useCoursePublisher = ({
               }),
             );
             setIsPublishing(false);
+            window.scrollTo({ top: 0, behavior: "smooth" });
             return;
           }
         }
