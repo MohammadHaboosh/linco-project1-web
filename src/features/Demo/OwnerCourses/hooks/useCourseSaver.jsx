@@ -275,6 +275,29 @@ export const useCourseSaver = ({
           setUploadProgress(null);
         }
 
+        const currentQuestions = sec.questions || [];
+        const updatedQuestionsList = [];
+        for (let q of currentQuestions) {
+          if (q.isNew || isTempId(q.id)) {
+            try {
+              const createdQ = await questionBankApi.addQuestion(
+                realSectionId,
+                q,
+              );
+              updatedQuestionsList.push({
+                ...(createdQ?.data || createdQ),
+                isNew: false,
+              });
+            } catch (err) {
+              console.error("Failed to save question", err);
+              hadItemSaveErrors = true;
+              updatedQuestionsList.push(q);
+            }
+          } else {
+            updatedQuestionsList.push(q);
+          }
+        }
+
         let updatedQuiz = sec.quiz;
         if (sec.quiz) {
           if (sec.quiz.isNew || isTempId(sec.quiz.id)) {
@@ -308,29 +331,6 @@ export const useCourseSaver = ({
               console.error("Failed to update quiz", err);
               hadItemSaveErrors = true;
             }
-          }
-        }
-
-        const currentQuestions = sec.questions || [];
-        const updatedQuestionsList = [];
-        for (let q of currentQuestions) {
-          if (q.isNew || isTempId(q.id)) {
-            try {
-              const createdQ = await questionBankApi.addQuestion(
-                realSectionId,
-                q,
-              );
-              updatedQuestionsList.push({
-                ...(createdQ?.data || createdQ),
-                isNew: false,
-              });
-            } catch (err) {
-              console.error("Failed to save question", err);
-              hadItemSaveErrors = true;
-              updatedQuestionsList.push(q);
-            }
-          } else {
-            updatedQuestionsList.push(q);
           }
         }
 

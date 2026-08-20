@@ -184,6 +184,21 @@ export const useCoursePublisher = ({
       }
 
       for (const section of processedSections) {
+        const questions = section.questions || [];
+        for (const q of questions) {
+          if (q.isNew || isTempId(q.id)) {
+            try {
+              await questionBankApi.addQuestion(section.realId, q);
+            } catch (qError) {
+              console.error(
+                `Failed to create question for section ${section.realId}:`,
+                qError,
+              );
+              throw qError;
+            }
+          }
+        }
+
         if (section.quiz && (section.quiz.isNew || isTempId(section.quiz.id))) {
           try {
             await quizApi.createQuiz(section.realId, {
@@ -198,21 +213,6 @@ export const useCoursePublisher = ({
               quizError,
             );
             throw quizError;
-          }
-        }
-
-        const questions = section.questions || [];
-        for (const q of questions) {
-          if (q.isNew || isTempId(q.id)) {
-            try {
-              await questionBankApi.addQuestion(section.realId, q);
-            } catch (qError) {
-              console.error(
-                `Failed to create question for section ${section.realId}:`,
-                qError,
-              );
-              throw qError;
-            }
           }
         }
 
