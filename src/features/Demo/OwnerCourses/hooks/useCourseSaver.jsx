@@ -39,6 +39,25 @@ export const useCourseSaver = ({
       const activeCourseId = courseId || assetId || demoId;
       let hadItemSaveErrors = false;
 
+      for (let i = 0; i < (sections || []).length; i++) {
+        const sec = sections[i];
+        if (sec.quiz) {
+          const quizQCount = Number(sec.quiz.numberOfQuestions || 0);
+          const bankQCount = sec.questions?.length || 0;
+
+          if (quizQCount > bankQCount) {
+            setSaveFeedback({
+              type: "error",
+              message: t("quiz-questions-exceed-bank-error", {
+                defaultValue: `The number of questions in the quiz (${quizQCount}) exceeds the number of questions in the question bank (${bankQCount}). Please ensure that the quiz does not have more questions than are available in the question bank.`,
+              }),
+            });
+            if (setIsSaving) setIsSaving(false);
+            return false;
+          }
+        }
+      }
+
       if (saveGeneralInfo) {
         await saveGeneralInfo();
       }

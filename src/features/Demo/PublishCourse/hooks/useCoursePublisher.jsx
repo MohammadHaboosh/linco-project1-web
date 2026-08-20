@@ -133,6 +133,24 @@ export const useCoursePublisher = ({
         return;
       }
 
+      for (let i = 0; i < currentSections.length; i++) {
+        const sec = currentSections[i];
+        if (sec.quiz) {
+          const quizQCount = Number(sec.quiz.numberOfQuestions || 0);
+          const bankQCount = sec.questions?.length || 0;
+
+          if (quizQCount > bankQCount) {
+            setErrorMessage(
+              t("quiz-questions-exceed-bank-error", {
+                defaultValue: `A quiz cannot be created in the section "${sec.title || "Section " + (i + 1)}". The number of quiz questions (${quizQCount}) is greater than what is available in the bank (${bankQCount}).`,
+              }),
+            );
+            setIsPublishing(false);
+            return;
+          }
+        }
+      }
+
       if (deletedSectionIds.length > 0) {
         await Promise.all(
           deletedSectionIds.map((secId) =>
