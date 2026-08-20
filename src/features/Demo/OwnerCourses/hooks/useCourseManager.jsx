@@ -84,12 +84,15 @@ export const useCourseManager = (demoId, assetId) => {
                   lessonsLoadError = true;
                 }
               }
+              const sortedLessons = [...lessonsList].sort(
+                (a, b) => (a.order || 0) - (b.order || 0),
+              );
 
               return {
                 id: sec.id,
                 title: sec.title,
                 order: sec.order,
-                lessons: lessonsList,
+                lessons: sortedLessons,
                 questions: sec.questions || [],
                 quiz: sec.quiz || null,
                 isNew: false,
@@ -101,7 +104,11 @@ export const useCourseManager = (demoId, assetId) => {
             }),
           );
 
-          setSections(formattedSections);
+          const sortedSections = formattedSections.sort(
+            (a, b) => (a.order || 0) - (b.order || 0),
+          );
+
+          setSections(sortedSections);
         }
       } catch (err) {
         console.error("Failed to load course details:", err);
