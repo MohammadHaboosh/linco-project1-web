@@ -1,11 +1,11 @@
 import { useAuthSession } from "../../features/User/hooks/useAuthSession.jsx";
-import AppHydrationFallback from "./AppHydrationFallback.jsx";
+import AppLayoutSkeleton from "../../layouts/AppLayoutSkeleton.jsx";
 
 const AuthSessionBoundary = ({ children }) => {
   const { isInitializing } = useAuthSession();
 
   if (isInitializing) {
-    return <AppHydrationFallback />;
+    return <AppLayoutSkeleton />;
   }
 
   return children;

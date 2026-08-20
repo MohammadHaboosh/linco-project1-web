@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import LandingRedirector from "../components/common/LandingRedirector.jsx";
 import NotFoundPage from "../pages/NotFoundPage.jsx";
-import AppHydrationFallback from "../components/common/AppHydrationFallback.jsx";
+import AppLayoutSkeleton from "../layouts/AppLayoutSkeleton.jsx";
 import RouteErrorPage from "../components/common/RouteErrorPage.jsx";
 import DemoRedirector from "../components/common/DemoRedirector.jsx";
 import DashboardLayout from "../layouts/DashboardLayout/DashboardLayout.jsx";
@@ -223,7 +223,7 @@ const routes = [
 
 export const router = createBrowserRouter(
   routes.map((route) => ({
-    HydrateFallback: AppHydrationFallback,
+    HydrateFallback: AppLayoutSkeleton,
     errorElement: <RouteErrorPage />,
     ...route,
   })),

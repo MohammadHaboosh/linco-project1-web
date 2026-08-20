@@ -11,6 +11,7 @@ import AuthSessionBoundary from "../../components/common/AuthSessionBoundary";
 import { useTranslation } from "react-i18next";
 import ExpiredSubscriptionGate from "../../features/Demo/Subscription/components/ExpiredSubscriptionGate/ExpiredSubscriptionGate";
 import { isDemoSubscriptionExpired } from "../../features/Demo/Subscription/utils/demoSubscription";
+import AppLayoutSkeleton from "../AppLayoutSkeleton.jsx";
 
 const LayoutContent = () => {
   const { t } = useTranslation();
@@ -27,14 +28,9 @@ const LayoutContent = () => {
   const location = useLocation();
   const isGroupsPage = location.pathname.includes("/groups");
 
-  if (isLoading)
-    return (
-      <div className={styles.layoutState} role="status" aria-live="polite">
-        <span className={styles.loader} aria-hidden="true" />
-        <h1>{t("loading-workspace")}</h1>
-        <p>{t("loading-workspace-description")}</p>
-      </div>
-    );
+  if (isLoading) {
+    return <AppLayoutSkeleton />;
+  }
 
   if (loadError || !demoData) {
     return (

@@ -1,0 +1,219 @@
+.splashScreen {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  display: block;
+  overflow: hidden;
+  background: var(--app-page-bg);
+  z-index: 9999;
+}
+
+.ambientBackground {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.glowOrb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.6;
+  animation: floatOrb 15s ease-in-out infinite alternate;
+}
+
+.orbPrimary {
+  width: 50vw;
+  height: 50vw;
+  top: -10%;
+  left: -10%;
+  background: var(--color-linco-blue);
+  animation-duration: 18s;
+}
+
+.orbSecondary {
+  width: 60vw;
+  height: 60vw;
+  bottom: -20%;
+  right: -10%;
+  background: var(--color-linco-navy);
+  animation-duration: 22s;
+  animation-delay: -5s;
+}
+
+.orbAccent {
+  width: 40vw;
+  height: 40vw;
+  top: 30%;
+  left: 30%;
+  background: var(--color-linco-light);
+  animation-duration: 25s;
+  animation-delay: -10s;
+  opacity: 0.4;
+}
+
+.glassOverlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--app-page-bg) 75%, transparent);
+  backdrop-filter: blur(60px) saturate(140%);
+  -webkit-backdrop-filter: blur(60px) saturate(140%);
+}
+
+.centerStage {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  width: min(90vw, 520px);
+  padding: 24px;
+}
+
+.logoShell {
+  position: relative;
+  width: clamp(100px, 14vw, 130px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  margin-bottom: 24px;
+}
+
+.logoImage {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.15));
+}
+
+.ripple {
+  position: absolute;
+  inset: 50%;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--color-linco-blue) 40%, transparent) 0%,
+    transparent 70%
+  );
+  transform: translate(-50%, -50%) scale(0.5);
+  opacity: 0;
+  animation: rippleExpand 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.rippleDelayed {
+  animation-delay: 1.5s;
+}
+
+.brandName {
+  margin: 0;
+  color: var(--app-heading);
+  font-size: clamp(1.4rem, 2vw, 1.8rem);
+  font-weight: 800;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+}
+
+.progressTrack {
+  position: relative;
+  width: min(60vw, 240px);
+  height: 3px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--app-border-strong) 40%, transparent);
+  margin-top: 8px;
+}
+
+.progressSweep {
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-linco-blue),
+    var(--color-linco-light),
+    transparent
+  );
+  animation: progressSweep 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.statusText {
+  margin: 4px 0 0;
+  color: var(--app-text);
+  font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+  letter-spacing: 0.05em;
+  animation: statusBreath 2.2s ease-in-out infinite;
+}
+
+@keyframes floatOrb {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(5%, 10%) scale(1.1);
+  }
+  66% {
+    transform: translate(-5%, 5%) scale(0.9);
+  }
+  100% {
+    transform: translate(0, -10%) scale(1.05);
+  }
+}
+
+@keyframes rippleExpand {
+  0% {
+    transform: translate(-50%, -50%) scale(0.6);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.2);
+    opacity: 0;
+  }
+}
+
+@keyframes progressSweep {
+  0% {
+    transform: translateX(-150%);
+  }
+  100% {
+    transform: translateX(350%);
+  }
+}
+
+@keyframes statusBreath {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glowOrb,
+  .ripple,
+  .progressSweep,
+  .statusText {
+    animation: none;
+  }
+  .glowOrb {
+    opacity: 0.3;
+  }
+  .progressSweep {
+    width: 100%;
+    transform: none;
+  }
+}
