@@ -74,7 +74,14 @@ const LessonList = ({
       setExpandedLessons(expandedLessons.filter((id) => id !== lessonId));
     } else {
       setExpandedLessons([...expandedLessons, lessonId]);
-      if (onFetchAttachments && !attachmentStates[lessonId]?.loaded) {
+      const lesson = lessons.find(
+        (item) => String(item.id) === String(lessonId),
+      );
+      if (
+        onFetchAttachments &&
+        !attachmentStates[lessonId]?.loaded &&
+        !lesson?.isAttachmentsFetched
+      ) {
         await loadAttachments(lessonId);
       }
     }

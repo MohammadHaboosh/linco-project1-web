@@ -307,6 +307,7 @@ export const useCurriculumLogic = (
               return {
                 ...l,
                 attachments: [...formatted, ...localNewAttachments],
+                isAttachmentsFetched: true,
               };
             }
             return l;
