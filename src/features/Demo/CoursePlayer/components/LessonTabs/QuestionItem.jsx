@@ -12,13 +12,15 @@ import {
 import ReplyItem from "./ReplyItem";
 import { useAnswers } from "../../hooks/useAnswers";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useUser } from "../../../../../hooks/useUser";
 
 const QuestionItem = ({ question, onEdit, onDelete, isDeleting }) => {
   const { t, i18n } = useTranslation();
   const { demoId } = useParams();
 
-  const currentUser = useSelector((state) => state.user);
+  // جلب id المستخدم الحالي
+  const { profile } = useUser();
+  const currentUserId = profile?.id;
 
   const [showReplies, setShowReplies] = useState(false);
   const [replyText, setReplyText] = useState("");
@@ -56,7 +58,7 @@ const QuestionItem = ({ question, onEdit, onDelete, isDeleting }) => {
     answers.length,
   );
 
-  const isOwner = currentUser?.id && currentUser.id === user.id;
+  const isOwner = currentUserId && currentUserId === user.id;
 
   const handleToggleReplies = () => {
     if (!showReplies) fetchAnswers();
@@ -70,7 +72,7 @@ const QuestionItem = ({ question, onEdit, onDelete, isDeleting }) => {
     if (result.success) {
       setReplyText("");
     } else {
-      setActionError(result.error || t("course-player-reply-post-failed"));
+      setActionError(t("course-player-reply-post-failed"));
     }
   };
 
@@ -202,7 +204,7 @@ const QuestionItem = ({ question, onEdit, onDelete, isDeleting }) => {
               </p>
             ) : error ? (
               <p className={styles.inlineError} role="alert">
-                {error || t("course-player-replies-load-failed")}
+                {t("course-player-replies-load-failed")}
               </p>
             ) : (
               <>
