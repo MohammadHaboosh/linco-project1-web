@@ -231,6 +231,31 @@
   scroll-padding-block: 16px;
 }
 
+.chatMessagesArea {
+  max-height: min(54dvh, 560px);
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  padding-inline-end: 6px;
+  scrollbar-gutter: stable;
+}
+
+.chatMessagesArea::-webkit-scrollbar {
+  width: 7px;
+}
+
+.chatMessagesArea::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chatMessagesArea::-webkit-scrollbar-thumb {
+  background: var(--app-border-strong);
+  border-radius: 999px;
+}
+
+.chatMessagesArea::-webkit-scrollbar-thumb:hover {
+  background: var(--app-muted);
+}
+
 .messageWrapper {
   display: flex;
   gap: 14px;

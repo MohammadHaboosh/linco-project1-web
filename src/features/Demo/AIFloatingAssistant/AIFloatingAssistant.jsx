@@ -236,7 +236,9 @@ const AIFloatingAssistant = ({ courseId }) => {
           </div>
 
           <div
-            className={styles.messagesArea}
+            className={`${styles.messagesArea} ${
+              mode === "chat" ? styles.chatMessagesArea : ""
+            }`}
             aria-live="polite"
             aria-busy={!isQuizMode && isAsking}
           >
