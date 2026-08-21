@@ -37,7 +37,7 @@ const QuizResult = ({
       <div className={styles.resultSummaryCol}>
         <div className={styles.resultContent}>
           <img
-            src={isPassed ? "/images/squid-happy.png" : "/icons/sad.png"}
+            src={isPassed ? "/images/squid-happy.webp" : "/icons/sad.png"}
             alt={
               isPassed
                 ? t("course-player-success-mascot-alt")
