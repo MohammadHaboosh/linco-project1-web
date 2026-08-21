@@ -237,6 +237,9 @@
   overscroll-behavior-y: contain;
   padding-inline-end: 6px;
   scrollbar-gutter: stable;
+  scrollbar-color: var(--app-border-strong) transparent;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
 }
 
 .chatMessagesArea::-webkit-scrollbar {
@@ -538,6 +541,12 @@
   }
 }
 
+@media (max-width: 900px) {
+  .chatMessagesArea {
+    max-height: min(50dvh, 480px);
+  }
+}
+
 @media (max-width: 560px) {
   .chatHeader {
     gap: 10px;
@@ -555,6 +564,11 @@
 
   .messageBubble {
     max-width: 86%;
+  }
+
+  .chatMessagesArea {
+    max-height: min(46dvh, 380px);
+    padding-inline-end: 4px;
   }
 
   .suggestions {
@@ -584,6 +598,12 @@
     width: 44px;
     height: 44px;
     border-radius: 13px;
+  }
+}
+
+@media (max-height: 700px) {
+  .chatMessagesArea {
+    max-height: 42dvh;
   }
 }
 
