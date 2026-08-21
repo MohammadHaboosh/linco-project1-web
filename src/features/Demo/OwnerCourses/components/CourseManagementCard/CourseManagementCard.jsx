@@ -4,7 +4,6 @@ import {
   IoCloudUploadOutline,
   IoListOutline,
   IoVideocamOutline,
-  IoHelpCircleOutline,
   IoCheckmarkCircleOutline,
   IoSettingsOutline,
   IoEyeOutline,
@@ -117,20 +116,6 @@ const CourseManagementCard = ({
               {t("course-lesson-count", {
                 count: course.lessonCount || 0,
                 formattedCount: formatCount(course.lessonCount || 0),
-              })}
-            </span>
-          </div>
-          <div className={styles.statItem}>
-            <IoHelpCircleOutline
-              className={styles.statIcon}
-              aria-hidden="true"
-            />
-            <span>
-              {t("course-quiz-count", {
-                count: course.quizzes || course.stats?.quizzes || 0,
-                formattedCount: formatCount(
-                  course.quizzes || course.stats?.quizzes || 0,
-                ),
               })}
             </span>
           </div>

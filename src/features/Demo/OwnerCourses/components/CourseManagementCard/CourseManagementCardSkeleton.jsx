@@ -44,7 +44,7 @@ const CourseManagementCardSkeleton = () => {
           </div>
 
           <div className={styles.statsRow}>
-            {[1, 2, 3].map((item) => (
+            {[1, 2].map((item) => (
               <div
                 key={item}
                 style={{ display: "flex", alignItems: "center", gap: "6px" }}

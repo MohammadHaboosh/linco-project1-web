@@ -15,7 +15,6 @@ const mapAssetToCourse = (asset) => {
     tags: c.tags ? c.tags.map((t) => t.name) : [],
     sectionsCount: c.sectionsCount || 0,
     lessonCount: c.lessonCount || 0,
-    quizzes: 0,
     imagePath: c.imagePath,
     price: c.price || 0,
     visibility: c.visibility || "PUBLIC",
