@@ -32,22 +32,13 @@ export const memberApi = {
     };
   },
 
-  inviteMember: async ({ receiverId, demoId, role }) => {
+  inviteMember: async ({ receiverId, demoId }) => {
     if (!receiverId) {
       throw new Error("A user must be selected before sending an invitation.");
     }
 
     if (!demoId) {
       throw new Error("Demo ID is required to send an invitation.");
-    }
-
-    const normalizedRole = String(role ?? "")
-      .trim()
-      .toUpperCase();
-    const allowedRoles = ["MEMBER", "ADMIN", "OWNER"];
-
-    if (!allowedRoles.includes(normalizedRole)) {
-      throw new Error("A valid invitation role is required.");
     }
 
     const response = await apiFetch("/invitations", {
@@ -60,7 +51,7 @@ export const memberApi = {
       body: JSON.stringify({
         receiverId,
         demoId,
-        role: normalizedRole,
+        role: "MEMBER",
       }),
     });
 
@@ -127,43 +118,4 @@ export const memberApi = {
     return responseData;
   },
 
-  updateMemberRole: async (demoId, memberId, role) => {
-    if (!demoId) {
-      throw new Error("Demo ID is required to update a member role.");
-    }
-
-    if (!memberId) {
-      throw new Error("Member ID is required to update a member role.");
-    }
-
-    const normalizedRole = String(role ?? "")
-      .trim()
-      .toUpperCase();
-    const allowedRoles = ["OWNER", "ADMIN", "MEMBER"];
-
-    if (!allowedRoles.includes(normalizedRole)) {
-      throw new Error("A valid member role is required.");
-    }
-
-    const response = await apiFetch(
-      `/members/${encodeURIComponent(memberId)}`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          "x-client-type": "web",
-          "x-demo-id": demoId,
-        },
-        body: JSON.stringify({ role: normalizedRole }),
-      },
-    );
-
-    const responseData = await response.json().catch(() => ({}));
-
-    if (!response.ok || responseData.success === false) {
-      throw new Error(responseData.message || "Failed to update member role.");
-    }
-
-    return responseData;
-  },
 };

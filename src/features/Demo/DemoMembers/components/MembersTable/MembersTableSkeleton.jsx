@@ -70,7 +70,6 @@ const MembersTableSkeleton = () => {
                       }}
                     >
                       <Skeleton width={32} height={32} borderRadius={8} />
-                      <Skeleton width={32} height={32} borderRadius={8} />
                     </div>
                   </td>
                 </tr>

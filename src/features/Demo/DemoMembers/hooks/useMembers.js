@@ -10,8 +10,6 @@ export const useMembers = (demoId) => {
   const [error, setError] = useState(null);
   const [deletingMemberId, setDeletingMemberId] = useState(null);
   const [deleteError, setDeleteError] = useState(null);
-  const [updatingMemberId, setUpdatingMemberId] = useState(null);
-  const [updateError, setUpdateError] = useState(null);
 
   const loadMembers = useCallback(
     async ({ signal } = {}) => {
@@ -60,7 +58,6 @@ export const useMembers = (demoId) => {
     setIsLoading(true);
     setError(null);
     setDeleteError(null);
-    setUpdateError(null);
 
     return loadMembers();
   }, [loadMembers]);
@@ -88,50 +85,6 @@ export const useMembers = (demoId) => {
     [demoId, deletingMemberId, t],
   );
 
-  const updateMemberRole = useCallback(
-    async (memberId, role) => {
-      if (!demoId || !memberId || updatingMemberId) return false;
-
-      const normalizedRole = String(role ?? "").trim().toUpperCase();
-
-      setUpdatingMemberId(memberId);
-      setUpdateError(null);
-
-      try {
-        const responseData = await memberApi.updateMemberRole(
-          demoId,
-          memberId,
-          normalizedRole,
-        );
-        const responseMember = responseData?.data;
-
-        setMembers((currentMembers) =>
-          currentMembers.map((member) => {
-            if (member.id !== memberId) return member;
-
-            if (responseMember && typeof responseMember === "object") {
-              return {
-                ...member,
-                ...responseMember,
-                role: responseMember.role ?? normalizedRole,
-              };
-            }
-
-            return { ...member, role: normalizedRole };
-          }),
-        );
-
-        return true;
-      } catch {
-        setUpdateError(t("workspace-member-role-update-failed"));
-        return false;
-      } finally {
-        setUpdatingMemberId(null);
-      }
-    },
-    [demoId, t, updatingMemberId],
-  );
-
   return {
     members,
     meta,
@@ -139,10 +92,7 @@ export const useMembers = (demoId) => {
     error,
     deletingMemberId,
     deleteError,
-    updatingMemberId,
-    updateError,
     refetch,
     deleteMember,
-    updateMemberRole,
   };
 };

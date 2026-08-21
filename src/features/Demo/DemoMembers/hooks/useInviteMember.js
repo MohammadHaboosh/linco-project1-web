@@ -9,7 +9,6 @@ export const useInviteMember = (demoId, onSuccess) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [role, setRole] = useState("MEMBER");
   const [isSearching, setIsSearching] = useState(false);
   const [searchError, setSearchError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -96,7 +95,6 @@ export const useInviteMember = (demoId, onSuccess) => {
         const responseData = await memberApi.inviteMember({
           receiverId: selectedUser.id,
           demoId,
-          role,
         });
 
         await onSuccess?.(responseData);
@@ -108,7 +106,7 @@ export const useInviteMember = (demoId, onSuccess) => {
         setIsSubmitting(false);
       }
     },
-    [demoId, onSuccess, role, selectedUser, t],
+    [demoId, onSuccess, selectedUser, t],
   );
 
   return {
@@ -118,8 +116,6 @@ export const useInviteMember = (demoId, onSuccess) => {
     selectedUser,
     selectUser,
     clearSelectedUser,
-    role,
-    setRole,
     isSearching,
     searchError,
     isSubmitting,

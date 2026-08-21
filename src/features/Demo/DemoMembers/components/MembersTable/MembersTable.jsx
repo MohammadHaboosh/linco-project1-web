@@ -1,12 +1,8 @@
 import {
   IoTrashOutline,
-  IoCreateOutline,
   IoShieldCheckmark,
-  IoCheckmarkOutline,
-  IoCloseOutline,
   IoPeopleOutline,
 } from "react-icons/io5";
-import { useState } from "react";
 import styles from "./MembersTable.module.css";
 import { useTranslation } from "react-i18next";
 import MembersTableSkeleton from "./MembersTableSkeleton";
@@ -17,15 +13,10 @@ const MembersTable = ({
   error,
   deletingMemberId,
   deleteError,
-  updatingMemberId,
-  updateError,
   onRetry,
   onDelete,
-  onUpdateRole,
 }) => {
   const { t, i18n } = useTranslation();
-  const [editingMemberId, setEditingMemberId] = useState(null);
-  const [selectedRole, setSelectedRole] = useState("MEMBER");
 
   const normalizeRole = (role) =>
     String(role ?? "")
@@ -33,35 +24,16 @@ const MembersTable = ({
       .replace(/[\s-]+/g, "_")
       .toUpperCase();
 
-  const getRoleBadge = (role) => {
-    switch (normalizeRole(role)) {
-      case "OWNER":
-        return (
-          <span className={`${styles.badge} ${styles.badgeOwner}`}>
-            <IoShieldCheckmark /> {t("owner")}
-          </span>
-        );
-      case "ADMIN":
-      case "MANAGER":
-        return (
-          <span className={`${styles.badge} ${styles.badgeManager}`}>
-            {t("manager")}
-          </span>
-        );
-      case "MEMBER":
-        return (
-          <span className={`${styles.badge} ${styles.badgeTrainee}`}>
-            {t("member")}
-          </span>
-        );
-      default:
-        return (
-          <span className={`${styles.badge} ${styles.badgeTrainee}`}>
-            {t("trainee")}
-          </span>
-        );
-    }
-  };
+  const getRoleBadge = (role) =>
+    normalizeRole(role) === "OWNER" ? (
+      <span className={`${styles.badge} ${styles.badgeOwner}`}>
+        <IoShieldCheckmark /> {t("owner")}
+      </span>
+    ) : (
+      <span className={`${styles.badge} ${styles.badgeMember}`}>
+        {t("member")}
+      </span>
+    );
 
   const formatJoinedAt = (joinedAt) => {
     if (!joinedAt) return t("date-not-available");
@@ -75,36 +47,6 @@ const MembersTable = ({
       month: "short",
       day: "numeric",
     }).format(date);
-  };
-
-  const getEditableRole = (role) => {
-    const normalizedRole = normalizeRole(role);
-
-    if (["MANAGER", "ADMIN"].includes(normalizedRole)) {
-      return "ADMIN";
-    }
-
-    if (normalizedRole === "MEMBER") return "MEMBER";
-
-    return ["OWNER", "ADMIN", "MEMBER"].includes(normalizedRole)
-      ? normalizedRole
-      : "MEMBER";
-  };
-
-  const startEditingRole = (member) => {
-    setEditingMemberId(member.id);
-    setSelectedRole(getEditableRole(member.role));
-  };
-
-  const cancelEditingRole = () => {
-    setEditingMemberId(null);
-    setSelectedRole("MEMBER");
-  };
-
-  const saveRole = async (memberId) => {
-    const wasUpdated = await onUpdateRole?.(memberId, selectedRole);
-
-    if (wasUpdated) cancelEditingRole();
   };
 
   if (isLoading) return <MembersTableSkeleton />;
@@ -125,10 +67,10 @@ const MembersTable = ({
           </tr>
         </thead>
         <tbody>
-          {(deleteError || updateError) && !error && (
+          {deleteError && !error && (
             <tr className={styles.stateRow}>
               <td colSpan="4" className={styles.errorState} role="alert">
-                {deleteError || updateError}
+                {deleteError}
               </td>
             </tr>
           )}
@@ -184,11 +126,7 @@ const MembersTable = ({
                 fullName.charAt(0).toUpperCase();
               const isOwner = normalizeRole(member.role) === "OWNER";
               const isDeleting = deletingMemberId === member.id;
-              const isEditing = editingMemberId === member.id;
-              const isUpdating = updatingMemberId === member.id;
-              const mutationInProgress = Boolean(
-                deletingMemberId || updatingMemberId,
-              );
+              const mutationInProgress = Boolean(deletingMemberId);
 
               return (
                 <tr key={member.id} className={styles.tableRow}>
@@ -211,69 +149,13 @@ const MembersTable = ({
                     </div>
                   </td>
                   <td data-label={t("role")}>
-                    {isEditing ? (
-                      <select
-                        className={styles.roleSelect}
-                        value={selectedRole}
-                        onChange={(event) =>
-                          setSelectedRole(event.target.value)
-                        }
-                        disabled={isUpdating}
-                        aria-label={t("assign-role")}
-                      >
-                        <option value="OWNER">{t("owner")}</option>
-                        <option value="MEMBER">{t("member")}</option>
-                        <option value="ADMIN">{t("admin")}</option>
-                      </select>
-                    ) : (
-                      getRoleBadge(member.role)
-                    )}
+                    {getRoleBadge(member.role)}
                   </td>
                   <td className={styles.dateText} data-label={t("joined")}>
                     {formatJoinedAt(member.joinedAt)}
                   </td>
                   <td className={styles.actionsCol} data-label={t("actions")}>
-                    {isEditing ? (
-                      <>
-                        <button
-                          type="button"
-                          className={`${styles.actionBtn} ${styles.saveBtn}`}
-                          title={t("save-role")}
-                          aria-label={t("save-member-role", {
-                            name: fullName,
-                          })}
-                          onClick={() => saveRole(member.id)}
-                          disabled={isUpdating}
-                          aria-busy={isUpdating}
-                        >
-                          <IoCheckmarkOutline />
-                        </button>
-                        <button
-                          type="button"
-                          className={`${styles.actionBtn} ${styles.cancelEditBtn}`}
-                          title={t("cancel")}
-                          aria-label={t("cancel-member-role-edit", {
-                            name: fullName,
-                          })}
-                          onClick={cancelEditingRole}
-                          disabled={isUpdating}
-                        >
-                          <IoCloseOutline />
-                        </button>
-                      </>
-                    ) : (
-                      <button
-                        type="button"
-                        className={styles.actionBtn}
-                        title={t("edit-role")}
-                        aria-label={t("edit-member-role", { name: fullName })}
-                        onClick={() => startEditingRole(member)}
-                        disabled={mutationInProgress}
-                      >
-                        <IoCreateOutline />
-                      </button>
-                    )}
-                    {!isEditing && !isOwner && (
+                    {!isOwner && (
                       <button
                         type="button"
                         className={`${styles.actionBtn} ${styles.deleteBtn}`}

@@ -73,8 +73,7 @@
 }
 
 .retryButton:focus-visible,
-.actionBtn:focus-visible,
-.roleSelect:focus-visible {
+.actionBtn:focus-visible {
   outline: 3px solid var(--app-focus-ring);
   outline-offset: 2px;
 }
@@ -146,13 +145,7 @@
   color: var(--app-warning-text);
 }
 
-.badgeManager {
-  border-color: var(--app-info-border);
-  background: var(--app-info-surface);
-  color: var(--app-info-text);
-}
-
-.badgeTrainee {
+.badgeMember {
   border-color: var(--app-border);
   background: var(--app-surface-soft);
   color: var(--app-text);
@@ -189,25 +182,6 @@
   color: var(--app-link);
 }
 
-.roleSelect {
-  min-width: 125px;
-  padding: 8px 12px;
-  border: 1px solid var(--app-border-strong);
-  border-radius: 8px;
-  background: var(--app-surface);
-  color: var(--app-text-strong);
-  font: inherit;
-  font-size: 0.85rem;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.roleSelect option {
-  background: var(--app-surface);
-  color: var(--app-text-strong);
-}
-
-.roleSelect:disabled,
 .actionBtn:disabled {
   cursor: not-allowed;
   opacity: 0.5;
@@ -221,16 +195,6 @@
 .deleteBtn:hover {
   background: var(--app-danger-surface);
   color: var(--app-danger-text);
-}
-
-.saveBtn:hover {
-  background: var(--app-success-surface);
-  color: var(--app-success-text);
-}
-
-.cancelEditBtn:hover {
-  background: var(--app-surface-soft);
-  color: var(--app-text);
 }
 
 @media (max-width: 720px) {

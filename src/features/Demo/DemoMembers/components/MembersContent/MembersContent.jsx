@@ -30,9 +30,6 @@ const MembersContent = () => {
     deleteMember,
     deletingMemberId,
     deleteError,
-    updateMemberRole,
-    updatingMemberId,
-    updateError,
   } = useMembers(demoId);
 
   useEffect(() => {
@@ -63,8 +60,8 @@ const MembersContent = () => {
       const normalizedRole = String(member.role ?? "").toUpperCase();
       const matchesRole =
         roleFilter === "ALL" ||
-        normalizedRole === roleFilter ||
-        (roleFilter === "ADMIN" && normalizedRole === "MANAGER");
+        (roleFilter === "OWNER" && normalizedRole === "OWNER") ||
+        (roleFilter === "MEMBER" && normalizedRole !== "OWNER");
 
       const matchesSearch =
         !normalizedQuery || searchableText.includes(normalizedQuery);
@@ -157,7 +154,6 @@ const MembersContent = () => {
           >
             <option value="ALL">{t("all-roles")}</option>
             <option value="OWNER">{t("owner")}</option>
-            <option value="ADMIN">{t("admin")}</option>
             <option value="MEMBER">{t("member")}</option>
           </select>
         </label>
@@ -171,10 +167,7 @@ const MembersContent = () => {
           onRetry={refetch}
           deletingMemberId={deletingMemberId}
           deleteError={deleteError}
-          updatingMemberId={updatingMemberId}
-          updateError={updateError}
           onDelete={handleDeleteMember}
-          onUpdateRole={updateMemberRole}
         />
       </div>
 

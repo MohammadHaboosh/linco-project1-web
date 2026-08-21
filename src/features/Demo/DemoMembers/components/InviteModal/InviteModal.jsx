@@ -17,8 +17,6 @@ const InviteModal = ({ demoId, onClose, onSuccess }) => {
     selectedUser,
     selectUser,
     clearSelectedUser,
-    role,
-    setRole,
     isSearching,
     searchError,
     isSubmitting,
@@ -156,25 +154,6 @@ const InviteModal = ({ demoId, onClose, onSuccess }) => {
                 )}
               </div>
             )}
-          </div>
-
-          <div className={styles.inputGroup}>
-            <label htmlFor="invite-member-role">{t("assign-role")}</label>
-            <select
-              id="invite-member-role"
-              className={styles.selectInput}
-              value={role}
-              onChange={(event) => setRole(event.target.value)}
-              disabled={isSubmitting}
-            >
-              <option value="MEMBER">{t("member")}</option>
-              <option value="ADMIN">{t("admin")}</option>
-            </select>
-            <span className={styles.helperText}>
-              {role === "ADMIN"
-                ? t("section-managers-can-manage-courses-and-tasks")
-                : t("trainers-can-access-learning-content")}
-            </span>
           </div>
 
           <div className={styles.modalActions}>
