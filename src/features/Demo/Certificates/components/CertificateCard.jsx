@@ -16,8 +16,8 @@ const CertificateCard = ({ certificate }) => {
   const courseName = certificate?.courseName || t("certificate-course-name");
   const provider = certificate?.demoName || t("certificate-provider-name");
 
-  const providerLogo = certificate?.logoImagePath || "/images/linco-logo.png";
-  const signatureImage = certificate?.signature || "/images/linco-logo.png";
+  const providerLogo = certificate?.logoImagePath || "/images/linco-logo.webp";
+  const signatureImage = certificate?.signature || "/images/linco-logo.webp";
   const safeCourseName = courseName.replace(/[<>:"/\\|?*]/g, "_").trim();
   const certificateFileName = `${t("certificate-file-prefix")}_${
     safeCourseName || "course"

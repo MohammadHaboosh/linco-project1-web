@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import { verifyUserEmail } from "../../api/userApi";
 import { PATHS } from "../../../../routes/paths.js";
 import styles from "./VerifyAccount.module.css";
-import logoImg from "../../../../../public/icons/celebrating.png";
+import logoImg from "../../../../../public/icons/celebrating.webp";
 
 const VerifyAccount = () => {
   const navigate = useNavigate();
@@ -87,7 +87,11 @@ const VerifyAccount = () => {
   return (
     <div className={styles["page-container"]}>
       <div className={styles["card"]}>
-        <img src={logoImg} alt={t("auth-linco-logo")} className={styles["logo"]} />
+        <img
+          src={logoImg}
+          alt={t("auth-linco-logo")}
+          className={styles["logo"]}
+        />
         <div className={styles["icon-wrapper"]}>
           <IoCheckmarkCircle className={styles["success-icon"]} />
         </div>
