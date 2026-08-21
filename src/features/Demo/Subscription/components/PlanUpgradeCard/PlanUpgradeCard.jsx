@@ -5,6 +5,8 @@ import {
   IoHomeOutline,
   IoSettingsOutline,
   IoTrendingUp,
+  IoPeopleOutline,
+  IoLayersOutline,
 } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
@@ -16,7 +18,9 @@ import styles from "./PlanUpgradeCard.module.css";
 const PLAN_ORDER = ["FREE", "STARTER", "PRO", "ENTERPRISE"];
 
 const normalizePlan = (plan) => {
-  const normalizedPlan = String(plan || "FREE").trim().toUpperCase();
+  const normalizedPlan = String(plan || "FREE")
+    .trim()
+    .toUpperCase();
   return PLAN_ORDER.includes(normalizedPlan) ? normalizedPlan : "FREE";
 };
 
@@ -57,17 +61,20 @@ const PlanUpgradeCard = ({
         id: "STARTER",
         price: 20,
         description: t("starter-plan-description"),
+        limits: { members: 5, departmentsAndGroups: 2 },
       },
       {
         id: "PRO",
         price: 100,
         description: t("pro-plan-description"),
         featured: true,
+        limits: { members: 25, departmentsAndGroups: 10 },
       },
       {
         id: "ENTERPRISE",
         price: 200,
         description: t("enterprise-plan-description"),
+        limits: { members: 100, departmentsAndGroups: 50 },
       },
     ],
     [t],
@@ -269,18 +276,69 @@ const PlanUpgradeCard = ({
                       <div className={styles.planPrice}>
                         {currencyFormatter.format(plan.price)}
                       </div>
+
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "10px",
+                          margin: "18px 0",
+                          padding: "12px 0",
+                          borderTop: "1px solid var(--app-border, #e2e8f0)",
+                          borderBottom: "1px solid var(--app-border, #e2e8f0)",
+                          fontSize: "0.85rem",
+                          color: "var(--app-muted, #64748b)",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "8px",
+                          }}
+                        >
+                          <IoPeopleOutline
+                            size={18}
+                            style={{ color: "var(--app-link, #3b82f6)" }}
+                          />
+                          <span>
+                            <strong>{plan.limits.members}</strong>{" "}
+                            {t("plan-members-limit")}
+                          </span>
+                        </div>
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "8px",
+                          }}
+                        >
+                          <IoLayersOutline
+                            size={18}
+                            style={{ color: "var(--app-link, #3b82f6)" }}
+                          />
+                          <span>
+                            <strong>{plan.limits.departmentsAndGroups}</strong>{" "}
+                            {t(
+                              "plan-departments-groups-limit",
+                              "Departments & Groups",
+                            )}
+                          </span>
+                        </div>
+                      </div>
+
                       <p>{plan.description}</p>
+
                       <button
                         type="button"
                         className={styles.selectPlanButton}
                         onClick={() => startCheckout(plan.id)}
                         disabled={isStartingCheckout}
+                        style={{ marginTop: "auto" }}
                       >
-                        {isSelected ? (
-                          t("preparing-checkout")
-                        ) : (
-                          t("choose-plan")
-                        )}
+                        {isSelected
+                          ? t("preparing-checkout")
+                          : t("choose-plan")}
                       </button>
                     </article>
                   );

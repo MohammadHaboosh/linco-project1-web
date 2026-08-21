@@ -2194,5 +2194,7 @@
   "certificate-of-completion": "شهادة الإنجاز",
   "has-successfully-completed-the-course": "أكمل الدورة بنجاح",
   "roadmap-download-failed": "فشل في تنزيل ملف PDF. \nيرجى المحاولة مرة أخرى.",
-  "downloading": "جارٍ التنزيل..."
+  "downloading": "جارٍ التنزيل...",
+  "plan-members-limit": "حد الأعضاء",
+  "plan-departments-groups-limit": "حد الأقسام والمجموعات"
 }
