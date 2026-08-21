@@ -1,6 +1,6 @@
 import { apiFetch } from "../../../../api/apiFetch";
 
-const RANDOM_QUIZ_BATCH_SIZE = 3;
+const QUIZ_BATCH_SIZE = 3;
 
 const stripOptionPrefix = (option) =>
   String(option ?? "")
@@ -97,6 +97,46 @@ const requestGeneratedQuiz = async (
   return normalizeQuizQuestions(responseData.data);
 };
 
+const requestGeneratedQuizInBatches = async (
+  courseId,
+  questionCount,
+  endpoint,
+  createPayload,
+  options,
+  failureMessage,
+) => {
+  const requestedQuestionCount = normalizeQuestionCount(questionCount);
+  const questions = [];
+
+  while (questions.length < requestedQuestionCount) {
+    const batchSize = Math.min(
+      QUIZ_BATCH_SIZE,
+      requestedQuestionCount - questions.length,
+    );
+    const batchQuestions = await requestGeneratedQuiz(
+      courseId,
+      endpoint,
+      createPayload(batchSize),
+      options,
+      failureMessage,
+    );
+    const firstQuestionIndex = questions.length;
+    const remainingQuestionCount =
+      requestedQuestionCount - firstQuestionIndex;
+
+    questions.push(
+      ...batchQuestions
+        .slice(0, remainingQuestionCount)
+        .map((question, index) => ({
+          ...question,
+          id: `generated-question-${firstQuestionIndex + index}`,
+        })),
+    );
+  }
+
+  return questions;
+};
+
 export const courseAssistantApi = {
   askQuestion: async (courseId, question, options = {}) => {
     const normalizedQuestion = String(question ?? "").trim();
@@ -148,48 +188,26 @@ export const courseAssistantApi = {
       throw new Error("Enter a topic for the quiz.");
     }
 
-    return requestGeneratedQuiz(
+    return requestGeneratedQuizInBatches(
       courseId,
+      questionCount,
       "quiz/generate",
-      {
+      (batchSize) => ({
         topic: normalizedTopic,
-        questionCount: normalizeQuestionCount(questionCount),
-      },
+        questionCount: batchSize,
+      }),
       options,
       "The topic quiz could not be generated.",
     );
   },
 
-  generateRandomQuiz: async (courseId, questionCount, options = {}) => {
-    const requestedQuestionCount = normalizeQuestionCount(questionCount);
-    const questions = [];
-
-    while (questions.length < requestedQuestionCount) {
-      const batchSize = Math.min(
-        RANDOM_QUIZ_BATCH_SIZE,
-        requestedQuestionCount - questions.length,
-      );
-      const batchQuestions = await requestGeneratedQuiz(
-        courseId,
-        "random-quiz/generate",
-        { questionCount: batchSize },
-        options,
-        "The random quiz could not be generated.",
-      );
-      const firstQuestionIndex = questions.length;
-      const remainingQuestionCount =
-        requestedQuestionCount - firstQuestionIndex;
-
-      questions.push(
-        ...batchQuestions
-          .slice(0, remainingQuestionCount)
-          .map((question, index) => ({
-            ...question,
-            id: `generated-question-${firstQuestionIndex + index}`,
-          })),
-      );
-    }
-
-    return questions;
-  },
+  generateRandomQuiz: (courseId, questionCount, options = {}) =>
+    requestGeneratedQuizInBatches(
+      courseId,
+      questionCount,
+      "random-quiz/generate",
+      (batchSize) => ({ questionCount: batchSize }),
+      options,
+      "The random quiz could not be generated.",
+    ),
 };
