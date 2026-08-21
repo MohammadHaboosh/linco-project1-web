@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { departmentApi } from "../api/departmentApi";
+import { getApiErrorMessage } from "../../../../utils/getApiErrorMessage";
 
 export const useDepartments = (demoId) => {
   const { t } = useTranslation();
@@ -21,9 +22,14 @@ export const useDepartments = (demoId) => {
           setDepartments(onlyDepartments);
           setError(null);
         }
-      } catch {
+      } catch (requestError) {
         if (isMounted) {
-          setError(t("departments-load-error-message"));
+          setError(
+            getApiErrorMessage(
+              requestError,
+              t("departments-load-error-message"),
+            ),
+          );
         }
       } finally {
         if (isMounted) {
@@ -49,8 +55,13 @@ export const useDepartments = (demoId) => {
       const data = await departmentApi.getDepartments(demoId);
       const onlyDepartments = data.filter((item) => item.isGroup !== true);
       setDepartments(onlyDepartments);
-    } catch {
-      setError(t("departments-load-error-message"));
+    } catch (requestError) {
+      setError(
+        getApiErrorMessage(
+          requestError,
+          t("departments-load-error-message"),
+        ),
+      );
     } finally {
       setIsLoading(false);
     }

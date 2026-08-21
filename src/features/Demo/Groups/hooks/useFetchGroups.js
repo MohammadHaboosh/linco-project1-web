@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { departmentApi } from "../../HomeDemoPage/api/departmentApi";
+import { getApiErrorMessage } from "../../../../utils/getApiErrorMessage";
 
 export const useFetchGroups = (demoId) => {
   const { t } = useTranslation();
@@ -31,7 +32,12 @@ export const useFetchGroups = (demoId) => {
       setGroups(filteredGroups);
     } catch (err) {
       console.error("Error fetching groups:", err);
-      setError(t("groups-load-failed", "Couldn't load groups"));
+      setError(
+        getApiErrorMessage(
+          err,
+          t("groups-load-failed", "Couldn't load groups"),
+        ),
+      );
     } finally {
       setIsLoading(false);
     }

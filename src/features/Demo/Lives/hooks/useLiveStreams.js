@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { liveStreamsApi } from "../api/liveStreamsApi";
+import { useTranslation } from "react-i18next";
+import { getApiErrorMessage } from "../../../../utils/getApiErrorMessage";
 
 const EMPTY_META = {
   hasNextPage: false,
@@ -19,6 +21,7 @@ const mergeUniqueStreams = (currentStreams, nextStreams) => {
 };
 
 export const useLiveStreams = ({ demoId, departmentId }) => {
+  const { t } = useTranslation();
   const hasContext = Boolean(demoId && departmentId);
   const [streams, setStreams] = useState([]);
   const [meta, setMeta] = useState(EMPTY_META);
@@ -47,7 +50,12 @@ export const useLiveStreams = ({ demoId, departmentId }) => {
         setMeta(result.meta);
       } catch (requestError) {
         if (requestError.name !== "AbortError") {
-          setError("live-streams-load-error-message");
+          setError(
+            getApiErrorMessage(
+              requestError,
+              t("live-streams-load-error-message"),
+            ),
+          );
         }
       } finally {
         if (!controller.signal.aborted) {
@@ -59,7 +67,7 @@ export const useLiveStreams = ({ demoId, departmentId }) => {
     loadInitialStreams();
 
     return () => controller.abort();
-  }, [demoId, departmentId, hasContext]);
+  }, [demoId, departmentId, hasContext, t]);
 
   const refetch = useCallback(async ({ silent = false } = {}) => {
     if (!hasContext) return;
@@ -74,14 +82,19 @@ export const useLiveStreams = ({ demoId, departmentId }) => {
       setStreams(result.streams);
       setMeta(result.meta);
     } catch (requestError) {
-      setError("live-streams-load-error-message");
+      setError(
+        getApiErrorMessage(
+          requestError,
+          t("live-streams-load-error-message"),
+        ),
+      );
       throw requestError;
     } finally {
       if (!silent) {
         setIsLoading(false);
       }
     }
-  }, [demoId, departmentId, hasContext]);
+  }, [demoId, departmentId, hasContext, t]);
 
   const loadMore = useCallback(async () => {
     if (
@@ -106,12 +119,17 @@ export const useLiveStreams = ({ demoId, departmentId }) => {
         mergeUniqueStreams(current, result.streams),
       );
       setMeta(result.meta);
-    } catch {
-      setError("live-streams-load-more-error-message");
+    } catch (requestError) {
+      setError(
+        getApiErrorMessage(
+          requestError,
+          t("live-streams-load-more-error-message"),
+        ),
+      );
     } finally {
       setIsLoadingMore(false);
     }
-  }, [demoId, departmentId, hasContext, isLoadingMore, meta]);
+  }, [demoId, departmentId, hasContext, isLoadingMore, meta, t]);
 
   const replaceStream = useCallback((updatedStream) => {
     setStreams((current) => {
@@ -184,7 +202,7 @@ export const useLiveStreams = ({ demoId, departmentId }) => {
     streams,
     isLoading,
     isLoadingMore,
-    error: hasContext ? error : "live-stream-context-missing",
+    error: hasContext ? error : t("live-stream-context-missing"),
     hasNextPage: meta.hasNextPage,
     refetch,
     loadMore,

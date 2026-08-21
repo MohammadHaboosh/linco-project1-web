@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { attachmentApi } from "../api/attachmentApi";
+import { getApiErrorMessage } from "../../../../utils/getApiErrorMessage";
 
 export const useAttachments = () => {
   const [attachments, setAttachments] = useState([]);
@@ -120,7 +121,9 @@ export const useAttachments = () => {
       );
     } catch (err) {
       console.error("Error getting upload URLs:", err);
-      setError("Failed to request upload URLs");
+      setError(
+        getApiErrorMessage(err, "Failed to request upload URLs"),
+      );
     }
   };
 

@@ -50,7 +50,7 @@ const LeaderboardContent = () => {
         >
           <IoAlertCircleOutline aria-hidden="true" />
           <strong>{t("leaderboard-load-failed")}</strong>
-          <p>{t("leaderboard-load-error-message")}</p>
+          <p>{error || t("leaderboard-load-error-message")}</p>
           <button type="button" onClick={retry}>
             {t("try-again")}
           </button>

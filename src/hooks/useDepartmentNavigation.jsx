@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { departmentApi } from "../features/Demo/HomeDemoPage/api/departmentApi";
 import { useDemo } from "./useDemo";
 import { useTranslation } from "react-i18next";
+import { getApiErrorMessage } from "../utils/getApiErrorMessage";
 
 export const useDepartmentNavigation = (fallbackName) => {
   const { t } = useTranslation();
@@ -10,7 +11,7 @@ export const useDepartmentNavigation = (fallbackName) => {
   const { departmentId } = useParams();
   const [departments, setDepartments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
   const resolvedFallbackName = fallbackName || t("departments");
 
   useEffect(() => {
@@ -32,12 +33,17 @@ export const useDepartmentNavigation = (fallbackName) => {
         if (!isMounted) return;
 
         setDepartments(data || []);
-        setError(false);
+        setError("");
       } catch (error) {
         console.error("Failed to load departments:", error);
         if (isMounted) {
           setDepartments([]);
-          setError(true);
+          setError(
+            getApiErrorMessage(
+              error,
+              t("departments-navigation-load-failed"),
+            ),
+          );
         }
       } finally {
         if (isMounted) {
@@ -51,7 +57,7 @@ export const useDepartmentNavigation = (fallbackName) => {
     return () => {
       isMounted = false;
     };
-  }, [demoId]);
+  }, [demoId, t]);
 
   const accessibleDepartments = useMemo(() => {
     return (departments || []).filter((dept) => !dept.isLocked);

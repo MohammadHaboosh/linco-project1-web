@@ -1,8 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { departmentMemberApi } from "../api/departmentMemberApi";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { getApiErrorMessage } from "../../../../utils/getApiErrorMessage";
 
 export const useDepartmentMembers = (departmentId) => {
+  const { t } = useTranslation();
   const [members, setMembers] = useState([]);
   const [meta, setMeta] = useState(null);
   const [isLoading, setIsLoading] = useState(Boolean(departmentId));
@@ -40,14 +43,19 @@ export const useDepartmentMembers = (departmentId) => {
 
         setMembers([]);
         setMeta(null);
-        setError("members-load-error-message");
+        setError(
+          getApiErrorMessage(
+            requestError,
+            t("members-load-error-message"),
+          ),
+        );
       } finally {
         if (!signal?.aborted) {
           setIsLoading(false);
         }
       }
     },
-    [demoId, departmentId],
+    [demoId, departmentId, t],
   );
 
   useEffect(() => {
@@ -82,14 +90,19 @@ export const useDepartmentMembers = (departmentId) => {
           currentMembers.filter((member) => member.id !== memberId),
         );
         return true;
-      } catch {
-        setDeleteError("department-member-remove-failed");
+      } catch (requestError) {
+        setDeleteError(
+          getApiErrorMessage(
+            requestError,
+            t("department-member-remove-failed"),
+          ),
+        );
         return false;
       } finally {
         setDeletingMemberId(null);
       }
     },
-    [demoId, departmentId, deletingMemberId],
+    [demoId, departmentId, deletingMemberId, t],
   );
 
   return {

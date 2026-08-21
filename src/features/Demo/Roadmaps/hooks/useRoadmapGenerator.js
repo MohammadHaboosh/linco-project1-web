@@ -1,8 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { roadmapApi } from "../api/roadmapApi";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { getApiErrorMessage } from "../../../../utils/getApiErrorMessage";
 
 export const useRoadmapGenerator = () => {
+  const { t } = useTranslation();
   const [roadmap, setRoadmap] = useState(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState(null);
@@ -41,7 +44,12 @@ export const useRoadmapGenerator = () => {
       } catch (requestError) {
         if (requestError.name === "AbortError") return false;
 
-        setError("roadmap-generation-error-message");
+        setError(
+          getApiErrorMessage(
+            requestError,
+            t("roadmap-generation-error-message"),
+          ),
+        );
         return false;
       } finally {
         if (activeControllerRef.current === controller) {
@@ -50,7 +58,7 @@ export const useRoadmapGenerator = () => {
         }
       }
     },
-    [demoId, departmentId],
+    [demoId, departmentId, t],
   );
 
   const reset = useCallback(() => {

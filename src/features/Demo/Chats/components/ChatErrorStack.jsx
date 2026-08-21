@@ -23,7 +23,7 @@ const ChatErrorStack = ({
       {visibleErrors.map((error) => (
         <div className={styles.errorBanner} key={error}>
           <IoCloudOfflineOutline aria-hidden="true" />
-          <span>{t(error)}</span>
+          <span>{t(error, { defaultValue: error })}</span>
           <div className={styles.errorActions}>
             <button
               type="button"

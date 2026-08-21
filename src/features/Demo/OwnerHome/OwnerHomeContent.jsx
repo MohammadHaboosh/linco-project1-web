@@ -50,7 +50,7 @@ const OwnerHomeContent = () => {
             aria-hidden="true"
           />
           <h1>{t("analytics-report-load-failed")}</h1>
-          <p>{t("analytics-report-load-error-message")}</p>
+          <p>{error || t("analytics-report-load-error-message")}</p>
           <button
             type="button"
             className={styles.stateAction}

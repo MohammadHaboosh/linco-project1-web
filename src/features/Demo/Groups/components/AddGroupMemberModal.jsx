@@ -124,7 +124,7 @@ const AddGroupMemberModal = ({ demoId, groupId, onClose, onSuccess }) => {
         <form className={styles.modalBody} onSubmit={submitMember}>
           {submitError && (
             <div className={styles.errorAlert} role="alert">
-              {t(submitError)}
+              {t(submitError, { defaultValue: submitError })}
             </div>
           )}
 
@@ -168,7 +168,9 @@ const AddGroupMemberModal = ({ demoId, groupId, onClose, onSuccess }) => {
 
                 <div className={styles.searchFeedback}>
                   {searchError ? (
-                    <span className={styles.searchError}>{t(searchError)}</span>
+                    <span className={styles.searchError}>
+                      {t(searchError, { defaultValue: searchError })}
+                    </span>
                   ) : (
                     searchQuery.trim() &&
                     !isSearching &&

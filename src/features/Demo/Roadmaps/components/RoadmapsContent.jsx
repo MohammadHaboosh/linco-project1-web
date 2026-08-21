@@ -148,7 +148,7 @@ const RoadmapsContent = () => {
               <IoAlertCircleOutline aria-hidden="true" />
               <div>
                 <strong>{t("roadmap-generation-failed")}</strong>
-                <p>{t(error)}</p>
+                <p>{t(error, { defaultValue: error })}</p>
               </div>
             </div>
           )}

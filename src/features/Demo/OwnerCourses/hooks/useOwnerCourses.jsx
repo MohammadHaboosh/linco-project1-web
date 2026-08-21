@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { ownerCoursesApi } from "../api/ownerCoursesApi";
+import { getApiErrorMessage } from "../../../../utils/getApiErrorMessage";
 
 const mapAssetToCourse = (asset) => {
   const c = asset.course;
@@ -41,7 +42,11 @@ export const useOwnerCourses = (demoId) => {
           setError(null);
         }
       } catch (err) {
-        if (isMounted) setError(t("courses-load-error-message"));
+        if (isMounted) {
+          setError(
+            getApiErrorMessage(err, t("courses-load-error-message")),
+          );
+        }
       } finally {
         if (isMounted) setIsLoading(false);
       }
@@ -62,8 +67,10 @@ export const useOwnerCourses = (demoId) => {
     try {
       const assetsData = await ownerCoursesApi.getDemoAssets(demoId);
       setCourses(assetsData.map(mapAssetToCourse));
-    } catch {
-      setError(t("courses-load-error-message"));
+    } catch (requestError) {
+      setError(
+        getApiErrorMessage(requestError, t("courses-load-error-message")),
+      );
     } finally {
       setIsLoading(false);
     }

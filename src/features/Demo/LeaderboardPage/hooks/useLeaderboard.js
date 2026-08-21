@@ -1,14 +1,19 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { leaderboardApi } from "../api/leaderboardApi";
+import { useTranslation } from "react-i18next";
+import { getApiErrorMessage } from "../../../../utils/getApiErrorMessage";
 
 export const useLeaderboard = () => {
+  const { t } = useTranslation();
   const { demoId, departmentId } = useParams();
   const hasRequiredIds = Boolean(demoId && departmentId);
 
   const [leaderboard, setLeaderboard] = useState([]);
   const [isLoading, setIsLoading] = useState(hasRequiredIds);
-  const [error, setError] = useState(!hasRequiredIds);
+  const [error, setError] = useState(
+    hasRequiredIds ? "" : t("leaderboard-load-error-message"),
+  );
   const [reloadVersion, setReloadVersion] = useState(0);
 
   useEffect(() => {
@@ -21,7 +26,7 @@ export const useLeaderboard = () => {
 
     const fetchLeaderboard = async () => {
       setIsLoading(true);
-      setError(false);
+      setError("");
       try {
         const response = await leaderboardApi.getDepartmentLeaderboard(
           demoId,
@@ -37,7 +42,12 @@ export const useLeaderboard = () => {
       } catch (err) {
         if (err?.name !== "AbortError" && isMounted) {
           setLeaderboard([]);
-          setError(true);
+          setError(
+            getApiErrorMessage(
+              err,
+              t("leaderboard-load-error-message"),
+            ),
+          );
         }
       } finally {
         if (isMounted) setIsLoading(false);
@@ -50,12 +60,12 @@ export const useLeaderboard = () => {
       isMounted = false;
       controller.abort();
     };
-  }, [demoId, departmentId, reloadVersion]);
+  }, [demoId, departmentId, reloadVersion, t]);
 
   return {
     leaderboard,
     isLoading: hasRequiredIds && isLoading,
-    error: !hasRequiredIds || error,
+    error: !hasRequiredIds ? t("leaderboard-load-error-message") : error,
     retry: () => setReloadVersion((version) => version + 1),
   };
 };

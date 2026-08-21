@@ -42,7 +42,7 @@ const ProfileContent = () => {
       <div className={`${styles.contentWrapper} ${styles.pageState}`}>
         <div className={styles.errorState} role="alert">
           <h1>{t("profile-load-error-title")}</h1>
-          <p>{t(error)}</p>
+          <p>{t(error, { defaultValue: error })}</p>
           <button
             type="button"
             className={styles.btnPrimary}

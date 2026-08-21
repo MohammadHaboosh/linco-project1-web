@@ -73,7 +73,7 @@ const ProfileSidebar = ({
         </div>
         {photoUploadError && (
           <p className={styles.photoUploadError} role="alert">
-            {t(photoUploadError)}
+            {t(photoUploadError, { defaultValue: photoUploadError })}
           </p>
         )}
         {photoUploadStatus && !photoUploadError && (

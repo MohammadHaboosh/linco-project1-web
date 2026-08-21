@@ -12,15 +12,18 @@ const HomePage = () => {
   const {
     ownedRooms,
     isLoadingOwnedRooms,
+    ownedRoomsError,
     activeRooms,
     isLoadingJoinedRooms,
+    joinedRoomsError,
     pendingInvitations,
     isLoadingInvitations,
+    invitationsError,
     acceptInvitation,
     rejectInvitation,
     processingInvitationId,
     processingAction,
-    actionError: invitationActionError,
+    invitationActionError,
   } = useHomePage();
 
   return (
@@ -47,6 +50,7 @@ const HomePage = () => {
             title={t("owned-workspaces")}
             rooms={ownedRooms}
             isLoading={isLoadingOwnedRooms}
+            error={ownedRoomsError}
             viewAllPath={PATHS.OWN_ROOMS}
             emptyMessage={t("no-owned-workspaces-yet")}
             emptySubtext={t("no-owned-workspaces-description")}
@@ -58,6 +62,7 @@ const HomePage = () => {
             title={t("joined-workspaces")}
             rooms={activeRooms}
             isLoading={isLoadingJoinedRooms}
+            error={joinedRoomsError}
             viewAllPath={PATHS.JOINED_ROOMS}
             emptyMessage={t("no-joined-workspaces-yet")}
             emptySubtext={t("no-joined-workspaces-description")}
@@ -68,6 +73,7 @@ const HomePage = () => {
           <PendingInvitations
             invitations={pendingInvitations}
             isLoading={isLoadingInvitations}
+            error={invitationsError}
             onAccept={acceptInvitation}
             onReject={rejectInvitation}
             processingInvitationId={processingInvitationId}

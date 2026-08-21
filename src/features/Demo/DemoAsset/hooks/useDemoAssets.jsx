@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import { ownerCoursesApi } from "../../OwnerCourses/api/ownerCoursesApi";
+import { useTranslation } from "react-i18next";
+import { getApiErrorMessage } from "../../../../utils/getApiErrorMessage";
 
 export const useDemoAssets = (demoId) => {
+  const { t } = useTranslation();
   const [assets, setAssets] = useState([]);
   const [isLoading, setIsLoading] = useState(Boolean(demoId));
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
   const [reloadVersion, setReloadVersion] = useState(0);
 
   useEffect(() => {
@@ -15,7 +18,7 @@ export const useDemoAssets = (demoId) => {
 
     const fetchAssets = async () => {
       setIsLoading(true);
-      setError(false);
+      setError("");
       try {
         const data = await ownerCoursesApi.getDemoAssets(demoId);
         if (isCurrent) setAssets(data || []);
@@ -23,7 +26,9 @@ export const useDemoAssets = (demoId) => {
         console.error("Error fetching demo assets:", err);
         if (isCurrent) {
           setAssets([]);
-          setError(true);
+          setError(
+            getApiErrorMessage(err, t("assets-load-error-message")),
+          );
         }
       } finally {
         if (isCurrent) setIsLoading(false);
@@ -35,7 +40,7 @@ export const useDemoAssets = (demoId) => {
     return () => {
       isCurrent = false;
     };
-  }, [demoId, reloadVersion]);
+  }, [demoId, reloadVersion, t]);
 
   return {
     assets,

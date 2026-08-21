@@ -6,6 +6,7 @@ import {
   IoVideocamOutline,
 } from "react-icons/io5";
 import styles from "./ScheduleLiveModal.module.css";
+import { getApiErrorMessage } from "../../../../../utils/getApiErrorMessage";
 
 const toDateTimeLocalValue = (date) => {
   const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
@@ -65,8 +66,10 @@ const ScheduleLiveModal = ({ onClose, onCreate }) => {
         scheduledAt: scheduleDate.toISOString(),
       });
       onClose();
-    } catch {
-      setError("live-create-failed");
+    } catch (requestError) {
+      setError(
+        getApiErrorMessage(requestError, t("live-create-failed")),
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -118,7 +121,7 @@ const ScheduleLiveModal = ({ onClose, onCreate }) => {
         >
           {error && (
             <div className={styles.errorAlert} role="alert">
-              {t(error)}
+              {t(error, { defaultValue: error })}
             </div>
           )}
 

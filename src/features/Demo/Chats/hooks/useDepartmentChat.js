@@ -3,6 +3,7 @@ import { departmentMessagesApi } from "../api/departmentMessagesApi";
 import { mergeMessagesById } from "../utils/messageUtils";
 import { useDepartmentChatActions } from "./useDepartmentChatActions";
 import { useDepartmentChatConnection } from "./useDepartmentChatConnection";
+import { getErrorMessage } from "../utils/departmentChatUtils";
 
 export const useDepartmentChat = ({ demoId, departmentId }) => {
   const contextKey = `${demoId ?? ""}:${departmentId ?? ""}`;
@@ -70,7 +71,9 @@ export const useDepartmentChat = ({ demoId, departmentId }) => {
           activeContextKeyRef.current === requestContextKey &&
           error.name !== "AbortError"
         ) {
-          setHistoryError("chat-error-load-conversation");
+          setHistoryError(
+            getErrorMessage(error, "chat-error-load-conversation"),
+          );
           throw error;
         }
 
@@ -182,9 +185,9 @@ export const useDepartmentChat = ({ demoId, departmentId }) => {
       mergeMessages(result.messages);
       setPageMeta(result.meta);
       return true;
-    } catch {
+    } catch (error) {
       if (activeContextKeyRef.current === requestContextKey) {
-        setHistoryError("chat-error-load-older");
+        setHistoryError(getErrorMessage(error, "chat-error-load-older"));
       }
       return false;
     } finally {

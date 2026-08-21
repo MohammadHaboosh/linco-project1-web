@@ -77,7 +77,7 @@ const DemoAssetContent = () => {
           role="alert"
         >
           <strong>{t("assets-load-failed")}</strong>
-          <span>{t("assets-load-error-message")}</span>
+          <span>{error}</span>
           <button type="button" onClick={retry}>
             {t("try-again")}
           </button>

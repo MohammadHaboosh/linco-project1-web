@@ -94,7 +94,7 @@ const CoursesContent = () => {
 
       {deleteError && (
         <div className={styles.deleteError} role="alert">
-          {t("department-course-delete-failed")}
+          {deleteError}
         </div>
       )}
 
@@ -115,7 +115,7 @@ const CoursesContent = () => {
           role="alert"
         >
           <strong>{t("courses-load-failed")}</strong>
-          <span>{t("courses-load-error-message")}</span>
+          <span>{error}</span>
           <button type="button" onClick={retry}>
             {t("try-again")}
           </button>

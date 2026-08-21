@@ -42,18 +42,18 @@ const AddEditFAQModal = ({ isOpen, onClose, onSubmit, initialData }) => {
 
     setIsSubmitting(true);
     setSubmitError("");
-    const success = await onSubmit({
+    const result = await onSubmit({
       question: question.trim(),
       answer: answer.trim(),
     });
     setIsSubmitting(false);
 
-    if (success) {
+    if (result?.success) {
       setQuestion("");
       setAnswer("");
       onClose();
     } else {
-      setSubmitError(t("faq-create-failed"));
+      setSubmitError(result?.error || t("faq-create-failed"));
     }
   };
 

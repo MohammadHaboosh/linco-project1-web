@@ -35,7 +35,9 @@ const QASection = ({ activeLesson }) => {
       setNewQuestionText("");
       setIsAsking(false);
     } else {
-      setActionError(t("course-player-question-post-failed"));
+      setActionError(
+        result.error || t("course-player-question-post-failed"),
+      );
     }
   };
 
@@ -43,7 +45,9 @@ const QASection = ({ activeLesson }) => {
     setActionError(null);
     const result = await editQuestion(questionId, newContent);
     if (!result.success) {
-      setActionError(t("course-player-question-update-failed"));
+      setActionError(
+        result.error || t("course-player-question-update-failed"),
+      );
       return false;
     }
     return true;
@@ -63,7 +67,9 @@ const QASection = ({ activeLesson }) => {
     const result = await removeQuestion(questionId);
     setDeletingQuestionId(null);
     if (!result.success) {
-      setActionError(t("course-player-question-delete-failed"));
+      setActionError(
+        result.error || t("course-player-question-delete-failed"),
+      );
     }
   };
 
@@ -149,7 +155,7 @@ const QASection = ({ activeLesson }) => {
           )}
           {error && (
             <p className={styles.inlineError} role="alert">
-              {t("course-player-discussions-load-failed")}
+              {error || t("course-player-discussions-load-failed")}
             </p>
           )}
 

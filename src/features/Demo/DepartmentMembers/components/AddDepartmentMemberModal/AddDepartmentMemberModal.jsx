@@ -131,7 +131,7 @@ const AddDepartmentMemberModal = ({
         >
           {submitError && (
             <div className={styles.errorAlert} role="alert">
-              {t(submitError)}
+              {t(submitError, { defaultValue: submitError })}
             </div>
           )}
 
@@ -185,7 +185,7 @@ const AddDepartmentMemberModal = ({
                 <div className={styles.searchFeedback} aria-live="polite">
                   {searchError ? (
                     <span className={styles.searchError} role="alert">
-                      {t(searchError)}
+                      {t(searchError, { defaultValue: searchError })}
                     </span>
                   ) : (
                     searchQuery.trim() &&

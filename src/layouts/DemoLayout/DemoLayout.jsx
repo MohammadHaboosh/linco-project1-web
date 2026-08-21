@@ -36,7 +36,7 @@ const LayoutContent = () => {
     return (
       <div className={styles.layoutState} role="alert">
         <h1>{t("workspace-load-failed")}</h1>
-        <p>{t("workspace-load-error-message")}</p>
+        <p>{loadError || t("workspace-load-error-message")}</p>
         <button type="button" onClick={retryLoadDemo}>
           {t("try-again")}
         </button>

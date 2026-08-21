@@ -5,6 +5,7 @@ import { attachmentApi } from "../api/attachmentApi";
 import { lessonApi } from "../api/lessonApi";
 import { useTranslation } from "react-i18next";
 import { useAppAlert } from "../../../../components/common/AppAlerts/useAppAlert";
+import { getApiErrorMessage } from "../../../../utils/getApiErrorMessage";
 
 export const useCurriculumLogic = (
   sections,
@@ -66,14 +67,17 @@ export const useCurriculumLogic = (
                   ...sec,
                   isQuestionsFetched: true,
                   isQuestionsLoading: false,
-                  questionsLoadError: true,
+                  questionsLoadError: getApiErrorMessage(
+                    error,
+                    t("questions-load-failed"),
+                  ),
                 }
               : sec,
           ),
         );
       }
     },
-    [isTempId, setSections],
+    [isTempId, setSections, t],
   );
 
   const handleFetchQuizForSection = useCallback(
@@ -110,14 +114,17 @@ export const useCurriculumLogic = (
                   ...sec,
                   isQuizFetched: true,
                   isQuizLoading: false,
-                  quizLoadError: true,
+                  quizLoadError: getApiErrorMessage(
+                    error,
+                    t("quiz-load-failed"),
+                  ),
                 }
               : sec,
           ),
         );
       }
     },
-    [isTempId, setSections],
+    [isTempId, setSections, t],
   );
 
   const toggleSection = (id) => {
@@ -380,7 +387,14 @@ export const useCurriculumLogic = (
       setSections((prev) =>
         prev.map((sec) =>
           sec.id === sectionId
-            ? { ...sec, isLessonsLoading: false, lessonsLoadError: true }
+            ? {
+                ...sec,
+                isLessonsLoading: false,
+                lessonsLoadError: getApiErrorMessage(
+                  error,
+                  t("course-lessons-load-failed"),
+                ),
+              }
             : sec,
         ),
       );

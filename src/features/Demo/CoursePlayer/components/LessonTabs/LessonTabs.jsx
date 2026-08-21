@@ -45,7 +45,7 @@ const LessonTabs = ({ activeLesson }) => {
     activeLesson?.id,
   );
   const { courseId } = useParams();
-  const { faqs, loading, errorf } = useFAQs(courseId);
+  const { faqs, loading, error: errorf } = useFAQs(courseId);
   const locale = i18n.resolvedLanguage || i18n.language || "en";
   const numberFormatter = new Intl.NumberFormat(locale);
 
@@ -152,7 +152,7 @@ const LessonTabs = ({ activeLesson }) => {
 
               {error && (
                 <p className={styles.errorText} role="alert">
-                  {t("course-player-attachments-load-failed")}
+                  {error || t("course-player-attachments-load-failed")}
                 </p>
               )}
 
@@ -214,7 +214,7 @@ const LessonTabs = ({ activeLesson }) => {
 
               {errorf && (
                 <p className={styles.errorText} role="alert">
-                  {t("course-player-faqs-load-failed")}
+                  {errorf || t("course-player-faqs-load-failed")}
                 </p>
               )}
 

@@ -43,7 +43,9 @@ const ReplyItem = ({ reply, onEdit, onDelete }) => {
     if (result?.success) {
       setIsEditing(false);
     } else {
-      setActionError(t("course-player-reply-update-failed"));
+      setActionError(
+        result?.error || t("course-player-reply-update-failed"),
+      );
     }
   };
 
@@ -63,7 +65,9 @@ const ReplyItem = ({ reply, onEdit, onDelete }) => {
     const result = await onDelete(reply.id);
     setIsDeleting(false);
     if (!result?.success) {
-      setActionError(t("course-player-reply-delete-failed"));
+      setActionError(
+        result?.error || t("course-player-reply-delete-failed"),
+      );
     }
   };
 

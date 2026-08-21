@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { departmentMemberApi } from "../api/departmentMemberApi";
+import { useTranslation } from "react-i18next";
+import { getApiErrorMessage } from "../../../../utils/getApiErrorMessage";
 
 const SEARCH_DEBOUNCE_MS = 300;
 const ALLOWED_JOB_TITLES = ["INTERN", "JUNIOR", "SENIOR"];
@@ -9,6 +11,7 @@ export const useAddDepartmentMember = ({
   departmentId,
   onSuccess,
 }) => {
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [selectedMember, setSelectedMember] = useState(null);
@@ -43,7 +46,12 @@ export const useAddDepartmentMember = ({
 
         if (!controller.signal.aborted) {
           setSearchResults([]);
-          setSearchError("workspace-member-search-failed");
+          setSearchError(
+            getApiErrorMessage(
+              requestError,
+              t("workspace-member-search-failed"),
+            ),
+          );
         }
       } finally {
         if (!controller.signal.aborted) {
@@ -56,7 +64,7 @@ export const useAddDepartmentMember = ({
       clearTimeout(debounceTimer);
       controller.abort();
     };
-  }, [demoId, searchQuery, selectedMember]);
+  }, [demoId, searchQuery, selectedMember, t]);
 
   const updateSearchQuery = useCallback((value) => {
     const nextQuery = String(value ?? "");
@@ -112,13 +120,18 @@ export const useAddDepartmentMember = ({
         });
 
         await onSuccess?.(responseData);
-      } catch {
-        setSubmitError("department-member-add-failed");
+      } catch (requestError) {
+        setSubmitError(
+          getApiErrorMessage(
+            requestError,
+            t("department-member-add-failed"),
+          ),
+        );
       } finally {
         setIsSubmitting(false);
       }
     },
-    [demoId, departmentId, jobTitle, onSuccess, selectedMember],
+    [demoId, departmentId, jobTitle, onSuccess, selectedMember, t],
   );
 
   return {

@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { demoPlanApi } from "../api/demoPlanApi";
+import { getApiErrorMessage } from "../../../../utils/getApiErrorMessage";
 
 export const useDemoPlanCheckout = (demoId) => {
   const { t } = useTranslation();
@@ -22,8 +23,10 @@ export const useDemoPlanCheckout = (demoId) => {
 
         window.location.assign(checkoutUrl);
         return true;
-      } catch {
-        setCheckoutError(t("checkout-start-failed"));
+      } catch (requestError) {
+        setCheckoutError(
+          getApiErrorMessage(requestError, t("checkout-start-failed")),
+        );
         setCheckoutPlan(null);
         return false;
       }

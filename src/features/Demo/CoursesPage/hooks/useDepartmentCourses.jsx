@@ -1,13 +1,16 @@
 import { useCallback, useState, useEffect } from "react";
 import { DepartmentCoursesApi } from "../api/DepartmentCoursesApi";
+import { useTranslation } from "react-i18next";
+import { getApiErrorMessage } from "../../../../utils/getApiErrorMessage";
 
 export const useDepartmentCourses = (demoId, departmentId) => {
+  const { t } = useTranslation();
   const [courses, setCourses] = useState([]);
   const [isLoading, setIsLoading] = useState(Boolean(demoId && departmentId));
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
   const [deletingDepartmentCourseId, setDeletingDepartmentCourseId] =
     useState(null);
-  const [deleteError, setDeleteError] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
   const [reloadVersion, setReloadVersion] = useState(0);
 
   useEffect(() => {
@@ -18,7 +21,7 @@ export const useDepartmentCourses = (demoId, departmentId) => {
 
     const fetchCourses = async () => {
       setIsLoading(true);
-      setError(false);
+      setError("");
       try {
         const response = await DepartmentCoursesApi.getDepartmentCourse(
           demoId,
@@ -29,7 +32,9 @@ export const useDepartmentCourses = (demoId, departmentId) => {
         console.error("Error fetching department courses:", err);
         if (isCurrent) {
           setCourses([]);
-          setError(true);
+          setError(
+            getApiErrorMessage(err, t("courses-load-error-message")),
+          );
         }
       } finally {
         if (isCurrent) setIsLoading(false);
@@ -41,7 +46,7 @@ export const useDepartmentCourses = (demoId, departmentId) => {
     return () => {
       isCurrent = false;
     };
-  }, [demoId, departmentId, reloadVersion]);
+  }, [demoId, departmentId, reloadVersion, t]);
 
   const deleteCourse = useCallback(
     async (departmentCourseId) => {
@@ -55,7 +60,7 @@ export const useDepartmentCourses = (demoId, departmentId) => {
       }
 
       setDeletingDepartmentCourseId(departmentCourseId);
-      setDeleteError(false);
+      setDeleteError("");
 
       try {
         await DepartmentCoursesApi.deleteDepartmentCourse(
@@ -74,13 +79,18 @@ export const useDepartmentCourses = (demoId, departmentId) => {
           "Error deleting course from department:",
           deleteRequestError,
         );
-        setDeleteError(true);
+        setDeleteError(
+          getApiErrorMessage(
+            deleteRequestError,
+            t("department-course-delete-failed"),
+          ),
+        );
         return false;
       } finally {
         setDeletingDepartmentCourseId(null);
       }
     },
-    [demoId, departmentId, deletingDepartmentCourseId],
+    [demoId, departmentId, deletingDepartmentCourseId, t],
   );
 
   return {

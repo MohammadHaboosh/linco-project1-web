@@ -69,7 +69,9 @@ const SecurityTab = () => {
               }`}
               role={passwordStatus.type === "error" ? "alert" : "status"}
             >
-              {t(passwordStatus.message)}
+              {t(passwordStatus.message, {
+                defaultValue: passwordStatus.message,
+              })}
             </div>
           )}
 
@@ -217,7 +219,9 @@ const SecurityTab = () => {
               }`}
               role={twoFactorMessage.type === "error" ? "alert" : "status"}
             >
-              {t(twoFactorMessage.message)}
+              {t(twoFactorMessage.message, {
+                defaultValue: twoFactorMessage.message,
+              })}
             </div>
           )}
 

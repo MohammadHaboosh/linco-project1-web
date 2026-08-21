@@ -36,7 +36,11 @@ const QuestionBankSection = ({
 
       {hasError && (
         <div className={styles.errorMessage} role="alert">
-          <span>{t("questions-load-failed")}</span>
+          <span>
+            {typeof hasError === "string"
+              ? hasError
+              : t("questions-load-failed")}
+          </span>
           <button type="button" onClick={onRetry}>
             {t("retry")}
           </button>

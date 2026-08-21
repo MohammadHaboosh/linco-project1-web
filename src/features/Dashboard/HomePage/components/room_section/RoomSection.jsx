@@ -4,6 +4,7 @@ import RoomCard from "../../../../../components/elements/RoomCard/RoomCard.jsx";
 import RoomCardSkeleton from "../../../../../components/elements/RoomCard/RoomCardSkeleton.jsx";
 import styles from "./RoomSection.module.css";
 import { useTranslation } from "react-i18next";
+import { getApiErrorMessage } from "../../../../../utils/getApiErrorMessage";
 
 const RoomSection = ({
   title,
@@ -12,6 +13,7 @@ const RoomSection = ({
   emptyMessage,
   emptySubtext,
   isLoading,
+  error,
 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -37,6 +39,12 @@ const RoomSection = ({
             .map((_, idx) => (
               <RoomCardSkeleton key={`room-skeleton-${idx}`} />
             ))}
+        </div>
+      ) : error ? (
+        <div className={styles["empty-state-card"]} role="alert">
+          <IoFolderOpenOutline className={styles["empty-icon"]} />
+          <h3>{t("unable-to-load-workspaces")}</h3>
+          <p>{getApiErrorMessage(error, t("try-again-later"))}</p>
         </div>
       ) : rooms.length > 0 ? (
         <div className={styles["cards-grid"]}>

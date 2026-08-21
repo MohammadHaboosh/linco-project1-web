@@ -18,8 +18,7 @@ const FAQsTab = ({ courseId, readOnly = false }) => {
 
   const handleSaveFAQ = async (faqData) => {
     setActionError("");
-    const result = await addFaq(faqData);
-    return result.success;
+    return addFaq(faqData);
   };
 
   const handleDeleteFAQ = async (id) => {
@@ -35,7 +34,7 @@ const FAQsTab = ({ courseId, readOnly = false }) => {
     setDeletingFaqId(id);
     const result = await removeFaq(id);
     if (!result.success) {
-      setActionError(t("faq-delete-failed"));
+      setActionError(result.error || t("faq-delete-failed"));
     }
     setDeletingFaqId(null);
   };
@@ -63,7 +62,7 @@ const FAQsTab = ({ courseId, readOnly = false }) => {
       ) : error ? (
         <div className={styles.errorState} role="alert">
           <h4>{t("course-faqs-load-failed-title")}</h4>
-          <p>{t("course-faqs-load-failed")}</p>
+          <p>{error || t("course-faqs-load-failed")}</p>
           <button type="button" onClick={refetch}>
             {t("retry")}
           </button>

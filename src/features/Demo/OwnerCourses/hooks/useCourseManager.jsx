@@ -3,13 +3,16 @@ import { useTranslation } from "react-i18next";
 import { courseManagerApi } from "../api/courseManagerApi";
 import { sectionApi } from "../api/sectionApi";
 import { lessonApi } from "../api/lessonApi";
+import { getApiErrorMessage } from "../../../../utils/getApiErrorMessage";
 
 export const useCourseManager = (demoId, assetId) => {
   const { t } = useTranslation();
   const hasRouteIdentifiers = Boolean(demoId && assetId);
   const [isLoading, setIsLoading] = useState(hasRouteIdentifiers);
   const [isSaving, setIsSaving] = useState(false);
-  const [error, setError] = useState(!hasRouteIdentifiers);
+  const [error, setError] = useState(
+    hasRouteIdentifiers ? "" : t("course-manager-load-error-message"),
+  );
   const [courseId, setCourseId] = useState(null);
   const [accessMethod, setAccessMethod] = useState(null);
   const [requestVersion, setRequestVersion] = useState(0);
@@ -41,7 +44,7 @@ export const useCourseManager = (demoId, assetId) => {
     const loadCourseData = async () => {
       try {
         setIsLoading(true);
-        setError(false);
+        setError("");
         setAccessMethod(null);
         const assetData = await courseManagerApi.getAsset(demoId, assetId);
 
@@ -70,7 +73,7 @@ export const useCourseManager = (demoId, assetId) => {
           const formattedSections = await Promise.all(
             (sectionsData || []).map(async (sec) => {
               let lessonsList = sec.lessons || [];
-              let lessonsLoadError = false;
+              let lessonsLoadError = "";
 
               if (!lessonsList || lessonsList.length === 0) {
                 try {
@@ -81,7 +84,10 @@ export const useCourseManager = (demoId, assetId) => {
                     err,
                   );
                   lessonsList = [];
-                  lessonsLoadError = true;
+                  lessonsLoadError = getApiErrorMessage(
+                    err,
+                    t("course-lessons-load-failed"),
+                  );
                 }
               }
               const sortedLessons = [...lessonsList].sort(
@@ -112,14 +118,16 @@ export const useCourseManager = (demoId, assetId) => {
         }
       } catch (err) {
         console.error("Failed to load course details:", err);
-        setError(true);
+        setError(
+          getApiErrorMessage(err, t("course-manager-load-error-message")),
+        );
       } finally {
         setIsLoading(false);
       }
     };
 
     loadCourseData();
-  }, [demoId, assetId, requestVersion]);
+  }, [demoId, assetId, requestVersion, t]);
 
   const saveGeneralInfo = useCallback(async () => {
     if (!courseId) {

@@ -10,6 +10,7 @@ import InvitationCard from "../../../../components/elements/InvitationCard/Invit
 import InvitationCardSkeleton from "../../../../components/elements/InvitationCard/InvitationCardSkeleton";
 import { usePendingInvitations } from "../hooks/usePendingInvitations.jsx";
 import styles from "./PendingInvitations.module.css";
+import { getApiErrorMessage } from "../../../../utils/getApiErrorMessage";
 
 const PendingInvitationsContent = () => {
   const { t } = useTranslation();
@@ -82,7 +83,7 @@ const PendingInvitationsContent = () => {
               <IoAlertCircleOutline />
             </div>
             <h3>{t("unable-to-load-invitations")}</h3>
-            <p>{t("try-again-later")}</p>
+            <p>{getApiErrorMessage(error, t("try-again-later"))}</p>
           </div>
         ) : filteredInvitations.length === 0 ? (
           <div className={styles.emptyState}>

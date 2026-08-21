@@ -13,6 +13,7 @@ import {
   uploadFileToCloud,
   updateUserProfilePhoto,
 } from "../../User/api/userApi.js";
+import { getApiErrorMessage } from "../../../utils/getApiErrorMessage";
 
 export const useProfile = () => {
   const dispatch = useDispatch();
@@ -72,7 +73,9 @@ export const useProfile = () => {
         } catch (err) {
           console.error("Failed to load user profile:", err);
           if (isCurrent) {
-            setError("profile-load-error-description");
+            setError(
+              getApiErrorMessage(err, t("profile-load-error-description")),
+            );
           }
         } finally {
           if (isCurrent) {
@@ -90,7 +93,7 @@ export const useProfile = () => {
     return () => {
       isCurrent = false;
     };
-  }, [profile, dispatch, loadAttempt]);
+  }, [profile, dispatch, loadAttempt, t]);
 
   const retryLoadProfile = useCallback(() => {
     setLoadAttempt((attempt) => attempt + 1);
@@ -131,7 +134,10 @@ export const useProfile = () => {
       console.error("Failed to update password:", err);
       setPasswordStatus({
         type: "error",
-        message: "profile-password-update-error",
+        message: getApiErrorMessage(
+          err,
+          t("profile-password-update-error"),
+        ),
       });
     } finally {
       setIsUpdatingPassword(false);
@@ -176,7 +182,9 @@ export const useProfile = () => {
       setPhotoUploadStatus("profile-photo-updated-successfully");
     } catch (err) {
       console.error("Failed to update profile photo:", err);
-      setPhotoUploadError("profile-photo-upload-error");
+      setPhotoUploadError(
+        getApiErrorMessage(err, t("profile-photo-upload-error")),
+      );
     } finally {
       setIsUploadingPhoto(false);
     }
@@ -197,7 +205,7 @@ export const useProfile = () => {
       console.error("Failed to generate two-factor QR code:", err);
       setTwoFactorMessage({
         type: "error",
-        message: "profile-2fa-generate-error",
+        message: getApiErrorMessage(err, t("profile-2fa-generate-error")),
       });
       setIsSettingUp2FA(false);
     } finally {
@@ -238,7 +246,7 @@ export const useProfile = () => {
       console.error("Failed to enable two-factor authentication:", err);
       setTwoFactorMessage({
         type: "error",
-        message: "profile-2fa-enable-error",
+        message: getApiErrorMessage(err, t("profile-2fa-enable-error")),
       });
     } finally {
       setIsVerifying2FA(false);

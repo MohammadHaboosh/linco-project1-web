@@ -4,6 +4,7 @@ import RoomCard from "../../../components/elements/RoomCard/RoomCard.jsx";
 import RoomCardSkeleton from "../../../components/elements/RoomCard/RoomCardSkeleton.jsx";
 import styles from "./SharedRoomsLayout.module.css";
 import { useTranslation } from "react-i18next";
+import { getApiErrorMessage } from "../../../utils/getApiErrorMessage";
 
 const SharedRoomsLayout = ({
   headerIcon,
@@ -69,7 +70,7 @@ const SharedRoomsLayout = ({
             <div className={styles.emptyState} role="alert">
               <div className={styles.emptyIconBox}>{emptyIcon}</div>
               <h3>{t("unable-to-load-workspaces")}</h3>
-              <p>{t("try-again-later")}</p>
+              <p>{getApiErrorMessage(error, t("try-again-later"))}</p>
             </div>
           ) : filteredRooms.length === 0 ? (
             <div className={styles.emptyState}>

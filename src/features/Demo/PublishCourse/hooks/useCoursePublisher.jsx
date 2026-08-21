@@ -7,6 +7,7 @@ import { questionBankApi } from "../../OwnerCourses/api/questionBankApi";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAppAlert } from "../../../../components/common/AppAlerts/useAppAlert";
+import { getApiErrorMessage } from "../../../../utils/getApiErrorMessage";
 
 export const useCoursePublisher = ({
   courseData,
@@ -106,7 +107,9 @@ export const useCoursePublisher = ({
       window.scrollTo(0, 0);
     } catch (error) {
       console.error("Error in Step 1 Next:", error);
-      setErrorMessage(t("course-studio-setup-save-error"));
+      setErrorMessage(
+        getApiErrorMessage(error, t("course-studio-setup-save-error")),
+      );
     }
   };
 
@@ -410,9 +413,9 @@ export const useCoursePublisher = ({
         sections: updatedSectionsList,
       }));
 
-      const backendMessage = error?.response?.data?.message || error?.message;
-      t("course-studio-publish-error");
-      setErrorMessage(backendMessage);
+      setErrorMessage(
+        getApiErrorMessage(error, t("course-studio-publish-error")),
+      );
     } finally {
       setIsPublishing(false);
       setUploadProgress(null);

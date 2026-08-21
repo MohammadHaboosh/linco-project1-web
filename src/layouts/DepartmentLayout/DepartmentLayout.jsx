@@ -41,7 +41,7 @@ const LayoutContent = () => {
     return (
       <div className={styles.layoutState} role="alert">
         <h1>{t("department-load-failed")}</h1>
-        <p>{t("department-load-error-message")}</p>
+        <p>{loadError || t("department-load-error-message")}</p>
         <button type="button" onClick={retryLoadDemo}>
           {t("try-again")}
         </button>

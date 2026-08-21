@@ -2,6 +2,7 @@ import { useState } from "react";
 import { IoCloseOutline, IoSendOutline } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
 import styles from "../Inquiries.module.css";
+import { getApiErrorMessage } from "../../../../../utils/getApiErrorMessage";
 
 const NewInquiryModal = ({ onClose, onSend, isSubmitting }) => {
   const { t } = useTranslation();
@@ -26,8 +27,13 @@ const NewInquiryModal = ({ onClose, onSend, isSubmitting }) => {
         subject: formData.subject.trim(),
         question: formData.question.trim(),
       });
-    } catch {
-      setError(t("failed-to-create-inquiry"));
+    } catch (requestError) {
+      setError(
+        getApiErrorMessage(
+          requestError,
+          t("failed-to-create-inquiry"),
+        ),
+      );
     }
   };
 

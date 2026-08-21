@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { demoPlanApi } from "../api/demoPlanApi";
+import { getApiErrorMessage } from "../../../../utils/getApiErrorMessage";
 
 export const useDemoSubscriptionPortal = (demoId) => {
   const { t } = useTranslation();
@@ -20,8 +21,13 @@ export const useDemoSubscriptionPortal = (demoId) => {
 
       window.location.assign(portalUrl);
       return true;
-    } catch {
-      setPortalError(t("subscription-portal-start-failed"));
+    } catch (requestError) {
+      setPortalError(
+        getApiErrorMessage(
+          requestError,
+          t("subscription-portal-start-failed"),
+        ),
+      );
       setIsOpeningPortal(false);
       return false;
     }

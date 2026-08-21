@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { apiFetch } from "../api/apiFetch";
+import { getApiErrorMessage } from "../utils/getApiErrorMessage";
 
 const DemoContext = createContext();
 
@@ -14,7 +15,7 @@ export const DemoProvider = ({ children }) => {
   const [actualRole, setActualRole] = useState("member");
   const [currentRoleView, setCurrentRoleView] = useState("member");
   const [isLoading, setIsLoading] = useState(true);
-  const [loadError, setLoadError] = useState(false);
+  const [loadError, setLoadError] = useState("");
   const [reloadVersion, setReloadVersion] = useState(0);
 
   useEffect(() => {
@@ -22,7 +23,7 @@ export const DemoProvider = ({ children }) => {
 
     const loadDemoData = async () => {
       setIsLoading(true);
-      setLoadError(false);
+      setLoadError("");
       try {
         const response = await apiFetch(`/demos/${demoId}`, {
           method: "GET",
@@ -72,7 +73,7 @@ export const DemoProvider = ({ children }) => {
       } catch (error) {
         console.error("Failed to load demo", error);
         setDemoData(null);
-        setLoadError(true);
+        setLoadError(getApiErrorMessage(error));
       } finally {
         setIsLoading(false);
       }

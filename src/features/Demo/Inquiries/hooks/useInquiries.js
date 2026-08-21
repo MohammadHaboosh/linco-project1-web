@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { inquiriesApi } from "../api/inquiriesApi";
+import { getApiErrorMessage } from "../../../../utils/getApiErrorMessage";
 
 const EMPTY_META = {
   hasNextPage: false,
@@ -101,7 +102,9 @@ export const useInquiries = ({ demoId, scope }) => {
 
         setInquiries([]);
         setMeta(EMPTY_META);
-        setError(t("inquiries-load-failed"));
+        setError(
+          getApiErrorMessage(requestError, t("inquiries-load-failed")),
+        );
         return false;
       } finally {
         if (!signal?.aborted) {
@@ -137,8 +140,13 @@ export const useInquiries = ({ demoId, scope }) => {
       );
       setMeta(result.meta);
       return true;
-    } catch {
-      setError(t("more-inquiries-load-failed"));
+    } catch (requestError) {
+      setError(
+        getApiErrorMessage(
+          requestError,
+          t("more-inquiries-load-failed"),
+        ),
+      );
       return false;
     } finally {
       setIsLoadingMore(false);

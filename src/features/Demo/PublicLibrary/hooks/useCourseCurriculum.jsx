@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { sectionApi } from "../../OwnerCourses/api/sectionApi";
 import { lessonApi } from "../../OwnerCourses/api/lessonApi";
+import { getApiErrorMessage } from "../../../../utils/getApiErrorMessage";
 
 export const useCourseCurriculum = (courseId, shouldFetch) => {
   const { t } = useTranslation();
@@ -23,7 +24,12 @@ export const useCourseCurriculum = (courseId, shouldFetch) => {
         } catch (error) {
           console.error("Error fetching sections:", error);
           setSections([]);
-          setSectionsError(t("course-curriculum-load-failed"));
+          setSectionsError(
+            getApiErrorMessage(
+              error,
+              t("course-curriculum-load-failed"),
+            ),
+          );
         } finally {
           setIsLoadingSections(false);
         }
@@ -65,7 +71,10 @@ export const useCourseCurriculum = (courseId, shouldFetch) => {
           ...prev,
           [sectionId]: {
             data: [],
-            error: t("course-lessons-load-failed"),
+            error: getApiErrorMessage(
+              error,
+              t("course-lessons-load-failed"),
+            ),
             isLoading: false,
           },
         }));

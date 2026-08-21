@@ -38,7 +38,11 @@ const SectionQuizSection = ({
         </p>
       ) : hasError ? (
         <div className={styles.errorMessage} role="alert">
-          <span>{t("quiz-load-failed")}</span>
+          <span>
+            {typeof hasError === "string"
+              ? hasError
+              : t("quiz-load-failed")}
+          </span>
           <button type="button" onClick={onRetry}>
             {t("retry")}
           </button>

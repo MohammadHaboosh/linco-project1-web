@@ -132,7 +132,7 @@ const CourseManagerLayout = ({ readOnly = false }) => {
               : "course-manager-load-failed",
           )}
         </h1>
-        <p>{t("course-manager-load-error-message")}</p>
+        <p>{error || t("course-manager-load-error-message")}</p>
         <div className={styles.stateActions}>
           <button type="button" onClick={() => navigate(-1)}>
             {t("back-to-courses")}

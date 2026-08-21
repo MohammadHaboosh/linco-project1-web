@@ -135,20 +135,22 @@ export const useDepartmentChatConnection = ({
       removeTypingMember(departmentMemberId);
     };
 
-    const handleSocketException = () => {
+    const handleSocketException = (error) => {
       if (!isCurrentContext()) {
         return;
       }
 
       if (connectionStatusRef.current === "joining") {
         updateConnectionStatus("error");
-        setConnectionError(
-          (currentError) => currentError || "chat-error-join",
+        setConnectionError((currentError) =>
+          currentError || getErrorMessage(error, "chat-error-join"),
         );
         return;
       }
 
-      setActionError("chat-error-request-rejected");
+      setActionError(
+        getErrorMessage(error, "chat-error-request-rejected"),
+      );
     };
 
     const recoverSocketAuthentication = async () => {
@@ -172,9 +174,11 @@ export const useDepartmentChatConnection = ({
         if (isCurrentContext() && !socket.connected) {
           socket.connect();
         }
-      } catch {
+      } catch (error) {
         if (isCurrentContext()) {
-          setConnectionError("chat-error-authenticate");
+          setConnectionError(
+            getErrorMessage(error, "chat-error-authenticate"),
+          );
           updateConnectionStatus("error");
         }
       } finally {
@@ -191,7 +195,7 @@ export const useDepartmentChatConnection = ({
         error,
         "Unable to connect to the department chat.",
       );
-      setConnectionError("chat-error-connect");
+      setConnectionError(message);
       updateConnectionStatus("error");
 
       if (message.toUpperCase().includes("UNAUTHORIZED")) {
@@ -224,7 +228,9 @@ export const useDepartmentChatConnection = ({
           }
 
           if (response?.status !== "joined") {
-            setConnectionError("chat-error-join");
+            setConnectionError(
+              getErrorMessage(response, "chat-error-join"),
+            );
             updateConnectionStatus("error");
             return;
           }
@@ -365,7 +371,11 @@ export const useDepartmentChatConnection = ({
           }
 
           if (response?.status !== "success") {
-            reject(new Error("chat-error-request-rejected"));
+            reject(
+              new Error(
+                getErrorMessage(response, "chat-error-request-rejected"),
+              ),
+            );
             return;
           }
 

@@ -388,7 +388,7 @@ const GeneralInfoTab = ({
           </div>
           {!readOnly && tagsError && (
             <div className={styles.inlineError} role="alert">
-              <span>{t("course-tags-load-failed")}</span>
+              <span>{tagsError}</span>
               <button type="button" onClick={retryTags}>
                 {t("retry")}
               </button>

@@ -155,7 +155,11 @@ const LessonList = ({
         </div>
       ) : hasError ? (
         <div className={styles.drawerError} role="alert">
-          <span>{t("course-lessons-load-failed")}</span>
+          <span>
+            {typeof hasError === "string"
+              ? hasError
+              : t("course-lessons-load-failed")}
+          </span>
           <button type="button" onClick={onRetry}>
             {t("retry")}
           </button>

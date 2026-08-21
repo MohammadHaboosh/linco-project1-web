@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import { apiFetch } from "../../../../api/apiFetch";
+import { useTranslation } from "react-i18next";
+import { getApiErrorMessage } from "../../../../utils/getApiErrorMessage";
 
 export const useAvailableTags = (enabled = true) => {
+  const { t } = useTranslation();
   const [availableTags, setAvailableTags] = useState([]);
   const [isLoadingTags, setIsLoadingTags] = useState(enabled);
-  const [tagsError, setTagsError] = useState(false);
+  const [tagsError, setTagsError] = useState("");
   const [requestVersion, setRequestVersion] = useState(0);
 
   useEffect(() => {
@@ -19,7 +22,7 @@ export const useAvailableTags = (enabled = true) => {
 
     const fetchTags = async () => {
       try {
-        setTagsError(false);
+        setTagsError("");
         const response = await apiFetch("/tags", {
           method: "GET",
           signal: controller.signal,
@@ -27,7 +30,9 @@ export const useAvailableTags = (enabled = true) => {
         const payload = await response.json();
 
         if (!response.ok || !payload.success) {
-          throw new Error("Tags request failed");
+          throw new Error(
+            payload.message || t("course-tags-load-failed"),
+          );
         }
 
         if (isMounted) {
@@ -36,7 +41,11 @@ export const useAvailableTags = (enabled = true) => {
       } catch (error) {
         if (error.name !== "AbortError") {
           console.error("Failed to fetch available tags:", error);
-          if (isMounted) setTagsError(true);
+          if (isMounted) {
+            setTagsError(
+              getApiErrorMessage(error, t("course-tags-load-failed")),
+            );
+          }
         }
       } finally {
         if (isMounted) setIsLoadingTags(false);
@@ -49,7 +58,7 @@ export const useAvailableTags = (enabled = true) => {
       isMounted = false;
       controller.abort();
     };
-  }, [enabled, requestVersion]);
+  }, [enabled, requestVersion, t]);
 
   return {
     availableTags,

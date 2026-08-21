@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { memberApi } from "../api/memberApi";
+import { getApiErrorMessage } from "../../../../utils/getApiErrorMessage";
 
 const SEARCH_DEBOUNCE_MS = 300;
 
@@ -37,7 +38,9 @@ export const useInviteMember = (demoId, onSuccess) => {
 
         if (!controller.signal.aborted) {
           setSearchResults([]);
-          setSearchError(t("user-search-failed"));
+          setSearchError(
+            getApiErrorMessage(requestError, t("user-search-failed")),
+          );
         }
       } finally {
         if (!controller.signal.aborted) {
@@ -99,8 +102,10 @@ export const useInviteMember = (demoId, onSuccess) => {
 
         await onSuccess?.(responseData);
         return true;
-      } catch {
-        setSubmitError(t("invitation-send-failed"));
+      } catch (requestError) {
+        setSubmitError(
+          getApiErrorMessage(requestError, t("invitation-send-failed")),
+        );
         return false;
       } finally {
         setIsSubmitting(false);

@@ -5,6 +5,7 @@ import { lessonApi } from "../api/lessonApi";
 import { attachmentApi } from "../api/attachmentApi";
 import { quizApi } from "../api/quizApi";
 import { questionBankApi } from "../api/questionBankApi";
+import { getApiErrorMessage } from "../../../../utils/getApiErrorMessage";
 
 export const useCourseSaver = ({
   courseId,
@@ -38,6 +39,7 @@ export const useCourseSaver = ({
       if (setIsSaving) setIsSaving(true);
       const activeCourseId = courseId || assetId || demoId;
       let hadItemSaveErrors = false;
+      let itemSaveError = "";
 
       for (let i = 0; i < (sections || []).length; i++) {
         const sec = sections[i];
@@ -279,6 +281,7 @@ export const useCourseSaver = ({
                 attError,
               );
               hadItemSaveErrors = true;
+              itemSaveError ||= getApiErrorMessage(attError);
               updatedAttachmentsList.push(...newAttachments);
             }
           }
@@ -311,6 +314,7 @@ export const useCourseSaver = ({
             } catch (err) {
               console.error("Failed to save question", err);
               hadItemSaveErrors = true;
+              itemSaveError ||= getApiErrorMessage(err);
               updatedQuestionsList.push(q);
             }
           } else {
@@ -334,6 +338,7 @@ export const useCourseSaver = ({
             } catch (err) {
               console.error("Failed to create quiz", err);
               hadItemSaveErrors = true;
+              itemSaveError ||= getApiErrorMessage(err);
             }
           } else if (sec.quiz.isModified) {
             try {
@@ -350,6 +355,7 @@ export const useCourseSaver = ({
             } catch (err) {
               console.error("Failed to update quiz", err);
               hadItemSaveErrors = true;
+              itemSaveError ||= getApiErrorMessage(err);
             }
           }
         }
@@ -368,7 +374,7 @@ export const useCourseSaver = ({
       if (hadItemSaveErrors) {
         setSaveFeedback({
           type: "error",
-          message: t("course-manager-save-failed"),
+          message: itemSaveError || t("course-manager-save-failed"),
         });
         return false;
       }
@@ -382,10 +388,10 @@ export const useCourseSaver = ({
       console.error("Error saving:", error);
       setSaveFeedback({
         type: "error",
-        message:
-          error?.name === "CourseValidationError"
-            ? error.message
-            : t("course-manager-save-failed"),
+        message: getApiErrorMessage(
+          error,
+          t("course-manager-save-failed"),
+        ),
       });
       return false;
     } finally {

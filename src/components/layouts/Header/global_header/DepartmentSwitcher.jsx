@@ -71,7 +71,7 @@ const DepartmentSwitcher = ({ currentDepartment }) => {
               </div>
             ) : error ? (
               <div className={styles["dept-item"]} role="alert">
-                {t("departments-navigation-load-failed")}
+                {error || t("departments-navigation-load-failed")}
               </div>
             ) : departments.length === 0 ? (
               <div className={styles["dept-item"]}>

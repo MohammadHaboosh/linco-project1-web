@@ -11,6 +11,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import styles from "../Inquiries.module.css";
 import { useTranslation } from "react-i18next";
 import { useInquiries } from "../../hooks/useInquiries";
+import { getApiErrorMessage } from "../../../../../utils/getApiErrorMessage";
 
 const ThemeWrapper = ({ children }) => (
   <SkeletonTheme
@@ -169,8 +170,13 @@ const ManagerInbox = ({ demoId }) => {
     try {
       await replyToInquiry(activeInquiry.id, response);
       setResponseText("");
-    } catch {
-      setResponseError(t("failed-to-send-response"));
+    } catch (requestError) {
+      setResponseError(
+        getApiErrorMessage(
+          requestError,
+          t("failed-to-send-response"),
+        ),
+      );
     }
   };
 

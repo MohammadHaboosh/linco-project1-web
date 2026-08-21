@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { faqsApi } from "../../OwnerCourses/api/faqsApi";
+import { getApiErrorMessage } from "../../../../utils/getApiErrorMessage";
 
 export const useCourseFaqs = (courseId, shouldFetch) => {
   const { t } = useTranslation();
@@ -21,7 +22,9 @@ export const useCourseFaqs = (courseId, shouldFetch) => {
           }
         } catch (error) {
           console.error("Error fetching FAQs:", error);
-          setFaqsError(t("course-faqs-load-failed"));
+          setFaqsError(
+            getApiErrorMessage(error, t("course-faqs-load-failed")),
+          );
         } finally {
           setIsLoadingFaqs(false);
         }

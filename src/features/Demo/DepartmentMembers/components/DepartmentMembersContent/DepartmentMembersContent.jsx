@@ -240,7 +240,7 @@ const DepartmentMembersContent = () => {
 
           {deleteError && !isLoading && !error && (
             <div className={styles.mutationError} role="alert">
-              {t(deleteError)}
+              {t(deleteError, { defaultValue: deleteError })}
             </div>
           )}
 
@@ -248,7 +248,7 @@ const DepartmentMembersContent = () => {
             <div className={styles.stateMessage} role="alert">
               <div className={styles.stateIcon}>!</div>
               <h3>{t("members-load-failed")}</h3>
-              <p>{t(error)}</p>
+              <p>{t(error, { defaultValue: error })}</p>
               {demoId && departmentId && (
                 <button type="button" onClick={refetch}>
                   <IoRefreshOutline aria-hidden="true" /> {t("try-again")}

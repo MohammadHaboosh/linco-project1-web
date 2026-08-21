@@ -4,10 +4,12 @@ import InvitationCardSkeleton from "../../../../../components/elements/Invitatio
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { PATHS } from "../../../../../routes/paths.js";
+import { getApiErrorMessage } from "../../../../../utils/getApiErrorMessage";
 
 const PendingInvitations = ({
   invitations,
   isLoading,
+  error,
   onAccept,
   onReject,
   processingInvitationId,
@@ -39,6 +41,10 @@ const PendingInvitations = ({
                 compact={true}
               />
             ))
+        ) : error ? (
+          <p className={styles["empty-state"]} role="alert">
+            {getApiErrorMessage(error, t("try-again-later"))}
+          </p>
         ) : invitations.length === 0 ? (
           <p className={styles["empty-state"]}>{t("no-pending-invitations")}</p>
         ) : (

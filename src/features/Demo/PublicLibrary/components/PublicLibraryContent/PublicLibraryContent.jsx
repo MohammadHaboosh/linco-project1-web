@@ -50,8 +50,7 @@ const PublicLibraryContent = () => {
     [assets],
   );
   const isLibraryLoading = isLoading || isLoadingAssets;
-  const libraryError =
-    error || (assetsError ? t("public-course-access-load-failed") : null);
+  const libraryError = error || assetsError || null;
 
   useEffect(() => {
     const handleClickOutside = (e) => {

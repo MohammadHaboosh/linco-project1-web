@@ -81,7 +81,7 @@ const SectionItem = ({ section, index, activeLesson, onSelectLesson }) => {
                 aria-hidden="true"
               />
               <p className={styles.errorText}>
-                {t("course-player-section-content-load-failed")}
+                {error || t("course-player-section-content-load-failed")}
               </p>
             </div>
           ) : lessons.length === 0 ? (
@@ -197,7 +197,7 @@ const CurriculumSidebar = ({ activeLesson, onSelectLesson }) => {
           aria-hidden="true"
         />
         <p className={styles.errorText}>
-          {t("course-player-curriculum-load-failed")}
+          {sectionsError || t("course-player-curriculum-load-failed")}
         </p>
       </div>
     );

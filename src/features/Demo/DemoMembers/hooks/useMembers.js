@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { memberApi } from "../api/memberApi";
+import { getApiErrorMessage } from "../../../../utils/getApiErrorMessage";
 
 export const useMembers = (demoId) => {
   const { t } = useTranslation();
@@ -35,7 +36,12 @@ export const useMembers = (demoId) => {
 
         setMembers([]);
         setMeta(null);
-        setError(t("workspace-members-load-failed"));
+        setError(
+          getApiErrorMessage(
+            requestError,
+            t("workspace-members-load-failed"),
+          ),
+        );
         return false;
       } finally {
         if (!signal?.aborted) {
@@ -75,8 +81,13 @@ export const useMembers = (demoId) => {
           currentMembers.filter((member) => member.id !== memberId),
         );
         return true;
-      } catch {
-        setDeleteError(t("workspace-member-remove-failed"));
+      } catch (requestError) {
+        setDeleteError(
+          getApiErrorMessage(
+            requestError,
+            t("workspace-member-remove-failed"),
+          ),
+        );
         return false;
       } finally {
         setDeletingMemberId(null);

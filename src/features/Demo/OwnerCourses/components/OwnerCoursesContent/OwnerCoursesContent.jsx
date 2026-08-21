@@ -15,6 +15,7 @@ import PublishConfirmationModal from "./PublishConfirmationModal";
 import ErrorModal from "./ErrorModal";
 import CourseSettingsModal from "./CourseSettingsModal";
 import { courseManagerApi } from "../../api/courseManagerApi";
+import { getApiErrorMessage } from "../../../../../utils/getApiErrorMessage";
 
 const OwnerCoursesContent = () => {
   const { t, i18n } = useTranslation();
@@ -81,7 +82,9 @@ const OwnerCoursesContent = () => {
       setStatusMessage(t("course-settings-saved-successfully"));
     } catch (error) {
       console.error("Error saving settings:", error);
-      setErrorMessage(t("course-settings-save-failed"));
+      setErrorMessage(
+        getApiErrorMessage(error, t("course-settings-save-failed")),
+      );
     } finally {
       setIsSavingSettings(false);
     }

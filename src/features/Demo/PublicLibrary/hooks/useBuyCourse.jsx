@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { saveCourseCheckoutContext } from "../../../Payment/utils/courseCheckoutContext";
 import { libraryApi } from "../api/libraryApi";
+import { getApiErrorMessage } from "../../../../utils/getApiErrorMessage";
 
 export const useBuyCourse = () => {
   const { t } = useTranslation();
@@ -18,10 +19,14 @@ export const useBuyCourse = () => {
         saveCourseCheckoutContext({ demoId, courseId });
         window.location.href = response.data.url;
       } else {
-        throw new Error("checkout-url-missing");
+        throw new Error(
+          response.message || t("course-purchase-start-failed"),
+        );
       }
     } catch (error) {
-      setBuyError(t("course-purchase-start-failed"));
+      setBuyError(
+        getApiErrorMessage(error, t("course-purchase-start-failed")),
+      );
       console.error(error);
     } finally {
       setIsBuying(false);

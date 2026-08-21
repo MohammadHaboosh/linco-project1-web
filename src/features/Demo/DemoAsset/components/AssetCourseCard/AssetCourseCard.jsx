@@ -54,7 +54,9 @@ const AssetCourseCard = ({ course, accessMethod, assetId }) => {
 
         {importError && (
           <p className={styles.importError} role="alert">
-            {t("course-import-failed")}
+            {typeof importError === "string"
+              ? importError
+              : t("course-import-failed")}
           </p>
         )}
 

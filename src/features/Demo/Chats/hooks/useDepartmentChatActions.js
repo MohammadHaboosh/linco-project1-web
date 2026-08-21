@@ -3,6 +3,7 @@ import { departmentMessagesApi } from "../api/departmentMessagesApi";
 import {
   getAttachmentErrorKey,
   getAttachmentMessageType,
+  getErrorMessage,
 } from "../utils/departmentChatUtils";
 
 export const useDepartmentChatActions = ({
@@ -102,8 +103,10 @@ export const useDepartmentChatActions = ({
         ) {
           const attachmentErrorKey = getAttachmentErrorKey(error);
           setActionError(
-            attachmentErrorKey ||
-              "chat-attachment-upload-failed",
+            getErrorMessage(
+              error,
+              attachmentErrorKey || "chat-attachment-upload-failed",
+            ),
           );
         }
         throw error;
@@ -176,8 +179,10 @@ export const useDepartmentChatActions = ({
           setActionError(
             (currentError) =>
               currentError ||
-              attachmentErrorKey ||
-              "chat-error-send-message",
+              getErrorMessage(
+                error,
+                attachmentErrorKey || "chat-error-send-message",
+              ),
           );
         }
         throw error;
@@ -216,7 +221,7 @@ export const useDepartmentChatActions = ({
           setActionError(
             (currentError) =>
               currentError ||
-              "chat-error-edit-message",
+              getErrorMessage(error, "chat-error-edit-message"),
           );
         }
         throw error;
@@ -247,7 +252,7 @@ export const useDepartmentChatActions = ({
           setActionError(
             (currentError) =>
               currentError ||
-              "chat-error-delete-message",
+              getErrorMessage(error, "chat-error-delete-message"),
           );
         }
         throw error;

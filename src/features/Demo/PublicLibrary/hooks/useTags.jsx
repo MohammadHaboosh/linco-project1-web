@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { libraryApi } from "../api/libraryApi";
+import { getApiErrorMessage } from "../../../../utils/getApiErrorMessage";
 
 export const useTags = () => {
   const { t } = useTranslation();
@@ -14,8 +15,10 @@ export const useTags = () => {
     try {
       const data = await libraryApi.getAllTags();
       setTags(data || []);
-    } catch {
-      setTagsError(t("course-tags-load-failed"));
+    } catch (requestError) {
+      setTagsError(
+        getApiErrorMessage(requestError, t("course-tags-load-failed")),
+      );
     } finally {
       setIsLoadingTags(false);
     }
@@ -32,9 +35,14 @@ export const useTags = () => {
         if (isMounted) {
           setTags(data || []);
         }
-      } catch {
+      } catch (requestError) {
         if (isMounted) {
-          setTagsError(t("course-tags-load-failed"));
+          setTagsError(
+            getApiErrorMessage(
+              requestError,
+              t("course-tags-load-failed"),
+            ),
+          );
         }
       } finally {
         if (isMounted) {

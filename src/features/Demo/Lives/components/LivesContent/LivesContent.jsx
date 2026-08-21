@@ -119,7 +119,7 @@ const LivesContent = () => {
         <div className={styles.errorBanner} role="alert">
           <div>
             <strong>{t("live-streams-load-failed")}</strong>
-            <span>{t(error)}</span>
+            <span>{t(error, { defaultValue: error })}</span>
           </div>
           {demoId && departmentId && (
             <button type="button" onClick={retryLoad} disabled={isLoading}>

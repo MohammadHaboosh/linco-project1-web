@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { libraryApi } from "../api/libraryApi";
+import { getApiErrorMessage } from "../../../../utils/getApiErrorMessage";
 
 export const usePublicCourses = (demoId) => {
   const { t } = useTranslation();
@@ -15,8 +16,10 @@ export const usePublicCourses = (demoId) => {
     try {
       const data = await libraryApi.getCourses(demoId);
       setCourses(data || []);
-    } catch {
-      setError(t("public-courses-load-failed"));
+    } catch (requestError) {
+      setError(
+        getApiErrorMessage(requestError, t("public-courses-load-failed")),
+      );
     } finally {
       setIsLoading(false);
     }
@@ -35,9 +38,14 @@ export const usePublicCourses = (demoId) => {
         if (isMounted) {
           setCourses(data || []);
         }
-      } catch {
+      } catch (requestError) {
         if (isMounted) {
-          setError(t("public-courses-load-failed"));
+          setError(
+            getApiErrorMessage(
+              requestError,
+              t("public-courses-load-failed"),
+            ),
+          );
         }
       } finally {
         if (isMounted) {

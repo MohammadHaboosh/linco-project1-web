@@ -64,7 +64,7 @@ const QuestionItem = ({ question, onEdit, onDelete, isDeleting }) => {
     if (result.success) {
       setReplyText("");
     } else {
-      setActionError(t("course-player-reply-post-failed"));
+      setActionError(result.error || t("course-player-reply-post-failed"));
     }
   };
 
@@ -199,7 +199,7 @@ const QuestionItem = ({ question, onEdit, onDelete, isDeleting }) => {
               </p>
             ) : error ? (
               <p className={styles.inlineError} role="alert">
-                {t("course-player-replies-load-failed")}
+                {error || t("course-player-replies-load-failed")}
               </p>
             ) : (
               <>

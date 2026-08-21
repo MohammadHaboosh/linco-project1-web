@@ -3,11 +3,20 @@ import { usePendingInvitations } from "../../PendingInvitationsPage/hooks/usePen
 import { useJoinedRooms } from "./useJoinedRooms.jsx";
 
 export const useHomePage = () => {
-  const { ownedRooms, isLoading: isLoadingOwnedRooms } = useOwnedRooms();
-  const { joinedRooms, isLoading: isLoadingJoinedRooms } = useJoinedRooms();
+  const {
+    ownedRooms,
+    isLoading: isLoadingOwnedRooms,
+    error: ownedRoomsError,
+  } = useOwnedRooms();
+  const {
+    joinedRooms,
+    isLoading: isLoadingJoinedRooms,
+    error: joinedRoomsError,
+  } = useJoinedRooms();
   const {
     invitations,
     isLoading: isLoadingInvitations,
+    error: invitationsError,
     acceptInvitation,
     rejectInvitation,
     processingInvitationId,
@@ -32,10 +41,13 @@ export const useHomePage = () => {
   return {
     ownedRooms: previewOwnedRooms,
     isLoadingOwnedRooms,
+    ownedRoomsError,
     activeRooms: previewJoinedRooms,
     isLoadingJoinedRooms,
+    joinedRoomsError,
     pendingInvitations: previewInvitations,
     isLoadingInvitations,
+    invitationsError,
     acceptInvitation,
     rejectInvitation,
     processingInvitationId,
