@@ -8,10 +8,14 @@ import {
 } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
 import { useAppAlert } from "../../../../../components/common/AppAlerts/useAppAlert";
+import { useSelector } from "react-redux";
 
 const ReplyItem = ({ reply, onEdit, onDelete }) => {
   const { t, i18n } = useTranslation();
   const { confirmAction } = useAppAlert();
+
+  const currentUser = useSelector((state) => state.user);
+
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(reply.content);
   const [isSaving, setIsSaving] = useState(false);
@@ -31,6 +35,8 @@ const ReplyItem = ({ reply, onEdit, onDelete }) => {
         dateStyle: "medium",
         timeStyle: "short",
       }).format(createdAt);
+
+  const isOwner = currentUser?.id && currentUser.id === replyUser.id;
 
   const getInitials = (name) => (name ? name.charAt(0).toUpperCase() : "?");
 
@@ -88,7 +94,7 @@ const ReplyItem = ({ reply, onEdit, onDelete }) => {
           <span className={styles.replyName}>{replyAuthor}</span>
           <span className={styles.date}>{replyDate}</span>
 
-          {!isEditing && (
+          {!isEditing && isOwner && (
             <div className={styles.ownerActions}>
               <button
                 type="button"

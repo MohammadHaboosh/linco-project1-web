@@ -12,10 +12,14 @@ import {
 import ReplyItem from "./ReplyItem";
 import { useAnswers } from "../../hooks/useAnswers";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 
 const QuestionItem = ({ question, onEdit, onDelete, isDeleting }) => {
   const { t, i18n } = useTranslation();
   const { demoId } = useParams();
+
+  const currentUser = useSelector((state) => state.user);
+
   const [showReplies, setShowReplies] = useState(false);
   const [replyText, setReplyText] = useState("");
 
@@ -51,6 +55,8 @@ const QuestionItem = ({ question, onEdit, onDelete, isDeleting }) => {
   const formattedReplyCount = new Intl.NumberFormat(locale).format(
     answers.length,
   );
+
+  const isOwner = currentUser?.id && currentUser.id === user.id;
 
   const handleToggleReplies = () => {
     if (!showReplies) fetchAnswers();
@@ -97,15 +103,12 @@ const QuestionItem = ({ question, onEdit, onDelete, isDeleting }) => {
         <div>
           <h4 className={styles.userName}>{authorName}</h4>
           <span className={styles.date}>
-            <IoTimeOutline
-              className={styles.dateIcon}
-              aria-hidden="true"
-            />
+            <IoTimeOutline className={styles.dateIcon} aria-hidden="true" />
             {formattedDate}
           </span>
         </div>
 
-        {!isEditing && (
+        {!isEditing && isOwner && (
           <div className={styles.ownerActions}>
             <button
               type="button"
