@@ -4,6 +4,7 @@ import { questionBankApi } from "../api/questionBankApi";
 import { attachmentApi } from "../api/attachmentApi";
 import { lessonApi } from "../api/lessonApi";
 import { useTranslation } from "react-i18next";
+import { useAppAlert } from "../../../../components/common/AppAlerts/useAppAlert";
 
 export const useCurriculumLogic = (
   sections,
@@ -13,6 +14,7 @@ export const useCurriculumLogic = (
   onDeleteQuestion,
 ) => {
   const { t, i18n } = useTranslation();
+  const { confirmAction } = useAppAlert();
   const [expandedSections, setExpandedSections] = useState(
     sections.length > 0 ? [sections[0].id] : [],
   );
@@ -164,10 +166,15 @@ export const useCurriculumLogic = (
     setExpandedSections((prev) => [...prev, newSection.id]);
   };
 
-  const deleteSection = (e, id) => {
+  const deleteSection = async (e, id) => {
     e.stopPropagation();
-    if (window.confirm(t("delete-section-confirmation")))
-      onDeleteSection && onDeleteSection(id);
+    const shouldDelete = await confirmAction({
+      message: t("delete-section-confirmation"),
+      confirmLabel: t("delete"),
+      tone: "danger",
+    });
+
+    if (shouldDelete) onDeleteSection?.(id);
   };
 
   const updateSectionTitle = (id, title) =>
@@ -257,30 +264,50 @@ export const useCurriculumLogic = (
       ),
     );
 
-  const deleteQuiz = (secId) => {
+  const deleteQuiz = async (secId) => {
     const qId = sections.find((s) => s.id === secId)?.quiz?.id;
-    if (qId && window.confirm(t("delete-quiz-confirmation")))
-      onDeleteQuiz
-        ? onDeleteQuiz(secId, qId)
-        : setSections((prev) =>
-            prev.map((s) => (s.id === secId ? { ...s, quiz: null } : s)),
-          );
+    if (!qId) return;
+
+    const shouldDelete = await confirmAction({
+      message: t("delete-quiz-confirmation"),
+      confirmLabel: t("delete"),
+      tone: "danger",
+    });
+
+    if (!shouldDelete) return;
+
+    if (onDeleteQuiz) {
+      onDeleteQuiz(secId, qId);
+    } else {
+      setSections((prev) =>
+        prev.map((s) => (s.id === secId ? { ...s, quiz: null } : s)),
+      );
+    }
   };
 
-  const deleteQuestion = (secId, qId) => {
-    if (window.confirm(t("delete-question-confirmation")))
-      onDeleteQuestion
-        ? onDeleteQuestion(secId, qId)
-        : setSections((prev) =>
-            prev.map((s) =>
-              s.id === secId
-                ? {
-                    ...s,
-                    questions: (s.questions || []).filter((q) => q.id !== qId),
-                  }
-                : s,
-            ),
-          );
+  const deleteQuestion = async (secId, qId) => {
+    const shouldDelete = await confirmAction({
+      message: t("delete-question-confirmation"),
+      confirmLabel: t("delete"),
+      tone: "danger",
+    });
+
+    if (!shouldDelete) return;
+
+    if (onDeleteQuestion) {
+      onDeleteQuestion(secId, qId);
+    } else {
+      setSections((prev) =>
+        prev.map((s) =>
+          s.id === secId
+            ? {
+                ...s,
+                questions: (s.questions || []).filter((q) => q.id !== qId),
+              }
+            : s,
+        ),
+      );
+    }
   };
 
   const handleFetchAttachments = async (lessonId) => {

@@ -9,29 +9,36 @@ import { useDepartmentMembers } from "../../DepartmentMembers/hooks/useDepartmen
 import { departmentMemberApi } from "../../DepartmentMembers/api/departmentMemberApi";
 import AddGroupMemberModal from "./AddGroupMemberModal";
 import styles from "./Groups.module.css";
+import { useAppAlert } from "../../../../components/common/AppAlerts/useAppAlert";
 
 const GroupMembersPanel = ({ demoId, groupId, isManager, currentUserId }) => {
   const { t } = useTranslation();
+  const { confirmAction, notify } = useAppAlert();
   const { members, isLoading, refetch } = useDepartmentMembers(groupId);
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleRemoveMember = async (memberId) => {
-    if (
-      !window.confirm(
-        t(
-          "confirm-remove-member",
-          "Are you sure you want to remove this member?",
-        ),
-      )
-    )
-      return;
+    const shouldRemove = await confirmAction({
+      message: t(
+        "confirm-remove-member",
+        "Are you sure you want to remove this member?",
+      ),
+      confirmLabel: t("remove"),
+      tone: "danger",
+    });
+
+    if (!shouldRemove) return;
+
     setIsDeleting(true);
     try {
       await departmentMemberApi.deleteMember(demoId, groupId, memberId);
       await refetch();
     } catch (error) {
-      alert(error.message);
+      notify({
+        type: "error",
+        message: error.message || t("an-error-occurred-please-try-again-later"),
+      });
     } finally {
       setIsDeleting(false);
     }

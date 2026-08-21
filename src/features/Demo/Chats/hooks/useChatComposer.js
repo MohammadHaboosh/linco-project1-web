@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useAppAlert } from "../../../../components/common/AppAlerts/useAppAlert";
 
 const TYPING_IDLE_DELAY = 1500;
 const COMPOSER_MAX_HEIGHT = 120;
@@ -18,6 +19,7 @@ export const useChatComposer = ({
   prepareAttachment,
 }) => {
   const { t } = useTranslation();
+  const { confirmAction } = useAppAlert();
   const [draft, setDraft] = useState("");
   const [replyingTo, setReplyingTo] = useState(null);
   const [editingMessage, setEditingMessage] = useState(null);
@@ -315,7 +317,13 @@ export const useChatComposer = ({
 
   const handleDelete = useCallback(
     async (message) => {
-      if (!window.confirm(t("chat-delete-confirmation"))) {
+      const shouldDelete = await confirmAction({
+        message: t("chat-delete-confirmation"),
+        confirmLabel: t("delete"),
+        tone: "danger",
+      });
+
+      if (!shouldDelete) {
         return;
       }
 
@@ -331,7 +339,7 @@ export const useChatComposer = ({
         // The data hook exposes the server or timeout error in the chat banner.
       }
     },
-    [deleteMessage, editingMessage, replyingTo, resetComposer, t],
+    [confirmAction, deleteMessage, editingMessage, replyingTo, resetComposer, t],
   );
 
   const isSubmitting = isSending || Boolean(pendingActionId);

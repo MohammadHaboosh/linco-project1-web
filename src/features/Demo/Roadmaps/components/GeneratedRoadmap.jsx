@@ -17,6 +17,7 @@ import {
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import styles from "./Roadmaps.module.css";
+import { useAppAlert } from "../../../../components/common/AppAlerts/useAppAlert";
 
 const RoadmapList = ({ icon, title, items, accent = "blue" }) => {
   if (!Array.isArray(items) || items.length === 0) return null;
@@ -38,6 +39,7 @@ const RoadmapList = ({ icon, title, items, accent = "blue" }) => {
 
 const GeneratedRoadmap = ({ roadmap }) => {
   const { t, i18n } = useTranslation();
+  const { notify } = useAppAlert();
   const roadmapRef = useRef(null);
   const [isDownloading, setIsDownloading] = useState(false);
 
@@ -127,12 +129,13 @@ const GeneratedRoadmap = ({ roadmap }) => {
       pdf.save(`${safeTitle}.pdf`);
     } catch (error) {
       console.error("Error generating PDF:", error);
-      alert(
-        t(
+      notify({
+        type: "error",
+        message: t(
           "roadmap-download-failed",
           "Failed to download PDF. Please try again.",
         ),
-      );
+      });
     } finally {
       // إعادة التنسيقات لطبيعتها بعد التقاط الصورة
       element.setAttribute("style", originalStyle);

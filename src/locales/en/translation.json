@@ -1,4 +1,11 @@
 {
+  "app-alert-notifications-label": "Notifications",
+  "app-alert-dismiss-notification": "Dismiss notification",
+  "app-alert-success-title": "Success",
+  "app-alert-error-title": "Something went wrong",
+  "app-alert-warning-title": "Please check this",
+  "app-alert-info-title": "For your information",
+  "app-alert-confirm-title": "Confirm this action",
   "back-to-demo": "Back to demo",
   "draft": "Draft",
   "published": "Published",

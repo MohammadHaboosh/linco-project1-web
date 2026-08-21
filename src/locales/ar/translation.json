@@ -1,4 +1,11 @@
 {
+  "app-alert-notifications-label": "الإشعارات",
+  "app-alert-dismiss-notification": "إغلاق الإشعار",
+  "app-alert-success-title": "تم بنجاح",
+  "app-alert-error-title": "حدث خطأ",
+  "app-alert-warning-title": "يرجى التحقق",
+  "app-alert-info-title": "للعلم",
+  "app-alert-confirm-title": "تأكيد الإجراء",
   "department-member-remove-failed": "تعذّرت إزالة العضو من هذا القسم. يرجى المحاولة مجدداً.",
   "remove-department-member": "إزالة من القسم",
   "remove-department-member-confirmation": "هل أنت متأكد من رغبتك في إزالة {{name}} من هذا القسم؟",

@@ -7,9 +7,11 @@ import {
   IoCloseOutline,
 } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
+import { useAppAlert } from "../../../../../components/common/AppAlerts/useAppAlert";
 
 const ReplyItem = ({ reply, onEdit, onDelete }) => {
   const { t, i18n } = useTranslation();
+  const { confirmAction } = useAppAlert();
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(reply.content);
   const [isSaving, setIsSaving] = useState(false);
@@ -46,17 +48,22 @@ const ReplyItem = ({ reply, onEdit, onDelete }) => {
   };
 
   const handleDelete = async () => {
-    if (
-      !isDeleting &&
-      window.confirm(t("course-player-delete-reply-confirmation"))
-    ) {
-      setIsDeleting(true);
-      setActionError(null);
-      const result = await onDelete(reply.id);
-      setIsDeleting(false);
-      if (!result?.success) {
-        setActionError(t("course-player-reply-delete-failed"));
-      }
+    if (isDeleting) return;
+
+    const shouldDelete = await confirmAction({
+      message: t("course-player-delete-reply-confirmation"),
+      confirmLabel: t("delete"),
+      tone: "danger",
+    });
+
+    if (!shouldDelete) return;
+
+    setIsDeleting(true);
+    setActionError(null);
+    const result = await onDelete(reply.id);
+    setIsDeleting(false);
+    if (!result?.success) {
+      setActionError(t("course-player-reply-delete-failed"));
     }
   };
 

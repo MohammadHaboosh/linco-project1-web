@@ -7,9 +7,11 @@ import {
 } from "react-icons/io5";
 import styles from "./Modal.module.css";
 import { useTranslation } from "react-i18next";
+import { useAppAlert } from "../../../../../../../../../components/common/AppAlerts/useAppAlert";
 
 const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
   const { t, i18n } = useTranslation();
+  const { notify } = useAppAlert();
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -36,7 +38,7 @@ const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
         videoFile: null,
         duration: 0,
       }));
-      alert(t("lesson-video-invalid-file"));
+      notify({ type: "warning", message: t("lesson-video-invalid-file") });
       return;
     }
 
@@ -89,12 +91,12 @@ const AddLessonModal = ({ isOpen, onClose, onSubmit }) => {
     e.preventDefault();
 
     if (!formData.videoFile) {
-      alert(t("lesson-video-required"));
+      notify({ type: "warning", message: t("lesson-video-required") });
       return;
     }
 
     if (!formData.description.trim()) {
-      alert(t("lesson-description-required"));
+      notify({ type: "warning", message: t("lesson-description-required") });
       return;
     }
 

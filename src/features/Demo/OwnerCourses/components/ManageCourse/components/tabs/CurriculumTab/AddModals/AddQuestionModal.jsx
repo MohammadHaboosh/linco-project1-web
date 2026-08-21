@@ -9,6 +9,7 @@ import {
 } from "react-icons/io5";
 import styles from "./Modal.module.css";
 import { useTranslation } from "react-i18next";
+import { useAppAlert } from "../../../../../../../../../components/common/AppAlerts/useAppAlert";
 
 const AddQuestionModal = ({ isOpen, onClose, onSubmit }) => {
   const [question, setQuestion] = useState("");
@@ -21,6 +22,7 @@ const AddQuestionModal = ({ isOpen, onClose, onSubmit }) => {
   ]);
 
   const { t } = useTranslation();
+  const { notify } = useAppAlert();
 
   if (!isOpen) return null;
 
@@ -56,20 +58,23 @@ const AddQuestionModal = ({ isOpen, onClose, onSubmit }) => {
     e.preventDefault();
 
     if (!choices.some((c) => c.isCorrect)) {
-      alert(t("select-at-least-one-correct-answer"));
+      notify({
+        type: "warning",
+        message: t("select-at-least-one-correct-answer"),
+      });
       return;
     }
 
     const hasEmptyChoices = choices.some((c) => !c.text.trim());
     if (hasEmptyChoices) {
-      alert(t("fill-all-choices"));
+      notify({ type: "warning", message: t("fill-all-choices") });
       return;
     }
 
     const choiceTexts = choices.map((c) => c.text.trim().toLowerCase());
     const uniqueChoices = new Set(choiceTexts);
     if (uniqueChoices.size !== choices.length) {
-      alert(t("choices-must-be-unique"));
+      notify({ type: "warning", message: t("choices-must-be-unique") });
       return;
     }
 

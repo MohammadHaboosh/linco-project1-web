@@ -6,6 +6,7 @@ import { quizApi } from "../../OwnerCourses/api/quizApi";
 import { questionBankApi } from "../../OwnerCourses/api/questionBankApi";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useAppAlert } from "../../../../components/common/AppAlerts/useAppAlert";
 
 export const useCoursePublisher = ({
   courseData,
@@ -20,6 +21,7 @@ export const useCoursePublisher = ({
   navigate,
 }) => {
   const { t, i18n } = useTranslation();
+  const { notify } = useAppAlert();
   const [errorMessage, setErrorMessage] = useState("");
   const numberFormatter = new Intl.NumberFormat(
     i18n.resolvedLanguage || i18n.language,
@@ -398,7 +400,7 @@ export const useCoursePublisher = ({
       }
 
       setDeletedSectionIds([]);
-      alert(t("course-studio-save-success"));
+      notify({ type: "success", message: t("course-studio-save-success") });
       navigate(-1);
     } catch (error) {
       console.error("Error saving curriculum:", error);

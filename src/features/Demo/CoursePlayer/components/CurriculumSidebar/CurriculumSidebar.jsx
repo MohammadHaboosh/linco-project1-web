@@ -15,6 +15,7 @@ import { useSectionLessons } from "../../hooks/useSectionLessons";
 import { useTranslation } from "react-i18next";
 import { useCertificates } from "../../../Certificates/hooks/useCertificates";
 import CertificateCard from "../../../Certificates/components/CertificateCard";
+import { useAppAlert } from "../../../../../components/common/AppAlerts/useAppAlert";
 
 const formatVideoDuration = (totalSeconds) => {
   if (!totalSeconds || isNaN(totalSeconds)) return "00:00";
@@ -154,6 +155,7 @@ const CurriculumSidebar = ({ activeLesson, onSelectLesson }) => {
     error: sectionsError,
   } = useCourseSections(courseId);
   const { t } = useTranslation();
+  const { notify } = useAppAlert();
 
   const { certificates, isLoading: isCertLoading } = useCertificates();
 
@@ -168,12 +170,13 @@ const CurriculumSidebar = ({ activeLesson, onSelectLesson }) => {
     if (userCertificate) {
       setIsModalOpen(true);
     } else {
-      alert(
-        t(
+      notify({
+        type: "info",
+        message: t(
           "certificate-not-earned-yet",
           "You have not yet received the certificate for this course.",
         ),
-      );
+      });
     }
   };
 

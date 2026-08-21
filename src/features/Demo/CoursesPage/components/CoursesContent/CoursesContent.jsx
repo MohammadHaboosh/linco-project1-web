@@ -7,9 +7,11 @@ import { useDemo } from "../../../../../hooks/useDemo";
 import { useDepartmentCourses } from "../../hooks/useDepartmentCourses";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
+import { useAppAlert } from "../../../../../components/common/AppAlerts/useAppAlert";
 
 const CoursesContent = () => {
   const { t, i18n } = useTranslation();
+  const { confirmAction } = useAppAlert();
   const { demoId, departmentId } = useParams();
   const { role } = useDemo();
   const isOwner = role === "owner";
@@ -70,11 +72,13 @@ const CoursesContent = () => {
     );
     const title = course?.title || t("untitled-course");
 
-    if (
-      !window.confirm(
-        t("remove-course-from-department-confirmation", { title }),
-      )
-    ) {
+    const shouldRemove = await confirmAction({
+      message: t("remove-course-from-department-confirmation", { title }),
+      confirmLabel: t("remove"),
+      tone: "danger",
+    });
+
+    if (!shouldRemove) {
       return;
     }
 

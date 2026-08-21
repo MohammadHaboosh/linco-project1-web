@@ -17,6 +17,7 @@ import {
   MembersTableSkeleton,
 } from "./DepartmentMembersSkeleton";
 import styles from "./DepartmentMembersContent.module.css";
+import { useAppAlert } from "../../../../../components/common/AppAlerts/useAppAlert";
 
 const ROLE_TRANSLATION_KEYS = {
   ADMIN: "admin",
@@ -36,6 +37,7 @@ const JOB_TITLE_TRANSLATION_KEYS = {
 const DepartmentMembersContent = () => {
   const { demoId, departmentId } = useParams();
   const { t, i18n } = useTranslation();
+  const { confirmAction } = useAppAlert();
   const [searchQuery, setSearchQuery] = useState("");
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
   const {
@@ -127,9 +129,13 @@ const DepartmentMembersContent = () => {
   };
 
   const handleDeleteMember = async (memberId, memberName) => {
-    const shouldDelete = window.confirm(
-      t("remove-department-member-confirmation", { name: memberName }),
-    );
+    const shouldDelete = await confirmAction({
+      message: t("remove-department-member-confirmation", {
+        name: memberName,
+      }),
+      confirmLabel: t("remove"),
+      tone: "danger",
+    });
 
     if (!shouldDelete) return;
 

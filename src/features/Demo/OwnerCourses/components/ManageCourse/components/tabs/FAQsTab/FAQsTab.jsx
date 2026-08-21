@@ -5,9 +5,11 @@ import FAQItem from "./FAQItem";
 import AddEditFAQModal from "./AddEditFAQModal";
 import { useFAQs } from "../../../../../hooks/useFAQs";
 import { useTranslation } from "react-i18next";
+import { useAppAlert } from "../../../../../../../../components/common/AppAlerts/useAppAlert";
 
 const FAQsTab = ({ courseId, readOnly = false }) => {
   const { t } = useTranslation();
+  const { confirmAction } = useAppAlert();
   const { faqs, loading, error, addFaq, removeFaq, refetch } =
     useFAQs(courseId);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,7 +23,13 @@ const FAQsTab = ({ courseId, readOnly = false }) => {
   };
 
   const handleDeleteFAQ = async (id) => {
-    if (!window.confirm(t("delete-faq-confirmation"))) return;
+    const shouldDelete = await confirmAction({
+      message: t("delete-faq-confirmation"),
+      confirmLabel: t("delete"),
+      tone: "danger",
+    });
+
+    if (!shouldDelete) return;
 
     setActionError("");
     setDeletingFaqId(id);

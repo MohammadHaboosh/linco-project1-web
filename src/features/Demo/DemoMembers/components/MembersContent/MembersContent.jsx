@@ -13,6 +13,7 @@ import InviteModal from "../InviteModal/InviteModal";
 import styles from "./MembersContent.module.css";
 import { useTranslation } from "react-i18next";
 import { useMembers } from "../../hooks/useMembers";
+import { useAppAlert } from "../../../../../components/common/AppAlerts/useAppAlert";
 
 const MembersContent = () => {
   const { demoId } = useParams();
@@ -22,6 +23,7 @@ const MembersContent = () => {
   const [invitationSuccessMessage, setInvitationSuccessMessage] =
     useState(null);
   const { t } = useTranslation();
+  const { confirmAction } = useAppAlert();
   const {
     members,
     isLoading,
@@ -71,7 +73,11 @@ const MembersContent = () => {
   }, [members, roleFilter, searchQuery]);
 
   const handleDeleteMember = async (memberId) => {
-    const shouldDelete = window.confirm(t("remove-member-confirmation"));
+    const shouldDelete = await confirmAction({
+      message: t("remove-member-confirmation"),
+      confirmLabel: t("remove"),
+      tone: "danger",
+    });
 
     if (!shouldDelete) return;
 

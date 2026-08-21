@@ -4,9 +4,11 @@ import styles from "./Certificates.module.css";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { useTranslation } from "react-i18next";
+import { useAppAlert } from "../../../../components/common/AppAlerts/useAppAlert";
 
 const CertificateCard = ({ certificate }) => {
   const { t, i18n } = useTranslation();
+  const { notify } = useAppAlert();
   const certificateRef = useRef(null);
 
   const [isDownloadingPDF, setIsDownloadingPDF] = useState(false);
@@ -64,7 +66,7 @@ const CertificateCard = ({ certificate }) => {
       pdf.save(`${certificateFileName}.pdf`);
     } catch (error) {
       console.error("Error generating PDF:", error);
-      alert(t("certificate-download-failed"));
+      notify({ type: "error", message: t("certificate-download-failed") });
     } finally {
       setIsDownloadingPDF(false);
     }
@@ -88,7 +90,10 @@ const CertificateCard = ({ certificate }) => {
       document.body.removeChild(link);
     } catch (error) {
       console.error("Error generating Image:", error);
-      alert(t("certificate-image-download-failed"));
+      notify({
+        type: "error",
+        message: t("certificate-image-download-failed"),
+      });
     } finally {
       setIsDownloadingImage(false);
     }

@@ -5,9 +5,11 @@ import QuestionItem from "./QuestionItem";
 import { useTranslation } from "react-i18next";
 import { useQA } from "../../hooks/useQA";
 import { useParams } from "react-router-dom";
+import { useAppAlert } from "../../../../../components/common/AppAlerts/useAppAlert";
 
 const QASection = ({ activeLesson }) => {
   const { t } = useTranslation();
+  const { confirmAction } = useAppAlert();
   const { demoId } = useParams();
 
   const {
@@ -48,14 +50,20 @@ const QASection = ({ activeLesson }) => {
   };
 
   const handleDelete = async (questionId) => {
-    if (window.confirm(t("course-player-delete-question-confirmation"))) {
-      setActionError(null);
-      setDeletingQuestionId(questionId);
-      const result = await removeQuestion(questionId);
-      setDeletingQuestionId(null);
-      if (!result.success) {
-        setActionError(t("course-player-question-delete-failed"));
-      }
+    const shouldDelete = await confirmAction({
+      message: t("course-player-delete-question-confirmation"),
+      confirmLabel: t("delete"),
+      tone: "danger",
+    });
+
+    if (!shouldDelete) return;
+
+    setActionError(null);
+    setDeletingQuestionId(questionId);
+    const result = await removeQuestion(questionId);
+    setDeletingQuestionId(null);
+    if (!result.success) {
+      setActionError(t("course-player-question-delete-failed"));
     }
   };
 
