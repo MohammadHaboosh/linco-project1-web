@@ -2034,7 +2034,7 @@
   "auth-current-user-failed": "We couldn't load your account. Please try again.",
   "certificate-not-earned-yet": "You have not yet received the certificate for this course.",
   "checking-certificate": "Checking...",
-  "view-certificate": "انقر لعرض شهادتك",
+  "view-certificate": "View Certiticate",
   "certificate-of-completion": "Certificate of Completion",
   "this-is-to-certify-that": "This is to certify that",
   "has-successfully-completed-the-course": "has successfully completed the course",

@@ -241,9 +241,9 @@ const CurriculumSidebar = ({ activeLesson, onSelectLesson }) => {
             <strong>{t("course-player-certificate")}</strong>
             <small>
               {isCertLoading
-                ? t("checking-certificate", "جاري التحقق...")
+                ? t("checking-certificate")
                 : userCertificate
-                  ? t("view-certificate", "انقر لعرض شهادتك")
+                  ? t("view-certificate")
                   : t("course-player-certificate-description")}
             </small>
           </span>
