@@ -28,6 +28,31 @@ const formatVideoDuration = (totalSeconds) => {
   return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 };
 
+const getAttachmentCount = (lesson) => {
+  if (
+    lesson.isAttachmentsFetched ||
+    lesson.isNew ||
+    String(lesson.id || "").startsWith("temp")
+  ) {
+    return lesson.attachments?.length || 0;
+  }
+
+  const rawResponseCount = lesson.attachmentCount;
+  const responseCount = Number(rawResponseCount);
+
+  if (
+    rawResponseCount !== null &&
+    rawResponseCount !== undefined &&
+    rawResponseCount !== "" &&
+    Number.isFinite(responseCount) &&
+    responseCount >= 0
+  ) {
+    return responseCount;
+  }
+
+  return null;
+};
+
 const LessonList = ({
   lessons = [],
   onAddLesson,
@@ -143,10 +168,13 @@ const LessonList = ({
         <div className={styles.lessonsList}>
           {lessons.map((lesson, index) => {
             const isExpanded = expandedLessons.includes(lesson.id);
-            const attachmentsCount = lesson.attachments?.length || 0;
-            const formattedAttachmentsCount = new Intl.NumberFormat(
-              i18n.resolvedLanguage || i18n.language,
-            ).format(attachmentsCount);
+            const attachmentsCount = getAttachmentCount(lesson);
+            const hasAttachmentCount = attachmentsCount !== null;
+            const formattedAttachmentsCount = hasAttachmentCount
+              ? new Intl.NumberFormat(
+                  i18n.resolvedLanguage || i18n.language,
+                ).format(attachmentsCount)
+              : null;
             const formattedDuration = formatVideoDuration(lesson.duration || 0);
             const attachmentState = attachmentStates[lesson.id];
 
@@ -230,12 +258,24 @@ const LessonList = ({
                       className={styles.attachmentBadgeCount}
                       onClick={(e) => toggleLessonExpand(lesson.id, e)}
                       aria-expanded={isExpanded}
+                      aria-label={
+                        hasAttachmentCount
+                          ? t("attachment-count", {
+                              count: attachmentsCount,
+                              formattedCount: formattedAttachmentsCount,
+                            })
+                          : t("show-lesson-attachments", {
+                              title: lesson.title,
+                            })
+                      }
                     >
                       <IoAttachOutline aria-hidden="true" />
-                      {t("attachment-count", {
-                        count: attachmentsCount,
-                        formattedCount: formattedAttachmentsCount,
-                      })}
+                      {hasAttachmentCount
+                        ? t("attachment-count", {
+                            count: attachmentsCount,
+                            formattedCount: formattedAttachmentsCount,
+                          })
+                        : "…"}
                     </button>
 
                     {!readOnly && (

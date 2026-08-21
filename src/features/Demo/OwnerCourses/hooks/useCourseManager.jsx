@@ -3,36 +3,6 @@ import { useTranslation } from "react-i18next";
 import { courseManagerApi } from "../api/courseManagerApi";
 import { sectionApi } from "../api/sectionApi";
 import { lessonApi } from "../api/lessonApi";
-import { attachmentApi } from "../api/attachmentApi";
-
-const formatAttachment = (attachment) => ({
-  id: attachment.id,
-  title: attachment.name || "",
-  fileName: attachment.name || "",
-  path: attachment.path,
-  isExisting: true,
-  isNew: false,
-});
-
-const loadLessonAttachments = async (lesson) => {
-  try {
-    const attachments = await attachmentApi.getAttachments(lesson.id);
-
-    return {
-      ...lesson,
-      attachments: (attachments || []).map(formatAttachment),
-      isAttachmentsFetched: true,
-    };
-  } catch (error) {
-    console.error(`Failed to fetch attachments for lesson ${lesson.id}:`, error);
-
-    return {
-      ...lesson,
-      attachments: lesson.attachments || [],
-      isAttachmentsFetched: false,
-    };
-  }
-};
 
 export const useCourseManager = (demoId, assetId) => {
   const { t } = useTranslation();
@@ -116,10 +86,6 @@ export const useCourseManager = (demoId, assetId) => {
               }
               const sortedLessons = [...lessonsList].sort(
                 (a, b) => (a.order || 0) - (b.order || 0),
-              );
-
-              lessonsList = await Promise.all(
-                (lessonsList || []).map(loadLessonAttachments),
               );
 
               return {
