@@ -8,10 +8,15 @@ import {
 } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
 import { useAppAlert } from "../../../../../components/common/AppAlerts/useAppAlert";
+import { useUser } from "../../../../../hooks/useUser";
 
 const ReplyItem = ({ reply, onEdit, onDelete }) => {
   const { t, i18n } = useTranslation();
   const { confirmAction } = useAppAlert();
+
+  const { profile } = useUser();
+  const currentUserId = profile?.id;
+
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(reply.content);
   const [isSaving, setIsSaving] = useState(false);
@@ -32,6 +37,8 @@ const ReplyItem = ({ reply, onEdit, onDelete }) => {
         timeStyle: "short",
       }).format(createdAt);
 
+  const isOwner = currentUserId && currentUserId === replyUser.id;
+
   const getInitials = (name) => (name ? name.charAt(0).toUpperCase() : "?");
 
   const handleSaveEdit = async () => {
@@ -43,9 +50,7 @@ const ReplyItem = ({ reply, onEdit, onDelete }) => {
     if (result?.success) {
       setIsEditing(false);
     } else {
-      setActionError(
-        result?.error || t("course-player-reply-update-failed"),
-      );
+      setActionError(t("course-player-reply-update-failed"));
     }
   };
 
@@ -65,9 +70,7 @@ const ReplyItem = ({ reply, onEdit, onDelete }) => {
     const result = await onDelete(reply.id);
     setIsDeleting(false);
     if (!result?.success) {
-      setActionError(
-        result?.error || t("course-player-reply-delete-failed"),
-      );
+      setActionError(t("course-player-reply-delete-failed"));
     }
   };
 
@@ -88,7 +91,7 @@ const ReplyItem = ({ reply, onEdit, onDelete }) => {
           <span className={styles.replyName}>{replyAuthor}</span>
           <span className={styles.date}>{replyDate}</span>
 
-          {!isEditing && (
+          {!isEditing && isOwner && (
             <div className={styles.ownerActions}>
               <button
                 type="button"

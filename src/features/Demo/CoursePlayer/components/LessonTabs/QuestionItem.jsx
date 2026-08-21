@@ -12,10 +12,16 @@ import {
 import ReplyItem from "./ReplyItem";
 import { useAnswers } from "../../hooks/useAnswers";
 import { useTranslation } from "react-i18next";
+import { useUser } from "../../../../../hooks/useUser";
 
 const QuestionItem = ({ question, onEdit, onDelete, isDeleting }) => {
   const { t, i18n } = useTranslation();
   const { demoId } = useParams();
+
+  // جلب id المستخدم الحالي
+  const { profile } = useUser();
+  const currentUserId = profile?.id;
+
   const [showReplies, setShowReplies] = useState(false);
   const [replyText, setReplyText] = useState("");
 
@@ -52,6 +58,8 @@ const QuestionItem = ({ question, onEdit, onDelete, isDeleting }) => {
     answers.length,
   );
 
+  const isOwner = currentUserId && currentUserId === user.id;
+
   const handleToggleReplies = () => {
     if (!showReplies) fetchAnswers();
     setShowReplies(!showReplies);
@@ -64,7 +72,7 @@ const QuestionItem = ({ question, onEdit, onDelete, isDeleting }) => {
     if (result.success) {
       setReplyText("");
     } else {
-      setActionError(result.error || t("course-player-reply-post-failed"));
+      setActionError(t("course-player-reply-post-failed"));
     }
   };
 
@@ -97,15 +105,12 @@ const QuestionItem = ({ question, onEdit, onDelete, isDeleting }) => {
         <div>
           <h4 className={styles.userName}>{authorName}</h4>
           <span className={styles.date}>
-            <IoTimeOutline
-              className={styles.dateIcon}
-              aria-hidden="true"
-            />
+            <IoTimeOutline className={styles.dateIcon} aria-hidden="true" />
             {formattedDate}
           </span>
         </div>
 
-        {!isEditing && (
+        {!isEditing && isOwner && (
           <div className={styles.ownerActions}>
             <button
               type="button"
@@ -199,7 +204,7 @@ const QuestionItem = ({ question, onEdit, onDelete, isDeleting }) => {
               </p>
             ) : error ? (
               <p className={styles.inlineError} role="alert">
-                {error || t("course-player-replies-load-failed")}
+                {t("course-player-replies-load-failed")}
               </p>
             ) : (
               <>
