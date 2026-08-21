@@ -2184,5 +2184,7 @@
   "view-certificate": "انقر لعرض شهادتك",
   "this-is-to-certify-that": "وهذا للتصديق على ذلك",
   "certificate-of-completion": "شهادة الإنجاز",
-  "has-successfully-completed-the-course": "أكمل الدورة بنجاح"
+  "has-successfully-completed-the-course": "أكمل الدورة بنجاح",
+  "roadmap-download-failed": "فشل في تنزيل ملف PDF. \nيرجى المحاولة مرة أخرى.",
+  "downloading": "جارٍ التنزيل..."
 }

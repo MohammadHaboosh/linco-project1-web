@@ -2032,5 +2032,7 @@
   "has-successfully-completed-the-course": "has successfully completed the course",
   "with-a-score-of": "with a score of",
   "issued": "Issued:",
-  "date-issued": "Date Issued:"
+  "date-issued": "Date Issued:",
+  "roadmap-download-failed": "Failed to download PDF. Please try again.",
+  "downloading": "Downloading..."
 }

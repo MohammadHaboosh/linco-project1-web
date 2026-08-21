@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   IoBarChartOutline,
@@ -11,7 +12,10 @@ import {
   IoMapOutline,
   IoRocketOutline,
   IoTimeOutline,
+  IoDownloadOutline,
 } from "react-icons/io5";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 import styles from "./Roadmaps.module.css";
 
 const RoadmapList = ({ icon, title, items, accent = "blue" }) => {
@@ -34,6 +38,9 @@ const RoadmapList = ({ icon, title, items, accent = "blue" }) => {
 
 const GeneratedRoadmap = ({ roadmap }) => {
   const { t, i18n } = useTranslation();
+  const roadmapRef = useRef(null);
+  const [isDownloading, setIsDownloading] = useState(false);
+
   const locale = i18n.resolvedLanguage || i18n.language;
   const steps = Array.isArray(roadmap.steps) ? roadmap.steps : [];
   const difficulty = String(roadmap.difficulty ?? "").toLowerCase();
@@ -64,9 +71,64 @@ const GeneratedRoadmap = ({ roadmap }) => {
     ? roadmap.careerOutcomes
     : [];
 
+  const handleDownloadPDF = async () => {
+    if (!roadmapRef.current) return;
+    setIsDownloading(true);
+
+    try {
+      const element = roadmapRef.current;
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor:
+          document.documentElement.getAttribute("data-theme") === "dark"
+            ? "#111827"
+            : "#ffffff",
+      });
+
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
+
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+      let position = 0;
+
+      pdf.addImage(imgData, "PNG", 0, position, pdfWidth, pdfHeight);
+
+      let heightLeft = pdfHeight - pageHeight;
+      while (heightLeft > 0) {
+        position = position - pageHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", 0, position, pdfWidth, pdfHeight);
+        heightLeft -= pageHeight;
+      }
+
+      const safeTitle = (roadmap.title || "Roadmap")
+        .replace(/[^a-z0-9]/gi, "_")
+        .toLowerCase();
+      pdf.save(`${safeTitle}.pdf`);
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      alert(
+        t(
+          "roadmap-download-failed",
+          "Failed to download PDF. Please try again.",
+        ),
+      );
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   return (
-    <section className={styles.resultSection} aria-live="polite">
-      <div className={styles.resultHero}>
+    <section
+      className={styles.resultSection}
+      aria-live="polite"
+      ref={roadmapRef}
+    >
+      <div className={styles.resultHero} data-html2canvas-ignore="false">
         <div className={styles.resultHeroContent}>
           <span className={styles.generatedLabel}>
             <IoCheckmarkCircleOutline aria-hidden="true" />
@@ -91,6 +153,18 @@ const GeneratedRoadmap = ({ roadmap }) => {
                 formattedCount: formattedStepCount,
               })}
             </span>
+
+            <button
+              onClick={handleDownloadPDF}
+              disabled={isDownloading}
+              className={styles.downloadPdfButton}
+              data-html2canvas-ignore="true"
+            >
+              <IoDownloadOutline aria-hidden="true" />
+              {isDownloading
+                ? t("downloading", "Downloading...")
+                : t("download-pdf", "Download PDF")}
+            </button>
           </div>
         </div>
         <div className={styles.heroMark} aria-hidden="true">
