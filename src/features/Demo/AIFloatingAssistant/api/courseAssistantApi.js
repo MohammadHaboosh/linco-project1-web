@@ -1,5 +1,7 @@
 import { apiFetch } from "../../../../api/apiFetch";
 
+const RANDOM_QUIZ_BATCH_SIZE = 3;
+
 const stripOptionPrefix = (option) =>
   String(option ?? "")
     .replace(/^\s*[A-Z]\s*[).:-]\s*/i, "")
@@ -159,12 +161,35 @@ export const courseAssistantApi = {
   },
 
   generateRandomQuiz: async (courseId, questionCount, options = {}) => {
-    return requestGeneratedQuiz(
-      courseId,
-      "random-quiz/generate",
-      { questionCount: normalizeQuestionCount(questionCount) },
-      options,
-      "The random quiz could not be generated.",
-    );
+    const requestedQuestionCount = normalizeQuestionCount(questionCount);
+    const questions = [];
+
+    while (questions.length < requestedQuestionCount) {
+      const batchSize = Math.min(
+        RANDOM_QUIZ_BATCH_SIZE,
+        requestedQuestionCount - questions.length,
+      );
+      const batchQuestions = await requestGeneratedQuiz(
+        courseId,
+        "random-quiz/generate",
+        { questionCount: batchSize },
+        options,
+        "The random quiz could not be generated.",
+      );
+      const firstQuestionIndex = questions.length;
+      const remainingQuestionCount =
+        requestedQuestionCount - firstQuestionIndex;
+
+      questions.push(
+        ...batchQuestions
+          .slice(0, remainingQuestionCount)
+          .map((question, index) => ({
+            ...question,
+            id: `generated-question-${firstQuestionIndex + index}`,
+          })),
+      );
+    }
+
+    return questions;
   },
 };
