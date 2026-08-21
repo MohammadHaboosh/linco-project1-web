@@ -49,7 +49,7 @@ export const useCourseSaver = ({
             setSaveFeedback({
               type: "error",
               message: t("quiz-questions-exceed-bank-error", {
-                defaultValue: `The number of questions in the quiz (${quizQCount}) exceeds the number of questions in the question bank (${bankQCount}). Please ensure that the quiz does not have more questions than are available in the question bank.`,
+                defaultValue: `The number of questions in the quiz exceeds the number of questions in the question bank (${bankQCount}). Please ensure that the quiz does not have more questions than are available in the question bank.`,
               }),
             });
             if (setIsSaving) setIsSaving(false);

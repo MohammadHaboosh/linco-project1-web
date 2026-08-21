@@ -2178,5 +2178,11 @@
   "auth-update-profile-photo-failed": "تعذّر تحديث صورة الملف الشخصي. يرجى المحاولة مرة أخرى.",
   "auth-two-factor-verification-failed": "تعذّر التحقق من رمز المصادقة. يرجى المحاولة مرة أخرى.",
   "auth-signout-failed": "تعذّر تسجيل خروجك. يرجى المحاولة مرة أخرى.",
-  "auth-current-user-failed": "تعذّر تحميل حسابك. يرجى المحاولة مرة أخرى."
+  "auth-current-user-failed": "تعذّر تحميل حسابك. يرجى المحاولة مرة أخرى.",
+  "certificate-not-earned-yet": "لم تحصل بعد على شهادة هذه الدورة.",
+  "checking-certificate": "جارٍ التحقق...",
+  "view-certificate": "انقر لعرض شهادتك",
+  "this-is-to-certify-that": "وهذا للتصديق على ذلك",
+  "certificate-of-completion": "شهادة الإنجاز",
+  "has-successfully-completed-the-course": "أكمل الدورة بنجاح"
 }

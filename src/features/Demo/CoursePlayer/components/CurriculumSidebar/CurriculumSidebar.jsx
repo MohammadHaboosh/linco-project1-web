@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import styles from "./CurriculumSidebar.module.css";
 import {
@@ -8,10 +8,12 @@ import {
   IoRibbonOutline,
   IoTimeOutline,
   IoTrophyOutline,
+  IoClose,
 } from "react-icons/io5";
 import { useCourseSections } from "../../hooks/useCourseSections";
 import { useSectionLessons } from "../../hooks/useSectionLessons";
 import { useTranslation } from "react-i18next";
+import { useCertificates } from "../../../Certificates/hooks/useCertificates";
 
 const formatVideoDuration = (totalSeconds) => {
   if (!totalSeconds || isNaN(totalSeconds)) return "00:00";
@@ -145,10 +147,36 @@ const SectionItem = ({ section, index, activeLesson, onSelectLesson }) => {
 
 const CurriculumSidebar = ({ activeLesson, onSelectLesson }) => {
   const { courseId } = useParams();
-  const { sections, isLoading, error } = useCourseSections(courseId);
+  const {
+    sections,
+    isLoading: isSectionsLoading,
+    error: sectionsError,
+  } = useCourseSections(courseId);
   const { t } = useTranslation();
 
-  if (isLoading) {
+  const { certificates, isLoading: isCertLoading } = useCertificates();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const userCertificate = useMemo(() => {
+    if (!certificates || certificates.length === 0) return null;
+    return certificates.find((cert) => cert.courseId === courseId);
+  }, [certificates, courseId]);
+
+  const handleCertificateClick = () => {
+    if (userCertificate) {
+      setIsModalOpen(true);
+    } else {
+      alert(
+        t(
+          "certificate-not-earned-yet",
+          "You have not yet received the certificate for this course.",
+        ),
+      );
+    }
+  };
+
+  if (isSectionsLoading) {
     return (
       <div className={styles.statusContainer} role="status" aria-live="polite">
         <div className={styles.loader} aria-hidden="true" />
@@ -157,7 +185,7 @@ const CurriculumSidebar = ({ activeLesson, onSelectLesson }) => {
     );
   }
 
-  if (error) {
+  if (sectionsError) {
     return (
       <div className={styles.statusContainer} role="alert">
         <IoAlertCircleOutline
@@ -172,35 +200,108 @@ const CurriculumSidebar = ({ activeLesson, onSelectLesson }) => {
   }
 
   return (
-    <div className={styles.curriculum}>
-      <div className={styles.chapterList}>
-        {sections.length === 0 ? (
-          <div className={styles.statusContainer} role="status">
-            <p>{t("no-sections-available-yet")}</p>
-          </div>
-        ) : (
-          sections.map((section, index) => (
-            <SectionItem
-              key={section.id}
-              section={section}
-              index={index}
-              activeLesson={activeLesson}
-              onSelectLesson={onSelectLesson}
-            />
-          ))
-        )}
+    <>
+      <div className={styles.curriculum}>
+        <div className={styles.chapterList}>
+          {sections.length === 0 ? (
+            <div className={styles.statusContainer} role="status">
+              <p>{t("no-sections-available-yet")}</p>
+            </div>
+          ) : (
+            sections.map((section, index) => (
+              <SectionItem
+                key={section.id}
+                section={section}
+                index={index}
+                activeLesson={activeLesson}
+                onSelectLesson={onSelectLesson}
+              />
+            ))
+          )}
+        </div>
+
+        <div
+          className={`${styles.certificate} ${userCertificate ? styles.certificateEarned : styles.certificateLocked}`}
+          onClick={handleCertificateClick}
+          role="button"
+          tabIndex={0}
+          style={{
+            cursor: userCertificate ? "pointer" : "default",
+            opacity: userCertificate ? 1 : 0.6,
+          }}
+        >
+          <span className={styles.certificateIcon} aria-hidden="true">
+            <IoRibbonOutline color={userCertificate ? "gold" : "inherit"} />
+          </span>
+          <span className={styles.certificateText}>
+            <strong>{t("course-player-certificate")}</strong>
+            <small>
+              {isCertLoading
+                ? t("checking-certificate", "جاري التحقق...")
+                : userCertificate
+                  ? t("view-certificate", "انقر لعرض شهادتك")
+                  : t("course-player-certificate-description")}
+            </small>
+          </span>
+        </div>
       </div>
 
-      <div className={styles.certificate}>
-        <span className={styles.certificateIcon} aria-hidden="true">
-          <IoRibbonOutline />
-        </span>
-        <span className={styles.certificateText}>
-          <strong>{t("course-player-certificate")}</strong>
-          <small>{t("course-player-certificate-description")}</small>
-        </span>
-      </div>
-    </div>
+      {isModalOpen && userCertificate && (
+        <div
+          className={styles.modalOverlay}
+          onClick={() => setIsModalOpen(false)}
+        >
+          <div
+            className={styles.modalContent}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className={styles.closeModalButton}
+              onClick={() => setIsModalOpen(false)}
+            >
+              <IoClose size={24} />
+            </button>
+
+            <div className={styles.certificateDisplay}>
+              <div className={styles.certHeader}>
+                <img
+                  src={userCertificate.logoImagePath}
+                  alt="Demo Logo"
+                  className={styles.certLogo}
+                />
+                <h2>{userCertificate.demoName}</h2>
+              </div>
+
+              <div className={styles.certBody}>
+                <h3>{t("certificate-of-completion")}</h3>
+                <p>{t("this-is-to-certify-that")}</p>
+                <h1 className={styles.certUserName}>
+                  {userCertificate.userName}
+                </h1>
+                <p>{t("has-successfully-completed-the-course")}</p>
+                <h2>{userCertificate.courseName}</h2>
+                <p>
+                  {t("with-a-score-of")}{" "}
+                  <strong>{userCertificate.score}%</strong>
+                </p>
+              </div>
+
+              <div className={styles.certFooter}>
+                <div className={styles.certDate}>
+                  <p>{t('date-issued')}</p>
+                  <strong>
+                    {new Date(userCertificate.issuedAt).toLocaleDateString()}
+                  </strong>
+                </div>
+                <div className={styles.certSignature}>
+                  <img src={userCertificate.signature} alt="Signature" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
