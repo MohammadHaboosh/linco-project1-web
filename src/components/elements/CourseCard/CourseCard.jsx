@@ -8,6 +8,7 @@ import {
 import styles from "./CourseCard.module.css";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useId, useRef, useState } from "react";
 
 const formatVideoDuration = (totalSeconds) => {
   if (!totalSeconds || isNaN(totalSeconds)) return "00:00";
@@ -30,6 +31,10 @@ const CourseCard = ({
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { demoId, departmentId } = useParams();
+  const descriptionId = useId();
+  const descriptionRef = useRef(null);
+  const [expandedDescription, setExpandedDescription] = useState(null);
+  const [hasDescriptionOverflow, setHasDescriptionOverflow] = useState(false);
   const locale = i18n.resolvedLanguage || i18n.language || "en";
   const numberFormatter = new Intl.NumberFormat(locale);
 
@@ -59,6 +64,28 @@ const CourseCard = ({
   const studentsCount = Number(providedStudentsCount) || 0;
   const status = providedStatus === "draft" ? "draft" : "published";
   const lastUpdated = providedLastUpdated || t("recently");
+  const isDescriptionExpanded = expandedDescription === description;
+
+  useEffect(() => {
+    const descriptionElement = descriptionRef.current;
+    if (!descriptionElement || isDescriptionExpanded) return undefined;
+
+    const checkOverflow = () => {
+      setHasDescriptionOverflow(
+        descriptionElement.scrollHeight > descriptionElement.clientHeight + 1,
+      );
+    };
+
+    const animationFrameId = requestAnimationFrame(checkOverflow);
+
+    const resizeObserver = new ResizeObserver(checkOverflow);
+    resizeObserver.observe(descriptionElement);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      resizeObserver.disconnect();
+    };
+  }, [description, isDescriptionExpanded]);
 
   const openCourse = () => {
     navigate(
@@ -123,9 +150,33 @@ const CourseCard = ({
           )}
         </div>
 
-        <p className={styles.description} title={description}>
-          {description}
-        </p>
+        <div className={styles.descriptionContainer}>
+          <p
+            id={descriptionId}
+            ref={descriptionRef}
+            className={`${styles.description} ${
+              isDescriptionExpanded ? styles.descriptionExpanded : ""
+            }`}
+            title={isDescriptionExpanded ? undefined : description}
+          >
+            {description}
+          </p>
+          {hasDescriptionOverflow && (
+            <button
+              type="button"
+              className={styles.descriptionToggle}
+              aria-expanded={isDescriptionExpanded}
+              aria-controls={descriptionId}
+              onClick={() => {
+                setExpandedDescription((currentDescription) =>
+                  currentDescription === description ? null : description,
+                );
+              }}
+            >
+              {t(isDescriptionExpanded ? "show-less" : "show-more")}
+            </button>
+          )}
+        </div>
 
         <div className={styles.metaContainer}>
           <div className={styles.metaTags}>
