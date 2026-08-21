@@ -75,15 +75,31 @@ const GeneratedRoadmap = ({ roadmap }) => {
     if (!roadmapRef.current) return;
     setIsDownloading(true);
 
+    const element = roadmapRef.current;
+    const originalStyle = element.getAttribute("style") || "";
+    const isDark =
+      document.documentElement.getAttribute("data-theme") === "dark";
+
     try {
-      const element = roadmapRef.current;
+      if (!isDark) {
+        element.style.setProperty("--app-heading", "#0f172a", "important");
+        element.style.setProperty("--app-text-strong", "#1e293b", "important");
+        element.style.setProperty("--app-text", "#334155", "important");
+        element.style.setProperty("--app-muted", "#475569", "important"); // تغميق الرمادي الباهت
+        element.style.setProperty("--app-surface", "#ffffff", "important");
+        element.style.setProperty("--app-border", "#94a3b8", "important"); // توضيح الحدود
+        element.style.setProperty(
+          "--app-border-strong",
+          "#64748b",
+          "important",
+        );
+        element.style.setProperty("--app-page-bg", "#ffffff", "important");
+      }
+
       const canvas = await html2canvas(element, {
-        scale: 2,
+        scale: 3,
         useCORS: true,
-        backgroundColor:
-          document.documentElement.getAttribute("data-theme") === "dark"
-            ? "#111827"
-            : "#ffffff",
+        backgroundColor: isDark ? "#111827" : "#ffffff",
       });
 
       const imgData = canvas.toDataURL("image/png");
@@ -118,6 +134,8 @@ const GeneratedRoadmap = ({ roadmap }) => {
         ),
       );
     } finally {
+      // إعادة التنسيقات لطبيعتها بعد التقاط الصورة
+      element.setAttribute("style", originalStyle);
       setIsDownloading(false);
     }
   };
