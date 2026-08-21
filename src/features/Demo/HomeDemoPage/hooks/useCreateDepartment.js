@@ -50,7 +50,9 @@ export const useCreateDepartment = (demoId, onSuccess) => {
 
         if (!controller.signal.aborted) {
           setSearchResults([]);
-          setSearchError(t("member-search-failed"));
+          setSearchError(
+            err?.backendMessage || t("member-search-failed"),
+          );
         }
       } finally {
         if (!controller.signal.aborted) {
@@ -116,8 +118,10 @@ export const useCreateDepartment = (demoId, onSuccess) => {
       await departmentApi.createDepartment(demoId, payload);
 
       if (onSuccess) onSuccess();
-    } catch {
-      setError(t("department-create-failed"));
+    } catch (requestError) {
+      setError(
+        requestError?.backendMessage || t("department-create-failed"),
+      );
     } finally {
       setIsSubmitting(false);
     }

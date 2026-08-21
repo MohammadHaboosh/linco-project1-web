@@ -1,5 +1,25 @@
 import { apiFetch } from "../../../../api/apiFetch";
 
+const getBackendErrorMessage = (payload) => {
+  const messages = Array.isArray(payload?.message)
+    ? payload.message
+    : [payload?.message];
+
+  return messages
+    .filter((message) => typeof message === "string")
+    .map((message) => message.trim())
+    .filter(Boolean)
+    .join(" ");
+};
+
+const createDepartmentApiError = (payload) => {
+  const backendMessage = getBackendErrorMessage(payload);
+  const error = new Error(backendMessage || "Department request failed.");
+  error.name = "DepartmentApiError";
+  error.backendMessage = backendMessage;
+  return error;
+};
+
 export const departmentApi = {
   searchMembers: async (demoId, searchQuery, options = {}) => {
     const normalizedQuery = String(searchQuery ?? "").trim();
@@ -29,7 +49,7 @@ export const departmentApi = {
       const data = await response.json().catch(() => ({}));
 
       if (!response.ok || data.success === false) {
-        throw new Error(data.message || "Failed to search members.");
+        throw createDepartmentApiError(data);
       }
 
       return Array.isArray(data.data) ? data.data : [];
@@ -53,10 +73,10 @@ export const departmentApi = {
         body: JSON.stringify(departmentPayload),
       });
 
-      const data = await response.json();
+      const data = await response.json().catch(() => ({}));
 
       if (!response.ok || data.success === false) {
-        throw new Error(data.message || "Failed to create department");
+        throw createDepartmentApiError(data);
       }
       return data;
     } catch (error) {
