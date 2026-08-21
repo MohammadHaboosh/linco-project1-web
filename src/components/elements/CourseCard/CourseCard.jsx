@@ -32,10 +32,6 @@ const CourseCard = ({
   const { demoId, departmentId } = useParams();
   const locale = i18n.resolvedLanguage || i18n.language || "en";
   const numberFormatter = new Intl.NumberFormat(locale);
-  const percentFormatter = new Intl.NumberFormat(locale, {
-    style: "percent",
-    maximumFractionDigits: 0,
-  });
 
   const {
     id,
@@ -44,7 +40,6 @@ const CourseCard = ({
     image: providedImage,
     lessonsCount: providedLessonsCount,
     totalDuration: providedTotalDuration,
-    progress: providedProgress,
     views: providedViews,
     studentsCount: providedStudentsCount,
     status: providedStatus,
@@ -60,12 +55,10 @@ const CourseCard = ({
   const durationInSeconds = Number(rawDuration) || 0;
   const formattedDuration = formatVideoDuration(durationInSeconds);
 
-  const progress = Math.min(100, Math.max(0, Number(providedProgress) || 0));
   const views = Number(providedViews) || 0;
   const studentsCount = Number(providedStudentsCount) || 0;
   const status = providedStatus === "draft" ? "draft" : "published";
   const lastUpdated = providedLastUpdated || t("recently");
-  const formattedProgress = percentFormatter.format(progress / 100);
 
   const openCourse = () => {
     navigate(
@@ -180,37 +173,13 @@ const CourseCard = ({
           </div>
         ) : (
           <div className={styles.traineeFooter}>
-            <div className={styles.progressContainer}>
-              <div className={styles.progressHeader}>
-                <span className={styles.progressLabel}>{t("progress")}</span>
-                <span className={styles.progressValue}>
-                  {formattedProgress}
-                </span>
-              </div>
-              <div
-                className={styles.progressBar}
-                role="progressbar"
-                aria-label={t("course-progress-label", { title })}
-                aria-valuemin="0"
-                aria-valuemax="100"
-                aria-valuenow={progress}
-              >
-                <div
-                  className={styles.progressFill}
-                  style={{ width: `${progress}%` }}
-                ></div>
-              </div>
-            </div>
             <button
               type="button"
               className={styles.primaryCta}
               onClick={openCourse}
-              aria-label={t(
-                progress > 0 ? "continue-named-course" : "start-named-course",
-                { title },
-              )}
+              aria-label={t("start-named-course", { title })}
             >
-              {progress > 0 ? t("continue-learning") : t("start-learning")}
+              {t("start-learning")}
             </button>
           </div>
         )}

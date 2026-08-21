@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import VideoContent from "./VideoContent";
 import LessonTabs from "../LessonTabs/LessonTabs";
@@ -6,12 +6,7 @@ import CourseSidebar from "../CourseSidebar/CourseSidebar";
 import QuizContainer from "../../../Quiz/components/QuizContainer";
 import { DepartmentCoursesApi } from "../../../CoursesPage/api/DepartmentCoursesApi";
 import styles from "./CourseViewer.module.css";
-import {
-  IoChevronBackOutline,
-  IoChevronForwardOutline,
-  IoTrophyOutline,
-  IoCheckmarkCircle,
-} from "react-icons/io5";
+import { IoChevronBackOutline, IoChevronForwardOutline } from "react-icons/io5";
 import { PATHS } from "../../../../../routes/paths";
 import { useTranslation } from "react-i18next";
 
@@ -27,11 +22,7 @@ const CourseViewer = () => {
   const hasCourseRouteParams = Boolean(demoId && departmentId && courseId);
   const [loadedCourse, setLoadedCourse] = useState(null);
   const [courseLoadState, setCourseLoadState] = useState(
-    passedCourseData
-      ? "success"
-      : hasCourseRouteParams
-        ? "loading"
-        : "error",
+    passedCourseData ? "success" : hasCourseRouteParams ? "loading" : "error",
   );
   const [courseLoadRetry, setCourseLoadRetry] = useState(0);
 
@@ -74,7 +65,7 @@ const CourseViewer = () => {
                 courseEntry.courseProgress ??
                 course.progress ??
                 0,
-              },
+            },
           });
           setCourseLoadState("success");
         } else if (isMounted) {
@@ -108,21 +99,8 @@ const CourseViewer = () => {
     (courseLoadState === "error"
       ? t("course-player-course-title-unavailable")
       : t("loading-course"));
-  const rawProgress = Number(courseData?.progress);
-  const courseProgress = Number.isFinite(rawProgress)
-    ? Math.min(100, Math.max(0, rawProgress))
-    : 0;
+
   const activeLessonId = activeLesson?.id;
-  const locale = i18n.resolvedLanguage || i18n.language || "en";
-  const percentFormatter = useMemo(
-    () =>
-      new Intl.NumberFormat(locale, {
-        style: "percent",
-        maximumFractionDigits: 0,
-      }),
-    [locale],
-  );
-  const formattedProgress = percentFormatter.format(courseProgress / 100);
   const activeLessonIndex = activeLesson
     ? currentPlaylist.findIndex((lesson) => lesson.id === activeLesson.id)
     : -1;
@@ -207,34 +185,6 @@ const CourseViewer = () => {
             </h1>
           </div>
         </div>
-
-        <div className={styles.headerRight}>
-          <div className={styles.progressBlock}>
-            <div className={styles.progressIcon}>
-              <IoTrophyOutline />
-            </div>
-            <div className={styles.progressText}>
-              <span className={styles.progressLabel}>
-                {t("course-player-progress")}
-              </span>
-              <strong>{formattedProgress}</strong>
-            </div>
-            <div
-              className={styles.progressTrack}
-              role="progressbar"
-              aria-label={t("course-progress-label", { title: courseTitle })}
-              aria-valuemin={0}
-              aria-valuemax={100}
-              aria-valuenow={Math.round(courseProgress)}
-              aria-valuetext={t("course-player-progress-value", {
-                progress: formattedProgress,
-              })}
-            >
-              <span style={{ width: `${courseProgress}%` }} />
-            </div>
-            <IoCheckmarkCircle className={styles.progressCheck} />
-          </div>
-        </div>
       </header>
 
       {!passedCourseData && courseLoadState !== "success" && (
@@ -294,7 +244,6 @@ const CourseViewer = () => {
               <LessonTabs activeLesson={activeLesson} />
             </div>
           </section>
-
         )}
 
         <CourseSidebar

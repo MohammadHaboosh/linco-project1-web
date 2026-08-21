@@ -14,6 +14,7 @@ import { useCourseSections } from "../../hooks/useCourseSections";
 import { useSectionLessons } from "../../hooks/useSectionLessons";
 import { useTranslation } from "react-i18next";
 import { useCertificates } from "../../../Certificates/hooks/useCertificates";
+import CertificateCard from "../../../Certificates/components/CertificateCard";
 
 const formatVideoDuration = (totalSeconds) => {
   if (!totalSeconds || isNaN(totalSeconds)) return "00:00";
@@ -254,50 +255,42 @@ const CurriculumSidebar = ({ activeLesson, onSelectLesson }) => {
           <div
             className={styles.modalContent}
             onClick={(e) => e.stopPropagation()}
+            style={{
+              width: "100%",
+              maxWidth: "1000px",
+              background: "transparent",
+              boxShadow: "none",
+              padding: "20px",
+            }}
           >
-            <button
-              className={styles.closeModalButton}
-              onClick={() => setIsModalOpen(false)}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                marginBottom: "12px",
+              }}
             >
-              <IoClose size={24} />
-            </button>
-
-            <div className={styles.certificateDisplay}>
-              <div className={styles.certHeader}>
-                <img
-                  src={userCertificate.logoImagePath}
-                  alt="Demo Logo"
-                  className={styles.certLogo}
-                />
-                <h2>{userCertificate.demoName}</h2>
-              </div>
-
-              <div className={styles.certBody}>
-                <h3>{t("certificate-of-completion")}</h3>
-                <p>{t("this-is-to-certify-that")}</p>
-                <h1 className={styles.certUserName}>
-                  {userCertificate.userName}
-                </h1>
-                <p>{t("has-successfully-completed-the-course")}</p>
-                <h2>{userCertificate.courseName}</h2>
-                <p>
-                  {t("with-a-score-of")}{" "}
-                  <strong>{userCertificate.score}%</strong>
-                </p>
-              </div>
-
-              <div className={styles.certFooter}>
-                <div className={styles.certDate}>
-                  <p>{t('date-issued')}</p>
-                  <strong>
-                    {new Date(userCertificate.issuedAt).toLocaleDateString()}
-                  </strong>
-                </div>
-                <div className={styles.certSignature}>
-                  <img src={userCertificate.signature} alt="Signature" />
-                </div>
-              </div>
+              <button
+                className={styles.closeModalButton}
+                onClick={() => setIsModalOpen(false)}
+                style={{
+                  backgroundColor: "#ffffff",
+                  border: "none",
+                  borderRadius: "50%",
+                  width: "40px",
+                  height: "40px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+                }}
+              >
+                <IoClose size={26} color="#1e293b" />
+              </button>
             </div>
+
+            <CertificateCard certificate={userCertificate} />
           </div>
         </div>
       )}
