@@ -17,9 +17,7 @@ const QuizTaker = ({
 }) => {
   const { t, i18n } = useTranslation();
   const isRtl = i18n.dir() === "rtl";
-  const PreviousIcon = isRtl
-    ? IoArrowForwardOutline
-    : IoArrowBackOutline;
+  const PreviousIcon = isRtl ? IoArrowForwardOutline : IoArrowBackOutline;
   const NextIcon = isRtl ? IoArrowBackOutline : IoArrowForwardOutline;
   const [currentQIndex, setCurrentQIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(
@@ -106,7 +104,7 @@ const QuizTaker = ({
         <div className={styles.questionCard}>
           <div className={styles.questionHeader}>
             <img
-              src="/icons/linco-logo.png"
+              src="/icons/linco-logo.webp"
               alt={t("course-player-thinking-mascot-alt")}
               className={styles.tinyMascot}
             />

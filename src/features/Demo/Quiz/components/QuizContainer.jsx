@@ -91,7 +91,7 @@ const QuizContainer = ({ examId, onCompleteSection }) => {
         <div className={styles.welcomeScreen}>
           <div className={styles.mascotEntrance}>
             <img
-              src="/icons/linco-logo.png"
+              src="/icons/linco-logo.webp"
               alt={t("course-player-welcome-mascot-alt")}
               className={styles.mascotImg}
             />

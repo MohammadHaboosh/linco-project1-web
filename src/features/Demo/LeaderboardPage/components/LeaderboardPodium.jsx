@@ -1,5 +1,5 @@
 import styles from "./LeaderboardPodium.module.css";
-import squidIcon from "/public/icons/winner2.png";
+import squidIcon from "/public/icons/winner2.webp";
 import { useTranslation } from "react-i18next";
 
 const LeaderboardPodium = ({ topThree, currentUserId }) => {
