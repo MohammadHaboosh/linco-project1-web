@@ -12,15 +12,18 @@ export const useExamPlayer = (passedExamId) => {
 
   const [answers, setAnswers] = useState({});
   const [examResult, setExamResult] = useState(null);
+  const [previousAttempt, setPreviousAttempt] = useState(null);
 
   useEffect(() => {
     let isMounted = true;
 
-    if (!passedExamId) {
+    if (!passedExamId || !demoId) {
       queueMicrotask(() => {
         if (isMounted) {
           setIsLoading(false);
-          setError("Exam ID is missing. Cannot load the assessment.");
+          setError(
+            "Exam ID or Demo ID is missing. Cannot load the assessment.",
+          );
         }
       });
       return;
@@ -35,6 +38,19 @@ export const useExamPlayer = (passedExamId) => {
 
     const loadExam = async () => {
       try {
+        const attempts = await examAttemptApi.getMyAttempts(demoId);
+        if (!isMounted) return;
+
+        const existingAttempt = attempts?.find(
+          (attempt) => attempt.examId === passedExamId,
+        );
+
+        if (existingAttempt) {
+          setPreviousAttempt(existingAttempt);
+          setIsLoading(false);
+          return;
+        }
+
         const data = await examAttemptApi.generateExam(passedExamId);
 
         if (!isMounted) return;
@@ -62,7 +78,7 @@ export const useExamPlayer = (passedExamId) => {
     return () => {
       isMounted = false;
     };
-  }, [passedExamId]);
+  }, [passedExamId, demoId]);
 
   const toggleChoice = (questionId, choiceId) => {
     setAnswers((prev) => {
@@ -120,5 +136,6 @@ export const useExamPlayer = (passedExamId) => {
     toggleChoice,
     submitExam,
     examResult,
+    previousAttempt,
   };
 };

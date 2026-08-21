@@ -2044,5 +2044,8 @@
   "roadmap-download-failed": "Failed to download PDF. Please try again.",
   "downloading": "Downloading...",
   "plan-members-limit": "Members Limit",
-  "plan-departments-groups-limit": "Departments & Groups Limit"
+  "plan-departments-groups-limit": "Departments & Groups Limit",
+  "exam-already-completed": "Exam Already Completed",
+  "excellent-job": "Excellent Job",
+  "you-have-already-passed-this-exam": "You have already passed this exam"
 }

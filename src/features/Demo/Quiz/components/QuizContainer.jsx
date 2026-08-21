@@ -8,6 +8,9 @@ import {
   IoTimeOutline,
   IoListOutline,
   IoCheckmarkCircleOutline,
+  IoTrophyOutline,
+  IoArrowForwardOutline,
+  IoArrowBackOutline,
 } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
 
@@ -30,6 +33,7 @@ const QuizContainer = ({ examId, onCompleteSection }) => {
     toggleChoice,
     submitExam,
     examResult,
+    previousAttempt,
   } = useExamPlayer(examId);
 
   const handleStart = () => {
@@ -62,6 +66,86 @@ const QuizContainer = ({ examId, onCompleteSection }) => {
         <button type="button" onClick={handleRetry}>
           {t("try-again")}
         </button>
+      </div>
+    );
+  }
+
+  if (previousAttempt) {
+    const percentage = Number(previousAttempt.score) || 0;
+    const formattedScore = percentFormatter.format(percentage / 100);
+    const ContinueIcon =
+      i18n.dir() === "rtl" ? IoArrowBackOutline : IoArrowForwardOutline;
+
+    return (
+      <div className={styles.quizWrapper} dir={i18n.dir()}>
+        <div className={styles.welcomeScreen}>
+          <div className={styles.mascotEntrance}>
+            <img
+              src="/images/squid-happy.webp"
+              alt={t("course-player-success-mascot-alt", "Success Mascot")}
+              className={styles.mascotImgResult}
+            />
+          </div>
+
+          <div className={styles.welcomeContent}>
+            <div
+              className={styles.quizBadge}
+              style={{
+                background: "var(--app-success-surface)",
+                color: "#10b981",
+                borderColor: "#10b981",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "6px",
+              }}
+            >
+              <IoTrophyOutline />
+              {t("exam-already-completed")}
+            </div>
+
+            <h2 className={styles.successText}>{t("excellent-job")}</h2>
+            <p>{t("you-have-already-passed-this-exam")}</p>
+
+            <div
+              className={styles.horizontalScoreBoard}
+              style={{ maxWidth: "400px", margin: "24px auto" }}
+            >
+              <div
+                className={`${styles.scoreRing} ${styles.ringSuccess}`}
+                role="img"
+                aria-label={t("course-player-assessment-score-value", {
+                  score: formattedScore,
+                })}
+              >
+                <svg viewBox="0 0 36 36" className={styles.circularChart}>
+                  <path
+                    className={styles.circleBg}
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                  <path
+                    className={styles.circle}
+                    strokeDasharray={`${percentage}, 100`}
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                </svg>
+                <div className={styles.scorePercentage}>
+                  <strong>{formattedScore}</strong>
+                  <span>{t("course-player-score")}</span>
+                </div>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              className={styles.startBtn}
+              onClick={onCompleteSection}
+              style={{ marginTop: "12px", minWidth: "220px" }}
+            >
+              {t("course-player-continue-course")}
+              <ContinueIcon />
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
