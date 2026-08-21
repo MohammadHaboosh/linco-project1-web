@@ -102,7 +102,6 @@ const OwnerHomeContent = () => {
           <TopDepartments
             departments={reportData?.departments}
             numberFormatter={numberFormatter}
-            percentFormatter={percentFormatter}
             isLoading={isLoading}
           />
         </div>

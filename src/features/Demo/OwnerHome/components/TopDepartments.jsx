@@ -10,7 +10,6 @@ import { TopDepartmentsSkeleton } from "./OwnerHomeSkeletons";
 const TopDepartments = ({
   departments,
   numberFormatter,
-  percentFormatter,
   isLoading,
 }) => {
   const { t } = useTranslation();
@@ -46,10 +45,6 @@ const TopDepartments = ({
       ) : (
         <ol className={styles.departmentsList}>
           {sortedDepts.map((dept, index) => {
-            const passRate = Math.min(
-              100,
-              Math.max(0, Number(dept.examPassRate) || 0),
-            );
             const memberCount = Number(dept.memberCount) || 0;
             const departmentName =
               dept.departmentName || t("analytics-unnamed-department");
@@ -74,29 +69,6 @@ const TopDepartments = ({
                     </span>
                   </div>
 
-                  <div className={styles.deptProgress}>
-                    <div className={styles.progressHeader}>
-                      <span>{t("analytics-exam-pass-rate-label")}</span>
-                      <span className={styles.scoreText}>
-                        {percentFormatter.format(passRate / 100)}
-                      </span>
-                    </div>
-                    <div
-                      className={styles.progressBar}
-                      role="progressbar"
-                      aria-label={t("department-performance-score", {
-                        department: departmentName,
-                      })}
-                      aria-valuemin={0}
-                      aria-valuemax={100}
-                      aria-valuenow={passRate}
-                    >
-                      <div
-                        className={styles.progressFill}
-                        style={{ width: `${passRate}%` }}
-                      />
-                    </div>
-                  </div>
                 </div>
               </li>
             );

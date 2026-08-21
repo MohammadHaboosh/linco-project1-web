@@ -66,13 +66,6 @@ export const TopDepartmentsSkeleton = () => {
                       <Skeleton width={90} height={14} borderRadius={6} />
                     </div>
                   </div>
-                  <div className={styles.deptProgress}>
-                    <div className={styles.progressHeader}>
-                      <Skeleton width={60} height={14} borderRadius={4} />
-                      <Skeleton width={30} height={14} borderRadius={4} />
-                    </div>
-                    <Skeleton width="100%" height={8} borderRadius={4} />
-                  </div>
                 </div>
               </div>
             ))}
