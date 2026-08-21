@@ -332,12 +332,16 @@ export const useCurriculumLogic = (
 
     try {
       const lessons = await lessonApi.getLessons(sectionId);
+      const sortedLessons = [...(lessons || [])].sort((a, b) => {
+        return (a.order || 0) - (b.order || 0);
+      });
+
       setSections((prev) =>
         prev.map((sec) =>
           sec.id === sectionId
             ? {
                 ...sec,
-                lessons: lessons || [],
+                lessons: sortedLessons,
                 isLessonsLoading: false,
                 lessonsLoadError: false,
               }

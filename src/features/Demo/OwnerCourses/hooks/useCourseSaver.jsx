@@ -39,6 +39,26 @@ export const useCourseSaver = ({
       const activeCourseId = courseId || assetId || demoId;
       let hadItemSaveErrors = false;
 
+      for (let i = 0; i < (sections || []).length; i++) {
+        const sec = sections[i];
+        if (sec.quiz) {
+          const quizQCount = Number(sec.quiz.numberOfQuestions || 0);
+          const bankQCount = sec.questions?.length || 0;
+
+          if (quizQCount > bankQCount) {
+            setSaveFeedback({
+              type: "error",
+              message: t("quiz-questions-exceed-bank-error", {
+                defaultValue: `The number of questions in the quiz (${quizQCount}) exceeds the number of questions in the question bank (${bankQCount}). Please ensure that the quiz does not have more questions than are available in the question bank.`,
+              }),
+            });
+            if (setIsSaving) setIsSaving(false);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            return false;
+          }
+        }
+      }
+
       if (saveGeneralInfo) {
         await saveGeneralInfo();
       }
@@ -275,6 +295,29 @@ export const useCourseSaver = ({
           setUploadProgress(null);
         }
 
+        const currentQuestions = sec.questions || [];
+        const updatedQuestionsList = [];
+        for (let q of currentQuestions) {
+          if (q.isNew || isTempId(q.id)) {
+            try {
+              const createdQ = await questionBankApi.addQuestion(
+                realSectionId,
+                q,
+              );
+              updatedQuestionsList.push({
+                ...(createdQ?.data || createdQ),
+                isNew: false,
+              });
+            } catch (err) {
+              console.error("Failed to save question", err);
+              hadItemSaveErrors = true;
+              updatedQuestionsList.push(q);
+            }
+          } else {
+            updatedQuestionsList.push(q);
+          }
+        }
+
         let updatedQuiz = sec.quiz;
         if (sec.quiz) {
           if (sec.quiz.isNew || isTempId(sec.quiz.id)) {
@@ -308,29 +351,6 @@ export const useCourseSaver = ({
               console.error("Failed to update quiz", err);
               hadItemSaveErrors = true;
             }
-          }
-        }
-
-        const currentQuestions = sec.questions || [];
-        const updatedQuestionsList = [];
-        for (let q of currentQuestions) {
-          if (q.isNew || isTempId(q.id)) {
-            try {
-              const createdQ = await questionBankApi.addQuestion(
-                realSectionId,
-                q,
-              );
-              updatedQuestionsList.push({
-                ...(createdQ?.data || createdQ),
-                isNew: false,
-              });
-            } catch (err) {
-              console.error("Failed to save question", err);
-              hadItemSaveErrors = true;
-              updatedQuestionsList.push(q);
-            }
-          } else {
-            updatedQuestionsList.push(q);
           }
         }
 

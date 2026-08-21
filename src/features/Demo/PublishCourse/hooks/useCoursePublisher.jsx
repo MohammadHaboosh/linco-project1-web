@@ -116,12 +116,13 @@ export const useCoursePublisher = ({
     }
 
     setIsPublishing(true);
+    const currentSections = courseData.sections || [];
+    const updatedSectionsList = [...currentSections];
 
     try {
       const activeCourseId = courseData.id;
-      const sections = courseData.sections || [];
 
-      const processedTitles = sections.map((sec, index) => {
+      const processedTitles = currentSections.map((sec, index) => {
         return sec.title?.trim() || `Section ${index + 1}`;
       });
 
@@ -132,6 +133,25 @@ export const useCoursePublisher = ({
         return;
       }
 
+      for (let i = 0; i < currentSections.length; i++) {
+        const sec = currentSections[i];
+        if (sec.quiz) {
+          const quizQCount = Number(sec.quiz.numberOfQuestions || 0);
+          const bankQCount = sec.questions?.length || 0;
+
+          if (quizQCount > bankQCount) {
+            setErrorMessage(
+              t("quiz-questions-exceed-bank-error", {
+                defaultValue: `A quiz cannot be created in the section "${sec.title || "Section " + (i + 1)}". The number of quiz questions (${quizQCount}) is greater than what is available in the bank (${bankQCount}).`,
+              }),
+            );
+            setIsPublishing(false);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            return;
+          }
+        }
+      }
+
       if (deletedSectionIds.length > 0) {
         await Promise.all(
           deletedSectionIds.map((secId) =>
@@ -140,11 +160,8 @@ export const useCoursePublisher = ({
         );
       }
 
-      const processedSections = [];
-
-      for (let index = 0; index < sections.length; index++) {
-        const sec = sections[index];
-
+      for (let index = 0; index < currentSections.length; index++) {
+        const sec = currentSections[index];
         const finalTitle = processedTitles[index];
         const payload = { title: finalTitle, order: sec.order || index + 1 };
 
@@ -171,54 +188,67 @@ export const useCoursePublisher = ({
           sec.id;
 
         if (isTempId(finalSecId)) {
-          console.warn(
-            "Warning: Still using a temp ID for section. The backend didn't return a proper ID.",
-          );
+          console.warn("Warning: Still using a temp ID for section.");
         }
 
-        processedSections.push({
+        updatedSectionsList[index] = {
           ...sec,
           title: finalTitle,
+          id: finalSecId,
           realId: finalSecId,
-        });
-      }
+          isNew: false,
+        };
 
-      for (const section of processedSections) {
-        if (section.quiz && (section.quiz.isNew || isTempId(section.quiz.id))) {
-          try {
-            await quizApi.createQuiz(section.realId, {
-              title: section.quiz.title,
-              numberOfQuestions: section.quiz.numberOfQuestions,
-              durationMinutes: section.quiz.durationMinutes,
-              passingScore: section.quiz.passingScore,
-            });
-          } catch (quizError) {
-            console.error(
-              `Failed to create quiz for section ${section.realId}:`,
-              quizError,
-            );
-            throw quizError;
-          }
-        }
-
-        const questions = section.questions || [];
-        for (const q of questions) {
+        const questions = sec.questions || [];
+        const updatedQuestions = [...questions];
+        for (let qIndex = 0; qIndex < questions.length; qIndex++) {
+          const q = questions[qIndex];
           if (q.isNew || isTempId(q.id)) {
             try {
-              await questionBankApi.addQuestion(section.realId, q);
+              const createdQ = await questionBankApi.addQuestion(finalSecId, q);
+              updatedQuestions[qIndex] = {
+                ...(createdQ?.data || createdQ || q),
+                isNew: false,
+              };
             } catch (qError) {
               console.error(
-                `Failed to create question for section ${section.realId}:`,
+                `Failed to create question for section ${finalSecId}:`,
                 qError,
               );
               throw qError;
             }
           }
         }
+        updatedSectionsList[index].questions = updatedQuestions;
 
-        const lessons = section.lessons || [];
-        for (let index = 0; index < lessons.length; index++) {
-          const lesson = lessons[index];
+        let updatedQuiz = sec.quiz;
+        if (updatedQuiz && (updatedQuiz.isNew || isTempId(updatedQuiz.id))) {
+          try {
+            const createdQuiz = await quizApi.createQuiz(finalSecId, {
+              title: updatedQuiz.title,
+              numberOfQuestions: updatedQuiz.numberOfQuestions,
+              durationMinutes: updatedQuiz.durationMinutes,
+              passingScore: updatedQuiz.passingScore,
+            });
+            updatedQuiz = {
+              ...(createdQuiz?.data || createdQuiz || updatedQuiz),
+              isNew: false,
+              isModified: false,
+            };
+          } catch (quizError) {
+            console.error(
+              `Failed to create quiz for section ${finalSecId}:`,
+              quizError,
+            );
+            throw quizError;
+          }
+        }
+        updatedSectionsList[index].quiz = updatedQuiz;
+
+        const lessons = sec.lessons || [];
+        const updatedLessons = [...lessons];
+        for (let lIndex = 0; lIndex < lessons.length; lIndex++) {
+          const lesson = lessons[lIndex];
           const isNewLesson = !lesson.id || lesson.isNew || isTempId(lesson.id);
 
           let realLessonId = lesson.id;
@@ -228,11 +258,11 @@ export const useCoursePublisher = ({
           if (isNewLesson) {
             if (lesson.videoFile) {
               setUploadProgress({
-                title: getLessonUploadMessage(lesson, index),
+                title: getLessonUploadMessage(lesson, lIndex),
                 percent: 0,
               });
               const uploadData = await lessonApi.getUploadUrl(
-                section.realId,
+                finalSecId,
                 lesson.videoFile.name,
               );
               const uploadUrl = uploadData.uploadUrl || uploadData.url;
@@ -255,22 +285,22 @@ export const useCoursePublisher = ({
                   lesson.videoFile,
                   (percent) => {
                     setUploadProgress({
-                      title: getLessonUploadMessage(lesson, index),
+                      title: getLessonUploadMessage(lesson, lIndex),
                       percent: percent,
                     });
                   },
                 );
                 setUploadProgress({
-                  title: getLessonUploadMessage(lesson, index),
+                  title: getLessonUploadMessage(lesson, lIndex),
                   percent: 100,
                 });
                 await new Promise((resolve) => setTimeout(resolve, 400));
               }
             }
 
-            const createdLesson = await lessonApi.createLesson(section.realId, {
-              title: lesson.title?.trim() || `Lesson ${index + 1}`,
-              order: lesson.order || index + 1,
+            const createdLesson = await lessonApi.createLesson(finalSecId, {
+              title: lesson.title?.trim() || `Lesson ${lIndex + 1}`,
+              order: lesson.order || lIndex + 1,
               videoUrl: finalVideoUrl,
               courseId: activeCourseId,
               description:
@@ -286,6 +316,7 @@ export const useCoursePublisher = ({
           }
 
           const currentAttachments = lesson.attachments || [];
+          const updatedAttachments = [...currentAttachments];
           const newAttachments = currentAttachments.filter(
             (att) => att.isNew && att.file,
           );
@@ -298,37 +329,52 @@ export const useCoursePublisher = ({
                 fileNames,
               );
 
-              for (const att of newAttachments) {
-                const uploadInfo = uploadUrls?.find(
-                  (u) =>
-                    u.fileName === att.file.name || u.name === att.file.name,
-                );
-                const uploadUrl = uploadInfo?.uploadUrl || uploadInfo?.url;
-                const finalPath =
-                  uploadInfo?.fileKey ||
-                  uploadInfo?.cdnUrl ||
-                  uploadInfo?.path ||
-                  "";
+              for (
+                let aIndex = 0;
+                aIndex < currentAttachments.length;
+                aIndex++
+              ) {
+                const att = currentAttachments[aIndex];
+                if (att.isNew && att.file) {
+                  const uploadInfo = uploadUrls?.find(
+                    (u) =>
+                      u.fileName === att.file.name || u.name === att.file.name,
+                  );
+                  const uploadUrl = uploadInfo?.uploadUrl || uploadInfo?.url;
+                  const finalPath =
+                    uploadInfo?.fileKey ||
+                    uploadInfo?.cdnUrl ||
+                    uploadInfo?.path ||
+                    "";
 
-                if (uploadUrl) {
-                  await attachmentApi.uploadAttachmentToStorage(
-                    uploadUrl,
-                    att.file,
-                    (percent) => {
-                      setUploadProgress({
-                        title: t("course-studio-uploading-attachment", {
-                          fileName: att.file.name,
-                        }),
-                        percent: percent,
-                      });
+                  if (uploadUrl) {
+                    await attachmentApi.uploadAttachmentToStorage(
+                      uploadUrl,
+                      att.file,
+                      (percent) => {
+                        setUploadProgress({
+                          title: t("course-studio-uploading-attachment", {
+                            fileName: att.file.name,
+                          }),
+                          percent: percent,
+                        });
+                      },
+                    );
+                  }
+
+                  const createdAtt = await attachmentApi.createAttachment(
+                    realLessonId,
+                    {
+                      name: att.title || att.fileName || att.file.name,
+                      path: finalPath,
                     },
                   );
-                }
 
-                await attachmentApi.createAttachment(realLessonId, {
-                  name: att.title || att.fileName || att.file.name,
-                  path: finalPath,
-                });
+                  updatedAttachments[aIndex] = {
+                    ...(createdAtt?.data || createdAtt || att),
+                    isNew: false,
+                  };
+                }
               }
             } catch (attError) {
               console.error(
@@ -338,7 +384,17 @@ export const useCoursePublisher = ({
               throw attError;
             }
           }
+
+          updatedLessons[lIndex] = {
+            ...lesson,
+            id: realLessonId,
+            videoUrl: finalVideoUrl,
+            videoFile: null,
+            isNew: false,
+            attachments: updatedAttachments,
+          };
         }
+        updatedSectionsList[index].lessons = updatedLessons;
       }
 
       setDeletedSectionIds([]);
@@ -346,9 +402,14 @@ export const useCoursePublisher = ({
       navigate(-1);
     } catch (error) {
       console.error("Error saving curriculum:", error);
+
+      setCourseData((prev) => ({
+        ...prev,
+        sections: updatedSectionsList,
+      }));
+
       const backendMessage = error?.response?.data?.message || error?.message;
       t("course-studio-publish-error");
-
       setErrorMessage(backendMessage);
     } finally {
       setIsPublishing(false);

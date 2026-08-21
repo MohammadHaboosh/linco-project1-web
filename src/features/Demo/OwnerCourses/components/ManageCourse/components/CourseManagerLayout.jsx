@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   IoArrowBackOutline,
@@ -45,18 +45,26 @@ const CourseManagerLayout = ({ readOnly = false }) => {
   const [deletedQuestionIds, setDeletedQuestionIds] = useState([]);
   const isReadOnly = readOnly || accessMethod === "PURCHASED";
 
-  const {
-    saveCourseData,
-    uploadProgress,
-    saveFeedback,
-    clearSaveFeedback,
-  } = useCourseSaver({
-    courseId,
-    assetId,
-    demoId,
-    saveGeneralInfo,
-    setIsSaving,
-  });
+  const { saveCourseData, uploadProgress, saveFeedback, clearSaveFeedback } =
+    useCourseSaver({
+      courseId,
+      assetId,
+      demoId,
+      saveGeneralInfo,
+      setIsSaving,
+    });
+
+  const feedbackBannerRef = useRef(null);
+
+  useEffect(() => {
+    if (saveFeedback) {
+      feedbackBannerRef.current?.focus();
+      feedbackBannerRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  }, [saveFeedback]);
 
   const executeSave = async () => {
     if (isReadOnly) return;
@@ -105,11 +113,7 @@ const CourseManagerLayout = ({ readOnly = false }) => {
 
   if (isLoading)
     return (
-      <div
-        className={styles.loadingScreen}
-        role="status"
-        aria-live="polite"
-      >
+      <div className={styles.loadingScreen} role="status" aria-live="polite">
         <div className={styles.spinner} aria-hidden="true"></div>
         <h1>
           {t(isReadOnly ? "loading-course-details" : "loading-course-manager")}
@@ -208,6 +212,8 @@ const CourseManagerLayout = ({ readOnly = false }) => {
 
       {!isReadOnly && saveFeedback && (
         <div
+          ref={feedbackBannerRef}
+          tabIndex="-1"
           className={`${styles.feedbackBanner} ${
             saveFeedback.type === "error"
               ? styles.feedbackError
@@ -231,10 +237,7 @@ const CourseManagerLayout = ({ readOnly = false }) => {
           <div className={styles.sidebarHeader}>
             <span>{navigationLabel}</span>
           </div>
-          <nav
-            className={styles.navMenu}
-            aria-label={navigationLabel}
-          >
+          <nav className={styles.navMenu} aria-label={navigationLabel}>
             {TABS.map((tab) => (
               <button
                 type="button"
