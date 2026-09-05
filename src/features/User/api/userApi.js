@@ -55,7 +55,11 @@ export const updateUserProfilePhoto = async (userId, imagePath) => {
   const data = await response.json().catch(() => ({}));
 
   if (!response.ok || data.success === false) {
-    throw createResponseError(data, response, "auth-update-profile-photo-failed");
+    throw createResponseError(
+      data,
+      response,
+      "auth-update-profile-photo-failed",
+    );
   }
 
   return data;
@@ -89,7 +93,7 @@ export const registerUser = async (userData) => {
 
 export const signinUser = async (credentials) => {
   try {
-    const response = await fetch(`${BASE_URL}/authentication/sign-in`, {
+    const response = await fetch(`${BASE_URL}authentication/sign-in`, {
       method: "POST",
       headers: createApiHeaders({
         "Content-Type": "application/json",
@@ -123,8 +127,8 @@ export const verify2FASignin = async (twoFactorToken, code) => {
       }),
       credentials: "include",
       body: JSON.stringify({
-        "twoFactorToken": twoFactorToken,
-        "tfaCode" : code,
+        twoFactorToken: twoFactorToken,
+        tfaCode: code,
       }),
     });
 
@@ -231,7 +235,11 @@ export const verifyUserEmail = async (token) => {
     const data = await response.json().catch(() => ({}));
 
     if (!response.ok || data.success === false) {
-      throw createResponseError(data, response, "auth-account-verification-failed");
+      throw createResponseError(
+        data,
+        response,
+        "auth-account-verification-failed",
+      );
     }
 
     return data;
@@ -279,7 +287,7 @@ export const resetPassword = async (token, newPassword) => {
     });
 
     const data = await response.json().catch(() => ({}));
-    
+
     if (!response.ok || data.success === false) {
       throw createResponseError(data, response, "auth-reset-password-failed");
     }
