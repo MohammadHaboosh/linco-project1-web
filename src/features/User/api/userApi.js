@@ -93,7 +93,7 @@ export const registerUser = async (userData) => {
 
 export const signinUser = async (credentials) => {
   try {
-    const response = await fetch(`${BASE_URL}authentication/sign-in`, {
+    const response = await fetch(`${BASE_URL}/authentication/sign-in`, {
       method: "POST",
       headers: createApiHeaders({
         "Content-Type": "application/json",
