@@ -66,7 +66,7 @@ export const DemoProvider = ({ children }) => {
         }
 
         setDemoData(activeDemo);
-        const role = activeDemo.isOwner ? "owner" : "member";
+        const role = "member";
 
         setActualRole(role);
         setCurrentRoleView(role);
